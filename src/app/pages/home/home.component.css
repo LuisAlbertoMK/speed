@@ -1,0 +1,14 @@
+.texto-justificado {
+    text-align: justify;
+  }
+  tr.anima:hover{
+    background: lavender;
+}
+tr.anima{
+    height: 35px;
+}
+.icono-servicio:hover{
+    color: rgb(246, 160, 68) ;
+}
+
+    

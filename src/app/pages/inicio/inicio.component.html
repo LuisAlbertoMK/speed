@@ -1,0 +1,96 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0"></h1>
+      </div>
+      <div class="col-sm-6">
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="">
+  <div class="row ">
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer " aria-current="page" [routerLink]="['/clientes']">
+      <div class="info-box">
+        <div class="info-box-content text-center">
+          <h3 class="card-title fw-bold">Clientes y Vehículos</h3>
+          <p class="card-text"><i class="fa fa-user fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/cotizacion']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Órdenes y Cotizaciones</h3>
+          <p class="card-text"><i class="fa fa-folder fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/catalogos']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Catalogos</h3>
+          <p class="card-text"><i class="fa fa-address-book fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <!-- <ng-container *ngIf="mostrarAdministracion"> -->
+      <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" *ngIf="ROL !=='Técnico/Ayudante'" aria-current="page"
+      [routerLink]="['/administracion']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Administración</h3>
+          <p class="card-text"><i class="fad fa-hand-holding-usd fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <!-- </ng-container> -->
+    
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/sucursales']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Sucursales</h3>
+          <p class="card-text"><i class="fad fa-landmark fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/servicios']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Vehículos en piso</h3>
+          <p class="card-text"><i class="fas fa-car-building fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/citas']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Citas</h3>
+          <p class="card-text"><i class="fa fa-calendar-check fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/usuarios']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Usuario y roles</h3>
+          <p class="card-text"><i class="fa fa-user fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" *ngIf="ROL !=='Técnico/Ayudante'" aria-current="page"
+      [routerLink]="['/recordatorios']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Recordatorios</h3>
+          <p class="card-text"><i class="fas fa-alarm-exclamation fa-2x"></i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

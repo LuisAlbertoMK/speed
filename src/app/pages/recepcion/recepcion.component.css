@@ -1,0 +1,11 @@
+.tooltipM:hover {
+    background: lavender;
+    color: black;
+    font-weight: bolder;
+  }
+  
+  ::ng-deep .mat-tooltip {
+    font-size: 1em;
+    min-width: 200px;
+  }
+  

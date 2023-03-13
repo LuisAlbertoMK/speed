@@ -1,0 +1,44 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0"></h1>
+      </div>
+      <div class="col-sm-6 text-end">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="SinDetalles">
+          <label class="form-check-label" for="SinDetalles">
+            Sin ningun detalle
+          </label>
+        </div>
+        <button type="button" class="btn btn-primary" *ngIf="SinDetalles" (click)="guardarSNDetalles()">Guardar sin detalles</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-lg-12 col-md-12 col-sm-12 text-end">
+    
+  </div>
+</div>
+<div class="row">
+  <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6" *ngFor="let item of arrayimgAutos">
+    <img [src]="item.foto" class="card-img-top img-fluid rayar" alt="...">
+    <div class="card-body">
+      <!-- <h5 class="card-title">{{item.id}}</h5> -->
+      <ng-container class="card-text">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [value]="true" [id]="item.id">
+          <label class="form-check-label" [for]="item.id">
+            {{item.mostrar}}
+          </label>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+    <button type="button" class="btn btn-primary col-4" *ngIf="!detalles" (click)="guardarRayarDetalles()">Guardar detalles</button>
+  </div>
+</div>

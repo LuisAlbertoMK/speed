@@ -1,0 +1,425 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { FormGroup, NgForm } from '@angular/forms';
+import { map } from 'rxjs';
+import { Cliente } from '../models/cliente.model';
+import { Directorio } from '../models/directorio.model';
+import { Facturacion } from '../models/facturacion.model';
+import { environment } from "../../environments/environment";
+import { Credito } from '../models/credito.model';
+
+import { child, get, getDatabase, onValue, push, ref, set } from "firebase/database";
+import { ServiciosPublicosService } from './servicios-publicos.service';
+import { info } from 'console';
+import { SucursalesService } from './sucursales.service';
+import { EmailsService } from './emails.service';
+import { VehiculosService } from './vehiculos.service';
+
+const db = getDatabase()
+const dbRef = ref(getDatabase());
+@Injectable({
+  providedIn: 'root'
+})
+export class ClientesService {
+  telefonosInvalidos:any[]=['5555555555','1111111111','0000000000','7777777777','1234567890','0123456789'];
+
+  constructor(private http: HttpClient, private _publicos:ServiciosPublicosService, private _sucursales: SucursalesService,
+    private _vehiculos: VehiculosService,
+    private _mail: EmailsService) { }
+  url:string= 'https://speed-pro-app-default-rtdb.firebaseio.com'
+  consultaClientes(){
+  return this.http.get(`${this.url}/clientes.json`)
+    .pipe(
+      map(this.crearArreglo2)
+    )
+  }
+  listadoDirectoriosCliente(id:string){
+    return this.http.get(`${this.url}/directorios/${id}/directorios.json`)
+    .pipe(
+      map(this.crearArreglo2)
+    )
+  }
+
+  async listaClientes(){
+    let answer = {contenido:false, data:[]}
+    // const sucursales = await this._sucursales.consultaSucursales().then(o=>{return o['data']})
+    // const vehiculos = await this._vehiculos.lista_vehiculos().then(o=>{ return o['data']})
+    // console.log(su);
+    await get(child(dbRef, `clientes`)).then(async (snapshot) => {
+      if (snapshot.exists()) {
+        const clientes = this._publicos.crearArreglo2(snapshot.val())
+        clientes.map(c=>{
+          // const infoSucursal = sucursales.find(o=>o['id'] === c['sucursal'])
+          // const vehiculos_cliente = vehiculos.filter(o=>o['cliente'] === c['id'])
+          // c['infoSucursal'] = infoSucursal
+          // c['vehiculos'] = vehiculos_cliente
+          c['fullname'] = `${c['nombre']} ${c['apellidos']}` 
+          return c
+        })
+        answer.data = clientes
+        answer.contenido =  true
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    
+    //  await this._sucursales.consultaSucursales().then(async ({contenido,data})=>{
+    //   if (contenido) {
+    //     const sucursales = data
+        
+    //   }
+    //  })
+    //  console.log(sucursales);
+     
+    
+    return answer
+  }
+  async getEmpresas(){
+    let answer = {contenido: false, data: []}
+    await get(child(dbRef, `empresas`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log();
+        
+        // const arreglo = this._publicos.crearArreglo2(snapshot.val())
+        
+        answer.contenido = true
+        answer.data = snapshot.val()
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return answer
+  }
+  async getEmpresasSucursal(sucursal){
+    let answer = {contenido: false, data: []}
+    await get(child(dbRef, `empresas/${sucursal}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const arreglo = this._publicos.crearArreglo2(snapshot.val())
+        arreglo.map(e=>{
+          e['empresa'] = String(e['empresa']).toLowerCase()
+        })
+        // console.log(arreglo);
+        answer.contenido = true
+        answer.data = arreglo
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return answer
+  }
+  async registraEmpresa(ID:string,data:any){
+    let asnwer = {registro:false}
+    const dat =  {empresa: data['empresa']}
+    await set(ref(db, `empresas/${ID}/${data['id']}`), dat )
+          .then(() => {
+            // Data saved successfully!
+            asnwer.registro = true
+          })
+          .catch((error) => {
+            // The write failed...
+          });
+
+    return asnwer
+  }
+  async infoCliente(id:string){
+    let answer = {informacion:false,info:{}}
+    await get(child(dbRef, `clientes/${id}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const infos = snapshot.val()
+        infos.fullname = `${infos.nombre} ${infos.apellidos}`
+        answer.info = infos
+        answer.informacion = true
+      } else {
+        answer.informacion = false
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return answer
+  }
+  
+  async countClientes(){
+    let clientes = 0
+    await get(child(dbRef, `clientes`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        let contador  = this.crearArreglo2(snapshot.val())
+        clientes = contador.length
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return clientes
+  }
+  async ListaClientes(){
+    let answer = {existe:false,clientes:[]}
+    await get(child(dbRef, `clientes`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const clie = this.crearArreglo2(snapshot.val())
+        
+        for (let index = 0; index < clie.length; index++) {
+          const element = clie[index];
+          clie[index].fullname = `${element.nombre} ${element.apellidos}`
+          clie[index].id = `${element.id}`
+        }
+        answer['clientes'] = clie
+        answer.existe = true
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return answer
+  }
+  async telefonoValido(telefono:string){
+    let bad:boolean = true
+    for (let index = 0; index < this.telefonosInvalidos.length; index++) {
+      const telefono_ = this.telefonosInvalidos[index];
+      if (telefono === telefono_) {
+        bad = false
+      }
+    }
+    return bad
+  }
+  async existeCorreo(correo:string){
+    let existe = false, listaCorreos:any=[]
+    await get(child(dbRef, `clientes`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        listaCorreos = this.crearArreglo2(snapshot.val())
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+
+    for (let index = 0; index < listaCorreos.length; index++) {
+      const element = listaCorreos[index];
+      if (element.correo === correo) { existe = true}
+    }
+    // console.log(listaCorreos);
+    // console.log(correo);
+    return existe
+  }
+
+  async generaNombreCliente(infoSucursal:any,infoCliente:any){
+    let contadorClientes = 0, no_cliente =''
+    await get(child(dbRef, `clientes`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const cuantosC = this.crearArreglo2(snapshot.val())
+        contadorClientes = cuantosC.length
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+        const timeRequest = this._publicos.getFechaHora()
+        const date: Date = new Date(timeRequest.fecha)
+        const numeroCliente:number = contadorClientes + 1
+
+        let mes = ''; let secuencia=''; let ceros = ''
+        let inicialesNombre = infoCliente['nombre'].slice(0,2)
+        let InicialesApellidos = infoCliente['apellidos'].slice(0,2)
+        let incialesSucursal = infoSucursal.slice(0,2)
+        let anio = String(date.getFullYear())
+        let muestra = anio.slice(anio.length-2,anio.length)
+        if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
+        for (let index = String(numeroCliente).length; index < 4 ; index++) {
+          ceros = `${ceros}0`
+        }
+        secuencia = `${ceros}${numeroCliente}`
+        let nombreCotizacion = `${inicialesNombre}${InicialesApellidos}${incialesSucursal}${mes}${muestra}${secuencia}`
+        no_cliente = nombreCotizacion
+        return no_cliente
+  }
+  async registraCliente(data:any){
+    let ans:boolean = false
+    data
+    	await set(ref(db, `clientes/${data.id}`), data )
+              .then(async () => {
+                // Data saved successfully!
+
+                await this._sucursales.inforSucursalUnica(data['sucursal']).then((info_sucursal)=>{
+
+                  if (info_sucursal['correo']) {
+                    const infocorreo = {
+                      nombre: `${data['nombre']} ${data['apellidos']}`,
+                      correos: [info_sucursal['correo'],data['correo']],
+                      no_cliente: data['no_cliente']
+                    }
+                    this._mail.EmailBienvenida(infocorreo)
+                    ans = true
+                  }
+                })
+                
+              })
+              .catch((error) => {
+                // The write failed...
+                ans = false
+
+              });
+    return ans
+  }
+
+
+
+  guardarCliente(sucursal:string,cliente: string,dataCliente:any){
+    const temp={
+      ...dataCliente
+    }
+    temp.status = true
+    return this.http.post(`${this.url}/clientes/${sucursal}/${cliente}.json`,temp)
+  }
+  guardarDirectorio(idCliente:string,cliente: Cliente){
+    const temp={
+      ...cliente
+    }
+    return this.http.post(`${this.url}/directorios/${idCliente}/directorios.json`,temp)
+
+  }
+  getClientesSucursal(sucursal:string){
+    return this.http.get(`${ this.url }/clientes/${ sucursal }.json`)
+    .pipe(
+      map(this.crearArreglo2)
+    )
+  }
+  updateStatus(sucursal:string,cliente:string,dataCliente:any,status:boolean){
+    const clienteTemp = {
+      ...dataCliente
+    }
+    clienteTemp.status = status
+    return this.http.put(`${ this.url }/clientes/${sucursal}/${ cliente }.json`, clienteTemp);
+  }
+  consultaClienteID(sucursal:string,id:string){
+    return this.http.get(`${ this.url }/clientes/${sucursal}/${ id }.json`)
+  }
+  consultaClienteConID(sucursal:string,id:string){
+    return this.http.get(`${ this.url }/clientes/${ sucursal }/${ id }.json`)
+  }
+  consultaDirectorioID(id:string){
+    return this.http.get(`${ this.url }/directorios/${ id }/directorios.json`)
+    .pipe(
+      map(this.crearArreglo2)
+    )
+  }
+  actualizarCliente( sucursal:string,cliente:string,dataCliente: Cliente ) {
+    const clienteTemp = {
+      ...dataCliente
+    };
+    return this.http.put(`${ this.url }/clientes/${sucursal}/${ cliente }.json`, clienteTemp);
+  }
+  actualizarDirectorio( ID:string,id:string,directorio: Directorio ) {
+    const directorioTemp = {
+      ...directorio
+    };
+    return this.http.put(`${ this.url }/directorios/${ ID }/directorios/${id}.json`, directorioTemp);
+  }
+  directorioUnico(ID:string,id:string){
+    return this.http.get(`${ this.url }/directorios/${ ID }/directorios/${id}.json`)
+  }
+  eliminarDirectorio(ID:string,id:string){
+    return this.http.delete(`${ this.url }/directorios/${ ID }/directorios/${id}.json`)
+  }
+  guardarFacturacion(ID:string, facturacion:Facturacion){
+    const temp={
+      ...facturacion
+    }
+    return this.http.post(`${this.url}/facturacion/${ID}.json`,temp)
+  }
+  actuzalizarFacturacion(idCliente:string, facturacion:Facturacion){
+    const temp = {
+      ...facturacion
+    };
+    return this.http.put(`${ this.url }/facturacion/${ idCliente }.json`, temp);
+  }
+  consultaFacturacion(ID:string){
+    return this.http.get(`${ this.url }/facturacion/${ ID }.json`)
+    /*.pipe(
+      map(this.crearArregloFacturacion)
+    )*/
+  }
+
+  consultaCredito(ID:string){
+    return this.http.get(`${ this.url }/creditos/${ ID }.json`)
+  }
+
+  crearCredito(ID:string, credito: Credito){
+    const temp={
+      ...credito
+    }
+    return this.http.post(`${this.url}/creditos/${ID}.json`,temp)
+  }
+  actualizarCredito(ID:string,id:string,credito: Credito){
+    const temp={
+      ...credito
+    }
+    return this.http.put(`${this.url}/creditos/${ID}/${id}.json`,temp)
+  }
+  consultaCreditos(ID){
+    return this.http.get(`${ this.url }/creditos/${ ID }.json`)
+    .pipe(
+      map(this.crearArreglo)
+    )
+  }
+
+
+  detallesClientePersonal(sucursal:string,cliente:string){
+    return this.http.get(`${ this.url }/clientes/${sucursal}/${ cliente }.json`)
+  }
+  detallesClienteDirectorio(cliente:string){
+    return this.http.get(`${ this.url }/directorios/${ cliente }/directorios.json`)
+    .pipe(
+      map(this.crearArreglo)
+    )
+  }
+  detallesClienteFacturacion(cliente:string){
+    return this.http.get(`${ this.url }/facturacion/${ cliente }.json`)
+  }
+  detallesClienteCredito(cliente:string){
+    return this.http.get(`${ this.url }/creditos/${ cliente }.json`)
+  }
+  detallesClienteAutomoviles(sucursal:string, cliente:string){
+    return this.http.get(`${ this.url }/vehiculos/${ cliente }.json`)
+    .pipe(
+      map(this.crearArreglo2)
+    )
+  }
+  consultaCorreos(ID:string){
+    return this.http.get(`${ this.url }/clientes/${ ID }.json`)
+  }
+
+
+  getEstados(){
+    return this.http.get(`${ this.url }/estados.json`)
+  }
+  getInformacion(){
+    return this.http.get(`${ this.url }/estados.json`)
+  }
+
+  
+
+  //arreglos
+  private crearArreglo(clientesObj:object){
+    const clientes:any[]=[]
+    if (clientesObj===null) { return [] }
+    Object.keys(clientesObj).forEach(key=>{
+      const cliente: any = clientesObj[key]
+      clientes.push(cliente )
+    })
+    return clientes
+  }
+  private crearArreglo2(directorioObj:object){
+    const directorios:any[]=[]
+    if (directorioObj===null) { return [] }
+    Object.keys(directorioObj).forEach(key=>{
+      const directorio: any = directorioObj[key]
+      directorio.id=key
+      directorios.push(directorio )
+    })
+    return directorios
+  }
+
+}

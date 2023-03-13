@@ -1,0 +1,279 @@
+<div class="content-header">
+  <div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item" *ngIf="regresar!==''"><a class="breadcrumb-item"  [routerLink]="['/'+regresar]">Regresar</a></li>
+          <li class="breadcrumb-item active">Vehículos</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row ">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"></h5>
+      <div class="card-text">
+        <div class="row">
+          <div class="col" *ngIf="!emptyData">
+            <form (ngSubmit)="guardarLlenadoManual()" [formGroup]="formaVehiculoManual" class="mt-2">
+              <div class="row">
+                <ng-container>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                    <div class="mb-1">
+                      <label for="cliente" class="form-label">Cliente</label>
+                      <ng-container>
+                        <input type="search" placeholder="cliente" aria-label="Cliente" 
+                        (click)="filtradoClientes()" (ngModelChange)="vericainfo('clientes')"
+                          class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto">
+                        <input type="hidden" formControlName="cliente"  >
+                        <small *ngIf="validarVehiculoLlenadoManual('cliente')" class="text-danger">
+                          Campo requerido
+                        </small>
+                        <mat-autocomplete #auto="matAutocomplete" class="text-capitalize" [displayWith]="displayFn">
+                          <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
+                            (click)="infoAdiciona(option)" #tooltip="matTooltip"
+                            [matTooltip]="'Nombre: '+option.fullname +', Sucursal: '+ '' +', Correo: '+option.correo"
+                            matTooltipPosition="right"
+                            aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
+                            {{option.fullname}}
+                          </mat-option>
+                        </mat-autocomplete>                      
+                      </ng-container>
+                    </div>
+                    
+                  </div>
+
+                </ng-container>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                  <div class="mb-1">
+                    <label for="placas" class="form-label">Placas</label>
+                    <input type="text" class="form-control form-control-sm text-uppercase" id="placas" formControlName="placas"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('placas')" (keyup)="placasVerifica()"
+                      maxlength="7" (keyup)="verificarEngomado('nuevo')">
+                    <small *ngIf="validarVehiculoLlenadoManual('placas') && !existenPlacas" class="text-danger">
+                      campo requerido
+                    </small>
+                    <ng-container *ngIf="existenPlacas">
+                      <small class="text-danger mt-1"><strong>Placas registradas verificar información</strong></small>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="mb-1">
+                    <label for="vinChasis" class="form-label">vinChasis</label>
+                    <input type="text" class="form-control form-control-sm" id="vinChasis" formControlName="vinChasis"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('vinChasis')" maxlength="17">
+                    <small *ngIf="validarVehiculoLlenadoManual('vinChasis')" class="text-danger">
+                      campo requerido
+                    </small>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="marca" class="form-label">Marca</label>
+                    <select class="form-select form-select-sm" formControlName="marca"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('marca')" (ngModelChange)="submarcas()">
+                      <option [defaultSelected]="" value="">Seleccione ...</option>
+                      <option value="{{marca.id}}" *ngFor="let marca of marcas;let i = index">{{marca.id}}</option>
+                    </select>
+                  </div>
+                  <small *ngIf="validarVehiculoLlenadoManual('marca')" class="text-danger">
+                    Campo requerido
+                  </small>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="modelo" class="form-label">Modelo</label>
+                    <ng-container *ngIf="modeloAuto!==null">
+                      <select class="form-select form-select-sm" formControlName="modelo" (ngModelChange)="aniosModelo()"
+                        [class.is-invalid]="validarVehiculoLlenadoManual('modelo')">
+                        <option [defaultSelected]="modelo.modelo" [value]="modelo.modelo" *ngFor="let modelo of arrayModelos" >{{modelo.modelo}}</option>
+                      </select>
+
+                    </ng-container>
+                    <ng-container *ngIf="modeloAuto===null">
+                      <select class="form-select form-select-sm" formControlName="modelo"
+                        [class.is-invalid]="validarVehiculoLlenadoManual('modelo')" [ngModel]="">
+                        <option [defaultSelected]="" value="">Seleccione marca</option>
+                      </select>
+                    </ng-container>
+                  </div>
+                  <small *ngIf="validarVehiculoLlenadoManual('modelo')" class="text-danger">
+                    Campo requerido
+                  </small>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="categoria" class="form-label">Categoria</label>
+                    <select class="form-select form-select-sm" formControlName="categoria"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('categoria')" [attr.disabled]="true">
+                      <option value="{{categoria}}" *ngFor="let categoria of categorias">{{categoria}}</option>
+                    </select>
+                  </div>
+                  <small *ngIf="validarVehiculoLlenadoManual('categoria')" class="text-danger">
+                    Campo requerido
+                  </small>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1">
+                    <label for="anio" class="form-label">Año</label>
+
+                    <select class="form-select form-select-sm" formControlName="anio" [ngModel]="anio"
+                      *ngIf="listaArrayAnios.length !==0" [class.is-invalid]="validarVehiculoLlenadoManual('anio')">
+                      <option [defaultSelected]="" value="">Selecciona año</option>
+                      <option [defaultSelected]="anio===anioS" value="{{anioS}}" *ngFor="let anioS of listaArrayAnios">
+                        <ng-container *ngIf="anio!==anioS">
+                          {{anioS}}
+                        </ng-container>
+                        <ng-container *ngIf="anio===anioS">
+                          {{anio}}
+                        </ng-container>
+                      </option>
+                    </select>
+                    <select class="form-select form-select-sm" formControlName="anio" [ngModel]=""
+                      *ngIf="listaArrayAnios.length===0" [class.is-invalid]="validarVehiculoLlenadoManual('anio')">
+                      <option [defaultSelected]="" value="">Seleccione marca</option>
+                    </select>
+                    <small *ngIf="validarVehiculoLlenadoManual('anio')" class="text-danger">
+                      campo requerido
+                    </small>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="cilindros" class="form-label">Cilindros</label>
+                    <select class="form-select form-select-sm" formControlName="cilindros"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('cilindros')">
+                      <option [defaultSelected]="" value="">Seleccione</option>
+                      <option value="4">4</option>
+                      <option value="6">6</option>
+                      <option value="8">8</option>
+                      <option value="10">10</option>
+                    </select>
+                  </div>
+                  <small *ngIf="validarVehiculoLlenadoManual('cilindros')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1">
+                    <label for="no_motor" class="form-label">No. de motor </label>
+                    <input type="text" class="form-control form-control-sm" id="no_motor" formControlName="no_motor"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('no_motor')" maxlength="17">
+                    <small *ngIf="validarVehiculoLlenadoManual('no_motor')" class="text-danger">
+                      campo requerido
+                    </small>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="color" class="form-label">Color</label>
+                    <select class="form-select form-select-sm" formControlName="color"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('color')">
+                      <option [defaultSelected]="" value="">Seleccione ...</option>
+                      <option value="{{color}}" *ngFor="let color of colores">{{color}}</option>
+                    </select>
+                  </div>
+                  <small *ngIf="validarVehiculoLlenadoManual('color')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                  <div class="mb-1">
+                    <label for="engomado" class="form-label">Engomado </label>
+                    <select class="form-select form-select-sm" formControlName="engomado" [attr.disabled]="true"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('engomado')"
+                      (change)="verificarEngomado('nuevo')">
+                      <option value="{{engomado}}" *ngFor="let engomado of engomadoColors">{{engomado}}</option>
+                    </select>
+
+                    <small *ngIf="validarVehiculoLlenadoManual('engomado')" class="text-danger">
+                      campo requerido
+                    </small>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="transmision" class="form-label">Transmisión</label>
+                    <select class="form-select form-select-sm" formControlName="transmision"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('transmision')">
+                      <option [defaultSelected]="" value="">Seleccione ...</option>
+                      <option value="Estandar">Manual o estándar</option>
+                      <option value="Automatica">automática </option>
+
+                    </select>
+                  </div>
+                  <small *ngIf="validarVehiculoLlenadoManual('transmision')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+                  <div class="mb-1">
+                    <label for="marcaMotor" class="form-label">Marca de motor</label>
+                    <input type="text" class="form-control form-control-sm" id="marcaMotor" formControlName="marcaMotor"
+                      [class.is-invalid]="validarVehiculoLlenadoManual('marcaMotor')" maxlength="60">
+                    <small *ngIf="validarVehiculoLlenadoManual('marcaMotor')" class="text-danger">
+                      campo requerido
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="d-grid gap-2 col-lg-4 col-md-4 col-sm-6 mx-auto mt-2">
+                <!-- [disabled]="(existenPlacas || formaVehiculoManual.invalid)  ? 'disabled': null" -->
+                <button type="submit" class="btn btn-primary"
+                  >Guardar</button>
+              </div>
+            </form>
+          </div>
+          <div class="col" *ngIf="emptyData">
+            <div class="jumbotron jumbotron-fluid">
+              <div class="container">
+                <h1 class="display-4">No se encontro información relacionada</h1>
+                <p class="lead">Verificar información</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="infoCliente" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <h3 class="modal-title text-primary" id="staticBackdropLabel">Información de cliente</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-1">
+        <!-- dataClienteSelect -->
+        <ul class="list-group">
+          <div class="row">
+            <li class="caja list-group-item col-lg-6 col-md-6 col-sm-6 col-12">Nombre:
+              <label>{{dataClienteSelect.nombre}}</label></li>
+            <li class="caja list-group-item col-lg-6 col-md-6 col-sm-6 col-12">Sucursal:
+              <label>{{dataClienteSelect.sucursal}}</label></li>
+            <li class="caja list-group-item col-lg-6 col-md-6 col-sm-6 col-12">Correo
+              <label>{{dataClienteSelect.correo}}</label></li>
+            <li class="caja list-group-item col-lg-6 col-md-6 col-sm-6 col-12">Telefono movil:
+              <label>{{dataClienteSelect.telefono_movil}}</label></li>
+            <li class="caja list-group-item col-lg-6 col-md-6 col-sm-6 col-12">Tipo:
+              <label>{{dataClienteSelect.tipo}}</label></li>
+          </div>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

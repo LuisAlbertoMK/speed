@@ -1,0 +1,333 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active">Clientes y Vehículos</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <button class="btn btn-sm btn-outline-primary" [(ngModel)]="!showFormCliente">Nuevo cliente</button>
+<ng-container *ngIf="showFormCliente">
+
+</ng-container> -->
+
+<!-- <ng-container *ngIf="showFormCliente; else elseClienteRegister">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+      <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
+    </div>
+  </div>
+
+</ng-container>
+<ng-template #elseClienteRegister>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+      <button [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" class="btn btn-sm btn-success"
+        (click)="changeValor(!showFormCliente)"><i class="fad fa-layer-plus"></i> Cliente</button>
+    </div>
+  </div>
+</ng-template> -->
+
+
+
+<!-- <hr> -->
+
+
+<!--todo el componente visible-->
+<div class="row ">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 text-end">
+          <ng-container class="text-end">
+            <button [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" class="btn btn-sm btn-primary m-1"
+              data-bs-toggle="modal" data-bs-target="#modalNewUser" (click)="cargaDataCliente('')">
+              <i class="fad fa-layer-plus"></i> Cliente
+            </button>
+            <button class="btn btn-warning btn-sm m-1" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cargaDataVehiculo('','cliente')"
+              [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">
+              <i class="fad fa-layer-plus"></i> Vehículo
+          </button>
+            <ng-container class="btn-group" role="group" *ngIf="SUCURSAL==='Todas'">
+              <button id="btnGroupDrop1" type="button" class="btn btn-danger btn-sm  text-capitalize m-1"
+                data-bs-toggle="dropdown" aria-expanded="false" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">
+                Sucursales <i class="fad fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <li><a class="dropdown-item" *ngFor="let filtrar of miarreglo">
+                    <div class="form-check">
+                      <ng-container>
+                        <input class="form-check-input" type="checkbox" [value]="filtrar.id" [id]="filtrar.id" checked
+                          (click)="filAp(filtrar.id)">
+                      </ng-container>
+                      <label class="form-check-label" [for]="filtrar.id">
+                        {{filtrar.nombre}}
+                      </label>
+                    </div>
+                  </a>
+
+                </li>
+              </ul>
+            </ng-container>
+            <ng-container class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm text-capitalize m-1"
+                data-bs-toggle="dropdown" aria-expanded="false" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">
+                Tipo <i class="fad fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <li class="text-capitalize"><a class="" class="dropdown-item" (click)="filtro(filtrar)"
+                    *ngFor="let filtrar of filtroTipo">{{filtrar}}</a></li>
+              </ul>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+      <ng-container *ngIf="dataSource.data; else elseTable">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+          <mat-form-field appearance="standard" class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <mat-label>Busqueda</mat-label>
+            <input matInput (keyup)="applyFilter($event,'clientes')" placeholder="SpeedPro" #input>
+          </mat-form-field>
+
+
+          <div class="table-responsive">
+            <table #clientes="matSort" matSort mat-table [dataSource]="dataSource" multiTemplateDataRows
+              class="mat-elevation-z8">
+              <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumnsSuperSU">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1.3+'px'}"> {{column}} </th>
+              <td mat-cell *matCellDef="let element">{{element[column]}}</td>
+            </ng-container> -->
+              <ng-container matColumnDef="no_cliente">
+                <th mat-header-cell *matHeaderCellDef># {{'cliente' | capitalizarUno}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.no_cliente}} </td>
+              </ng-container>
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef> {{'nombre' | capitalizarUno}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+              </ng-container>
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef> {{'tipo' | capitalizarUno}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.tipo}} </td>
+              </ng-container>
+              <ng-container matColumnDef="sucursal">
+                <th mat-header-cell *matHeaderCellDef> {{'sucursal' | capitalizarUno}} </th>
+                <!-- {{element['infoSucursal'].sucursal}}  -->
+                <td mat-cell *matCellDef="let element"> </td>
+              </ng-container>
+              <ng-container matColumnDef="correo">
+                <th mat-header-cell *matHeaderCellDef> {{'correo' | capitalizarUno}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+              </ng-container>
+              <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button aria-label="expand row"
+                    (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnsSuperSUExtended.length">
+
+                  <div class="row example-element-detail"
+                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <!-- <div class="example-element-description"> -->
+                    <div class="row ">
+                      <ng-container>
+                        <!-- <app-cliente [data]="element" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente> -->
+                      </ng-container>
+
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-capitalize text-end">
+                        <i class="btn btn-sm fa fa-edit fa-2xs text-primary" #tooltip="matTooltip"
+                          matTooltip="Editar información" (click)="cargaDataCliente(element)" data-bs-toggle="modal"
+                          data-bs-target="#modalNewUser"></i>
+                          <i class="btn btn-sm fa fa-edit fa-2xs text-primary" #tooltip="matTooltip"
+                          matTooltip="Nuevo vehiculo" (click)="cargaDataVehiculo(element,'cliente')" data-bs-toggle="modal"
+                          data-bs-target="#modalNewVehiculo"></i>
+                          <!-- [routerLink]="'/historial-cliente/clientes/'+element.id" -->
+                        <i class="btn btn-sm fa fa-books fa-2xs text-danger" #tooltip="matTooltip"
+                          matTooltip="Historial de cliente"
+                          ></i>
+                          
+                        <i class="btn btn-sm fa fa-layer-plus fa-2xs text-success" #tooltip="matTooltip"
+                          matTooltip="Realizar cotización" [routerLink]="'/cotizacionNueva/'+element.id+'/cliente'"
+                          (click)="updateClie(element)"></i>
+                        <i class="btn btn-sm fa fa-layer-plus fa-2xs text-primary" #tooltip="matTooltip"
+                          matTooltip="Realizar recepción"
+                          [routerLink]="'/ServiciosConfirmar/'+element.id+'/cliente'"></i>
+                      </div>
+                      <ng-container *ngFor="let item of campos_cliente">
+                        <ng-container *ngIf="element[item.valor]; else elseTemplate">
+
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                            {{item.muestra | capitalizarUno}}: <strong [ngClass]="'text-'+item.tipo">
+                              {{element[item.valor] }}</strong>
+                          </div>
+                        </ng-container>
+                        <ng-template #elseTemplate>
+
+                        </ng-template>
+                      </ng-container>
+                    </div>
+
+                    <!--  tabla de vehiculos-->
+                    <hr>
+                    <ng-container *ngIf="element['vehiculos'].length; else elseVehiculosCliente">
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Vehiculo</th>
+                            <th scope="col">Descripciom</th>
+                            <th scope="col">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let v of element['vehiculos']; let i = index">
+                            <th scope="row">{{ i + 1}}</th>
+                            <td>{{v['placas']}}</td>
+                            <td>{{v['marca']}} {{v['modelo']}} {{v['anio']}} </td>
+                            <td>
+                              <i class="fa fa-edit btn btn-sm text-primary" (click)="cargaDataVehiculo(v,'vehiculo')"
+                              #tooltip="matTooltip" matTooltip="Editar vehiculo" data-bs-toggle="modal"
+                              data-bs-target="#modalNewVehiculo"></i>
+                              <i class="fa fa-layer-plus btn btn-sm text-success" 
+                              [routerLink]="['/cotizacionNueva/'+v['id']+'/vehiculo']"
+                              #tooltip="matTooltip" matTooltip="Realizar cotizacion"></i>
+                              <i class="fa fa-layer-plus btn btn-sm text-primary" 
+                              #tooltip="matTooltip" matTooltip="Realizar recepcion"
+                              [routerLink]="['/ServiciosConfirmar/'+v['id']+'/vehiculo']"></i>
+                              <i class="fa fa-books btn btn-sm text-danger" 
+                              #tooltip="matTooltip" matTooltip="Historial de vehiculo"></i>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </ng-container>
+                    <ng-template #elseVehiculosCliente>
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                          <h1 class="fw-bold">No hay vehiculos registrados del cliente </h1>
+                        </div>
+                      </div>
+                    </ng-template>
+                    
+                    
+                    <!--  tabla de vehiculos-->
+
+
+                    <!-- <div class="col">
+                      <ng-container *ngIf="element['vehiculos']">
+                        <pre>
+                          {{element['vehiculos'] | json}}
+                        </pre>
+                      </ng-container>
+                      
+                      
+                    </div> -->
+                    <!-- </div> -->
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsSuperSUExtended"></tr>
+              <tr mat-row *matRowDef="let element; columns: displayedColumnsSuperSUExtended;"
+                class="example-element-row" [class.example-expanded-row]="expandedElement === element">
+                <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+          </div>
+          <mat-paginator #ClientePaginator role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+        </div>
+      </ng-container>
+      <ng-template #elseTable>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mt-3 align-content-center">
+          <p class="fs-2 fw-bold">Cargando información</p>
+          <i class="fa fa-spin fa-spinner fa-2x text-warning"></i>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalNewUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <!-- <div class="modal-header ml-3">
+        <h2 class="modal-title text-primary " id="exampleModalLabel">Nuevo cliente </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div> -->
+      <div class="modal-body m-2">
+        <div class="row">
+          <div class="col text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <ng-container *ngIf="datCliente; else elseNewCliente">
+          <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
+        </ng-container>
+        <ng-template #elseNewCliente>
+          <div class="row">
+            <div class="col text-center">
+              <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalNewVehiculo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <!-- <div class="modal-header ml-3">
+        <h2 class="modal-title text-primary " id="exampleModalLabel">Nuevo cliente </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div> -->
+      <div class="modal-body m-2">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cargaDataCliente('')"></button>
+          </div>
+        </div>
+        <ng-container *ngIf="cliente; else elseVehiculo">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <app-vehiculo [cliente]="cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #elseVehiculo>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <ng-container *ngIf="vehiculo; else elseIDvehiculo">
+                <app-vehiculo [vehiculo]="vehiculo['id']" [vehiculoDat]="vehiculo" [cliente]="vehiculo['cliente']" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+              </ng-container>
+              <ng-template #elseIDvehiculo>
+                <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+              </ng-template>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,300 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row ">
+      <div class="col-sm-12">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active">Clientes y Vehículos</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="con-flot">
+  <input type="checkbox" id="btn-mas">
+  <div class="redes">
+    <a class="mat-elevation-z8" [routerLink]="['/inicio']"><i class="fad fa-arrow-alt-left"></i></a>
+    <a class="mat-elevation-z8"><i class="fad fa-arrow-alt-up"></i></a>
+    <a class="mat-elevation-z8"><i class="fad fa-arrow-alt-down"></i></a>
+  </div>
+  <div class="btn-mas">
+    <label for="btn-mas" class="btn-ma"><strong><i class="fad fa-plus-circle"></i></strong></label>
+  </div>
+</div>
+<div class="row">
+  <div class="card">
+    <div class="card-body">
+      <div class="text-end"
+          *ngIf="ROL === 'SuperSU' || ROL==='Administrador' || ROL ==='Gerente' || ROL ==='Auxiliar'">
+            <button type="button" class="btn btn-success btn-sm m-1" data-bs-toggle="modal"
+              data-bs-target="#nuevoUsuario" (click)="obtenerInformacion('')">
+              Nuevo usuario
+            </button>
+        </div>
+      <div class="card-text">
+      </div>
+      <div class="alert alert-light text-center" role="alert" *ngIf="carga">
+        <h2>Cargando información espere ...</h2>
+        <i class="fad fa-spinner-third fa-spin fa-3x"></i>
+      </div>
+      <ng-container *ngIf="!carga">
+        <mat-form-field appearance="standard" class="col-lg-6 col-md-6 col-sm-12">
+          <mat-label>Busqueda</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+        </mat-form-field>
+
+        <div class="mat-elevation-z8 table-responsive">
+          <table mat-table [dataSource]="dataSource" matSort class="">
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumnsSuperSU">
+              <ng-container *ngIf="column!=='correo'">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" class="text-capitalize"> {{column}} </th>
+                <td mat-cell *matCellDef="let element" class="text-capitalize"> {{element[column]}} </td>
+              </ng-container>
+              <ng-container *ngIf="column==='correo'">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  [ngStyle]="{'min-width':(miniColumnas)*2+'px'}" class="text-capitalize"> {{column}} </th>
+                <td mat-cell *matCellDef="let element" class=""> {{element[column]}} </td>
+              </ng-container>
+
+            </ng-container>
+
+            <ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsSuperSUExtended; sticky: true"></tr>
+              <tr mat-row [matMenuTriggerFor]="menu" [ngClass]="{'false': !row.status}" class="anima"
+                [class.demo-row-is-clicked]="clickedRows.has(row)"
+                *matRowDef="let row; columns: displayedColumnsSuperSUExtended;">
+                <ng-container>
+                  <!-- (click)="changeStatus(row,true)" -->
+                  <mat-menu #menu="matMenu" yPosition="below">
+                    <button mat-menu-item (click)="obtenerInformacion(row)" data-bs-toggle="modal"
+                      data-bs-target="#nuevoUsuario"
+                      *ngIf="(ROL === 'SuperSU') || (ROL === 'Administrador')">Actualizar información</button>
+                    <button mat-menu-item (click)="obtenerInformacion(row)" data-bs-toggle="modal"
+                      data-bs-target="#nuevoUsuario"
+                      *ngIf="(ROL === 'Gerente') && (row.rol==='Auxiliar' || row.rol ==='Técnico/Ayudante') && (row.idSucursal === SUCURSAL)">Actualizar
+                      información</button>
+                    <!-- <button mat-menu-item (click)="obtenerInformacion(row)" data-bs-toggle="modal" data-bs-target="#nuevoUsuario" *ngIf="(ROL === 'Gerente') && (row.rol!=='Gerente') && (row.idSucursal === SUCURSAL)" >Actualizar información</button> -->
+                    <button mat-menu-item (click)="obtenerInformacion(row)" data-bs-toggle="modal"
+                      data-bs-target="#nuevoUsuario"
+                      *ngIf="(ROL !== 'SuperSU' && ROL !== 'Administrador') && (row.correo===CORREO)">Actualizar mi
+                      información</button>
+                    <!-- <button mat-menu-item (click)="obtenerInformacion(row)" data-bs-toggle="modal" data-bs-target="#nuevoUsuario" *ngIf="(ROL === 'Auxiliar') && (row.rol!=='Auxiliar' && row.rol!=='Gerente') && (row.idSucursal === SUCURSAL)" >Actualizar información</button> -->
+                    <button mat-menu-item (click)="changeStatus(row,true)"
+                      *ngIf="(ROL === 'SuperSU' || ROL === 'Administrador') && (row.id!=='unico') && !row.status">Habilitar</button>
+                    <button mat-menu-item (click)="changeStatus(row,false)"
+                      *ngIf="(ROL === 'SuperSU' || ROL === 'Administrador') && (row.id!=='unico' && row.status)">Deshabilitar</button>
+                    <button mat-menu-item (click)="changeStatus(row,true)"
+                      *ngIf="(ROL === 'Gerente') && row.rol!=='Gerente' && (row.correo!==CORREO) && !row.status && (row.idSucursal === SUCURSAL)">Habilitar</button>
+                    <button mat-menu-item (click)="changeStatus(row,true)"
+                      *ngIf="(ROL === 'Auxiliar') && row.rol!=='Gerente' && (row.correo!==CORREO) && !row.status && (row.idSucursal === SUCURSAL)">Habilitar</button>
+                    <button mat-menu-item (click)="changeStatus(row,false)"
+                      *ngIf="(ROL === 'Gerente') && row.rol!=='Gerente' && (row.correo!==CORREO) && row.status && (row.idSucursal === SUCURSAL)">Deshabilitar</button>
+                    <button mat-menu-item (click)="changeStatus(row,false)"
+                      *ngIf="(ROL === 'Auxiliar') && row.rol!=='Gerente' && (row.correo!==CORREO) && row.status && (row.idSucursal === SUCURSAL)">Deshabilitar</button>
+                    <!-- <button mat-menu-item  (click)="changeStatus(row,false)" *ngIf="(ROL === 'SuperSU' || ROL === 'Administrador') && (row.id!=='unico' && row.status)">Deshabilitar</button> -->
+                    <button mat-menu-item (click)="detalles(row)"
+                      *ngIf="(ROL === 'SuperSU' || ROL === 'Administrador')">Detalles confidencial</button>
+                    <button mat-menu-item (click)="detalles(row)"
+                      *ngIf="(ROL !== 'SuperSU' && ROL !== 'Administrador') && row.correo===CORREO">Mis
+                      detalles</button>
+                    <!-- <button mat-menu-item (click)="detalles(row)" *ngIf="(ROL !== 'SuperSU' && ROL !== 'Administrador') && row.correo===CORREO">Actualiza mi informacion</button> -->
+                    <button mat-menu-item (click)="detalles(row)"
+                      *ngIf="(ROL !== 'SuperSU' && ROL !== 'Administrador') && row.correo!==CORREO">Detalles</button>
+                  </mat-menu>
+                </ng-container>
+              </tr>
+            </ng-container>
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td [colSpan]="10" class="mat-cell text-center" colspan="4">
+                <br>
+                <h3 *ngIf="input.value!==''">Ninguna resultado con criterio: {{ input.value }}</h3>
+                <h3 *ngIf="input.value===''">Ninguna resultado</h3>
+              </td>
+            </tr>
+          </table>
+
+          <mat-paginator class="col-12" [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users">
+          </mat-paginator>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal -->
+<div class="modal fade" id="nuevoUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <h3 class="modal-title fw-bold text-primary" *ngIf="IDUsuario===''">Nuevo Usuario</h3>
+        <h3 class="modal-title fw-bold text-primary" *ngIf="IDUsuario!==''">Actualizar información</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-3">
+        <ng-container class="card-text">
+          <form (ngSubmit)="guardarUsuario()" [formGroup]="formaUsuario">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 text-end">
+                <section class="example-section">
+                  <mat-slide-toggle class="example-margin" [color]="color" checked="checked" formControlName="status"
+                    id="status">
+                    Activo
+                  </mat-slide-toggle>
+                </section>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="mb-1">
+                  <label for="usuario" class="form-label">Nombre de usuario</label>
+                  <input type="text" class="form-control form-control-sm" id="usuario" formControlName="usuario" placeholder="Juan perez Garcia"
+                    [class.is-invalid]="validarCampo('formaUsuario','usuario')">
+                  <small *ngIf="validarCampo('formaUsuario','usuario')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="mb-1">
+                  <label for="correo" class="form-label">Correo</label>
+                  <input type="text" class="form-control form-control-sm" id="correo" formControlName="correo"
+                    [class.is-invalid]="validarCampo('formaUsuario','correo')">
+                  <small *ngIf="validarCampo('formaUsuario','correo')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class=" mb-1">
+                  <label for="confirmCorreo" class="form-label">Confirma correo</label>
+                  <input type="text" class="form-control form-control-sm" id="confirmCorreo"
+                    formControlName="confirmCorreo" [class.is-invalid]="validarCampo('formaUsuario','confirmCorreo')">
+                  <small *ngIf="validarCampo('formaUsuario','confirmCorreo')" class="text-danger">
+                    El correo ingresado no coincide con "<strong>{{ formaUsuario.controls['correo'].value}}</strong>"
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <label for="password" class="form-label">Contraseña</label>&nbsp;&nbsp;
+                <label (click)="cambiarTipo(!ver)">
+                  <div [ngSwitch]="ver">
+                    <div *ngSwitchCase="true"><i class="fad fa-eye-slash pointer fa-0"></i></div>
+                    <div *ngSwitchDefault><i class="fad fa-eye pointer fa-0"></i></div>
+                  </div>
+                </label>
+                <div class="input-group  mb-1">
+                  <input type="password" class="form-control form-control-sm" id="password" formControlName="password"
+                    [class.is-invalid]="validarCampo('formaUsuario','password')">
+
+                </div>
+                <small *ngIf="validarCampo('formaUsuario','password')" class="text-danger">
+                  Debe tener al menos 8 caracteres de longitud,debe ser alfanumérico, con al menos un carácter en
+                  mayúscula y uno en minúscula
+                  y debe tener al menos un caracter especial.
+                </small>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <label for="confirmPassword" class="form-label">Confirma contraeña </label>&nbsp;&nbsp;
+                <label (click)="cambiarTipo(!ver)">
+                  <div [ngSwitch]="ver">
+                    <div *ngSwitchCase="true"><i class="fad fa-eye-slash pointer fa-0"></i></div>
+                    <div *ngSwitchDefault><i class="fad fa-eye pointer fa-0"></i></div>
+                  </div>
+                </label>
+                <div class="input-group mb-1">
+                  <input type="password" class="form-control form-control-sm" id="confirmPassword"
+                    formControlName="confirmPassword"
+                    [class.is-invalid]="validarCampo('formaUsuario','confirmPassword')">
+                </div>
+                <small *ngIf="validarCampo('formaUsuario','confirmPassword')" class="text-danger">
+                  La contraseña ingresada no coincide
+                </small>
+              </div>
+
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="mb-1">
+                  <!-- <label for="rol" class="form-label" *ngIf="ROL === 'Gerente' || ROL ==='Auxiliar'">ROL</label> -->
+                  <label for="rol" class="form-label">ROL</label>
+                  <select class=" form-select form-select-sm" formControlName="rol" [ngModel]='datUsuario.rol'
+                    [class.is-invalid]="validarCampo('formaUsuario','rol')"
+                    *ngIf="ROL === 'SuperSU' || ROL==='Administrador'">
+                    <option [defaultSelected]="datUsuario.rol === rol" [value]="rol"
+                      *ngFor="let rol of roles;let i=index">{{rol}}</option>
+                  </select>
+                  <select class=" form-select form-select-sm " formControlName="rol"
+                    *ngIf="ROL === 'Gerente' "
+                    [class.is-invalid]="validarCampo('formaUsuario','rol')" >
+                    <option  value="tecnico">Tecnico / Ayudante</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="mb-1">
+                  <label for="sucursal" class="form-label">Sucursal</label>
+                  <select class=" form-select form-select-sm " formControlName="sucursal"
+                    [class.is-invalid]="validarCampo('formaUsuario','sucursal')"
+                    *ngIf="ROL === 'SuperSU' || ROL==='Administrador'" [ngModel]='datUsuario.idSucursal'>
+                    <option value="Todas" *ngIf="valido">Todas</option>
+                    <option [defaultSelected]="datUsuario.idSucursal === sucursal.id" [value]="sucursal.id"
+                      *ngFor="let sucursal of listaArraySucursales;let i=index">{{sucursal.sucursal}}</option>
+                  </select>
+                  <select class=" form-select form-select-sm " formControlName="sucursal"
+                    [ngModel]='datUsuario.idSucursal' [class.is-invalid]="validarCampo('formaUsuario','sucursal')"
+                    *ngIf="ROL !== 'SuperSU' && ROL !=='Administrador'">
+                    <option [defaultSelected]="SUCURSAL" [value]="SUCURSAL">{{nombreSucursal}}</option>
+                  </select>
+
+                  <small *ngIf="validarCampo('formaUsuario','sucursal')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="d-grid gap-2 col-6 mx-auto mt-2">
+                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" >Guardar</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal para gerentes -->
+<div class="modal fade" id="inforContacto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title ml-3" id="staticBackdropLabel">Detalles de usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-2">
+        <div class="row">
+          <div class="col-lg-12-sm-12">
+            <table class="table">
+              <tbody>
+                <tr>nombre:</tr>
+                <tr>Correo:</tr>
+                <tr>Rol</tr>
+                <tr>Status</tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>

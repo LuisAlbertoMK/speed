@@ -1,0 +1,21 @@
+.caja { 
+    font-family: sans-serif; 
+    font-size: 18px; 
+    font-weight: 400; 
+    color: black;
+    background: #D7F2F9 ;
+}
+.caja:hover{
+    background: lavender;
+}
+.tooltipM:hover {
+    background: lavender;
+    color: black;
+    font-weight: bolder;
+    
+  }
+  
+  ::ng-deep .mat-tooltip {
+    font-size: 1em;
+    min-width: 200px;
+  }

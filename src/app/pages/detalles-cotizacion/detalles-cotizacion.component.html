@@ -1,0 +1,330 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li> -->
+          <li class="breadcrumb-item active" ><a class="breadcrumb-item"  [routerLink]="['/'+pagina]">Regresar</a></li>
+          <li class="breadcrumb-item active">Detalles de cotización </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="con-flot">
+  <input type="checkbox" id="btn-mas">
+  <div class="redes">
+    <a  class="mat-elevation-z8" [routerLink]="['/cotizacion']" *ngIf="pagina==='cotizacion'" ><i class="fad fa-arrow-alt-left"></i></a>
+    <a  class="mat-elevation-z8" [routerLink]="['/servicios']" *ngIf="pagina==='servicios'" ><i class="fad fa-arrow-alt-left"></i></a>
+    <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-up"></i></a>
+    <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-down"></i></a>
+  </div>
+  <div class="btn-mas">
+    <label for="btn-mas" class="btn-ma"><strong><i class="fad fa-plus-circle"></i></strong></label>
+  </div>
+</div>
+
+
+<div class="row ">
+  <div class="card">
+    <div class="card-body logo" *ngIf="!inforValida">
+        <h2>NO existe informacion disponible</h2>
+    </div>
+    <div class="card-body" *ngIf="inforValida">
+      <div class="row">
+        <div class="col text-end">
+          <h2  style="color:#000; ">Detalles de recepción</h2>
+        </div>
+      </div>
+      <div class="card-text">
+
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-primary">Información de recepción</h2>
+            <div class="card-text">
+              <div class="row">
+                
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Rayar detalles:
+                  <strong>
+                    <ng-container [ngSwitch]="dataRecepcion.rayarDetalles">
+                      <label *ngSwitchCase="true" [ngClass]="{'text-success':dataRecepcion.rayarDetalles}"><i class="fad fa-check-circle fa-1x"></i></label>
+                      <label *ngSwitchDefault [ngClass]="{'text-danger':!dataRecepcion.rayarDetalles}"><i class="fad fa-times-circle fa-1x"></i></label>
+                    </ng-container>
+                  </strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Consentimiento:
+                  <strong>
+                    <ng-container [ngSwitch]="dataRecepcion.firmaConsentimiento">
+                      <label *ngSwitchCase="true" [ngClass]="{'text-success':dataRecepcion.firmaConsentimiento}"><i class="fad fa-check-circle fa-1x"></i></label>
+                      <label *ngSwitchDefault [ngClass]="{'text-danger':!dataRecepcion.firmaConsentimiento}"><i class="fad fa-times-circle fa-1x"></i></label>
+                    </ng-container>
+                  </strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Cotización:
+                  <strong>
+                    <ng-container [ngSwitch]="dataRecepcion.cotizacion">
+                      <label *ngSwitchCase="true" [ngClass]="{'text-success':dataRecepcion.cotizacion}"><i class="fad fa-check-circle fa-1x"></i></label>
+                      <label *ngSwitchDefault [ngClass]="{'text-danger':!dataRecepcion.cotizacion}"><i class="fad fa-times-circle fa-1x"></i></label>
+                    </ng-container>
+                  </strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Entrega:
+                  <strong>
+                    <ng-container [ngSwitch]="dataRecepcion.firmaEntrega">
+                      <label *ngSwitchCase="true" [ngClass]="{'text-success':dataRecepcion.firmaEntrega}"><i class="fad fa-check-circle fa-1x"></i></label>
+                      <label *ngSwitchDefault [ngClass]="{'text-danger':!dataRecepcion.firmaEntrega}"><i class="fad fa-times-circle fa-1x"></i></label>
+                    </ng-container>
+                  </strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Servicio: <strong class="text-uppercase"> {{dataRecepcion.servicio}}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-primary">Información de cliente</h2>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  Nombre: 
+                  <strong>
+                    {{dataCliente.nombre}} {{dataCliente.apellidos}}
+                  </strong>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  Telefonos: <br>
+                  <strong>
+                    <ng-container *ngIf="dataCliente.telefono_fijo !==''">
+                      Movil: {{dataCliente.telefono_movil}} / fijo: {{dataCliente.telefono_fijo}}
+                    </ng-container>
+                    <ng-container *ngIf="dataCliente.telefono_fijo ===''">
+                      Movil: {{dataCliente.telefono_movil}}
+                    </ng-container>
+                  </strong>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  Correos: <br>
+                  <strong>
+                    <ng-container *ngIf="dataCliente.correo_sec !==''">
+                      Principal: {{dataCliente.correo}} <br> Secundario: {{dataCliente.correo_sec}}
+                    </ng-container>
+                    <ng-container *ngIf="dataCliente.correo_sec ===''">
+                      Principal: {{dataCliente.correo}}
+                    </ng-container>
+                  </strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                  Tipo: 
+                  <strong class="text-capitalize">
+                    {{dataCliente.tipo}}
+                  </strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                  Activo:
+                  <strong>
+                    <ng-container [ngSwitch]="dataCliente.status">
+                      <label *ngSwitchCase="true">SI</label>
+                      <label *ngSwitchDefault>NO</label>
+                    </ng-container>
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-primary">Información de sucursal</h2>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Sucursal: <strong class="text-uppercase"> {{dataSucursal.sucursal}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Telefono: <strong class="text-uppercase"> {{dataSucursal.telefono}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  serie: <strong class="text-uppercase"> {{dataSucursal.serie}}</strong>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  Direccion: <strong class="text-uppercase"> {{dataSucursal.direccion}}</strong>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                   <img [src]="dataSucursal.imagen" alt="" class="img-fluid" style="width: 300px; height:150px">
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-primary">Información de vehículo</h2>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Placas: <strong class="text-uppercase"> {{dataVehiculo.placas}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Marca: <strong class="text-uppercase"> {{dataVehiculo.Marca}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Categoria: <strong class="text-uppercase"> {{dataVehiculo.categoria}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Trasmision: <strong class="text-uppercase"> {{dataVehiculo.transmision}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Color: <strong class="text-uppercase"> {{dataVehiculo.color}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Engomado: <strong class="text-uppercase"> {{dataVehiculo.engomado}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Cilindros: <strong class="text-uppercase"> {{dataVehiculo.cilindros}}</strong>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Modelo: <strong class="text-uppercase"> {{dataVehiculo.modelo}}</strong>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  vinChasis: <strong class="text-uppercase"> {{dataVehiculo.vinChasis}}</strong>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  Motor: <strong class="text-uppercase"> {{dataVehiculo.no_motor}}</strong>
+                </div>
+               
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                  Año: <strong class="text-uppercase"> {{dataVehiculo.anio}}</strong>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-primary"><strong>Status</strong> de vehículo:
+              <strong class="text-uppercase">
+                <ng-container [ngSwitch]="dataStatus.status">
+                  <label *ngSwitchCase="'recibido'" class="text-success">{{dataStatus.status}}</label>
+                  <label *ngSwitchCase="'cotizacion'" class="text-default">{{dataStatus.status}}</label>
+                  <label *ngSwitchCase="'pendiente'" class="pendiente">{{dataStatus.status}}</label>
+                  <label *ngSwitchCase="'entregado'" class="text-primary">{{dataStatus.status}}</label>
+                  <label *ngSwitchCase="'terminado'" class="terminado-text">{{dataStatus.status}}</label>
+                  <label *ngSwitchCase="'proceso'" class="text-warning">{{dataStatus.status}}</label>
+                </ng-container>
+              </strong>
+            </h2>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <ng-container *ngIf="dataStatus.fecha_recibido === 'pendiente'">
+                    Fecha recibido: <strong>No se ha recibido </strong>
+                  </ng-container>
+                  <ng-container *ngIf="dataStatus.fecha_recibido !== 'pendiente'">
+                    Fecha recibido: <strong class="text-uppercase">{{dataStatus.fecha_recibido}} {{dataStatus.hora_recibido}}</strong>
+                  </ng-container>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <ng-container *ngIf="dataStatus.fecha_entregado === 'pendiente'">
+                    Fecha entregado: <strong>No se ha entregado </strong>
+                  </ng-container>
+                  <ng-container *ngIf="dataStatus.fecha_entregado !== 'pendiente'">
+                    Fecha entregado: <strong class="text-uppercase">{{dataStatus.fecha_entregado}} {{dataStatus.hora_entregado}}</strong>
+                  </ng-container>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="dataRecepcion!==null && dataRecepcion.cotizacion">
+          <div class="card-body">
+            <h2 class="card-title text-primary">Información de cotizacion</h2>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  fecha cotizacion: <strong>{{dataCotizacion.fecha}} {{dataCotizacion.hora}}</strong>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  Costo: <strong>{{totalCotizacion | monedas}}</strong>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <strong>Elementos de cotizacion: </strong>
+                  <div class="row">
+                    <!-- <pre>{{dataComplementos | json}}</pre> -->
+                      <div class="card col-lg-3 col-md-4 col-sm-6" *ngFor="let elemento of dataComplementos">
+                        <div class="card-body">
+                          <h3 class="card-title"><strong>{{elemento.nombre}}</strong></h3>
+                          <div class="card-text">
+                            <p>Tipo: <strong>{{elemento.tipo}}</strong></p>
+                            <p>Costo: <strong>{{elemento.precio  | monedas}}</strong></p>
+                            <p> <strong>Descripcion</strong>: {{elemento.descripcion | slice:0:35 }}...</p>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <pre>{{dataElementos | json}}</pre> -->
+        <div class="card" *ngIf="dataElementos.length!==0">
+          <div class="card-body">
+            <h2 class="card-title text-primary">Detalles de paquetes</h2>
+            <div class="card-text">
+              <div class="row">
+                
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="row">
+                      <div class="card col-lg-12 col-md-12 col-sm-12" *ngFor="let data of dataElementos">
+                        <div class="card-body">
+                          <h3 class="card-title"><strong>paquete {{data.nombre}}</strong></h3>
+                          <div class="card-text">
+                            <div class="row">
+                              <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let det of data.datos">
+                                <div class="card-body">
+                                  <p>Tipo: <strong>{{det.tipo}}</strong></p>
+                                  <p>Nombre: <strong>{{det.nombre}}</strong></p>
+                                  <p  *ngIf="det.marca">Marca: 
+                                    <ng-container >
+                                      <strong>{{det.marca}}</strong>
+                                    </ng-container>
+                                </p>
+                                <p *ngIf="det.modelo">Modelo: 
+                                  <ng-container  >
+                                    <strong>{{det.modelo}}</strong>
+                                  </ng-container>                              
+                                </p>
+                                <p>Cantidad: <strong>{{det.cantidad}}</strong></p>
+                                <p>Costo: <strong>{{det.precio  | monedas}}</strong></p>
+                                <p>Subtotal: <strong>{{det.subtotal | monedas}}</strong></p>
+                                
+                                <p class="texto-justificado"> Descripcion: {{det.descripcion }}...</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <pre>
+        {{ dataComplementos | json}}
+      </pre> -->
+      </div>
+    </div>
+  </div>

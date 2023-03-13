@@ -1,0 +1,442 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-uppercase">Historial de vehiculo {{ dataVehiculo.placas}}</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item pointer" (click)="preguntar('/inicio')"  style="text-decoration: none">Inicio</a></li> -->
+          <li class="breadcrumb-item"><a class="breadcrumb-item pointer" [routerLink]="'/clientes'">Regresar</a>
+          </li>
+          <li class="breadcrumb-item active">historial vehiculo</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <p class="fs-4 text-center">Información de vehículo</p>
+        <ng-container *ngFor="let campo of campos_vehiculo">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="vehiculo[campo.campo]">
+            {{campo.muestra}}: <strong>{{vehiculo[campo.campo]}}</strong>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <!-- <div class="card-body"> -->
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Cliente">
+        <div class="card">
+          <div class="card-body">
+            <p>Información de cliente</p>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end pointer">
+                <i class="btn btn-sm fa fa-user-edit fa-2xs text-primary" data-bs-toggle="modal"
+                  data-bs-target="#modalNewUser" #tooltip="matTooltip" [matTooltip]="'Editar info. cliente'"
+                  matTooltipPosition="right"></i>
+                <i class="btn btn-sm fa fa-books fa-2xs text-danger"
+                  [routerLink]="'/historial-cliente/cotizacionNueva/'+cliente.id" #tooltip="matTooltip"
+                  [matTooltip]="'Historial de cliente'" matTooltipPosition="right"></i>
+              </div>
+              <!-- (click)="cargaDataCliente()" -->
+              <ng-container *ngFor="let campo of campos_cliente">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-uppercase" *ngIf="cliente[campo.campo]">
+                  {{campo.muestra}}: <strong>{{cliente[campo.campo]}}</strong>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Cotizaciones">
+        <div class="row m-1">
+          <p class="fs-3 text-uppercase text-center mt-2">Desgloce de cotizaciones</p>
+          <ng-container *ngFor="let campo of campos_desgloce">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+              <div class="card">
+                <div class="card-body  text-end">
+                  <h5 class="text-center text-uppercase fs-6">{{campo.nombre}}</h5>
+                  <p class="card-text"><strong class="fs-3">
+                      {{info_Degloce[campo.valor] | monedas}}
+                    </strong></p>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <mat-form-field appearance="standard" class="col-lg-6 col-md-6 col-sm-12">
+          <mat-label>Busqueda </mat-label>
+          <input matInput (keyup)="applyFilter($event,'cotizaciones')" placeholder="SpeedPro" #input>
+        </mat-form-field>
+        <div class="m-1">
+
+          <div class="table-responsive">
+            <table #tabCotizacion="matSort" matSort mat-table [dataSource]="dataSourceCotizaciones"
+              multiTemplateDataRows class="mat-elevation-z8">
+              <ng-container matColumnDef="no_cotizacion">
+                <th mat-header-cell *matHeaderCellDef> No. Cotización </th>
+                <td mat-cell *matCellDef="let element"> {{element.no_cotizacion}} </td>
+              </ng-container>
+              <ng-container matColumnDef="placas">
+                <th mat-header-cell *matHeaderCellDef> Placas</th>
+                <td mat-cell *matCellDef="let element" class="text-uppercase"> {{element.infoVehiculo['placas']}} </td>
+              </ng-container>
+              <ng-container matColumnDef="servicio">
+                <th mat-header-cell *matHeaderCellDef> Servicio </th>
+                <td mat-cell *matCellDef="let element" class="text-uppercase">
+                  <ng-container *ngFor="let s of servicios">
+                    <ng-container *ngIf="s.valor === element.servicio">
+                      {{s.nombre}}
+                    </ng-container>
+                  </ng-container>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
+              </ng-container>
+              <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button aria-label="expand row"
+                    (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columsCotizacionesExtended.length">
+                  <div class="example-element-detail"
+                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="row m-2">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                        <div class="row">
+                          <p>Desgloce cotizacion <strong>{{element['no_cotizacion']}}</strong></p>
+                          <ng-container *ngFor="let campo of campos_desgloce">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                              <div class="card">
+                                <div class="card-body  text-end">
+                                  <h5 class="text-center text-uppercase fs-6">{{campo.nombre}}</h5>
+                                  <p class="card-text"><strong class="fs-3">
+                                      {{element['desgloce'][campo.valor] | monedas}}
+                                    </strong></p>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+
+                      </div>
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngFor="let item of element.elementos"
+                            [ngClass]="{'tipo-paquete': item.tipo === 'paquete','tipo-mo': item.tipo === 'MO','tipo-refaccion': item.tipo === 'refaccion'}">
+                            <strong>{{item.nombre | capitalizarUno}}</strong>
+                            &nbsp; <i class="fa fa-search-plus fa-2xs pointer" *ngIf="item.tipo === 'paquete'"
+                              (click)="elementospaqueteShow(item)" data-bs-toggle="modal"
+                              data-bs-target="#elemtosPaquete"></i>
+
+                              <ng-container *ngIf="item.tipo !== 'paquete'">
+                                <ng-container *ngIf="item.costo > 0">{{ item.costo * item.cantidad | monedas}}</ng-container>
+                                <ng-container *ngIf="item.precio && item.costo<=0">{{ item.precio * item.cantidad | monedas}}</ng-container>
+                              </ng-container>
+                              
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columsCotizacionesExtended"></tr>
+              <tr mat-row *matRowDef="let element; columns: columsCotizacionesExtended;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+          </div>
+          <mat-paginator #paginatorCotizacion role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+        </div>
+      </mat-tab>
+      <mat-tab label="Recepciones">
+        <div class="row m-1">
+          <p class="fs-3 text-uppercase text-center mt-2">Desgloce de cotizaciones</p>
+          <ng-container *ngFor="let campo of campos_desgloce">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+              <div class="card">
+                <div class="card-body  text-end">
+                  <h5 class="text-center text-uppercase fs-6">{{campo.nombre}}</h5>
+                  <p class="card-text"><strong class="fs-3">
+                      {{info_Degloce_recepciones[campo.valor] | monedas}}
+                    </strong></p>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="m-1">
+
+          <div class="table-responsive">
+            <table #tabRecepciones="matSort" matSort mat-table [dataSource]="dataSourceRecepciones"
+              multiTemplateDataRows class="mat-elevation-z8">
+              <ng-container matColumnDef="no_os">
+                <th mat-header-cell *matHeaderCellDef> # O.S </th>
+                <td mat-cell *matCellDef="let element"> {{element.no_os}} </td>
+              </ng-container>
+              <ng-container matColumnDef="placas">
+                <th mat-header-cell *matHeaderCellDef> Placas</th>
+                <td mat-cell *matCellDef="let element" class="text-uppercase"> {{element.infoVehiculo['placas']}} </td>
+              </ng-container>
+              <ng-container matColumnDef="servicio">
+                <th mat-header-cell *matHeaderCellDef> Servicio </th>
+                <td mat-cell *matCellDef="let element" class="text-uppercase">
+                  <ng-container *ngFor="let s of servicios">
+                    <ng-container *ngIf="s.valor === element.servicio">
+                      {{s.nombre}}
+                    </ng-container>
+                  </ng-container>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let element"> {{element.fecha_recibido}} </td>
+              </ng-container>
+              <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button aria-label="expand row"
+                    (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columsRecepcionesExtended.length">
+                  <div class="example-element-detail"
+                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="row m-2">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+
+                        <div class="row">
+                          <p>Desgloce cotizacion <strong>{{element['no_os']}}</strong></p>
+                          <ng-container *ngFor="let campo of campos_desgloce">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                              <div class="card">
+                                <div class="card-body  text-end">
+                                  <h5 class="text-center text-uppercase fs-6">{{campo.nombre}}</h5>
+                                  <p class="card-text"><strong class="fs-3">
+                                      {{element['desgloce'][campo.valor] | monedas}}
+                                    </strong></p>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+
+                      </div>
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngFor="let item of element.servicios"
+                            [ngClass]="{'tipo-paquete': item.tipo === 'paquete','tipo-mo': item.tipo === 'MO','tipo-refaccion': item.tipo === 'refaccion'}">
+                            <strong>{{item.nombre | capitalizarUno}}</strong>
+                            &nbsp; <i class="fa fa-search-plus fa-2xs pointer" *ngIf="item.tipo === 'paquete'"
+                              (click)="elementospaqueteShow(item)" data-bs-toggle="modal"
+                              data-bs-target="#elemtosPaquete"></i>
+
+                              <ng-container *ngIf="item.tipo !== 'paquete'">
+                                <ng-container *ngIf="item.costo > 0">{{ item.costo * item.cantidad | monedas}}</ng-container>
+                                <ng-container *ngIf="item.precio && item.costo<=0">{{ item.precio * item.cantidad | monedas}}</ng-container>
+                              </ng-container>
+                              
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columsRecepcionesExtended"></tr>
+              <tr mat-row *matRowDef="let element; columns: columsRecepcionesExtended;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+          </div>
+          <mat-paginator #paginatorRecepciones role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <!-- </div> -->
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <h2 class="modal-title" id="exampleModal">Detalles de paquete <strong
+            class="text-primary">{{paqueteData}}</strong></h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-1">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="text-capitalize">
+                <th>tipo</th>
+                <th>nombre</th>
+                <th>cantidad</th>
+                <th>precio</th>
+                <th>subtotal</th>
+                <th>marca</th>
+                <th>modelo</th>
+                <th>descripcion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let complemento of complementosShow" class="anima">
+                <td>{{complemento.tipo}}</td>
+                <td>{{complemento.nombre}}</td>
+                <td>{{complemento.cantidad}}</td>
+                <td>{{complemento.precio | monedas}}</td>
+                <td>{{complemento.subtotal | monedas}}</td>
+                <td>{{complemento.marca}}</td>
+                <td>{{complemento.modelo}}</td>
+                <td>{{complemento.descripcion}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="elemtosPaquete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <h2 class="modal-title text-primary" id="exampleModalLabel">Detalles de paquete <strong
+            class="text-danger">{{infoPaquete.nombre}}</strong></h2>
+      </div>
+      <div class="modal-body m-1">
+        <div class="row m-2">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-4 mt-1 mb-1">
+            <h5 class="text-center fs-4">Desgloce de precios de paquete</h5>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+            <div class="card">
+              <div class="card-body  text-end">
+                <h5 class="text-center fs-6 text-capitalize">precio Normal</h5>
+                <p class="card-text"><strong class="fs-3"> {{(infoPaquete.flotilla)*1.30 | monedas}} </strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+            <div class="card">
+              <div class="card-body  text-end">
+                <h5 class="text-center fs-6 text-capitalize">precio flotilla</h5>
+                <p class="card-text"><strong class="fs-3"> {{infoPaquete.flotilla | monedas}} </strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-4 col-6">
+            <div class="card">
+              <div class="card-body  text-end">
+                <h5 class="text-center fs-6 text-capitalize">U.B</h5>
+                <p class="card-text"><strong class="fs-3"> {{infoPaquete.UB}} </strong></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4 col-sm-4 col-6 ">
+            <div class="card border-warning">
+              <div class="card-body  text-end">
+                <h5 class="text-center fs-6 text-capitalize">Costo refacciones</h5>
+                <p class="card-text"><strong class="fs-3"> {{infoPaquete.refacciones | monedas}} </strong></p>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-4 col-sm-4 col-6 ">
+            <div class="card border-warning">
+              <div class="card-body  text-end">
+                <h5 class="text-center fs-6 text-capitalize">Costo refacciones flotilla</h5>
+                <p class="card-text"><strong class="fs-3"> {{(infoPaquete.refacciones) * 1.25 | monedas}} </strong></p>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-lg-3 col-md-4 col-sm-4 col-6 ">
+            <div class="card border-primary">
+              <div class="card-body  text-end">
+                <h5 class="text-center fs-6 text-capitalize">Costo MO</h5>
+                <p class="card-text"><strong class="fs-3"> {{infoPaquete.mo | monedas}} </strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Normal</th>
+                    <th scope="col">Flotilla</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of elementospaquete; let i = index" class="anima">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.nombre}}
+                      <strong [ngClass]="{'tipo-refaccion': item.tipo === 'refaccion','tipo-mo': item.tipo === 'MO'}">(
+                        {{item.tipo}})</strong>
+                    </td>
+                    <td><strong>{{item.cantidad}}</strong></td>
+                    <td><strong>{{item.precio | monedas}}</strong></td>
+                    <td><strong>{{item.normal | monedas}}</strong></td>
+                    <td><strong>{{item.flotilla | monedas}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"
+          role="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

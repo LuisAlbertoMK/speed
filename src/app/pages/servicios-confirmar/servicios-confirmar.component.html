@@ -1,0 +1,915 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/cotizacion']">Regresar</a></li>
+          <li class="breadcrumb-item active">Nueva cotización</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <img src="../../../assets/imagenes_detalles/capo.jpg" alt=""> -->
+<!-- <pre>{{this.dataRecepcion.data | json}}</pre> -->
+<ng-container >
+  <div class="mb-3 row">
+    <label for="cotizaciones-auto" class="col-sm-4 col-form-label">Clientes disponibles ( Totales: {{clientes.length}}
+      )</label>
+    <div class="col-sm-8 ">
+      <div class="input-group">
+        <input type="search" [formControl]="myControlClientes" id="cotizaciones-auto" [matAutocomplete]="auto"
+          class="form-control form-control-sm text-uppercase" (ngModelChange)="cargaDataCliente()">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnClientes">
+          <mat-option *ngFor="let option of filteredOptionsClientes | async" [value]="option" class="text-uppercase">
+            {{option['no_cliente']}} {{option['fullname']}}
+          </mat-option>
+        </mat-autocomplete>
+        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="modal" #tooltip="matTooltip"
+          matTooltip="Nuevo cliente" data-bs-target="#modalNewUser">+</button>
+      </div>
+
+    </div>
+  </div>
+</ng-container>
+
+
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="dataRecepcion.cliente">
+  <div class="card border-dark">
+    <div class="card-body text-dark">
+      <h3 class="text-center text-uppercase"><strong>Información de cliente #
+          {{dataRecepcion.cliente['no_cliente']}}</strong></h3>
+      <div class="row card-text text-start">
+        <ng-container *ngFor="let item of camposCliente">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="dataRecepcion.cliente[item]">
+            {{item.toUpperCase()}}:<strong class="fs-6 text-uppercase"> {{dataRecepcion.cliente[item]}} </strong>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- *ngIf="tipo === 'cliente'" -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="mb-3 row ">
+    <label for="cotizaciones-auto" class="col-sm-6 col-form-label">Seleccionar placas de vehiculo ( Totales:
+      {{dataRecepcion['vehiculos'].length}} )</label>
+    <div class="col-sm-6 ">
+      <div class="input-group">
+        <select class="form-select form-select-sm text-uppercase" [ngModel]="dataRecepcion.data['vehiculo']"
+          (change)="AutoSeleccionado(autoSeleccionado.value)" #autoSeleccionado>
+          <option [value]=""></option>
+          <option [value]="vehiculo.id" *ngFor="let vehiculo of dataRecepcion.vehiculos" class="text-uppercase">
+            {{vehiculo.placas}}</option>
+        </select>
+        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="modal" #tooltip="matTooltip"
+          matTooltip="nuevo vehículo" data-bs-target="#modalNewVehiculo"
+          [disabled]="!dataRecepcion.data.cliente">+</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="col" *ngIf="tipo === 'vehiculo' || tipo === 'cliente'">
+  <div class="mb-3 row">
+    <label for="cotizaciones-auto" class="col-sm-6 col-form-label">Cotizaciones vehiculo ( Totales:
+      {{cotizacionesAUTO.length}} )</label>
+    <div class="col-sm-6">
+      <input type="search" [formControl]="myControlCotizacionesAUTO" id="cotizaciones-auto" [matAutocomplete]="auto"
+        class="form-control form-control-sm">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnAUTO">
+        <mat-option *ngFor="let option of filteredOptionsCotizacionesAUTO | async" [value]="option">
+          {{option['no_cotizacion']}}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+  </div>
+
+</div>
+<!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="tipo === 'new'">
+  <div class="mb-3 row">
+    <label for="cotizaciones-auto" class="col-sm-6 col-form-label">Seleccionar placas de vehiculo ( Totales:
+      {{dataRecepcion['vehiculos'].length}} )</label>
+    <div class="col-sm-6">
+      <select class="form-select form-select-sm text-uppercase" (change)="AutoSeleccionado(autoSeleccionado.value)"
+        #autoSeleccionado>
+        <option [value]=""></option>
+        <option [value]="vehiculo.id" *ngFor="let vehiculo of dataRecepcion['vehiculos']" class="text-uppercase">
+          {{vehiculo.placas}}</option>
+      </select>
+    </div>
+  </div>
+</div> -->
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card border-dark">
+    <div class="card-body text-dark" *ngIf="dataRecepcion.vehiculo">
+      <h3 class="text-center text-uppercase"><strong>Información de vehiculo #
+          {{dataRecepcion.vehiculo['placas']}}</strong></h3>
+      <div class="row card-text text-start">
+        <ng-container *ngFor="let item of camposVehiculo">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="dataRecepcion.vehiculo[item]">
+            {{item.toUpperCase()}}:<strong class="fs-6 text-uppercase"> {{dataRecepcion.vehiculo[item]}} </strong>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+  <mat-step>
+    <ng-template matStepLabel>Servicios a realizar</ng-template>
+
+    <div class="row">
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end m-1">
+        <button (click)="muestraPaquetes(!showPaquetes);" class="btn btn-sm btn-primary m-1">
+          Agrega paquete
+          <i class="fa" [ngClass]="{'fa-plus': !showPaquetes,'fa-minus': showPaquetes}"></i>
+        </button>
+        <button (click)="muestraFormElemento(!showFormElemento)" class="btn btn-sm btn-primary m-1">
+          Agrega elemento
+          <i class="fa" [ngClass]="{'fa-plus': !showFormElemento,'fa-minus': showFormElemento}"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="restaurarOriginales()"
+          *ngIf="dataRecepcion.elementos_originales.length">
+          Restaurar elementos
+          <i class="fa fa-redo-alt"></i>
+        </button>
+      </div>
+
+      <ng-container *ngIf="showPaquetes">
+        <div class="row mb-3">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+            <button class="btn btn-sm btn-primary m-1" (click)="filtrarPaquetes('modelo')"
+              [disabled]="!modeloFiltro">Modelo</button>
+            <button class="btn btn-sm btn-danger m-1" (click)="filtrarPaquetes('todos')"
+              [disabled]="modeloFiltro">Todos</button>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+              <mat-form-field appearance="standard" class="col-lg-8 col-md-8 col-sm-8 col-12">
+                <mat-label>Busqueda de paquetes</mat-label>
+                <input matInput (keyup)="applyFilter($event,'paquetes')" placeholder="SpeedPro" #inputPaquetes
+                  id="filtroPaquetes">
+              </mat-form-field>
+              <!-- <button class="btn btn-sm btn-success" (click)="filtroPaquetes('modelo')" *ngIf="!modelo">modelo</button>
+              <button class="btn btn-sm btn-danger" (click)="filtroPaquetes('alls')" *ngIf="modelo">Todos</button> -->
+            </div>
+
+            <div class="mat-elevation-z8 table-responsive ">
+              <table #Paquetes="matSort" matSort mat-table [dataSource]="dataSourcePaquetes" multiTemplateDataRows>
+
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef class="text-capitalize"> index </th>
+                  <td mat-cell *matCellDef="let element" class="text-start">{{element.index}} </td>
+                </ng-container>
+                <ng-container matColumnDef="nombre">
+                  <th mat-header-cell *matHeaderCellDef class="text-capitalize"> nombre </th>
+                  <td mat-cell *matCellDef="let element" class="text-start"> {{element.nombre | capitalizarUno}} </td>
+                </ng-container>
+                <ng-container matColumnDef="precio">
+                  <th mat-header-cell *matHeaderCellDef class="text-capitalize"> precio </th>
+                  <td mat-cell *matCellDef="let element" class="text-end"> {{element.refacciones1 | monedas}} </td>
+                </ng-container>
+                <ng-container matColumnDef="normal">
+                  <th mat-header-cell *matHeaderCellDef class="text-capitalize"> normal </th>
+                  <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla * 1.30 | monedas}} </td>
+                </ng-container>
+                <ng-container matColumnDef="flotilla">
+                  <th mat-header-cell *matHeaderCellDef class="text-capitalize"> flotilla </th>
+                  <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla | monedas}} </td>
+                </ng-container>
+                <ng-container matColumnDef="opciones">
+                  <th mat-header-cell *matHeaderCellDef class="text-capitalize"> opciones </th>
+                  <td mat-cell *matCellDef="let element" class="text-end">
+                    <button class="btn btn-sm" (click)="colocarpaquete(element)">
+                      <i class="fa fa-layer-plus btn btn-sm btn-success"></i>
+                    </button>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="expand">
+                  <th mat-header-cell *matHeaderCellDef aria-label="row actions"
+                    [ngStyle]="{'min-width':(miniColumnas)*.4+'px'}">&nbsp;</th>
+                  <td mat-cell *matCellDef="let element">
+                    <!-- <i class="fa fa-layer-plus btn btn-sm text-primary" (click)="agregarCotizacion(element)"></i> -->
+                    <!-- <i class="fa fa-edit btn btn-sm text-primary" data-bs-toggle="modal" data-bs-target="#InformacionPaquete"(click)="DataActualizaPaquete(element)"></i> -->
+                    <!-- <i class="fa fa-edit btn btn-sm text-primary"  data-bs-toggle="modal" data-bs-target="#paqueteAgrega" (click)="verificaInformacionPaquete(element)"></i>
+                    <i *ngIf="element.status" class="fa fa-ban btn btn-sm text-danger" (click)="changeStatusPaquete(element,false)"></i>
+                    <i *ngIf="!element.status" class="fa fa-check btn btn-sm text-success" (click)="changeStatusPaquete(element,true)"></i> -->
+                    <button mat-icon-button aria-label="expand row"
+                      (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                      <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                      <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                <ng-container matColumnDef="expandedDetail">
+                  <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpandpaquetes.length -1 ">
+                    <div class="example-element-detail"
+                      [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                      <div class="table-responsive">
+                        <table class="table" style="width: 100%;">
+                          <thead>
+                            <tr>
+                              <th colspan="8" class="col text-center fs-5">U.B
+                                <strong [ngClass]="{'text-danger':element.UB<55,'text-success':element.UB>=55}">
+                                  {{element.UB}} %
+                                </strong>
+                              </th>
+                            </tr>
+                            <tr>
+                              <th scope="col" class="text-capitalize">#</th>
+                              <th scope="col" class="text-capitalize">nombre</th>
+                              <th scope="col" class="text-capitalize">cantidad</th>
+                              <th scope="col" class="text-capitalize">precio</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of element.elementos; let i = index" class="anima">
+                              <th scope="row" class="text-center">{{i +1}}</th>
+                              <td class="text-start text-capitalize">{{item.nombre | capitalizarUno}}
+                                <strong
+                                  [ngClass]="{'tipo-mo':item.tipo === 'MO','tipo-refaccion':item.tipo === 'refaccion'}"
+                                  class="tipo-mo text-uppercase">
+                                  ( {{item.tipo}} )
+                                </strong>
+                              </td>
+                              <td class="text-center">{{item.cantidad}}</td>
+                              <td class="text-end">{{item.precio | monedas}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- <div class="row bg-black" style="width: 100%;">
+                          <ng-container *ngIf="element.elementos">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                              
+                            </div>
+                          </ng-container>
+                          <ng-container *ngIf="!element.elementos">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3">
+                              <i class="fa fa-warning text-info fa-2x"></i> <strong>Paquete sin elementos</strong>
+                            </div>
+                          </ng-container>
+                        </div> -->
+                    </div>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpandpaquetes"></tr>
+                <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpandpaquetes;"
+                  class="example-element-row " [ngClass]="{'false':!element.status }"
+                  [class.example-expanded-row]="expandedElement === element">
+                  <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+              </table>
+              <mat-paginator #PaquetesPaginator role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="showFormElemento">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+          <mat-slide-toggle [(ngModel)]="guardarEnCatalogo" [disabled]="formElemento.controls['id'].value">Guardar
+            en catalogo</mat-slide-toggle>
+        </div>
+        <form [formGroup]="formElemento" (ngSubmit)="colocarElemento()">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="row">
+                <label for="nombre"
+                  class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">nombre</label>
+                <div class="col-9 col-sm-9 col-md-9 col-lg-9 ">
+                  <!-- <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"> -->
+                  <input type="search" class="form-control form-control-sm text-uppercase" id="elementos"
+                    (ngModelChange)="verificaInforElemento('principal')" [formControl]="myControl"
+                    [matAutocomplete]="autoElementos" placeholder="Buscar por: nombre elemento">
+                  <!--  -->
+                  <mat-autocomplete autoActiveFirstOption #autoElementos="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      <strong
+                        [ngClass]="{'tipo-mo': option['tipo']==='MO','tipo-refaccion': option['tipo']==='refaccion'}">
+                        {{option['nombre'] | capitalizarUno}}
+                      </strong>
+                    </mat-option>
+                  </mat-autocomplete>
+                  <!-- <small for="elementos">elementos disponibles <strong>{{elementosConjunto.length}}</strong></small> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-1 row">
+                <label for="cantidad" class="col-12 col-sm-6 col-md-6 col-lg-6 col-form-label">
+                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'refaccion'">{{'cantidad' | capitalizarUno}}</ng-container>
+                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'">{{'cantidad de horas' | capitalizarUno}}</ng-container>
+                </label>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                  <input type="number" class="form-control form-control-sm" min="1" id="cantidad"
+                    formControlName="cantidad">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-1 row">
+                <label for="precio" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">
+                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'refaccion'">precio</ng-container>
+                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'">Costo</ng-container>
+                </label>
+                <div class="col-9 col-sm-9 col-md-9 col-lg-9">
+                  <input type="number" class="form-control form-control-sm" min="1" id="precio"
+                    formControlName="precio">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-1 row">
+                <label for="costo"
+                  class="col-12 col-sm-6 col-md-6 col-lg-6 col-form-label">
+                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'; else elseSobrescrito">
+                    {{'Sobrescribir costo MO' | capitalizarUno}}
+                  </ng-container>
+                  <ng-template #elseSobrescrito>
+                    {{'Sobrescribir costo refacción' | capitalizarUno}}
+                  </ng-template>
+                  
+                </label>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                  <input type="number" class="form-control form-control-sm" min="0" id="costo" formControlName="costo">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-1 row">
+                <label for="tipo" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">tipo</label>
+                <div class="col-9 col-sm-9 col-md-9 col-lg-9 ">
+                  <!-- <input type="text" class="form-control form-control-sm" id="tipo" formControlName="tipo"> -->
+                  <select [ngModel]="formElemento.controls['tipo'].value" class="form-select form-select-sm"
+                    formControlName="tipo">
+                    <option value="MO">Mano obra</option>
+                    <option value="refaccion">Refaccion</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="formElemento.controls['tipo'].value === 'refaccion'">
+              <div class="mb-1 row ">
+                <label for="marca" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">marca</label>
+                <div class="col-9 col-sm-9 col-md-9 col-lg-9">
+                  <div class="input-group mb-3">
+                    <select class="form-select form-select-sm" id="marca" [(ngModel)]="marcaSelect"
+                      formControlName="marca">
+                      <option value="">Ninguna</option>
+                      <option [selected]="marca.id === marcaSelect" value="marca.id"
+                        *ngFor="let marca of refaccionesMarcas">{{marca.marca}}</option>
+                    </select>
+                    <button class="btn btn-outline-primary" type="button" id="button-addon2"
+                      (click)="mensajeMarca()">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="mb-1 row">
+                <label for="descripcion"
+                  class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">descripcion</label>
+                <div class="col-9 col-sm-9 col-md-9 col-lg-9">
+                  <textarea id="descripcion" cols="30" rows="3" formControlName="descripcion"
+                    style="width: 100%;"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <button type="submit" [disabled]="formElemento.invalid ?'disabled':null"
+                class="btn btn-sm btn-primary col-lg-3 col-md-3 col-sm-4 col-10 m-1">Colocar</button>
+              <!-- (click)="cancelarAgregarElemento()" -->
+              <button type="button"
+                class="btn btn-sm btn-danger col-lg-3 col-md-3 col-sm-4 col-10 m-1">Cancelar</button>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+        <mat-checkbox class="example-margin" (change)="seleccionarAlls()" [(ngModel)]="seleccionarTodo">Seleccionar todo
+        </mat-checkbox>
+      </div>
+      <div class="card border-secondary col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3 fw-bolder">
+              Elementos recepción
+            </div>
+            <ng-container>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-12  text-start"
+                *ngFor="let servicio of dataRecepcion.elementos; let index = index ">
+                <mat-checkbox type="checkbox" class="example-margin" [id]="servicio.id + '-' + index"
+                  [checked]="servicio.aprobado" #val (change)="accionesRealiza(index,val)">
+                  <strong class="fs-6" *ngIf="servicio.tipo === 'MO'" class="tipo-mo">
+                    {{servicio.nombre | capitalizarUno}}
+                  </strong>
+                  <strong class="fs-6" *ngIf="servicio.tipo === 'refaccion'" class="tipo-refaccion">
+                    {{servicio.nombre | capitalizarUno}}
+                  </strong>
+                  <strong class="fs-6" *ngIf="servicio.tipo === 'paquete'" class="tipo-paquete">
+                    {{servicio.nombre | capitalizarUno}}
+                  </strong>
+                  <ng-container *ngIf="servicio.costo; else templateCosto">
+                    {{servicio['costo'] | monedas}}
+                  </ng-container>
+                  <ng-template #templateCosto>
+                    {{servicio['flotilla'] | monedas}}
+                  </ng-template>
+                  
+                </mat-checkbox>
+                <mat-icon class="text-danger" (click)="eliminaElemento(index)">restore_from_trash</mat-icon>
+                <mat-icon class="text-primary" *ngIf="servicio.tipo === 'paquete'"
+                  (click)="muestraDetallespaquete(servicio)" data-bs-toggle="modal" data-bs-target="#DetallesPaquete">
+                  search</mat-icon>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-end">
+            <div class="mb-3 row">
+              <label for="margen" class="col-sm-4 col-form-label">Margen:</label>
+              <div class="col-sm-8">
+                <input type="number" (change)="cambiarMargen(marg.value)" #marg [(ngModel)]="margen" id="margen"
+                  class="form-control form-control-sm" min="25" max="100">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-6 col-12 text-end">
+            <mat-checkbox class="example-margin" (change)="cambiarIva()" [(ngModel)]="IVA">IVA</mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3 mb-2">
+        Desgloce de operación
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="row">
+          <ng-container *ngFor="let item of desgloce">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+              <div class="card border-primary">
+                <div class="card-body  text-end">
+                  <h5 class="text-center fs-6">{{item.nombre}}</h5>
+                  <p class="card-text"><strong class="fs-3"> {{dataRecepcion.data[item.valor] | monedas}} </strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!dataRecepcion.data['iva']">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+              <div class="card border-primary">
+                <div class="card-body  text-end">
+                  <h5 class="text-center fs-6">Total</h5>
+                  <p class="card-text"><strong class="fs-3"> {{dataRecepcion.data['total'] | monedas}} </strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="dataRecepcion.data['iva']">
+            <ng-container *ngFor="let item of desgloce_iva">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                <div class="card border-primary">
+                  <div class="card-body  text-end">
+                    <h5 class="text-center fs-6">{{item.nombre | capitalizarUno}}</h5>
+                    <p class="card-text"><strong class="fs-3"> {{dataRecepcion.data[item.valor] | monedas}} </strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+      <!-- <button mat-button matStepperPrevious>Anterior</button> -->
+      <button matStepperNext class="btn btn-sm btn-primary">Siguiente</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Rayar detalles</ng-template>
+    <div class="row mt-1">
+      
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
+        <h3 class="text-danger">Si estas en telefono movil cambiar a orientación horizontal</h3>
+        <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
+          <mat-tab label="Personalizado">
+
+            <div class="row m-3">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end m-1">
+                <mat-checkbox class="example-margin" (click)="comenzar()" [(ngModel)]="detallesPersonalizado">
+                  Personalizado</mat-checkbox>
+              </div>
+              <ng-container *ngIf="detallesPersonalizado">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  <form class="row g-3">
+                    <div class="col-auto">
+                      <button class="btn btn-sm btn-primary m-1" (click)="principal()">Reiniciar</button>
+                    </div>
+                    <div class="col-auto">
+                      <button class="btn btn-sm btn-success m-1" [disabled]="disableBtnGuardarIMG || !contieneIMG"
+                        (click)="guardarImagenCanvas()">Guardar</button>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div class="mb-3 row">
+                        <label for="" class="col-sm-4 col-form-label">Color de pluma</label>
+                        <div class="col-sm-8">
+                          <select class="form-select form-select-sm" aria-label=".form-select-sm example" #plumaColor
+                            (change)="changePluma(plumaColor.value)">
+                            <option value="444BF2">Azul</option>
+                            <option value="C9D612">Amarillo</option>
+                            <option value="FFA30A">Naranja</option>
+                            <option value="010101">Negro</option>
+                            <option value="F30F05">Rojo</option>
+                            <option value="3DD400">Verde</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                </div>
+              </ng-container>
+              <br><br>
+              <ng-container *ngIf="detallesPersonalizado">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                  <main class="main-container">
+                    <canvas #detalles id="main-canvas" width="600" height="600"></canvas>
+                  </main>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!detallesPersonalizado">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 fs-3 text-center text-uppercase">
+                  No hay detalles personalizados
+                </div>
+              </ng-container>
+            </div>
+          </mat-tab>
+          <mat-tab label="Fotografias">
+            <div class="row m-3">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                <mat-checkbox class="example-margin" [(ngModel)]="fotografias">Adjuntar fotografias</mat-checkbox>
+                <!--  -->
+                <!-- <select [(ngModel)]="camera_select" (ngModelChange)="activarCamaraID()">
+                  <option *ngFor="let cam of nombres_cameras" [value]="cam['id']">{{cam['label']}}</option>
+                </select> -->
+              </div>
+              <ng-container *ngIf="fotografias">
+                <!-- <button class="btb btn-sm " (click)="changeBoolean()">change Boolean</button> -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                  <!-- ngx-dropzone -->
+                  <div class="col">
+                    <!-- <i class="fa fa-camera fa-xs"></i>
+                    <i class="fa fa-camera fa-sm"></i>
+                    <i class="fa fa-camera fa-lg"></i> -->
+                    <!-- <i class="fa fa-camera fa-2x"></i> -->
+                    <!-- <i class="fa fa-camera fa-3x text-danger"></i> -->
+                  
+                    <ng-container *ngIf="cameraStart; else elseCameraStart">
+                      <i class="fa fa-sync text-primary fa-2x m-1" (click)="getCamera(!camaraVuelta)" ></i>
+                      <i class="fa fa-toggle-on fa-2x m-1 text-danger" (click)="cameraOFF()" #tooltip="matTooltip"
+                      matTooltip="Apagar camara"></i>
+                      <i class="fa fa-camera-retro fa-2x m-1 text-success m-1" (click)="sacarFoto()" #tooltip="matTooltip"
+                        matTooltip="Tomar foto"></i>
+                    </ng-container>
+                    <ng-template #elseCameraStart>
+                      <i class="fa fa-camera fa-2x m-1 text-success" (click)="dimensiones()" #tooltip="matTooltip"
+                      matTooltip="Encender camara"></i>
+                    </ng-template>                    
+                    <ng-container *ngIf="foto_tomada; else elseFotoCancela">
+                        <i class="fa fa-trash fa-2x text-danger m-1" (click)="cancelarFoto()" #tooltip="matTooltip"
+                        matTooltip="Eliminar foto"></i>
+                        <i class="fa fa-save fa-2x text-primary m-1" (click)="guardaImagen()" #tooltip="matTooltip"
+                        matTooltip="Guardar foto"></i>
+                    </ng-container>
+                    <ng-template #elseFotoCancela>
+                        
+                    </ng-template>
+                  </div>
+                  <!--   -->
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" id="divCamera" [hidden]="!cameraStart" 
+                  style="width: 100%;" >
+                    <!-- style="position: absolute; top: 0;visibility:hidden; left: 0;opacity: 0;" -->
+                    <ng-container *ngIf="foto_tomada; else elseFoto">
+                      <img [src]="foto_tomada"  alt="" class="img-thumbnail">
+                    </ng-container>
+                    <ng-template #elseFoto>
+                      <div class="row">
+                        <div class="col text-center">
+                          <video  style="position:relative;" muted #videoContainer [width]="sizeScreen.w" [height]="sizeScreen.h"></video>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <canvas style="position: absolute; top: 0;visibility:hidden; left: 0;opacity: 0;"  width="640" height="480"  class="js-canvas" #myCanvas></canvas>
+                  </div>
+                  <button class="btn btn-sm btn-danger m-1" (click)="limpiarArchivos()">Limpiar fotografias</button><br>
+                  <ngx-dropzone (change)="onSelect($event)" class="well drop-zone" [multiple]="true"
+                    accept="image/jpeg,image/jpg,image/png">
+                    <ngx-dropzone-label>Arrastra o click aqui las fotografias!</ngx-dropzone-label>
+                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f"
+                      [removable]="true" (removed)="onRemove(f)">
+                      <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                    </ngx-dropzone-image-preview>
+                  </ngx-dropzone>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!fotografias">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 fs-3 text-center text-uppercase">
+                  no se inluyen fotografias
+                </div>
+              </ng-container>
+            </div>
+          </mat-tab>
+          <mat-tab label="Detalles">
+            <div class="row m-3">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                <mat-checkbox class="example-margin" (click)="revisarDeatllesNinguno()" [(ngModel)]="SinDetalles">Sin
+                  detalles
+                </mat-checkbox>
+              </div>
+              <ng-container *ngIf="!SinDetalles">
+                <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4"
+                  *ngFor="let item of vehiculosDetalles; let index = index">
+                  <img [src]="item.foto" class="card-img-top  rayar" alt="..." width="150px" height="150px">
+                  <div class="card-body">
+                    <ng-container class="card-text">
+                      <mat-checkbox type="checkbox" class="example-margin" [id]="item.id" #val
+                        (change)="revisarDeatlles(index,val)">
+                        {{item.mostrar}}
+                      </mat-checkbox>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="SinDetalles">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 fs-3 text-center text-uppercase">
+                  No cuenta con ningún detalle
+                </div>
+              </ng-container>
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+      <button matStepperPrevious class="btn btn-sm btn-primary m-1">Anterior</button>
+      <button class="btn btn-sm btn-success m-1" [disabled]="disableBtnGuardarIMG || !contieneIMG"
+                        (click)="guardarImagenCanvas()">Guardar</button>
+      <button matStepperNext class="btn btn-sm btn-primary m-1">Siguiente</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>CheckList de elementos vehiculo</ng-template>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3">Revisar cada elemento y selecionar la opcion
+        más acertada</div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+        <div class="row m-3">
+          <div class="col-auto">
+            <label for="kilometraje">Kilometraje: </label>
+          </div>
+          <div class="col-auto">
+            <input type="number" id="kilometraje" [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
+              class="form-control form-control-sm" min="0">
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12" [ngClass]="{'NoChecado':!item.status}"
+        *ngFor="let item of dataRecepcion.checkList; let index = index">
+        <div class="row">
+          <ng-container *ngIf="item['id'] === 'nivel_gasolina'; else elseTemplate">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start m-1"><strong>{{item.mostrar | capitalizarUno}}</strong>:</div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start m-1">
+              <mat-button-toggle-group [ngModel]="item.status" aria-label="Font Style" >
+                <mat-button-toggle (click)="cambiarSattus(index,val)" #val [value]="ite" *ngFor="let ite of item.opciones">
+                  {{ite | capitalizarUno}}</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </ng-container>
+          <ng-template #elseTemplate>
+          <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start m-1"><strong>{{item.mostrar | capitalizarUno}}</strong>:</div>
+          <div class="col-lg-7 col-md-7 col-sm-12 col-12 text-start m-1">
+            <!-- {{item['id']}} -->
+                     
+            <mat-button-toggle-group [ngModel]="item.status" aria-label="Font Style" >
+              <mat-button-toggle (click)="cambiarSattus(index,val)" #val [value]="ite" *ngFor="let ite of item.opciones">
+                {{ite | capitalizarUno}}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          </ng-template>
+          
+          <!-- <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start m-1"><strong>{{item.mostrar | capitalizarUno}}</strong>:</div> -->
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+      <button class="btn btn-sm btn-primary m-1" matStepperPrevious>Anterior</button>
+      <button class="btn btn-sm btn-primary m-1" matStepperNext>Siguiente</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel> Fecha estimada de entrega</ng-template>
+    <div class="row m-1">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+        <mat-form-field appearance="fill">
+          <mat-label>Fecha</mat-label>
+          <input matInput [matDatepicker]="dp3" [matDatepickerFilter]="myFilter" disabled #fecha (dateChange)="obtenerFecha(fecha.value)">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="dp3" ></mat-datepicker-toggle>
+          <mat-datepicker #dp3 disabled="false" ></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <ng-container *ngIf="diasEntrega >= 0">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+          <p>Dia(s) <strong>{{diasEntrega}}</strong> para entrega</p>
+          <p>Fecha estimada de entrega <strong>{{dataRecepcion.data['showfecha']}}</strong></p>
+        </div>
+      </ng-container>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+        <button class="btn btn-sm btn-primary m-1" matStepperPrevious>Anterior</button>
+        <button class="btn btn-sm btn-primary m-1" matStepperNext>Siguiente</button>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Firma de cliente</ng-template>
+    <br>
+    <button class="btn btn-primary btn-sm m-1" [matMenuTriggerFor]="menu">cambiar tecnico</button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      <ng-container *ngFor="let tecnico of listaTecnicos">
+        <button mat-menu-item (click)="registraTecnico(tecnico)" class="text-uppercase">
+          {{tecnico.usuario}}
+        </button>
+      </ng-container>
+    </mat-menu>
+    <ng-container *ngIf="!dataRecepcion.tecnico">
+      <strong class="text-uppercase fs-4 text-danger">Seleccionar tecnico</strong>
+    </ng-container>
+    <ng-container *ngIf="dataRecepcion.tecnico">
+      Tecnico asignado: <strong class="text-uppercase fs-6 text-primary">
+        {{dataRecepcion.tecnico}}
+      </strong>
+    </ng-container>
+    <br>
+    <small class="text-secondary">Nota: No es obligatorio seleccionar tecnico para realizar la recepcion</small>
+    <br>
+    <div class="col-12 text-center" style="font-size: 11;" [ngClass]="{'readonly': disableFirma}">
+      <canvas #firmaDigital class="fluid" style="touch-action:none"></canvas>
+      <br>
+      <h3 class="fw-bolder">Firma de cliente</h3>
+      <button class="btn btn-danger m-1 " (click)="limpiarFirma()">Limpiar</button>
+      <button class="btn btn-primary m-1 " (click)="firmar()">Firmar</button>
+      <!-- <button class="btn btn-danger m-1 " (click)="subirFirma()">subirFirma</button> -->
+    </div>
+    <!-- <pre> 
+      {{this.dataRecepcion.data | json}}
+    </pre> -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+      <button class="btn btn-sm btn-primary m-1" matStepperPrevious>Anterior</button>
+      <!-- <button mat-button (click)="stepper.reset()">Reiniciar</button> -->
+    </div>
+  </mat-step>
+</mat-stepper>
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" [ngStyle]="{'width': progreso+'%'}" aria-valuemin="0"
+    aria-valuemax="100"></div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-danger m-2" *ngIf="mensajeError">
+    <p>Información Faltante: </p>
+    <p><strong>{{ mensajeError }}</strong> </p>
+    <!-- <p><small>Verificar los pasos</small></p> -->
+  </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center m-1">
+    <button class="btn btn-sm btn-primary" [disabled]="progreso<100" (click)="RealizaRecepcion()">Realizar
+      recepcion</button>
+  </div>
+</div>
+<!-- {{this.dataRecepcion.data |json}} -->
+<div class="row m-5"></div>
+
+
+
+<div class="modal fade" id="DetallesPaquete" tabindex="-1" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Detalles de paquete</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">cantidad</th>
+              <th scope="col">precio / costo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of elementosPaquete; let i = index">
+              <td>{{ i + 1}}</td>
+              <td>{{item.nombre}}</td>
+              <td>{{item.cantidad}}</td>
+              <td>{{item.precio}}</td>
+              <td>{{item.descripcion}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalNewUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <!-- <div class="modal-header ml-3">
+        <h2 class="modal-title text-primary " id="exampleModalLabel">Nuevo cliente </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div> -->
+      <div class="modal-body m-2">
+        <div class="row">
+          <div class="col text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <ng-container *ngIf="datCliente; else elseNewCliente">
+          <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
+        </ng-container>
+        <ng-template #elseNewCliente>
+          <div class="row">
+            <div class="col text-center">
+              <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalNewVehiculo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <!-- <div class="modal-header ml-3">
+        <h2 class="modal-title text-primary " id="exampleModalLabel">Nuevo cliente </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div> -->
+      <div class="modal-body m-2">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+          </div>
+        </div>
+        <ng-container *ngIf="dataRecepcion.data.cliente; else elseTemplate">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <app-vehiculo  [cliente]="dataRecepcion.data.cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+          </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

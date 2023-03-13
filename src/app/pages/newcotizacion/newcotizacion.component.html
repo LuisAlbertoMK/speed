@@ -1,0 +1,1137 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6">
+        <h1 class="m-0" >
+          Nueva cotización
+        </h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item pointer" (click)="preguntar('/inicio')"  style="text-decoration: none">Inicio</a></li> -->
+          <li class="breadcrumb-item"><a class="breadcrumb-item pointer" [routerLink]="'/'+pagina"
+              style="text-decoration: none">Regresar</a>
+          </li>
+          <li class="breadcrumb-item active">Nueva cotización</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="con-flot">
+  <input type="checkbox" id="btn-mas">
+  <div class="redes">
+    <a class="mat-elevation-z8" [routerLink]="['/inicio']"><i class="fad fa-arrow-alt-left"></i></a>
+    <a class="mat-elevation-z8"><i class="fad fa-arrow-alt-up"></i></a>
+    <a class="mat-elevation-z8"><i class="fad fa-arrow-alt-down"></i></a>
+  </div>
+  <div class="btn-mas">
+    <label for="btn-mas" class="btn-ma"><strong><i class="fad fa-plus-circle"></i></strong></label>
+  </div>
+</div>
+
+
+
+
+<div class="row ">
+  <div class="card" >
+    <div class="card-body">
+      <div class="row">
+        
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+          <label *ngIf="vigente" class="text-success">Cotización Vigente, 
+             <ng-container *ngIf="soloHoy!==''"> {{soloHoy }}</ng-container> 
+             <ng-container *ngIf="soloHoy===''">por {{diasVigencia }} días</ng-container>
+          </label>
+          <label *ngIf="!vigente" class="text-danger">NO VIGENTE, expiro hace: <strong> {{ diasVigencia }}</strong> días</label>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <button class="btn btn-sm btn-danger m-1" (click)="PDF()" 
+          [disabled]="(tempdataCotizacionmuestra.length===0 || formCotizacion.invalid || totalCotizacion===0)  ? 'disabled': null"
+          >Descargar PDF</button>
+          <button class="btn btn-sm btn-success m-1" (click)="exportarExel()"
+          [disabled]="(tempdataCotizacionmuestra.length===0 || formCotizacion.invalid || totalCotizacion===0)  ? 'disabled': null"
+          >Descargar Excel</button>
+          
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <!-- {{fechaPruebaPipe }} -->
+          <form [formGroup]="formCotizacion">
+
+            <div class="row g-3 align-items-center m-1">
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label class="form-label text-capitalize">cliente</label>
+              </div>
+              <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tipoCotizacion==='new'">
+                <input type="search" placeholder="cliente" aria-label="Cliente" class="form-control text-capitalize"
+                  clean [matAutocomplete]="auto" (ngModelChange)="verififff()" [formControl]="myControl"
+                  (click)="filtradoClientes()">
+                <input type="hidden" formControlName="cliente">
+                <ng-container *ngIf="selecciono" >
+                  <button class="btn btn-sm btn-success m-1" [routerLink]="'/historial-cliente/'+idhistorial">Historial de cliente</button>
+                </ng-container>
+                <!--  -->
+                <small *ngIf="validarFormCotizacion('cliente')" class="text-danger">
+                  Campo requerido
+                </small>
+                <mat-autocomplete #auto="matAutocomplete" class="text-capitalize" [displayWith]="displayFn">
+                  <mat-option class="tooltipM tooltipe" *ngFor="let option of filteredOptions | async" [value]="option"
+                    (click)="vehiculosCliente(option)" #tooltip="matTooltip"
+                    [matTooltip]="'Nombre: '+option.nombre +', Sucursal: '+ option.sucursal + ', Correo: '+option.correo"
+                    matTooltipPosition="right"
+                    aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
+                    {{option.nombre}} {{option.apellidos}}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+              <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tipoCotizacion!=='new'">
+                <select class=" form-select form-control " formControlName="cliente" [ngModel]="dataRecepcion.cliente">
+                  <option [defaultSelected]="dataRecepcion.cliente" [value]="dataRecepcion.cliente">
+                    {{dataCliente.fullname}}</option>
+                </select>
+                <a class="mt-1" [routerLink]="'/historial-cliente/'+dataRecepcion.cliente">Historial de cotizaciones</a>
+                <!-- <button class="btn btn-sm btn-success m-1" [routerLink]="'/historial-cliente/'+dataRecepcion.cliente">Historial de cotizaciones</button> -->
+              </div>
+            </div>
+            <div class="row g-3 align-items-center m-1">
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label for="vehiculo" class="form-label text-capitalize ">Placas</label>
+              </div>
+              <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tipoCotizacion==='new'">
+                <select class=" form-select form-control text-uppercase" formControlName="vehiculo"
+                  (change)="modeloFiltro()" [class.is-invalid]="validarFormCotizacion('vehiculo')">
+                  <option [defaultSelected]="" value="">Seleccione...</option>
+                  <option [defaultSelected]="" value="new">Registrar nuevo vehículo</option>
+                  <option value="{{vehiculo.id}}" *ngFor="let vehiculo of listaArrayVehiculosCliente;let i = index">
+                    {{vehiculo.placas}} - {{vehiculo.marca}} {{vehiculo.modelo}}</option>
+                </select>
+                <small *ngIf="validarFormCotizacion('vehiculo')" class="text-danger">
+                  Seleccionar véhiculo
+                </small>
+                <ng-container *ngIf="listaArrayVehiculosCliente.length===0 && selecciono">
+                  <a [routerLink]="'/vehiculos/new/newCotizacion'" class="btn btn-sm btn-danger m-1">Registrar
+                    vehiculo</a>
+                </ng-container>
+              </div>
+              <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tipoCotizacion!=='new'">
+                <select class=" form-select form-control text-uppercase" formControlName="vehiculo"
+                  [ngModel]="dataRecepcion.vehiculo" (change)="modeloFiltro()">
+                  <option [defaultSelected]="vehiculo.id === dataRecepcion.vehiculo" [value]="vehiculo.id" *ngFor="let vehiculo of listaArrayVehiculosCliente;let i = index">
+                    {{vehiculo.placas}} - {{vehiculo.marca}} {{vehiculo.modelo}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-3 align-items-center m-1">
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label for="servicio" class="form-label text-capitalize ">Servicios</label>
+              </div>
+              <!-- <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="idRecepcion==='newCotizacion'">
+                <select class=" form-select form-control text-capitalize" formControlName="servicio"
+                  [class.is-invalid]="validarFormCotizacion('servicio')">
+                  <option [defaultSelected]="" value="">Seleccione...</option>
+                  <option value="{{servicio}}" *ngFor="let servicio of servicios;let i = index">
+                    {{servicio}}</option>
+                </select>
+                
+              </div> -->
+              <div class="col-sm-9 col-md-9 col-lg-9">
+                <select class=" form-select form-control text-uppercase" formControlName="servicio"
+                  [ngModel]="dataRecepcion.servicio" (change)="verificaTipoServicio()"
+                  [class.is-invalid]="validarFormCotizacion('servicio')" [ngModel]="">
+                  <option [defaultSelected]="" value="">Selecciona servicio</option>
+                  <option [defaultSelected]="dataRecepcion.servicio === servicio" value="{{servicio}}"
+                    *ngFor="let servicio of servicios;let i = index" (click)="verificaTipoServicio()">
+                    {{servicio}}</option>
+                </select>
+                <small *ngIf="validarFormCotizacion('servicio')" class="text-danger">
+                  Seleccionar servicio
+                </small>
+              </div>
+              
+            </div>
+            <div class="row g-3 align-items-center m-1">
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label for="servicio" class="form-label text-capitalize ">Promoción</label>
+              </div>
+              <div class="col-sm-9 col-md-9 col-lg-9">
+                <select class=" form-select form-control text-uppercase" formControlName="promocion"
+                  [ngModel]="dataRecepcion.promocion" 
+                  [class.is-invalid]="validarFormCotizacion('promocion')" [ngModel]="">
+                  <option [defaultSelected]="" value="">Selecciona promocion</option>
+                  <option [defaultSelected]="dataRecepcion.promocion === promocion" value="{{promocion}}"
+                    *ngFor="let promocion of promociones;let i = index" (click)="verificaTipoServicio()">
+                    {{promocion}}</option>
+                </select>
+              </div>
+            </div>
+
+            
+
+
+
+            <div class="row g-3 align-items-center m-1">
+              <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Agregar NOTA de cotización</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" [value]="dataRecepcion.nota" rows="3" formControlName="nota" 
+              [placeholder]="dataRecepcion.nota"></textarea>
+            </div>
+            </div>
+            
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                <!-- <button type="submit" class="btn btn-primary col-lg-4 col-md-4 col-sm-4 m-1">Guardar</button> -->
+                <!-- <button type="button" data-bs-dismiss="modal" class="btn btn-danger col-lg-4 col-md-4 col-sm-4 m-1" (click)="limpiarFormulario()">Salir</button> -->
+              </div>
+            </div>
+          </form>
+          <div class="row mt-2">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="card">
+                <div class="card-body" >
+																	<div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                    <h3><i class="fad fa-layer-plus"></i> <strong>&nbsp; Buscar reparación en el catálogo</strong></h3>
+                                  </div>
+																	<mat-tab-group mat-align-tabs="start">
+                                    
+																		<mat-tab label="Paquetes">
+                                      <ng-container *ngIf="contadorPaquetes<=0">
+                                        <div class="alert alert-light text-center" role="alert">
+                                          <h2>No hay ningun paquete para el modelo {{ this.modeloAuto }}</h2>
+                                          <i class="fas fa-server fa-3x"></i>
+                                          <br>
+                                          <button class="btn btn-primary btn-sm" (click)="listarPaquetes('')">Mostrar todos los paquetes</button>
+                                        </div>
+                                      </ng-container>
+                                      <ng-container *ngIf="contadorPaquetes>0">
+                                        <mat-form-field appearance="standard" class="col-lg-12 col-md-12 col-sm-12 col-12">
+																					<mat-label class="text-capitalize">búsqueda</mat-label>
+																					<input matInput (keyup)="applyFilter($event,'paquetes')" placeholder="SpeedPro" #input>
+																				</mat-form-field>
+																				<div class="mat-elevation-z8 table-responsive" >
+																					<table #tabPaquetes="matSort" mat-table [dataSource]="dataSourcePaquetes" matSort>
+																							<ng-container matColumnDef="{{column}}" *ngFor="let column of columnsPaquetes">
+																									<th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> {{column}} </th>
+																									<ng-container *ngIf="column==='precio'">
+																											<td mat-cell *matCellDef="let row">{{row[column] | monedas}} </td>
+																									</ng-container>
+																									<ng-container *ngIf="column!=='precio'">
+																											<td mat-cell *matCellDef="let row" class="text-capitalize">{{row[column]}} </td>
+																									</ng-container>
+																							</ng-container>
+																							<ng-container>
+																									<tr mat-header-row *matHeaderRowDef="columnsPaquetesExtended"></tr>
+																									<tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)" [matMenuTriggerFor]="menu" [ngClass]="{'false': !row.status }" class="anima"
+																											*matRowDef="let row; columns: columnsPaquetesExtended;">
+																											<mat-menu #menu="matMenu"  yPosition="below">
+																												
+                                                          <button class="item-menu" mat-menu-item data-bs-toggle="modal" data-bs-target="#detallesPaquete" (click)="getInfoPaquete(row)">Detalles</button>
+                                                          <button class="item-menu" mat-menu-item (click)="addCotizacion(row.id,row,'paquete')">Agregar a cotizacion</button>
+                                                        </mat-menu>
+																									</tr>
+																							</ng-container>
+																							<tr class="mat-row" *matNoDataRow>
+																									<td class="mat-cell" colspan="4" *ngIf="input.value!==''">ningun resultado con el criterio
+																											"{{input.value}}"</td>
+																									<td class="mat-cell" colspan="5" class="text-center" *ngIf="filtroAuto!=='' && input.value==='' ">
+																											No existe ningun paquete para el auto <br> "<strong>{{filtroAuto}}</strong>"
+																											<br>
+																											<!-- <button mat-button (click)="verificaDatos('',true)">Ver todos los paquetes</button> -->
+																									</td>
+																							</tr>
+																					</table>
+																							<mat-paginator #paginatorPaquetes [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+																			</div>
+                                      </ng-container>
+																				
+																		</mat-tab>
+																		<mat-tab label="Mano obra">
+																			<mat-form-field appearance="standard" class="col-lg-12 col-md-12 col-sm-12 col-12">
+																				<mat-label class="text-capitalize">búsqueda</mat-label>
+																				<input matInput (keyup)="applyFilter($event,'MO')" placeholder="SpeedPro" #input>
+																			</mat-form-field>
+																			<table #tabMO="matSort" mat-table [dataSource]="dataSourceMO" matSort>
+																				<ng-container matColumnDef="{{column}}" *ngFor="let column of columnasMO">
+																						<th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" > {{column}} </th>
+																						<ng-container *ngIf="column==='precio'">
+																								<td mat-cell *matCellDef="let row"[ngStyle]="{'min-width':(miniColumnas)*1+'px'}">{{row[column] | monedas}} </td>
+																						</ng-container>
+																						<ng-container *ngIf="column!=='precio'">
+																								<td mat-cell *matCellDef="let row" class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">{{row[column]}} </td>
+																						</ng-container>
+																				</ng-container>
+																				<ng-container>
+																						<tr mat-header-row *matHeaderRowDef="columnasMOExtended"></tr>
+																						<tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)" [matMenuTriggerFor]="menu" [ngClass]="{'false': !row.status }" class="anima"
+																								*matRowDef="let row; columns: columnasMOExtended;">
+																								<mat-menu #menu="matMenu"  yPosition="below">
+																									<!-- <button class="item-menu" mat-menu-item (click)="getDetalles(row)">Detalles</button> -->
+																									<button class="item-menu" mat-menu-item (click)="addCotizacion(row.id,row,'MO')">Agregar a cotizacion</button>
+																							</mat-menu>
+																						</tr>
+																				</ng-container>
+																				<tr class="mat-row" *matNoDataRow>
+																						<td class="mat-cell" colspan="4" *ngIf="input.value!==''">ningun resultado con el criterio
+																								"{{input.value}}"</td>
+																						<td class="mat-cell" colspan="5" class="text-center" *ngIf="filtroAuto!=='' && input.value==='' ">
+																								No existe ningun paquete para el auto <br> "<strong>{{filtroAuto}}</strong>"
+																								<br>
+																								<!-- <button mat-button (click)="verificaDatos('',true)">Ver todos los paquetes</button> -->
+																						</td>
+																				</tr>
+																		</table>
+																				<mat-paginator #paginatorMO [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+																		</mat-tab>
+																		<mat-tab label="Refacciones">
+																			<mat-form-field appearance="standard" class="col-lg-12 col-md-12 col-sm-12 col-12">
+																				<mat-label class="text-capitalize">búsqueda</mat-label>
+																				<input matInput (keyup)="applyFilter($event,'refacciones')" placeholder="SpeedPro" #input>
+																			</mat-form-field>
+																			<table #tabRefacciones="matSort" mat-table [dataSource]="dataSourceRefacciones" matSort>
+																				<ng-container matColumnDef="{{column}}" *ngFor="let column of columnasRefacciones">
+																						<th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> {{column}} </th>
+																						<ng-container *ngIf="column==='precio'">
+																								<td mat-cell *matCellDef="let row">{{row[column] | monedas}} </td>
+																						</ng-container>
+																						<ng-container *ngIf="column!=='precio'">
+																								<td mat-cell *matCellDef="let row" class="text-capitalize">{{row[column]}} </td>
+																						</ng-container>
+																				</ng-container>
+																				<ng-container>
+																						<tr mat-header-row *matHeaderRowDef="columnasRefaccionesExtended"></tr>
+																						<tr mat-row [class.demo-row-is-clicked]="clickedRows.has(row)" [matMenuTriggerFor]="menu" [ngClass]="{'false': !row.status }" class="anima"
+																								*matRowDef="let row; columns: columnasRefaccionesExtended;">
+																								<mat-menu #menu="matMenu"  yPosition="below">
+																									<!-- <button class="item-menu" mat-menu-item (click)="getDetalles(row)">Detalles</button> -->
+																									<button class="item-menu" mat-menu-item (click)="addCotizacion(row.id,row,'refaccion')">Agregar a cotizacion</button>
+																							</mat-menu>
+																						</tr>
+																				</ng-container>
+																				<tr class="mat-row" *matNoDataRow>
+																						<td class="mat-cell" colspan="4" *ngIf="input.value!==''">ningun resultado con el criterio
+																								"{{input.value}}"</td>
+																						<td class="mat-cell" colspan="5" class="text-center" *ngIf="filtroAuto!=='' && input.value==='' ">
+																								No existe ningun paquete para el auto <br> "<strong>{{filtroAuto}}</strong>"
+																								<br>
+																								<!-- <button mat-button (click)="verificaDatos('',true)">Ver todos los paquetes</button> -->
+																						</td>
+																				</tr>
+																		</table>
+																				<mat-paginator #paginatorRefacciones [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+																		</mat-tab>
+																</mat-tab-group>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center pointer">
+              <div class="card" data-bs-toggle="modal" data-bs-target="#AddNewReparacion">
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                  <div class="card-text  ">
+                    <h3 class="" >
+                      <i class="fad fa-layer-plus"></i>Agregar nueva reparación
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+   
+          <div class="">
+            <div class="row">
+              <!-- <pre>{{tempdataCotizacion | json}}</pre> -->
+              <div class="col-12  text-end">
+               
+                <button role="button" (click)="guardaraCotizacion()" class="btn btn-primary col-6"
+                  [disabled]="(tempdataCotizacionmuestra.length===0 || formCotizacion.invalid || totalCotizacion===0)  ? 'disabled': null">
+                  Guardar cotización</button>
+                <!-- <button role="button" class="btn text-primary" alt="editar una cotizacion"><i class="fas fa-comment-alt-edit fa-2x"></i></button> -->
+              </div>
+            </div>
+            <!-- <div class="row">
+              <pre>{{ tempdataCotizacionmuestra | json}}</pre>
+            </div> -->
+            <div class="row">
+              <h2 class="fw-bolder text-warning text-uppercase sombratext">elementos en cotización</h2>
+            </div>
+            <div class="row m-1 mb-2">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                  <mat-slide-toggle [(ngModel)]="IVA" (ngModelChange)="obtenerTotalCotizacion()">Incluir IVA</mat-slide-toggle>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                  <mat-slide-toggle [(ngModel)]="Descuento" (ngModelChange)="obtenerTotalCotizacion()">Descuento </mat-slide-toggle>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  <ng-container *ngIf="Descuento" >
+                    <div class="input-group mb-2 mt-2 ">
+                      <input type="number" id="descuento" name="descuento" [value]="descuentoAplicado" class="form-control form-control-sm"  aria-describedby="button-addon2" min="0" max="999999">
+                      <button class="btn btn-sm btn-primary" type="button" id="button-addon2" (click)="obtenerTotalCotizacion()" (click)="aplicarDescuento()">Aplicar Descuento</button>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" >
+            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let agregado of tempdataCotizacionmuestra;let i = index" >
+              <ng-container >
+                <div class="card ">
+                  <!-- type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+agregado.idReferencia" aria-expanded="false" aria-controls="collapseExample" -->
+                  <div class="card-body ">
+                    <div class="row">
+                      <div class="col-lg-9 col-md-9 col-sm-9 col-9">
+                        <ng-container *ngIf="agregado.tipo === 'MO'">
+                          <ng-container *ngIf="agregado.personalizado">
+                            <strong class="fs-5 personalizado">{{agregado.nombre}}</strong>
+                          </ng-container>
+                          <ng-container *ngIf="!agregado.personalizado">
+                            <strong class="text-success fs-5">{{agregado.nombre}}</strong>
+                          </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="agregado.tipo !== 'MO'">
+                          <strong class="text-success fs-5">{{agregado.nombre}}</strong>
+                        </ng-container>
+                      </div>
+                      <div class="col-lg-3 col-md-3 col-sm-3 col-3 text-end">
+                        <a class="m-1 " role="button" data-bs-toggle="collapse"
+                          [href]="'#'+agregado.idReferencia" role="button" aria-expanded="false">
+                          <i class="fas fa-angle-down"></i></a>
+                        <a class="m-1 " role="button" (click)="dropPaqueteCotizacion(agregado.idReferencia)"
+                          #tooltip="matTooltip" [matTooltip]="'Eliminar de cotización'" matTooltipPosition="right"><i
+                            class="fas fa-trash-alt"></i></a>
+                        <a class="m-1 " role="button" *ngIf="agregado.tipo ==='paquete'"
+                          #tooltip="matTooltip" [matTooltip]="'Ver de talles'" matTooltipPosition="right"
+                          data-bs-toggle="modal" data-bs-target="#detallesPaquete" (click)="getInfoPaquete(agregado)"><i
+                            class="fas fa-search-plus"></i></a>
+                      </div>
+                    </div>
+                    <div class="collapse" [id]="agregado.idReferencia">
+                      <ng-container *ngIf="agregado.tipo  === 'MO'">
+
+                        
+                          Precio: <input type="number" [value]="agregado.precio" class="form-control" [id]="'idPaquete_'+agregado.idReferencia" aria-describedby="helpId" placeholder="">
+                          Horas: <input type="number" [value]="agregado.Horas" class="form-control" [id]="'idReferencia_'+agregado.idReferencia" aria-describedby="helpId" placeholder="">
+                          <div class="row">
+                            <div class="col text-center">
+                              <button class="btn btn-sm btn-primary m-1" (click)="actualizaInfoMO(i)">Actualiza</button>
+                            </div>
+                          </div>
+                      </ng-container>
+                      <p>Tipo: <strong>{{agregado.tipo}}</strong></p>
+                      <p *ngIf="agregado.cantidad">Cantidad: <strong>{{agregado.cantidad}}</strong></p>
+                      <p>Costo: <strong>{{agregado.costo | monedas}}</strong></p>
+                      <p *ngIf="agregado.descripcion"> Descripcion: {{agregado.descripcion }}</p>
+
+                    </div>
+
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="row text-end">
+              <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="elementos">
+                Costo de cotizacion:
+                  <p class="iva" >Subtotal: <strong>{{subtotal | monedas}}</strong></p>
+                  <p class="iva" *ngIf="IVA">IVA: <strong>{{ivaAplicado  | monedas}}</strong></p>
+                  <p class="iva" *ngIf="Descuento">Descuento: <strong>{{descuentoAplicado  | monedas}}</strong></p>
+                  <p class="iva" >TOTAL: <strong>{{totalCotizacion  | monedas}}</strong></p>
+                  <p class="iva"  *ngIf="totalCotizacion"><strong id="obtenerCantidad">{{totalCotizacion | numerosLetras}}</strong></p>
+                  <p class="iva"  >Contado:<strong>{{totalCotizacion | monedas}}</strong></p>
+                  <p class="iva"  >3 M.S.I: <strong>{{tresMeses | monedas}}</strong></p>
+                  <p class="iva"  >6 M.S.I: <strong>{{seisMeses | monedas}}</strong></p>
+                  <p class="iva"  >12 M.S.I: <strong>{{doceMeses | monedas}}</strong></p>
+                
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="!elementos">
+                <h2 class="text-danger">Sin elementos de cotización</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-3 mb-3 text-center">
+          <h2><strong>
+            Términos y condiciones
+          </strong></h2>
+         <p class="text-center">
+          Precios en M.N; IVA en caso de requerir factura. Este documento es una cotización y no representa ninguna orden de trabajo.
+         </p>
+         <p class="text-center">Cotización Valida por 20 días Naturales y no aplica con otras Promociones. Costo de Recoleccion y entrega de Auto es de $150.00 Pesos MN</p>
+         <p class="text-center"> Precios sujetos a cambio sin previo aviso. Precios de Promoción no aplican a 6 meses sin intereses</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<table id="season-tble">
+  <tbody>
+    <ng-container id="data-cliente">
+      <tr>
+        <td [colSpan]="ACE*4"></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">Información de cliente</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"> nombre </td>
+        <td [colSpan]="ACE*2">  {{dataCliente.fullname}} </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"> Correo:</td>
+        <td [colSpan]="ACE*2"> {{dataCliente.correo}} </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"> telefono movil:</td>
+        <td [colSpan]="ACE*2"> {{dataCliente.telefono_movil}} </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"> tipo:</td>
+        <td [colSpan]="ACE*2"> {{dataCliente.tipo}} </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"> telefono_movil:</td>
+        <td [colSpan]="ACE*2"> {{dataCliente.telefono_movil}} </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"> telefono_fijo:</td>
+        <td [colSpan]="ACE*2"> {{dataCliente.telefono_fijo}} </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"> sucursal:</td>
+        <td [colSpan]="ACE*2"> {{dataCliente.sucursal}} </td>
+      </tr>
+    </ng-container>
+    <ng-container id="data-vehiculo">
+      <tr>
+        <td [colSpan]="ACE*4"></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">Informacion de vehículo</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE">Placas</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.placas}}</td>
+        <td [colSpan]="ACE">marca</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.marca}}</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE">modelo</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.modelo}}</td>
+        <td [colSpan]="ACE">categoria</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.categoria}}</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE">anio</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.anio}}</td>
+        <td [colSpan]="ACE">color</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.color}}</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE">cilindros</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.cilindros}}</td>
+        <td [colSpan]="ACE">engomado</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.engomado}}</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE">marcaMotor</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.marcaMotor}}</td>
+        <td [colSpan]="ACE">no_motor</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.no_motor}}</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE">Transmision</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.Transmision}}</td>
+        <td [colSpan]="ACE">vinChasis</td>
+        <td [colSpan]="ACE">{{dataVehiculoExcel.vinChasis}}</td>
+      </tr>
+    </ng-container>
+    <ng-container id="detallesCotizacion">
+      <tr>
+        <td [colSpan]="ACE*4"></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">Detalles de cotizacion</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE">Tipo</td>
+        <td [colSpan]="ACE">Nombre</td>
+        <td [colSpan]="ACE">Precio</td>
+        <td [colSpan]="ACE">descripcion</td>
+      </tr>
+      <tr *ngFor="let item of tempdataCotizacionmuestra">
+        <td [colSpan]="ACE">{{item.tipo}}</td>
+        <td [colSpan]="ACE">{{item.nombre}}</td>
+        <td [colSpan]="ACE">{{item.precio}}</td>
+        <td [colSpan]="ACE">{{item.descripcion}}</td>
+      </tr>
+    </ng-container>
+    <ng-container id="detallesPaquetes">
+      <tr>
+        <td [colSpan]="ACE*4"></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">Detalles de paquetes</td>
+      </tr>
+      <!-- <pre>{{tempDataPaquetes | json}}</pre> -->
+      <!-- <br> -->
+      <tr *ngFor="let item of tempDataPaquetes">
+        <td [colSpan]="ACE" >Paquete: {{item.nombre}}</td>
+        <td [colSpan]="ACE*3">
+          <ng-container *ngFor="let elemento of item.elementos; let i = index">
+            &nbsp; {{ i+1 }}.- Nombre: {{elemento.nombre}}, 
+            precio: {{elemento.precio}}, 
+            descripcion: {{elemento.descripcion}}
+          </ng-container>
+        </td>
+        <!-- <td [colSpan]="ACE*3" *ngFor="let elemento of item.elementos">
+           <tr>
+            Nombre: {{elemento.nombre}}, 
+            precio: {{elemento.precio}}, 
+            descripcion: {{elemento.descripcion}}
+           </tr>
+        </td> -->
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4"></td>
+      </tr>
+    </ng-container>
+    <ng-container id="costosFinales">
+      <tr>
+        <td [colSpan]="ACE*4"></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"></td>
+        <td [colSpan]="ACE" *ngIf="IVA || Descuento">Subtotal</td>
+        <td [colSpan]="ACE" class="iva" *ngIf="IVA || Descuento"><strong>{{subtotal | monedas}}</strong></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"></td>
+        <td [colSpan]="ACE" *ngIf="IVA">IVA</td>
+        <td [colSpan]="ACE" class="iva" *ngIf="IVA"><strong>{{ivaAplicado  | monedas}}</strong></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2"></td>
+        <td [colSpan]="ACE" *ngIf="Descuento">Descuento</td>
+        <td [colSpan]="ACE" class="iva" *ngIf="Descuento"><strong>{{descuentoAplicado  | monedas}}</strong></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*2" ></td>
+        <td [colSpan]="ACE" >TOTAL</td>
+        <td [colSpan]="ACE" class="iva" ><strong>{{totalCotizacion  | monedas}}</strong></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4"></td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">Cantidad con letra</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4" class="iva" *ngIf="totalCotizacion!==0"><strong>{{totalCotizacion | numerosLetras}}</strong></td>
+      </tr>
+    </ng-container>
+    <ng-container id="terminos y condiciones">
+      <tr>
+        <td [colSpan]="ACE*4">Términos y condiciones</td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">
+          Precios en M.N; IVA en caso de requerir factura. Este documento es una cotización y no representa ninguna orden de trabajo.
+        </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">
+          Cotización Valida por 20 días Naturales y no aplica con otras Promociones. Costo de Recoleccion y entrega de Auto es de $150.00 Pesos MN
+        </td>
+      </tr>
+      <tr>
+        <td [colSpan]="ACE*4">
+          Precios sujetos a cambio sin previo aviso. Precios de Promoción no aplican a 6 meses sin intereses
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<!-- ventanas modal para agregar Paquetes -->
+<div class="modal fade" id="AddNewReparacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-primary" id="staticBackdropLabel">Agregar nueva reparación </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row text-center mt-2">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="refaccion"
+                checked (click)="tipoReparacion(true)">
+              <label class="form-check-label" for="inlineRadio1">Refacción</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="MO"
+                (click)="tipoReparacion(false)">
+              <label class="form-check-label" for="inlineRadio2">Agregar Mano de Obra</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" [value]="true" id="addCat"
+                (click)="guardaCatalogoCheck(!guardaCatalogo)">
+              <label class="form-check-label" for="addCat">
+                Registrar en catálogo
+              </label>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="repTipo">
+          <h3 class="fw-bold">Agregar refacción</h3>
+          <form [formGroup]="formaNuevaReparacion" class="mt-2" (ngSubmit)="gurdaRepacion()">
+            <div class="row m-1">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="nombre" class="form-label ">Nombre</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input class="form-control form-control-sm" formControlName="nombre"
+                      [class.is-invalid]="validarcampo('nombre')" placeholder="Escribe el nombre de la reparación">
+                    <small *ngIf="validarcampo('nombre')" class="text-danger">Campo requerido</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="precio" class="form-label text-capitalize">precio</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input type="number" class="form-control form-control-sm" formControlName="precio"
+                      [class.is-invalid]="validarcampo('precio')" placeholder="Costo de la repacion" min="1"
+                      (change)="obtenerSubtota()">
+                    <small *ngIf="validarcampo('precio')" class="text-danger">Campo requerido </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row m-1">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="cantidad" class="form-label text-capitalize">cantidad</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input type="number" class="form-control form-control-sm" formControlName="cantidad"
+                      [class.is-invalid]="validarcampo('cantidad')" placeholder="cantidad" min="1"
+                      (change)="obtenerSubtota()">
+                    <small *ngIf="validarcampo('cantidad')" class="text-danger">Campo requerido </small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="subtotal" class="form-label text-capitalize">subtotal</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input type="number" class="form-control form-control-sm" formControlName="subtotal"
+                      [class.is-invalid]="validarcampo('subtotal')" placeholder="subtotal" min="1"
+                      (change)="obtenerSubtota()">
+                    <small *ngIf="validarcampo('subtotal')" class="text-danger">Campo requerido / Solo Números</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row m-1">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="unidad" class="form-label text-capitalize">unidad</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <select class="form-select form-select-sm" formControlName="unidad"
+                      [class.is-invalid]="validarcampo('unidad')" [ngModel]="unidades[0]">
+                      <option *ngFor="let unidad of unidades" [value]="unidad">{{unidad}}</option>
+                    </select>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="marca" class="form-label text-capitalize">marca</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input class="form-control form-control-sm" formControlName="marca"
+                      [class.is-invalid]="validarcampo('marca')" placeholder="marca">
+                    <small *ngIf="validarcampo('marca')" class="text-danger">Campo requerido</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row text-center mt-5">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <button role="button" class="btn btn-primary col-4">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="!repTipo">
+          <h3 class="fw-bold">Datos de Mano de Obra</h3>
+          <form [formGroup]="formaNuevaMO" class="mt-2" (ngSubmit)="gurdaRepacion()">
+            <div class="row m-1">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="nombre" class="form-label ">Nombre</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input class="form-control form-control-sm" formControlName="nombre"
+                      [class.is-invalid]="validarcampoMO('nombre')" placeholder="Escribe el nombre de la reparación">
+                    <small *ngIf="validarcampoMO('nombre')" class="text-danger">Campo requerido</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="precio" class="form-label text-capitalize">Precio * H</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input type="number" class="form-control form-control-sm" formControlName="precio"
+                      [class.is-invalid]="validarcampoMO('precio')" placeholder="Costo de la repacion" min="1"
+                      (change)="obtenerSubtotaMO()">
+                    <small *ngIf="validarcampoMO('precio')" class="text-danger">Campo requerido </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row m-1">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="horas" class="form-label ">Horas</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input class="form-control form-control-sm" formControlName="horas" (change)="obtenerSubtotaMO()"
+                      [class.is-invalid]="validarcampoMO('horas')">
+                    <small *ngIf="validarcampoMO('horas')" class="text-danger">Campo requerido</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row g-2 align-items-center">
+                  <div class="col-lg-4 col-md-4 col-sm-6">
+                    <label for="subtotal" class="form-label text-capitalize">subtotal</label>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-6">
+                    <input type="number" class="form-control form-control-sm" formControlName="subtotal"
+                      [class.is-invalid]="validarcampoMO('subtotal')" placeholder="Costo de la repacion" min="1"
+                      (change)="obtenerSubtotaMO()">
+                    <small *ngIf="validarcampoMO('subtotal')" class="text-danger">Campo requerido </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row text-center mt-5">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <button role="button" class="btn btn-primary col-4">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="detallesPaquete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <h2 class="modal-title " id="exampleModalLabel">Detalles de paquete <strong
+            class="text-primary">{{nombrePaquete}}</strong></h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-1">
+        <!-- {{dataShowPaquete | json}} -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="text-capitalize">
+                <th scope="col">#</th>
+                <th scope="col">tipo</th>
+                <th scope="col">nombre</th>
+                <th scope="col">cantidad</th>
+                <th scope="col">precio</th>
+                <th scope="col">subtotal</th>
+                <th scope="col">marca</th>
+                <th scope="col">modelo</th>
+                <th scope="col">descripcion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataShowPaquete;let i = index" class="anima">
+                <th scope="row">{{i + 1}}</th>
+                <td class="ajustar">{{item.tipo}}</td>
+                <td class="ajustar">{{item.nombre}}</td>
+                <td class="ajustar">{{item.cantidad}}</td>
+                <td class="ajustar">{{item.precio | monedas}}</td>
+                <td class="ajustar">{{item.subtotal | monedas}}</td>
+                <td class="ajustar">
+                  <ng-container *ngIf="item.marca">{{item.marca}}</ng-container>
+                  <ng-container *ngIf="!item.marca"> - - - -</ng-container>
+                </td>
+                <td class="ajustar">
+                  <ng-container *ngIf="item.modelo">{{item.modelo}}</ng-container>
+                  <ng-container *ngIf="!item.modelo"> - - - -</ng-container>
+                </td>
+                <td class="texto-justificado">
+                  <strong>{{item.nombre}}</strong>: {{item.descripcion}}
+                </td>
+              </tr>
+              <tr *ngFor="let item of dataShowPaquete;let i = index">
+                <td colspan="9" class="collapse" [id]="item.IDreferencia">
+                  <div class="card card-body">
+                    Descripcion <strong>{{item.nombre}}</strong>: {{item.descripcion}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table id="capture" class="table ">
+          <tbody>
+            <ng-container id="data-cliente">
+              <tr>
+                <td [colSpan]="2">
+                  Operadora de Servicios Automotrices integrales del Centro del 
+                  pais Speed Service GAFEAG SA De CV, 
+                  {{dataSucursal.sucursal}}, 
+                  {{dataSucursal.direccion}}, 
+                  Tel. {{dataSucursal.telefono}}, 
+                  {{dataSucursal.correo}}
+                </td>
+                <td [colSpan]="2">
+                  <img src="https://firebasestorage.googleapis.com/v0/b/speedpro-3a4e1.appspot.com/o/logos%2FlogoSpeedBig.png?alt=media&token=bebffe87-3000-4317-b322-67adef4a971b" alt=""
+                  class="img-fluid"
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td [colSpan]="2"></td>
+              </tr>
+              <tr>
+                <td [colSpan]="2"><h3>Información de cliente</h3></td>
+              </tr>
+              <tr>
+                <td> nombre </td>
+                <td>  {{dataCliente.fullname}} </td>
+                <td> Correo:</td>
+                <td> {{dataCliente.correo}} </td>
+              </tr>
+              <tr>
+                <td> telefono movil:</td>
+                <td> {{dataCliente.telefono_movil}} </td>
+                <td> tipo:</td>
+                <td> {{dataCliente.tipo}} </td>
+              </tr>
+              <tr>
+                <td> telefono_movil:</td>
+                <td> {{dataCliente.telefono_movil}} </td>
+                <td> telefono_fijo:</td>
+                <td> {{dataCliente.telefono_fijo}} </td>
+              </tr>
+            </ng-container>
+            <ng-container id="data-vehiculo">
+              <tr>
+                <td [colSpan]="2"></td>
+              </tr>
+              <tr>
+                <td >Informacion de vehículo</td>
+              </tr>
+              <tr>
+                <td >Placas</td>
+                <td >{{dataVehiculoExcel.placas}}</td>
+                <td >marca</td>
+                <td >{{dataVehiculoExcel.marca}}</td>
+              </tr>
+              <tr>
+                <td >modelo</td>
+                <td >{{dataVehiculoExcel.modelo}}</td>
+                <td >categoria</td>
+                <td >{{dataVehiculoExcel.categoria}}</td>
+              </tr>
+              <tr>
+                <td >anio</td>
+                <td >{{dataVehiculoExcel.anio}}</td>
+                <td >color</td>
+                <td >{{dataVehiculoExcel.color}}</td>
+              </tr>
+              <tr>
+                <td >cilindros</td>
+                <td >{{dataVehiculoExcel.cilindros}}</td>
+                <td >engomado</td>
+                <td >{{dataVehiculoExcel.engomado}}</td>
+              </tr>
+              <tr>
+                <td >marcaMotor</td>
+                <td >{{dataVehiculoExcel.marcaMotor}}</td>
+                <td >no_motor</td>
+                <td >{{dataVehiculoExcel.no_motor}}</td>
+              </tr>
+              <tr>
+                <td >Transmision</td>
+                <td >{{dataVehiculoExcel.Transmision}}</td>
+                <td >vinChasis</td>
+                <td >{{dataVehiculoExcel.vinChasis}}</td>
+              </tr>
+            </ng-container>
+            <ng-container id="detallesCotizacion">
+              <tr>
+                <td [colSpan]="2"></td>
+              </tr>
+              <tr>
+                <td [colSpan]="2">Detalles de cotizacion</td>
+              </tr>
+              <tr>
+                <td >Tipo</td>
+                <td >Nombre</td>
+                <td >Precio</td>
+                <td >descripcion</td>
+              </tr>
+              <tr *ngFor="let item of tempdataCotizacionmuestra">
+                <td >{{item.tipo}}</td>
+                <td >{{item.nombre}}</td>
+                <td >{{item.precio}}</td>
+                <td >{{item.descripcion}}</td>
+              </tr>
+            </ng-container>
+            <ng-container id="detallesPaquetes">
+              <tr>
+                <td [colSpan]="2"></td>
+              </tr>
+              <tr>
+                <td [colSpan]="2">Detalles de paquetes</td>
+              </tr>
+              <!-- <pre>{{tempDataPaquetes | json}}</pre> -->
+              <!-- <br> -->
+              <tr *ngFor="let item of tempDataPaquetes">
+                <td [colSpan]="" >Paquete: {{item.nombre}}</td>
+                <td [colSpan]="">
+                  <ng-container *ngFor="let elemento of item.elementos; let i = index">
+                    &nbsp; {{ i+1 }}.- Nombre: {{elemento.nombre}}, 
+                    precio: {{elemento.precio}}, 
+                    descripcion: {{elemento.descripcion}}
+                  </ng-container>
+                </td>
+                <!-- <td [colSpan]="*3" *ngFor="let elemento of item.elementos">
+                   <tr>
+                    Nombre: {{elemento.nombre}}, 
+                    precio: {{elemento.precio}}, 
+                    descripcion: {{elemento.descripcion}}
+                   </tr>
+                </td> -->
+              </tr>
+              <tr>
+                <td [colSpan]="4"></td>
+              </tr>
+            </ng-container>
+            <ng-container id="costosFinales">
+              <tr>
+                <td [colSpan]="4"></td>
+              </tr>
+              <tr>
+                <td [colSpan]="2"></td>
+                <td [colSpan]="" *ngIf="IVA || Descuento">Subtotal</td>
+                <td [colSpan]="" class="iva" *ngIf="IVA || Descuento"><strong>{{subtotal | monedas}}</strong></td>
+              </tr>
+              <tr>
+                <td [colSpan]="2"></td>
+                <td [colSpan]="" *ngIf="IVA">IVA</td>
+                <td [colSpan]="" class="iva" *ngIf="IVA"><strong>{{ivaAplicado  | monedas}}</strong></td>
+              </tr>
+              <tr>
+                <td [colSpan]="2"></td>
+                <td [colSpan]="" *ngIf="Descuento">Descuento</td>
+                <td [colSpan]="" class="iva" *ngIf="Descuento"><strong>{{descuentoAplicado  | monedas}}</strong></td>
+              </tr>
+              <tr>
+                <td [colSpan]="2" ></td>
+                <td [colSpan]="" >TOTAL</td>
+                <td [colSpan]="" class="iva" ><strong>{{totalCotizacion  | monedas}}</strong></td>
+              </tr>
+              <tr>
+                <td [colSpan]="4"></td>
+              </tr>
+              <tr>
+                <td [colSpan]="4">Cantidad con letra</td>
+              </tr>
+              <tr>
+                <td [colSpan]="4" class="iva" *ngIf="totalCotizacion!==0"><strong>{{totalCotizacion | numerosLetras}}</strong></td>
+              </tr>
+            </ng-container>
+            <ng-container id="terminos y condiciones">
+              <tr>
+                <td  class="text-center" [colSpan]="4">Términos y condiciones</td>
+              </tr>
+              <tr>
+                <td  class="text-center" [colSpan]="4">
+                  Precios en M.N; IVA en caso de requerir factura. Este documento es una cotización y no representa ninguna orden de trabajo.
+                </td>
+              </tr>
+              <tr>
+                <td  class="text-center"  [colSpan]="4">
+                  Cotización Valida por 20 días Naturales y no aplica con otras Promociones. Costo de Recoleccion y entrega de Auto es de $150.00 Pesos MN
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center" [colSpan]="4">
+                  Precios sujetos a cambio sin previo aviso. Precios de Promoción no aplican a 6 meses sin intereses
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="PDF()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

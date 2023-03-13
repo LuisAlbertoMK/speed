@@ -1,0 +1,135 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a class="brand-link">
+      <img src="assets/logoSpeedPro/logoSpeed.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        style="opacity: .8">
+      <span class="brand-text font-weight-light">SpeedPro {{nombreSucursalMuestra}}</span>
+    </a>
+  
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <!-- <div class="image">
+          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div> -->
+        <div class="info">
+          <strong class="text-uppercase text-white">{{TIPO_USUARIO}}</strong>
+        </div>
+      </div>
+  
+      <!-- SidebarSearch Form -->
+      <!--div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div-->
+  
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+               <li class="nav-item">
+                <a  [routerLink]="['/inicio']" class="nav-link">
+                  <i class="nav-icon fad fa-home-alt fa-1x"></i>
+                  <p>
+                    Inicio
+                    <!--span class="right badge badge-danger">New</span-->
+                  </p>
+                </a>
+              </li>
+          <li class="nav-item">
+            <a  [routerLink]="['/clientes']" class="nav-link">
+  
+              <i class=" nav-icon fa fa-user fa-1x"></i>
+              <p>
+                Clientes y Vehículos
+                <!--span class="right badge badge-danger">New</span-->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [routerLink]="['/catalogos']" class="nav-link">
+  
+              <i class=" nav-icon fa fa-address-book  fa-1x"></i>
+              <p>
+                Catalogos
+                <!--span class="right badge badge-danger">New</span-->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [routerLink]="['/citas']" class="nav-link">
+  
+              <i class=" nav-icon fa fa-calendar-check fa-1x"></i>
+              <p>
+                Citas
+                <!--span class="right badge badge-danger">New</span-->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a  [routerLink]="['/cotizacion']" class="nav-link">
+  
+              <i class=" nav-icon fa fa-folder fa-1x"></i>
+              <p>
+                Órdenes y Cotizaciones
+                <!--span class="right badge badge-danger">New</span-->
+              </p>
+            </a>
+          </li>
+  
+          <li class="nav-item">
+            <a [routerLink]="['/servicios']" class="nav-link">
+  
+              <i class=" nav-icon fad fa-taxi fa-1x"></i>
+              <p>
+                Servicios
+                <!--span class="right badge badge-danger">New</span-->
+              </p>
+            </a>
+          </li>
+          <ng-container >
+            <li class="nav-item" *ngIf="ROL !=='Técnico/Ayudante'">
+              <a [routerLink]="['/administracion']" class="nav-link">
+    
+                <i class=" nav-icon fad fa-hand-holding-usd fa-1x"></i>
+                <p>
+                  Administración
+                  <!--span class="right badge badge-danger">New</span-->
+                </p>
+              </a>
+            </li>
+          </ng-container>
+          <li class="nav-item">
+            <a  [routerLink]="['/usuarios']" class="nav-link">
+              <i class="nav-icon fad fa-users fa-1x"></i>
+              <p>
+                Usuarios
+                <!--span class="right badge badge-danger">New</span-->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [routerLink]="['/sucursales']" class="nav-link">
+  
+              <i class=" nav-icon fad fa-landmark fa-1x"></i>
+              <p>
+                Sucursales
+                <!--span class="right badge badge-danger">New</span-->
+              </p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+  
