@@ -17,6 +17,7 @@ const dbRef = ref(getDatabase());
 })
 export class PagoComponent implements OnInit {
 
+  @Input() dataRecepcion:any = null
   @Output() showPagoHide : EventEmitter<any>
 
   
@@ -37,19 +38,19 @@ export class PagoComponent implements OnInit {
   ]
   usuario:string
   rol:string
-
   validaciones= [
-  {valor: 'no_os', show:'O.S'},
-  {valor: 'monto', show:'Monto'},
-  {valor: 'metodo', show:'Metodo'},
-  {valor: 'concepto', show:'Concepto'},
-  {valor: 'referencia', show:'Referencia'},
-  {valor: 'fecha', show:'Fecha de pago'},
-  {valor: 'fecha_registro', show:'Fecha de registro'},
-  {valor: 'hora_registro', show:'Hora de registro'},
-  {valor: 'sucursal', show:'Sucursal'},
-  {valor: 'usuario', show:'Usuario'},
-  {valor: 'rol', show:'ROL'},
+    {valor: 'no_os', show:'O.S'},
+    {valor: 'monto', show:'Monto'},
+    {valor: 'metodo', show:'Metodo'},
+    {valor: 'concepto', show:'Concepto'},
+    {valor: 'referencia', show:'Referencia'},
+    {valor: 'fecha', show:'Fecha de pago'},
+    {valor: 'fecha_registro', show:'Fecha de registro'},
+    {valor: 'hora_registro', show:'Hora de registro'},
+    {valor: 'sucursal', show:'Sucursal'},
+    {valor: 'usuario', show:'Usuario'},
+    {valor: 'rol', show:'ROL'},
+    {valor: 'gasto_tipo', show:'gasto_tipo'},
   ]
   Sucursales= []
   sucursal:string
@@ -58,7 +59,7 @@ export class PagoComponent implements OnInit {
     this.listaOrdenes()
     this.listaSucursales()
     this.infoDATA()
-    this.crearFormPago()
+    this.crearFormPago()    
   }
   listaOrdenes(){
     const starCountRef = ref(db, `recepciones`)
@@ -71,7 +72,7 @@ export class PagoComponent implements OnInit {
         const ordenados = this._publicos.ordernarPorCampo(recep_2,'no_os')
         ordenados.forEach((recep)=>{
           const tempData = {
-            id: recep['id'], no_os: recep['no_os']
+            id: recep['id'], no_os: recep['no_os'], sucursal: recep['sucursal']
           }
           recepciones_arra.push(tempData)
         })
@@ -106,6 +107,7 @@ export class PagoComponent implements OnInit {
       fecha:[this.selected,[Validators.required]],
       sucursal: [sucursal,[Validators.required]],
       usuario: [this.usuario, [Validators.required]],
+      gasto_tipo:['',[]],
       rol: [this.rol, [Validators.required]],
     })
   }
@@ -117,23 +119,25 @@ export class PagoComponent implements OnInit {
     const answer = {valido: false, dataSave:{}, faltante:''}
     const pagoData = this.formPago.value
     const getFecha = await this._publicos.getFechaHora()
+    if (this.dataRecepcion) {
+      pagoData['no_os'] = this.dataRecepcion['id']
+      pagoData['sucursal'] = this.dataRecepcion['sucursal']
+    }
     const dataSave = {
-      no_os: pagoData['no_os'],
-      monto: pagoData['monto'],
-      metodo: parseInt(pagoData['metodo']),
-      concepto: pagoData['concepto'],
-      fecha: pagoData['fecha'],
-      fecha_registro: getFecha.fecha,
-      hora_registro: getFecha.hora,
-      sucursal: pagoData['sucursal'],
-      usuario: pagoData['usuario'],
-      rol: pagoData['rol'],
-      tipo:'pago',
-      status: true
+      no_os: pagoData['no_os'],monto: pagoData['monto'],metodo: parseInt(pagoData['metodo']),
+      concepto: pagoData['concepto'],fecha_registro: getFecha.fecha,
+      hora_registro: getFecha.hora,sucursal: pagoData['sucursal'],usuario: pagoData['usuario'],
+      rol: pagoData['rol'],tipo:'pago',status: true,gasto_tipo: pagoData['gasto_tipo']
     };
+    let fecha = this.selected, date = null;
+    dataSave['fecha'] = '';
+    (fecha) ? date = new Date(this.selected): '';
+      if (date instanceof Date) {
+        const fechaSave = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+        dataSave['fecha'] = fechaSave
+      }
     (String(pagoData['referencia']).length >0 )? dataSave['referencia'] = pagoData['referencia'] : ''
     answer.dataSave = dataSave
-
     let invcalidos = []
     const mapdataSave = Object.keys(dataSave)
     await mapdataSave.forEach(v=>{
@@ -162,7 +166,7 @@ export class PagoComponent implements OnInit {
           }
         });
       }else{
-        // console.log(dataSave);
+        
         Swal.fire({
           title: 'Guardar pago?',
           showDenyButton: false,
@@ -175,17 +179,15 @@ export class PagoComponent implements OnInit {
           if (result.isConfirmed) {
             const updates = {}
             const newPostKey = push(child(ref(db), 'posts')).key
-            const campos = ['concepto','fecha','fecha_registro','hora_registro','metodo','monto','rol','status','tipo']
+            const campos = ['concepto','fecha','fecha_registro','hora_registro','metodo','monto','rol','status','tipo','gasto_tipo','sucursal']
             const recuperados = this._publicos.nuevaRecuperacionData(dataSave,campos)
-            updates[`recepciones/${dataSave['no_os']}/historialPagos/${newPostKey}`] = recuperados;
+            updates[`recepciones/${dataSave['no_os']}/HistorialPagos/${newPostKey}`] = recuperados;
             update(ref(db), updates).then(()=>{
               this.formPago.reset({
-                no_os: '',
-                usuario: this.usuario,
-                sucursal: this.sucursal,
-                referencia: '',
-                rol: this.rol
+                no_os: '',  usuario: this.usuario,  sucursal: this.sucursal,
+                referencia: '',  rol: this.rol
               })
+              this.selected = null
               this._publicos.mensaje('registro pago correto',1)
             })
           } else if (result.isDenied) {
@@ -195,6 +197,14 @@ export class PagoComponent implements OnInit {
       }
     })
   }
+  changeInfo(id: any){
+    if(!id) {
+      this.formPago.controls['sucursal'].setValue('')
+    }else{
+      const data = this.ordenes.find(os=>os['id'] === id)
+      this.formPago.controls['sucursal'].setValue(data['sucursal'])
+    } 
+  }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
       const date = new Date(event.value)
       if (date instanceof Date) {
@@ -203,6 +213,10 @@ export class PagoComponent implements OnInit {
       }else{
         this.formPago.controls['fecha'].setValue('')
       }
+  }
+  nuevoevento(){
+    console.log('aqui');
+    
   }
   cancela(){
     this.showPagoHide.emit( {show: false})

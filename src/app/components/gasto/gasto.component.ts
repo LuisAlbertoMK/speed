@@ -16,10 +16,12 @@ const dbRef = ref(getDatabase());
 })
 export class GastoComponent implements OnInit {
 
+
+  @Input() dataRecepcion:any = null
+
   @Output() showGastoHide : EventEmitter<any>
 
 
-  comando:boolean = true
 
   miniColumnas:number=100
   formGasto:FormGroup
@@ -50,7 +52,7 @@ export class GastoComponent implements OnInit {
   {valor: 'sucursal', show:'Sucursal'},
   {valor: 'usuario', show:'Usuario'},
   {valor: 'rol', show:'ROL'},
-  {valor: 'gasto_tipo', show:'gasto_tipo'},
+  
   ]
   Sucursales= []
   sucursal:string
@@ -74,7 +76,8 @@ export class GastoComponent implements OnInit {
         const ordenados = this._publicos.ordernarPorCampo(recep_2,'no_os')
         ordenados.forEach((recep)=>{
           const tempData = {
-            id: recep['id'], no_os: recep['no_os'], fecha: recep['fecha_recibido'], hora: recep['hora_recibido']
+            id: recep['id'], no_os: recep['no_os'], fecha: recep['fecha_recibido'], 
+            hora: recep['hora_recibido'], sucursal: recep['sucursal']
           }
           recepciones_arra.push(tempData)
         })
@@ -102,7 +105,7 @@ export class GastoComponent implements OnInit {
     let sucursal = '';
     (this.sucursal ==='Todas') ? sucursal = '': sucursal= this.sucursal
     this.formGasto = this.fb.group({
-      tipo:['',[Validators.required]],
+      tipo:['gasto',[Validators.required]],
       no_os:['',[]],
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
@@ -111,7 +114,7 @@ export class GastoComponent implements OnInit {
       fecha:[this.selected,[Validators.required]],
       sucursal: [sucursal,[Validators.required]],
       usuario: [this.usuario, [Validators.required]],
-      gasto_tipo:['refaccion',[]],
+      gasto_tipo:['',[]],
       rol: [this.rol, [Validators.required]],
     })
   }
@@ -135,12 +138,14 @@ export class GastoComponent implements OnInit {
     }
   }
   fechaInicio(id:string){
-    console.log(this.muestraLista);
-    
-    if (this.muestraLista) {
+    if (this.muestraLista && id) {
       const fechainicio = this.ordenes.find(os=>os['id'] === id)
       const aqui2 = fechainicio['fecha'].split('/')
+      this.formGasto.controls['sucursal'].setValue(fechainicio['sucursal'])
       this.fechaIIII= new Date(aqui2[2],aqui2[1] - 1,aqui2[0]) 
+    }else{
+      this.formGasto.controls['sucursal'].setValue('')
+
     }
   }
   myFilter = (d: Date | null): boolean => {
@@ -159,14 +164,39 @@ export class GastoComponent implements OnInit {
   async validaInformacion(){
     const answer = {valido: false, dataSave:{}, faltante:''}
     const pagoData = this.formGasto.value
+
     const getFecha = await this._publicos.getFechaHora()
     const dataSave = {
-      tipo: pagoData['tipo'],  no_os: pagoData['no_os'],  monto: pagoData['monto'],
-      metodo: parseInt(pagoData['metodo']),  concepto: pagoData['concepto'],  fecha: pagoData['fecha'],
+      tipo: pagoData['tipo'],  monto: pagoData['monto'],
+      metodo: parseInt(pagoData['metodo']),no_os:pagoData['no_os'], concepto: pagoData['concepto'],  fecha: pagoData['fecha'],
       fecha_registro: getFecha.fecha,  hora_registro: getFecha.hora,  sucursal: pagoData['sucursal'],
       usuario: pagoData['usuario'],  referencia: pagoData['referencia'],  rol: pagoData['rol'],
-      status: true,gasto_tipo:pagoData['gasto_tipo']
+      status: true,gasto_tipo: pagoData['gasto_tipo']
     };
+    let fecha = this.selected, date = null;
+    dataSave['fecha'] = '';
+    (fecha) ? date = new Date(this.selected): '';
+      if (date instanceof Date) {
+        const fechaSave = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+        dataSave['fecha'] = fechaSave
+      }
+
+      if (this.dataRecepcion) {
+        this.muestraLista = true
+        const inf = this.dataRecepcion
+        dataSave['tipo'] = 'orden'
+        dataSave['no_os'] = inf['id']
+        dataSave['sucursal'] = inf['sucursal']
+      }
+      if (dataSave['tipo'] === 'orden') {
+        let nu =this.validaciones.filter(v=>v['valor']!=='gasto_tipo')
+        nu.push({show:'gasto_tipo',valor:'gasto_tipo'})
+        this.validaciones = nu
+      }else{
+        let nu =this.validaciones.filter(v=>v['valor']!=='gasto_tipo')
+        this.validaciones = nu
+      }
+      
     (String(pagoData['referencia']).length >0 )? dataSave['referencia'] = pagoData['referencia'] : ''
     answer.dataSave = dataSave
 
@@ -214,23 +244,34 @@ export class GastoComponent implements OnInit {
             const newPostKey = push(child(ref(db), 'posts')).key
             const campos = ['concepto','fecha','fecha_registro','referencia','hora_registro','metodo','monto','rol','status','tipo','sucursal'];
             let camposR = [...campos];
-            (this.muestraLista) ? camposR.push('no_os') : '';
-            (this.muestraLista) ? '' : dataSave['tipo'] = 'operacion'
-
+            
+            if(this.muestraLista) {
+              camposR.push('gasto_tipo','no_os'); campos.push('gasto_tipo')
+            }else{
+              if (this.dataRecepcion) {
+                dataSave['tipo'] = 'orden'
+              }else{
+                dataSave['tipo'] = 'operacion'
+              }
+            }  
             const dataPrimary = this._publicos.nuevaRecuperacionData(dataSave,camposR)
             const dataSaveFinal = this._publicos.nuevaRecuperacionData(dataPrimary,campos)
             
             if(this.muestraLista) {
-              updates[`recepciones/${dataPrimary['no_os']}/historialGastos/${newPostKey}`] = dataSaveFinal;
+              updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
             }else{
               updates[`HistorialGastosOperacion/${newPostKey}`] = dataSaveFinal;
             }
+            // console.log(updates);
+            
             update(ref(db), updates).then(()=>{
               this.formGasto.reset({
                 tipo: '',  no_os: '',  usuario: this.usuario,
                 sucursal: this.sucursal, referencia: '', rol: this.rol
               })
               this._publicos.mensaje('registro gasto correto',1)
+            }).catch(error =>{
+
             })
           } else if (result.isDenied) {
             // Swal.fire('Changes are not saved', '', 'info')

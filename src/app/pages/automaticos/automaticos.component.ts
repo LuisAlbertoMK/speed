@@ -497,6 +497,7 @@ export class AutomaticosComponent implements OnInit {
     {'categoria':'Pick Up','marca':'Nissan','modelo':'Frontier','anioInicial':'1997','anioFinal':'2023'},
     {'categoria':'PickUp','marca':'RAM','modelo':'Promaster Rapid','anioInicial':'2017','anioFinal':'2023'},
     {'categoria':'Compacto Sedán','marca':'Pontiac','modelo':'Matiz','anioInicial':'1998','anioFinal':'2022'},
+    {'categoria':'SUV','marca':'Jeep','modelo':'Liberty','anioInicial':'2002','anioFinal':'2023'},
   ]
   categorias:any=[
     "Sedán",
@@ -551,6 +552,53 @@ recepciones = {
         "monto": 1,
         "referencia": "nueva ref",
         "status": true
+      },
+      {
+        "concepto": "Gasto orden SSSSSS",
+        "fecha": "10/3/2023",
+        "hora": "15:16:15",
+        "metodo": "1",
+        "monto": 500,
+        "referencia": "para probar",
+        "status": true
+      },
+      {
+        "concepto": "orden de mentira",
+        "fecha": "10/3/2023",
+        "hora": "15:16:30",
+        "metodo": 1,
+        "monto": 2000,
+        "referencia": "mentira de orden",
+        "status": true
+      }
+    ],
+    "HistorialPagos": [
+      {
+        "concepto": "Pago completo",
+        "fecha": "10/3/2023",
+        "hora": "15:13:15",
+        "metodo": "1",
+        "monto": 4877.5,
+        "referencia": "Pago final",
+        "status": false
+      },
+      {
+        "concepto": "pago prueba",
+        "fecha": "10/3/2023",
+        "hora": "15:15:25",
+        "metodo": 1,
+        "monto": 500,
+        "referencia": "de prueba de chocolate",
+        "status": false
+      },
+      {
+        "concepto": "liquidacion de pago",
+        "fecha": "10/3/2023",
+        "hora": "15:15:46",
+        "metodo": 1,
+        "monto": 4377.5,
+        "referencia": "chocolate 2",
+        "status": false
       }
     ],
     "ckeckList": [
@@ -1002,6 +1050,7 @@ recepciones = {
         "index": 20
       }
     ],
+    "diasSucursal": 57,
     "fechaPromesa": "23/12/2022",
     "fecha_entregado": "",
     "fecha_recibido": "16/1/2023",
@@ -1037,7 +1086,8 @@ recepciones = {
         "modelo": "F-350",
         "nombre": "x",
         "precio": 200,
-        "status": true,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
         "terminado": true,
         "tipo": "paquete",
         "total": 200
@@ -1108,8 +1158,8 @@ recepciones = {
         "modelo": "Canyon",
         "nombre": "paquete z",
         "precio": 2595,
-        "status": true,
-        "terminado": true,
+        "showStatus": "No aprobado",
+        "status": "noAprobado",
         "tipo": "paquete"
       },
       {
@@ -1154,7 +1204,8 @@ recepciones = {
         "modelo": "iX M60",
         "nombre": "paquete bmw",
         "precio": 1450,
-        "status": true,
+        "showStatus": "No aprobado",
+        "status": "noAprobado",
         "terminado": true,
         "tipo": "paquete"
       },
@@ -1186,7 +1237,8 @@ recepciones = {
         "modelo": "Serie 1",
         "nombre": "nuevo",
         "precio": 375,
-        "status": true,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
         "terminado": true,
         "tipo": "paquete",
         "total": 375
@@ -1219,7 +1271,8 @@ recepciones = {
         "modelo": "Continental ",
         "nombre": "aqui",
         "precio": 375,
-        "status": true,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
         "terminado": true,
         "tipo": "paquete",
         "total": 375
@@ -1280,7 +1333,8 @@ recepciones = {
         "modelo": "Wrangler",
         "nombre": "nuevo",
         "precio": 1437.5,
-        "status": true,
+        "showStatus": "No aprobado",
+        "status": "noAprobado",
         "terminado": true,
         "tipo": "paquete"
       },
@@ -1354,7 +1408,8 @@ recepciones = {
         "modelo": "Wrangler",
         "nombre": "personalizado 1",
         "precio": 1185,
-        "status": true,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
         "terminado": true,
         "tipo": "paquete",
         "total": 1185
@@ -1429,7 +1484,8 @@ recepciones = {
         "modelo": "Wrangler",
         "nombre": "personalizado 2",
         "precio": 1500,
-        "status": true,
+        "showStatus": "No aprobado",
+        "status": "noAprobado",
         "terminado": true,
         "tipo": "paquete"
       },
@@ -1503,7 +1559,8 @@ recepciones = {
         "modelo": "Equinox",
         "nombre": "paquetePruebaWEB",
         "precio": 1555,
-        "status": true,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
         "terminado": true,
         "tipo": "paquete",
         "total": 1555
@@ -1517,6 +1574,8 @@ recepciones = {
         "id": "-NG3I_ejiuh3KiL9EdAp",
         "nombre": "600",
         "precio": 1000,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
         "terminado": true,
         "tipo": "MO"
       },
@@ -1530,6 +1589,8 @@ recepciones = {
         "marca": "-NFyYn5eKO2EuaZhukGs",
         "nombre": "BALATAS CERÁMICA",
         "precio": 150,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
         "terminado": true,
         "tipo": "refaccion"
       },
@@ -1542,6 +1603,8 @@ recepciones = {
         "marca": "Aston Martín",
         "nombre": "LAVAR CPO DE ACELERACION",
         "precio": 300,
+        "showStatus": "No aprobado",
+        "status": "noAprobado",
         "terminado": true,
         "tipo": "MO"
       }
@@ -2537,7 +2600,7 @@ recepciones = {
         "url": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/recepciones%2FfotografiasDetalles%2F-NJlmVtatollLU3RozCg%2FdetallesPersonalizado.png?alt=media&token=d78c0ee6-3050-4b8d-8330-babed4d78154"
       }
     ],
-    "diasSucursal": 69,
+    "diasSucursal": 84,
     "fechaPromesa": "23/12/2022",
     "fecha_recibido": "20/12/2022",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/firmas%2Frecepcion%2FCU1222GE00002?alt=media&token=221c8e9f-d179-439d-9661-c2c172eb9434",
@@ -5640,7 +5703,7 @@ recepciones = {
         "url": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/recepciones%2FfotografiasDetalles%2FCU1222GE00004%2FdetallesPersonalizado.png?alt=media&token=a646e9c8-b504-41ba-a67b-fd528b7bed6d"
       }
     ],
-    "diasSucursal": 68,
+    "diasSucursal": 83,
     "fechaPromesa": "23/12/2022",
     "fecha_recibido": "21/12/2022",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/firmas%2Frecepcion%2FCU1222GE00004?alt=media&token=74f2435b-22d3-478b-b5f3-03037e650056",
@@ -7144,7 +7207,7 @@ recepciones = {
         "index": 20
       }
     ],
-    "diasSucursal": 62,
+    "diasSucursal": 77,
     "fechaPromesa": "30/12/2022",
     "fecha_recibido": "27/12/2022",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/firmas%2Frecepcion%2FCU1222GE00005?alt=media&token=15deef2c-d1ea-4d5e-a60a-360451387c40",
@@ -8649,7 +8712,7 @@ recepciones = {
         "index": 20
       }
     ],
-    "diasSucursal": 48,
+    "diasSucursal": 63,
     "fechaPromesa": "12/1/2023",
     "fecha_recibido": "10/1/2023",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/firmas%2Frecepcion%2FCU0123GE00007?alt=media&token=bcc2fc17-4d14-4996-ad0d-5f7467c82dc8",
@@ -9158,7 +9221,7 @@ recepciones = {
         "url": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/recepciones%2FfotografiasDetalles%2F%20CU0123GE00008%2FdetallesPersonalizado.png?alt=media&token=572e27e0-cb93-40c6-82fb-889bb6a82e47"
       }
     ],
-    "diasSucursal": 48,
+    "diasSucursal": 63,
     "fechaPromesa": "12/1/2023",
     "fecha_entregado": "",
     "fecha_recibido": "10/1/2023",
@@ -9665,7 +9728,7 @@ recepciones = {
         "index": 20
       }
     ],
-    "diasSucursal": 48,
+    "diasSucursal": 63,
     "fechaPromesa": "11/1/2023",
     "fecha_entregado": "",
     "fecha_recibido": "10/1/2023",
@@ -9709,762 +9772,6 @@ recepciones = {
     "sucursal": "-N2glF34lV3Gj0bQyEWK",
     "tecnico": "-NL1hTSnVq0ImKF7kCT7",
     "vehiculo": "-NLSJwWeFEuZSI9jaHnB"
-  },
-  "-NLXpWowxthdbHBS37jv": {
-    "ckeckList": [
-      {
-        "id": "antena",
-        "mostrar": "antena",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "birlo_seguridad",
-        "mostrar": "birlo seguridad",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "si"
-      },
-      {
-        "id": "bocinas",
-        "mostrar": "bocinas",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "botones_interiores",
-        "mostrar": "botones interiores",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "boxina_claxon",
-        "mostrar": "boxina claxon",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "calefaccion",
-        "mostrar": "calefaccion",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "dañado"
-      },
-      {
-        "id": "cenicero",
-        "mostrar": "cenicero",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "cristales",
-        "mostrar": "cristales",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "dañado"
-      },
-      {
-        "id": "encendedor",
-        "mostrar": "encendedor",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "espejo_retorvisor",
-        "mostrar": "espejo retorvisor",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "si"
-      },
-      {
-        "id": "espejos_laterales",
-        "mostrar": "espejos laterales",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "estuche_herramientas",
-        "mostrar": "estuche herramientas",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "dañado"
-      },
-      {
-        "id": "extintor",
-        "mostrar": "extintor",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "gato",
-        "mostrar": "gato",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "golpes_y_carroceria",
-        "mostrar": "golpes y carroceria",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "instrumentos_tablero",
-        "mostrar": "instrumentos tablero",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "interiores",
-        "mostrar": "interiores",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "limpiadores",
-        "mostrar": "limpiadores",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "llanta_refaccion",
-        "mostrar": "llanta refaccion",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "llave_cruz",
-        "mostrar": "llave cruz",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "llega_en_grua",
-        "mostrar": "llega en grua",
-        "opciones": [
-          "si",
-          "no"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "luces",
-        "mostrar": "luces",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "maneral_gato",
-        "mostrar": "maneral gato",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "manijas_interiores",
-        "mostrar": "manijas interiores",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "molduras_completas",
-        "mostrar": "molduras completas",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "nivel_gasolina",
-        "mostrar": "nivel gasolina",
-        "opciones": [
-          "vacio",
-          "1/4",
-          "1/2",
-          "3/4",
-          "lleno"
-        ],
-        "status": "3/4"
-      },
-      {
-        "id": "radio",
-        "mostrar": "radio",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "tapetes",
-        "mostrar": "tapetes",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "tapon_combustible",
-        "mostrar": "tapon combustible",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "tapones_llantas",
-        "mostrar": "tapones llantas",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "tapones_motor",
-        "mostrar": "tapones motor",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "tarjeta_de_circulacion",
-        "mostrar": "tarjeta de circulacion",
-        "opciones": [
-          "si",
-          "no"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "testigos_en_tablero",
-        "mostrar": "testigos en tablero",
-        "opciones": [
-          "si",
-          "no"
-        ],
-        "status": "no"
-      },
-      {
-        "id": "triangulos_seguridad",
-        "mostrar": "triangulos seguridad",
-        "opciones": [
-          "si",
-          "no",
-          "dañado"
-        ],
-        "status": "no"
-      }
-    ],
-    "cliente": "-NJQOaVswPrU7ny27I5u",
-    "detalles": [
-      {
-        "checado": false,
-        "id": "Capo",
-        "index": 0
-      },
-      {
-        "checado": false,
-        "id": "Paragolpes_frontal",
-        "index": 1
-      },
-      {
-        "checado": false,
-        "id": "Paragolpes_posterior",
-        "index": 2
-      },
-      {
-        "checado": false,
-        "id": "Techo",
-        "index": 3
-      },
-      {
-        "checado": false,
-        "id": "espejo_derecho",
-        "index": 4
-      },
-      {
-        "checado": false,
-        "id": "espejo_izquierdo",
-        "index": 5
-      },
-      {
-        "checado": false,
-        "id": "faros_frontales",
-        "index": 6
-      },
-      {
-        "checado": false,
-        "id": "faros_posteriores",
-        "index": 7
-      },
-      {
-        "checado": false,
-        "id": "parabrisas_posterior",
-        "index": 8
-      },
-      {
-        "checado": false,
-        "id": "paragolpes_frontal",
-        "index": 9
-      },
-      {
-        "checado": false,
-        "id": "paragolpes_posterior",
-        "index": 10
-      },
-      {
-        "checado": false,
-        "id": "puerta_lateral_derecha_1",
-        "index": 11
-      },
-      {
-        "checado": false,
-        "id": "puerta_lateral_derecha_2",
-        "index": 12
-      },
-      {
-        "checado": false,
-        "id": "puerta_lateral_izquierda_1",
-        "index": 13
-      },
-      {
-        "checado": false,
-        "id": "puerta_lateral_izquierda_2",
-        "index": 14
-      },
-      {
-        "checado": false,
-        "id": "puerta_posterior",
-        "index": 15
-      },
-      {
-        "checado": false,
-        "id": "tirador_lateral_derecha_1",
-        "index": 16
-      },
-      {
-        "checado": false,
-        "id": "tirador_lateral_derecha_2",
-        "index": 17
-      },
-      {
-        "checado": false,
-        "id": "tirador_lateral_izquierda_1",
-        "index": 18
-      },
-      {
-        "checado": false,
-        "id": "tirador_lateral_izquierda_2",
-        "index": 19
-      },
-      {
-        "checado": false,
-        "id": "tirador_posterior",
-        "index": 20
-      }
-    ],
-    "diasSucursal": 47,
-    "fechaPromesa": "20/1/2023",
-    "fecha_recibido": "11/1/2023",
-    "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/firmas%2Frecepcion%2FTO0123GE000010?alt=media&token=77882771-3e3b-4b37-9ca4-5be544557de3",
-    "formaPago": 1,
-    "hora_recibido": "15:56:59",
-    "iva": true,
-    "margen": 25,
-    "no_os": "TO0123GE000010",
-    "servicio": 1,
-    "servicios": [
-      {
-        "UB": "20.00",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "4",
-        "elementos": [
-          {
-            "IDreferencia": "-NG3I_ejiuh3KiL9EdAp",
-            "cantidad": 1,
-            "catalogo": false,
-            "nombre": "refaccion1",
-            "precio": 350,
-            "subtotal": 437.5,
-            "tipo": "refaccion"
-          }
-        ],
-        "enCatalogo": true,
-        "factibilidad": 0,
-        "flotilla": 437.5,
-        "id": "-NIEsB5V5ql3rxg_xyoV",
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "SERVICIO MAYOR",
-        "precio": 437.5,
-        "refacciones1": 350,
-        "refacciones2": 437.5,
-        "status": true,
-        "subtotal": 0,
-        "tipo": "paquete",
-        "total": 0,
-        "totalMO": 0
-      },
-      {
-        "UB": "86.20",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "6",
-        "elementos": [
-          {
-            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna",
-            "nombre": "REEMPLAZAR BUJIAS",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "N",
-            "nombre": "ROTACION DE LLANTAS",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NGbPadXFum0ZEpqn70p",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "multigrado",
-            "nombre": "aceite de motor",
-            "precio": 100,
-            "subtotal": 125,
-            "tipo": "refaccion"
-          }
-        ],
-        "enCatalogo": true,
-        "flotilla": 725,
-        "id": "-NEH_O1qK7I5z8sWdOQz",
-        "marca": "BMW",
-        "modelo": "iX M60",
-        "nombre": "paquete bmw",
-        "precio": 725,
-        "refacciones1": 100,
-        "refacciones2": 125,
-        "status": true,
-        "tipo": "paquete",
-        "totalMO": 600
-      },
-      {
-        "UB": "71.13",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "6",
-        "elementos": [
-          {
-            "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-            "cantidad": 1,
-            "catalogo": true,
-            "costo": 300,
-            "descripcion": "ninguna",
-            "nombre": "REV. Y CORREGIR NIVELES",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NHgI_n9nJAmuOg4EwcL",
-            "cantidad": 1,
-            "catalogo": true,
-            "costo": 111.5,
-            "descripcion": "prueba",
-            "nombre": "bujias",
-            "precio": 300,
-            "subtotal": 139.375,
-            "tipo": "refaccion"
-          },
-          {
-            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna",
-            "nombre": "REEMPLAZAR BUJIAS",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna",
-            "nombre": "LAVAR INYECTORES",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          }
-        ],
-        "enCatalogo": true,
-        "flotilla": 1039.375,
-        "id": "-NE430_ohL7xCijFnR3i",
-        "marca": "GMC",
-        "modelo": "Canyon",
-        "nombre": "paquete z",
-        "precio": 1039.375,
-        "refacciones1": 300,
-        "refacciones2": 139.375,
-        "status": true,
-        "tipo": "paquete",
-        "totalMO": 900
-      }
-    ],
-    "servicios_original": [
-      {
-        "UB": "20.00",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "4",
-        "elementos": [
-          {
-            "IDreferencia": "-NG3I_ejiuh3KiL9EdAp",
-            "cantidad": 1,
-            "catalogo": false,
-            "nombre": "refaccion1",
-            "precio": 350,
-            "subtotal": 437.5,
-            "tipo": "refaccion"
-          }
-        ],
-        "enCatalogo": true,
-        "factibilidad": 0,
-        "flotilla": 437.5,
-        "id": "-NIEsB5V5ql3rxg_xyoV",
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "SERVICIO MAYOR",
-        "precio": 437.5,
-        "refacciones1": 350,
-        "refacciones2": 437.5,
-        "status": true,
-        "subtotal": 0,
-        "tipo": "paquete",
-        "total": 0,
-        "totalMO": 0
-      },
-      {
-        "UB": "86.20",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "6",
-        "elementos": [
-          {
-            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna",
-            "nombre": "REEMPLAZAR BUJIAS",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "N",
-            "nombre": "ROTACION DE LLANTAS",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NGbPadXFum0ZEpqn70p",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "multigrado",
-            "nombre": "aceite de motor",
-            "precio": 100,
-            "subtotal": 125,
-            "tipo": "refaccion"
-          }
-        ],
-        "enCatalogo": true,
-        "flotilla": 725,
-        "id": "-NEH_O1qK7I5z8sWdOQz",
-        "marca": "BMW",
-        "modelo": "iX M60",
-        "nombre": "paquete bmw",
-        "precio": 725,
-        "refacciones1": 100,
-        "refacciones2": 125,
-        "status": true,
-        "tipo": "paquete",
-        "totalMO": 600
-      },
-      {
-        "UB": "71.13",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "6",
-        "elementos": [
-          {
-            "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-            "cantidad": 1,
-            "catalogo": true,
-            "costo": 300,
-            "descripcion": "ninguna",
-            "nombre": "REV. Y CORREGIR NIVELES",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NHgI_n9nJAmuOg4EwcL",
-            "cantidad": 1,
-            "catalogo": true,
-            "costo": 111.5,
-            "descripcion": "prueba",
-            "nombre": "bujias",
-            "precio": 300,
-            "subtotal": 139.375,
-            "tipo": "refaccion"
-          },
-          {
-            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna",
-            "nombre": "REEMPLAZAR BUJIAS",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna",
-            "nombre": "LAVAR INYECTORES",
-            "precio": 300,
-            "subtotal": 300,
-            "tipo": "MO"
-          }
-        ],
-        "enCatalogo": true,
-        "flotilla": 1039.375,
-        "id": "-NE430_ohL7xCijFnR3i",
-        "marca": "GMC",
-        "modelo": "Canyon",
-        "nombre": "paquete z",
-        "precio": 1039.375,
-        "refacciones1": 300,
-        "refacciones2": 139.375,
-        "status": true,
-        "tipo": "paquete",
-        "totalMO": 900
-      }
-    ],
-    "status": "recibido",
-    "sucursal": "-N2gkzuYrS4XDFgYciId",
-    "vehiculo": "-NJQOthxQfqsqfHg0A7m"
   },
   "-NLXvtAAE3nsUyV83H3N": {
     "ckeckList": [
@@ -10916,7 +10223,7 @@ recepciones = {
         "index": 20
       }
     ],
-    "diasSucursal": 47,
+    "diasSucursal": 62,
     "fechaPromesa": "28/1/2023",
     "fecha_recibido": "11/1/2023",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/firmas%2Frecepcion%2FCU0123GE00011?alt=media&token=865812f2-770e-4d54-8bd1-b62e447bb1d2",
@@ -11622,7 +10929,7 @@ recepciones = {
         "url": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/recepciones%2FfotografiasDetalles%2F%20CU0123GE00011%2FdetallesPersonalizado.png?alt=media&token=f3be6f5a-059c-4ae7-98a4-c220590f7437"
       }
     ],
-    "diasSucursal": 46,
+    "diasSucursal": 61,
     "fechaPromesa": "13/1/2023",
     "fecha_recibido": "12/1/2023",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/firmas%2Frecepcion%2FCU0123GE00011?alt=media&token=3483268d-d5f5-454f-b740-55de05411dfc",
@@ -12321,7 +11628,7 @@ recepciones = {
         "url": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/recepciones%2FfotografiasDetalles%2F%20CU0123GE00012%2FdetallesPersonalizado.png?alt=media&token=0fefbcfe-c147-4a09-afac-b6c665e698e5"
       }
     ],
-    "diasSucursal": 42,
+    "diasSucursal": 57,
     "fechaPromesa": "26/1/2023",
     "fecha_recibido": "16/1/2023",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/firmas%2Frecepcion%2FCU0123GE00012?alt=media&token=4764a6fc-df00-406d-b4b7-4730e25edb08",
@@ -13235,7 +12542,7 @@ recepciones = {
         "index": 20
       }
     ],
-    "diasSucursal": 27,
+    "diasSucursal": 42,
     "fechaPromesa": "26/1/2023",
     "fecha_entregado": "",
     "fecha_recibido": "31/1/2023",
@@ -13753,7 +13060,7 @@ recepciones = {
       }
     ],
     "cliente": "-NMidpyPu8Cb9fVvE9GM",
-    "diasSucursal": 32,
+    "diasSucursal": 47,
     "fechaPromesa": "31/1/2023",
     "fecha_recibido": "26/1/2023",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/firmas%2Frecepcion%2FTO0123GE00014?alt=media&token=3177d2db-5a05-4b92-93d8-25a90c36fc84",
@@ -14150,7 +13457,7 @@ recepciones = {
         "url": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/recepciones%2FfotografiasDetalles%2F%20CU0123GE00015%2Ffoto_1674850407995.png?alt=media&token=f0669dd3-1650-40c6-9131-dbb49279e4be"
       }
     ],
-    "diasSucursal": 31,
+    "diasSucursal": 46,
     "fechaPromesa": "27/1/2023",
     "fecha_recibido": "27/1/2023",
     "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/firmas%2Frecepcion%2FCU0123GE00015?alt=media&token=3f270529-ecf9-420f-8dfe-38e3a057cd3e",
@@ -15588,7 +14895,7 @@ recepciones = {
         "url": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/recepciones%2FfotografiasDetalles%2F%20CO0123GE00016%2FdetallesPersonalizado.png?alt=media&token=9c6afa76-4580-46f2-8479-feed470fc213"
       }
     ],
-    "diasSucursal": 27,
+    "diasSucursal": 42,
     "fechaPromesa": "18/2/2023",
     "fecha_entregado": "",
     "fecha_recibido": "31/1/2023",
@@ -15896,7 +15203,28 @@ recepciones = {
     "sucursal": "-N2glf8hot49dUJYj5WP",
     "vehiculo": "-NN9-8J4Jlhwv-uAd9WR"
   },
-  "-NN94CkfCK0x0dVqzJln": {
+  "-NQCaVHfUPUtvbmH9lbZ": {
+    "HistorialGastos": [
+      {
+        "concepto": "Ftgyyb",
+        "fecha": "10/3/2023",
+        "hora": "16:19:1",
+        "metodo": "1",
+        "monto": 7890,
+        "referencia": "Yhujhg",
+        "status": true
+      }
+    ],
+    "HistorialPagos": [
+      {
+        "concepto": "Pago completo",
+        "fecha": "10/3/2023",
+        "hora": "16:19:11",
+        "metodo": 1,
+        "monto": 14105.6,
+        "status": true
+      }
+    ],
     "checkList": [
       {
         "id": "antena",
@@ -16238,398 +15566,1320 @@ recepciones = {
         "status": "si"
       }
     ],
-    "cliente": "-NN8zq1K2QnBp7RIwtq2",
-    "diasSucursal": 27,
-    "fechaPromesa": "3/2/2023",
-    "fecha_recibido": "31/1/2023",
-    "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/firmas%2Frecepcion%2FCO0123GE00017?alt=media&token=ecc19ad9-144f-4fc9-93a8-3e205b4eb3bd",
+    "cliente": "-NEvGgxapGc_2IQyfCPQ",
+    "diasSucursal": 4,
+    "fechaPromesa": "17/3/2023",
+    "fecha_entregado": "",
+    "fecha_recibido": "10/3/2023",
+    "firmaCliente": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/firmas%2Frecepcion%2FCU0323GE00016?alt=media&token=b1aae225-275f-42ff-89f9-a88ed3aeb486",
     "formaPago": 1,
-    "hora_recibido": "17:6:24",
+    "hora_entregado": "",
+    "hora_recibido": "16:17:49",
     "iva": true,
     "margen": 25,
-    "no_os": "CO0123GE00017",
+    "no_os": "CU0323GE00016",
     "servicio": 1,
     "servicios": [
       {
-        "UB": "71.13",
+        "UB": "100.00",
         "aprobado": true,
         "cantidad": 1,
         "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  100.00",
+          "flotilla": 0,
+          "mo": 200,
+          "precio": 0,
+          "refacciones1": 0,
+          "refacciones2": 0,
+          "totalPaquete": 200
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "nombre": "FRENOSSSS",
+            "precio": 200,
+            "tipo": "MO"
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 200,
+        "id": "-NE2pvE6CS_1mdeHFL5W",
+        "marca": "Ford",
+        "modelo": "F-350",
+        "nombre": "x",
+        "precio": 200,
+        "showStatus": "Terminado",
+        "status": "terminar",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "73.02",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  73.02",
+          "flotilla": 0,
+          "mo": 1720,
+          "precio": 700,
+          "refacciones1": 700,
+          "refacciones2": 875,
+          "totalPaquete": 2595
+        },
         "elementos": [
           {
             "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
             "cantidad": 1,
             "catalogo": true,
-            "costo": 300,
+            "costo": 0,
             "descripcion": "ninguna",
-            "nombre": "REV. Y CORREGIR NIVELES",
-            "precio": 300,
-            "subtotal": 300,
+            "nombre": "nueva",
+            "precio": 100,
             "tipo": "MO"
           },
           {
-            "IDreferencia": "-NHgI_n9nJAmuOg4EwcL",
+            "IDreferencia": "-NI8Qx6S-SUBqjhU_z2k",
             "cantidad": 1,
             "catalogo": true,
-            "costo": 111.5,
-            "descripcion": "prueba",
-            "nombre": "bujias",
-            "precio": 300,
-            "subtotal": 139.375,
+            "descripcion": "ninguna",
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "precio": 700,
             "tipo": "refaccion"
+          },
+          {
+            "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "nombre": "nueva",
+            "precio": 120,
+            "tipo": "MO"
           },
           {
             "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
             "cantidad": 1,
             "catalogo": true,
+            "costo": 0,
             "descripcion": "ninguna",
-            "nombre": "REEMPLAZAR BUJIAS",
-            "precio": 300,
-            "subtotal": 300,
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "precio": 700,
             "tipo": "MO"
           },
           {
             "IDreferencia": "-NE78vEAujLp8QfcIAtl",
             "cantidad": 1,
             "catalogo": true,
+            "costo": 0,
             "descripcion": "ninguna",
-            "nombre": "LAVAR INYECTORES",
-            "precio": 300,
-            "subtotal": 300,
+            "nombre": "prueba 500",
+            "precio": 800,
             "tipo": "MO"
           }
         ],
         "enCatalogo": true,
-        "flotilla": 1039.375,
+        "flotilla": 2595,
         "id": "-NE430_ohL7xCijFnR3i",
         "marca": "GMC",
         "modelo": "Canyon",
         "nombre": "paquete z",
-        "precio": 300,
-        "refacciones1": 300,
-        "refacciones2": 139.375,
-        "status": true,
-        "subtotal": 1039.375,
-        "tipo": "paquete",
-        "totalMO": 900
+        "precio": 2595,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "58.62",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  58.62",
+          "flotilla": 0,
+          "mo": 700,
+          "precio": 600,
+          "refacciones1": 600,
+          "refacciones2": 750,
+          "totalPaquete": 1450
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NEH_QLEjBw7m2y3OBGJ",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "XD",
+            "flotilla": 750,
+            "marca": "BMW",
+            "nombre": "exprimi",
+            "normal": 975,
+            "precio": 600,
+            "subtotal": 750,
+            "tipo": "refaccion",
+            "total": 975
+          },
+          {
+            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 700,
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "normal": 910,
+            "precio": 700,
+            "subtotal": 700,
+            "tipo": "MO",
+            "total": 910
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1450,
+        "id": "-NEH_O1qK7I5z8sWdOQz",
+        "marca": "BMW",
+        "modelo": "iX M60",
+        "nombre": "paquete bmw",
+        "precio": 1450,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
       },
       {
         "UB": "20.00",
         "aprobado": true,
         "cantidad": 1,
         "cilindros": "4",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  20.00",
+          "flotilla": 0,
+          "mo": 0,
+          "precio": 300,
+          "refacciones1": 300,
+          "refacciones2": 375,
+          "totalPaquete": 375
+        },
         "elementos": [
           {
-            "IDreferencia": "-NIDngpO-v_a3bJoKnD1",
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
             "cantidad": 1,
             "catalogo": true,
-            "descripcion": "prueba",
-            "nombre": "filtro de gasolina",
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
             "precio": 300,
             "subtotal": 375,
-            "tipo": "refaccion"
+            "tipo": "refaccion",
+            "total": 487.5
           }
         ],
         "enCatalogo": true,
         "flotilla": 375,
-        "id": "-NIJ9UAKOX0gN2RGd2Yo",
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "paquete desde cotizacion JL",
-        "precio": 300,
-        "refacciones1": 300,
-        "refacciones2": 375,
-        "status": true,
-        "subtotal": 375,
-        "tipo": "paquete",
-        "totalMO": 0
-      },
-      {
-        "UB": "61.48",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "4",
-        "elementos": [
-          {
-            "IDreferencia": "-NIJ4g98MXI7Zs3d3xe6",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna descripc",
-            "nombre": "mano jose luis",
-            "precio": 600,
-            "subtotal": 600,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NGbPl434B_Pzb_G6vGp",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "prueba",
-            "nombre": "filtro de aceite",
-            "precio": 150,
-            "subtotal": 187.5,
-            "tipo": "refaccion"
-          },
-          {
-            "IDreferencia": "-NIJ5Gl1R47GQ6g5h6nJ",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna descr",
-            "nombre": "materiales diversos",
-            "precio": 300,
-            "subtotal": 375,
-            "tipo": "refaccion"
-          },
-          {
-            "IDreferencia": "-NIJ59oXarA3-kLIDfEp",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "prueba 2",
-            "nombre": "mano jose luis 1",
-            "precio": 6,
-            "subtotal": 6,
-            "tipo": "MO"
-          }
-        ],
-        "enCatalogo": true,
-        "flotilla": 1168.5,
-        "id": "-NIJ4C_eDdJgnc-hAlTX",
-        "marca": "Bentley",
-        "modelo": "Continental ",
-        "nombre": "paquete jose luis",
-        "precio": 450,
-        "refacciones1": 450,
-        "refacciones2": 562.5,
-        "status": true,
-        "subtotal": 1168.5,
-        "tipo": "paquete",
-        "totalMO": 606
+        "id": "-NFng8NXTiO7yySaUCtQ",
+        "marca": "BMW",
+        "modelo": "Serie 1",
+        "nombre": "nuevo",
+        "precio": 375,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
       },
       {
         "UB": "20.00",
         "aprobado": true,
         "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  20.00",
+          "flotilla": 0,
+          "mo": 0,
+          "precio": 300,
+          "refacciones1": 300,
+          "refacciones2": 375,
+          "totalPaquete": 375
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
+            "precio": 300,
+            "subtotal": 375,
+            "tipo": "refaccion",
+            "total": 487.5
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 375,
+        "id": "-NFyFt2ltBZt-CMx0way",
+        "marca": "Bentley",
+        "modelo": "Continental ",
+        "nombre": "aqui",
+        "precio": 375,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "47.82",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  47.82",
+          "flotilla": 0,
+          "mo": 500,
+          "precio": 750,
+          "refacciones1": 750,
+          "refacciones2": 937.5,
+          "totalPaquete": 1437.5
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
+            "precio": 300,
+            "subtotal": 375,
+            "tipo": "refaccion",
+            "total": 487.5
+          },
+          {
+            "IDreferencia": "-NE3tnQLGfFd7HK7wRJq",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 562.5,
+            "marca": "GMC",
+            "nombre": "XD",
+            "normal": 731.25,
+            "precio": 450,
+            "subtotal": 562.5,
+            "tipo": "refaccion",
+            "total": 731.25
+          },
+          {
+            "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 500,
+            "marca": "ninguna",
+            "nombre": "Mandk",
+            "normal": 650,
+            "precio": 500,
+            "subtotal": 500,
+            "tipo": "MO",
+            "total": 650
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1437.5,
+        "id": "-NG386DKUmKAlxvapTIK",
+        "marca": "Jeep",
+        "modelo": "Wrangler",
+        "nombre": "nuevo",
+        "precio": 1437.5,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "74.68",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  74.68",
+          "flotilla": 0,
+          "mo": 810,
+          "precio": 300,
+          "refacciones1": 300,
+          "refacciones2": 375,
+          "totalPaquete": 1185
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 500,
+            "marca": "ninguna",
+            "nombre": "Mandk",
+            "normal": 650,
+            "precio": 500,
+            "subtotal": 500,
+            "tipo": "MO",
+            "total": 650
+          },
+          {
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
+            "precio": 300,
+            "subtotal": 375,
+            "tipo": "refaccion",
+            "total": 487.5
+          },
+          {
+            "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 230,
+            "marca": "ninguna",
+            "nombre": "new mo",
+            "normal": 299,
+            "precio": 230,
+            "subtotal": 230,
+            "tipo": "MO",
+            "total": 299
+          },
+          {
+            "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 80,
+            "marca": "Aston Martín",
+            "nombre": "mano de obra cara",
+            "normal": 104,
+            "precio": 80,
+            "subtotal": 80,
+            "tipo": "MO",
+            "total": 104
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1185,
+        "id": "-NG38XM-ZEqoNxvurYl0",
+        "marca": "Jeep",
+        "modelo": "Wrangler",
+        "nombre": "personalizado 1",
+        "precio": 1185,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "57.33",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  57.33",
+          "flotilla": 0,
+          "mo": 700,
+          "precio": 640,
+          "refacciones1": 640,
+          "refacciones2": 800,
+          "totalPaquete": 1500
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFof935I4yJ0ulZ945p",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 250,
+            "marca": "ninguna",
+            "nombre": "refa refa",
+            "normal": 325,
+            "precio": 200,
+            "subtotal": 250,
+            "tipo": "refaccion",
+            "total": 325
+          },
+          {
+            "IDreferencia": "-NFof935I4yJ0ulZ945p",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 250,
+            "marca": "ninguna",
+            "nombre": "refa refa",
+            "normal": 325,
+            "precio": 200,
+            "subtotal": 250,
+            "tipo": "refaccion",
+            "total": 325
+          },
+          {
+            "IDreferencia": "-NFovlw3fDzGbVMa-mg4",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 300,
+            "marca": "-NFiyBdjmZFfdpSoyWNU",
+            "nombre": "nueva refac 45",
+            "normal": 390,
+            "precio": 240,
+            "subtotal": 300,
+            "tipo": "refaccion",
+            "total": 390
+          },
+          {
+            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 700,
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "normal": 910,
+            "precio": 700,
+            "subtotal": 700,
+            "tipo": "MO",
+            "total": 910
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1500,
+        "id": "-NG38nZre8RkONgpHMEY",
+        "marca": "Jeep",
+        "modelo": "Wrangler",
+        "nombre": "personalizado 2",
+        "precio": 1500,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "42.12",
+        "aprobado": true,
+        "cantidad": 1,
         "cilindros": "4",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  42.12",
+          "flotilla": 0,
+          "mo": 430,
+          "precio": 900,
+          "refacciones1": 900,
+          "refacciones2": 1125,
+          "totalPaquete": 1555
+        },
         "elementos": [
           {
             "IDreferencia": "-NG3I_ejiuh3KiL9EdAp",
             "cantidad": 1,
-            "catalogo": false,
-            "nombre": "refaccion1",
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 350,
+            "marca": "ninguna",
+            "nombre": "600",
+            "normal": 455,
             "precio": 350,
-            "subtotal": 437.5,
-            "tipo": "refaccion"
+            "subtotal": 350,
+            "tipo": "MO",
+            "total": 455
+          },
+          {
+            "IDreferencia": "-NG3IXnZpd88mlXrpK4C",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 500,
+            "marca": "-NFyYn5eKO2EuaZhukGs",
+            "nombre": "BALATAS CERÁMICA",
+            "normal": 650,
+            "precio": 400,
+            "subtotal": 500,
+            "tipo": "refaccion",
+            "total": 650
+          },
+          {
+            "IDreferencia": "-NFUnmWOMfHeLuqvqDni",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 625,
+            "marca": "BMW",
+            "nombre": "SEGURO BALASTASSSS",
+            "normal": 812.5,
+            "precio": 500,
+            "subtotal": 625,
+            "tipo": "refaccion",
+            "total": 812.5
+          },
+          {
+            "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 80,
+            "marca": "Aston Martín",
+            "nombre": "mano de obra cara",
+            "normal": 104,
+            "precio": 80,
+            "subtotal": 80,
+            "tipo": "MO",
+            "total": 104
           }
         ],
         "enCatalogo": true,
-        "factibilidad": 0,
-        "flotilla": 437.5,
-        "id": "-NIEsB5V5ql3rxg_xyoV",
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "SERVICIO MAYOR",
-        "precio": 350,
-        "refacciones1": 350,
-        "refacciones2": 437.5,
-        "status": true,
-        "subtotal": 437.5,
-        "tipo": "paquete",
-        "total": 0,
-        "totalMO": 0
+        "flotilla": 1555,
+        "id": "-NG3sNo5jlk1a0qoBMjL",
+        "marca": "Chevrolet",
+        "modelo": "Equinox",
+        "nombre": "paquetePruebaWEB",
+        "precio": 1555,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "terminado": true,
+        "tipo": "paquete"
+      },
+      {
+        "aprobada": false,
+        "aprobado": true,
+        "cantidad": 2,
+        "costo": 500,
+        "descripcion": "ninguna",
+        "enCatalogo": true,
+        "flotilla": 500,
+        "id": "-NG3I_ejiuh3KiL9EdAp",
+        "nombre": "600",
+        "precio": 100,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 1000,
+        "terminado": true,
+        "tipo": "MO"
+      },
+      {
+        "aprobada": false,
+        "aprobado": true,
+        "cantidad": 1,
+        "costo": 0,
+        "descripcion": "ninguna",
+        "enCatalogo": true,
+        "flotilla": 150,
+        "id": "-NI8Qx6S-SUBqjhU_z2k",
+        "marca": "-NFyYn5eKO2EuaZhukGs",
+        "nombre": "BALATAS CERÁMICA",
+        "precio": 150,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 150,
+        "terminado": true,
+        "tipo": "refaccion"
+      },
+      {
+        "aprobada": false,
+        "aprobado": true,
+        "cantidad": 1,
+        "costo": 0,
+        "enCatalogo": true,
+        "flotilla": 300,
+        "id": "-NFGEgUK6OVe2fEDvCgS",
+        "marca": "Aston Martín",
+        "nombre": "LAVAR CPO DE ACELERACION",
+        "precio": 300,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 300,
+        "terminado": true,
+        "tipo": "MO"
       }
     ],
     "servicios_original": [
       {
-        "UB": "71.13",
+        "UB": "100.00",
         "aprobado": true,
         "cantidad": 1,
         "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  100.00",
+          "flotilla": 0,
+          "mo": 200,
+          "precio": 0,
+          "refacciones1": 0,
+          "refacciones2": 0,
+          "totalPaquete": 200
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "nombre": "FRENOSSSS",
+            "precio": 200,
+            "tipo": "MO"
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 200,
+        "id": "-NE2pvE6CS_1mdeHFL5W",
+        "marca": "Ford",
+        "modelo": "F-350",
+        "nombre": "x",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "73.02",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  73.02",
+          "flotilla": 0,
+          "mo": 1720,
+          "precio": 700,
+          "refacciones1": 700,
+          "refacciones2": 875,
+          "totalPaquete": 2595
+        },
         "elementos": [
           {
             "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
             "cantidad": 1,
             "catalogo": true,
-            "costo": 300,
+            "costo": 0,
             "descripcion": "ninguna",
-            "nombre": "REV. Y CORREGIR NIVELES",
-            "precio": 300,
-            "subtotal": 300,
+            "nombre": "nueva",
+            "precio": 100,
             "tipo": "MO"
           },
           {
-            "IDreferencia": "-NHgI_n9nJAmuOg4EwcL",
+            "IDreferencia": "-NI8Qx6S-SUBqjhU_z2k",
             "cantidad": 1,
             "catalogo": true,
-            "costo": 111.5,
-            "descripcion": "prueba",
-            "nombre": "bujias",
-            "precio": 300,
-            "subtotal": 139.375,
+            "descripcion": "ninguna",
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "precio": 700,
             "tipo": "refaccion"
+          },
+          {
+            "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "nombre": "nueva",
+            "precio": 120,
+            "tipo": "MO"
           },
           {
             "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
             "cantidad": 1,
             "catalogo": true,
+            "costo": 0,
             "descripcion": "ninguna",
-            "nombre": "REEMPLAZAR BUJIAS",
-            "precio": 300,
-            "subtotal": 300,
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "precio": 700,
             "tipo": "MO"
           },
           {
             "IDreferencia": "-NE78vEAujLp8QfcIAtl",
             "cantidad": 1,
             "catalogo": true,
+            "costo": 0,
             "descripcion": "ninguna",
-            "nombre": "LAVAR INYECTORES",
-            "precio": 300,
-            "subtotal": 300,
+            "nombre": "prueba 500",
+            "precio": 800,
             "tipo": "MO"
           }
         ],
         "enCatalogo": true,
-        "flotilla": 1039.375,
+        "flotilla": 2595,
         "id": "-NE430_ohL7xCijFnR3i",
         "marca": "GMC",
         "modelo": "Canyon",
         "nombre": "paquete z",
-        "precio": 300,
-        "refacciones1": 300,
-        "refacciones2": 139.375,
-        "status": true,
-        "subtotal": 1039.375,
-        "tipo": "paquete",
-        "totalMO": 900
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "58.62",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  58.62",
+          "flotilla": 0,
+          "mo": 700,
+          "precio": 600,
+          "refacciones1": 600,
+          "refacciones2": 750,
+          "totalPaquete": 1450
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NEH_QLEjBw7m2y3OBGJ",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "XD",
+            "flotilla": 750,
+            "marca": "BMW",
+            "nombre": "exprimi",
+            "normal": 975,
+            "precio": 600,
+            "subtotal": 750,
+            "tipo": "refaccion",
+            "total": 975
+          },
+          {
+            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 700,
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "normal": 910,
+            "precio": 700,
+            "subtotal": 700,
+            "tipo": "MO",
+            "total": 910
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1450,
+        "id": "-NEH_O1qK7I5z8sWdOQz",
+        "marca": "BMW",
+        "modelo": "iX M60",
+        "nombre": "paquete bmw",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
       },
       {
         "UB": "20.00",
         "aprobado": true,
         "cantidad": 1,
         "cilindros": "4",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  20.00",
+          "flotilla": 0,
+          "mo": 0,
+          "precio": 300,
+          "refacciones1": 300,
+          "refacciones2": 375,
+          "totalPaquete": 375
+        },
         "elementos": [
           {
-            "IDreferencia": "-NIDngpO-v_a3bJoKnD1",
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
             "cantidad": 1,
             "catalogo": true,
-            "descripcion": "prueba",
-            "nombre": "filtro de gasolina",
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
             "precio": 300,
             "subtotal": 375,
-            "tipo": "refaccion"
+            "tipo": "refaccion",
+            "total": 487.5
           }
         ],
         "enCatalogo": true,
         "flotilla": 375,
-        "id": "-NIJ9UAKOX0gN2RGd2Yo",
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "paquete desde cotizacion JL",
-        "precio": 300,
-        "refacciones1": 300,
-        "refacciones2": 375,
-        "status": true,
-        "subtotal": 375,
-        "tipo": "paquete",
-        "totalMO": 0
-      },
-      {
-        "UB": "61.48",
-        "aprobado": true,
-        "cantidad": 1,
-        "cilindros": "4",
-        "elementos": [
-          {
-            "IDreferencia": "-NIJ4g98MXI7Zs3d3xe6",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna descripc",
-            "nombre": "mano jose luis",
-            "precio": 600,
-            "subtotal": 600,
-            "tipo": "MO"
-          },
-          {
-            "IDreferencia": "-NGbPl434B_Pzb_G6vGp",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "prueba",
-            "nombre": "filtro de aceite",
-            "precio": 150,
-            "subtotal": 187.5,
-            "tipo": "refaccion"
-          },
-          {
-            "IDreferencia": "-NIJ5Gl1R47GQ6g5h6nJ",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "ninguna descr",
-            "nombre": "materiales diversos",
-            "precio": 300,
-            "subtotal": 375,
-            "tipo": "refaccion"
-          },
-          {
-            "IDreferencia": "-NIJ59oXarA3-kLIDfEp",
-            "cantidad": 1,
-            "catalogo": true,
-            "descripcion": "prueba 2",
-            "nombre": "mano jose luis 1",
-            "precio": 6,
-            "subtotal": 6,
-            "tipo": "MO"
-          }
-        ],
-        "enCatalogo": true,
-        "flotilla": 1168.5,
-        "id": "-NIJ4C_eDdJgnc-hAlTX",
-        "marca": "Bentley",
-        "modelo": "Continental ",
-        "nombre": "paquete jose luis",
-        "precio": 450,
-        "refacciones1": 450,
-        "refacciones2": 562.5,
-        "status": true,
-        "subtotal": 1168.5,
-        "tipo": "paquete",
-        "totalMO": 606
+        "id": "-NFng8NXTiO7yySaUCtQ",
+        "marca": "BMW",
+        "modelo": "Serie 1",
+        "nombre": "nuevo",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
       },
       {
         "UB": "20.00",
         "aprobado": true,
         "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  20.00",
+          "flotilla": 0,
+          "mo": 0,
+          "precio": 300,
+          "refacciones1": 300,
+          "refacciones2": 375,
+          "totalPaquete": 375
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
+            "precio": 300,
+            "subtotal": 375,
+            "tipo": "refaccion",
+            "total": 487.5
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 375,
+        "id": "-NFyFt2ltBZt-CMx0way",
+        "marca": "Bentley",
+        "modelo": "Continental ",
+        "nombre": "aqui",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "47.82",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  47.82",
+          "flotilla": 0,
+          "mo": 500,
+          "precio": 750,
+          "refacciones1": 750,
+          "refacciones2": 937.5,
+          "totalPaquete": 1437.5
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
+            "precio": 300,
+            "subtotal": 375,
+            "tipo": "refaccion",
+            "total": 487.5
+          },
+          {
+            "IDreferencia": "-NE3tnQLGfFd7HK7wRJq",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 562.5,
+            "marca": "GMC",
+            "nombre": "XD",
+            "normal": 731.25,
+            "precio": 450,
+            "subtotal": 562.5,
+            "tipo": "refaccion",
+            "total": 731.25
+          },
+          {
+            "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 500,
+            "marca": "ninguna",
+            "nombre": "Mandk",
+            "normal": 650,
+            "precio": 500,
+            "subtotal": 500,
+            "tipo": "MO",
+            "total": 650
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1437.5,
+        "id": "-NG386DKUmKAlxvapTIK",
+        "marca": "Jeep",
+        "modelo": "Wrangler",
+        "nombre": "nuevo",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "74.68",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  74.68",
+          "flotilla": 0,
+          "mo": 810,
+          "precio": 300,
+          "refacciones1": 300,
+          "refacciones2": 375,
+          "totalPaquete": 1185
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 500,
+            "marca": "ninguna",
+            "nombre": "Mandk",
+            "normal": 650,
+            "precio": 500,
+            "subtotal": 500,
+            "tipo": "MO",
+            "total": 650
+          },
+          {
+            "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 375,
+            "marca": "Audi",
+            "nombre": "BALATAS",
+            "normal": 487.5,
+            "precio": 300,
+            "subtotal": 375,
+            "tipo": "refaccion",
+            "total": 487.5
+          },
+          {
+            "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 230,
+            "marca": "ninguna",
+            "nombre": "new mo",
+            "normal": 299,
+            "precio": 230,
+            "subtotal": 230,
+            "tipo": "MO",
+            "total": 299
+          },
+          {
+            "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 80,
+            "marca": "Aston Martín",
+            "nombre": "mano de obra cara",
+            "normal": 104,
+            "precio": 80,
+            "subtotal": 80,
+            "tipo": "MO",
+            "total": 104
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1185,
+        "id": "-NG38XM-ZEqoNxvurYl0",
+        "marca": "Jeep",
+        "modelo": "Wrangler",
+        "nombre": "personalizado 1",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "57.33",
+        "aprobado": true,
+        "cantidad": 1,
+        "cilindros": "6",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  57.33",
+          "flotilla": 0,
+          "mo": 700,
+          "precio": 640,
+          "refacciones1": 640,
+          "refacciones2": 800,
+          "totalPaquete": 1500
+        },
+        "elementos": [
+          {
+            "IDreferencia": "-NFof935I4yJ0ulZ945p",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 250,
+            "marca": "ninguna",
+            "nombre": "refa refa",
+            "normal": 325,
+            "precio": 200,
+            "subtotal": 250,
+            "tipo": "refaccion",
+            "total": 325
+          },
+          {
+            "IDreferencia": "-NFof935I4yJ0ulZ945p",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 250,
+            "marca": "ninguna",
+            "nombre": "refa refa",
+            "normal": 325,
+            "precio": 200,
+            "subtotal": 250,
+            "tipo": "refaccion",
+            "total": 325
+          },
+          {
+            "IDreferencia": "-NFovlw3fDzGbVMa-mg4",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 300,
+            "marca": "-NFiyBdjmZFfdpSoyWNU",
+            "nombre": "nueva refac 45",
+            "normal": 390,
+            "precio": 240,
+            "subtotal": 300,
+            "tipo": "refaccion",
+            "total": 390
+          },
+          {
+            "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 700,
+            "marca": "BMW",
+            "nombre": "prueba 2000 mo",
+            "normal": 910,
+            "precio": 700,
+            "subtotal": 700,
+            "tipo": "MO",
+            "total": 910
+          }
+        ],
+        "enCatalogo": true,
+        "flotilla": 1500,
+        "id": "-NG38nZre8RkONgpHMEY",
+        "marca": "Jeep",
+        "modelo": "Wrangler",
+        "nombre": "personalizado 2",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
+      },
+      {
+        "UB": "42.12",
+        "aprobado": true,
+        "cantidad": 1,
         "cilindros": "4",
+        "costo": 0,
+        "desgloce": {
+          "UB": "$  42.12",
+          "flotilla": 0,
+          "mo": 430,
+          "precio": 900,
+          "refacciones1": 900,
+          "refacciones2": 1125,
+          "totalPaquete": 1555
+        },
         "elementos": [
           {
             "IDreferencia": "-NG3I_ejiuh3KiL9EdAp",
             "cantidad": 1,
-            "catalogo": false,
-            "nombre": "refaccion1",
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 350,
+            "marca": "ninguna",
+            "nombre": "600",
+            "normal": 455,
             "precio": 350,
-            "subtotal": 437.5,
-            "tipo": "refaccion"
+            "subtotal": 350,
+            "tipo": "MO",
+            "total": 455
+          },
+          {
+            "IDreferencia": "-NG3IXnZpd88mlXrpK4C",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 500,
+            "marca": "-NFyYn5eKO2EuaZhukGs",
+            "nombre": "BALATAS CERÁMICA",
+            "normal": 650,
+            "precio": 400,
+            "subtotal": 500,
+            "tipo": "refaccion",
+            "total": 650
+          },
+          {
+            "IDreferencia": "-NFUnmWOMfHeLuqvqDni",
+            "cantidad": 1,
+            "catalogo": true,
+            "descripcion": "ninguna",
+            "flotilla": 625,
+            "marca": "BMW",
+            "nombre": "SEGURO BALASTASSSS",
+            "normal": 812.5,
+            "precio": 500,
+            "subtotal": 625,
+            "tipo": "refaccion",
+            "total": 812.5
+          },
+          {
+            "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+            "cantidad": 1,
+            "catalogo": true,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "flotilla": 80,
+            "marca": "Aston Martín",
+            "nombre": "mano de obra cara",
+            "normal": 104,
+            "precio": 80,
+            "subtotal": 80,
+            "tipo": "MO",
+            "total": 104
           }
         ],
         "enCatalogo": true,
-        "factibilidad": 0,
-        "flotilla": 437.5,
-        "id": "-NIEsB5V5ql3rxg_xyoV",
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "SERVICIO MAYOR",
-        "precio": 350,
-        "refacciones1": 350,
-        "refacciones2": 437.5,
-        "status": true,
-        "subtotal": 437.5,
-        "tipo": "paquete",
-        "total": 0,
-        "totalMO": 0
+        "flotilla": 1555,
+        "id": "-NG3sNo5jlk1a0qoBMjL",
+        "marca": "Chevrolet",
+        "modelo": "Equinox",
+        "nombre": "paquetePruebaWEB",
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 0,
+        "tipo": "paquete"
+      },
+      {
+        "aprobada": false,
+        "aprobado": true,
+        "cantidad": 2,
+        "costo": 500,
+        "descripcion": "ninguna",
+        "enCatalogo": true,
+        "flotilla": 500,
+        "id": "-NG3I_ejiuh3KiL9EdAp",
+        "nombre": "600",
+        "precio": 100,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 1000,
+        "tipo": "MO"
+      },
+      {
+        "aprobada": false,
+        "aprobado": true,
+        "cantidad": 1,
+        "costo": 0,
+        "descripcion": "ninguna",
+        "enCatalogo": true,
+        "flotilla": 150,
+        "id": "-NI8Qx6S-SUBqjhU_z2k",
+        "marca": "-NFyYn5eKO2EuaZhukGs",
+        "nombre": "BALATAS CERÁMICA",
+        "precio": 150,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 150,
+        "tipo": "refaccion"
+      },
+      {
+        "aprobada": false,
+        "aprobado": true,
+        "cantidad": 1,
+        "costo": 0,
+        "enCatalogo": true,
+        "flotilla": 300,
+        "id": "-NFGEgUK6OVe2fEDvCgS",
+        "marca": "Aston Martín",
+        "nombre": "LAVAR CPO DE ACELERACION",
+        "precio": 300,
+        "showStatus": "Aprobado",
+        "status": "aprobado",
+        "subtotal": 300,
+        "tipo": "MO"
       }
     ],
-    "status": "recibido",
-    "sucursal": "-N2glf8hot49dUJYj5WP",
-    "vehiculo": "-NN9-8J4Jlhwv-uAd9WR"
+    "status": "terminado",
+    "sucursal": "-N2glF34lV3Gj0bQyEWK",
+    "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+    "vehiculo": "-NG3sHVtOK8ofWWIt_eM"
   }
 }
 
@@ -36369,6 +36619,17 @@ recepciones = {
   operaciones(){
     
   }
+  reemplahistoriales(){
+    const recepciones = Object.keys(this.recepciones)
+    recepciones.map(recep=>{
+      console.log(recep);
+      
+      const updates = {};
+      updates[`recepciones/${recep}/HistorialGastos`] = null;
+      updates[`recepciones/${recep}/HistorialPagos`] = null;
+      update(ref(db), updates);
+    })
+  }
   consultaArbol(){
     const presenceRef = ref(db, "disconnectmessage");
 // Write a string when this client loses connection
@@ -36598,14 +36859,14 @@ recepcionesChange(){
           anios: arregloAnios,
           categoria: fil.categoria
         }
-        set(ref(db, `marcas_autos/${element.marca}/${inde}`), temp )
-         .then(() => {
-           // Data saved successfully!
-           this._publicos.mensajeCorrecto('registro terminado')
-         })
-         .catch((error) => {
-           // The write failed...
-         });
+        // set(ref(db, `marcas_autos/${element.marca}/${inde}`), temp )
+        //  .then(() => {
+        //    // Data saved successfully!
+        //    this._publicos.mensajeCorrecto('registro terminado')
+        //  })
+        //  .catch((error) => {
+        //    // The write failed...
+        //  });
       }
       
     }

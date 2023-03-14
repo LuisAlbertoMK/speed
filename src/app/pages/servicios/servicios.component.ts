@@ -249,6 +249,19 @@ export class ServiciosComponent implements OnInit {
                 }
               }
             });
+            if (!cot['HistorialPagos']) {
+              cot['HistorialPagos'] = []
+            } else{
+              const arreglo1 = this.crearArreglo2(cot['HistorialPagos'])
+              cot['HistorialPagos'] = arreglo1
+            }
+            if (!cot['HistorialGastos']) {
+              cot['HistorialGastos'] = []
+            }else{
+              const arreglo1 = this.crearArreglo2(cot['HistorialGastos'])
+              cot['HistorialGastos'] = arreglo1
+            }
+            
             cot['desgloce'] = this._publicos.realizarOperacion(cot,'servicios')
 
             cot['infoSucursal'] = this.sucursales.find(o=>o['id'] === cot['sucursal'])
@@ -263,9 +276,9 @@ export class ServiciosComponent implements OnInit {
               updates[`recepciones/${cot['id']}/diasSucursal`] = difference/(1000 * 3600 * 24);
               update(ref(db), updates);
             }
-            if (!cot['HistorialPagos']) cot['HistorialPagos'] = []
-            if (!cot['HistorialGastos']) cot['HistorialGastos'] = []
+            cot['_pagos']  = this._servicios.realizarPagos(cot)
           })
+          
           let filtrados =  [];
           (this.SUCURSAL === 'Todas') ? filtrados = data: filtrados = data.filter(c=>c['sucursal'] === this.SUCURSAL)
           if (!this.recepciones.length) {
@@ -275,14 +288,15 @@ export class ServiciosComponent implements OnInit {
             const contador1 = this.recepciones.length
             const contador2 = filtrados.length
             const campos=[
-              'HistorialGastos','checkList','diasSucursal','fechaPromesa','desgloce','fecha_entregado','fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen','status','index','HistorialPagos'
+              'HistorialGastos','checkList','diasSucursal','fechaPromesa','desgloce','fecha_entregado','fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen','status','index','HistorialPagos','_pagos'
             ]
               if (this.recepciones.length === filtrados.length) {
                 this.recepciones.map((a,indexx)=>{
-                  campos.forEach(c=>{ a[c] = filtrados[indexx][c] })
+                  campos.forEach(c=>{  a[c] = filtrados[indexx][c] })
                   const servicios = a['servicios']
                   const camposS = [
-                    'UB','aprobado','cantidad','cilindros','costo','desgloce','enCatalogo','id','marca','modelo','nombre','showStatus','status','subtotal','tipo','precio','index','flotilla'
+                    'UB','aprobado','cantidad','cilindros','costo','desgloce','enCatalogo','id','marca','modelo','nombre',
+                    'showStatus','status','subtotal','tipo','precio','index','flotilla'
                   ]
                   const dfh = filtrados[indexx]['servicios']
                   servicios.map((s,index)=>{
@@ -318,6 +332,10 @@ export class ServiciosComponent implements OnInit {
                 filtrados.forEach(f=>{ nuevios.push(f) })
                 this.recepciones = nuevios
                 this.aplicaFiltros()
+              }
+              if(this.info_recepcion['id'] ){
+                const data = this.recepciones.find(r=>r['id'] === this.info_recepcion['id'])
+                this.AsiganacionIndexPadre(data)
               }
           }
         }
@@ -491,6 +509,8 @@ export class ServiciosComponent implements OnInit {
     }else{
       nuevos = por_campos
     }
+    // console.log(nuevos);
+    
     this.generaCamposReporte(nuevos)
   }
   generaCamposReporte(data:any[]){
@@ -552,11 +572,9 @@ export class ServiciosComponent implements OnInit {
   }
   async AsiganacionIndexPadre(data){
     this.recepciones.map(async (recep)=>{
-      if (recep['id'] === data) {
+      if (recep['id'] === data['id']) {
         this.formPago.controls['padre'].setValue(recep['id'])
         this.formaGasto.controls['padre'].setValue(recep['id'])
-        const _pagos  = await this._servicios.realizarPagos(recep)
-        recep['_pagos'] = _pagos
         this.info_recepcion = recep
       }
     })
@@ -585,97 +603,22 @@ export class ServiciosComponent implements OnInit {
       this.formPago.controls['concepto'].setValue(null)
     }
   }
-  RegistraPago(){
-    const valoresPago = this.formPago.value
-    // console.log(valoresPago);
-    let HistorialPagos = []
-    if (valoresPago['padre']) {
-      const fechaGet = this._publicos.getFechaHora()
-      
-      this.info_recepcion['HistorialPagos'] ? HistorialPagos =  this.info_recepcion['HistorialPagos'] : HistorialPagos = []
-      
-      const tempData = {
-        fecha: fechaGet.fecha,
-        hora: fechaGet.hora,
-        metodo: valoresPago['metodo'],
-        monto: valoresPago['monto'],
-        concepto: valoresPago['concepto'],
-        status: true
-      };
-      if (valoresPago['monto'] > this.info_recepcion['desgloce'].total) return
-
-      (valoresPago['referencia']) ? tempData['referencia'] = valoresPago['referencia'] : null
-      let pagado = 0
-      for (let index = 0; index < HistorialPagos.length; index++) {
-        const element = HistorialPagos[index];
-        if (element['status']) {
-          pagado += element['monto']
-        }
-      }
-      if (this.pagoTotal) {
-        if (HistorialPagos.length>0) {
-          const restante = this.info_recepcion['_pagos'].total - pagado
-          tempData.concepto = 'liquidacion de pago'
-          tempData.monto = restante
-          HistorialPagos.push(tempData)
-        }else{
-          HistorialPagos =  []
-          tempData['monto'] = this.info_recepcion['desgloce'].total
-          tempData['concepto']  = `Pago completo`;
-    
-          (valoresPago['referencia']) ? tempData['referencia'] = valoresPago['referencia'] : null
-  
-          HistorialPagos.push(tempData)
-        }
-      }else{
-        HistorialPagos.push(tempData)
-      }
-      // console.log(HistorialPagos);
-      this._servicios.actualizahistorialPagos(valoresPago['padre'],HistorialPagos).then(async ({registroOK})=>{
-        if (registroOK) {
-          const _pagos = await this._servicios.realizarPagos(this.info_recepcion)
-          this.info_recepcion['_pagos'] = _pagos
-          this.pagoTotal = false
-          this.limpiaFormualrio(valoresPago['padre'])
-          this._publicos.mensajeCorrecto('Se agrego el pago')
+ 
+  eliminarPago(id:string){
+    // console.log(index);
+    if(!id && !this.info_recepcion['id']) return
+    const idpadre = this.info_recepcion['id']
+    const updates = {};
+    updates[`/recepciones/${idpadre}/HistorialPagos/${id}/status`] = false;
+    update(ref(db), updates).then(()=>{
+      this.recepciones.map(async (recep)=>{
+        if (recep['id'] === idpadre) {
+          this.formPago.controls['padre'].setValue(idpadre)
+          this.formaGasto.controls['padre'].setValue(idpadre)
+          this.AsiganacionIndexPadre(recep)
         }
       })
-    }
-  }
-  eliminarPago(index){
-    // console.log(index);
-    this._publicos.mensaje_pregunta('eliminar pago').then(({respuesta})=>{
-      if (respuesta) {
-        const pagos = this.info_recepcion['HistorialPagos']
-        const borrar = false
-        let HistorialPagos = []
-        const id =  this.info_recepcion['id']
-        if (id) {
-          pagos[index].status = false
-          HistorialPagos = pagos
-        }
-        
-        // if (borrar) {
-        //   pagos[index].status = false
-        //   HistorialPagos = pagos.filter(o=>o['status'])
-        // }else{
-          pagos[index].status = false
-          HistorialPagos = pagos
-        // }
-        // console.log(HistorialPagos);
-        this._servicios.actualizahistorialPagos(id,HistorialPagos).then(async ({registroOK})=>{
-          if (registroOK) {
-            const _pagos = await this._servicios.realizarPagos(this.info_recepcion)
-            this.info_recepcion['_pagos'] = _pagos
-            // this.pagoTotal = false
-            // this.limpiaFormualrio(id)
-            this._publicos.mensajeCorrecto('Se cancelo el pago')
-          }
-        })
-        
-      }
     })
-    
   }
   limpiaFormualrio(padre){
     this.formPago.reset({padre,metodo:1,concepto: null, referecnia:null, monto:0 })
@@ -692,90 +635,25 @@ export class ServiciosComponent implements OnInit {
   validarCampoGasto(campo: string){
     return this.formaGasto.get(campo).invalid && this.formaGasto.get(campo).touched
   }
-  RegistraGasto(){
-      const valoresGastos = this.formaGasto.value
-      const fechaGet = this._publicos.getFechaHora()
-      const tempData = {
-        metodo: valoresGastos['metodo'],
-        concepto: valoresGastos['concepto'],
-        referencia: valoresGastos['referencia'],
-        monto: valoresGastos['monto'],
-        fecha: fechaGet.fecha,
-        hora: fechaGet.hora,
-        status: true
-      }
-      let HistorialGastos =[]
-      if (valoresGastos['padre']) {
-        this.info_recepcion['HistorialGastos'] ? HistorialGastos =  this.info_recepcion['HistorialGastos'] : HistorialGastos = []
-      }
-      let existe = false
-      // existeGasto
-      HistorialGastos.map(g=>{
-        if (g['monto'] == tempData['monto'] && g['concepto'] === tempData['concepto']) existe = true
-      })
-      if (existe) {
-        Swal.fire({
-          title: `Existe el gasto!!`,
-          html:`Desea guardar el gasto?`,
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: 'Confirmar',
-          denyButtonText: `Cancelar`,
-          cancelButtonText: `Cancelar`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            HistorialGastos.push(tempData)
-            const id = valoresGastos['padre']
-            this._servicios.actualizahistorialGastos(id,HistorialGastos).then(async ({registroOK})=>{
-            if (registroOK) {
-              this.limpiaFormualrioGasto(id)
-              const _pagos = await this._servicios.realizarPagos(this.info_recepcion)
-              this.info_recepcion['_pagos'] = _pagos
-              this.mensajeCorrecto('Registro de gasto correcto')
-            }else{
-              this.mensajeIncorrecto('No se pudo registrar gasto')
-            }
-          })
-          }
-        })
-      }else{
-        HistorialGastos.push(tempData)
-        const id = valoresGastos['padre']
-        this._servicios.actualizahistorialGastos(id,HistorialGastos).then(async ({registroOK})=>{
-        if (registroOK) {
-          this.limpiaFormualrioGasto(id)
-          const _pagos = await this._servicios.realizarPagos(this.info_recepcion)
-          this.info_recepcion['_pagos'] = _pagos
-          this.mensajeCorrecto('Registro de gasto correcto')
-        }else{
-          this.mensajeIncorrecto('No se pudo registrar gasto')
-        }
-      })
-      }
-      
-      
-  }
+ 
   limpiaFormualrioGasto(padre){
     this.formaGasto.reset({padre,metodo:1,concepto: null, referecnia:null, monto:0 })
   }
-  eliminarGasto(index){
+  eliminarGasto(id:string){
+    if (!id && !this.info_recepcion['id']) return
     this._publicos.mensaje_pregunta('eliminar pago').then(({respuesta})=>{
       if (respuesta) {
-        const id =  this.info_recepcion['id']
-        let gastos = []
-        if (!id) return
-        gastos = this.info_recepcion['HistorialGastos']
-        gastos[index].status = false
-        console.log(gastos);
-        this._servicios.actualizahistorialGastos(id,gastos).then(async ({registroOK})=>{
-          if (registroOK) {
-            const _pagos = await this._servicios.realizarPagos(this.info_recepcion)
-            this.info_recepcion['_pagos'] = _pagos
-            this._publicos.mensajeCorrecto('Se cancelo el pago')
-          }else{
-            this._publicos.mensajeIncorrecto('Problema al elimiar gasto')
-          }
+        const updates = {};
+        const idpadre = this.info_recepcion['id']
+        updates[`recepciones/${idpadre}/HistorialGastos/${id}/status`] = false;
+        update(ref(db), updates).then(()=>{
+          this.recepciones.map(async (recep)=>{
+            if (recep['id'] === idpadre) {
+              this.formPago.controls['padre'].setValue(idpadre)
+              this.formaGasto.controls['padre'].setValue(idpadre)
+              this.AsiganacionIndexPadre(recep)
+            }
+          })
         })
       }
     })

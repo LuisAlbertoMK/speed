@@ -814,6 +814,7 @@ export class ServiciosPublicosService {
       sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquete:0,total:0}
     let mo=0, refacciones_1=0, sobrescrito_mo=0,sobrescrito_refaccion=0, sobrescrito_paquete=0
     let elementos = [];
+    
     if(data[deQuien]) elementos = data[deQuien]
     elementos.forEach(ele => {
       if (ele['aprobado']) {
