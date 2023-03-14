@@ -19,6 +19,8 @@ export class GastoComponent implements OnInit {
   @Output() showGastoHide : EventEmitter<any>
 
 
+  comando:boolean = true
+
   miniColumnas:number=100
   formGasto:FormGroup
   selected: Date | null;
