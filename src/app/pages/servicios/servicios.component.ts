@@ -223,7 +223,55 @@ export class ServiciosComponent implements OnInit {
       this._servicios.getRecepcionesnew().
       then(({valido,data})=>{
         if (valido) {
-          data.map(async (cot,index)=>{   
+          let nuevos = []
+          const serv = [...data]
+          serv.forEach(ser => {
+            // console.log(ser);
+            const claves = Object.keys(ser)
+            let nuevoInterno = {}
+            // c hace rereferencia al campo
+            claves.forEach((c)=>{
+              //la siguiente condicion evalua si el campo es "aprobado y enCatalogo"  pasa su valor directo de 
+              //de lo contrario lo elimina ya que son valores boolean
+              if(c==='iva' || c==='enCatalogo') 
+              { nuevoInterno[c] = ser[c] 
+              }else{ 
+                if(ser[c]) nuevoInterno[c] = ser[c]
+              }
+            })
+            nuevos.push(nuevoInterno)
+          });
+          let elementosX = []
+              nuevos.forEach((ser)=>{
+                // && ser['id'] === '-NE430_ohL7xCijFnR3i'
+                if (ser['aprobado']) {
+                  ser['status'] = 'terminar'
+                  ser['showStatus'] = 'Terminado'
+                }
+                if (ser['tipo'] === 'paquete') {
+                  // console.log(ser['id']);
+                  // console.log(ser['elementos']);
+                  let elementos = []
+                  if(ser['elementos']) elementos =[...ser['elementos']]
+                  let internosArr = []
+                  elementos.forEach((e)=>{
+                    const claves = Object.keys(e)
+                    let nuevoInterno = {}
+                    claves.forEach((c)=>{
+                      if (c==='aprobado' || c==='enCatalogo') {
+                        nuevoInterno[c] = e[c]
+                      }else{
+                        if (e[c]) nuevoInterno[c] = e[c]
+                      }
+                    })
+                    internosArr.push(nuevoInterno)
+                  })
+                  elementosX.push({...ser, elementos:internosArr})
+                }else{
+                  elementosX.push({...ser})
+                }
+              })
+          elementosX.map(async (cot,index)=>{   
             // console.log(cot['id']);
             this.clientes.map(async (cli)=>{
               if(cot['cliente'] === cli['id']) {
@@ -280,7 +328,7 @@ export class ServiciosComponent implements OnInit {
           })
           
           let filtrados =  [];
-          (this.SUCURSAL === 'Todas') ? filtrados = data: filtrados = data.filter(c=>c['sucursal'] === this.SUCURSAL)
+          (this.SUCURSAL === 'Todas') ? filtrados = elementosX: filtrados = elementosX.filter(c=>c['sucursal'] === this.SUCURSAL)
           if (!this.recepciones.length) {
             this.recepciones = filtrados
             this.aplicaFiltros()
@@ -288,7 +336,7 @@ export class ServiciosComponent implements OnInit {
             const contador1 = this.recepciones.length
             const contador2 = filtrados.length
             const campos=[
-              'HistorialGastos','checkList','diasSucursal','fechaPromesa','desgloce','fecha_entregado','fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen','status','index','HistorialPagos','_pagos'
+              'HistorialGastos','checkList','diasSucursal','fechaPromesa','desgloce','fecha_entregado','fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen','status','tecnico','index','HistorialPagos','_pagos','servicios'
             ]
               if (this.recepciones.length === filtrados.length) {
                 this.recepciones.map((a,indexx)=>{
@@ -300,10 +348,16 @@ export class ServiciosComponent implements OnInit {
                   ]
                   const dfh = filtrados[indexx]['servicios']
                   servicios.map((s,index)=>{
-                    camposS.forEach((c)=>{ s[c] = dfh[index][c] })
+                    camposS.forEach((c)=>{ 
+                      if(dfh[index][c]){
+                        s[c] = dfh[index][c]
+                      }else{
+                        s[c] = ''
+                      }
+                     })
                     if (s['tipo'] === 'paquete') { 
                       const elementos = s['elementos']
-                      const camposEle = ['cantidad','descripcion','marca','costo','nombre','precio','subtotal','tipo']
+                      const camposEle = ['cantidad','descripcion','costo','nombre','precio','subtotal','tipo']
                       elementos.map((e,ind) => {
                         
                         camposEle.forEach( ce => { e[ce] = dfh[index].elementos[ind][ce] })
@@ -658,10 +712,6 @@ export class ServiciosComponent implements OnInit {
       }
     })
   }
-  
- 
-
- 
   Recepciones(){
     const starCountRef = ref(db, `recepciones`)
     onValue(starCountRef, async (snapshot)  => {
@@ -675,7 +725,6 @@ export class ServiciosComponent implements OnInit {
       }
     })
   }
-  
   listadoTecnicos(){
     this._usuarios.listatecnicos().then(({contenido,data})=>{
       if(contenido){
@@ -690,7 +739,6 @@ export class ServiciosComponent implements OnInit {
       
     })
   }
- 
   registraTecnico(idRecepcion:string,dataTecnico:any){
     // console.log(dataTecnico);
     if (dataTecnico['id']) {
@@ -734,7 +782,6 @@ export class ServiciosComponent implements OnInit {
       }
     })
   }
-  
   generaReporte(){
     if(this.dataSource.data.length){
       this._exporter.exportExcelServicios(this.dataSource.data)
@@ -742,12 +789,9 @@ export class ServiciosComponent implements OnInit {
       this.mensajeIncorrecto('No hayn informaciín disponible')
     }
   }
-  
   isSticky(columna:string) {
     return (columna).indexOf(columna) !== -1;
   }
-  
-
   async ordenamiento(campo:string,ordena:boolean){
     let nuevos = []
     this.servicios.map((o)=>{
@@ -773,7 +817,6 @@ export class ServiciosComponent implements OnInit {
     this.newPagination('recepciones')
     this.ordena = ordena
   }
-  
   ivaChange(data:any,iva:boolean){
     // console.log('change: '+ iva);
     set(ref(db, `recepciones/${data.id}/iva`), iva )
@@ -833,8 +876,6 @@ export class ServiciosComponent implements OnInit {
       if ((status === 'entregado' || status === 'terminado') && !data.tecnico) {
           this._publicos.mensajeIncorrecto('Paara continuar favor de seleccionar tecnico')
       }else{
-        
-        
         Swal.fire({
           title: 'Cambiar status de vehículo?',
           html:`<b class='text-uppercase'>${status}</b>`,
@@ -860,24 +901,22 @@ export class ServiciosComponent implements OnInit {
               status:stat
             }
             if (stat==='terminado') {
-              // console.log(data);
-              
-              const serv = data['servicios']
-              for (let index = 0; index < serv.length; index++) {
-                const element = serv[index];
-                serv[index].terminado = true
-              }
-              // console.log(serv);
-              set(ref(db, `recepciones/${data.id}/servicios`), serv )
-                .then(() => {
-                  // Data saved successfully!
-                })
-                .catch((error) => {
-                  // The write failed...
-                });
-
+              let serv = []
+              serv =  [...data['servicios']]
+              serv.map((ser)=>{
+                if (ser['aprobado']) {
+                  ser['status'] = 'terminar'
+                  ser['showStatus'] = 'Terminado'
+                }
+              })
+              const updates = {};
+              updates[`recepciones/${data.id}/servicios`] = serv;
+              // console.log(updates);
+              update(ref(db), updates).then(async ()=>{
+                this._publicos.mensajeCorrecto('Todos los servicios termiandos ')
+                await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
+              });
             }
-            
             if (stat === 'cancelado') {
               let fecha2 = new Date()
               const fecha_cancelado = this._publicos.convierteFecha(`${fecha2.getDate()}/${fecha2.getMonth()+1}/${fecha2.getFullYear()}`)
@@ -885,39 +924,34 @@ export class ServiciosComponent implements OnInit {
               const updates = {};
               updates[`recepciones/${data.id}/status`] = 'cancelado';
               updates[`recepciones/${data.id}/fecha_entregado`] = fecha_cancelado;
-              update(ref(db), updates);
+              update(ref(db), updates).then(async ()=>{
+                await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
+              });
             }else{
               set(ref(db, `recepciones/${data.id}/status`), stat )
               .then(async () => {
-                // Data saved successfully!
-                  await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{
-                    const fechaHora = this._publicos.getFechaHora()
-                    if (stat === 'entregado') {
-    
-                      set(ref(db, `recepciones/${data.id}/fecha_entregado`), fechaHora.fecha )
-                      set(ref(db, `recepciones/${data.id}/hora_entregado`), fechaHora.hora )
-                    }else if(stat === 'recibido'){
-                      set(ref(db, `recepciones/${data.id}/fecha_recibido`), fechaHora.fecha )
-                      set(ref(db, `recepciones/${data.id}/hora_recibido`), fechaHora.hora )
-                      set(ref(db, `recepciones/${data.id}/fecha_entregado`), '' )
-                      set(ref(db, `recepciones/${data.id}/hora_entregado`), '' )
-                    }else{
-                      set(ref(db, `recepciones/${data.id}/fecha_entregado`), '' )
-                      set(ref(db, `recepciones/${data.id}/hora_entregado`), '' )
-                    }
-                    this.mensajeCorrecto('Cambio de status correcto')
-                  })
+                const updates = {};
+                const fechaHora = this._publicos.getFechaHora()
+                if (stat === 'entregado') {
+                  updates[`recepciones/${data.id}/fecha_entregado`] = fechaHora.fecha;
+                  updates[`recepciones/${data.id}/hora_entregado`] = fechaHora.hora;
+                }else if(stat === 'recibido'){
+                  updates[`recepciones/${data.id}/fecha_recibido`] = fechaHora.fecha;
+                  updates[`recepciones/${data.id}/hora_recibido`] = fechaHora.hora;
+                  updates[`recepciones/${data.id}/fecha_entregado`] = fechaHora.fecha;
+                  updates[`recepciones/${data.id}/hora_entregado`] = fechaHora.hora;
+                }else{
+                  updates[`recepciones/${data.id}/hora_entregado`] = '';
+                  updates[`recepciones/${data.id}/hora_entregado`] = '';
+                }
+                update(ref(db), updates);
               })
               .catch((error) => {
                 // The write failed...
               });
             }
-              
-            
-            
-            
           } else if (result.isDenied) {
-            this.mensajeIncorrecto('Se cancelo el cambio de status')
+            // this.mensajeIncorrecto('Se cancelo el cambio de status')
           }
       })
       }
@@ -928,68 +962,61 @@ export class ServiciosComponent implements OnInit {
     // console.log(`accion-> ${status} showStatus-> ${showStatus} aprobado-> ${aprobado}` );
     // console.log(padre);
     if (padre['id']) {
-      const servicios = padre['servicios'], id = padre['id'], updates = {};
-      let correos = [], mostrar= [], desgloce = '';
+      const servicios = padre['servicios'], id = padre['id']
+      let correos = [], desgloce = '';
       (padre['infoSucursal']['correo']) ? correos.push(padre['infoSucursal']['correo']) : '';
       (padre['infoCliente']['correo']) ? correos.push(padre['infoCliente']['correo']) : '';
       (padre['infoCliente']['correo_sec']) ? correos.push(padre['infoCliente']['correo_sec']) : '';
       const infoEmail = {
         correos, cliente: padre['infoCliente'], vehiculo: padre['infoVehiculo'],
         subject:`El elemento ${servicios[index].nombre} cambio su estatus a ${showStatus}`,
-        resumen: '', os:padre['no_os'], desgloce: desgloce
+        resumen: padre['no_os'], no_os:padre['no_os'], desgloce
       }
+      const updates = {};
+      let elementosRecepcion = []
+      elementosRecepcion = [...padre['servicios']]
+      let okisi = []
       if(status==='eliminar'){
-        Swal.fire({
-          title: 'Desea restaurar los elementos a su estado original?',
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: 'Confirmar',
-          cancelButtonText: 'Cancelar',
-          // denyButtonText: `Don't save`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            servicios[index] = null
-            const filtro = servicios.filter(option=>option !== null)
-            updates[`recepciones/${id}/servicios`] = filtro;
-            filtro.forEach((e)=>{
-              mostrar.push(e['nombre'])
-            })
-            update(ref(db), updates).then(()=>{
-              infoEmail.resumen = mostrar.join(', ')
-              setTimeout(() => {
-                const inf = this.recepciones.find(i=>i['id']  === padre['id'])
-                    this._publicos.realizarOperaciones(inf,'servicios').then((ans)=>{
-                      infoEmail.desgloce = `<br> Subtotal ${this._publicos.redondeado(ans['subtotal']) } <br> IVA ${this._publicos.redondeado(ans['iva']) } <br> Total ${this._publicos.redondeado(ans['total']) }`;
-                      this._email.cambioInformacionOS(infoEmail).then((ansChange:any)=>{
-                        this._publicos.mensajeCorrecto('Se notifico al cliente de los cambios de su O.S')
-                      })
-                    })
-              }, 1000);
-            });
-          }
+        elementosRecepcion.forEach((a,index1)=>{
+          if (index1 !== index) okisi.push(a) 
         })
+        elementosRecepcion = okisi
       }else{
-        updates[`recepciones/${id}/servicios/${index}/status`] = status;
-        updates[`recepciones/${id}/servicios/${index}/showStatus`] = showStatus;
-        updates[`recepciones/${id}/servicios/${index}/aprobado`] = aprobado;
-        update(ref(db), updates).then(()=>{
-          const inf = this.recepciones.find(i=>i['id']  === padre['id'])
-                this._publicos.realizarOperaciones(inf,'servicios').then((ans)=>{
-                  // this.recepciones[inf['index']].desgloce = ans
-                  padre['servicios'].forEach((e)=>{
-                    mostrar.push(e['nombre'])
-                  })
-                  infoEmail.resumen = mostrar.join(', ')
-                  infoEmail.desgloce = `<br> Subtotal ${this._publicos.redondeado(ans['subtotal']) } <br> IVA ${this._publicos.redondeado(ans['iva']) } <br> Total ${this._publicos.redondeado(ans['total']) }`;
-                  this._email.cambioInformacionOS(infoEmail).then((ansChange:any)=>{
-                    this._publicos.mensajeCorrecto('Se notifico al cliente de los cambios de su O.S')
-                  })
-                })
-        });
+        elementosRecepcion[index].status = status
+        elementosRecepcion[index].showStatus = showStatus;
+        (status === 'noAprobado') ? elementosRecepcion[index].aprobado = false :elementosRecepcion[index].aprobado = true 
       }
+
+      let totales=0, Aprobados=0, Terminados=0, NoAprobados=0
+      totales = elementosRecepcion.length
+      elementosRecepcion.forEach((ele)=>{
+        (ele['aprobado']) ? Aprobados++ : NoAprobados++
+        if (ele['aprobado'] && ele['status']==='terminar') Terminados++
+      })
+      // console.log({totales,Aprobados,NoAprobados,Terminados});
+      let statusEnviarCorreo = ''
+      if (Terminados === Aprobados) {
+        updates[`recepciones/${padre['id']}/status`] = 'terminado';
+        statusEnviarCorreo = 'terminado'
+      }else{
+        updates[`recepciones/${padre['id']}/status`] = 'recibido';
+        statusEnviarCorreo = 'recibido'
+      }
+      updates[`recepciones/${padre['id']}/servicios`] = elementosRecepcion;
+      let nuevoDes = []
+      elementosRecepcion.forEach((a)=>{
+        nuevoDes.push(`${a['nombre']} [${a['showStatus']}]`)
+      })
+      infoEmail['desgloce'] = nuevoDes.join(', ')
+      infoEmail['status'] = statusEnviarCorreo
       
-      
+      update(ref(db), updates)
+      .then(async ()=>{
+        await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
     }
     
     

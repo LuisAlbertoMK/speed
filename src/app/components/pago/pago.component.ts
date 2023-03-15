@@ -49,8 +49,7 @@ export class PagoComponent implements OnInit {
     {valor: 'hora_registro', show:'Hora de registro'},
     {valor: 'sucursal', show:'Sucursal'},
     {valor: 'usuario', show:'Usuario'},
-    {valor: 'rol', show:'ROL'},
-    {valor: 'gasto_tipo', show:'gasto_tipo'},
+    {valor: 'rol', show:'ROL'}
   ]
   Sucursales= []
   sucursal:string
@@ -107,7 +106,6 @@ export class PagoComponent implements OnInit {
       fecha:[this.selected,[Validators.required]],
       sucursal: [sucursal,[Validators.required]],
       usuario: [this.usuario, [Validators.required]],
-      gasto_tipo:['',[]],
       rol: [this.rol, [Validators.required]],
     })
   }
@@ -127,7 +125,7 @@ export class PagoComponent implements OnInit {
       no_os: pagoData['no_os'],monto: pagoData['monto'],metodo: parseInt(pagoData['metodo']),
       concepto: pagoData['concepto'],fecha_registro: getFecha.fecha,
       hora_registro: getFecha.hora,sucursal: pagoData['sucursal'],usuario: pagoData['usuario'],
-      rol: pagoData['rol'],tipo:'pago',status: true,gasto_tipo: pagoData['gasto_tipo']
+      rol: pagoData['rol'],tipo:'pago',status: true
     };
     let fecha = this.selected, date = null;
     dataSave['fecha'] = '';
@@ -179,7 +177,7 @@ export class PagoComponent implements OnInit {
           if (result.isConfirmed) {
             const updates = {}
             const newPostKey = push(child(ref(db), 'posts')).key
-            const campos = ['concepto','fecha','fecha_registro','hora_registro','metodo','monto','rol','status','tipo','gasto_tipo','sucursal']
+            const campos = ['concepto','fecha','fecha_registro','hora_registro','metodo','monto','rol','status','tipo','sucursal']
             const recuperados = this._publicos.nuevaRecuperacionData(dataSave,campos)
             updates[`recepciones/${dataSave['no_os']}/HistorialPagos/${newPostKey}`] = recuperados;
             update(ref(db), updates).then(()=>{

@@ -98,7 +98,7 @@ export class EmailsService {
         from: dataEmail.correos[0],
         email: dataEmail.correos,  
         subject: dataEmail.subject,
-        mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.nombre} ${cliente.apellidos}</strong>.<br>Se le informa que el vehiculo ${vehiculo.marca} ${vehiculo.modelo} con placas ${vehiculo.placas.toUpperCase()} , color ${vehiculo.color} ha cambiado su estado a ${dataEmail.status}, `,
+        mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.nombre} ${cliente.apellidos}</strong>.<br>Se le informa que el vehiculo ${vehiculo.marca} ${vehiculo.modelo} con placas ${vehiculo.placas.toUpperCase()} , color ${vehiculo.color} ha cambiado su estado a ${dataEmail.status} anexo el resumen de la O.S: ${dataEmail['no_os']}. <br> desgloce de operacion <br> ${dataEmail.desgloce}`,
       }
     }
     if (tipo === 'changeElemento') {
@@ -163,7 +163,9 @@ export class EmailsService {
       correos: data.correos,
       cliente: data.cliente,
       vehiculo: data.vehiculo,
-      status:data.status
+      status:data.status,
+      no_os:data['no_os'],
+      desgloce: data['desgloce']
     }
     const dataMail = await this.template(data.cliente,data.vehiculo,dataEmail)
     console.log(dataMail);

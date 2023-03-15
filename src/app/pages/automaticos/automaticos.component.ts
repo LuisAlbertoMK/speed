@@ -36621,9 +36621,7 @@ recepciones = {
   }
   reemplahistoriales(){
     const recepciones = Object.keys(this.recepciones)
-    recepciones.map(recep=>{
-      console.log(recep);
-      
+    recepciones.map(recep=>{      
       const updates = {};
       updates[`recepciones/${recep}/HistorialGastos`] = null;
       updates[`recepciones/${recep}/HistorialPagos`] = null;

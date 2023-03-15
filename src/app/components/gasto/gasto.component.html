@@ -59,7 +59,7 @@
                   </div>
                 </ng-container>
               </ng-template>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="muestraLista">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="dataRecepcion || muestraLista">
                 <div class="mb-1 row">
                   <label [ngClass]="{'text-danger': validaCampo('gasto_tipo'),'text-success': !validaCampo('gasto_tipo')}" for="gasto_tipo"
                     class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">gasto_tipo</label>
