@@ -26,11 +26,11 @@
                   </div>
                 </div>
                 <ng-container *ngIf="muestraLista">
-                  <div class="col-lg-12 col-md-12 col-sm-6 col-12 text-start" >
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" >
                     <div class="mb-1 row">
                       <label [ngClass]="{'text-danger': validaCampo('no_os'),'text-success': !validaCampo('no_os')}" for="no_os"
-                        class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label"># O.S  [ ordenes: {{ ordenes.length }} ]</label>
-                      <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                        class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label"># O.S  [ ordenes: {{ ordenes.length }} ]</label>
+                      <div class="col-sm-8 col-md-6 col-lg-6 col-12">
                         <select id="sucursal" class="form-select form-select-sm" formControlName="no_os" #indoRecep (change)="fechaInicio(indoRecep.value)" >
                           <option value="">Selecciona</option>
                           <option [value]="s.id" *ngFor="let s of ordenes">
@@ -46,8 +46,8 @@
                   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
                     <div class="mb-1 row">
                       <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
-                        for="sucursal" class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Sucursal</label>
-                      <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                        for="sucursal" class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Sucursal</label>
+                      <div class="col-sm-8 col-md-6 col-lg-6 col-12">
                         <select id="sucursal" class="form-select form-select-sm" formControlName="sucursal">
                           <option value="">Selecciona</option>
                           <option [value]="s.id" *ngFor="let s of Sucursales">
@@ -75,8 +75,8 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
                 <div class="mb-1 row">
                   <label [ngClass]="{'text-danger': validaCampo('monto'),'text-success': !validaCampo('monto')}" for="monto"
-                    class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Monto de pago </label>
-                  <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                    class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Monto de pago </label>
+                  <div class="col-sm-8 col-md-6 col-lg-6 col-12">
                     <input id="monto" type="number" min="0" max="10000000" class="form-control form-control-sm"
                       formControlName="monto">
                   </div>
@@ -85,8 +85,8 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
                 <div class="mb-1 row">
                   <label [ngClass]="{'text-danger': validaCampo('metodo'),'text-success': !validaCampo('metodo')}"
-                    for="metodo" class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Método de pago </label>
-                  <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                    for="metodo" class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Método de pago </label>
+                  <div class="col-sm-8 col-md-6 col-lg-6 col-12">
                     <select id="metodo" class="form-select form-select-sm" formControlName="metodo">
                       <option value="">Selecciona</option>
                       <option [value]="pago.metodo" *ngFor="let pago of metodospago">

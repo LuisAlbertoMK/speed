@@ -113,11 +113,11 @@ export class ServiciosService {
         const element = HistorialPagos[index];
         if (element['status']) {
           pagado += element['monto']
-          if(element['gasto_tipo'] === 'refaccion'){
-            answer.real_pagos_refaccion += element['monto']
-          }else{
-            answer.real_pagos_mo += element['monto']
-          }
+          // if(element['gasto_tipo'] === 'refaccion'){
+          //   answer.real_pagos_refaccion += element['monto']
+          // }else{
+          //   answer.real_pagos_mo += element['monto']
+          // }
         }
       }
       answer.total_real_refacciones =   answer.real_pagos_refaccion - answer.real_gastos_refaccion

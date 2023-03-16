@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { child, get, getDatabase, onValue, ref, push } from 'firebase/database';
-import html2canvas from 'html2canvas';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -807,7 +807,7 @@ obtenerResultadosPG(){
     // }
   }
   async listadodePG(){
-    const starCountRef = ref(db, `HistorialPagosGastos`)
+    const starCountRef = ref(db, `HistorialGastosOperacion`)
     await onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         // let arreglo= this.crearArreglo2(snapshot.val())
@@ -825,7 +825,17 @@ obtenerResultadosPG(){
           pg['tipo'] = pg['tipo']
           pg['tipoShow'] = `Gasto de operacion`
         })
-        this.listaHistorialPG = nuevos
+
+        let filtrados =  []
+        if (this.SUCURSAL=== 'Todas') {
+          this.listaHistorialPG = nuevos
+        }else{
+          this.listaHistorialPG = nuevos.filter(o=>o['sucursal'] === this.SUCURSAL)
+        }
+
+        console.log(this.listaHistorialPG);
+        
+        
         this.obtenerResultadosPG()
       } else {
         this.obtenerResultadosPG()
