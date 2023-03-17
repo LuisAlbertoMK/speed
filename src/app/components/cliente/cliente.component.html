@@ -34,6 +34,21 @@
         </ng-template>
       </div>
     </div>
+    <div class="row mb-1">
+      
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+        <span class="mr-1 fs-6">Usar correo <strong class="text-danger">{{correo_utilizado}}</strong>:</span>
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          [(ngModel)]="correo_utilizado"
+          >
+          <mat-radio-button class="example-radio-button ml-1" (click)="verificarCorreoExiste()" *ngFor="let email of correos" [value]="email.value">
+            {{email.show}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
     <form (ngSubmit)="guardarCliente()" [formGroup]="form_cliente">
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -92,7 +107,7 @@
               <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal </label>
               <div class="col-sm-9 col-md-8 col-lg-9">
                 <select class=" form-select  form-select-sm" formControlName="sucursal" (change)="actualizaNoCliente()"
-                  [class.is-invalid]="validarCampo('sucursal')" id="sucursal">
+                  [class.is-invalid]="validarCampo('sucursal')" id="sucursal" (change)="verificarCorreoExiste()">
                   <option [ngValue]="sucursal.id" *ngFor="let sucursal of Sucursales;let i=index">
                     {{sucursal.sucursal}}</option>
                 </select>
@@ -140,7 +155,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="this.correo_utilizado === 'personal'">
           <div class="mb-1 row">
             <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
             <div class="col-sm-9 col-md-8 col-lg-9 ">
@@ -209,8 +224,8 @@
       {{correoExistente}}
       {{!form_cliente.valid}}
       {{!empresa_valida}}
-    </pre>
-    <pre>{{form_cliente.value | json}}</pre> -->
+    </pre>-->
+    <pre>{{form_cliente.value | json}}</pre>
   </div>
 </div>
 <div class="modal fade" id="modalEmpresa" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">

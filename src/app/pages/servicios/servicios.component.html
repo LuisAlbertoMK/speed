@@ -281,9 +281,7 @@
                                 <ng-container *ngIf="tecnico.id === element.tecnico">
                                   <strong>Tecnico asignado <strong class="text-primary">{{tecnico.usuario}}</strong></strong>
                                 </ng-container>
-      
                               </ng-container>
-      
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
                               <div class="row m-1">
@@ -363,6 +361,16 @@
                                             <div class="card-body  text-end">
                                               <h5 class="text-center text-uppercase fs-6">U.B Estimada</h5>
                                               <p><strong class="fs-4">{{element.desgloce['UB'] | monedas:'%'}}</strong></p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-lg-4 col-md-4 col-sm-4 col-6 ">
+                                        <div class="card-deck">
+                                          <div class="card">
+                                            <div class="card-body  text-end">
+                                              <h5 class="text-center text-uppercase fs-6">U.B Real</h5>
+                                              <p><strong class="fs-4">{{element.desgloce['UB2'] | monedas:'%'}}</strong></p>
                                             </div>
                                           </div>
                                         </div>

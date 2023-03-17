@@ -43,6 +43,9 @@ export class ClienteComponent implements OnInit {
   contadroClientes= 0
   infonew = {}
   muestraFormEmpresa:boolean = false
+
+  correo_utilizado: string = 'personal'
+  correos = [{value:'personal', show:'Personal'},{value:'sucursal', show:'Sucursal'}];
   constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
     private _clientes: ClientesService) {
       this.heroeSlec = new EventEmitter()
@@ -96,10 +99,16 @@ export class ClienteComponent implements OnInit {
     })
   }
   verificarCorreoExiste(){
-    const correo = this.form_cliente.controls['correo'].value
-    const info = this.arreglo_correos.find(o=>o === correo)
-    this.correoExistente = false
-    if (info) this.correoExistente = true
+    if (this.correo_utilizado === 'sucursal') {
+      this.correoExistente = false
+      this.form_cliente.controls['correo'].setValue('patito@gmail.com')
+    }else{
+      const correo = this.form_cliente.controls['correo'].value
+      const info = this.arreglo_correos.find(o=>o === correo)
+      this.correoExistente = false
+      if (info) this.correoExistente = true
+    }
+    
   }
   verificarTelefono(){
     const telefono = this.form_cliente.controls['telefono_movil'].value
@@ -225,6 +234,14 @@ export class ClienteComponent implements OnInit {
 
   }
   guardarCliente(){
+
+    // this.correo_utilizado === 'sucursal'
+
+    console.log(this.correo_utilizado);
+
+    return
+    
+    
     const info_get = this.form_cliente.value
     let saveInfo = {
       no_cliente: String(info_get['no_cliente']).trim(),

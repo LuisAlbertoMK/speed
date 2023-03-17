@@ -1018,14 +1018,6 @@ export class ServiciosComponent implements OnInit {
         console.log(error);
       })
     }
-    
-    
-
-    
-    
-    
-
-    
   }
   
   newPagination(tabla:string) {
@@ -1035,7 +1027,7 @@ export class ServiciosComponent implements OnInit {
         this.dataSource.sort = this.sort;
       }
       
-    }, 500);
+    }, 600);
   }
   splitNombreDetalles(cadena:string){
     const caden = cadena.split('_')

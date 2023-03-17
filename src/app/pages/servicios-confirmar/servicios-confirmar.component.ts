@@ -282,7 +282,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   vehiculo:string = null
 
   valida:boolean = true
-  cuales:string = null
+  cuales:string = ''
   constructor(
     private router: Router, private rutaActiva: ActivatedRoute, private _formBuilder: FormBuilder, private _clientes:ClientesService,
     private _uploadfirma: UploadFirmaService,private _mail:EmailsService, private fb: FormBuilder, private _publicos:ServiciosPublicosService,

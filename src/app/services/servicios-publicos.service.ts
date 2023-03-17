@@ -810,7 +810,7 @@ export class ServiciosPublicosService {
     return fecha_return
   }
   realizarOperacion(data:any,deQuien:string){
-    const desgloce = { UB:0,mo:0,refacciones_1:0,refacciones_2:0,subtotal:0,iva:0,sobrescrito:0,
+    const desgloce = { UB:0,UB2:0,mo:0,refacciones_1:0,refacciones_2:0,subtotal:0,iva:0,sobrescrito:0,
       sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquete:0,total:0}
     let mo=0, refacciones_1=0, sobrescrito_mo=0,sobrescrito_refaccion=0, sobrescrito_paquete=0
     let elementos = [];
@@ -862,6 +862,7 @@ export class ServiciosPublicosService {
     if(data['iva']) desgloce.iva = desgloce.subtotal * .16
     desgloce.total = desgloce.subtotal + desgloce.iva
     desgloce.UB = ((desgloce.subtotal - desgloce.refacciones_1)*100)/desgloce.subtotal
+    desgloce.UB2 = 100 - ((desgloce.refacciones_2*100)/desgloce.total)
     this.formasPAgo.map(f=>{
       if (f.id != data['formaPago']) return
         const operacion = desgloce.total * (1 + (f['interes'] / 100))
