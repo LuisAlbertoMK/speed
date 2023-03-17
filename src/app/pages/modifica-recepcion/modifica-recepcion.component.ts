@@ -257,8 +257,8 @@ export class ModificaRecepcionComponent implements OnInit {
               }else{
                 if (ele['tipo'] === 'paquete') {
                   const desgloce = this._publicos.costodePaquete(ele['elementos'], data['margen'])
-                  ele['flotilla'] =  desgloce.totalPaquete
-                  ele['precio'] =  desgloce.totalPaquete
+                  ele['flotilla'] =  desgloce.flotilla
+                  ele['precio'] =  desgloce.flotilla
                   ele['desgloce'] =  desgloce
                 }else{
                   // console.log(ele['precio'] * ele['cantidad']);

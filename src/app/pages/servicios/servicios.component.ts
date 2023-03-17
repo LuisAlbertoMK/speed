@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterContentChecked, AfterViewInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 
 //paginacion
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 
 import {FormBuilder} from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
 import { EmailsService } from 'src/app/services/emails.service';
 import { child, get, getDatabase, onValue, ref, set, push , update} from 'firebase/database';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
@@ -44,7 +44,7 @@ const dbRef = ref(getDatabase());
     ]),
   ],
 })
-export class ServiciosComponent implements OnInit {
+export class ServiciosComponent implements OnInit, OnDestroy {
   //ancho minimo de columnas
   miniColumnas:number = 80; ROL: string = '';SUCURSAL: string = '';
   dataSource = new MatTableDataSource();
@@ -169,13 +169,114 @@ export class ServiciosComponent implements OnInit {
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
+     comprobar(){
+        // console.log(this.recepciones);
+        const recepciones = this.recepciones
+        let notificados = [], no_notificados =[]
+        recepciones.forEach((r)=>{
+          if (r['notifico']) {
+            notificados.push(r)
+          }else{
+            no_notificados.push(r)
+          }
+        })
 
+
+
+        // console.log('notificados',notificados);
+        // console.log('no_notificados',no_notificados);
+        // updates[`recepciones/${padre['id']}/notifico`]= false
+
+        
+
+        if (no_notificados.length) {
+            Swal.fire({
+            title: '¡ADVERTENCIA!',
+            html:`Hay recepciones las cuales no se notificó al cliente de cambios <br> ¿Enviar Notificación  (email) a clientes?`,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Enviar',
+            denyButtonText: `No enviar`,
+            allowOutsideClick: false
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              // Swal.fire('Saved!', '', 'success')
+              // console.log('se enviara notificacion');
+              const updates = {};
+              no_notificados.forEach(n=>{
+                updates[`recepciones/${n['id']}/notifico`] = true;
+              })
+              // console.log(updates);
+      
+              update(ref(db), updates).then(()=>{
+                no_notificados.forEach(n=>{
+                  let correos = [], desgloce = '';
+                  const infoEmail = {
+                    correos, cliente: n['infoCliente'], vehiculo: n['infoVehiculo'],
+                    subject:`Cambio de informacion en O.S`,
+                    resumen: n['no_os'], no_os:n['no_os'], desgloce, status:n['status']
+                  }
+                  let nuevoDes = []
+                  let elementosRecepcion = [...n['servicios']]
+                  if (n['infoSucursal']['correo']) correos.push(n['infoSucursal']['correo'])
+                  if (n['infoCliente']['correo']) correos.push(n['infoCliente']['correo'])
+                  if (n['infoCliente']['correo_sec']) correos.push(n['infoCliente']['correo_sec'])
+                  // if(n['servicios']) n['servicios'] = n['servicios']
+                  updates[`recepciones/${n['id']}/servicios`] = elementosRecepcion;
+                  elementosRecepcion.forEach((a)=>{
+                    nuevoDes.push(`${a['nombre']} [${a['showStatus']}]`)
+                  })
+                
+                  infoEmail['desgloce'] = nuevoDes.join(', ')
+                  // console.log(infoEmail);
+                  
+                  // infoEmail['status'] = statusEnviarCorreo
+                  this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
+                })
+              })
+              
+            } else if (result.isDenied) {
+              // Swal.fire('Changes are not saved', '', 'info')
+              // console.log('no hacer nada');
+              
+            }
+          })
+          
+        }
+        
+     }
+     ngOnDestroy(){
+      
+      
+      // console.log('comprobacion');
+      // Swal.fire({
+      //   title: 'Do you want to save the changes?',
+      //   showDenyButton: true,
+      //   showCancelButton: true,
+      //   confirmButtonText: 'Save',
+      //   denyButtonText: `Don't save`,
+      // }).then((result) => {
+      //   /* Read more about isConfirmed, isDenied below */
+      //   if (result.isConfirmed) {
+      //     // Swal.fire('Saved!', '', 'success')
+      //     console.log('se enviara notificacion');
+          
+      //   } else if (result.isDenied) {
+      //     // Swal.fire('Changes are not saved', '', 'info')
+      //     console.log('no hacer nada');
+          
+      //   }
+      // })
+      
+     }
   ngOnInit(): void {
     this.crearFormPago()
     this.crearFormGastos()
     this.listadoTecnicos()
     this.listaSucursales()
-
+    // console.log(this.route);
+    
   }
   listaSucursales(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -293,7 +394,7 @@ export class ServiciosComponent implements OnInit {
                 }else{
                   const costo = this._publicos.costodePaquete( element['elementos'],cot['margen'])
                   // ser[index].flotilla = costo.totalPaquete
-                  ser[index].precio = costo.totalPaquete
+                  ser[index].precio = costo.flotilla
                 }
               }
             });
@@ -336,7 +437,7 @@ export class ServiciosComponent implements OnInit {
             const contador1 = this.recepciones.length
             const contador2 = filtrados.length
             const campos=[
-              'HistorialGastos','checkList','diasSucursal','fechaPromesa','desgloce','fecha_entregado','fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen','status','tecnico','index','HistorialPagos','_pagos','servicios'
+              'HistorialGastos','notifico','checkList','diasSucursal','fechaPromesa','desgloce','fecha_entregado','fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen','status','tecnico','index','HistorialPagos','_pagos','servicios'
             ]
               if (this.recepciones.length === filtrados.length) {
                 this.recepciones.map((a,indexx)=>{
@@ -786,7 +887,7 @@ export class ServiciosComponent implements OnInit {
     if(this.dataSource.data.length){
       this._exporter.exportExcelServicios(this.dataSource.data)
     }else{
-      this.mensajeIncorrecto('No hayn informaciín disponible')
+      this._publicos.mensajeIncorrecto('No hayn informaciín disponible')
     }
   }
   isSticky(columna:string) {
@@ -867,6 +968,55 @@ export class ServiciosComponent implements OnInit {
       mo
     }
     this.infoPaquete = infoPaquete
+  }
+  saveNotificacion(data:any){
+    // console.log(data);
+
+     
+    Swal.fire({
+      title: 'Notificar al cliente de los cambios en la O.S?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Confirmar',
+      denyButtonText: `Cancelar`,
+      allowOutsideClick: false,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        if (data['id']) {
+          let correos = [], desgloce = ''; const updates = {};
+          const infoEmail = {
+            correos, cliente: data['infoCliente'], vehiculo: data['infoVehiculo'],
+            subject:`Cambio de informacion en O.S`,
+            resumen: data['no_os'], no_os:data['no_os'], desgloce, status:data['status']
+          }
+          let nuevoDes = []
+          let elementosRecepcion = [...data['servicios']]
+          if (data['infoSucursal']['correo']) correos.push(data['infoSucursal']['correo'])
+          if (data['infoCliente']['correo']) correos.push(data['infoCliente']['correo'])
+          if (data['infoCliente']['correo_sec']) correos.push(data['infoCliente']['correo_sec'])
+          // if(n['servicios']) n['servicios'] = n['servicios']
+          elementosRecepcion.forEach((a)=>{
+            nuevoDes.push(`${a['nombre']} [${a['showStatus']}]`)
+          })
+          
+          infoEmail['desgloce'] = nuevoDes.join(', ')
+          updates[`recepciones/${data['id']}/notifico`] = true;
+          // console.log(infoEmail);
+          // console.log(updates);
+          update(ref(db), updates).then(()=>{
+            this._publicos.mensajeCorrecto('Se envio notificación')
+            if (correos.length) {
+              this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
+            }
+          })          
+        }
+      } else if (result.isDenied) {
+        Swal.fire('No se notifico al cliente', '', 'info')
+      }
+    })
+
+    
   }
   cambiarStatusOS(status:string, data:any){
     const stat = status.toLowerCase()
@@ -961,6 +1111,8 @@ export class ServiciosComponent implements OnInit {
   accionElemento(padre:any, index:number, status:string, showStatus:string, aprobado:boolean){
     // console.log(`accion-> ${status} showStatus-> ${showStatus} aprobado-> ${aprobado}` );
     // console.log(padre);
+    // console.log('accion');
+    
     if (padre['id']) {
       const servicios = padre['servicios'], id = padre['id']
       let correos = [], desgloce = '';
@@ -1009,10 +1161,11 @@ export class ServiciosComponent implements OnInit {
       })
       infoEmail['desgloce'] = nuevoDes.join(', ')
       infoEmail['status'] = statusEnviarCorreo
+      updates[`recepciones/${padre['id']}/notifico`]= false
       
       update(ref(db), updates)
       .then(async ()=>{
-        await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
+        // await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
       })
       .catch((error)=>{
         console.log(error);
@@ -1077,42 +1230,8 @@ export class ServiciosComponent implements OnInit {
     // // console.log(dias);
     // return dias;
    }
-   mensajeCorrecto(mensaje:string){
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'center',
-      showConfirmButton: false,
-      timer: 1000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-    
-    Toast.fire({
-      icon: 'success',
-      title: mensaje
-    })
-  }
-  mensajeIncorrecto(mensaje:string){
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'center',
-      showConfirmButton: false,
-      timer: 2500,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-    
-    Toast.fire({
-      icon: 'error',
-      title: mensaje
-    })
-  }
+  
+  
   getFechaHora(){
     const date: Date = new Date()
     const months = ["enero", "febrero", "marzo","abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];

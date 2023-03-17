@@ -39,7 +39,7 @@ export class EmailsService {
         from:emailAnexa[0],
         email: emailAnexa,
         subject: `${dataEmail.subject} ${conceptos}`,
-        mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.fullname}</strong>.<br>Adjunto encontrara la cotización por <strong style='font-weight:bolder;'>${conceptos}</strong> CDMX para el auto <strong style='font-weight:bolder;'>${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio} </stronng> que nos hizo favor de solicitar, para cualquier referencia su No. de Cot es el; <strong style='font-weight:bolder;'>${no_cotizacion[0]}</strong>, le recordamos que nuestro horario de servicio es de Lunes a Viernes de 8:30 a 18:30 y Sábados de 8:30 a 13:00.`,
+        mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.fullname}</strong>.<br>Adjunto encontrara la cotización por <strong style='font-weight:bolder;'>${conceptos}</strong> para el auto <strong style='font-weight:bolder;'>${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio} </stronng> que nos hizo favor de solicitar, para cualquier referencia su No. de Cot es el; <strong style='font-weight:bolder;'>${no_cotizacion[0]}</strong>, le recordamos que nuestro horario de servicio es de Lunes a Viernes de 8:30 a 18:30 y Sábados de 8:30 a 13:00. <br> <strong>Recibimos todas las tarjetas de crédito.</strong>`,
         attachments:[
           {   // use URL as an attachment
             filename: filename,

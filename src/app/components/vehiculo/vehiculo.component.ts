@@ -151,7 +151,7 @@ export class VehiculoComponent implements OnInit {
       color:['',[Validators.required]],
       engomado:['',[Validators.required]],
       marcaMotor:['',[]],
-      transmision:['',[Validators.required]]
+      transmision:['',[]]
     })
     // this.form_vehiculo.controls['engomado'].disable()
   }
@@ -167,8 +167,8 @@ export class VehiculoComponent implements OnInit {
       cilindros: getVehiculo['cilindros'],
       color: getVehiculo['color'],
       engomado: getVehiculo['engomado'],
-      transmision: getVehiculo['transmision'],
     }
+    if(getVehiculo['transmision']) saveInfo['transmision'] = getVehiculo['transmision']
     if(getVehiculo['marcaMotor']) saveInfo['marcaMotor'] = getVehiculo['marcaMotor']
     if(getVehiculo['vinChasis']) saveInfo['vinChasis'] = getVehiculo['vinChasis']
     if(getVehiculo['no_motor']) saveInfo['no_motor'] = getVehiculo['no_motor']

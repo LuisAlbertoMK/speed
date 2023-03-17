@@ -2,6 +2,9 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+.pointer{
+  cursor: pointer;
+}
 
 .example-form {
   min-width: 150px;
@@ -82,11 +85,16 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 tr.anima:hover{
-  background: lavender;
+  background-color: lavender;
 }
 tr.anima{
   height: 35px;
 }
-
 /* limpiar */
 
+::ng-deep .mat-sort-header-container {
+  /* color: white; */
+  /* margin-left: 10%; */
+  /* background-color: blue !important; */
+  /* text-align:  right !important; */
+}

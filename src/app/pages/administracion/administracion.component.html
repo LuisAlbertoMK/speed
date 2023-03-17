@@ -614,6 +614,10 @@
                   <th mat-header-cell *matHeaderCellDef> Index </th>
                   <td mat-cell *matCellDef="let element; let i = index" class="text-center"> {{i + 1}} </td>
                 </ng-container>
+                <ng-container matColumnDef="no_os">
+                  <th mat-header-cell *matHeaderCellDef> O.S </th>
+                  <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{element['no_os']}}</td>
+                </ng-container>
                 <ng-container matColumnDef="tipo">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
                   <td mat-cell *matCellDef="let element" class="text-start"> {{element.tipoShow | capitalizarUno}} </td>
@@ -673,6 +677,10 @@
                   <th mat-header-cell *matHeaderCellDef> Index </th>
                   <td mat-cell *matCellDef="let element; let i = index" class="text-center"> {{i + 1}} </td>
                 </ng-container>
+                <ng-container matColumnDef="no_os">
+                  <th mat-header-cell *matHeaderCellDef> O.S </th>
+                  <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{element['no_os']}}</td>
+                </ng-container>
                 <ng-container matColumnDef="tipo">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
                   <td mat-cell *matCellDef="let element" class="text-start"> {{element.tipo | capitalizarUno}} </td>
@@ -723,6 +731,10 @@
                 <ng-container matColumnDef="index">
                   <th mat-header-cell *matHeaderCellDef> Index </th>
                   <td mat-cell *matCellDef="let element; let i = index" class="text-center"> {{i + 1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="no_os">
+                  <th mat-header-cell *matHeaderCellDef> O.S </th>
+                  <td mat-cell *matCellDef="let element; let i = index" class="text-center">{{element['no_os']}}</td>
                 </ng-container>
                 <ng-container matColumnDef="tipo">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>

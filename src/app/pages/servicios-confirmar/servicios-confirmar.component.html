@@ -513,6 +513,34 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
         <h3 class="text-danger">Si estas en telefono movil cambiar a orientación horizontal</h3>
         <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
+          <mat-tab label="Detalles">
+            <div class="row m-3">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                <mat-checkbox class="example-margin" (click)="revisarDeatllesNinguno()" [(ngModel)]="SinDetalles">Sin
+                  detalles
+                </mat-checkbox>
+              </div>
+              <ng-container *ngIf="!SinDetalles">
+                <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4"
+                  *ngFor="let item of vehiculosDetalles; let index = index">
+                  <img [src]="item.foto" class="card-img-top  rayar" alt="..." width="150px" height="150px">
+                  <div class="card-body">
+                    <ng-container class="card-text">
+                      <mat-checkbox type="checkbox" class="example-margin" [id]="item.id" #val
+                        (change)="revisarDeatlles(index,val)">
+                        {{item.mostrar}}
+                      </mat-checkbox>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="SinDetalles">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 fs-3 text-center text-uppercase">
+                  No cuenta con ningún detalle
+                </div>
+              </ng-container>
+            </div>
+          </mat-tab>
           <mat-tab label="Personalizado">
 
             <div class="row m-3">
@@ -640,36 +668,6 @@
               </ng-container>
             </div>
           </mat-tab>
-          <mat-tab label="Detalles">
-            <div class="row m-3">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-                <mat-checkbox class="example-margin" (click)="revisarDeatllesNinguno()" [(ngModel)]="SinDetalles">Sin
-                  detalles
-                </mat-checkbox>
-              </div>
-              <ng-container *ngIf="!SinDetalles">
-                <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4"
-                  *ngFor="let item of vehiculosDetalles; let index = index">
-                  <img [src]="item.foto" class="card-img-top  rayar" alt="..." width="150px" height="150px">
-                  <div class="card-body">
-                    <ng-container class="card-text">
-                      <mat-checkbox type="checkbox" class="example-margin" [id]="item.id" #val
-                        (change)="revisarDeatlles(index,val)">
-                        {{item.mostrar}}
-                      </mat-checkbox>
-                    </ng-container>
-                  </div>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="SinDetalles">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 fs-3 text-center text-uppercase">
-                  No cuenta con ningún detalle
-                </div>
-              </ng-container>
-            </div>
-          </mat-tab>
-
-
         </mat-tab-group>
       </div>
     </div>

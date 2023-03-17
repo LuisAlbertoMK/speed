@@ -64,7 +64,7 @@ export class AdministracionComponent implements OnInit {
   columnasRecepciones:string[]=['no_os','status','placas','fecha_recibido','fecha_entregado'];
   columnasRecepcionesExtended:string[]=[...this.columnasRecepciones,'expand'];
   
-  columnasIE: string []= ['index','tipo','concepto','fecha','metodo','monto']
+  columnasIE: string []= ['index','no_os','tipo','concepto','fecha','metodo','monto']
   columnasI: string []= [...this.columnasIE]
   columnasE: string []= [...this.columnasIE]
 
@@ -290,11 +290,14 @@ export class AdministracionComponent implements OnInit {
                   ser[index].precio = element['costo']
                 }else{
                   const costo = this._publicos.costodePaquete( element['elementos'],d['margen'])
-                  ser[index].precio = costo.totalPaquete
+                  ser[index].precio = costo.flotilla
                 }
               }
             });
           })
+
+          // console.log(data);
+          
           this.servTemp = data
           this.obtenerResultados()
           this.listadodePG()
@@ -469,7 +472,7 @@ obtenerResultadosPG(){
       HP.forEach((p)=>{
         const aqui = p['fecha'].split('/')
         p['fecha_compara'] = new Date(aqui[2],aqui[1] - 1,aqui[0],0,0,0,0)
-        const info = { ...p, sucursal: pg['sucursal'], usuario:'',tipo:'pago', tipoShow:'Pago' , id:0, rol:'' }
+        const info = { ...p, sucursal: pg['sucursal'], usuario:'',tipo:'pago', tipoShow:'Pago' , id:0, rol:'', no_os: pg['no_os'] }
         // ingresos_arr.push(info)   
         pagosPG.push(info)
       })
@@ -479,7 +482,7 @@ obtenerResultadosPG(){
       HG.forEach((p)=>{
         const aqui = p['fecha'].split('/')
         p['fecha_compara'] = new Date(aqui[2],aqui[1] - 1,aqui[0],0,0,0,0)
-        const info = { ...p, sucursal: pg['sucursal'], usuario:'', tipo:'orden',tipoShow:'Gasto de '+ 'orden', id:0, rol:'' }
+        const info = { ...p, sucursal: pg['sucursal'], usuario:'', tipo:'orden',tipoShow:'Gasto de '+ 'orden', id:0, rol:'' , no_os: pg['no_os']}
         // gastos_arr.push(info)   
         pagosPG.push(info)
       })
@@ -824,6 +827,7 @@ obtenerResultadosPG(){
           pg['fecha_compara'] = new Date(aqui[2],aqui[1] - 1,aqui[0],0,0,0,0)
           pg['tipo'] = pg['tipo']
           pg['tipoShow'] = `Gasto de operacion`
+          pg['no_os'] =''
         })
 
         let filtrados =  []
@@ -833,7 +837,7 @@ obtenerResultadosPG(){
           this.listaHistorialPG = nuevos.filter(o=>o['sucursal'] === this.SUCURSAL)
         }
 
-        console.log(this.listaHistorialPG);
+        // console.log(this.listaHistorialPG);
         
         
         this.obtenerResultadosPG()

@@ -168,15 +168,15 @@
               </ng-container>
               <ng-container matColumnDef="precio">
                 <th mat-header-cell *matHeaderCellDef class="text-capitalize"> precio </th>
-                <td mat-cell *matCellDef="let element" class="text-end"> {{element.refacciones1 | monedas}} </td>
+                <td mat-cell *matCellDef="let element" class="text-end"> {{element['_desgloce'].refacciones1 | monedas}} </td>
               </ng-container>
               <ng-container matColumnDef="normal">
                 <th mat-header-cell *matHeaderCellDef class="text-capitalize"> normal </th>
-                <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla * 1.30 | monedas}} </td>
+                <td mat-cell *matCellDef="let element" class="text-end"> {{element['_desgloce'].flotilla * 1.30 | monedas}} </td>
               </ng-container>
               <ng-container matColumnDef="flotilla">
                 <th mat-header-cell *matHeaderCellDef class="text-capitalize"> flotilla </th>
-                <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla | monedas}} </td>
+                <td mat-cell *matCellDef="let element" class="text-end"> {{element['_desgloce'].flotilla | monedas}} </td>
               </ng-container>
               <ng-container matColumnDef="opciones">
                 <th mat-header-cell *matHeaderCellDef class="text-capitalize"> opciones </th>
@@ -205,7 +205,7 @@
     
               <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
               <ng-container matColumnDef="expandedDetail">
-                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpandpaquetes.length -1">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpandpaquetes.length">
                   <div class="example-element-detail"
                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                     <div class="example-element-description">
@@ -218,7 +218,7 @@
                                   <tr>
                                     <th colspan="8" class="col text-center fs-5">U.B
                                       <strong [ngClass]="{'text-danger':element.UB<55,'text-success':element.UB>=55}">
-                                        {{element.UB}} %
+                                        {{element['_desgloce'].UB  | monedas:'%'}}
                                       </strong>
                                     </th>
                                   </tr>
@@ -324,7 +324,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="mb-1 row">
                       <label for="precio"
-                        class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">precio</label>
+                        class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">costo</label>
                       <div class="col-9 col-sm-9 col-md-9 col-lg-9">
                         <input type="number" class="form-control form-control-sm" min="1" id="precio"
                           formControlName="precio">
@@ -334,7 +334,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-12">
                     <div class="mb-1 row">
                       <label for="costo"
-                        class="col-4 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">costo sobrescrito</label>
+                        class="col-4 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">precio sobrescrito</label>
                       <div class="col-8 col-sm-8 col-md-8 col-lg-8">
                         <input type="number" class="form-control form-control-sm" min="0" id="costo"
                           formControlName="costo">
@@ -406,22 +406,20 @@
         </mat-form-field>
         <div class="table-responsive mat-elevation-z8">
           <table #elements="matSort" matSort mat-table [dataSource]="dataSource" multiTemplateDataRows
-            class="">
+           >
             <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of elementos">
               <th mat-header-cell *matHeaderCellDef> {{column}} </th>
               <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
             </ng-container> -->
             <ng-container matColumnDef="index">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"
-                [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> index </th>
-              <td mat-cell *matCellDef="let element" class="text-center"> {{element.index + 1}}
-    
-              </td>
+              <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+                [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> index </th>
+              <td mat-cell *matCellDef="let element" class="text-center"> {{element.index + 1}}</td>
             </ng-container>
             <ng-container matColumnDef="nombre">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize text-end"
                 [ngStyle]="{'min-width':(miniColumnas)*1.3+'px'}"> nombre </th>
-              <td mat-cell *matCellDef="let element"> {{element.nombre | capitalizarUno}}
+              <td mat-cell *matCellDef="let element" class="td-2"> {{element.nombre | capitalizarUno}}
                 <strong
                   [ngClass]="{'tipo-mo':element.tipo === 'MO','tipo-refaccion':element.tipo === 'refaccion','tipo-paquete':element.tipo === 'paquete'}">
                   {{element.tipo}}</strong>
@@ -436,16 +434,30 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="sobrescrito">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
-                Costo sobrescrito </th>
-              <td mat-cell *matCellDef="let element; let indicePadre = dataIndex;" class="text-end">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="td-2">
+                precio sobrescrito </th>
+              <td mat-cell *matCellDef="let element; let indicePadre = dataIndex;" class="text-end td-2">
                 <input type="number" min="0" max="10000" [value]="element.costo"
                   (change)="cambiarSobrescrito($event,element.index)" (keyup)="cambiarSobrescrito($event,element.index)">
               </td>
             </ng-container>
             <ng-container matColumnDef="precio">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
-                precio </th>
+              <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end" 
+              [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  
+              (click)="ordenamiento = !ordenamiento; ordenarElementos('precio')">
+                <!-- <ng-container class="pointer"> -->
+                  <span class="pointer" style="width: 100%;">costo &nbsp;
+                    <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                      <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </ng-container>
+                    <ng-template #elseOrdenamiento>
+                      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                    </ng-template>
+                  </span> 
+                
+                <!-- </ng-container> -->
+                
+               </th>
               <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-end">
                 <ng-container>
                   {{element.precio | monedas}}
@@ -457,19 +469,43 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="normal">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"
-                [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}"> normal </th>
-              <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla * 1.30 | monedas}} </td>
+              <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
+                [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" 
+                (click)="ordenamiento = !ordenamiento; ordenarElementos('normal')"> 
+                <span class="pointer" style="width: 100%;">normal &nbsp;
+                  <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                    <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                  </ng-container>
+                  <ng-template #elseOrdenamiento>
+                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                  </ng-template>
+                </span> 
+
+                 </th>
+              <td mat-cell *matCellDef="let element" class="text-end"> {{element.normal | monedas}} </td>
             </ng-container>
             <ng-container matColumnDef="flotilla">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"
-                [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}"> flotilla </th>
+              <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
+                [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" 
+                (click)="ordenamiento = !ordenamiento; ordenarElementos('flotilla')"> 
+                 
+                <span class="pointer" style="width: 100%;">flotilla &nbsp;
+                  <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                    <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                  </ng-container>
+                  <ng-template #elseOrdenamiento>
+                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                  </ng-template>
+                </span>
+              
+              </th>
               <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla | monedas}} </td>
             </ng-container>
             <ng-container matColumnDef="opciones">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> opciones </th>
-              <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-end">
-                <!-- <i class="fa fa-edit btn btn-sm btn-success fa-xs m-1" (click)="agregarelementopaquete(!elementoAgregar, element.index)"></i> -->
+              <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-center"
+              [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> opciones </th>
+              <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-center">
+                <!-- <i class="fa fa-edit btn btn-sm btn-success fa-xs m-1" (click)="agregarelementopaquete(!elementoAgregar, element.index)"></i> --> 
                 <ng-container>
                   <i class="fa fa-trash btn btn-sm btn-danger fa-xs m-1" (click)="eliminaElemento(element['index'])"></i>
                 </ng-container>
@@ -691,9 +727,9 @@
               </td>
             </ng-container>
     
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row anima"
-              [class.example-expanded-row]="expandedElement === element">
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" class=""></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row "
+              [class.example-expanded-row]="expandedElement === element" >
               <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
             </tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>

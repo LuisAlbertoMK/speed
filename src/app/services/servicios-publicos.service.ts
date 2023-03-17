@@ -562,8 +562,9 @@ export class ServiciosPublicosService {
   
  
   costodePaquete(array:any,margen:number){
-    const info ={mo:0,refacciones1:0,refacciones2:0,totalPaquete:0,UB:'',flotilla:0,precio:0}
+    const info ={mo:0,refacciones1:0,refacciones2:0,UB:0,flotilla:0,normal: 0,precio:0}
     let mo=0,refacciones1=0,refacciones2=0, suma = 0
+    
     array.forEach(a=>{
       if (a['tipo'] === 'MO') {
         if (!a['costo']) a['costo'] = 0;
@@ -580,10 +581,9 @@ export class ServiciosPublicosService {
     })
     info.mo = mo; info.refacciones1 = refacciones1; info.refacciones2 = refacciones2;
     suma = mo+refacciones2
-    const UB = ((suma - refacciones1)*100)/suma
-    info.UB =  this.redondeado(UB,'')
-    info.totalPaquete = suma
-    info.precio = refacciones1;
+    info.UB = ((suma - refacciones1)*100)/suma
+    info.flotilla = suma
+    info.normal = suma * (1+(margen / 100))
     return info
   }
   isObject(valor){

@@ -166,6 +166,7 @@ camposDesgloce = [
   valida:boolean = false
   cuales:string = null
   empresas=[]
+  ordenamiento : boolean = true
   constructor(private _mail:EmailsService, private fb: FormBuilder, private router: Router,
               private rutaActiva: ActivatedRoute,private _uploadPDF: UploadPDFService,
               private _cotizaciones: CotizacionService, private _sucursales: SucursalesService,
@@ -182,9 +183,9 @@ camposDesgloce = [
     this.crearFormElemento()
     this.listaSucursales()
     // this.Listaclientes()
+    await this.listaMO()
+    await this.listaRefacciones()
     this.listaPaquetes()
-    this.listaRefacciones()
-    this.listaMO()
     this.autoComplete()
     this.realizarOperaciones()
     this.getBase64ImageFromURL('../../../assets/logoSpeedPro/Logo-Speedpro.png').then((val:any)=>{
@@ -295,8 +296,24 @@ camposDesgloce = [
               this.clientes.map(cli=>{
                 if(cot['cliente'] !== cli['id']) return
                 cot['infoCliente'] = cli
+                let elementos = []
+                if(cot['elementos']) elementos = cot['elementos']
+                elementos.map((subelement)=>{
+                  let nuevosElementos = []
+                  if (subelement['costo'] > 0 ) {
+                    subelement['normal']  =  (subelement['cantidad'] * subelement['costo']) * 1.30
+                  }else{
+                    if(subelement['elementos'] ) nuevosElementos = subelement['elementos']
+                    const infoInterno = this._publicos.costodePaquete(nuevosElementos,this.margen);
+                    // subelement['_desgloce'] = infoInterno
+                    subelement['normal']  = infoInterno['flotilla'] * 1.30
+                  }
+                  
+                })
               })
           })
+          // console.log(cotizaciones);
+          
           if (this.SUCURSAL === 'Todas') {
             this.cotizaciones = cotizaciones
           }else{
@@ -441,48 +458,7 @@ camposDesgloce = [
 
 
   }
-  listaPaquetes(){
-    const starCountRef = ref(db, `paquetes`)
-    onValue(starCountRef, async (snapshot) => {
-      if (snapshot.exists()) {
-        // this.paquetesListos = false
-        const paquetes:any[] = await this._catalogos.listaPaquetes()
-        for (let index = 0; index < paquetes.length; index++) {
-          const element = paquetes[index];
-          if (element.elementos) {
-            const elementos:any[] = element.elementos
-            for (let index = 0; index < elementos.length; index++) {
-              const ele = elementos[index];
-              let ruta = '';
-              if (ele.catalogo) {
-                (ele.tipo === 'MO') ? ruta= `manos_obra/${ele.IDreferencia}`:ruta=`refacciones/${ele.IDreferencia}`
-              const infoelemento = await this._catalogos.infoElemento(ruta)
-              const camposElemento = ['nombre','precio','descripcion']
-              for (let indcam = 0; indcam < camposElemento.length; indcam++) {
-                const campEle = camposElemento[indcam];
-                elementos[index][campEle] = infoelemento[campEle]
-              }
-              }
-            };
-            const info = await this._publicos.costodePaquete(element.elementos,this.margen);
-            const camposPaquete = ['totalMO','UB','refacciones1','refacciones2','flotilla','precio']
-            for (let indcampos = 0; indcampos < camposPaquete.length; indcampos++) {
-              const element = camposPaquete[indcampos];
-              paquetes[index][element] = info[element]
-            }
-            paquetes[index].elementos = element.elementos
-          }
-          }
-          if (paquetes.length) {
-            const filter = paquetes.filter(o=>o.elementos)
-            this.paquetes = paquetes
-            this.paquetesListos = false
-          }else{
-            this.paquetesListos = true
-          }
-      }
-    })
-  }
+  
   filtroPaquetes(cuales:string){
     let data = []
     const existentes = this.paquetes
@@ -500,6 +476,26 @@ camposDesgloce = [
       }
     }
     this.colocaInfoPaquetes(data)
+  }
+  
+  listaMO(){
+    const starCountRef = ref(db, `manos_obra`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const manos_obra = await this._catalogos.listadoManos_obra()
+        if (manos_obra.length) {
+          for (let index = 0; index < manos_obra.length; index++) {
+            const element = manos_obra[index];
+            manos_obra[index].tipo = 'MO';
+            (manos_obra[index].descripcion)? '': manos_obra[index].descripcion = ''
+          }
+          this.manos_obra = manos_obra
+            this.manos_obraListo = false
+        }else{
+            this.manos_obraListo = true
+        }
+      }
+    })
   }
   listaRefacciones(){
     const starCountRef = ref(db, `refacciones`)
@@ -520,22 +516,47 @@ camposDesgloce = [
       }
     })
   }
-  listaMO(){
-    const starCountRef = ref(db, `manos_obra`)
+  listaPaquetes(){
+    const starCountRef = ref(db, `paquetes`)
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        const manos_obra = await this._catalogos.listadoManos_obra()
-        if (manos_obra.length) {
-          for (let index = 0; index < manos_obra.length; index++) {
-            const element = manos_obra[index];
-            manos_obra[index].tipo = 'MO';
-            (manos_obra[index].descripcion)? '': manos_obra[index].descripcion = ''
-          }
-          this.manos_obra = manos_obra
-            this.manos_obraListo = false
+        // this.paquetes = paquetes
+        //     this.paquetesListos = false
+        // console.log('manos de obra',this.manos_obra);
+        // console.log('refacciones',this.refacciones);
+        await this.listaMO()
+        await this.listaRefacciones()
+        const concatenados = this.manos_obra.concat(this.refacciones)
+        // console.log(concatenados);
+        
+        const paquetes:any[] = await this._catalogos.listaPaquetes()
+        // console.log(paquetes);
+        paquetes.map((p)=>{
+          // console.log(p['id'])
+          let elements = []
+          if(p['elementos']) elements = p['elementos']
+          elements.map((subelement)=>{
+            concatenados.forEach(g=>{
+              if (subelement['IDreferencia'] === g['id']) {
+                subelement['nombre'] = g['nombre']
+                subelement['descripcion'] = g['descripcion']
+                subelement['status'] = g['status']
+                if (!subelement['precio']) subelement['precio'] = g['precio']
+              }
+            })
+          })
+          p['_desgloce'] = this._publicos.costodePaquete(elements,this.margen);
+          // console.log(p);
+        })
+       
+
+        if (paquetes.length) {
+          this.paquetes = paquetes
+          this.paquetesListos = false
         }else{
-            this.manos_obraListo = true
+          this.paquetesListos = true
         }
+        
       }
     })
   }
@@ -710,9 +731,10 @@ camposDesgloce = [
 
   async realizarOperaciones(){
     const desgloce = { UB:'0',mo:0,refacciones_1:0,refacciones_2:0,subtotal:0,iva:0,
-    sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquetes:0,total:0 }
+    sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquetes:0,total:0, descuento:0 }
     const elementos:any[] = this.infoCotizacion.elementos
     let mo=0, refacciones_1=0, sobrescrito_mo=0,sobrescrito_refaccion=0, sobrescrito_paquetes=0
+
     if(elementos.length) {      
       await elementos.map(async (ele,index)=>{
         ele['index'] = index
@@ -725,24 +747,30 @@ camposDesgloce = [
           if(!ele['elementos']) ele['elementos'] = []
           if (ele['costo']>0) {
             ele['flotilla'] = ele['costo']
+            ele['normal'] = (ele['cantidad'] *  ele['costo']) * 1.30
           }else{
             const data_paquete = this._publicos.costodePaquete(ele['elementos'],this.margen)
             ele['precio'] = data_paquete.flotilla
             ele['flotilla'] = data_paquete.flotilla * ele['cantidad']
+            ele['normal'] = (ele['cantidad'] *  ele['precio']) * 1.30
           }
         }
         if(ele['tipo'] === 'MO' ) {
           if(ele['costo']>0){
             sobrescrito_mo=sobrescrito_mo+ (ele['costo'] * ele['cantidad'])
+            ele['normal'] = (ele['cantidad'] *  ele['costo']) * 1.30
           }else{
             if(ele['precio']>0) mo=mo+ (ele['precio'] * ele['cantidad'])
+            ele['normal'] = (ele['cantidad'] *  ele['precio']) * 1.30
           }
         }
         if(ele['tipo'] === 'refaccion' ) {
           if(ele['costo']>0) {
             sobrescrito_refaccion=sobrescrito_refaccion+ (ele['costo'] * ele['cantidad'])
+            ele['normal'] = (ele['cantidad'] *  ele['costo']) * 1.30
           }else{
-            refacciones_1=refacciones_1+ (ele['precio'] * ele['cantidad']) 
+            refacciones_1=refacciones_1+ (ele['precio'] * ele['cantidad'])
+            ele['normal'] = (ele['cantidad'] *  ele['precio']) * 1.30
           }
         }
         if (ele['tipo'] === 'paquete') {
@@ -800,7 +828,9 @@ camposDesgloce = [
         desgloce['meses'] = operacion;
         (f['numero']>0) ? this.meses = f['numero'] : this.meses = 0
     })
-
+    // console.log(this.descuento);
+    desgloce.descuento = this.descuento
+    
     this.infoCotizacion['desgloce'] = desgloce
     this.realizarInfo(elementos)
   }
@@ -942,9 +972,6 @@ camposDesgloce = [
     
     const elementos:any[] = this.infoCotizacion.elementos
     elementos[index] = null
-    console.log(elementos);
-    
-   
     this.infoCotizacion.elementos = elementos.filter(e=>e)
     this.realizarOperaciones()
   }
@@ -1201,6 +1228,7 @@ camposDesgloce = [
           const cliente = this.infoCotizacion.cliente
           
           const desgloce = this.infoCotizacion['desgloce']
+          
           const vencimiento = infoCotizacion['vencimiento']
           if(!vehiculo['no_motor']) vehiculo['no_motor'] =''
           if(!cliente['empresa']) cliente['empresa'] = ''
@@ -1230,7 +1258,6 @@ camposDesgloce = [
             infoCotizacion,
             formaPago: infoPago
           }
-          console.log(tempPDF);
           
           this._pdf.pdf(this.dataImagen,tempPDF,this.detalles).then(async (ans:any)=>{
             const pdfDocGenerator = pdfMake.createPdf(ans);
@@ -1341,6 +1368,38 @@ camposDesgloce = [
         this.cuales = cu
       }
     })
+  }
+
+  ordenarElementos(campo:string){
+    // console.log(campo);
+    // console.log(this.dataSource.data);
+    let info =  []
+    info = [...this.dataSource.data]
+    
+    // console.log(this.ordenamiento);
+    
+
+    if (this.ordenamiento) {
+      info.sort(function (a, b) {
+        if (a[campo] > b[campo]) { return 1; }
+        if (a[campo] < b[campo]) { return -1; }
+        return 0;
+      })
+    }else{
+      info.sort(function (a, b) {
+        if (a[campo] < b[campo]) { return 1; }
+        if (a[campo] > b[campo]) { return -1; }
+        return 0;
+      })
+    }
+    
+
+    // console.log(info);
+
+    this.dataSource.data = info
+    this.newPagination('elementos')
+    
+    
   }
 
   async validarInformacion(){

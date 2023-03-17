@@ -113,7 +113,6 @@ export class ClienteComponent implements OnInit {
       this.correoExistente = false
       if (info) this.correoExistente = true
     }
-    
   }
   verificarTelefono(){
     const telefono = this.form_cliente.controls['telefono_movil'].value
@@ -167,12 +166,9 @@ export class ClienteComponent implements OnInit {
           }
         })
       }
-
     }else{
       this._publicos.mensajeIncorrecto('seleccionar sucursal para poder registrar empresa')
     }
-
-
   }
   validarEmpresa(campo: string){
     return this.formaEmpresa.get(campo).invalid && this.formaEmpresa.get(campo).touched
@@ -242,8 +238,6 @@ export class ClienteComponent implements OnInit {
 
     // this.correo_utilizado === 'sucursal'
 
-    
-    
     const info_get = this.form_cliente.value
     let saveInfo = {
       no_cliente: String(info_get['no_cliente']).trim(),
@@ -316,7 +310,6 @@ export class ClienteComponent implements OnInit {
         saveInfo['id'] = push(child(ref(db), 'posts')).key
       }
 
-      
       updates['/clientes/' + saveInfo['id']] = saveInfo;
     
       update(ref(db), updates)

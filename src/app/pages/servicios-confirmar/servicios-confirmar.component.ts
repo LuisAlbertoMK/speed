@@ -411,7 +411,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           }else{
             if (ele['tipo'] === 'paquete') {
               const desgloce = this._publicos.costodePaquete(ele['elementos'], cot['margen'])
-              ele['flotilla'] =  desgloce.totalPaquete
+              ele['flotilla'] =  desgloce.flotilla
               ele['desgloce'] =  desgloce
             }else{
               // console.log(ele['precio'] * ele['cantidad']);
@@ -1522,6 +1522,11 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       arregloString,
       desgloce
     }    
+    data['notifico'] = true
+
+
+
+    
 
     // console.log(dataMail);
     this._mail.EmailRecepcion(dataMail).then(()=>{
