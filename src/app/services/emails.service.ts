@@ -113,7 +113,7 @@ export class EmailsService {
     }
     return tempEmail
   }
-  async EmailBienvenida(cliente:any){
+  async EmailBienvenida(cliente:any){    
     const dataEmail = {
       // from:cliente['correos'][0],
       cliente: cliente['nombre'],

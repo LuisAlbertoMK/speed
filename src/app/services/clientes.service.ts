@@ -237,7 +237,7 @@ export class ClientesService {
   }
   async registraCliente(data:any){
     let ans:boolean = false
-    data
+    
     	await set(ref(db, `clientes/${data.id}`), data )
               .then(async () => {
                 // Data saved successfully!

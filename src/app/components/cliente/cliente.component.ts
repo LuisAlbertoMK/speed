@@ -6,6 +6,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 
 import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database"
 import Swal from 'sweetalert2';
+import { EmailsService } from 'src/app/services/emails.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -47,7 +48,7 @@ export class ClienteComponent implements OnInit {
   correo_utilizado: string = 'personal'
   correos = [{value:'personal', show:'Personal'},{value:'sucursal', show:'Sucursal'}];
   constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
-    private _clientes: ClientesService) {
+    private _clientes: ClientesService,private _mail: EmailsService) {
       this.heroeSlec = new EventEmitter()
     }
 
@@ -87,6 +88,7 @@ export class ClienteComponent implements OnInit {
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
+        this.arreglo_correos =[]
         this._clientes.ListaClientes().then(({existe,clientes})=>{
           if (existe) {
             this.contadroClientes = clientes.length + 1
@@ -98,10 +100,13 @@ export class ClienteComponent implements OnInit {
       }
     })
   }
+  coloca(val:string){
+    if(val) this.form_cliente.controls['correo'].setValue('patito@gmail.com')
+    else  this.form_cliente.controls['correo'].setValue(val)
+  }
   verificarCorreoExiste(){
     if (this.correo_utilizado === 'sucursal') {
       this.correoExistente = false
-      this.form_cliente.controls['correo'].setValue('patito@gmail.com')
     }else{
       const correo = this.form_cliente.controls['correo'].value
       const info = this.arreglo_correos.find(o=>o === correo)
@@ -237,9 +242,6 @@ export class ClienteComponent implements OnInit {
 
     // this.correo_utilizado === 'sucursal'
 
-    console.log(this.correo_utilizado);
-
-    return
     
     
     const info_get = this.form_cliente.value
@@ -248,23 +250,29 @@ export class ClienteComponent implements OnInit {
       nombre: String(info_get['nombre']).trim(),
       apellidos: String(info_get['apellidos']).trim(),
       fullname: String(`${info_get['nombre']} ${info_get['apellidos']}`).trim(),
-      correo: String(info_get['correo']).trim(),
+      
       telefono_movil: String(info_get['telefono_movil']).trim(),
       tipo: String(info_get['tipo']).trim(),
       sucursal: String(info_get['sucursal']).trim(),
     };
 
+    if(this.correo_utilizado ==='personal'){
+      saveInfo['correo'] = String(info_get['correo']).trim()
+    }else{
+    //  const {correo} =  this.Sucursales.find(s=>s['id'] === saveInfo['sucursal'] )
+    }
     (info_get['correo_sec']) ? saveInfo['correo_sec'] = String(info_get['correo_sec']).trim(): null;
     (info_get['telefono_fijo']) ? saveInfo['telefono_fijo'] = String(info_get['telefono_fijo']).trim(): null;
     (info_get['empresa']) ? saveInfo['empresa'] = String(info_get['empresa']).trim(): null;
 
     let contador = 0
+    const updates = {};
     if (this.id) {
       const campos = ['no_cliente','nombre','apellidos','correo','telefono_movil','tipo',
                       'sucursal','correo_sec','telefono_fijo','empresa']
       campos.map( (campo)=>{
         // console.log(campo);
-        const updates = {};
+        
         updates[`clientes/${this.id}/${campo}`] = saveInfo[campo];
         if (this.data[campo] && saveInfo[campo]) {
           if ( this.data[campo] !== saveInfo[campo] ) {
@@ -307,11 +315,33 @@ export class ClienteComponent implements OnInit {
       if (!info_get['id']) {
         saveInfo['id'] = push(child(ref(db), 'posts')).key
       }
-      this._clientes.registraCliente(saveInfo).then(ans=>{
-        this.heroeSlec.emit( {registro: ans, cliente: saveInfo, oculta: true})
-        }).catch(ans=>{
-          this.heroeSlec.emit( {registro: ans, cliente: {}, oculta: false})
+
+      
+      updates['/clientes/' + saveInfo['id']] = saveInfo;
+    
+      update(ref(db), updates)
+      .then(async ()=>{
+        
+        // if (this.correo_utilizado === 'personal') {
+           const {correo} =  this.Sucursales.find(s=>s['id'] === saveInfo['sucursal'] )
+            
+            const infocorreo = {
+              nombre: `${saveInfo['nombre']} ${saveInfo['apellidos']}`,
+              correos: [],
+              no_cliente: saveInfo['no_cliente']
+            }
+            if(saveInfo['correo']){
+              infocorreo['correos'] = [correo,saveInfo['correo']]
+            }else{
+              infocorreo['correos'] = [correo]
+            }
+            await this._mail.EmailBienvenida(infocorreo)
+        // }
+        this.heroeSlec.emit( {registro: true, cliente: saveInfo, oculta: true})
+        }).catch(()=>{
+          this.heroeSlec.emit( {registro: false, cliente: {}, oculta: false})
         })
+      // this._clientes.registraCliente(saveInfo)
     }
   }
 

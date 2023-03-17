@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { child, get, getDatabase, onValue, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database";
 import {debounceTime, map, startWith} from 'rxjs/operators'
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import  pdfMake  from "pdfmake/build/pdfmake";
@@ -626,14 +626,29 @@ camposDesgloce = [
     const valor = String(value).toLowerCase();
     let data =[], ordenando =[]
     if (donde==='cotizaciones') {
-      data= this.cotizaciones.filter(o => o.no_cotizacion.toLowerCase().includes(valor))
-      // console.log(data);
+      data= this.cotizaciones.filter(o => o.no_cotizacion.toLowerCase().includes(valor))      
       if (data.length===0) { data= this.cotizaciones.filter(o => o['infoCliente']['fullname'].toLowerCase().includes(valor)) }
+      this.cotizaciones.map((c)=>{
+        if(!c['infoCliente'].correo) c['infoCliente'].correo = ''
+      })
       if (data.length===0) { data= this.cotizaciones.filter(o => o.infoCliente['correo'].toLowerCase().includes(valor)) }
+      if (data.length===0) { 
+        this.cotizaciones.map((o)=>{
+          const vehiculos = o.infoCliente['vehiculos']
+          vehiculos.forEach(v => {
+            if (v['id'] === o['vehiculo']) o['placas'] = v['placas']
+          });
+        })
+        data= this.cotizaciones.filter(o => o['placas'].toLowerCase().includes(valor))
+       }
+
       ordenando =  this._publicos.ordernarPorCampo(data,'no_cotizacion')
     }else if (donde==='clientes') {
       data= this.clientes.filter(o => o.no_cliente.toLowerCase().includes(valor))
       if (data.length===0) { data= this.clientes.filter(o => o.nombre.toLowerCase().includes(valor)) }
+      this.clientes.map((c)=>{
+        if(!c['correo']) c['correo'] = ''
+      })
       if (data.length===0) { data= this.clientes.filter(o => o.correo.toLowerCase().includes(valor)) }
       ordenando =  this._publicos.ordernarPorCampo(data,'no_cliente')
     }else if (donde==='elementos') {
@@ -798,11 +813,14 @@ camposDesgloce = [
       this.infoCotizacion.vehiculo  = null
     }else{
       this._publicos.recuperaDataArreglo(this.camposCliente,valor).then(async (recuperada)=>{
+        let nueva = {...recuperada}
+        const infoSucursal = await this.sucursales.find(o=>o['id'] === valor['sucursal'])
+        nueva['sucursal'] = infoSucursal
         this.myControlClientes.setValue(recuperada)
         this.infoCotizacion.vehiculos = valor['vehiculos']
         this.infoCotizacion.data.vehiculo = null
         this.infoCotizacion.data['sucursal'] = recuperada['sucursal']
-        this.infoCotizacion.sucursal = valor['infoSucursal']
+        this.infoCotizacion.sucursal = infoSucursal
         this.infoCotizacion.vehiculo  = null
         this.infoCotizacion.cliente = recuperada
         this.infoCotizacion.data.cliente = valor['id']
@@ -1259,7 +1277,11 @@ camposDesgloce = [
                         if (result.isConfirmed) {
                           pdfMake.createPdf(ans).open();
                         } else if (result.isDenied) {
-                          set(ref(db, `cotizacionesRealizadas/${newPostKey}`), infoCotizacion )
+                          const updates = {};
+                          updates['cotizacionesRealizadas/' + newPostKey] = infoCotizacion;
+                          
+                        
+                          update(ref(db), updates)
                           .then(() => {
                             pdfMake.createPdf(ans).download(no_cotizacion);
                             this._email.EmailCotizacion(dataCorreo)
@@ -1269,6 +1291,18 @@ camposDesgloce = [
                           .catch((error) => {
                             // The write failed...
                           });
+                          // set(ref(db, `cotizacionesRealizadas/${newPostKey}`), infoCotizacion )
+                          // .then(() => {
+                          //   pdfMake.createPdf(ans).download(no_cotizacion);
+                          //   console.log(dataCorreo);
+                            
+                          //   this._email.EmailCotizacion(dataCorreo)
+                          //   this._publicos.mensajeCorrecto('Cotizacion realizada')
+                          //   this.router.navigateByUrl('/cotizacion')
+                          // })
+                          // .catch((error) => {
+                          //   // The write failed...
+                          // });
                         }
                       })
                       

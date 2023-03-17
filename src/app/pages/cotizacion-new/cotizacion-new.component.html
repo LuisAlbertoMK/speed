@@ -17,7 +17,7 @@
         <form>
           <input type="search" class="form-control form-control-sm text-uppercase" id="cotizaciones"
             [formControl]="myControl" [matAutocomplete]="auto" (ngModelChange)="vericarInfoCotizacion()"
-            placeholder="Buscar por: # Cotización, nombre o correo">
+            placeholder="Buscar por: # Cotización, nombre, correo Ó placas">
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
               {{option['no_cotizacion']}} - {{ option['infoCliente']['fullname']}} - {{option['infoCliente']['correo']}}
@@ -74,6 +74,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="infoCotizacion.cliente[item]">
                   {{item.toUpperCase()}}:
                   <ng-container *ngIf="item === 'sucursal'; else elseSucursal">
+                    <!-- {{infoCotizacion.sucursal}}  -->
                     <strong class="fs-6 text-uppercase"> {{infoCotizacion.sucursal['sucursal']}} </strong>
                   </ng-container>
                   <ng-template #elseSucursal>
