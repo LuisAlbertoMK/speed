@@ -785,6 +785,22 @@
       <button class="btn btn-primary m-1 " (click)="firmar()">Firmar</button>
       <!-- <button class="btn btn-danger m-1 " (click)="subirFirma()">subirFirma</button> -->
     </div>
+    <!-- (ngSubmit)="guardarCliente()" -->
+    <form  [formGroup]="observaciones">
+      <div class="row text-start">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="mb-1 row">
+            <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">observaciones</label>
+            <div class="col-sm-9 col-md-8 col-lg-9 ">
+              <textarea style="width: 100%;" rows="2" formControlName="observaciones"></textarea>
+              <!-- <input type="text" class="form-control form-control-sm" id="observaciones" > -->
+             <!-- [class.is-invalid]="validarCampo('no_cliente')" [attr.disabled]="true" -->
+              <!-- <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small> -->
+            </div>
+          </div>
+        </div>
+        </div>
+    </form>
     <!-- <pre> 
       {{this.dataRecepcion.data | json}}
     </pre> -->

@@ -25,6 +25,9 @@ export class PdfService {
           layout: layoutDef
       };
     }
+
+    
+    
     function transform(value: number): string {
       // let nuevoValue = ``
       if (value) {
@@ -257,8 +260,8 @@ export class PdfService {
             row['normal'] = transform((row['costo'] * row['cantidad'])* 1.30)
             columns.forEach(function(column) {
               dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
-          i++;
-          })
+              i++;
+              })
           }else{
             row['flotilla2'] = transform(row['flotilla'])
             row['normal'] = transform(row['flotilla'] * 1.30)

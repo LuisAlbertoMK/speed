@@ -20,7 +20,6 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { ClientesService } from '../../services/clientes.service';
 import { SucursalesService } from '../../services/sucursales.service';
 import { VehiculosService } from '../../services/vehiculos.service';
-import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { ServiciosService } from '../../services/servicios.service';
 import { CatalogosService } from '../../services/catalogos.service';
 
@@ -30,8 +29,11 @@ import { UploadFileService } from '../../services/upload-file.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { CotizacionService } from 'src/app/services/cotizacion.service';
-import { log } from 'console';
 import { PdfRecepcionService } from '../../services/pdf-recepcion.service';
+
+import  pdfMake  from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -270,6 +272,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   listaEmpresas = []
   formaEmpresa: FormGroup;
+  observaciones: FormGroup;
 
   sucursales= []
   cotizaciones = []
@@ -296,6 +299,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     
     // this.listaClientes()
+    this.crearFormObservaciones()
     this.listaSucursales()
     this.listaMarcas_refacciones()
     this.listarPaquetes()
@@ -317,6 +321,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.dataImagen = val
     })
   }
+  
   async getBase64ImageFromURL(url:any) {
     return new Promise((resolve, reject) => {
       var img = new Image();
@@ -335,6 +340,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       };
       img.src = url;
     });
+  }
+
+  crearFormObservaciones(){
+    this.observaciones = this.fb.group({
+      observaciones:['',[]]
+    })
   }
 
   listaSucursales(){
@@ -1548,17 +1559,29 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }    
     data['notifico'] = true
 
-    console.log(this.dataRecepcion);
     
-
     
-
+    
+    
+    
     
     const campos = ['apellidos','correo','correo_sec','fullname','id','no_cliente','nombre','sucursal','telefono_fijo','telefono_movil','tipo']
     const cliente = this._publicos.recuperaData(campos,this.dataRecepcion['cliente'])
+    if (!cliente['empresa']) {
+      cliente['empresa'] =''
+    }
+    console.log(this.dataRecepcion);
+
+    let obs = ''
+    if (this.observaciones.controls['observaciones'].value) {
+      obs = this.observaciones.controls['observaciones'].value
+    }
     const infoPdf = {
       checkList: this.dataRecepcion['checkList'],
       cliente,
+      no_os:data['no_os'],
+      observaciones: obs,
+      fecha: this._publicos.getFechaHora().fecha,
       detalles: this.dataRecepcion['detalles'],
       elementos: this.dataRecepcion['elementos'],
       imagenBase64: this.dataImagen,
@@ -1567,7 +1590,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }
     
     // console.log(infoPdf);
-    this._pdfRecepcion.pdf(infoPdf)
+    this._pdfRecepcion.pdf(infoPdf).then((ans:any)=>{
+      const pdfDocGenerator = pdfMake.createPdf(ans);
+      pdfMake.createPdf(ans).open();
+      pdfDocGenerator.getBlob(async (blob) => {
+      })
+    })
     
 
     
