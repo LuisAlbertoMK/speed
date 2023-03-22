@@ -8,6 +8,12 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { PdfRecepcionService } from '../../services/pdf-recepcion.service';
+
+
+import  pdfMake  from "pdfmake/build/pdfmake";
+import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -36608,7 +36614,7 @@ recepciones = {
   }
 
   constructor(private _automaticos: AutomaticosService, private _encript: EncriptadoService, private _publicos: ServiciosPublicosService,
-    private _security:EncriptadoService, public _router: Router, public _location: Location
+    private _security:EncriptadoService, public _router: Router, public _location: Location,private _pdfRecepcion: PdfRecepcionService
     ) { }
 
   ngOnInit(): void {
@@ -36994,4 +37000,27 @@ recepcionesChange(){
         this._publicos.mensajeCorrecto('registro de cliente correcto')
       }
   }
+
+  realizaPDF(){
+  let variable = 2
+  switch (variable) {
+    case 1:
+      
+      break;
+    case 2:
+      let data = {}
+      this._pdfRecepcion.pdf(data).then((ans:any)=>{
+        const pdfDocGenerator = pdfMake.createPdf(ans);
+        pdfMake.createPdf(ans).open();
+        pdfDocGenerator.getBlob(async (blob) => {
+        })
+      })
+      
+      break;
+  
+    default:
+      break;
+  }
+  }
+  
 }

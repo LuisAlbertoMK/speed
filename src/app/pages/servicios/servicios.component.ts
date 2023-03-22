@@ -457,7 +457,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
                       }
                      })
                     if (s['tipo'] === 'paquete') { 
-                      const elementos = s['elementos']
+                      let elementos = []
+                      if(s['elementos']) elementos = s['elementos']
                       const camposEle = ['cantidad','descripcion','costo','nombre','precio','subtotal','tipo']
                       elementos.map((e,ind) => {
                         

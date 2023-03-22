@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import  pdfMake  from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
 import { ServiciosPublicosService } from './servicios-publicos.service';
-import { style } from '@angular/animations';
+
 
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs

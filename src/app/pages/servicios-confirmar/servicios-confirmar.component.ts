@@ -31,6 +31,7 @@ import { UsuariosService } from '../../services/usuarios.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { CotizacionService } from 'src/app/services/cotizacion.service';
 import { log } from 'console';
+import { PdfRecepcionService } from '../../services/pdf-recepcion.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -283,13 +284,14 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   valida:boolean = true
   cuales:string = ''
+  dataImagen:any;
   constructor(
     private router: Router, private rutaActiva: ActivatedRoute, private _formBuilder: FormBuilder, private _clientes:ClientesService,
     private _uploadfirma: UploadFirmaService,private _mail:EmailsService, private fb: FormBuilder, private _publicos:ServiciosPublicosService,
     private _sucursales: SucursalesService, private _vehiculos: VehiculosService,
     private _servicios: ServiciosService, private _catalogos:CatalogosService, private _uploadFiles: UploadFileService,
     private _usuarios: UsuariosService,  private _security:EncriptadoService,
-    private _cotizaciones: CotizacionService) { }
+    private _cotizaciones: CotizacionService, private _pdfRecepcion: PdfRecepcionService) { }
     
   ngOnInit(): void {
     
@@ -311,6 +313,28 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     // this.generaNombreRecepcion()
     this.filtro_date()
     // this.lista_cameras()
+    this.getBase64ImageFromURL('../../../assets/logoSpeedPro/Logo-Speedpro.png').then((val:any)=>{
+      this.dataImagen = val
+    })
+  }
+  async getBase64ImageFromURL(url:any) {
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL);
+      };
+      img.onerror = error => {
+        reject(error);
+      };
+      img.src = url;
+    });
   }
 
   listaSucursales(){
@@ -1524,25 +1548,47 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }    
     data['notifico'] = true
 
+    console.log(this.dataRecepcion);
+    
 
+    
+
+    
+    const campos = ['apellidos','correo','correo_sec','fullname','id','no_cliente','nombre','sucursal','telefono_fijo','telefono_movil','tipo']
+    const cliente = this._publicos.recuperaData(campos,this.dataRecepcion['cliente'])
+    const infoPdf = {
+      checkList: this.dataRecepcion['checkList'],
+      cliente,
+      detalles: this.dataRecepcion['detalles'],
+      elementos: this.dataRecepcion['elementos'],
+      imagenBase64: this.dataImagen,
+      sucursal: this.dataRecepcion['sucursal'],
+      vehiculo: this.dataRecepcion['vehiculo'],
+    }
+    
+    // console.log(infoPdf);
+    this._pdfRecepcion.pdf(infoPdf)
+    
+
+    
 
     
 
     // console.log(dataMail);
-    this._mail.EmailRecepcion(dataMail).then(()=>{
-      set(ref(db, `recepciones/${newPostKey}`), data )
-        .then(() => {
-          this.dataRecepcion={data:{},elementos:[],cliente:[],vehiculo:[],sucursal:[],detalles:[],checkList:[]}
-          this.realizarOperaciones()
-          this.archivos = []
-          this.disableBtnGuardarIMG = false
-          this._publicos.mensajeCorrecto('Nueva OS registrada')
-          this.router.navigateByUrl('/servicios')
-        })
-        .catch((error) => {
-          // The write failed...
-        });
-    })
+    // this._mail.EmailRecepcion(dataMail).then(()=>{
+    //   set(ref(db, `recepciones/${newPostKey}`), data )
+    //     .then(() => {
+    //       this.dataRecepcion={data:{},elementos:[],cliente:[],vehiculo:[],sucursal:[],detalles:[],checkList:[]}
+    //       this.realizarOperaciones()
+    //       this.archivos = []
+    //       this.disableBtnGuardarIMG = false
+    //       this._publicos.mensajeCorrecto('Nueva OS registrada')
+    //       this.router.navigateByUrl('/servicios')
+    //     })
+    //     .catch((error) => {
+    //       // The write failed...
+    //     });
+    // })
   
   }
   applyFilter(event: Event, table:string) {
@@ -1718,10 +1764,10 @@ comenzar(){
 
   }
   limpiarCanvas() {
-    const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
+    // const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
     
-    const context = mainCanvas.getContext("2d")
-    context.clearRect(0,0,700,500);
+    // const context = mainCanvas.getContext("2d")
+    // context.clearRect(0,0,700,500);
  }
  async guardarImagenCanvas(){
   this.disableBtnGuardarIMG = true
