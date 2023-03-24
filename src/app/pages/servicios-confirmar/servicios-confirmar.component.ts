@@ -74,7 +74,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   desgloce_iva:any=[{nombre: 'subtotal', valor:'subtotal'},{nombre: 'IVA', valor:'IVA'},{nombre: 'total', valor:'total'}]
   IVA:boolean = true; seleccionarTodo:boolean =true;
 
-  SinDetalles:boolean = false; kilometraje:number =0; diasEntrega:number = null
+  SinDetalles:boolean = false; kilometraje:number =1234; diasEntrega:number = null
   
   fotografias:boolean = false; detallesPersonalizado:boolean = true
 
@@ -205,6 +205,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     //   this.files=[]
     //   this.archivos=[]
     // }
+    this.archivos =[]
     this.files.push(...event.addedFiles);
     for(const f of this.files) {
       this.archTemp={
@@ -1273,11 +1274,11 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
             arreglo.id = element[campo]
           }
         }
-        // if (element['id'] === 'nivel_gasolina') {
-        //   arreglo.status = 'lleno'
-        // }else{
-          // arreglo.status = 'si'
-        // }
+        if (element['id'] === 'nivel_gasolina') {
+          arreglo.status = 'lleno'
+        }else{
+          arreglo.status = 'si'
+        }
         const mos = element['id'].split('_')
         arreglo.mostrar = mos.join(' ')
         
@@ -1615,13 +1616,35 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.progreso = avance
 
   }
+  verIma(){
+    console.log(this.archivos);
+  }
   gurdarFinal(newPostKey:string,data:any,arregloString:string,desgloce:any){
     // console.log(data);
+    let personalizados = []
+    
+    
+    
+    
+    
+    if (this.archivos.length) {
+       this.archivos.forEach((a)=>{
+        const infoPer = {
+          nombre: a['nombreArchivo'],
+          url: a['url'],
+        }
+        personalizados.push(infoPer)
+       })
+    }
+
+    this.dataRecepcion['personalizados'] = personalizados
+
     
     let correos:any[] =[]
     correos.push(this.dataRecepcion.sucursal['correo']);    
     (this.dataRecepcion.cliente['correo'])? correos.push(this.dataRecepcion.cliente['correo']):'';
     (this.dataRecepcion.cliente['correo_sec'])? correos.push(this.dataRecepcion.cliente['correo_sec']):''
+
     const dataMail = {
       correos,
       no_os: data['no_os'],
@@ -1632,11 +1655,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }    
     data['notifico'] = true
 
-    
-    
-    
-    
-    
     
     const campos = ['apellidos','correo','empresaShow','correo_sec','fullname','id','no_cliente','nombre','sucursal','telefono_fijo','telefono_movil','tipo']
     const cliente = this._publicos.recuperaData(campos,this.dataRecepcion['cliente'])
@@ -1660,6 +1678,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       imagenBase64: this.dataImagen,
       sucursal: this.dataRecepcion['sucursal'],
       vehiculo: this.dataRecepcion['vehiculo'],
+      personalizados: this.dataRecepcion['personalizados'],
     }
 
     let timerInterval
@@ -1687,14 +1706,14 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     })
     
     
-    // console.log(infoPdf);
+    console.log(infoPdf);
     this._pdfRecepcion.pdf(infoPdf).then((ans:any)=>{
       const pdfDocGenerator = pdfMake.createPdf(ans);
       // pdfMake.createPdf(ans).open();
       dataMail['filename'] = `${infoPdf['no_os']}.pdf`,
 
-
-
+      // console.log(dataMail);
+      
       pdfDocGenerator.getBlob(async (blob) => {
        this._pdf.uploadRecepcion(blob, dataMail['filename']).then((asn)=>{
          let intervalo = setInterval(()=>{
@@ -1702,9 +1721,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           if (asn.ruta) {
             clearInterval(intervalo)
             // console.log(asn.ruta);
+            
             dataMail['pathPDF'] = asn.ruta
             const updates = {};
             updates[`recepciones/${newPostKey}`] = data;
+            this.files =[]
+            this.archivos = []
             update(ref(db), updates).then(()=>{
               pdfMake.createPdf(ans).download(dataMail['filename']);
               this._mail.EmailRecepcion(dataMail)
@@ -1924,7 +1946,7 @@ comenzar(){
     const datURL = await canvas.toDataURL()
     const blob = this.UrltoBlob(datURL)
     
-    const file = new File([blob], `detallesPersonalizado.png.png`,{
+    const file = new File([blob], `detallesPersonalizado.png`,{
       type: blob.type,
     })
     this.files.push(file)
@@ -1932,7 +1954,7 @@ comenzar(){
     this.blobDetallesPersonalizado = blob
     this.archTemp={
       archivo:blob,
-      nombreArchivo:'detallesPersonalizado.png',
+      nombreArchivo:'detallesPersonalizado',
       estaSubiendo:false,
       progreso:0
     }

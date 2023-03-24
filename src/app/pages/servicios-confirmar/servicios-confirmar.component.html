@@ -542,6 +542,8 @@
       
 
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
+
+        <button class="btn btn-danger " (click)="verIma()"> revisar archivos </button>
         <h3 class="text-danger">Si estas en telefono movil cambiar a orientación horizontal</h3>
         <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
           <mat-tab label="Detalles">
@@ -724,7 +726,8 @@
             <label for="kilometraje">Kilometraje: </label>
           </div>
           <div class="col-auto">
-            <input type="number" id="kilometraje" (change)="revisarAvance()" [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
+            <input type="number" id="kilometraje" 
+            (change)="revisarAvance()" [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
               class="form-control form-control-sm" min="0">
           </div>
         </div>

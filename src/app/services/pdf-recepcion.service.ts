@@ -1724,17 +1724,48 @@ export class PdfRecepcionService {
     nuevasdocumentDefinitionimages['tirador_posterior'] = `${(await bases('../../assets/imagenes_detalles/tirador_posterior.jpg')).url}`
     nuevasdocumentDefinitionimages['techo'] = `${(await bases('../../assets/imagenes_detalles/techo.jpg')).url}`
 
+    
+    
+    
+    let limites_ = [], person_ =[]
+    
+    if (dat['personalizados'].length) {
+      // console.log('anexar al pdf las imagenes de personalizados');
+      person_ = dat['personalizados']
+    }
+    let conjunto = []
+    if (person_.length) {
+      conjunto = checados.concat(person_)
+    }else{
+      conjunto = checados
+    }
+    const donde = conjunto
+    person_.forEach((p)=>{
+      const nombre = p['nombre'].split('.')
+      nuevasdocumentDefinitionimages[nombre[0].toLowerCase()] = Object({
+        url: `${p['url']}`,
+        headers: {
+          myheader: 'imagen',
+          myotherheader: '123',
+          // cors:'Access-Control-Allow-Headers'
+          
+        }
+      })
+    })
+    
+    
     documentDefinition.images = Object({...nuevasdocumentDefinitionimages})
+    // console.log('definiciones de imagenes para pdf');
     
-
+    // console.log(nuevasdocumentDefinitionimages);
+    
+    // console.log(donde);
     let i_ =0
-    let limites_ = []
-    const donde = checados
-    
     if (donde.length) {
      
       info.push({ columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },)
       info.push({ text: `${'Detalles en vehiculos'}`,alignment: 'center', style:'otro' })
+
       donde.forEach((c, index)=>{
         // console.log(c['id']);
         if (i_ >= 4 ) {
@@ -1750,16 +1781,33 @@ export class PdfRecepcionService {
     if (donde.length>4) {
       limites_.push(donde.length -1)
     }
-     
+
+    // if (donde.length>4) {
+    //   limites_.push(donde.length -1)
+    // }
+    // console.log('error');
+    
     let todasLasImagenes =[]
+    
+    limites_.sort()
+    // console.log(limites_);
+    
     limites_.forEach((a,index) => {
       let muestra = []
       if (index ===0) {
         for (let index_ = 0; index_ <= a; index_++) {
           // console.log(checados[index_]);
+          let cual =''
+          if (donde[index_].id) {
+            cual = `${donde[index_].id.toLowerCase()}`
+          }else{
+            const nombre = donde[index_].nombre.split('.')
+            cual = `${nombre[0].toLowerCase()}`
+          }
+          // console.log(cual);
           muestra.push(Object(
             {
-              image: `${donde[index_].id.toLowerCase()}`,
+              image: `${cual}`,
               height: 70,
               width: 120,
               aling: 'center',
@@ -1771,9 +1819,17 @@ export class PdfRecepcionService {
       }else{        
         for (let index_ = limites_[index -1 ]+1; index_ <=a; index_++) {
           // console.log(checados[index_]);
+          let cual =''
+          if (donde[index_].id) {
+            cual = `${donde[index_].id.toLowerCase()}`
+          }else{
+            const nombre = donde[index_].nombre.split('.')
+            cual = `${nombre[0].toLowerCase()}`
+          }
+          // console.log(cual);
           muestra.push(Object(
             {
-              image: `${donde[index_].id.toLowerCase()}`,
+              image: `${cual}`,
               height: 70,
               width: 120,
               aling: 'center',
@@ -1788,6 +1844,8 @@ export class PdfRecepcionService {
       console.log(muestra);
       
     });
+    
+    console.log(todasLasImagenes);
     
    
     todasLasImagenes.sort(function(a, b){return b.length - a.length})
@@ -1810,8 +1868,6 @@ export class PdfRecepcionService {
         }
       }
     ))
-    }else{
-      
     }
 
     documentDefinition.content = [...info]
