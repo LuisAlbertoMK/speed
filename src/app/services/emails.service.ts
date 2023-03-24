@@ -24,8 +24,6 @@ export class EmailsService {
     const emailAnexa = dataEmail.emailAnexa
     // const correoCliente = cliente.correo
 
-      
-    
     let tempEmail ={}
     let title = ''; let nota =''
     if (tipo === 'cotizacion') {
@@ -90,6 +88,12 @@ export class EmailsService {
           email: dataEmail.correos,  
           subject: `${dataEmail.subject}`,
           mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.nombre} ${cliente.apellidos}</strong>.<br>Se le informa la recepcion de su vehículo con placas ${vehiculo.placas.toUpperCase()}, numero de recepcion ${nombreRecepcion} <br> anexo desgloce:  <br>  ${dataEmail['desgloce']}`,
+          attachments:[
+            {   // use URL as an attachment
+              filename: filename,
+              path: pathPDF
+            }
+          ],
         }
       }      
     }
@@ -111,6 +115,7 @@ export class EmailsService {
          color ${vehiculo.color} anexo el resumen de la O.S: ${dataEmail.resumen}. <br> desgloce de operacion <br> ${dataEmail.desgloce}`,
       }
     }
+    
     return tempEmail
   }
   async EmailBienvenida(cliente:any){    
@@ -195,6 +200,8 @@ export class EmailsService {
       subject: `Recepcion de vehiculo ${data.vehiculo.placas.toUpperCase()}`,
       tipo:'recepcionVehiculo',
       correos: data.correos,
+      pathPDF: data['pathPDF'],
+      filename: data['filename'],
       nombreRecepcion: data.no_os,
       arregloString: data.arregloString,
       desgloce: data.desgloce

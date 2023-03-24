@@ -1574,7 +1574,7 @@ export class PdfRecepcionService {
                   ],
                   [ 
                     { text: `Empresa:`,alignment: 'left', style:'info' },
-                    { text: `${dat['cliente']['empresa']}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
+                    { text: `${dat['cliente']['empresaShow']}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `Año:`,alignment: 'left', style:'info' },
                     { text: `${dat['vehiculo'].anio}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
@@ -1725,13 +1725,17 @@ export class PdfRecepcionService {
     nuevasdocumentDefinitionimages['techo'] = `${(await bases('../../assets/imagenes_detalles/techo.jpg')).url}`
 
     documentDefinition.images = Object({...nuevasdocumentDefinitionimages})
-    info.push({ columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },)
-    info.push({ text: `${'Detalles en vehiculos'}`,alignment: 'center', style:'otro' })
+    
 
     let i_ =0
     let limites_ = []
     const donde = checados
-    donde.forEach((c, index)=>{
+    
+    if (donde.length) {
+     
+      info.push({ columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },)
+      info.push({ text: `${'Detalles en vehiculos'}`,alignment: 'center', style:'otro' })
+      donde.forEach((c, index)=>{
         // console.log(c['id']);
         if (i_ >= 4 ) {
           limites_.push(index - 1)
@@ -1806,9 +1810,12 @@ export class PdfRecepcionService {
         }
       }
     ))
-    
+    }else{
+      
+    }
 
     documentDefinition.content = [...info]
+    
 
     return documentDefinition
 

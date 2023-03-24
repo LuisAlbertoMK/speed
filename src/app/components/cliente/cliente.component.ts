@@ -258,50 +258,22 @@ export class ClienteComponent implements OnInit {
     (info_get['correo_sec']) ? saveInfo['correo_sec'] = String(info_get['correo_sec']).trim(): null;
     (info_get['telefono_fijo']) ? saveInfo['telefono_fijo'] = String(info_get['telefono_fijo']).trim(): null;
     (info_get['empresa']) ? saveInfo['empresa'] = String(info_get['empresa']).trim(): null;
-
+    console.log(saveInfo);
+    
     let contador = 0
     const updates = {};
     if (this.id) {
-      const campos = ['no_cliente','nombre','apellidos','correo','telefono_movil','tipo',
-                      'sucursal','correo_sec','telefono_fijo','empresa']
+      const campos = ['no_cliente','nombre','apellidos','correo','telefono_movil','tipo','sucursal','correo_sec','telefono_fijo','empresa']
       campos.map( (campo)=>{
-        // console.log(campo);
-        
-        updates[`clientes/${this.id}/${campo}`] = saveInfo[campo];
-        if (this.data[campo] && saveInfo[campo]) {
-          if ( this.data[campo] !== saveInfo[campo] ) {
-            contador++
-            // console.log(`clientes/${this.id}/${campo} = ${saveInfo[campo]} !==  ${this.data[campo]}`);
-            update(ref(db), updates).catch((error)=>{
-                console.log(error);
-                contador--
-              })
-          }
-        }
-        if (saveInfo[campo] && !this.data[campo]) {
-          // console.log(`este campo no existia ${campo}: ${saveInfo[campo]}`);
-          contador++
-          update(ref(db), updates).catch((error)=>{
-              console.log(error);
-              contador--
-            })
-        }
-        if (!saveInfo[campo] && this.data[campo]) {
-          // console.log(`este campo existia ${campo}: ${this.data[campo]} pero se elimino`);
-          contador++
-          updates[`clientes/${this.id}/${campo}`] = '';
-          update(ref(db), updates).catch((error)=>{
-              console.log(error);
-              contador--
-            })
-        }
+        if (saveInfo[campo]) updates[`clientes/${this.id}/${campo}`] = saveInfo[campo];
+      })      
+      saveInfo['id'] = this.id
+      update(ref(db), updates).then(()=>{
+        this.heroeSlec.emit( {registro: true, cliente: saveInfo})
       })
-      
-    if (contador > 0) {
-      this.heroeSlec.emit( {actualizacion: true, cliente: saveInfo})
-    }else{
-      this.heroeSlec.emit( {registro: false})
-    }
+      .catch(()=>{
+        this.heroeSlec.emit( {registro: false})
+      })
       
     }else{
       // console.log('ID: ','nuevo')

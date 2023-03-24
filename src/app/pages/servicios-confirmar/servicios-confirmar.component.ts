@@ -33,6 +33,9 @@ import { PdfRecepcionService } from '../../services/pdf-recepcion.service';
 
 import  pdfMake  from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
+
+import { UploadPDFService } from '../../services/upload-pdf.service';
+import { EmpresasService } from 'src/app/services/empresas.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
@@ -195,6 +198,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     'tirador_lateral_izquierda_2',
     'tirador_posterior',
   ]
+
+  detallesFaltantes = ''
   onSelect(event) {
     // if(this.files.length>0){
     //   this.files=[]
@@ -288,16 +293,25 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   valida:boolean = true
   cuales:string = ''
   dataImagen:any;
+
+  pasosFaltantes = {servicios: false, checkList: false, firmaCliente: false, entrega: false}
+
+  recorridoPasos = ['servicios', 'checkList', 'firmaCliente', 'entrega']
+
+  empresaList = []
   constructor(
     private router: Router, private rutaActiva: ActivatedRoute, private _formBuilder: FormBuilder, private _clientes:ClientesService,
     private _uploadfirma: UploadFirmaService,private _mail:EmailsService, private fb: FormBuilder, private _publicos:ServiciosPublicosService,
     private _sucursales: SucursalesService, private _vehiculos: VehiculosService,
     private _servicios: ServiciosService, private _catalogos:CatalogosService, private _uploadFiles: UploadFileService,
     private _usuarios: UsuariosService,  private _security:EncriptadoService,
-    private _cotizaciones: CotizacionService, private _pdfRecepcion: PdfRecepcionService) { }
+    private _cotizaciones: CotizacionService, private _pdfRecepcion: PdfRecepcionService,
+    private _pdf: UploadPDFService, private _empresas: EmpresasService) { }
     
   ngOnInit(): void {
-    
+    this._empresas.listaempresas().then(({contenido,data})=>{
+      this.empresaList = data
+    })
     // this.listaClientes()
     this.crearFormObservaciones()
     this.listaSucursales()
@@ -371,6 +385,21 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
               if(cli['sucursal'] !== s['id']) return
               cli['infoSucursal'] = s
             })
+            console.log(cli['id']);
+            if (cli['empresa']) {
+              let empresa = this.empresaList.find(d=>d['id'] === cli['empresa'])
+              console.log(empresa);
+              if (empresa) {
+                cli['empresaShow'] = empresa['empresa']
+              }else{
+                cli['empresaShow'] = ' '
+              }
+            }else{
+              cli['empresaShow'] = ' '
+            }
+            
+            console.log( `Empresa cliente : ${cli['empresaShow']}`);
+            
           })
           let clientes_nuevos = [];
           (this.SUCURSAL !== 'Todas')? clientes_nuevos = clientes.filter(o=>o.sucursal === this.SUCURSAL): clientes_nuevos  = clientes;
@@ -436,7 +465,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     // console.log(ID);
     // console.log(tipo);
     if (tipo === 'cotizacion') {
-      this.cotizaciones.map(cot=>{
+      this.cotizaciones.map((cot)=>{
         if(cot['id']!== ID) return
         const elementos = cot['elementos']
         elementos.map(ele=>{
@@ -457,7 +486,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           ele['showStatus'] = 'Aprobado'  
           ele['status'] = 'aprobado' 
         })
-        this.dataRecepcion.elementos = cot['elementos']
+        this.dataRecepcion.elementos = elementos
         this.realizarOperaciones()
         this.clientes.map(clie=>{
           if(clie['id'] !== cot['cliente']) return
@@ -474,6 +503,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
               this.dataRecepcion.vehiculo = v
           })
         })
+        this.validaciones()
       })
     }else if(tipo === 'cliente'){
       this.clientes.map(clie=>{
@@ -506,6 +536,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     if(!id) {
       this.dataRecepcion.data['vehiculo'] = ''
       this.dataRecepcion.vehiculo = null
+      this.validaciones()
       return
     }
       const vehiculos = this.dataRecepcion.vehiculos
@@ -513,6 +544,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         if(v['id'] !== id) return
           this.dataRecepcion.data['vehiculo'] = v['id']
           this.dataRecepcion.vehiculo = v
+          this.validaciones()
       })
   }
 
@@ -665,6 +697,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.dataRecepcion.cliente = value
     this.dataRecepcion.sucursal = value['infoSucursal']
     this.dataRecepcion.data['sucursal'] = value['sucursal']
+    this.dataRecepcion.vehiculo= null
+    this.validaciones()
   }
   vehiculosCliente(){
     const starCountRef = ref(db, `vehiculos`)
@@ -965,8 +999,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     }
      
-    console.log(this.dataRecepcion.elementos);
-    
+    // console.log(this.dataRecepcion.elementos);
+    this.revisarAvance()
     this.realizarOperaciones()
   }
   eliminaElemento(index:number){
@@ -1022,6 +1056,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     for (let index = 0; index < this.dataRecepcion.elementos.length; index++) {
       this.dataRecepcion.elementos[index].aprobado = this.seleccionarTodo
     }
+    this.revisarAvance()
     this.realizarOperaciones()
   }
   cambiarIva(){
@@ -1113,7 +1148,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }else{  
       this.dataRecepcion.data.total =  opera
     }
-    this.verificarInformacion()
+    // this.verificarInformacion()
   }
   revisarDeatllesNinguno(){
     for (let index = 0; index < this.dataRecepcion.detalles.length; index++) {
@@ -1125,7 +1160,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   cambiarSattus(index:number, val:any){
     this.dataRecepcion.checkList[index].status = val.value
-    this.verificarInformacion()
+    // this.verificarInformacion()
+    this.revisarAvance()
   }
   obtenerFecha(fecha:any){
     // console.log(fecha);
@@ -1141,27 +1177,32 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.diasEntrega = dias
       this.dataRecepcion.data['fechaPromesa'] = fecha
       this.dataRecepcion.data['showfecha'] = this._publicos.obtenerFechaCompleta(fecha)
+      this.revisarAvance()
     }
-    this.verificarInformacion()
+    // this.verificarInformacion()
   }
   limpiarFirma(){
     this.SignaturePad.clear()
     this.imgFirma = null
-    this.verificarInformacion()
+    this.revisarAvance()
+    // this.verificarInformacion()
   }
   firmar(){
     const u = this.SignaturePad.toDataURL()
     if (!this.SignaturePad.isEmpty()) {
        this.descargar(u).then((ans:any)=>{
           this.imgFirma = ans
-          this.verificarInformacion()
-          this._publicos.mensajeCorrecto('Tenemos el blob')
+          // this.verificarInformacion()
+          // this._publicos.mensajeCorrecto('Tenemos el blob')
+          this.revisarAvance()
       })
     }else{
       this.imgFirma = null
-      this._publicos.mensajeIncorrecto('Firmar el dcoumento')
-      this.verificarInformacion()
+      this._publicos.mensajeIncorrecto('La firma no puede estar vacia!!')
+      this.revisarAvance()
+      // this.verificarInformacion()
     }
+    
     
   }
   subirFirma(){
@@ -1189,31 +1230,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }    
     return new Blob([array],{type: contentType})
   }
-  verificarInformacion(){
-    const porcentaje =100/5
-    let avance = 0
-    const servicios = this.dataRecepcion.elementos.filter(o=>o.aprobado)
-    if (servicios.length >0) {
-      avance = avance + porcentaje
-    }
-    if (this.SinDetalles) {
-      avance = avance + porcentaje
-    }else{
-      avance = avance + porcentaje
-    }
-    const elementos:any[] = this.dataRecepcion.checkList.filter(o=>!o.status)
-    if (elementos.length === 0 && this.kilometraje>0) {
-      avance = avance + porcentaje
-    }
-    if (this.diasEntrega !== null) {
-      avance = avance + porcentaje
-    }
-    if(this.imgFirma !== null){
-      avance = avance + porcentaje
-    }
-    // console.log(avance);
-    this.progreso = avance
-  }
+
   ListapartesVehiculo(){
     // console.log(this.detalles_rayar);
     const urlimg = '../../../assets/imagenes_detalles'
@@ -1239,7 +1256,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }
     this.vehiculosDetalles = arraynew
     this.dataRecepcion.detalles = nuevoArreglo
-    this.verificarInformacion()
+    // this.verificarInformacion()
   }
   ListaCheckList(){
     this._vehiculos.checklist().then((ans:any)=>{
@@ -1259,7 +1276,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         // if (element['id'] === 'nivel_gasolina') {
         //   arreglo.status = 'lleno'
         // }else{
-          arreglo.status = 'si'
+          // arreglo.status = 'si'
         // }
         const mos = element['id'].split('_')
         arreglo.mostrar = mos.join(' ')
@@ -1542,6 +1559,62 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         }
     
   }
+
+  validaciones(){
+    const answer = {valida: true,faltantes:[]}
+    // console.log(this.dataRecepcion);
+
+    const camposRequwridos =['cliente','data','detalles','elementos','sucursal','vehiculo','checkList']
+
+    if (!this.dataRecepcion['cliente']['correo']) {
+      answer.faltantes.push('Correo de cliente')
+    }
+    camposRequwridos.forEach((campo)=>{
+      if (!this.dataRecepcion[campo]) {
+        answer.faltantes.push(campo)
+      }
+    })
+    // this.dataRecepcion['cliente']['correo'] = null
+    if (answer.faltantes.length) answer.valida = false
+    
+    if (answer.faltantes.length) {
+      this.detallesFaltantes = answer.faltantes.join(', ')
+    }else{
+      
+      this.detallesFaltantes = null
+    }
+
+    // this.progreso = 100
+     this.revisarAvance()
+    
+    return answer
+  }
+
+  revisarAvance(){
+    //verificar los pasos que no estan completos y que se requieren
+    //ademas de obtener el porcentaje de avance
+    this.pasosFaltantes = {servicios: true, checkList: true, firmaCliente: true, entrega: true}
+
+    let avance = 0;    const porcentaje =100/5
+
+    const servicios = this.dataRecepcion['elementos'].filter(o=>o['aprobado']);
+
+    (servicios.length) ?  avance += porcentaje : this.pasosFaltantes.servicios = false;
+    
+    const elementos = this.dataRecepcion.checkList.filter(o=>!o.status);
+    
+    (!elementos.length && this.kilometraje>0) ?  avance += porcentaje : this.pasosFaltantes.checkList = false;
+
+    (this.diasEntrega !== null) ? avance += porcentaje : this.pasosFaltantes.entrega = false;
+
+    (this.imgFirma !== null) ? avance += porcentaje : this.pasosFaltantes.firmaCliente = false;
+
+
+    (this.SinDetalles) ? avance += porcentaje : avance += porcentaje
+
+    this.progreso = avance
+
+  }
   gurdarFinal(newPostKey:string,data:any,arregloString:string,desgloce:any){
     // console.log(data);
     
@@ -1570,7 +1643,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     if (!cliente['empresa']) {
       cliente['empresa'] =''
     }
-    console.log(this.dataRecepcion);
+    // console.log(this.dataRecepcion);
 
     let obs = ''
     if (this.observaciones.controls['observaciones'].value) {
@@ -1588,20 +1661,71 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       sucursal: this.dataRecepcion['sucursal'],
       vehiculo: this.dataRecepcion['vehiculo'],
     }
+
+    let timerInterval
+    Swal.fire({
+      title: 'Espere por favor..',
+      html: 'Se esta realizando procedimiento',
+      timer: 10000,
+      timerProgressBar: true,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+        const b = Swal.getHtmlContainer().querySelector('b')
+        timerInterval = setInterval(() => {
+          // b.textContent = String(Swal.getTimerLeft())
+        }, 100)
+      },
+      willClose: () => {
+        // clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        // console.log('I was closed by the timer')
+      }
+    })
+    console.log(infoPdf);
+
+    return
     
     // console.log(infoPdf);
     this._pdfRecepcion.pdf(infoPdf).then((ans:any)=>{
       const pdfDocGenerator = pdfMake.createPdf(ans);
-      pdfMake.createPdf(ans).open();
+      // pdfMake.createPdf(ans).open();
+      dataMail['filename'] = `${infoPdf['no_os']}.pdf`,
+
+
+
       pdfDocGenerator.getBlob(async (blob) => {
+       this._pdf.uploadRecepcion(blob, dataMail['filename']).then((asn)=>{
+         let intervalo = setInterval(()=>{
+          // console.log(asn);
+          if (asn.ruta) {
+            clearInterval(intervalo)
+            // console.log(asn.ruta);
+            dataMail['pathPDF'] = asn.ruta
+            const updates = {};
+            updates[`recepciones/${newPostKey}`] = data;
+            update(ref(db), updates).then(()=>{
+              pdfMake.createPdf(ans).download(dataMail['filename']);
+              this._mail.EmailRecepcion(dataMail)
+              clearInterval(timerInterval)
+              this.router.navigateByUrl('/servicios')
+              this._publicos.mensajeCorrecto('recepcion realizada')
+            });
+          }
+        },100)
+        
+       })
+        // console.log(rutaPDF);
+        
+        // this._mail.EmailRecepcion(dataMail).then(()=>{
+            
+        // })
       })
     })
     
-
-    
-
-    
-
     // console.log(dataMail);
     // this._mail.EmailRecepcion(dataMail).then(()=>{
     //   set(ref(db, `recepciones/${newPostKey}`), data )
@@ -1636,16 +1760,14 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   clientesInfo(info:any){
     if (info['registro']) {
-      // this.showFormCliente = !info['oculta']
-      this.myControlClientes.setValue(info['cliente'])
-      this._publicos.mensajeCorrecto('registro de cliente correcto')
-      if(!info['vehiculos']) this.dataRecepcion['vehiculos'] =[]
-      setTimeout(()=>{
-        
-      },100)
-    }else if(info['actualizacion']){
+      const cliente = this.clientes.find(c=>c['id'] === info['cliente']['id'])
       this.myControlClientes.setValue('')
-      this._publicos.mensajeCorrecto('actualizacion de cliente correcto')
+      setTimeout(()=>{
+        this.myControlClientes.setValue(cliente)
+        let vehiculosX = cliente['vehiculos']
+        const veh = vehiculosX.find(v=>v['id'] === this.dataRecepcion['data']['vehiculo']);
+        this.dataRecepcion['vehiculo'] = veh 
+      },100)
     }
 }
 vehiculoInfo(info:any){
@@ -1663,12 +1785,10 @@ vehiculoInfo(info:any){
              this.dataRecepcion.data.cliente = info['vehiculo']['cliente']
              this.dataRecepcion.cliente = recuperada
              this.dataRecepcion.data.vehiculo = info['vehiculo']['cliente']
-             this.dataRecepcion.vehiculo  = v
-             setTimeout(() => {
-              // this.seleccionaAuto(v['id'])
-              this.dataRecepcion.data['vehiculo'] = v['id']
-               this._publicos.mensajeCorrecto('Accion correcra')
-             }, 150);
+
+             let vehiculosX = c['vehiculos']
+             const veh = vehiculosX.find(v=>v['id'] === this.dataRecepcion['data']['vehiculo']);
+              (veh) ? this.dataRecepcion['vehiculo'] = veh : this.dataRecepcion['vehiculo'] = null
            })
        }
      })
@@ -1694,6 +1814,8 @@ comenzar(){
     this.disableBtnGuardarIMG = false
     this.contieneIMG = false
     const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
+    // console.log(mainCanvas);
+    if (!mainCanvas) return
     
     const context = mainCanvas.getContext("2d")
     var miimagen = new Image()
@@ -1843,13 +1965,6 @@ comenzar(){
     }
     }, 500)
   }
-
-  // DAR DE ALTA NUEVO VEHICULO
-   //para guardar vehiculo nuevo
-
-
-  // GUARDAR NUEVO CLIENTE
-
 
   async dimensiones(){
     
@@ -2044,6 +2159,16 @@ comenzar(){
     setTimeout(() => {
       this.dimensiones()
     }, 200);
+  }
+
+  clienteSelect(){
+    
+    this.cliente = null
+    setTimeout(()=>{
+      if (this.dataRecepcion['cliente']) {
+        this.cliente = this.dataRecepcion['cliente']
+      }
+    },300)
   }
   
 }

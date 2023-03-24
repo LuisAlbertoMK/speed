@@ -27,7 +27,7 @@
             {{option['no_cliente']}} {{option['fullname']}}
           </mat-option>
         </mat-autocomplete>
-        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="modal" #tooltip="matTooltip"
+        <button class="btn btn-outline-primary btn-sm"  type="button" data-bs-toggle="modal" #tooltip="matTooltip"
           matTooltip="Nuevo cliente" data-bs-target="#modalNewUser">+</button>
       </div>
 
@@ -40,9 +40,16 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="dataRecepcion.cliente">
   <div class="card border-dark">
     <div class="card-body text-dark">
+      <div class="col text-end">
+        <button class="btn btn-primary btn-sm" (click)="clienteSelect()" data-bs-toggle="modal" data-bs-target="#modalNewUser" >
+          <i class="fa fa-edit"></i>
+        </button>
+      </div>
       <h3 class="text-center text-uppercase"><strong>Información de cliente #
-          {{dataRecepcion.cliente['no_cliente']}}</strong></h3>
+          {{dataRecepcion.cliente['no_cliente']}}</strong>
+        </h3>
       <div class="row card-text text-start">
+        
         <ng-container *ngFor="let item of camposCliente">
           <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="dataRecepcion.cliente[item]">
             {{item.toUpperCase()}}:<strong class="fs-6 text-uppercase"> {{dataRecepcion.cliente[item]}} </strong>
@@ -122,7 +129,11 @@
 
 <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
   <mat-step>
-    <ng-template matStepLabel>Servicios a realizar</ng-template>
+    <ng-template matStepLabel>
+      <strong [ngClass]="{'text-danger': !pasosFaltantes['servicios'],'text-success': pasosFaltantes['servicios']}">
+        Servicios a realizar
+      </strong>
+      </ng-template>
 
     <div class="row">
 
@@ -501,6 +512,25 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <form  [formGroup]="observaciones">
+          <div class="row text-start">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="mb-1 row">
+                <label for="tipo_cliente" class="col-12 col-sm-3 col-md-3 col-lg-3 col-form-label">Observación de recepción</label>
+                <div class="col-12 col-sm-9 col-md-9 col-lg-9 ">
+                  <textarea style="width: 100%;" rows="3" formControlName="observaciones"></textarea>
+                  <!-- <input type="text" class="form-control form-control-sm" id="observaciones" > -->
+                 <!-- [class.is-invalid]="validarCampo('no_cliente')" [attr.disabled]="true" -->
+                  <!-- <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small> -->
+                </div>
+              </div>
+            </div>
+            </div>
+        </form>
+      </div>
+    </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
       <!-- <button mat-button matStepperPrevious>Anterior</button> -->
       <button matStepperNext class="btn btn-sm btn-primary">Siguiente</button>
@@ -680,7 +710,11 @@
     </div>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>CheckList de elementos vehiculo</ng-template>
+    <ng-template matStepLabel>
+      <strong [ngClass]="{'text-danger': !pasosFaltantes['checkList'],'text-success': pasosFaltantes['checkList']}">
+        CheckList de elementos vehiculo
+      </strong>
+      </ng-template>
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3">Revisar cada elemento y selecionar la opcion
         más acertada</div>
@@ -690,7 +724,7 @@
             <label for="kilometraje">Kilometraje: </label>
           </div>
           <div class="col-auto">
-            <input type="number" id="kilometraje" [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
+            <input type="number" id="kilometraje" (change)="revisarAvance()" [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
               class="form-control form-control-sm" min="0">
           </div>
         </div>
@@ -732,7 +766,11 @@
     </div>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel> Fecha estimada de entrega</ng-template>
+    <ng-template matStepLabel>
+      <strong [ngClass]="{'text-danger': !pasosFaltantes['entrega'],'text-success': pasosFaltantes['entrega']}">
+        Fecha estimada de entrega
+      </strong>
+    </ng-template>
     <div class="row m-1">
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
         <mat-form-field appearance="fill">
@@ -756,7 +794,11 @@
     </div>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Firma de cliente</ng-template>
+    <ng-template matStepLabel >
+      <strong [ngClass]="{'text-danger': !pasosFaltantes['firmaCliente'],'text-success': pasosFaltantes['firmaCliente']}">
+        Firma de cliente
+      </strong>
+    </ng-template>
     <br>
     <button class="btn btn-primary btn-sm m-1" [matMenuTriggerFor]="menu">cambiar tecnico</button>
     <mat-menu #menu="matMenu" xPosition="before">
@@ -781,26 +823,18 @@
       <canvas #firmaDigital class="fluid" style="touch-action:none"></canvas>
       <br>
       <h3 class="fw-bolder">Firma de cliente</h3>
-      <button class="btn btn-danger m-1 " (click)="limpiarFirma()">Limpiar</button>
-      <button class="btn btn-primary m-1 " (click)="firmar()">Firmar</button>
+      <button class="btn btn-danger m-1 " (click)="limpiarFirma()">Limpiar Firma</button>
+      <button class="btn btn-primary m-1 " (click)="firmar()">Firmar recepción</button>
+      
       <!-- <button class="btn btn-danger m-1 " (click)="subirFirma()">subirFirma</button> -->
     </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+        <strong><span class="text-danger">Recuerda presionar el boton de "Firmar recepción" para guardar la firma</span></strong>
+      </div>
+    </div>
     <!-- (ngSubmit)="guardarCliente()" -->
-    <form  [formGroup]="observaciones">
-      <div class="row text-start">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-          <div class="mb-1 row">
-            <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">observaciones</label>
-            <div class="col-sm-9 col-md-8 col-lg-9 ">
-              <textarea style="width: 100%;" rows="2" formControlName="observaciones"></textarea>
-              <!-- <input type="text" class="form-control form-control-sm" id="observaciones" > -->
-             <!-- [class.is-invalid]="validarCampo('no_cliente')" [attr.disabled]="true" -->
-              <!-- <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small> -->
-            </div>
-          </div>
-        </div>
-        </div>
-    </form>
+    
     <!-- <pre> 
       {{this.dataRecepcion.data | json}}
     </pre> -->
@@ -822,8 +856,34 @@
     <!-- <p><small>Verificar los pasos</small></p> -->
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center m-1">
-    <button class="btn btn-sm btn-primary" [disabled]="progreso<100" (click)="RealizaRecepcion()">Realizar
+    <button class="btn btn-sm btn-danger m-1"  (click)="validaciones()">Validar Información</button>
+    <button class="btn btn-sm btn-primary m-1" [disabled]="progreso<100 || detallesFaltantes" (click)="RealizaRecepcion()">Realizar
       recepcion</button>
+  </div>
+</div>
+<div class="row m-1">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+    <ng-container *ngIf="detallesFaltantes; else elseDeatlles">
+      Información faltante: <strong class="text-danger fs-6"> {{this.detallesFaltantes}}</strong>
+    </ng-container>
+    <ng-template #elseDeatlles>
+      <strong class="text-success fs-6">Toda la información necesaria es correcta!!</strong>
+    </ng-template>
+  </div>
+</div>
+<div class="row">
+  <h4>Revisar lista de pasos</h4>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+    <ol class="list-group">
+      <li class="list-group-item text-capitalize" *ngFor="let item of recorridoPasos">{{item}}: 
+        <ng-container *ngIf="pasosFaltantes[item]; else elseServicios">
+          <strong class="text-success">Completo</strong>
+        </ng-container>
+        <ng-template #elseServicios>
+          <strong class="text-danger">Incompleto</strong>
+        </ng-template>
+      </li>
+    </ol>
   </div>
 </div>
 <!-- {{this.dataRecepcion.data |json}} -->
@@ -884,16 +944,17 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
         </div>
-        <ng-container *ngIf="datCliente; else elseNewCliente">
-          <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
+        <!-- {{cliente | json}} -->
+        <ng-container *ngIf="cliente">
+          <app-cliente [data]="cliente" [id]="cliente['id']" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
         </ng-container>
-        <ng-template #elseNewCliente>
+        <!-- <ng-template #elseNewCliente>
           <div class="row">
             <div class="col text-center">
               <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
             </div>
           </div>
-        </ng-template>
+        </ng-template> -->
       </div>
     </div>
   </div>
@@ -928,3 +989,4 @@
     </div>
   </div>
 </div>
+

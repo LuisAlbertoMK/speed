@@ -248,27 +248,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      }
      ngOnDestroy(){
       
-      
-      // console.log('comprobacion');
-      // Swal.fire({
-      //   title: 'Do you want to save the changes?',
-      //   showDenyButton: true,
-      //   showCancelButton: true,
-      //   confirmButtonText: 'Save',
-      //   denyButtonText: `Don't save`,
-      // }).then((result) => {
-      //   /* Read more about isConfirmed, isDenied below */
-      //   if (result.isConfirmed) {
-      //     // Swal.fire('Saved!', '', 'success')
-      //     console.log('se enviara notificacion');
-          
-      //   } else if (result.isDenied) {
-      //     // Swal.fire('Changes are not saved', '', 'info')
-      //     console.log('no hacer nada');
-          
-      //   }
-      // })
-      
+      this.comprobar()
      }
   ngOnInit(): void {
     this.crearFormPago()
