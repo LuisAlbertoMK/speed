@@ -385,10 +385,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
               if(cli['sucursal'] !== s['id']) return
               cli['infoSucursal'] = s
             })
-            console.log(cli['id']);
+            // console.log(cli['id']);
             if (cli['empresa']) {
               let empresa = this.empresaList.find(d=>d['id'] === cli['empresa'])
-              console.log(empresa);
+              // console.log(empresa);
               if (empresa) {
                 cli['empresaShow'] = empresa['empresa']
               }else{
@@ -398,7 +398,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
               cli['empresaShow'] = ' '
             }
             
-            console.log( `Empresa cliente : ${cli['empresaShow']}`);
+            // console.log( `Empresa cliente : ${cli['empresaShow']}`);
             
           })
           let clientes_nuevos = [];
@@ -1638,7 +1638,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     
     
     
-    const campos = ['apellidos','correo','correo_sec','fullname','id','no_cliente','nombre','sucursal','telefono_fijo','telefono_movil','tipo']
+    const campos = ['apellidos','correo','empresaShow','correo_sec','fullname','id','no_cliente','nombre','sucursal','telefono_fijo','telefono_movil','tipo']
     const cliente = this._publicos.recuperaData(campos,this.dataRecepcion['cliente'])
     if (!cliente['empresa']) {
       cliente['empresa'] =''
@@ -1685,9 +1685,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         // console.log('I was closed by the timer')
       }
     })
-    console.log(infoPdf);
-
-    return
+    
     
     // console.log(infoPdf);
     this._pdfRecepcion.pdf(infoPdf).then((ans:any)=>{
