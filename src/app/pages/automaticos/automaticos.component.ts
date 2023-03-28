@@ -37009,12 +37009,12 @@ recepcionesChange(){
       break;
     case 2:
       let data = {}
-      this._pdfRecepcion.pdf(data).then((ans:any)=>{
-        const pdfDocGenerator = pdfMake.createPdf(ans);
-        pdfMake.createPdf(ans).open();
-        pdfDocGenerator.getBlob(async (blob) => {
-        })
-      })
+      // this._pdfRecepcion.pdf(data).then((ans:any)=>{
+      //   const pdfDocGenerator = pdfMake.createPdf(ans);
+      //   pdfMake.createPdf(ans).open();
+      //   pdfDocGenerator.getBlob(async (blob) => {
+      //   })
+      // })
       
       break;
   

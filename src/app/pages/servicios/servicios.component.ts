@@ -649,42 +649,10 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     
     this.generaCamposReporte(nuevos)
   }
-  generaCamposReporte(data:any[]){
-    // return
-    // console.log(data);
-    
+  generaCamposReporte(data:any){
     this.dataSource.data = data
     this.newPagination('servicios')
-    let tiempoEstancia = 0, horas_estancia=0, ticket=0, horas_totales=0
-    const busque = this.fechaBusqueda;
-    let arreglo = []
-    if (busque !== 'cancelado') {
-      arreglo = data.filter(o=>o['status'] !== 'cancelado')
-    }else{
-      arreglo = data.filter(o=>o['status'] === 'cancelado')
-    }
-    let reporte = {horas_estancia:0,ticket:0, tiempoEstancia:0, horas_totales:0}
-    data.map(d=>{
-      // console.log(d['id']);
-      ticket= ticket + d['desgloce'].total
-      if (d['diasSucursal']) {
-        tiempoEstancia += d['diasSucursal']
-      }
-      
-      const fecha1 = new Date(d['fecha_compara_time'])
-      const fecha2 = new Date()
-      if ((fecha1 instanceof Date) && (fecha2 instanceof Date)) {
-        let diferencia = (fecha2.getTime() - fecha1.getTime())/1000
-        diferencia /= (60*60)
-        horas_estancia=horas_estancia + Math.abs(Math.round(diferencia)) 
-        horas_totales += horas_estancia 
-      }
-    })
-    reporte.horas_estancia = horas_estancia / data.length
-    reporte.ticket = ticket / data.length
-    reporte.tiempoEstancia = tiempoEstancia / data.length
-    reporte.horas_totales = horas_totales / data.length
-    
+    const reporte = this._publicos.generaCamposReporte(data,this.fechaBusqueda)
     this.camposReporte.tiempoEstancia = reporte.tiempoEstancia
     this.camposReporte.ticket = reporte.ticket
     this.camposReporte.horas_totales = reporte.horas_totales
@@ -1089,7 +1057,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     
   }
-  accionElemento(padre:any, index:number, status:string, showStatus:string, aprobado:boolean){
+  async accionElemento(padre:any, index:number, status:string, showStatus:string, aprobado:boolean){
     // console.log(`accion-> ${status} showStatus-> ${showStatus} aprobado-> ${aprobado}` );
     // console.log(padre);
     // console.log('accion');
@@ -1110,16 +1078,23 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       elementosRecepcion = [...padre['servicios']]
       let okisi = []
       if(status==='eliminar'){
-        elementosRecepcion.forEach((a,index1)=>{
-          if (index1 !== index) okisi.push(a) 
+        await this._publicos.mensaje_pregunta('Eliminar elemento de O.S').then(({respuesta})=>{
+          console.log(respuesta);
+          if (respuesta) {
+            elementosRecepcion.forEach((a,index1)=>{
+              if (index1 !== index) okisi.push(a) 
+            })
+            elementosRecepcion = okisi
+          }
         })
-        elementosRecepcion = okisi
       }else{
         elementosRecepcion[index].status = status
         elementosRecepcion[index].showStatus = showStatus;
         (status === 'noAprobado') ? elementosRecepcion[index].aprobado = false :elementosRecepcion[index].aprobado = true 
       }
 
+      console.log(elementosRecepcion);
+      
       let totales=0, Aprobados=0, Terminados=0, NoAprobados=0
       totales = elementosRecepcion.length
       elementosRecepcion.forEach((ele)=>{
@@ -1146,6 +1121,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       
       update(ref(db), updates)
       .then(async ()=>{
+        this._publicos.mensajeSwal('accion terminada')
         // await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
       })
       .catch((error)=>{

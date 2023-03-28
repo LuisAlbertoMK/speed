@@ -1185,6 +1185,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   limpiarFirma(){
     this.SignaturePad.clear()
     this.imgFirma = null
+    this.dataRecepcion['firmaCliente'] = ''
     this.revisarAvance()
     // this.verificarInformacion()
   }
@@ -1193,24 +1194,15 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     if (!this.SignaturePad.isEmpty()) {
        this.descargar(u).then((ans:any)=>{
           this.imgFirma = ans
-          // this.verificarInformacion()
-          // this._publicos.mensajeCorrecto('Tenemos el blob')
           this.revisarAvance()
       })
     }else{
       this.imgFirma = null
       this._publicos.mensajeIncorrecto('La firma no puede estar vacia!!')
       this.revisarAvance()
-      // this.verificarInformacion()
     }
-    
-    
   }
-  subirFirma(){
-    this._uploadfirma.upload(this.imgFirma,'nuevo','recepcion1p','recepcion').then((ans:any)=>{
-        console.log(ans);
-    })
-  }
+
   async descargar(dataURL:any){
     let blobGet:Blob
     if (navigator.userAgent.indexOf('safari')>-1 && navigator.userAgent.indexOf('Chrome')===-1) {
@@ -1339,27 +1331,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   displayFnClientes(elementos: any): string {
     return elementos && elementos.no_cliente ? elementos.no_cliente : '';
   }
-  RealizaRecepcion(){  
 
 
-    let  detalles = []
-
-    if(!this.SinDetalles) delete this.dataRecepcion.data['detalles']
-
-    if (this.dataRecepcion.data['detalles']) detalles = this.dataRecepcion.data['detalles']
-
-    if(!this.archivos.length && !detalles.length ){
-      this._publicos.mensaje_pregunta('Continuar recepcion sin ningun tipo de detalle?').then(({respuesta})=>{
-          if (!respuesta) return
-          this.continua_respuesta([])
-      })
-    }else{
-      this.continua_respuesta(this.archivos)
-    }
-  }
-
-  async continua_respuesta(archivos:any[]){
-      // console.log(archivos);
+  async continua_respuesta(){
+      
       const camposDataRecupera = ['cliente','fechaPromesa','iva','margen','no_os','sucursal','vehiculo','aprobado','formaPago','servicio']
 
       const newPostKey = push(child(ref(db), 'posts')).key
@@ -1374,48 +1349,36 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           infoSave['hora_recibido'] = timeRequest.hora
           infoSave['status'] = 'recibido'
           infoSave['checkList'] = this.dataRecepcion.checkList;
-          (!this.SinDetalles) ?  delete this.dataRecepcion.data['detalles'] : infoSave['detalles'] = this.dataRecepcion.detalles
+          (!this.SinDetalles) ?  infoSave['detalles'] = [] : infoSave['detalles'] = this.dataRecepcion.detalles
           infoSave['servicios'] = this.dataRecepcion.elementos
           infoSave['servicios_original'] = this.dataRecepcion.elementos
 
-          if (archivos.length) {
-            await this._uploadfirma.upload(this.imgFirma,newPostKey,answer,'recepcion').then((ansFirma:any)=>{
-              const inter = setInterval(async () => {
-                if (ansFirma['ruta']) {
-                  infoSave['firmaCliente'] = ansFirma.ruta
-                  // this.realizarRecepcion(newPostKey,infoSave)
-                  clearInterval(inter); 
-                  
-                  if (this.fotografias && this.detallesPersonalizado) {
-                                  
-                  }else if(this.fotografias && !this.detallesPersonalizado){
-                    const f = this.archivos
-                    this.archivos = f.filter(o=>o.nombreArchivo !== 'detallesPersonalizado.png')
-                  }else if(!this.fotografias && this.detallesPersonalizado){
-                    const f = this.archivos
-                    this.archivos = f.filter(o=>o.nombreArchivo === 'detallesPersonalizado.png')
-                  }else if(!this.fotografias && !this.detallesPersonalizado){
-                    this.archivos = []
-                    this.files = []
-                  }
-                  await this._uploadFiles.guardarFotografias(this.archivos,infoSave['no_os'])
-                  this.thisver(newPostKey,infoSave)
-                }
-              }, 500);            
-            }) 
-          }else{
-            await this._uploadfirma.upload(this.imgFirma,newPostKey,answer,'recepcion').then((ansFirma:any)=>{
-              const inter = setInterval(async () => {
-                if (ansFirma['ruta']) {
-                  infoSave['firmaCliente'] = ansFirma.ruta
-                  clearInterval(inter); 
-                  this.thisver(newPostKey,infoSave)
-                }
-                
-              },500)
+          await this._uploadfirma.upload(this.imgFirma,newPostKey,answer,'recepcion').then((ansFirma:any)=>{
+            let miinter
+            Swal.fire({
+              title: 'Subiendo firma de cliente',
+              text: 'Esperando ...',
+              timer: 10000,
+              showConfirmButton: false,
+              allowOutsideClick: false
             })
-            
-          }
+            Swal.isLoading()
+            const inter = setInterval(async () => {
+              if (ansFirma.ruta) {
+                        infoSave['firmaCliente'] = ansFirma.ruta
+                        // this.realizarRecepcion(newPostKey,infoSave)
+                        Swal.close()
+                        // console.log('tenemos la ruta',ansFirma.ruta);
+                        clearInterval(inter); 
+                        this.thisver(newPostKey,infoSave)
+                        // await this._uploadFiles.guardarFotografias(this.archivos,infoSave['no_os'])
+            } else if(ansFirma.error.length){
+                Swal.close()
+                this._publicos.mensajeIncorrecto('Ocurrio un error')
+                console.log(ansFirma.error); // este error es por si la imagen de la firma no se subio correctamente
+            }
+            },500)
+          })
         })
       })
      
@@ -1435,36 +1398,38 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     return detallesPersonalizados
   }
   async thisver(newPostKey:string,infoSav:any){
+
+    
     // console.log(infoSav);
     if (this.archivos.length) {
       let timerInterval
-    Swal.fire({
-      title: 'Espere porfavor!',
-      // html: 'I will close in <b></b> milliseconds.',
-      timer: 2000,
-      timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading()
-        const b = Swal.getHtmlContainer().querySelector('b')
-        timerInterval = setInterval(async () => {
-          // b.textContent = String(Swal.getTimerLeft())
-          // setTimeout(async ()=>{
-            const urlSS:any[] = await this.returnUrl()
-            infoSav['detallesPersonalizados'] = urlSS
-          // },1200)
-        }, 100)
-      },
-      willClose: () => {
-        clearInterval(timerInterval)
-      }
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-        // console.log('I was closed by the timer')
-        // console.log(infoSav);
-        this.realizarRecepcion(newPostKey,infoSav)
-      }
-    })
+      Swal.fire({
+        title: 'Espere porfavor!',
+        // html: 'I will close in <b></b> milliseconds.',
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading()
+          const b = Swal.getHtmlContainer().querySelector('b')
+          timerInterval = setInterval(async () => {
+            // b.textContent = String(Swal.getTimerLeft())
+            // setTimeout(async ()=>{
+              const urlSS:any[] = await this.returnUrl()
+              infoSav['detallesPersonalizados'] = urlSS
+            // },1200)
+          }, 100)
+        },
+        willClose: () => {
+          clearInterval(timerInterval)
+        }
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          // console.log('I was closed by the timer')
+          // console.log(infoSav);
+          this.realizarRecepcion(newPostKey,infoSav)
+        }
+      })
     }else{
       this.realizarRecepcion(newPostKey,infoSav)
     }
@@ -1503,6 +1468,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const camposVerificar = ['checkList','cliente','fechaPromesa','fecha_recibido','hora_recibido','iva',
     'margen','no_os','servicios','servicios_original','status','sucursal','formaPago','servicio',
     'vehiculo','firmaCliente']
+
+
+    
     const camposRecibidos = Object.keys(data)
     
     
@@ -1521,6 +1489,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
             arregloExisten.push(verifica)
           }
         }
+
         
         if (camposVerificar.length === contadorCorrectos) {
           this.mensajeError = null
@@ -1620,13 +1589,17 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     console.log(this.archivos);
   }
   gurdarFinal(newPostKey:string,data:any,arregloString:string,desgloce:any){
+    Swal.fire({
+      title: 'Espere generando PDF!',
+      text: 'esperando ...',
+      timer: 5000,
+      showConfirmButton: false,
+      allowOutsideClick: false
+    })
+    Swal.isLoading()
+
     // console.log(data);
-    let personalizados = []
-    
-    
-    
-    
-    
+    let personalizados = []    
     if (this.archivos.length) {
        this.archivos.forEach((a)=>{
         const infoPer = {
@@ -1636,7 +1609,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         personalizados.push(infoPer)
        })
     }
-
     this.dataRecepcion['personalizados'] = personalizados
 
     
@@ -1679,88 +1651,94 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       sucursal: this.dataRecepcion['sucursal'],
       vehiculo: this.dataRecepcion['vehiculo'],
       personalizados: this.dataRecepcion['personalizados'],
+      firmaCliente: data['firmaCliente']
     }
-
-    let timerInterval
-    Swal.fire({
-      title: 'Espere por favor..',
-      html: 'Se esta realizando procedimiento',
-      timer: 10000,
-      timerProgressBar: true,
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading()
-        const b = Swal.getHtmlContainer().querySelector('b')
-        timerInterval = setInterval(() => {
-          // b.textContent = String(Swal.getTimerLeft())
-        }, 100)
-      },
-      willClose: () => {
-        // clearInterval(timerInterval)
-      }
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-        // console.log('I was closed by the timer')
-      }
-    })
     
     
-    console.log(infoPdf);
-    this._pdfRecepcion.pdf(infoPdf).then((ans:any)=>{
-      const pdfDocGenerator = pdfMake.createPdf(ans);
-      // pdfMake.createPdf(ans).open();
-      dataMail['filename'] = `${infoPdf['no_os']}.pdf`,
+    
+    this._pdfRecepcion.obtenerImege(infoPdf).then((pdfReturn:any)=>{
+      const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
+      // pdfMake.createPdf(pdfReturn).open();
+      dataMail['filename'] = `${infoPdf['no_os']}.pdf`
+      Swal.fire({
+        title: 'Nueva O.S',
+        html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de registrar</strong>`,
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Previsualizar PDF O.S',
+        denyButtonText: `Guardar y enviar correo`,
+        cancelButtonText:`Cancelar`,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+  
+          pdfMake.createPdf(pdfReturn).open(); // abrir el pdf
+  
+        } else if (result.isDenied) {
+            // console.log('Guardar y enviar pdf');
+            let timerInterval
+              Swal.fire({
+                title: 'Espere por favor..',
+                html: 'Se esta realizando procedimiento',
+                timer: 10000,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                  Swal.showLoading()
+                  const b = Swal.getHtmlContainer().querySelector('b')
+                  timerInterval = setInterval(() => {
+                    // b.textContent = String(Swal.getTimerLeft())
+                  }, 100)
+                },
+                willClose: () => {
+                  // clearInterval(timerInterval)
+                }
+              }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                  // console.log('I was closed by the timer')
+                }
+              })
+            pdfDocGenerator.getBlob(async (blob) => {
+              this._pdf.uploadRecepcion(blob, dataMail['filename']).then((asn)=>{
+                let intervalo = setInterval(()=>{
+                 // console.log(asn);
+                 if (asn.ruta) {
+                   clearInterval(intervalo)
+                   // console.log(asn.ruta);
+                   
+                   dataMail['pathPDF'] = asn.ruta
+                   data['pathPDF'] = asn.ruta
+                   const updates = {};
+                   updates[`recepciones/${newPostKey}`] = data;
+                   
+                   update(ref(db), updates).then(()=>{
+        
+                    pdfMake.createPdf(pdfReturn).download(dataMail['filename']);
+                    this._mail.EmailRecepcion(dataMail)
+                    clearInterval(timerInterval)
+                    this.files =[]
+                    this.archivos = []
+                    this.limpiarFirma()
+                    this.router.navigateByUrl('/servicios')
 
-      // console.log(dataMail);
-      
-      pdfDocGenerator.getBlob(async (blob) => {
-       this._pdf.uploadRecepcion(blob, dataMail['filename']).then((asn)=>{
-         let intervalo = setInterval(()=>{
-          // console.log(asn);
-          if (asn.ruta) {
-            clearInterval(intervalo)
-            // console.log(asn.ruta);
-            
-            dataMail['pathPDF'] = asn.ruta
-            const updates = {};
-            updates[`recepciones/${newPostKey}`] = data;
-            this.files =[]
-            this.archivos = []
-            update(ref(db), updates).then(()=>{
-              pdfMake.createPdf(ans).download(dataMail['filename']);
-              this._mail.EmailRecepcion(dataMail)
-              clearInterval(timerInterval)
-              this.router.navigateByUrl('/servicios')
-              this._publicos.mensajeCorrecto('recepcion realizada')
-            });
-          }
-        },100)
-        
-       })
-        // console.log(rutaPDF);
-        
-        // this._mail.EmailRecepcion(dataMail).then(()=>{
-            
-        // })
+                    // this._publicos.mensajeCorrecto()
+                    this._publicos.mensajeSwal('recepcion realizada')
+                   });
+                 }
+               },100)
+              })
+             })
+        }
       })
     })
     
-    // console.log(dataMail);
-    // this._mail.EmailRecepcion(dataMail).then(()=>{
-    //   set(ref(db, `recepciones/${newPostKey}`), data )
-    //     .then(() => {
-    //       this.dataRecepcion={data:{},elementos:[],cliente:[],vehiculo:[],sucursal:[],detalles:[],checkList:[]}
-    //       this.realizarOperaciones()
-    //       this.archivos = []
-    //       this.disableBtnGuardarIMG = false
-    //       this._publicos.mensajeCorrecto('Nueva OS registrada')
-    //       this.router.navigateByUrl('/servicios')
-    //     })
-    //     .catch((error) => {
-    //       // The write failed...
-    //     });
-    // })
+
+    
+
+    
+    
   
   }
   applyFilter(event: Event, table:string) {
@@ -1934,10 +1912,10 @@ comenzar(){
 
   }
   limpiarCanvas() {
-    // const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
-    
-    // const context = mainCanvas.getContext("2d")
-    // context.clearRect(0,0,700,500);
+    const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
+    if (!mainCanvas) return
+    const context = mainCanvas.getContext("2d")
+    context.clearRect(0,0,700,500);
  }
  async guardarImagenCanvas(){
   this.disableBtnGuardarIMG = true
@@ -1949,9 +1927,7 @@ comenzar(){
     const file = new File([blob], `detallesPersonalizado.png`,{
       type: blob.type,
     })
-    this.files.push(file)
-
-    this.blobDetallesPersonalizado = blob
+    // this.blobDetallesPersonalizado = blob
     this.archTemp={
       archivo:blob,
       nombreArchivo:'detallesPersonalizado',
@@ -1959,10 +1935,23 @@ comenzar(){
       progreso:0
     }
     this.nombre= 'detallesPersonalizado'
-    this.archivos.push(this.archTemp)
-    this._publicos.mensajeCorrecto('imagen generada')
+    //primero verificar si existe
+    let existe = false
+    this.archivos.forEach((a)=>{
+      if (a['nombreArchivo'] === 'detallesPersonalizado' || a['nombreArchivo'] === 'detallesPersonalizado.png') existe = true
+    })
     
-    
+    if (existe) {
+      this.archivos.forEach((a,index)=>{
+        if (a['nombreArchivo'] === 'detallesPersonalizado' || a['nombreArchivo'] === 'detallesPersonalizado.png') this.archivos[index] = this.archTemp
+      })
+      this.files.forEach((a,index)=>{
+        if (a['name'] === 'detallesPersonalizado.png') this.files[index] = file
+      })
+    }else{
+      this.archivos.push(this.archTemp)
+      this.files.push(file)
+    }
   });
  }
  changePluma(color:string){
@@ -1972,7 +1961,7 @@ comenzar(){
 // CANVAS
   limpiarArchivos(){
     this.archivos = []
-
+    this.files =[]
   }
   newPagination(data:string){
     setTimeout(() => {

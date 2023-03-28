@@ -164,10 +164,20 @@ export class AdministracionComponent implements OnInit {
   porMetodo_pago = { Efectivo:0,Cheque:0,Tarjeta:0,Transferencia:0 }
   porMetodo_gasto = { Efectivo:0,Cheque:0,Tarjeta:0,Transferencia:0 }
   porMetodo_PG = { Efectivo:0,Cheque:0,Tarjeta:0,Transferencia:0 }
+  desgloce_final = { Efectivo:0,Cheque:0,Tarjeta:0,Transferencia:0,Total:0 }
 
   listaHistorialPG = []
   fechasRango = {inicio:'', final:''}
   fechaG = {inicio:null, final:null}
+
+  camposReporte={servicios:0,ticket:0,tiempoEstancia:0,horas_totales:0,horas_servicios:0}
+  camposReporte_arr=[
+  {valor:'servicios', show:'servicios'},
+  {valor:'ticket', show:'ticket'},
+  {valor:'tiempoEstancia', show:'tiempo Estancia'},
+  {valor:'horas_totales', show:'horas totales'},
+  {valor:'horas_servicios', show:'horas servicios'}]
+  total_GO =0
   constructor(
     private router:Router, private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
     private _servicios: ServiciosService, private fb: FormBuilder,private _sucursales: SucursalesService,
@@ -184,6 +194,8 @@ export class AdministracionComponent implements OnInit {
     this.crearFormGastos()
     this.getFechaBalance()
     this.listaSucursales()
+    
+
   }
   cambia(valor:boolean, cual:string){
     if(cual === 'pago'){
@@ -242,9 +254,6 @@ export class AdministracionComponent implements OnInit {
       then(async ({valido,data})=>{
         // console.log(cotizaciones);
         if (valido) {
-          // console.log(this.clientes);
-          // console.log(data);
-          
           await data.map(async(d)=>{
             // console.log(d['id']);
             
@@ -253,7 +262,10 @@ export class AdministracionComponent implements OnInit {
             }
             this.clientes.map(async (cli)=>{
               if(d['cliente'] === cli['id']) {
-              // console.log(cli);
+              if (cli['id'] === "-NMidpyPu8Cb9fVvE9GM") {
+                console.log(cli['id']);
+                
+              }
                 d['infoCliente'] = cli
                 const vehiculos:any[] = cli['vehiculos']
                 if (vehiculos) {
@@ -276,12 +288,12 @@ export class AdministracionComponent implements OnInit {
               const aqui2 = d['fecha_entregado'].split('/')
               d['fecha_compara_entrega'] = new Date(aqui2[2],aqui2[1] - 1,aqui2[0],0,0,0,0) 
             }
-            this.clientes.map(c=>{
-              const vehiculos = c['vehiculos']
-              vehiculos.map(v=>{
-                if (v['id'] === d['vehiculo']) d['infoVehiculo'] = v
-              })
-            })
+            // this.clientes.map(c=>{
+            //   const vehiculos = c['vehiculos']
+            //   vehiculos.map(v=>{
+            //     if (v['id'] === d['vehiculo']) d['infoVehiculo'] = v
+            //   })
+            // })
             d['desgloce'] = this._publicos.realizarOperacion(d,'servicios')
             const ser = d['servicios']
             ser.forEach((element,index) => {
@@ -295,11 +307,8 @@ export class AdministracionComponent implements OnInit {
               }
             });
           })
-
-          // console.log(data);
-          
           this.servTemp = data
-          this.obtenerResultados()
+          // this.obtenerResultados()
           this.listadodePG()
         }
       })
@@ -314,11 +323,11 @@ export class AdministracionComponent implements OnInit {
   asignaSucursal(data:any){
     this.sucursalSelect.valor = data['id']
     this.sucursalSelect.show = data['sucursal']
-    this.obtenerResultados()
+    // this.obtenerResultados()
   }
   aisgnaFecha(data:any){
     this.fechaSelect = data
-    this.obtenerResultados()
+    // this.obtenerResultados()
   }
   aisgnaFecha2(data:any){
     this.fechaSelect2 = data
@@ -326,138 +335,14 @@ export class AdministracionComponent implements OnInit {
   }
   asignaBusqueda(data:any){
     this.busquedaStatus = data
-    this.obtenerResultados()
+    // this.obtenerResultados()
   }
   
-obtenerResultados(){
-  let filtro2 = [],filtro = [];
-  (this.sucursalSelect2.valor === 'Todas') ? filtro2 = this.servTemp : filtro2 = this.servTemp.filter(d=>d['sucursal'] === this.sucursalSelect2.valor);
-  (this.SUCURSAL === 'Todas') ? filtro = filtro2 : filtro = filtro2.filter(g=>g['sucursal'] === this.SUCURSAL)
-  
-  // console.log(resultados_recepciones);
-  const fechaHoy = new Date(); fechaHoy.setHours(0,0,0,0)
-  const criteriosER = {inicio: fechaHoy, final : fechaHoy, tipo: 'recibido', resultados: [], desgloce:{} }
 
-  let diasMes = 1, diasMesPG=1, anio =fechaHoy.getFullYear()
-  let valor = 'ayer'
-  switch (this.fechaSelect.valor) {
-    case 'ayer':
-      criteriosER.final = new Date(fechaHoy); criteriosER.inicio.setDate(criteriosER.final.getDate() - 1)
-      criteriosER.inicio.setHours(0,0,0,0)
-    break;
-    case 'ult_7Dias':
-      criteriosER.final = new Date(fechaHoy); criteriosER.inicio.setDate(criteriosER.final.getDate() - 7)
-      criteriosER.inicio.setHours(0,0,0,0)
-    break;
-    case 'ult_30Dias':
-      criteriosER.final = new Date(fechaHoy); criteriosER.inicio.setDate(criteriosER.final.getDate() - 30)
-      criteriosER.inicio.setHours(0,0,0,0)
-    break;
-    case 'ult_mes':
-      criteriosER.inicio.setMonth(fechaHoy.getMonth() -1 )
-      diasMes = new Date(criteriosER.inicio.getFullYear(), criteriosER.inicio.getMonth(),0).getDate()
-      criteriosER.inicio = new Date(criteriosER.inicio.getFullYear(), criteriosER.inicio.getMonth(),1,0,0,0,0)
-      criteriosER.final = new Date(criteriosER.inicio.getFullYear(), criteriosER.inicio.getMonth(),diasMes,0,0,0,0)
-    break;
-    case 'este_anio':
-      criteriosER.inicio = new Date(anio,0,1); criteriosER.final = new Date(anio,11,31)
-    break;
-    case 'ult_anio':
-      anio =fechaHoy.getFullYear() - 1
-      criteriosER.inicio = new Date(anio,0,1); criteriosER.final = new Date(anio,11,31)
-    break;
-    case 'personalizado':
-      criteriosER.inicio = fechaHoy; criteriosER.final = fechaHoy
-      if (this.range.controls['start'].value && this.range.controls['end'].value) {
-        criteriosER.inicio = new Date(this.range.value.start._d)
-        criteriosER.final = new Date(this.range.value.end._d)
-      }
-    break;
-    default:
-      criteriosER.inicio = fechaHoy; criteriosER.final = fechaHoy
-    break;
-  }
-  // criteriosER.tipo = 'fecha_compara_recibido'
-  criteriosER.tipo = this.busquedaStatus.valor
-  let resultados_recepciones = []
-  this.fechaG.inicio = new Date(criteriosER.inicio)
-  this.fechaG.final = new Date(criteriosER.final)
-  // console.log(this.fechaG);
-  filtro.forEach((a)=>{
-    if (a[criteriosER.tipo ] >= criteriosER.inicio && a[criteriosER.tipo ] <= criteriosER.final) resultados_recepciones.push(a)
-  })
-  let resultados2 =[]
-  if (criteriosER.tipo ==='fecha_compara_recibido') {
-    resultados2 = resultados_recepciones.filter(o=>o['status'] !== 'entregado')
-  }else{
-    resultados2 = resultados_recepciones.filter(o=>o['status'] === 'entregado')
-  }
-  this.fechasRango.inicio = this._publicos.fechaNueva(criteriosER.inicio)
-  this.fechasRango.final = this._publicos.fechaNueva(criteriosER.final)
-
-  criteriosER.resultados = resultados2
-  
-
-  const realizar:any[] = resultados2
-  const desgloce = {
-    UB:0,mo:0,refacciones_1:0,refacciones_2:0,sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquetes:0,
-    iva:0,subtotal:0,total:0}
-  
-  realizar.forEach(r=>{
-    const desglo = r['desgloce']
-      if (r['desgloce']) {
-        this.camposDesgloce.map(des=>{
-          const valor = des.valor
-          if (desglo[valor]) desgloce[valor] = desgloce[valor] + desglo[valor]
-        })
-      }
-    })
-    desgloce['UB'] = desgloce['UB'] / realizar.length
-    desgloce['UBC'] =  desgloce['total'] * (desgloce['UB'] / 100)
-    // desgloce['CPR'] =  desgloce['total'] * ((100 - desgloce['UB']) / 100)
-    criteriosER.desgloce = desgloce
-    
-    if(!this.recepciones.length){
-      this.recepciones = realizar
-    }else{
-      if (realizar.length > this.recepciones.length) {
-        const inicio = this.recepciones.length
-        for (let index = inicio; index < realizar.length; index++) {
-          const cotizacion = realizar[index]
-          this.recepciones.push(cotizacion)
-        }
-      }else if(realizar.length < this.recepciones.length){
-        // console.log('aqui');
-        this.recepciones  = realizar
-      }else if(realizar.length == this.recepciones.length){
-        const camposRecupera = ['infoCliente','infoVehiculo','iva','desgloce','fecha_recibido','hora_recibido',
-        'status','tecnico','diasSucursal']
-        this.recepciones.map((cot,index)=>{
-          if (JSON.stringify(this.recepciones[index]) === JSON.stringify(realizar[index])) return
-          camposRecupera.map(cam=>{
-          if (realizar[index][cam]) {
-            cot[cam] = realizar[index][cam]
-          }
-          })
-        })
-      }
-    }
-    this.dataSource.data = realizar
-    this.desgloceAsigando = criteriosER.desgloce
-    this.newPagination('recepciones')
-
-}
 obtenerResultadosPG(){
-  let filtro2 = this.servTemp;
-  let filtro = [];
-  
-  if (this.SUCURSAL === 'Todas') {
-    filtro2 = this.servTemp
-  }else{
-    this.sucursalSelect2.valor = this.SUCURSAL
-    filtro2.filter(g=>g['sucursal'] === this.SUCURSAL)
-  }
-  (this.sucursalSelect2.valor === 'Todas') ? filtro = this.servTemp : filtro = this.servTemp.filter(d=>d['sucursal'] === this.sucursalSelect2.valor)
+
+
+// variables constantes para ambos
   const fechaHoy = new Date(); fechaHoy.setHours(0,0,0,0)
   const criteriosPG = {inicio: fechaHoy, final : fechaHoy, tipo: 'recibido', resultadosAmbos: [], resultadosP:[], resultadosG:[]}
   const desglocePG = {Efectivo:0,Cheque:0,Tarjeta:0,Transferencia:0}
@@ -465,36 +350,8 @@ obtenerResultadosPG(){
   const desgloceG = {...desglocePG}
   let pagosPG=[], ingresos_arr=[], gastos_arr=[]
   const campos= ['Efectivo','Cheque','Tarjeta','Transferencia']
-  campos.forEach((c)=>{  this.dataHistorial[c] =0 })
-  filtro.forEach(pg=>{
-    if (pg['HistorialPagos']) {
-      const HP = this._publicos.crearArreglo2(pg['HistorialPagos'])
-      HP.forEach((p)=>{
-        const aqui = p['fecha'].split('/')
-        p['fecha_compara'] = new Date(aqui[2],aqui[1] - 1,aqui[0],0,0,0,0)
-        const info = { ...p, sucursal: pg['sucursal'], usuario:'',tipo:'pago', tipoShow:'Pago' , id:0, rol:'', no_os: pg['no_os'] }
-        // ingresos_arr.push(info)   
-        pagosPG.push(info)
-      })
-    }
-    if (pg['HistorialGastos']) {
-      const HG =  this._publicos.crearArreglo2(pg['HistorialGastos']) 
-      HG.forEach((p)=>{
-        const aqui = p['fecha'].split('/')
-        p['fecha_compara'] = new Date(aqui[2],aqui[1] - 1,aqui[0],0,0,0,0)
-        const info = { ...p, sucursal: pg['sucursal'], usuario:'', tipo:'orden',tipoShow:'Gasto de '+ 'orden', id:0, rol:'' , no_os: pg['no_os']}
-        // gastos_arr.push(info)   
-        pagosPG.push(info)
-      })
-    }
-  })
-  
-  let nuevo = []
 
-  // console.log('---Listado');
-  this.listaHistorialPG.forEach(o=>{  pagosPG.push(o)  })
-  if(this.sucursalSelect2.valor !== 'Todas') nuevo = this.listaHistorialPG.filter(o=>o['sucursal'] === this.sucursalSelect2.valor)
-
+  const criteriosER = {inicio: fechaHoy, final : fechaHoy, tipo: 'recibido', resultados: [], desgloce:{} }
   let diasMes = 1, diasMesPG=1, anio =fechaHoy.getFullYear()
   let valor = 'ult_30Dias'
   switch (this.fechaSelect2.valor) {
@@ -533,7 +390,136 @@ obtenerResultadosPG(){
       criteriosPG.inicio = fechaHoy; criteriosPG.final = fechaHoy
     break;
   }
+  this.fechasRango.inicio = this._publicos.fechaNueva(criteriosPG.inicio)
+  this.fechasRango.final = this._publicos.fechaNueva(criteriosPG.final)
   criteriosPG.tipo = 'fecha_compara_recibido'
+  /// variables para obtener los servicios
+
+
+
+  let filtro_servicios2 = this.servTemp;
+
+  let resultados_servicios = []
+  filtro_servicios2.forEach((a)=>{
+    if (a[criteriosPG.tipo ] >= criteriosPG.inicio && a[criteriosPG.tipo ] <= criteriosPG.final) resultados_servicios.push(a)
+  })
+  let resultados2 =[]
+  if (criteriosER.tipo.toLowerCase() !=='cancelado') {
+    resultados2 = resultados_servicios.filter(o=>o['status'] !== 'cancelado')
+  }else{
+    resultados2 = resultados_servicios.filter(o=>o['status'] === 'entregado')
+  }
+  const realizar:any[] = resultados2;
+
+
+  let otros = [];
+  (this.sucursalSelect2.valor === 'Todas') ? otros = resultados2 : otros = resultados2.filter(g=>g['sucursal'] === this.sucursalSelect2.valor)
+
+
+
+  const desgloce = {
+    UB:0,mo:0,refacciones_1:0,refacciones_2:0,sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquetes:0,
+    iva:0,subtotal:0,total:0}
+
+
+    otros.forEach(r=>{
+      const desglo = r['desgloce']
+        if (r['desgloce']) {
+          this.camposDesgloce.map(des=>{
+            const valor = des.valor
+            if (desglo[valor]) desgloce[valor] = desgloce[valor] + desglo[valor]
+          })
+        }
+      })
+
+      desgloce['UB'] = desgloce['UB'] / otros.length
+      desgloce['UBC'] =  desgloce['total'] * (desgloce['UB'] / 100)
+      // desgloce['CPR'] =  desgloce['total'] * ((100 - desgloce['UB']) / 100)
+      criteriosER.desgloce = desgloce
+      if(!this.recepciones.length){
+        this.recepciones = otros
+      }else{
+        if (otros.length > this.recepciones.length) {
+          const inicio = this.recepciones.length
+          for (let index = inicio; index < otros.length; index++) {
+            const cotizacion = otros[index]
+            this.recepciones.push(cotizacion)
+          }
+        }else if(otros.length < this.recepciones.length){
+          // console.log('aqui');
+          this.recepciones  = otros
+        }else if(otros.length == this.recepciones.length){
+          const camposRecupera = ['infoCliente','infoVehiculo','iva','desgloce','fecha_recibido','hora_recibido',
+          'status','tecnico','diasSucursal']
+          this.recepciones.map((cot,index)=>{
+            if (JSON.stringify(this.recepciones[index]) === JSON.stringify(otros[index])) return
+            camposRecupera.map(cam=>{
+            if (otros[index][cam]) {
+              cot[cam] = otros[index][cam]
+            }
+            })
+          })
+        }
+      }
+      // console.log(otros);
+      
+
+      this.dataSource.data = otros
+    // console.log(realizar);
+    
+    this.desgloceAsigando = criteriosER.desgloce
+    this.newPagination('recepciones')
+
+
+    
+
+
+
+
+
+  ///variables para PG
+
+
+
+  otros.forEach(pg=>{
+
+    if (pg['HistorialPagos']) {
+      const HP = this._publicos.crearArreglo2(pg['HistorialPagos'])
+      HP.forEach((p)=>{
+        const aqui = p['fecha'].split('/')
+        p['fecha_compara'] = new Date(aqui[2],aqui[1] - 1,aqui[0],0,0,0,0)
+        const {muestra} = this.MetodosPago.find(m=>m['metodo'] === p['metodo'])
+        p['metodoShow'] = muestra
+        const info = { ...p, sucursal: pg['sucursal'], usuario:'',tipo:'pago', tipoShow:'Pago' , id:0, rol:'', no_os: pg['no_os'] }
+        // ingresos_arr.push(info)   
+        pagosPG.push(info)
+      })
+    }
+    if (pg['HistorialGastos']) {
+      const HG =  this._publicos.crearArreglo2(pg['HistorialGastos']) 
+      HG.forEach((p)=>{
+        const aqui = p['fecha'].split('/')
+        p['fecha_compara'] = new Date(aqui[2],aqui[1] - 1,aqui[0],0,0,0,0)
+        const {muestra} = this.MetodosPago.find(m=>m['metodo'] === p['metodo'])
+        p['metodoShow'] = muestra
+        
+        const info = { ...p, sucursal: pg['sucursal'], usuario:'', tipo:'orden',tipoShow:'Gasto de '+ 'orden', id:0, rol:'' , no_os: pg['no_os']}
+        // gastos_arr.push(info)   metodo
+        pagosPG.push(info)
+      })
+    }
+  })
+
+  
+  
+  let nuevo = []
+
+  // console.log('---Listado');
+  this.listaHistorialPG.forEach(o=>{  pagosPG.push(o)  })
+  // if(this.sucursalSelect2.valor !== 'Todas') nuevo = this.listaHistorialPG.filter(o=>o['sucursal'] === this.sucursalSelect2.valor)
+
+  
+  
 
   let resultados_recepciones = []
  
@@ -542,48 +528,79 @@ obtenerResultadosPG(){
   pagosPG.forEach((a)=>{    
     if (a['fecha_compara'] >= criteriosPG.inicio && a['fecha_compara'] <= criteriosPG.final) resultados_recepciones.push(a)
   })
+
+
   // console.log(resultados_recepciones);
-  criteriosPG.resultadosAmbos = resultados_recepciones; criteriosPG.resultadosP = []; criteriosPG.resultadosG = []; 
-   
-  criteriosPG.resultadosP = resultados_recepciones.filter(o=>o['tipo'] === 'pago')
-  criteriosPG.resultadosG = resultados_recepciones.filter(o=>o['tipo'] === 'operacion').concat(resultados_recepciones.filter(o=>o['tipo'] === 'orden'))
- 
-  resultados_recepciones.forEach((pg)=>{
-    this.MetodosPago.forEach((f)=> {  if(f.metodo == pg['metodo']) desglocePG[f.muestra] = desglocePG[f.muestra] + pg['monto'] })
-  })
-
-  this.porMetodo_PG = desglocePG
-  // console.log('Ingresos y gastos',this.porMetodo_PG);
-
-  criteriosPG.resultadosP.forEach((pg)=>{
-    this.MetodosPago.forEach((f)=>{  if (f.metodo == pg['metodo']) desgloceP[f.muestra]+=pg['monto']  })
-  })
-  this.porMetodo_pago= desgloceP
-  this.dataHistorial['pagos'] = desgloceP['Cheque'] + desgloceP['Efectivo'] + desgloceP['Tarjeta'] + desgloceP['Transferencia']
-
-  criteriosPG.resultadosG.forEach((pg)=>{
-    this.MetodosPago.forEach((f)=>{
-      if (f.metodo == pg['metodo']) desgloceG[f.muestra]+=pg['monto']
-    })
-  })
-  this.dataHistorial['egresos'] = desgloceG['Cheque'] + desgloceG['Efectivo'] + desgloceG['Tarjeta'] + desgloceG['Transferencia']
-  this.porMetodo_gasto= desgloceG
-  // console.log('Ingresos y gastos',this.porMetodo_gasto);
-  resultados_recepciones.forEach((pg)=>{
-    this.MetodosPago.forEach((f)=>{
-      if (f.metodo == pg['metodo']) {
-        this.dataHistorial[f.muestra] = desgloceP[f.muestra] - desgloceG[f.muestra]
-        pg['metodo'] = f.muestra
-      }
-    })
-  })
   
-  this.MetodosPago.forEach((f)=>{
-      this.dataHistorial['total'] = 
-      (desgloceP['Cheque'] + desgloceP['Efectivo'] + desgloceP['Tarjeta'] + desgloceP['Transferencia']) -
-      (desgloceG['Cheque'] + desgloceG['Efectivo'] + desgloceG['Tarjeta'] + desgloceG['Transferencia']) 
-  })
+  let filtrados_Sucursal =[]
+  if (this.sucursalSelect2.valor === 'Todas') {
+    filtrados_Sucursal = pagosPG
+  }else{
+    filtrados_Sucursal = pagosPG.filter(a=>a['sucursal'] === this.sucursalSelect2.valor)
+  }
   
+  // resultados_recepciones.forEach((pg)=>{
+  //   this.MetodosPago.forEach((f)=> {  if(f.metodo == pg['metodo']) desglocePG[f.muestra] = desglocePG[f.muestra] + pg['monto'] })
+  // })
+  
+  // console.log(this.MetodosPago);
+  // console.log(resultados_recepciones);
+  
+  
+  let pagos = resultados_recepciones.filter(p=>p['tipo'] ==='pago')
+  let gastos = resultados_recepciones.filter(p=>p['tipo'] ==='orden')
+  let operacion = resultados_recepciones.filter(p=>p['tipo'] ==='operacion')
+  const desgloce_pagos = {Cheque: 0,Efectivo: 0, Tarjeta: 0,Transferencia: 0}
+  const desgloce_gastos= {Cheque: 0,Efectivo: 0, Tarjeta: 0,Transferencia: 0}
+  const desgloce_operacion= {Cheque: 0,Efectivo: 0, Tarjeta: 0,Transferencia: 0}
+  const desgloce_final= {Cheque: 0,Efectivo: 0, Tarjeta: 0,Transferencia: 0, Total:0}
+
+  pagos.forEach((pg)=>{
+    this.MetodosPago.forEach((f)=> {  if(f.metodo == pg['metodo']) desgloce_pagos[f.muestra] = desgloce_pagos[f.muestra] + pg['monto'] })
+  })
+  gastos.forEach((pg)=>{
+    this.MetodosPago.forEach((f)=> {  if(f.metodo == pg['metodo']) desgloce_gastos[f.muestra] = desgloce_gastos[f.muestra] + pg['monto'] })
+  })
+  operacion.forEach((pg)=>{
+    this.MetodosPago.forEach((f)=> {  if(f.metodo == pg['metodo']) desgloce_operacion[f.muestra] = desgloce_operacion[f.muestra] + pg['monto'] })
+  })
+  // console.log(operacion);
+  
+  
+  desgloce_final.Efectivo= desgloce_pagos.Efectivo - ( desgloce_gastos.Efectivo + desgloce_operacion.Efectivo)
+  desgloce_final.Cheque= desgloce_pagos.Cheque - ( desgloce_gastos.Cheque + desgloce_operacion.Cheque)
+  desgloce_final.Tarjeta= desgloce_pagos.Tarjeta - ( desgloce_gastos.Tarjeta + desgloce_operacion.Tarjeta)
+  desgloce_final.Transferencia= desgloce_pagos.Transferencia - ( desgloce_gastos.Transferencia + desgloce_operacion.Transferencia)
+  
+
+  desgloce_final.Total = desgloce_final.Efectivo + desgloce_final.Cheque + desgloce_final.Tarjeta + desgloce_final.Transferencia
+  // this.porMetodo_gasto.Tarjeta = desgloce_gastos.Tarjeta
+  // console.log('desgloce_pagos--> ',desgloce_pagos);
+  // console.log('desgloce_gastos--> ',desgloce_gastos);
+  // console.log('desgloce_operacion--> ',desgloce_operacion);
+  // console.log('desgloce_final--> ',desgloce_final);
+
+
+  // console.log(this.MetodosPago);
+  
+  this.MetodosPago.forEach(met=>{
+    this.porMetodo_pago[met.muestra] = desgloce_pagos[met.muestra]
+    this.porMetodo_gasto[met.muestra] = ( desgloce_gastos[met.muestra] + desgloce_operacion[met.muestra])
+    this.dataHistorial[met.muestra] = desgloce_final[met.muestra]
+  })
+  this.desgloce_final = desgloce_final
+
+  // this.porMetodo_pago.Efectivo = desgloce_pagos.Efectivo
+  // this.porMetodo_gasto.Efectivo = desgloce_gastos.Efectivo
+  // this.dataHistorial.Efectivo = desgloce_final.Efectivo
+  
+
+  
+  
+  
+
+
+
   this.dataSourceIngresosEgresos.data = resultados_recepciones
   this.dataSourceIngresos.data = criteriosPG.resultadosP
   this.dataSourceEgresos.data = criteriosPG.resultadosG
@@ -808,6 +825,13 @@ obtenerResultadosPG(){
     // if (this.ROL!=='SuperSU') {
     //   this.router.navigateByUrl('/incio')
     // }
+    if (this.SUCURSAL==='Todas') {
+      
+    }else{
+      this.sucursalSelect2.show = ''
+      this.sucursalSelect2.valor = this.SUCURSAL
+
+    }
   }
   async listadodePG(){
     const starCountRef = ref(db, `HistorialGastosOperacion`)
@@ -828,18 +852,12 @@ obtenerResultadosPG(){
           pg['tipo'] = pg['tipo']
           pg['tipoShow'] = `Gasto de operacion`
           pg['no_os'] =''
+          const {muestra} = this.MetodosPago.find(m=>m['metodo'] === pg['metodo'])
+          pg['metodoShow'] = muestra
         })
 
-        let filtrados =  []
-        if (this.SUCURSAL=== 'Todas') {
-          this.listaHistorialPG = nuevos
-        }else{
-          this.listaHistorialPG = nuevos.filter(o=>o['sucursal'] === this.SUCURSAL)
-        }
 
-        // console.log(this.listaHistorialPG);
-        
-        
+        this.listaHistorialPG = nuevos
         this.obtenerResultadosPG()
       } else {
         this.obtenerResultadosPG()
@@ -875,8 +893,8 @@ obtenerResultadosPG(){
     this.imagenZoom = urlImagen
   }
   async ordenamiento(campo:string,ordena:boolean){
-    const asnOrder = await this._publicos.ordenamiento(this.servicios,campo,ordena)
-    this.dataSource =  new MatTableDataSource(asnOrder)
+    const asnOrder = await this._publicos.ordenamiento(this.dataSource.data,campo,ordena)
+    this.dataSource.data =  asnOrder
     // this.newPagination('recepciones')
     // this.ordena = ordena
     // return this.servicios
@@ -889,6 +907,9 @@ obtenerResultadosPG(){
         if (tabla === 'recepciones') {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          
+          this.geeraReportes()
+          this.TotalGastosOperacion()
         }
         if (tabla === 'IE') {
           this.dataSourceIngresosEgresos.paginator = this.paginatorIE;
@@ -934,5 +955,24 @@ obtenerResultadosPG(){
     if (this.dataSource.data.length) {
       this._exporter.generaReportenew(this.dataSource.data, fechaR,gastos)
     }
+  }
+
+  geeraReportes(){
+    const reporte = this._publicos.generaCamposReporte(this.dataSource.data, this.busquedaStatus.show)
+    this.camposReporte.tiempoEstancia = reporte.tiempoEstancia
+    this.camposReporte.ticket = reporte.ticket
+    this.camposReporte.horas_totales = reporte.horas_totales
+    this.camposReporte.horas_servicios = reporte.horas_estancia
+    this.camposReporte.servicios = this.dataSource.data.length
+  }
+
+  TotalGastosOperacion(){
+    // console.log(this.listaHistorialPG);
+    let total_GO =0
+    this.listaHistorialPG.forEach(go=>{
+      total_GO+= go['monto']
+    })
+    this.total_GO = total_GO
+    
   }
 }

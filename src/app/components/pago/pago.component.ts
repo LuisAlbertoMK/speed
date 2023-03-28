@@ -34,7 +34,10 @@ export class PagoComponent implements OnInit {
     {metodo:1, show:'Efectivo'},
     {metodo:2, show:'Cheque'},
     {metodo:3, show:'Tarjeta'},
-    {metodo:4, show:'Transferencia'},
+    {metodo:4, show:'OpenPay'},
+    {metodo:5, show:'Clip / mercadoPago'},
+    {metodo:6, show:'Terminal BBVA'},
+    {metodo:7, show:'Terminal BANAMEX'}
   ]
   usuario:string
   rol:string

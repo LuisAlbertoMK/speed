@@ -969,5 +969,65 @@ export class ServiciosPublicosService {
   }
   
 
+  mensajeSwal(mensaje:string){
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: mensaje,
+      showConfirmButton: true,
+      // timer: 1500
+    })
+  }
+
+  generaCamposReporte(data:any[], busqueda:string){
+    let tiempoEstancia = 0, horas_estancia=0, ticket=0, horas_totales=0
+    let arreglo = []
+
+    if (busqueda.toLowerCase() !== 'cancelado') {
+      arreglo = data.filter(o=>o['status'] !== 'cancelado')
+    }else{
+      arreglo = data.filter(o=>o['status'] === 'cancelado')
+    }
+    
+    let reporte = {horas_estancia:0,ticket:0, tiempoEstancia:0, horas_totales:0}
+    arreglo.map(d=>{
+      // console.log(d['id']);
+      ticket= ticket + d['desgloce'].total
+      if (d['diasSucursal']) {
+        tiempoEstancia += d['diasSucursal']
+      }
+    // para obtener la fecha en formato string y comparar RECIBIDO
+      const aqui = d['fecha_recibido'].split('/')
+      const aqui_time = d['hora_recibido'].split(':')
+      const fec_Recibido = new Date(aqui[2],aqui[1] - 1,aqui[0], aqui_time[0], aqui_time[1],aqui_time[2])
+
+        // para obtener la fecha en formato string y comparar Entregado
+      let aqui_entregado , aqui_time_entregado, fec_entregado
+      if (d['fecha_entregado']) {
+        aqui_entregado = d['fecha_entregado'].split('/')
+        aqui_time_entregado = d['hora_entregado'].split(':')
+        fec_entregado = new Date(aqui_entregado[2],aqui_entregado[1] - 1,aqui_entregado[0], aqui_time_entregado[0], aqui_time_entregado[1],aqui_time_entregado[2])
+      }else{
+        fec_entregado = new Date()
+      }
+
+      if ((fec_Recibido instanceof Date) && (fec_entregado instanceof Date)) {
+        let diferencia = (fec_entregado.getTime() - fec_Recibido.getTime())/1000
+        diferencia /= (60*60)
+        horas_estancia += horas_estancia + Math.abs(Math.round(diferencia)) 
+        horas_totales += horas_estancia 
+      }
+    })
+    if (arreglo.length) {
+      reporte.horas_estancia = horas_estancia / arreglo.length
+      reporte.tiempoEstancia = tiempoEstancia / arreglo.length
+      reporte.horas_totales = horas_totales / arreglo.length
+      reporte.ticket = ticket / arreglo.length
+    }
+    
+    
+    return reporte
+  }
+
   
 }

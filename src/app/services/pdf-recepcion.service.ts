@@ -1141,19 +1141,13 @@ export class PdfRecepcionService {
     }
 }
   constructor(public _publicos:ServiciosPublicosService) { }
-  async pdf(data:any){
-
-    // variables necesarias nivel de gasolina, (imagenes, check, etc), observaciones
-    // adatos de cliente, servicios a realizar, no_os, fecha 
-    const colorTextoPDF: string = '#1215F4';
-    
-    
-    // const dat = this.infoPDF
-    const dat = data
-    if (!dat['cliente']['empresa']) {
-      dat['cliente']['empresa'] =''
-    }else{
-      dat['cliente']['empresa']
+  async obtenerImege(data:any){
+    async function bases(URL:any) {
+      const dataaa = {url: '', logo:''}
+      await getBase64ImageFromURL(URL).then((val:any)=>{
+        dataaa.url = val
+      })
+      return dataaa
     }
     function getBase64ImageFromURL(url:string) {
       return new Promise((resolve, reject) => {
@@ -1174,50 +1168,93 @@ export class PdfRecepcionService {
         img.src = url;
       });
     }
+    // console.log(data);
+    
+    const nuevasdocumentDefinitionimages = {}
+    nuevasdocumentDefinitionimages['logo'] = `${(await bases('../../assets/logoSpeedPro/Logo-Speedpro.png')).url}`
+    nuevasdocumentDefinitionimages['combustiblevacio'] = `${(await bases('../../assets/combustible/c_vacio.png')).url}`
+    nuevasdocumentDefinitionimages['combustible14'] = `${(await bases('../../assets/combustible/c_14.png')).url}`
+    nuevasdocumentDefinitionimages['combustible12'] = `${(await bases('../../assets/combustible/c_12.png')).url}`
+    nuevasdocumentDefinitionimages['combustible34'] = `${(await bases('../../assets/combustible/c_34.png')).url}`
+    nuevasdocumentDefinitionimages['combustibleFull'] = `${(await bases('../../assets/combustible/c_full.png')).url}`
+    nuevasdocumentDefinitionimages['capo'] = `${(await bases('../../assets/imagenes_detalles/capo.jpg')).url}`
+    nuevasdocumentDefinitionimages['espejo_derecho'] = `${(await bases('../../assets/imagenes_detalles/espejo_derecho.jpg')).url}`
+    nuevasdocumentDefinitionimages['espejo_izquierdo'] = `${(await bases('../../assets/imagenes_detalles/espejo_izquierdo.jpg')).url}`
+    nuevasdocumentDefinitionimages['faros_frontales'] = `${(await bases('../../assets/imagenes_detalles/faros_frontales.jpg')).url}`
+    nuevasdocumentDefinitionimages['faros_posteriores'] = `${(await bases('../../assets/imagenes_detalles/faros_posteriores.jpg')).url}`
+    nuevasdocumentDefinitionimages['frontal'] = `${(await bases('../../assets/imagenes_detalles/frontal.jpg')).url}`
+    nuevasdocumentDefinitionimages['lateralDerecho'] = `${(await bases('../../assets/imagenes_detalles/lateralDerecho.jpg')).url}`
+    nuevasdocumentDefinitionimages['parabrisas'] = `${(await bases('../../assets/imagenes_detalles/parabrisas.jpg')).url}`
+    nuevasdocumentDefinitionimages['parabrisas_posterior'] = `${(await bases('../../assets/imagenes_detalles/parabrisas_posterior.jpg')).url}`
+    nuevasdocumentDefinitionimages['paragolpes_frontal'] = `${(await bases('../../assets/imagenes_detalles/paragolpes_frontal.jpg')).url}`
+    nuevasdocumentDefinitionimages['paragolpes_posterior'] = `${(await bases('../../assets/imagenes_detalles/paragolpes_posterior.jpg')).url}`
+    nuevasdocumentDefinitionimages['posterior'] = `${(await bases('../../assets/imagenes_detalles/posterior.jpg')).url}`
+    nuevasdocumentDefinitionimages['tirador_lateral_izquierda_1'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_izquierda_1.jpg')).url}`
+    nuevasdocumentDefinitionimages['tirador_lateral_izquierda_2'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_izquierda_2.jpg')).url}`
+    nuevasdocumentDefinitionimages['tirador_lateral_derecha_1'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_derecha_1.jpg')).url}`
+    nuevasdocumentDefinitionimages['tirador_lateral_derecha_2'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_derecha_2.jpg')).url}`
+    nuevasdocumentDefinitionimages['puerta_lateral_izquierda_1'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_izquierda_1.jpg')).url}`
+    nuevasdocumentDefinitionimages['puerta_lateral_izquierda_2'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_izquierda_2.jpg')).url}`
+    nuevasdocumentDefinitionimages['puerta_lateral_derecha_1'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_derecha_1.jpg')).url}`
+    nuevasdocumentDefinitionimages['puerta_lateral_derecha_2'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_derecha_2.jpg')).url}`
+    nuevasdocumentDefinitionimages['puerta_posterior'] = `${(await bases('../../assets/imagenes_detalles/puerta_posterior.jpg')).url}`
+    nuevasdocumentDefinitionimages['tirador_posterior'] = `${(await bases('../../assets/imagenes_detalles/tirador_posterior.jpg')).url}`
+    nuevasdocumentDefinitionimages['techo'] = `${(await bases('../../assets/imagenes_detalles/techo.jpg')).url}`
+    nuevasdocumentDefinitionimages['firmaCliente'] = `${data['firmaCliente']}`
 
     
-    let base = ''
+    let person_ =[]
     
-    async function bases(URL:any) {
-      const dataaa = {url: '', logo:''}
-      await getBase64ImageFromURL(URL).then((val:any)=>{
-        dataaa.url = val
-      })
-      return dataaa
+    if (data['personalizados'].length) {
+      // console.log('anexar al pdf las imagenes de personalizados');
+      person_ = data['personalizados']
     }
+
+    person_.forEach((p)=>{
+      const nombre = p['nombre'].split('.')
+      nuevasdocumentDefinitionimages[nombre[0].toLowerCase()] = `${p['url']}`
+    })
+    const checados = data['detalles'].filter(d=>d['checado'])
+    data['conjuntos'] = checados.concat(person_)
+    return this.pdf(data,nuevasdocumentDefinitionimages)
+  }
+  async pdf(data:any, bibliotecaVirtual:any){
+
+    const colorTextoPDF: string = '#1215F4';
+    const dat = data
+    if (!dat['cliente']['empresa']) {
+      dat['cliente']['empresa'] =''
+    }else{
+      dat['cliente']['empresa']
+    }
+
+
     function Combustble(){
       let {status} = dat['checkList'].find(c=>c['id'] === 'nivel_gasolina')
-      let imagen = '', fullpath = '', base64 = null
-
-      // combustiblevacio
-      // combustible14
-      // combustible12
-      // combustible34
-      // combustibleFull
-      const ruta = '../../assets/combustible'
+      let fullpath = ''
       switch (status) {
         case 'vacio':
-          imagen = 'c_vacio.png'
+          // imagen = 'c_vacio.png'
           // fullpath = `${ruta}/${imagen}`
           fullpath = 'combustiblevacio'
           break;
           case '1/4':
-            imagen = 'c_14.png'
+            // imagen = 'c_14.png'
             // fullpath = `${ruta}/${imagen}`
             fullpath = 'combustible14'
             break;
           case '1/2':
-            imagen = 'c_12.png'
+            // imagen = 'c_12.png'
             // fullpath = `${ruta}/${imagen}`
             fullpath = 'combustible12'
             break;
           case '3/4':
-            imagen = 'c_34.png'
+            // imagen = 'c_34.png'
             // fullpath = `${ruta}/${imagen}`
             fullpath = 'combustible34'
             break;
           case 'lleno':
-            imagen = 'c_full.png'
+            // imagen = 'c_full.png'
             // fullpath = `${ruta}/${imagen}`
             fullpath = 'combustibleFull'
             break;
@@ -1358,9 +1395,6 @@ export class PdfRecepcionService {
       })
       return body;
     }
-
-
-   
     let documentDefinition = {
       footer: function(currentPage, pageCount) {
         return [
@@ -1414,11 +1448,6 @@ export class PdfRecepcionService {
       },
       images:{}
     }
-
-    
-
-    const checados = dat['detalles'].filter(d=>d['checado'])
-    
     const info = [{
       layout: 'noBorders',
       table: {
@@ -1644,7 +1673,13 @@ export class PdfRecepcionService {
                   [ { text: ` `,alignment: 'center', style:'info3' }],
                   [ { text: `Nombre y Firma.`,alignment: 'center', style:'info3' }],
                   [ { text: ` `,alignment: 'center', style:'info3' }],
-                  [ { text: `____________________________`,alignment: 'center', style:'info3' }],
+                  [ {
+                    image: `firmaCliente`,
+                    height: 50,
+                    width: 150,
+                    aling: 'center',
+                    valing: 'center'
+                  },],
                   [ { text: ` `,alignment: 'center', style:'info3' }],
                   [ { text: `Recibió`,alignment: 'center', style:'info3' }],
                   [ { text: ` `,alignment: 'center', style:'info3' }],
@@ -1692,74 +1727,12 @@ export class PdfRecepcionService {
     { text: `C) en caso de requerir un servicio adicional el cliente será notificado antes de realizar dicho servicio`,alignment: 'justify', style:'terminos2' },
     { text: `D) la empresa no se hace responsable por artículos de valor no reportados al momento de recibir el vehículo`,alignment: 'justify', style:'terminos2' },
     // { text: `E) Cualquier diagnóstico y cotización que no sea autorizada tendra un costo minimo de $ 499.00 pesos'`,alignment: 'justify', style:'terminos' },
-]
-    const nuevasdocumentDefinitionimages = {}
-    nuevasdocumentDefinitionimages['logo'] = `${(await bases('../../assets/logoSpeedPro/Logo-Speedpro.png')).url}`
-    nuevasdocumentDefinitionimages['combustiblevacio'] = `${(await bases('../../assets/combustible/c_vacio.png')).url}`
-    nuevasdocumentDefinitionimages['combustible14'] = `${(await bases('../../assets/combustible/c_14.png')).url}`
-    nuevasdocumentDefinitionimages['combustible12'] = `${(await bases('../../assets/combustible/c_12.png')).url}`
-    nuevasdocumentDefinitionimages['combustible34'] = `${(await bases('../../assets/combustible/c_34.png')).url}`
-    nuevasdocumentDefinitionimages['combustibleFull'] = `${(await bases('../../assets/combustible/c_full.png')).url}`
-    nuevasdocumentDefinitionimages['capo'] = `${(await bases('../../assets/imagenes_detalles/capo.jpg')).url}`
-    nuevasdocumentDefinitionimages['espejo_derecho'] = `${(await bases('../../assets/imagenes_detalles/espejo_derecho.jpg')).url}`
-    nuevasdocumentDefinitionimages['espejo_izquierdo'] = `${(await bases('../../assets/imagenes_detalles/espejo_izquierdo.jpg')).url}`
-    nuevasdocumentDefinitionimages['faros_frontales'] = `${(await bases('../../assets/imagenes_detalles/faros_frontales.jpg')).url}`
-    nuevasdocumentDefinitionimages['faros_posteriores'] = `${(await bases('../../assets/imagenes_detalles/faros_posteriores.jpg')).url}`
-    nuevasdocumentDefinitionimages['frontal'] = `${(await bases('../../assets/imagenes_detalles/frontal.jpg')).url}`
-    nuevasdocumentDefinitionimages['lateralDerecho'] = `${(await bases('../../assets/imagenes_detalles/lateralDerecho.jpg')).url}`
-    nuevasdocumentDefinitionimages['parabrisas'] = `${(await bases('../../assets/imagenes_detalles/parabrisas.jpg')).url}`
-    nuevasdocumentDefinitionimages['parabrisas_posterior'] = `${(await bases('../../assets/imagenes_detalles/parabrisas_posterior.jpg')).url}`
-    nuevasdocumentDefinitionimages['paragolpes_frontal'] = `${(await bases('../../assets/imagenes_detalles/paragolpes_frontal.jpg')).url}`
-    nuevasdocumentDefinitionimages['paragolpes_posterior'] = `${(await bases('../../assets/imagenes_detalles/paragolpes_posterior.jpg')).url}`
-    nuevasdocumentDefinitionimages['posterior'] = `${(await bases('../../assets/imagenes_detalles/posterior.jpg')).url}`
-    nuevasdocumentDefinitionimages['tirador_lateral_izquierda_1'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_izquierda_1.jpg')).url}`
-    nuevasdocumentDefinitionimages['tirador_lateral_izquierda_2'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_izquierda_2.jpg')).url}`
-    nuevasdocumentDefinitionimages['tirador_lateral_derecha_1'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_derecha_1.jpg')).url}`
-    nuevasdocumentDefinitionimages['tirador_lateral_derecha_2'] = `${(await bases('../../assets/imagenes_detalles/tirador_lateral_derecha_2.jpg')).url}`
-    nuevasdocumentDefinitionimages['puerta_lateral_izquierda_1'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_izquierda_1.jpg')).url}`
-    nuevasdocumentDefinitionimages['puerta_lateral_izquierda_2'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_izquierda_2.jpg')).url}`
-    nuevasdocumentDefinitionimages['puerta_lateral_derecha_1'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_derecha_1.jpg')).url}`
-    nuevasdocumentDefinitionimages['puerta_lateral_derecha_2'] = `${(await bases('../../assets/imagenes_detalles/puerta_lateral_derecha_2.jpg')).url}`
-    nuevasdocumentDefinitionimages['puerta_posterior'] = `${(await bases('../../assets/imagenes_detalles/puerta_posterior.jpg')).url}`
-    nuevasdocumentDefinitionimages['tirador_posterior'] = `${(await bases('../../assets/imagenes_detalles/tirador_posterior.jpg')).url}`
-    nuevasdocumentDefinitionimages['techo'] = `${(await bases('../../assets/imagenes_detalles/techo.jpg')).url}`
+    ]
+    let limites_ = []
 
-    
-    
-    
-    let limites_ = [], person_ =[]
-    
-    if (dat['personalizados'].length) {
-      // console.log('anexar al pdf las imagenes de personalizados');
-      person_ = dat['personalizados']
-    }
-    let conjunto = []
-    if (person_.length) {
-      conjunto = checados.concat(person_)
-    }else{
-      conjunto = checados
-    }
-    const donde = conjunto
-    person_.forEach((p)=>{
-      const nombre = p['nombre'].split('.')
-      nuevasdocumentDefinitionimages[nombre[0].toLowerCase()] = Object({
-        url: `${p['url']}`,
-        headers: {
-          myheader: 'imagen',
-          myotherheader: '123',
-          // cors:'Access-Control-Allow-Headers'
-          
-        }
-      })
-    })
-    
-    
-    documentDefinition.images = Object({...nuevasdocumentDefinitionimages})
-    // console.log('definiciones de imagenes para pdf');
-    
-    // console.log(nuevasdocumentDefinitionimages);
-    
-    // console.log(donde);
+    let donde = dat['conjuntos']
+
+    documentDefinition.images = await Object({...bibliotecaVirtual})
     let i_ =0
     if (donde.length) {
      
@@ -1782,15 +1755,10 @@ export class PdfRecepcionService {
       limites_.push(donde.length -1)
     }
 
-    // if (donde.length>4) {
-    //   limites_.push(donde.length -1)
-    // }
-    // console.log('error');
     
     let todasLasImagenes =[]
     
     limites_.sort()
-    // console.log(limites_);
     
     limites_.forEach((a,index) => {
       let muestra = []
@@ -1841,11 +1809,9 @@ export class PdfRecepcionService {
         
       }
       todasLasImagenes.push(muestra)
-      console.log(muestra);
+      // console.log(muestra);
       
     });
-    
-    console.log(todasLasImagenes);
     
    
     todasLasImagenes.sort(function(a, b){return b.length - a.length})
