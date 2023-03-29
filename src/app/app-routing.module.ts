@@ -31,7 +31,9 @@ import { CotizacionNewComponent } from './pages/cotizacion-new/cotizacion-new.co
 import { ServiciosConfirmarComponent } from './pages/servicios-confirmar/servicios-confirmar.component';
 import { ModificaRecepcionComponent } from './pages/modifica-recepcion/modifica-recepcion.component';
 import { AuthPruebaComponent } from './components/auth-prueba/auth-prueba.component';
+
 import { Loginv1Component } from './components/loginv1/loginv1.component';
+import { ReporteGastosComponent } from './pages/reporte-gastos/reporte-gastos.component';
 
 const routes: Routes = [];
 
@@ -72,6 +74,7 @@ const APP_ROUTES: Routes = [
   { path: 'automaticos', component: AutomaticosComponent },
   // { path: 'login', component: LoginComponent},
   { path: 'loginv1', component: Loginv1Component},
+  { path: 'reporteGastos', component: ReporteGastosComponent},
   { path: 'pruebaAuth', component: AuthPruebaComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];

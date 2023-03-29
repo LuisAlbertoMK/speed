@@ -841,7 +841,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       costo:['0',[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(0)]],
       marca:['',[]],
       status:['',[]],
-      tipo:['refaccion',[Validators.required]],
+      tipo:['',[Validators.required]],
       descripcion:['',[]]
     })
   }
@@ -1102,7 +1102,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
               }
             }       
           
-        }else if (element.tipo === 'MO') {
+        }else if (element.tipo === 'mo') {
           if (element.costo>0) {
             const operacion = cantidad * element.costo
             totalImportante = totalImportante + operacion
@@ -2169,7 +2169,6 @@ comenzar(){
       this.dimensiones()
     }, 200);
   }
-
   clienteSelect(){
     
     this.cliente = null
@@ -2178,6 +2177,17 @@ comenzar(){
         this.cliente = this.dataRecepcion['cliente']
       }
     },300)
+  }
+
+  elementoInfo(data:any){
+    console.log(data);
+    if (data) {
+      this.dataRecepcion['elementos'].push(data)
+      this.realizarOperaciones()
+    }else{
+      this._publicos.mensajeSwal('ocurrio un error')
+    }
+   
   }
   
 }

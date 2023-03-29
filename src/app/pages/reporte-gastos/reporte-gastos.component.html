@@ -1,0 +1,177 @@
+<div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let metodo of metodospago" (click)="agregar(metodo)">{{metodo['show']}}</li>
+            </ul>
+        </div>
+        <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+            <!-- Metodo de pago seleccionado: {{ metodo_select | json }} -->
+           
+            
+            <!-- <div class="col-lg-12 col-md-6 col-sm-12 col-12"> -->
+                <!-- <mat-radio-group aria-label="Select an option" [(ngModel)]="tipo_gasto">
+                    <mat-radio-button value="nuevo" class="m-1" >Nuevo gasto</mat-radio-button>
+                    <mat-radio-button value="inicial" class="m-1" >Gasto Inicial</mat-radio-button>
+                  </mat-radio-group> -->
+                 
+                    
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 border">
+                    <form (ngSubmit)="registraGasto()" [formGroup]="formGasto" class="m-2">
+                        <mat-radio-group *ngIf="!Editar"
+                        aria-labelledby="example-radio-group-label"
+                        class="example-radio-group"
+                         formControlName="tipo">
+                            <mat-radio-button class="m-1 text-capitalize" *ngFor="let gasto of gastos" [value]="gasto">
+                                {{gasto}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                        <ng-container *ngIf="SUCURSAL === 'Todas'">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="mb-1 row text-start">
+                                  <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}" for="sucursal"
+                                    class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Sucursal </label>
+                                  <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                                    <select class="form-select form-select-sm" formControlName="sucursal">
+                                        <option value="">Selecciona</option>
+                                        <option [value]="sucu['id']" *ngFor="let sucu of sucursales">{{sucu['sucursal']}}</option>
+                                    </select>
+                                  </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="mb-1 row text-start">
+                              <label [ngClass]="{'text-danger': validaCampo('monto'),'text-success': !validaCampo('monto')}" for="monto"
+                                class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Monto de gasto </label>
+                              <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                                <input id="monto" type="number" min="0" max="10000000" class="form-control form-control-sm"
+                                  formControlName="monto">
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="mb-1 row text-start">
+                              <label [ngClass]="{'text-danger': validaCampo('metodo'),'text-success': !validaCampo('metodo')}" for="metodo"
+                                class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Metodo de gasto </label>
+                              <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                                <select class="form-select form-select-sm" formControlName="metodo">
+                                    <option value="">Selecciona</option>
+                                    <option [value]="sucu['valor']" *ngFor="let sucu of metodospago">{{sucu['show']}}</option>
+                                </select>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="mb-1 row text-start">
+                              <label [ngClass]="{'text-danger': validaCampo('concepto'),'text-success': !validaCampo('concepto')}" for="concepto"
+                                class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label">Metodo de gasto </label>
+                              <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                                <textarea cols="30" rows="3" formControlName="concepto" style="width: 100%;"></textarea>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <button type="submit" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
+                              class="btn btn-sm btn-primary m-1">Registrar Gasto</button>
+                            <button type="button" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
+                              class="btn btn-sm btn-danger m-1" (click)="limpiaForm()">Limpiar inf.</button>
+                          </div>
+                        
+                    </form>
+                </div>
+                <ng-container *ngIf="formGasto.invalid">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-justify">
+                        <span class="text-danger">LLenar datos de gasto</span>
+                    </div>
+                </ng-container>
+                
+            <!-- </div> -->
+            
+            <!-- <div class="row">
+                <div class="col">
+                    <label for="">Cantidad recibida</label>
+                    <input type="number" [(ngModel)]="monto">
+                </div>
+            </div> -->
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-4 mt-1 text-center">
+            <h3>Aqui el historial de gastos del dia</h3>
+            <div class="mat-elevation-z8 table-responsive ">
+                <table #GastosDia="matSort" matSort mat-table [dataSource]="dataSourceGastosDia">
+                  <ng-container matColumnDef="concepto">
+                    <th mat-header-cell *matHeaderCellDef class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
+                    (click)="ordenamiento = !ordenamiento; ordenarElementos('concepto')"> 
+                        <span class="pointer" style="width: 100%;">Metodo &nbsp;
+                            <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </ng-container>
+                            <ng-template #elseOrdenamiento>
+                              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </ng-template>
+                          </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-start"> {{element['concepto'] }} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="metodo">
+                    <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="ordenamiento = !ordenamiento; ordenarElementos('metodo')"> 
+                        <span class="pointer" style="width: 100%;">metodo &nbsp;
+                            <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </ng-container>
+                            <ng-template #elseOrdenamiento>
+                              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </ng-template>
+                          </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center"> {{element['metodoShow'] }}  </td>
+                  </ng-container>
+                  <ng-container matColumnDef="monto">
+                    <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="ordenamiento = !ordenamiento; ordenarElementos('monto')"> 
+                        <span class="pointer" style="width: 100%;">monto &nbsp;
+                            <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </ng-container>
+                            <ng-template #elseOrdenamiento>
+                              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </ng-template>
+                          </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">{{element['monto'] | monedas}}  </td>
+                  </ng-container>
+                  <ng-container matColumnDef="tipo">
+                    <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
+                    (click)="ordenamiento = !ordenamiento; ordenarElementos('tipo')"> 
+                        <span class="pointer" style="width: 100%;">tipo &nbsp;
+                            <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </ng-container>
+                            <ng-template #elseOrdenamiento>
+                              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </ng-template>
+                          </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="text-center text-capitalize"> {{element['tipo'] }}  </td>
+                  </ng-container>
+                  <ng-container matColumnDef="opciones">
+                    <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> opciones </th>
+                    <td mat-cell *matCellDef="let element" class="text-center">
+                      <i class="fa fa-edit text-primary fa-1x m-1 pointer" (click)="editarGasto(element)"></i>
+                      <i class="fa fa-trash text-danger fa-1x m-1 pointer" (click)="editarGasto(element)"></i>
+                    </td>
+                  </ng-container>
+        
+                  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                  
+                  <tr mat-header-row *matHeaderRowDef="columnasGastosDia"></tr>
+                  <tr mat-row *matRowDef="let row; columns: columnasGastosDia;" class="anima"></tr>
+                  <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+                </table>
+                <mat-paginator #GastosDiaPaginator role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>

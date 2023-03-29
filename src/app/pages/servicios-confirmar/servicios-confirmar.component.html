@@ -288,126 +288,11 @@
         </div>
       </ng-container>
       <ng-container *ngIf="showFormElemento">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-          <!-- [disabled]="formElemento.controls['id'].value" -->
-          <mat-slide-toggle [(ngModel)]="guardarEnCatalogo" >Guardar
-            en catalogo</mat-slide-toggle>
-        </div>
-        <form [formGroup]="formElemento" (ngSubmit)="colocarElemento()">
-          <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-              <div class="row">
-                <label for="nombre"
-                  class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">nombre</label>
-                <div class="col-9 col-sm-9 col-md-9 col-lg-9 ">
-                  <!-- <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"> -->
-                  <input type="search" class="form-control form-control-sm text-uppercase" id="elementos"
-                    (ngModelChange)="verificaInforElemento('principal')" [formControl]="myControl"
-                    [matAutocomplete]="autoElementos" placeholder="Buscar por: nombre elemento">
-                  <!--  -->
-                  <mat-autocomplete autoActiveFirstOption #autoElementos="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                      <strong
-                        [ngClass]="{'tipo-mo': option['tipo']==='MO','tipo-refaccion': option['tipo']==='refaccion'}">
-                        {{option['nombre'] | capitalizarUno}}
-                      </strong>
-                    </mat-option>
-                  </mat-autocomplete>
-                  <!-- <small for="elementos">elementos disponibles <strong>{{elementosConjunto.length}}</strong></small> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-              <div class="mb-1 row">
-                <label for="cantidad" class="col-12 col-sm-6 col-md-6 col-lg-6 col-form-label">
-                  <!-- <ng-container *ngIf="formElemento.controls['tipo'].value === 'refaccion'">{{'cantidad' | capitalizarUno}}</ng-container>
-                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'">{{'cantidad de horas' | capitalizarUno}}</ng-container> -->
-                </label>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
-                  <input type="number" class="form-control form-control-sm" min="1" id="cantidad"
-                    formControlName="cantidad">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-              <div class="mb-1 row">
-                <label for="precio" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">
-                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'refaccion'">precio</ng-container>
-                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'">Costo</ng-container>
-                </label>
-                <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                  <input type="number" class="form-control form-control-sm" min="1" id="precio"
-                    formControlName="precio">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-              <div class="mb-1 row">
-                <label for="costo"
-                  class="col-12 col-sm-6 col-md-6 col-lg-6 col-form-label">
-                  <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'; else elseSobrescrito">
-                    {{'Sobrescribir costo MO' | capitalizarUno}}
-                  </ng-container>
-                  <ng-template #elseSobrescrito>
-                    {{'Sobrescribir costo refacción' | capitalizarUno}}
-                  </ng-template>
-                  
-                </label>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
-                  <input type="number" class="form-control form-control-sm" min="0" id="costo" formControlName="costo">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-              <div class="mb-1 row">
-                <label for="tipo" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">tipo</label>
-                <div class="col-9 col-sm-9 col-md-9 col-lg-9 ">
-                  <!-- <input type="text" class="form-control form-control-sm" id="tipo" formControlName="tipo"> -->
-                  <select [ngModel]="formElemento.controls['tipo'].value" class="form-select form-select-sm"
-                    formControlName="tipo">
-                    <option value="MO">Mano obra</option>
-                    <option value="refaccion">Refaccion</option>
-                  </select>
-                </div>
-              </div>
+        
+        <!-- <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente> -->
+        <app-mo-refacciones (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
 
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="formElemento.controls['tipo'].value === 'refaccion'">
-              <div class="mb-1 row ">
-                <label for="marca" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">marca</label>
-                <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                  <div class="input-group mb-3">
-                    <select class="form-select form-select-sm" id="marca" [(ngModel)]="marcaSelect"
-                      formControlName="marca">
-                      <option value="">Ninguna</option>
-                      <option [selected]="marca.id === marcaSelect" value="marca.id"
-                        *ngFor="let marca of refaccionesMarcas">{{marca.marca}}</option>
-                    </select>
-                    <button class="btn btn-outline-primary" type="button" id="button-addon2"
-                      (click)="mensajeMarca()">+</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <div class="mb-1 row">
-                <label for="descripcion"
-                  class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">descripcion</label>
-                <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                  <textarea id="descripcion" cols="30" rows="3" formControlName="descripcion"
-                    style="width: 100%;"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-              <button type="submit" [disabled]="formElemento.invalid ?'disabled':null"
-                class="btn btn-sm btn-primary col-lg-3 col-md-3 col-sm-4 col-10 m-1">Colocar</button>
-              <!-- (click)="cancelarAgregarElemento()" -->
-              <button type="button"
-                class="btn btn-sm btn-danger col-lg-3 col-md-3 col-sm-4 col-10 m-1">Cancelar</button>
-            </div>
-          </div>
-        </form>
+
       </ng-container>
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
         <mat-checkbox class="example-margin" (change)="seleccionarAlls()" [(ngModel)]="seleccionarTodo">Seleccionar todo
@@ -425,7 +310,7 @@
                 *ngFor="let servicio of dataRecepcion.elementos; let index = index ">
                 <mat-checkbox type="checkbox" class="example-margin" [id]="servicio.id + '-' + index"
                   [checked]="servicio.aprobado" #val (change)="accionesRealiza(index,val)">
-                  <strong class="fs-6" *ngIf="servicio.tipo === 'MO'" class="tipo-mo">
+                  <strong class="fs-6" *ngIf="servicio.tipo === 'mo'" class="tipo-mo">
                     {{servicio.nombre | capitalizarUno}}
                   </strong>
                   <strong class="fs-6" *ngIf="servicio.tipo === 'refaccion'" class="tipo-refaccion">
@@ -434,12 +319,15 @@
                   <strong class="fs-6" *ngIf="servicio.tipo === 'paquete'" class="tipo-paquete">
                     {{servicio.nombre | capitalizarUno}}
                   </strong>
-                  <ng-container *ngIf="servicio.costo; else templateCosto">
+                  <!-- {{servicio['costo']}}
+                  {{servicio['precio']}}
+                  {{servicio['flotilla']}} -->
+                  <!-- <ng-container *ngIf="servicio.costo; else templateCosto">
                     {{servicio['costo'] | monedas}}
                   </ng-container>
-                  <ng-template #templateCosto>
+                  <ng-template #templateCosto> -->
                     {{servicio['flotilla'] | monedas}}
-                  </ng-template>
+                  <!-- </ng-template> -->
                   
                 </mat-checkbox>
                 <mat-icon class="text-danger" (click)="eliminaElemento(index)">restore_from_trash</mat-icon>

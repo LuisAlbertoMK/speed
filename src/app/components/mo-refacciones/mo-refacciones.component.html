@@ -1,0 +1,149 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 text-end" >
+                <h4>Buscar elemento en catalogo</h4>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
+                
+                <input type="input" class="form-control form-control-sm" (ngModelChange)="verificaElemento()"
+                     placeholder="Nombre de Refaccón / MO"
+                     aria-label="Nombre"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     >
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)">
+                  {{option['nombre']}}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+        </div>
+        <hr>
+          <form [formGroup]="formElemento" (ngSubmit)="colocarElemento()">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="row">
+                  <label for="nombre"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">nombre</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
+                    <ng-container *ngIf="existe; else elseExiste">
+                        <input type="text" class="form-control form-control-sm" readonly  id="nombre" formControlName="nombre">
+                    </ng-container>
+                    <ng-template #elseExiste>
+                        <input type="text" class="form-control form-control-sm"  id="nombre" formControlName="nombre">
+                    </ng-template>
+                    
+                    
+                    <!-- <small for="elementos">elementos disponibles <strong>{{elementosConjunto.length}}</strong></small> -->
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="cantidad"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">cantidad</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                    <input type="number" class="form-control form-control-sm" min="1" id="cantidad"
+                      formControlName="cantidad">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="precio"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalizee">costo</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                    <input type="number" class="form-control form-control-sm" min="1" id="precio"
+                      formControlName="precio">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="costo"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">precio sobrescrito</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                    <input type="number" class="form-control form-control-sm" min="0" id="costo"
+                      formControlName="costo">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="tipo"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">tipo</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
+                    <ng-container *ngIf="existe; else elseExisteTipo">
+                        <!-- <select [ngModel]="formElemento.controls['tipo'].value"  readonly class="form-select form-select-sm" formControlName="tipo">
+                            <option value="MO">Mano obra</option>
+                            <option value="refaccion">Refaccion</option>
+                        </select> -->
+                        <input type="text" class="form-control form-control-sm" readonly  id="nombre" formControlName="tipo">
+
+                    </ng-container>
+                    <ng-template #elseExisteTipo>
+                        <select [ngModel]="formElemento.controls['tipo'].value" class="form-select form-select-sm" formControlName="tipo">
+                            <option value="mo">Mano obra</option>
+                            <option value="refaccion">Refaccion</option>
+                        </select>
+                    </ng-template>
+                    
+                    <!-- <input type="text" class="form-control form-control-sm" id="tipo" formControlName="tipo"> -->
+                    
+                  </div>
+                </div>
+
+              </div>
+              <ng-container *ngIf="marca; else elseMarca">
+                <!-- Muestra lista marcas -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="formElemento.controls['tipo'].value === 'refaccion'">
+                    <div class="mb-1 row ">
+                      <label for="marca"
+                        class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">marca</label>
+                      <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                        <div class="input-group mb-3">
+    
+                           
+                            
+                          <!-- <select [(ngModel)]="marcaSelect" class="form-select form-select-sm" id="marca"
+                            formControlName="marca">
+                            <option value="">Ninguna</option>
+                            <option [selected]="marca.id === marcaSelect" value="marca.id"
+                              *ngFor="let marca of refaccionesMarcas">{{marca.marca}}</option>
+                          </select> -->
+                          <!-- <button class="btn btn-outline-primary" type="button" id="button-addon2"
+                            (click)="mensajeMarca()">+</button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </ng-container>
+            <ng-template #elseMarca>
+                
+            </ng-template>
+              
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="descripcion"
+                    class="col-12 col-sm-3 col-md-2 col-lg-2 col-form-label text-capitalize">descripcion</label>
+                  <div class="col-12 col-sm-9 col-md-10 col-lg-10">
+                    <textarea id="descripcion" cols="30" rows="3" formControlName="descripcion"
+                      style="width: 100%;"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <button type="submit" [disabled]="formElemento.invalid ?'disabled':null"
+                  class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Colocar</button>
+                <button type="button" (click)="limpiarControl()" 
+                  class="btn btn-sm btn-danger m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Limpiar Inf.</button>
+              </div>
+            </div>
+          </form>
+    </div>
+  </div>
+<!-- {{listado | json}} -->
+  <!-- <button (click)="combinar()">change</button> -->

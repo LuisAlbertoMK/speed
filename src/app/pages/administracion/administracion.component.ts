@@ -433,8 +433,9 @@ obtenerResultadosPG(){
       })
 
       desgloce['UB'] = desgloce['UB'] / otros.length
+      
       desgloce['UBC'] =  desgloce['total'] * (desgloce['UB'] / 100)
-      // desgloce['CPR'] =  desgloce['total'] * ((100 - desgloce['UB']) / 100)
+      // desgloce['CPR'] =  desgloce['total'] * ((                                                           100 - desgloce['UB']) / 100)
       criteriosER.desgloce = desgloce
       if(!this.recepciones.length){
         this.recepciones = otros

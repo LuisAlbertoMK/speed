@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  child, get,set,getDatabase, ref, onValue,onChildAdded, onChildChanged, onChildRemoved } from "firebase/database";
+import {  child, get,set,getDatabase, ref, onValue,onChildAdded, onChildChanged, onChildRemoved, push } from "firebase/database";
 import Swal from 'sweetalert2';
-export interface Product{
-  code: string;
-  description: string;
-  type: string;
-}
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
+          
+
 @Injectable({
   providedIn: 'root'
 })
@@ -133,12 +131,14 @@ export class ServiciosPublicosService {
    }
    getFechaHora(fechaa?:Date){
     let fechas = new Date();
+    let fechaNumeros =''
     if(fechaa) fechas = new Date(fechaa)
     const date: Date = fechas; 
     let fecha:string, hora:string
     const months = ["enero", "febrero", "marzo","abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
     const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
     fecha=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
+    fechaNumeros=`${date.getDate()}${(date.getMonth()+1)}${date.getFullYear()}`
     hora=date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
     const numeroDia = new Date(date).getDay();
     const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
@@ -146,7 +146,7 @@ export class ServiciosPublicosService {
     n.setDate(date.getDate()+20);
     const vencimiento = n.toLocaleDateString()
     const Mes =months[date.getMonth()]
-    return {fecha,hora,fechaPDF,vencimiento,Mes}
+    return {fecha,hora,fechaPDF,vencimiento,Mes,fechaNumeros}
   }
   obtenerFechaCompleta(fecha:any){
     // let fecha = '21/12/2022'
@@ -940,7 +940,10 @@ export class ServiciosPublicosService {
       desgloce.iva = desgloce.subtotal * .16
       desgloce.total = desgloce.subtotal + desgloce.iva
     }
-    desgloce.UB = ((desgloce.total - desgloce.refacciones_1)*100)/desgloce.total
+    desgloce.UB = 100 - ((desgloce.refacciones_1 *100)/desgloce.total)
+
+
+    // 100 - ()
     // console.log(desgloce);
     // console.log(this.formaPago);
     desgloce.sobrescrito = desgloce.sobrescrito_mo + desgloce.sobrescrito_paquete + desgloce.sobrescrito_refaccion
@@ -973,6 +976,15 @@ export class ServiciosPublicosService {
     Swal.fire({
       position: 'center',
       icon: 'success',
+      title: mensaje,
+      showConfirmButton: true,
+      // timer: 1500
+    })
+  }
+  mensajeSwalError(mensaje:string){
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
       title: mensaje,
       showConfirmButton: true,
       // timer: 1500
@@ -1014,19 +1026,23 @@ export class ServiciosPublicosService {
       if ((fec_Recibido instanceof Date) && (fec_entregado instanceof Date)) {
         let diferencia = (fec_entregado.getTime() - fec_Recibido.getTime())/1000
         diferencia /= (60*60)
-        horas_estancia += horas_estancia + Math.abs(Math.round(diferencia)) 
+        horas_estancia += Math.abs(Math.round(diferencia)) 
         horas_totales += horas_estancia 
       }
     })
     if (arreglo.length) {
-      reporte.horas_estancia = horas_estancia / arreglo.length
-      reporte.tiempoEstancia = tiempoEstancia / arreglo.length
-      reporte.horas_totales = horas_totales / arreglo.length
+      reporte.horas_estancia = tiempoEstancia
+      reporte.tiempoEstancia = tiempoEstancia / 24
+      reporte.horas_totales = tiempoEstancia
       reporte.ticket = ticket / arreglo.length
     }
     
     
     return reporte
+  }
+
+  generaClave(){
+    return push(child(ref(db), 'posts')).key
   }
 
   
