@@ -21,4 +21,6 @@ table {
   tr.anima{
     height: 35px;
   }
-  
+  .eliminado{
+    background-color: rgb(245, 128, 128);
+  }

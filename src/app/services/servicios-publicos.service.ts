@@ -131,14 +131,31 @@ export class ServiciosPublicosService {
    }
    getFechaHora(fechaa?:Date){
     let fechas = new Date();
-    let fechaNumeros =''
+    let fechaNumeros ='', fechaNumerosAyer, fechaManianaNumeros
     if(fechaa) fechas = new Date(fechaa)
     const date: Date = fechas; 
-    let fecha:string, hora:string
+    let ayer = fechas
+    let fecha:string, hora:string, fechaM:string
     const months = ["enero", "febrero", "marzo","abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
     const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
     fecha=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
     fechaNumeros=`${date.getDate()}${(date.getMonth()+1)}${date.getFullYear()}`
+
+    
+    let fehaHoy = new Date()
+    
+    if (fechaa) {
+      fehaHoy = new Date(fechaa)
+    }
+    let fechaManiana = new Date()
+    fehaHoy.setHours(0,0,0,0)
+
+    fechaManiana.setDate(date.getDate() + 1)
+    fechaManiana.setHours(0,0,0,0)
+    fechaM=fechaManiana.getDate()+"/"+(fechaManiana.getMonth()+1)+"/"+fechaManiana.getFullYear()
+
+
+    
     hora=date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
     const numeroDia = new Date(date).getDay();
     const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
@@ -146,7 +163,13 @@ export class ServiciosPublicosService {
     n.setDate(date.getDate()+20);
     const vencimiento = n.toLocaleDateString()
     const Mes =months[date.getMonth()]
-    return {fecha,hora,fechaPDF,vencimiento,Mes,fechaNumeros}
+    ayer.setDate(date.getDate() - 1)
+    ayer.setHours(0,0,0,0)
+    fechaNumerosAyer=`${ayer.getDate()}${(ayer.getMonth()+1)}${ayer.getFullYear()}`
+    fechaManianaNumeros=`${fechaManiana.getDate()}${(fechaManiana.getMonth()+1)}${fechaManiana.getFullYear()}`
+
+    return {fecha,hora,fechaPDF,vencimiento,Mes,fechaM,
+      fechaNumeros,ayer,fechaNumerosAyer,fehaHoy,fechaManianaNumeros,fechaManiana}
   }
   obtenerFechaCompleta(fecha:any){
     // let fecha = '21/12/2022'
@@ -162,6 +185,15 @@ export class ServiciosPublicosService {
     const numeroDia = new Date(date).getDay();
     const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
     return fechaPDF
+  }
+  construyeFechaString(fecha:string, hora?:string){
+    const splitFecha = fecha.split('/')
+    let horaNew = '00:00:00'
+    if (hora) horaNew = hora
+    const splitHora = horaNew.split(':')
+    const fechaNew = new Date(Number(splitFecha[2]),Number(splitFecha[1]) - 1,Number(splitFecha[0]),Number(splitHora[0]),Number(splitHora[1]),Number(splitHora[1]),0)
+
+    return fechaNew
   }
   fechaNueva(fecha){
     const date: Date = new Date(fecha);
