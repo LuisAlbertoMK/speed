@@ -14,12 +14,12 @@
             <mat-menu #menuDia="matMenu" >
               <button mat-menu-item (click)="SearchDia = 'hoy'; filtraPorSucursal()">hoy</button>
               <button mat-menu-item (click)="SearchDia = 'ayer'; filtraPorSucursal()">Ayer</button>
-              <button mat-menu-item (click)="SearchDia = 'personalizado'; filtraPorSucursal(); picker.open() ">
+              <button mat-menu-item (click)="SearchDia = 'personalizado'; picker.open() ">
                 personalizado
               </button>
             </mat-menu>
             <mat-menu #menuSucursales="matMenu" >
-              <button mat-menu-item (click)="SearchSucursal = {id:'Todas',sucu:'Todas'}; filtraPorSucursal()">Todas</button>
+              <button mat-menu-item (click)="SearchSucursal = {id:'ninguna',sucu:'Seleccionar'}; filtraPorSucursal()">Ninguna</button>
               <button mat-menu-item (click)="SearchSucursal = {id:sucu['id'],sucu: sucu['sucursal']}; filtraPorSucursal()" *ngFor="let sucu of sucursales">{{sucu['sucursal']}}</button>
             </mat-menu>
             <div class="row justify-content-end mb-3">
@@ -32,7 +32,7 @@
                 <div class="input-group">
                   <input readonly class="form-control form-control-sm"  [matDatepicker]="picker" (dateChange)="selected('change', $event)">
                   <!-- <mat-datepicker-toggle  matIconSuffix [for]="picker"></mat-datepicker-toggle> -->
-                  <button class="btn btn-outline-secondary btn-sm" (click)="SearchDia = 'personalizado'; filtraPorSucursal(); picker.open()" type="button" id="button-addon2">
+                  <button class="btn btn-outline-secondary btn-sm" (click)="picker.open()" type="button" id="button-addon2">
                     <i class="fa fa-calendar"></i>
                   </button> 
                   <mat-datepicker #picker></mat-datepicker>
@@ -69,7 +69,7 @@
                             </ng-template>
                           </span>
                     </th>
-                    <td mat-cell *matCellDef="let element" class="text-start"> {{element['concepto'] | capitalizarUno}} </td>
+                    <td mat-cell *matCellDef="let element" class="text-start"> {{element['concepto'] | slice:0:15}}...</td>
                   </ng-container>
                   <ng-container matColumnDef="metodo">
                     <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="ordenamiento = !ordenamiento; ordenarElementos('metodo')"> 
@@ -129,8 +129,13 @@
                     <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> opciones </th>
                     <td mat-cell *matCellDef="let element" class="text-center">
                       <ng-container *ngIf="SearchDia === 'hoy'; else elseTemplate">
-                        <i class="fa fa-edit text-primary fa-1x m-1 pointer" (click)="editarGasto(element);" data-bs-toggle="modal" data-bs-target="#RegistroGasto" ></i>
+                        <ng-container *ngIf="element['tipo'] !='Anterior'; else elseTemplate">
+                          <i class="fa fa-edit text-primary fa-1x m-1 pointer" (click)="editarGasto(element);" data-bs-toggle="modal" data-bs-target="#RegistroGasto" ></i>
                         <i class="fa fa-trash text-danger fa-1x m-1 pointer" (click)="editarStatus(element, false)" *ngIf="element['status']"></i>
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                          <!-- <i class="fa fa-check-double text-success fa-1x m-1"></i> -->
+                        </ng-template>
                         <i class="fa fa-check-double text-success fa-1x m-1 pointer" (click)="editarStatus(element, true)" *ngIf="!element['status']"></i>
                       </ng-container>
                       <ng-template #elseTemplate>
@@ -144,7 +149,7 @@
                   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
                   
                   <tr mat-header-row *matHeaderRowDef="columnasGastosDia"></tr>
-                  <tr mat-row *matRowDef="let row; columns: columnasGastosDia;" class="anima"></tr>
+                  <tr mat-row *matRowDef="let row; columns: columnasGastosDia;" class="anima" (dblclick)="detalles(row)" ></tr>
                   <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
                 </table>
                 <mat-paginator #GastosDiaPaginator role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>

@@ -17,6 +17,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { ExporterService } from 'src/app/services/exporter.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-administracion',
@@ -77,6 +78,12 @@ export class AdministracionComponent implements OnInit {
     start: new FormControl(Date),
     end: new FormControl(Date),
   });
+
+  personalizado = new FormGroup({
+    start: new FormControl(null),
+    end: new FormControl(null),
+  });
+
   fechamuestraStart:string = ''
   fechamuestraEnd:string = ''
   fechaSelect={valor:'hoy',show:'Hoy'}
@@ -157,6 +164,7 @@ export class AdministracionComponent implements OnInit {
     {valor:'ult_anio', show:'Año anterior'},
     {valor:'personalizado', show:'Personalizado'},
   ]
+
   filtrofechaRE = [
     {valor:'fecha_compara_recibido',show:'Recibido'},
     {valor:'fecha_compara_entrega',show:'Entregado'},
@@ -178,6 +186,9 @@ export class AdministracionComponent implements OnInit {
   {valor:'horas_totales', show:'horas totales'},
   {valor:'horas_servicios', show:'horas servicios'}]
   total_GO =0
+
+  deCual = ['dia','mes','anio']
+  diasX = 'dia'
   constructor(
     private router:Router, private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
     private _servicios: ServiciosService, private fb: FormBuilder,private _sucursales: SucursalesService,
@@ -315,6 +326,133 @@ export class AdministracionComponent implements OnInit {
     })
     ///     VER PORQUE N TOMA LOS RESULTADOS DE LAS RECEPIONES FILTRADAS
   }
+
+nuevaRpor(){
+  // console.log(this.servTemp);
+  const gas_op =this.listaHistorialPG
+  const ordenes = this.servTemp
+  const ordenesEntregado = ordenes.filter(o=>o['status'] === 'entregado')
+ 
+  let PG_Alls =[]
+  ordenesEntregado.forEach((o)=>{
+    if (o['HistorialPagos']) {
+      const arreglo = this._publicos.crearArreglo2(o['HistorialPagos'])
+      arreglo.forEach(a=>{
+        const data = {
+          ...a,
+          id_orden: o['id'],
+          no_os: o['no_os'],
+          tipo:'pago',
+          donde: 'HistorialPagos'
+        }
+        PG_Alls.push(data)
+      })
+    }
+    if (o['HistorialGastos']) {
+      const arreglo = this._publicos.crearArreglo2(o['HistorialGastos'])
+      arreglo.forEach(a=>{
+        const data = {
+          ...a,
+          id_orden: o['id'],
+          no_os: o['no_os'],
+          tipo:'gasto',
+          donde: 'HistorialGastos'
+        }
+        PG_Alls.push(data)
+      })
+    }
+  })
+  gas_op.forEach((o)=>{
+    const data = {
+      ...o,
+      donde: 'HistorialGastosOperacion'
+    }
+    PG_Alls.push(data)
+  })
+  PG_Alls.map(a=>{
+    // console.log(a['id']);
+    
+    const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora'])
+    // const fechaCompara_registro = this._publicos.construyeFechaString(a['fecha_registro'],a['hora_registro'])
+    a['fechaCompara'] = fechaCompara_
+    // a['fechaCompara_registro'] = fechaCompara_registro
+    
+  })
+  // console.log(this.fechaSelect2);
+  const {valor, show} = this.fechaSelect2
+  // console.log(PG_Alls);
+  let numero: number =0, tipo ='resta',donde='dia'
+  let fechas
+  switch (valor) {
+    case 'hoy':
+      donde= 'dia'
+      numero=0
+      fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+      break;
+    case 'ayer':
+      numero = 1
+      donde = 'dia'
+      fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+      break;
+    case 'ult_7Dias':
+      numero = 7
+      donde = 'dia'
+      fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+      break;
+    case 'ult_30Dias':
+      numero = 30
+      donde = 'dia'
+      fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+      break;
+    case 'ult_mes':
+      donde = 'mes'
+      numero = 1
+      fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+      break;
+    case 'este_anio':
+      numero = 0
+      donde = 'anio'
+      fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+      break;
+    case 'ult_anio':
+      donde = 'anio'
+      numero = 1
+      fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+      break;
+    case 'personalizado':
+      
+      break;
+  
+    default:
+      break;
+  }
+
+  
+  console.log(fechas);
+  
+  let resultadosPG = []
+  // PG_Alls.forEach((a)=>{
+  //   if (a['fechaCompara' ] >= getTime1 && a['fechaCompara' ] <= getTime2) resultadosPG.push(a)
+  // })
+
+  // console.log(resultadosPG);
+  
+  
+  
+}
+
+validaFecha(){
+  
+
+
+  const {start, end } = this.personalizado.value
+  if (start && end) {
+    if ((start['_d'] instanceof Date) && (end['_d'] instanceof Date)) {
+      this.nuevaRpor()
+    }
+  }
+}
+
   asignaSucursal2(data:any){
     this.sucursalSelect2.valor = data['id']
     this.sucursalSelect2.show = data['sucursal']

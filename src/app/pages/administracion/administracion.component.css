@@ -85,3 +85,20 @@ tr.example-element-row:not(.example-expanded-row):active {
 .mat-tab-group {
   margin-bottom: 48px;
 }
+
+.aquiCalendar{
+  width: 17em !important;
+	padding: .2em .2em 0 !important;
+	display: none !important;
+  position: absolute !important;
+	left: 50% !important;
+  background-color: red;
+}
+
+::ng-deep .cdk-overlay-container{
+  margin-left: -8em !important;
+}
+::ng-deep .cdk-overlay-pane .mat-datepicker-popup{
+  margin-left: -8em !important;
+}
+/* cdk-overlay-pane mat-datepicker-popup */

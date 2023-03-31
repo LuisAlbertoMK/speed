@@ -12,6 +12,7 @@ import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/pagina
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import Swal from 'sweetalert2';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -25,8 +26,12 @@ export class ReporteGastosComponent implements OnInit {
     {valor:1, show:'Efectivo', ocupa:'Efectivo'},
     {valor:2, show:'Cheque', ocupa:'Cheque'},
     {valor:3, show:'Tarjeta', ocupa:'Tarjeta'},
-    {valor:4, show:'OpenPay', ocupa:'OpenPay'},
-    {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
+    {valor:4, show:'Transferencia', ocupa:'Transferencia'},
+    {valor:4, show:'Credito', ocupa:'credito'},
+    // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
+
+
+    // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
     {valor:6, show:'Terminal BBVA', ocupa:'BBVA'},
     {valor:7, show:'Terminal BANAMEX', ocupa:'BANAMEX'}
   ]
@@ -52,7 +57,8 @@ export class ReporteGastosComponent implements OnInit {
 
   ordenamiento : boolean = true
 
-  SearchDia:string = 'hoy'; SearchSucursal = {id:'Todas',sucu:'Todas'}; 
+  // SearchDia:string = 'hoy'; SearchSucursal = {id:'Todas',sucu:'Todas'}; 
+  SearchDia:string = 'hoy'; SearchSucursal = {id: null,sucu: 'Seleccionar'}; 
   ResultadosDiarios = []
   // selected: Date | null;
   reporteFinal = {Efectivo:0,Cheque:0,Tarjeta:0,OpenPay:0,Clip:0,BBVA:0,BANAMEX:0}
@@ -61,7 +67,7 @@ export class ReporteGastosComponent implements OnInit {
 
   filtraOcupadosMetodoEspecifico =[]
   resultados_=[]
-
+  fechaUnica:Date
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -90,7 +96,6 @@ export class ReporteGastosComponent implements OnInit {
     return this.formGasto.get(campo).invalid && this.formGasto.get(campo).touched
   }
   rol(){
-
     if (localStorage.getItem('dataSecurity')) {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
@@ -98,6 +103,7 @@ export class ReporteGastosComponent implements OnInit {
       if (this.SUCURSAL !=='Todas') {
         // let nu = []
         // this.columnasGastosDia[0] = null
+        this.SearchSucursal = {id: this.SUCURSAL,sucu: 'esta'}; 
         this.columnasGastosDia.shift()
       }  
     }
@@ -194,7 +200,6 @@ export class ReporteGastosComponent implements OnInit {
         })
     }
   }
-
   listaGastosDiarios(){
     const getTime = this._publicos.getFechaHora()
     let sucursal
@@ -258,52 +263,45 @@ export class ReporteGastosComponent implements OnInit {
             })
           })
           // asignacion de resultados y mandar traer el metodo para el filtrado de la informacion
-          this.ResultadosDiarios = resultadosFinales
+          this.ResultadosDiarios = resultadosFinales          
           this.filtraPorSucursal()
         }
       })
     }
     
   }
-  filtraPorSucursal(fecha?:Date){
+  selected(type: string, event: MatDatepickerInputEvent<Date>){
+    const valor = event.value
+    this.SearchDia = 'personalizado'; 
+    setTimeout(()=>{
+      if (valor['_d'] instanceof Date) {
+        this.fechaUnica = valor['_d']        
+        this.filtraPorSucursal()
+      }
+    },100)
+  }
+  filtraPorSucursal(){
     //traer las fechas mediante la funcion publica getFechaHora
     let getTime = this._publicos.getFechaHora()
-    // console.log(fecha);
-    
-    // console.log(getTime);
-    
-    
-    let busqueda , rango:Date
+    let rango:Date
     // revisar que tipo de busqueda es la que se necesita
     switch (this.SearchDia) {
       case 'hoy':
-        busqueda = getTime.fechaNumeros
         rango = getTime.fehaHoy
         break;
       case 'ayer':
-        busqueda = getTime.fechaNumerosAyer
         rango = getTime.ayer
         break;
       case 'personalizado':
-        // busqueda = getTime.fechaNumerosAyer
-        if (fecha) {
-          getTime = this._publicos.getFechaHora(fecha)
-        }
-        busqueda = getTime.fechaNumeros
-        rango = getTime.fehaHoy
+        rango = this._publicos.getFechaHora(this.fechaUnica).fehaHoy
         break;
       default:
-        busqueda = getTime.fechaNumeros
         rango = getTime.fehaHoy
         break;
     }
-    // console.log(rango);
-    
     // asiganar los resultados generales para poder utilizarlos
     let muestra = this.ResultadosDiarios
     let resultadosDia = []
-    
-    
     //veirificar si se encuentran los resultados dentro del rango de fechas
     muestra.forEach(mues=>{
       if (mues['fecha_compara'] >= rango && mues['fecha_compara'] <= rango) resultadosDia.push(mues)
@@ -312,24 +310,18 @@ export class ReporteGastosComponent implements OnInit {
     // filtrado para los pertenecientes a la sucursal seleccionada en caso de ser SU
     if (this.SearchSucursal['id'] !== 'Todas') {
       muestra2 = resultadosDia.filter(r=>r['sucursal'] === this.SearchSucursal['id'])
-    }else{
-      muestra2 = resultadosDia
     }
     // Obtener el nombre de la sucursal a mostrar en SU
     muestra2.map(m=>{
       let {sucursal} = this.sucursales.find(d=>d['id'] ===m['sucursal'])
       m['sucursalShow'] = sucursal
     })
-    
     //asignaion de resultados a la tabla para paginacion
     this.dataSourceGastosDia.data = muestra2
     
     this.newPagination('GastosDia')
-    // setTimeout(()=>{
-      this.generaReporte(muestra2)
-    // },1000)
+    this.generaReporte(muestra2)
   }
-
   generaReporte(data:any[]){
     // console.log(data);
     this.filtraOcupadosMetodoEspecifico = data
@@ -355,7 +347,14 @@ export class ReporteGastosComponent implements OnInit {
     const inciales = inciales2.filter(iniciales=>iniciales['status'])
     const nuevos2 = data.filter(iniciales=>iniciales['tipo'] === 'nuevo')
     const nuevos = nuevos2.filter(iniciales=>iniciales['status'])
-    const inicialUnico = data.filter(iniciales=>iniciales['tipo'] === 'inicialUnico')
+    const Anterior = data.filter(iniciales=>iniciales['tipo'] === 'Anterior')
+    Anterior.forEach((dat)=>{
+      agregados.forEach(ag=>{
+        if (dat['metodo'] === ag['valor']) {
+          reporteIncial[ag['show']] += dat['monto']
+        }
+      })
+    })
     inciales.forEach((dat)=>{
       agregados.forEach(ag=>{
         if (dat['metodo'] === ag['valor']) {
@@ -363,13 +362,7 @@ export class ReporteGastosComponent implements OnInit {
         }
       })
     })
-    inicialUnico.forEach((dat)=>{
-      agregados.forEach(ag=>{
-        if (dat['metodo'] === ag['valor']) {
-          reporteIncial[ag['show']] += dat['monto']
-        }
-      })
-    })
+    
     nuevos.forEach((dat)=>{
       agregados.forEach(ag=>{
         if (dat['metodo'] === ag['valor']) {
@@ -389,44 +382,57 @@ export class ReporteGastosComponent implements OnInit {
       Sobrante += reporteFinal[cf]
     })
 
-    // console.log(Sobrante);
-    
-    
-    // console.log(reporteIncial);
-    // console.log(reporteNuevos);
-    // console.log(reporteFinal);
     this.reporteShow = 'General'
     
     this.reporteFinal = reporteFinal
     this.Sobrante = Sobrante
     const updates = {};
-
-
+    let getTime = this._publicos.getFechaHora()
+    let getTimePlus:Date
+    if (getTime.numeroManiana === 0) {
+      getTimePlus = this._publicos.fechaDiasPlus(getTime.fehaHoy, 1)
+      getTime = this._publicos.getFechaHora(getTimePlus)
+    }
     
     let sucursal = this.SUCURSAL
     if (this.SUCURSAL ==='Todas') {
       sucursal = this.SearchSucursal['id']
     }
     if (sucursal !=='Todas') {
-      const getTime = this._publicos.getFechaHora()
-      // console.log(getTime);
-      const id = this._publicos.generaClave()
+      clavesFinal.forEach((c)=>{
+        const infoSave = {
+          fecha: getTime.fechaM,
+          hora: getTime.hora,
+          id:'Anterior',
+          monto: 0,
+          sucursal: sucursal,
+          tipo: 'Anterior',
+          concepto: `Sobrante de dia`,
+          metodo: 1,
+          status:true
+        }
+        if (reporteFinal[c] > 0) {
+          infoSave['monto'] = reporteFinal[c]
+          infoSave['id'] = `${c}Unico`
+          infoSave['concepto'] = `Sobrante en ${c} del dia anterior`
+          agregados.forEach((r)=>{
+           if (r['show'] === c) {
+            infoSave['metodo'] = r['valor']
+           }
+          })
+          updates[`gastosDiarios/${sucursal}/${getTime.fechaManianaNumeros}/${infoSave['id']}`] = infoSave;
+        }else{
+          infoSave['monto'] = reporteFinal[c]
+          infoSave['id'] = `${c}Unico`
+          infoSave['concepto'] = `Sobrante en ${c} del dia anterior`
+          updates[`gastosDiarios/${sucursal}/${getTime.fechaManianaNumeros}/${infoSave['id']}`] = infoSave;
+        }
+      })
+      //actualizar los campos para actualizar los totales asignados del dia anterior
+      update(ref(db), updates);
 
-      const infoSave = {
-        fecha: getTime.fechaM,
-        hora: getTime.hora,
-        id:'inicialUnico',
-        monto: Sobrante,
-        sucursal: sucursal,
-        tipo: 'inicialUnico',
-        concepto: `Sobrante de dia ${getTime.fecha}`,
-        metodo: 1,
-        status:true
-      }
-      updates[`gastosDiarios/${sucursal}/${getTime.fechaManianaNumeros}/${infoSave['id']}`] = infoSave;
-      update(ref(db), updates)
-      // console.log(updates);
     }
+    
   }
   editarStatus(data: any, status){
     //verificar si existe la informacion
@@ -481,14 +487,7 @@ export class ReporteGastosComponent implements OnInit {
     this.dataSourceGastosDia.data = info
     ///mandar traer la paginacion de resultados
     this.newPagination('GastosDia')
-  }
-  selected(type: string, event: MatDatepickerInputEvent<Date>){
-    // console.log(event.value);
-    const valor = event.value
-    if (valor['_d'] instanceof Date) {
-      this.filtraPorSucursal(valor['_d'])
-    }
-  }
+  }  
   editarGasto(data:any){
     // verificar si existe id en la data para continuar con la edicion de informacion de gasto
     if (data['id']) {
@@ -506,7 +505,6 @@ export class ReporteGastosComponent implements OnInit {
       this.Editar = true
     }
   }
-
   ///paginacion de los resultados
   newPagination(data:string){
     //despues de la asiganacion de la data esperar .5 segundos para realizar paginacion
@@ -517,5 +515,33 @@ export class ReporteGastosComponent implements OnInit {
     }
     }, 500)
   }
-
+  //mostrar los detalles de gasto
+  detalles(data:any){
+    if (data['id']) {
+      Swal.fire({
+        title: '<strong>Detalles</strong>',
+        // icon: 'info',
+        html:
+          `
+          <ul class='list-group'>
+            <li class='list-group-item'>Sucursal: ${data['sucursalShow']}</li>
+            <li class='list-group-item'>Concepto: ${data['concepto']}</li>
+            <li class='list-group-item'>Metodo: ${data['metodo']}</li>
+            <li class='list-group-item'>Monto: ${data['monto']}</li>
+            <li class='list-group-item'>Tipo: ${data['tipo']}</li>
+            <li class='list-group-item'>Fecha: ${data['fecha']} ${data['hora']}</li>
+          </ul>
+          `,
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+        confirmButtonText:
+          '<i class="fa fa-thumbs-up"></i> OK!',
+        confirmButtonAriaLabel: 'Thumbs up, great!',
+        cancelButtonText:
+          '<i class="fa fa-thumbs-down"></i>',
+        cancelButtonAriaLabel: 'Thumbs down'
+      })
+    }
+  }
 }

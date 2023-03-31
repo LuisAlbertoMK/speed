@@ -158,6 +158,7 @@ export class ServiciosPublicosService {
     
     hora=date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
     const numeroDia = new Date(date).getDay();
+    const numeroManiana = new Date(fechaManiana).getDay();
     const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
     const n = new Date(date)
     n.setDate(date.getDate()+20);
@@ -167,9 +168,70 @@ export class ServiciosPublicosService {
     ayer.setHours(0,0,0,0)
     fechaNumerosAyer=`${ayer.getDate()}${(ayer.getMonth()+1)}${ayer.getFullYear()}`
     fechaManianaNumeros=`${fechaManiana.getDate()}${(fechaManiana.getMonth()+1)}${fechaManiana.getFullYear()}`
+    // console.log(`${dias[numeroDia]}`);
+    const diaReturn = dias[numeroManiana]
+    return {fecha,hora,fechaPDF,vencimiento,Mes,fechaM,diaReturn,numeroManiana,
+      fechaNumeros,ayer,fechaNumerosAyer,fehaHoy,fechaManianaNumeros,fechaManiana,}
+  }
+  fechaDiasPlus(fecha:Date, diasSum?:number,tipo?:string){
+    let diasPlus = new Date(fecha)
+    if (tipo) {
+      if (tipo = 'resta') {
+        diasPlus.setDate(fecha.getDate() - diasSum)
+        diasPlus.setHours(0,0,0,0)
+      }else{
+        diasPlus.setDate(fecha.getDate() + diasSum)
+        diasPlus.setHours(0,0,0,0)
+      }
+    }else{
+      diasPlus.setDate(fecha.getDate() + diasSum)
+      diasPlus.setHours(0,0,0,0)
+    }
+    return diasPlus
+  }
+  getMesFecha(fecha:Date, operacion:string,tipo:string, numero:number,){
+    let FechaActual = new Date(fecha), diasMes = 0, fecha1:Date, fecha2:Date
 
-    return {fecha,hora,fechaPDF,vencimiento,Mes,fechaM,
-      fechaNumeros,ayer,fechaNumerosAyer,fehaHoy,fechaManianaNumeros,fechaManiana}
+    if (operacion === 'suma') {
+      if (tipo ==='dia') {
+        FechaActual.setDate(fecha.getDate() + numero)
+        fecha1 = FechaActual
+        fecha2 = new Date()
+      }else if (tipo ==='mes') {
+        FechaActual.setMonth(fecha.getMonth() + numero)
+        diasMes =new Date(FechaActual.getFullYear(), FechaActual.getMonth(), 0).getDate()
+        fecha1 = new Date(FechaActual.getFullYear(), FechaActual.getMonth(), 1)
+        fecha2 = new Date(FechaActual.getFullYear(), FechaActual.getMonth(), diasMes)
+      }else if (tipo ==='anio') {
+        FechaActual.setFullYear(fecha.getFullYear() + numero)
+        fecha1 = new Date(FechaActual.getFullYear(), 0, 1)
+        fecha2 = new Date(FechaActual.getFullYear(), 11, 31)
+      }
+    }else{
+      if (tipo ==='dia') {
+        FechaActual.setDate(fecha.getDate() - numero)
+        fecha1 = FechaActual
+        fecha2 = new Date( fecha.getDate() + numero)
+      }else if (tipo ==='mes') {
+        console.log(FechaActual);
+        console.log(FechaActual.setMonth(fecha.getMonth() - numero));
+        
+        diasMes =new Date(fecha.getFullYear(), fecha.getMonth() - numero, 0).getDate()
+        fecha1 = new Date(fecha.getFullYear(), fecha.getMonth() - numero, 1)
+        fecha2 = new Date(fecha.getFullYear(), fecha.getMonth() - numero, diasMes)
+      }else if (tipo ==='anio') {
+        FechaActual.setFullYear(fecha.getFullYear() - numero)
+        fecha1 = new Date(FechaActual.getFullYear(), 0, 1)
+        fecha2 = new Date(FechaActual.getFullYear(), 11, 31)
+      }
+    }
+
+    // diasMes =new Date(MesActual.getFullYear(), MesActual.getMonth(), 0).getDate()
+    // fecha1 = new Date(MesActual.getFullYear(), MesActual.getMonth(), 1)
+    // fecha2 = new Date(MesActual.getFullYear(), MesActual.getMonth(), diasMes)
+    
+  
+    return {FechaActual,diasMes,fecha1, fecha2}
   }
   obtenerFechaCompleta(fecha:any){
     // let fecha = '21/12/2022'

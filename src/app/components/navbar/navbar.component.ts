@@ -485,7 +485,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
                 if (valor === true) {
                   
                 }else{
-                  console.log('dias :'+dias + ' -> ' + cotizacion.id);
+                  // console.log('dias :'+dias + ' -> ' + cotizacion.id);
                   set(ref(db, `cotizacionesRealizadas/${cotizacion.id}/recordatorio3dias`), true )
                   .then(async () => {
                     // Data saved successfully!
@@ -529,7 +529,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
                     // console.log(filtro_conceptos);
                     // console.log(cliente);
                     setTimeout(() => {
-                      this._email.recordatorioCotizacion(cliente,vehiculo,cotizacion,filtro_conceptos)
+                      // this._email.recordatorioCotizacion(cliente,vehiculo,cotizacion,filtro_conceptos)
                     }, 1000);
                     // console.log('envio email');
                   })
