@@ -24,3 +24,7 @@ table {
   .eliminado{
     background-color: rgb(245, 128, 128);
   }
+  /* ::ng-deep .mat-form-field input {
+    height: 10px;
+    transition: height ease-in-out 400ms;
+  } */

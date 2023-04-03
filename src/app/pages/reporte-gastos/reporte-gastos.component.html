@@ -1,45 +1,57 @@
+<br>
+
+
+
+
 <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-4 mt-1 text-center">
-            <p>Aqui el historial de gastos sucursal 
-              <ng-container *ngIf="SUCURSAL === 'Todas'">
-                <button mat-button [matMenuTriggerFor]="menuSucursales" class="text-capitalize">( {{SearchSucursal['sucu']}} )</button> 
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-4 mt-1 text-end">
+         
+          <button class="btn btn-sm btn-outline-primary m-1" data-bs-toggle="modal" data-bs-target="#PagoGastoModal" 
+          (click)="cambia('deposito')" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">nuevo Deposito</button>
+
+          <button class="btn btn-sm btn-outline-primary m-1" data-bs-toggle="modal" data-bs-target="#PagoGastoModal" 
+          (click)="cambia('pago')" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">nuevo Pago</button>
+
+          <button class="btn btn-sm btn-outline-primary m-1" data-bs-toggle="modal" data-bs-target="#PagoGastoModal" 
+          (click)="cambia('gasto')" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">nuevo Gasto</button>
+          
+          
+
+          <mat-menu #menuFechas="matMenu">
+            <button mat-menu-item *ngFor="let item of fevchas" (click)="valor = item; realizaOp()">{{item}}</button>
+            <button mat-menu-item  (click)="valor = 'personalizado'; picker.open();">personalizado</button>
+          </mat-menu>
+            <div class="row justify-content-end mb-3">
+              
+              <div class="col-lg-auto col-md-auto col-sm-auto col-auto text-end">
+                
+                <button class="btn btn-sm btn-outline-success" [matMenuTriggerFor]="menuFechas" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">{{valor}}</button>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+                <mat-form-field appearance="fill">
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+                  <mat-date-range-input [formGroup]="range_busqueda" [rangePicker]="picker" >
+                    <input readonly  matStartDate formControlName="start" (dateChange)="selected()">
+                    <input readonly  matEndDate formControlName="end" (dateChange)="selected()">
+                  </mat-date-range-input>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <ng-container *ngFor="let cam of campos_Reporte">
+                  <div class="col-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <h3>{{cam['show']}}</h3>
+                        {{reporte[cam['valor']] | monedas}}
+                      </div>
+                    </div>
+                  </div>
               </ng-container>
               
-              del dia 
-              <button mat-button [matMenuTriggerFor]="menuDia" class="text-capitalize">( {{SearchDia}} )</button>
-            </p>
-            
-            <mat-menu #menuDia="matMenu" >
-              <button mat-menu-item (click)="SearchDia = 'hoy'; filtraPorSucursal()">hoy</button>
-              <button mat-menu-item (click)="SearchDia = 'ayer'; filtraPorSucursal()">Ayer</button>
-              <button mat-menu-item (click)="SearchDia = 'personalizado'; picker.open() ">
-                personalizado
-              </button>
-            </mat-menu>
-            <mat-menu #menuSucursales="matMenu" >
-              <button mat-menu-item (click)="SearchSucursal = {id:'ninguna',sucu:'Seleccionar'}; filtraPorSucursal()">Ninguna</button>
-              <button mat-menu-item (click)="SearchSucursal = {id:sucu['id'],sucu: sucu['sucursal']}; filtraPorSucursal()" *ngFor="let sucu of sucursales">{{sucu['sucursal']}}</button>
-            </mat-menu>
-            <div class="row justify-content-end mb-3">
-              <div class="col-lg-4 col-md-6 col-sm-8 col-12 text-end">
-                <button class="btn btn-primary btn-sm m-1" type="button" data-bs-toggle="modal" data-bs-target="#RegistroGasto">
-                  Nuevo gasto
-                </button>
-              </div>
-              <div class="col-auto text-end">
-                <div class="input-group">
-                  <input readonly class="form-control form-control-sm"  [matDatepicker]="picker" (dateChange)="selected('change', $event)">
-                  <!-- <mat-datepicker-toggle  matIconSuffix [for]="picker"></mat-datepicker-toggle> -->
-                  <button class="btn btn-outline-secondary btn-sm" (click)="picker.open()" type="button" id="button-addon2">
-                    <i class="fa fa-calendar"></i>
-                  </button> 
-                  <mat-datepicker #picker></mat-datepicker>
-                  
-                </div>
-                
-              </div>
             </div>
             <div class="mat-elevation-z8 table-responsive ">
                 <table #GastosDia="matSort" matSort mat-table [dataSource]="dataSourceGastosDia">
@@ -128,19 +140,18 @@
                   <ng-container matColumnDef="opciones">
                     <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> opciones </th>
                     <td mat-cell *matCellDef="let element" class="text-center">
-                      <ng-container *ngIf="SearchDia === 'hoy'; else elseTemplate">
+                      <!-- <ng-container *ngIf="SearchDia === 'hoy'; else elseTemplate">
                         <ng-container *ngIf="element['tipo'] !='Anterior'; else elseTemplate">
                           <i class="fa fa-edit text-primary fa-1x m-1 pointer" (click)="editarGasto(element);" data-bs-toggle="modal" data-bs-target="#RegistroGasto" ></i>
                         <i class="fa fa-trash text-danger fa-1x m-1 pointer" (click)="editarStatus(element, false)" *ngIf="element['status']"></i>
                         </ng-container>
                         <ng-template #elseTemplate>
-                          <!-- <i class="fa fa-check-double text-success fa-1x m-1"></i> -->
                         </ng-template>
                         <i class="fa fa-check-double text-success fa-1x m-1 pointer" (click)="editarStatus(element, true)" *ngIf="!element['status']"></i>
                       </ng-container>
                       <ng-template #elseTemplate>
                          <i class="fa fa-check-double text-success fa-1x m-1" ></i>
-                      </ng-template>
+                      </ng-template> -->
                       
                       
                     </td>
@@ -155,174 +166,32 @@
                 <mat-paginator #GastosDiaPaginator role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
               </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-4 mt-1 text-center">
-          <div class="row grid gap-0">
-            <div class="col-lg-4 col-md-4 col-sm-6 col-6 border text-center pointer" (click)="agregar('General')" >
-              <h4 class="m-1"><strong>General</strong></h4>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-6 border text-center pointer" (click)="agregar(metodo['ocupa'])" *ngFor="let metodo of metodospago">
-              <h4 class="m-1"><strong>{{metodo['show']}}</strong></h4>
-            </div>
-          </div>
-        </div>
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
-            <h2>Sobrante del dia {{Sobrante | monedas}}</h2>
-              <ng-container *ngIf="reporteShow ==='General'; else elseTemplate">
-                <h4>Resultados Generales</h4>
-                <div class="row card-group grid gap-0">
-                  <ng-container *ngFor="let item of metodospago">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12">
-                      <div class="card ">
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item['ocupa']}}: </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
-                              <strong>{{reporteFinal[item['ocupa']] | monedas}}</strong>
-                            </div>
-                          </div> 
-                        </div>
-                      </div>
-                    </div>
-                  </ng-container>
-                </div>
-              </ng-container>
-              <ng-template #elseTemplate>
-                <h4>Resultados de metodo especifico <strong>{{reporteShow}}</strong></h4>
-                <div class="table-responsive">
-                  <table class="table table-sm">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" >Concepto</th>
-                        <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" >Fecha / Hora</th>
-                        <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" >Metodo</th>
-                        <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" >Monto</th>
-                        <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  *ngIf="SUCURSAL === 'Todas'">Sucursal</th>
-                        <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" >Tipo</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let item of resultados_; let i = index" class="anima" [ngClass]="{'eliminado': !item['status']}">
-                        <th scope="row" >{{ i + 1}}</th>
-                        <td class="text-start">{{item['concepto'] | capitalizarUno}}</td>
-                        <td class="text-start">{{item['fecha'] }} {{item['hora'] }}</td>
-                        <td class="text-center text-capitalize">{{item['metodoShow']}}</td>
-                        <td class="text-end">{{item['monto'] | monedas}}</td>
-                        <td class="text-start text-capitalize" *ngIf="SUCURSAL === 'Todas'">{{item['sucursalShow']}}</td>
-                        <td class="text-start text-capitalize">{{item['tipo']}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </ng-template>
-              
-          </div>
       </div>
     </div>
   </div>
-<!-- modal para registro de gasto -->
-  <div class="modal fade" id="RegistroGasto" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  
+
+  <div class="modal fade" id="PagoGastoModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">
-            <ng-container *ngIf="Editar; else elseEditar">
-              Editar información
-            </ng-container>
-            <ng-template #elseEditar>
-              Nuevo Gasto
-            </ng-template>
-            
-          </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
         <div class="modal-body">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <form (ngSubmit)="registraGasto()" [formGroup]="formGasto" class="m-2">
-                  <mat-radio-group *ngIf="!Editar"
-                  aria-labelledby="example-radio-group-label"
-                  class="example-radio-group"
-                  formControlName="tipo">
-                      <mat-radio-button class="m-1 text-capitalize" *ngFor="let gasto of gastos" [value]="gasto['valor']">
-                          {{gasto['show']}}
-                      </mat-radio-button>
-                  </mat-radio-group>
-                  <ng-container *ngIf="SUCURSAL === 'Todas'">
-                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                          <div class="mb-1 row text-start">
-                            <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}" for="sucursal"
-                              class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Sucursal </label>
-                            <div class="col-sm-6 col-md-6 col-lg-6 col-12">
-                              <select class="form-select form-select-sm" formControlName="sucursal">
-                                  <option value="">Selecciona</option>
-                                  <option [value]="sucu['id']" *ngFor="let sucu of sucursales">{{sucu['sucursal']}}</option>
-                              </select>
-                            </div>
-                          </div>
-                      </div>
-                  </ng-container>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                      <div class="mb-1 row text-start">
-                        <label [ngClass]="{'text-danger': validaCampo('monto'),'text-success': !validaCampo('monto')}" for="monto"
-                          class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Monto de gasto </label>
-                        <div class="col-sm-6 col-md-6 col-lg-6 col-12">
-                          <input id="monto" type="number" min="0" max="10000000" class="form-control form-control-sm"
-                            formControlName="monto">
-                        </div>
-                      </div>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                      <div class="mb-1 row text-start">
-                        <label [ngClass]="{'text-danger': validaCampo('metodo'),'text-success': !validaCampo('metodo')}" for="metodo"
-                          class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Metodo de gasto </label>
-                        <div class="col-sm-6 col-md-6 col-lg-6 col-12">
-                          <select class="form-select form-select-sm" formControlName="metodo">
-                              <option value="">Selecciona</option>
-                              <option [value]="sucu['valor']" *ngFor="let sucu of metodospago">{{sucu['show']}}</option>
-                          </select>
-                        </div>
-                      </div>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                      <div class="mb-1 row text-start">
-                        <label [ngClass]="{'text-danger': validaCampo('concepto'),'text-success': !validaCampo('concepto')}" for="concepto"
-                          class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label">Metodo de gasto </label>
-                        <div class="col-12 col-sm-8 col-md-8 col-lg-8">
-                          <textarea cols="30" rows="3" formControlName="concepto" style="width: 100%;"></textarea>
-                        </div>
-                      </div>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                      <button type="submit" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
-                        class="btn btn-sm btn-primary m-1">
-                        <ng-container *ngIf="formGasto.controls['tipo'].value === 'nuevo'; else elseTipo">
-                          Registrar Gasto
-                        </ng-container>
-                        <ng-template #elseTipo>
-                          Registrar Deposito
-                        </ng-template>
-                      </button>
-                      <button type="button" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
-                        class="btn btn-sm btn-danger m-1" (click)="limpiaForm()">Limpiar inf.</button>
-                        <button class="btn btn-danger btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" type="button" data-bs-dismiss="modal"
-                        (click)="limpiaForm()">
-                          Cancelar
-                        </button>
-                    </div>
-              </form>
+              <ng-container *ngIf="muestraForms['pago']">
+                <app-pago (showPagoHide)="cambia('pago')"></app-pago>
+              </ng-container>
+              <ng-container *ngIf="muestraForms['gasto']">
+                <app-gasto (showPagoHide)="cambia('gasto')"></app-gasto>
+              </ng-container>
+              <ng-container *ngIf="muestraForms['deposito']">
+                <app-realiza-deposito></app-realiza-deposito>
+              </ng-container>
           </div>
-          <ng-container *ngIf="formGasto.invalid">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-justify">
-                  <span class="text-danger">LLenar datos de gasto</span>
-              </div>
-          </ng-container>
           </div>
         </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
       </div>
     </div>
   </div>
+
+
+  

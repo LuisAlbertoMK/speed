@@ -36619,7 +36619,7 @@ recepciones = {
 
   ngOnInit(): void {
     this.rol()
-    this.operaciones()
+    // this.operaciones()
     // this.consultaArbol()
   }
   operaciones(){

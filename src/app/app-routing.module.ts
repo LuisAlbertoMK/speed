@@ -12,7 +12,7 @@ import { CotizacionComponent } from './pages/cotizacion/cotizacion.component';
 import { FirmaComponent } from './pages/firma/firma.component';
 import { GerenteComponent } from './pages/gerente/gerente.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
-import { NewcotizacionComponent } from './pages/newcotizacion/newcotizacion.component';
+// import { NewcotizacionComponent } from './pages/newcotizacion/newcotizacion.component';
 import { ServiciosComponent } from './pages/servicios/servicios.component';
 import { SucursalesComponent } from './pages/sucursales/sucursales.component';
 import { TecnicoayudanteComponent } from './pages/tecnicoayudante/tecnicoayudante.component';
@@ -57,7 +57,7 @@ const APP_ROUTES: Routes = [
   { path: 'usuarios', component: UsuariosComponent,  canActivate:[AuthGuard] },
   { path: 'Gerente', component: GerenteComponent,  canActivate:[AuthGuard] },
   { path: 'tecnico-ayudante', component: TecnicoayudanteComponent,  canActivate:[AuthGuard] },
-  { path: 'newCotizacion/:cotizacion/:pagina', component: NewcotizacionComponent ,  canActivate:[AuthGuard]},
+  // { path: 'newCotizacion/:cotizacion/:pagina', component: NewcotizacionComponent ,  canActivate:[AuthGuard]},
   { path: 'recepcion/:recepcion/:pagina', component: RecepcionComponent ,  canActivate:[AuthGuard]},
   { path: 'FirmaEntrega/:idRecepcion', component: FirmaComponent ,  canActivate:[AuthGuard]},
   { path: 'FirmaConsentimiento/:idRecepcion', component: FirmaConsentimientoComponent ,  canActivate:[AuthGuard] },

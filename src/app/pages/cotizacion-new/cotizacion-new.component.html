@@ -710,7 +710,7 @@
                               <td class="text-end">
                                 {{item.precio | monedas}}
                               </td>
-                              <td class="text-end">{{item.subtotal | monedas}}</td>
+                              <td class="text-end">{{item['flotilla'] | monedas}}</td>
                               <td class="text-end">
                                 <i class="fa fa-trash btn btn-sm btn-danger fa-xs m-1"
                                   (click)="EliminaSubrelemento(indexPadre,indexHijo)"></i>
@@ -856,6 +856,8 @@
           </div>
         </div>
       </div>
+
+      <pre>{{reporte | json}}</pre>
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end mb-2 mt-1 text-center" *ngIf="infoCotizacion.desgloce.UB">
         <strong class="fs-3"
           [ngClass]="{'text-danger': infoCotizacion.desgloce.UB <55, 'text-success':infoCotizacion.desgloce.UB >=55}">

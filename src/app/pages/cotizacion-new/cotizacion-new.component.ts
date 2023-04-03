@@ -1,32 +1,30 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database";
-import {debounceTime, map, startWith} from 'rxjs/operators'
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import  pdfMake  from "pdfmake/build/pdfmake";
-import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
+import { child, get, getDatabase, onValue, push, ref, update } from "firebase/database";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts.js";
+import { map, startWith } from 'rxjs/operators';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 //paginacion
-import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {Observable, ReplaySubject} from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { UploadPDFService } from '../../services/upload-pdf.service';
-import { EmailsService } from '../../services/emails.service';
-import { EncriptadoService } from 'src/app/services/encriptado.service';
-import { CotizacionService } from '../../services/cotizacion.service';
-import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-import { ClientesService } from '../../services/clientes.service';
-import { VehiculosService } from '../../services/vehiculos.service';
 import { CatalogosService } from 'src/app/services/catalogos.service';
-import Swal from 'sweetalert2';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { PdfService } from 'src/app/services/pdf.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
-import { data } from 'jquery';
-import { log } from 'console';
+import Swal from 'sweetalert2';
+import { ClientesService } from '../../services/clientes.service';
+import { CotizacionService } from '../../services/cotizacion.service';
+import { EmailsService } from '../../services/emails.service';
+import { UploadPDFService } from '../../services/upload-pdf.service';
+import { VehiculosService } from '../../services/vehiculos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 export interface User {nombre: string, apellidos:string}
@@ -167,6 +165,18 @@ camposDesgloce = [
   cuales:string = null
   empresas=[]
   ordenamiento : boolean = true
+
+  reporte = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0, subtotal:0,sobrescrito_paquetes:0, iva:0, total:0}
+
+  camposReporte = [
+    {mo:0,show:'Mano de obra'},
+    {refacciones_1:0,show:'Refacciones'},
+    {sobrescrito_mo:0,show:'Precio sobrescrito MO'},
+    {sobrescrito_refaccion:0,show:'Precio sobrescrito Reafacciones'},
+    {sobrescrito_paquetes:0,show:'Precio sobrescrito paquetes'},
+    {iva:0,show:'iva'},
+    {total:0,show:'Total'},
+  ]
   constructor(private _mail:EmailsService, private fb: FormBuilder, private router: Router,
               private rutaActiva: ActivatedRoute,private _uploadPDF: UploadPDFService,
               private _cotizaciones: CotizacionService, private _sucursales: SucursalesService,
@@ -734,92 +744,111 @@ camposDesgloce = [
     sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquetes:0,total:0, descuento:0 }
     const elementos:any[] = this.infoCotizacion.elementos
     let mo=0, refacciones_1=0, sobrescrito_mo=0,sobrescrito_refaccion=0, sobrescrito_paquetes=0
-
-    if(elementos.length) {      
-      await elementos.map(async (ele,index)=>{
-        ele['index'] = index
-        if (ele['costo']>0) {
-          ele['flotilla'] = ele['cantidad'] * ele['costo']
-        }else{
-          ele['flotilla'] = ele['cantidad'] * ele['precio']
-        }
-        if (ele['tipo'] === 'paquete') {
-          if(!ele['elementos']) ele['elementos'] = []
-          if (ele['costo']>0) {
-            ele['flotilla'] = ele['costo']
-            ele['normal'] = (ele['cantidad'] *  ele['costo']) * 1.30
+    const margen = (1 + (this.margen/100))
+    const norm_ = 1.30
+    const reporte = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0}
+    if(elementos.length) {
+      elementos.map((e, index)=>{
+        e['index'] = index
+        if (e['tipo'] ==='refaccion') {
+          let pre = e['precio']
+          let operacion = (e['cantidad']* pre) * margen
+          if (e['costo']>0) {
+            pre = e['costo']
+            operacion = (e['cantidad']* pre) * margen
+            reporte.sobrescrito_refaccion += operacion
           }else{
-            const data_paquete = this._publicos.costodePaquete(ele['elementos'],this.margen)
-            ele['precio'] = data_paquete.flotilla
-            ele['flotilla'] = data_paquete.flotilla * ele['cantidad']
-            ele['normal'] = (ele['cantidad'] *  ele['precio']) * 1.30
+            reporte.refacciones_1 += operacion
           }
-        }
-        if(ele['tipo'] === 'MO' ) {
-          if(ele['costo']>0){
-            sobrescrito_mo=sobrescrito_mo+ (ele['costo'] * ele['cantidad'])
-            ele['normal'] = (ele['cantidad'] *  ele['costo']) * 1.30
+          e['flotilla'] = operacion
+          e['normal'] = operacion * norm_
+        }else  if (e['tipo'] ==='MO') {
+          let pre = e['precio']
+          let operacion = (e['cantidad']* pre)
+          if (e['costo']>0) {
+            pre = e['costo']
+            operacion = (e['cantidad']* pre)
+            reporte.sobrescrito_mo += operacion
           }else{
-            if(ele['precio']>0) mo=mo+ (ele['precio'] * ele['cantidad'])
-            ele['normal'] = (ele['cantidad'] *  ele['precio']) * 1.30
+            reporte.mo += operacion
           }
-        }
-        if(ele['tipo'] === 'refaccion' ) {
-          if(ele['costo']>0) {
-            sobrescrito_refaccion=sobrescrito_refaccion+ (ele['costo'] * ele['cantidad'])
-            ele['normal'] = (ele['cantidad'] *  ele['costo']) * 1.30
+          e['flotilla'] = operacion
+          e['normal'] = operacion * norm_
+        }else if (e['tipo'] ==='paquete') {
+          let element_internos = []
+          if (e['elementos']) element_internos = e['elementos']
+          const reporte_interno = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0}
+      
+          if (e['costo']>0) {
+            const operacion = e['cantidad'] * e['costo']
+            e['flotilla'] = operacion
+            e['normal'] = operacion * norm_
+            reporte.sobrescrito_paquetes += operacion
           }else{
-            refacciones_1=refacciones_1+ (ele['precio'] * ele['cantidad'])
-            ele['normal'] = (ele['cantidad'] *  ele['precio']) * 1.30
-          }
-        }
-        if (ele['tipo'] === 'paquete') {
-          const elementos_paquete:any[] = ele['elementos']
-          const cantidad = ele['cantidad']
-          for (let can = 1; can <= cantidad; can++) {
-            if(ele['costo']){
-              sobrescrito_paquetes = sobrescrito_paquetes + ele['costo']
-            }else{
-              for (let index = 1; index <=ele['cantidad']; index++) {
-                await elementos_paquete.map(sub_ele=>{
-                  if(sub_ele['tipo'] === 'MO' ) {
-                    
-                    if(sub_ele['costo']>0){
-                      sobrescrito_mo=sobrescrito_mo+ (sub_ele['costo'] * sub_ele['cantidad'])
-                    }else{
-                      if(sub_ele['precio']>0) mo=mo+ (sub_ele['precio'] * sub_ele['cantidad'])
-                    }
-                  }
-                  if(sub_ele['tipo'] === 'refaccion' ) {
-                    if(sub_ele['costo']>0) {
-                      sobrescrito_refaccion=sobrescrito_refaccion+ (sub_ele['costo'] * sub_ele['cantidad'])
-                    }else{
-                      refacciones_1=refacciones_1+ (sub_ele['precio'] * sub_ele['cantidad']) 
-                    }
-                  }
-                })
+            element_internos.map(e_interno=>{
+              if (e_interno['tipo'] ==='refaccion') {
+                let pre = e_interno['precio']
+                let operacion = (e_interno['cantidad']* pre) * margen
+                if (e_interno['costo']>0) {
+                  pre = e_interno['costo']
+                  operacion = (e_interno['cantidad']* pre) * margen
+                  reporte.sobrescrito_refaccion += operacion
+                  reporte_interno.sobrescrito_refaccion += operacion
+                }else{
+                  reporte.refacciones_1 += operacion
+                  reporte_interno.refacciones_1 += operacion
                 }
-            }
-            
+                e_interno['flotilla'] = operacion
+                e_interno['normal'] = operacion * norm_
+              }else  if (e_interno['tipo'] ==='MO') {
+                let pre = e_interno['precio']
+                let operacion = (e_interno['cantidad']* pre)
+                if (e_interno['costo']>0) {
+                  pre = e_interno['costo']
+                  operacion = (e_interno['cantidad']* pre)
+                  reporte.sobrescrito_mo += operacion
+                  reporte_interno.sobrescrito_mo += operacion
+                }else{
+                  reporte.mo += operacion
+                  reporte_interno.mo += operacion
+                }
+                e_interno['flotilla'] = operacion
+                e_interno['normal'] = operacion * norm_
+              }
+            })
+            e['reporte_interno'] = reporte_interno
+            e['flotilla'] = (reporte_interno.mo+ reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion + reporte_interno.refacciones_1)
+            e['normal'] = e['flotilla'] * norm_
           }
-          
         }
       })
     }
-    desgloce.mo = mo
-    desgloce.sobrescrito_paquetes = sobrescrito_paquetes
-    desgloce.sobrescrito_mo = sobrescrito_mo
-    desgloce.sobrescrito_refaccion = sobrescrito_refaccion
-    desgloce.refacciones_1 = refacciones_1
-    desgloce.refacciones_2 = refacciones_1 * (1 + (this.margen/100))
-    desgloce.subtotal = 
-    (desgloce.mo + desgloce.refacciones_2 + desgloce.sobrescrito_mo + desgloce.sobrescrito_refaccion + desgloce.sobrescrito_paquetes) - this.descuento
-    desgloce.total = desgloce.subtotal
-    if(this.iva){
-      desgloce.iva = desgloce.subtotal * .16
-      desgloce.total = desgloce.subtotal + desgloce.iva
+    console.log(reporte);
+    const suma = reporte.mo + reporte.sobrescrito_mo + reporte.refacciones_1 + reporte.sobrescrito_refaccion + reporte.sobrescrito_paquetes
+    let otra_op = suma
+    let iva = otra_op, total= suma, subtotal= suma
+    if(this.iva) {
+      total = suma * 1.16
+    }else{
+      total = suma
     }
-    desgloce.UB = this._publicos.redondeado(((desgloce.total - desgloce.refacciones_1)*100)/desgloce.total)
+    this.reporte = {...reporte,iva,subtotal,total}
+    
+    
+    // desgloce.mo = mo
+    // desgloce.sobrescrito_paquetes = sobrescrito_paquetes
+    // desgloce.sobrescrito_mo = sobrescrito_mo
+    // desgloce.sobrescrito_refaccion = sobrescrito_refaccion
+    // desgloce.refacciones_1 = refacciones_1
+    // desgloce.refacciones_2 = refacciones_1 * (1 + (this.margen/100))
+    // desgloce.subtotal = 
+    // (desgloce.mo + desgloce.refacciones_2 + desgloce.sobrescrito_mo + desgloce.sobrescrito_refaccion + desgloce.sobrescrito_paquetes) - this.descuento
+    // desgloce.total = desgloce.subtotal
+    // if(this.iva){
+    //   desgloce.iva = desgloce.subtotal * .16
+    //   desgloce.total = desgloce.subtotal + desgloce.iva
+    // }
+    // desgloce.UB = this._publicos.redondeado(((desgloce.total - desgloce.refacciones_1)*100)/desgloce.total)
     // console.log(desgloce);
     // console.log(this.formaPago);
     this.formasPAgo.map(f=>{
