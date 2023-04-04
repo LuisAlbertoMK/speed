@@ -166,17 +166,18 @@ camposDesgloce = [
   empresas=[]
   ordenamiento : boolean = true
 
-  reporte = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0, subtotal:0,sobrescrito_paquetes:0, iva:0, total:0}
+  reporte = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0, subtotal:0,sobrescrito_paquetes:0, iva:0, total:0,UB:0}
 
   camposReporte = [
-    {mo:0,show:'Mano de obra'},
-    {refacciones_1:0,show:'Refacciones'},
-    {sobrescrito_mo:0,show:'Precio sobrescrito MO'},
-    {sobrescrito_refaccion:0,show:'Precio sobrescrito Reafacciones'},
-    {sobrescrito_paquetes:0,show:'Precio sobrescrito paquetes'},
-    {iva:0,show:'iva'},
-    {total:0,show:'Total'},
+    {valor:'mo',show:'Mano de obra'},
+    {valor:'refacciones_1',show:'Refacciones'},
+    {valor:'sobrescrito_mo',show:'Precio sobrescrito MO'},
+    {valor:'sobrescrito_refaccion',show:'Precio sobrescrito Refacciones'},
+    {valor:'sobrescrito_paquetes',show:'Precio sobrescrito paquetes'},
+    {valor:'iva',show:'iva'},
+    {valor:'total',show:'Total'},
   ]
+  
   constructor(private _mail:EmailsService, private fb: FormBuilder, private router: Router,
               private rutaActiva: ActivatedRoute,private _uploadPDF: UploadPDFService,
               private _cotizaciones: CotizacionService, private _sucursales: SucursalesService,
@@ -739,14 +740,11 @@ camposDesgloce = [
           })
   }
 
-  async realizarOperaciones(){
-    const desgloce = { UB:'0',mo:0,refacciones_1:0,refacciones_2:0,subtotal:0,iva:0,
-    sobrescrito_mo:0,sobrescrito_refaccion:0,sobrescrito_paquetes:0,total:0, descuento:0 }
+  realizarOperaciones(){
     const elementos:any[] = this.infoCotizacion.elementos
-    let mo=0, refacciones_1=0, sobrescrito_mo=0,sobrescrito_refaccion=0, sobrescrito_paquetes=0
     const margen = (1 + (this.margen/100))
     const norm_ = 1.30
-    const reporte = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0}
+    const reporte = {mo:0, refacciones_1:0,refacciones_ad:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0}
     if(elementos.length) {
       elementos.map((e, index)=>{
         e['index'] = index
@@ -762,6 +760,7 @@ camposDesgloce = [
           }
           e['flotilla'] = operacion
           e['normal'] = operacion * norm_
+          reporte.refacciones_ad += e['precio']
         }else  if (e['tipo'] ==='MO') {
           let pre = e['precio']
           let operacion = (e['cantidad']* pre)
@@ -800,6 +799,7 @@ camposDesgloce = [
                 }
                 e_interno['flotilla'] = operacion
                 e_interno['normal'] = operacion * norm_
+                reporte.refacciones_ad += e_interno['precio']
               }else  if (e_interno['tipo'] ==='MO') {
                 let pre = e_interno['precio']
                 let operacion = (e_interno['cantidad']* pre)
@@ -823,44 +823,35 @@ camposDesgloce = [
         }
       })
     }
-    console.log(reporte);
     const suma = reporte.mo + reporte.sobrescrito_mo + reporte.refacciones_1 + reporte.sobrescrito_refaccion + reporte.sobrescrito_paquetes
-    let otra_op = suma
-    let iva = otra_op, total= suma, subtotal= suma
+ 
+    let iva = 0, total= suma, subtotal= suma, UB=0
+
     if(this.iva) {
       total = suma * 1.16
+      iva = suma *.16
     }else{
       total = suma
     }
-    this.reporte = {...reporte,iva,subtotal,total}
-    
-    
-    // desgloce.mo = mo
-    // desgloce.sobrescrito_paquetes = sobrescrito_paquetes
-    // desgloce.sobrescrito_mo = sobrescrito_mo
-    // desgloce.sobrescrito_refaccion = sobrescrito_refaccion
-    // desgloce.refacciones_1 = refacciones_1
-    // desgloce.refacciones_2 = refacciones_1 * (1 + (this.margen/100))
-    // desgloce.subtotal = 
-    // (desgloce.mo + desgloce.refacciones_2 + desgloce.sobrescrito_mo + desgloce.sobrescrito_refaccion + desgloce.sobrescrito_paquetes) - this.descuento
-    // desgloce.total = desgloce.subtotal
-    // if(this.iva){
-    //   desgloce.iva = desgloce.subtotal * .16
-    //   desgloce.total = desgloce.subtotal + desgloce.iva
-    // }
-    // desgloce.UB = this._publicos.redondeado(((desgloce.total - desgloce.refacciones_1)*100)/desgloce.total)
-    // console.log(desgloce);
-    // console.log(this.formaPago);
-    this.formasPAgo.map(f=>{
-      if (f.id != this.formaPago) return
-        const operacion = desgloce.total * (1 + (f['interes'] / 100))
-        desgloce['meses'] = operacion;
-        (f['numero']>0) ? this.meses = f['numero'] : this.meses = 0
+    UB = (total - reporte.refacciones_ad)*100/total
+
+    // console.log(typeof this.formaPago);
+
+    this.formasPAgo.forEach(f=>{
+      if (Number(this.formaPago) === Number(f['id'])) {
+        if (f['id'] == 1) {
+          total = total - this.descuento
+        }else{
+          const operacion = total * (1 + (f['interes'] / 100))
+          reporte['meses'] = operacion;
+          (f['numero']>0) ? this.meses = f['numero'] : this.meses = 0
+        }
+      }
     })
-    // console.log(this.descuento);
-    desgloce.descuento = this.descuento
-    
-    this.infoCotizacion['desgloce'] = desgloce
+
+    this.reporte = {...reporte,iva,subtotal,total,UB}
+
+    this.infoCotizacion['reporte'] = this.reporte
     this.realizarInfo(elementos)
   }
   async comprobarInfoCliente(){
@@ -1208,7 +1199,7 @@ camposDesgloce = [
         const cu = faltantes.join(', ')
         this.cuales = cu
       }else{
-        
+        // Swal.isLoading()
    
         if (this.SUCURSAL === 'Todas') {
           this.sucursales.map(s=>{
@@ -1256,7 +1247,7 @@ camposDesgloce = [
           const vehiculo = this.infoCotizacion.vehiculo
           const cliente = this.infoCotizacion.cliente
           
-          const desgloce = this.infoCotizacion['desgloce']
+          const reporte = this.infoCotizacion['reporte']
           
           const vencimiento = infoCotizacion['vencimiento']
           if(!vehiculo['no_motor']) vehiculo['no_motor'] =''
@@ -1281,7 +1272,7 @@ camposDesgloce = [
             sucursal,
             vehiculo,
             cliente,
-            desgloce,
+            reporte,
             vencimiento,
             elementos,
             infoCotizacion,

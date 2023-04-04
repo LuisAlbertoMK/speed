@@ -49,6 +49,11 @@ export class ReporteGastosComponent implements OnInit {
   Editar:boolean = false
 
   
+  dataSourceResporteGastos = new MatTableDataSource(); //elementos
+  columnasResporteGastos:string[] = ['sucursal','concepto','metodo','monto','tipo','fecha','opciones']
+  @ViewChild('ResporteGastosPaginator') ResporteGastospaginator: MatPaginator //elementos
+  @ViewChild('ResporteGastos') ResporteGastossort: MatSort //elementos
+
   dataSourceGastosDia = new MatTableDataSource(); //elementos
   columnasGastosDia:string[] = ['sucursal','concepto','metodo','monto','tipo','fecha','opciones']
   @ViewChild('GastosDiaPaginator') paginator: MatPaginator //elementos
@@ -57,7 +62,7 @@ export class ReporteGastosComponent implements OnInit {
   ordenamiento : boolean = true
 
   // SearchDia:string = 'hoy'; SearchSucursal = {id:'Todas',sucu:'Todas'}; 
-  SearchDia:string = 'hoy'; SearchSucursal = {id: null,sucu: 'Seleccionar'}; 
+  SearchDia:string = 'hoy'; SearchSucursal = {id: null,sucu: 'Todas'}; 
   ResultadosDiarios = []
   // selected: Date | null;
   reporteFinal = {Efectivo:0,Cheque:0,Tarjeta:0,OpenPay:0,Clip:0,BBVA:0,BANAMEX:0}
@@ -74,27 +79,18 @@ export class ReporteGastosComponent implements OnInit {
   arr_GastosDiarios = []
   /// valor
   valor = 'hoy'
-  fevchas = [
-    'hoy',
-    'ayer',
-    'ult_7Dias',
-    'ult_30Dias',
-    'ult_mes',
-    'este_anio',
-    'ult_anio'
-  ]
+  fevchas = ['hoy','ayer','ult_7Dias','ult_30Dias','ult_mes','este_anio','ult_anio']
   fechasSeleccionadas = {inicio: '', final:''}
   range_busqueda = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
   });
-  reporte = {_pagos: 0, _gastos:0, _operacion:0,utlidad:0,_depositos:0}
+  reporte = {_pagos: 0, _gastos:0, _operacion:0,utilidad:0}
   campos_Reporte = [
     {valor:'_pagos', show:'Pagos' },
     {valor:'_gastos', show:'Gastos' },
     {valor:'_operacion',show:'Operación'},
-    {valor:'_depositos',show:'Depositos'},
-    {valor:'utlidad',show:'Utilidad'},
+    {valor:'utilidad',show:'Utilidad'},
 ]
 
   showPago:boolean = false
@@ -102,14 +98,25 @@ export class ReporteGastosComponent implements OnInit {
   muestraForms = {pago:false, gasto:false,deposito:false}
   
   forms = ['pago','gasto','deposito']
+
+  fechas_get = {inicio:new Date(), final: new Date()}
+
+  reporte_diario = { _gastos:0,_depositos:0,utilidad:0,_operacion:0}
+  campos_diario = [
+    {valor:'_gastos', show:'Gastos' },
+    {valor:'_depositos',show:'Depositos'},
+    {valor:'utilidad',show:'Utilidad'},
+   ]
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.rol()
     this.listaSucursales()
     // this.listaGastosDiarios()
-    this.lista_gastosOperacion()
+    // this.lista_gastosOperacion()
     // this.lista_pagosGastos_OS()
+    this.consulta_gastosDiarios()
+    this.revisarCambios()
   }
 
   validaCampo(campo: string){
@@ -136,122 +143,6 @@ export class ReporteGastosComponent implements OnInit {
       }
     })
   }
-  // agregar(data:any){
-  //   // this.metodo_select = data
-  //   // console.log(data);
-    
-  //   this.reporteShow = data
-  //   let resultados_ = []
-  //   this.filtraOcupadosMetodoEspecifico.forEach(m=>{
-  //       this.metodospago.find(p=>{
-  //         if (p['valor'] === m['metodo'] && data === p['ocupa']) {
-  //           resultados_.push(m)
-  //         }
-  //       })
-  //   })
-  //   // console.log(resultados_);
-  //   this.resultados_ = resultados_
-  // }
-  // limpiaForm(){
-  //   let sucursal 
-  //   if (this.SUCURSAL !== 'Todas') {
-  //     sucursal = this.SUCURSAL
-  //   }
-  //   this.formGasto.reset({
-  //     id: '',
-  //     monto: 0,
-  //     tipo: 'nuevo',
-  //     metodo: 1,
-  //     sucursal,
-  //     concepto: '',
-  //   })
-  //   this.Editar = false
-  // }
-  // registraGasto(){
-  //   if (this.formGasto.valid) {
-  //     // this._publicos.mensajeSwal('registro continuar')
-  //     const data = this.formGasto.value
-  //     let getTime = this._publicos.getFechaHora()
-  //     let id 
-  //     // console.log(data);
-  //     const updates = {};
-  //     ///primero verificar si existe id en formulario
-  //     const infoSave = {
-  //       fecha: getTime.fecha,
-  //       hora: getTime.hora,
-  //       id,
-  //       monto: data['monto'],
-  //       sucursal: data['sucursal'],
-  //       tipo: data['tipo'],
-  //       concepto: data['concepto'],
-  //       metodo: Number(data['metodo']),
-  //       status:true
-  //     }
-  //     if (data['id']) {
-  //       ///en caso de que desee editar informacion el id cambia para que se edicion de informacion
-  //       infoSave['id'] = data['id']
-  //       // infoSave['fecha'] = data['fecha']
-  //       // infoSave['hora'] = data['hora']
-        
-  //       const enviaFecha = this._publicos.construyeFechaString(data['fecha'],data['hora'])
-        
-  //       getTime = this._publicos.getFechaHora(enviaFecha)
-  //       // console.log(getTime);
-  //       infoSave['fecha'] = getTime.fecha
-  //       infoSave['hora'] = getTime.hora
-  //       updates[`gastosDiarios/${data['sucursal']}/${getTime.fechaNumeros}/${data['id']}`] = infoSave;
-  //       // console.log(updates);
-        
-  //     }else{
-  //       ///en caso de que desee registrar informacion el id cambia para que se nuevo registro de informacion
-  //       // if (data['tipo'] === 'nuevo')
-  //       id = this._publicos.generaClave()
-  //       infoSave['id'] = id
-  //       updates[`gastosDiarios/${data['sucursal']}/${getTime.fechaNumeros}/${id}`] = infoSave;
-  //     }
-  //     // console.log(updates);
-  //     update(ref(db), updates).then(()=>{
-  //         this._publicos.mensajeSwal('Gasto registrado correctamente!')
-  //         this.limpiaForm()
-  //         this.Editar = false
-  //       })
-  //       .catch(()=>{
-  //         this._publicos.mensajeSwalError('Error al registrar gasto')
-  //       })
-  //   }
-  // }
-
-  // editarStatus(data: any, status){
-  //   //verificar si existe la informacion
-  //   if (data['id']) {
-  //     // console.log(data);
-  //     // convertir fecha en string tipo Date
-  //     const fecha = this._publicos.construyeFechaString(data['fecha'],data['hora'])
-  //     // traer la fecha en numeros del la variable "fecha"
-  //     const getTime = this._publicos.getFechaHora(fecha)
-      
-  //     const updates = {};
-  //     updates[`gastosDiarios/${data['sucursal']}/${getTime.fechaNumeros}/${data['id']}/status`] = status;
-  //     // console.log(updates);
-  //     // Realizar pregunta si desea eliminar el gasto
-  //     let mensaje = `¿Eliminar gasto tipo ${data['tipo']}`
-  //     if(status) mensaje = `Activar gasto tipo ${data['tipo']}`
-  //     this._publicos.mensaje_pregunta(`${mensaje}`).then(({respuesta})=>{
-  //       if (respuesta) {
-  //         //en caso de confirmar la respuesta realizar la actualizacion
-  //         update(ref(db), updates).then(()=>{
-  //           this._publicos.mensajeSwal('Accion correcta!!')
-  //         })
-  //         //en caso de error informar mediante mensaje
-  //         .catch(erro=>{
-  //           this._publicos.mensajeSwalError('Error al eliminar gasto')
-  //         })
-  //       }
-  //     })
-      
-  //     // update(ref(db), updates);
-  //   }
-  // }
   ordenarElementos(campo:string){
     // declaracion y asiganacion de resultados de la tabla
     let info =  []
@@ -275,25 +166,7 @@ export class ReporteGastosComponent implements OnInit {
     ///mandar traer la paginacion de resultados
     this.newPagination('GastosDia')
   }  
-  // editarGasto(data:any){
-  //   // verificar si existe id en la data para continuar con la edicion de informacion de gasto
-  //   if (data['id']) {
-  //     this.formGasto.reset({
-  //       id: data['id'],
-  //       monto: data['monto'],
-  //       tipo: data['tipo'],
-  //       metodo: data['metodo'],
-  //       sucursal: data['sucursal'],
-  //       concepto: data['concepto'],
-  //       fecha: data['fecha'],
-  //       hora: data['hora'],
-  //     })
-  //     //variable para activar modo edicion
-  //     this.Editar = true
-  //   }
-  // }
-  
-  //mostrar los detalles de gasto
+    //mostrar los detalles de gasto
   detalles(data:any){
     if (data['id']) {
       Swal.fire({
@@ -302,6 +175,7 @@ export class ReporteGastosComponent implements OnInit {
         html:
           `
           <ul class='list-group'>
+            <li class='list-group-item'>OS: ${data['no_os']}</li>
             <li class='list-group-item'>Sucursal: ${data['sucursalShow']}</li>
             <li class='list-group-item'>Concepto: ${data['concepto']}</li>
             <li class='list-group-item'>Metodo: ${data['metodo']}</li>
@@ -321,6 +195,17 @@ export class ReporteGastosComponent implements OnInit {
         cancelButtonAriaLabel: 'Thumbs down'
       })
     }
+  }
+  revisarCambios(){
+    const starCountRef = ref(db, `gastosDiarios`)
+    onValue(starCountRef, (snapshot) => {
+      this.lista_gastosOperacion()
+    })
+    const starCountRef1 = ref(db, `HistorialGastosOperacion`)
+    onValue(starCountRef1, (snapshot) => {
+      this.lista_gastosOperacion()
+    })
+	
   }
   //listar los gastos de operacion
   lista_gastosOperacion(){
@@ -355,7 +240,7 @@ export class ReporteGastosComponent implements OnInit {
             gastos_historial.forEach((a)=>{
               const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
               a['fechaCompara'] = fechaCompara_
-              const infoGasto = {...a,historial:'gasto'}
+              const infoGasto = {...a,historial:'gasto',claveID:os['id'],no_os:os['no_os']}
               os_historial.push(infoGasto)
             })
           }
@@ -364,17 +249,17 @@ export class ReporteGastosComponent implements OnInit {
             pago_historial.forEach((a)=>{
               const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
               a['fechaCompara'] = fechaCompara_
-              const infoGasto = {...a,historial:'pago'}
+              const infoGasto = {...a,historial:'pago',claveID:os['id'],no_os:os['no_os']}
               os_historial.push(infoGasto)
             })
           }
         })
         // console.log(os_historial);
         this.arr_historialPG_ordenes = os_historial
-        this.consulta_gastosDiarios()
+        this.realizaOp()
       }else{
         this.arr_historialPG_ordenes = []
-        this.consulta_gastosDiarios()
+        this.realizaOp()      
       }
 
     })
@@ -388,6 +273,109 @@ export class ReporteGastosComponent implements OnInit {
         this.realizaOp()
       }
     }
+  }
+  realizaOp(){
+    
+    
+    const info = this.arr_gastosOperacion.concat( this.arr_historialPG_ordenes )
+    // console.log(info);
+
+    // console.log(reporte);
+    let rangoFechas = {inicio: new Date(), final: new Date()}
+
+    // fechas de consulta o filtrado numero es (dias / meses / anios ) a restar o sumar
+    // tipo es si se sumara o restara la variable numero
+    // donde es que tipo sera (+,-) dia mes o  anios
+    let numero: number =0, tipo ='resta',donde='dia'
+    let fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+    switch (this.valor) {
+      case 'hoy':
+        donde= 'dia'
+        numero=0, fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+        break;
+      case 'ayer':
+        numero = 1, donde = 'dia'
+        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero,'',true)
+        break;
+      case 'ult_7Dias':
+        numero = 7, donde = 'dia'
+        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+        break;
+      case 'ult_30Dias':
+        numero = 30, donde = 'dia'
+        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+        break;
+      case 'ult_mes':
+        donde = 'mes', numero = 1
+        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+        break;
+      case 'este_anio':
+        numero = 0, donde = 'anio'
+        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+        break;
+      case 'ult_anio':
+        donde = 'anio', numero = 1;
+        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+        break;
+      case 'personalizado':
+        const {start, end} = this.range_busqueda.value
+          if (start && end) {
+            if (start['_d'] && end['_d']) rangoFechas = {inicio: start['_d'], final: end['_d']} 
+          }
+        break;
+      default:
+        donde= 'dia', numero=0
+        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+        break;
+    }
+    if (this.valor !== 'personalizado') {
+      rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
+    }
+
+    this.fechas_get = rangoFechas
+  //filtrar por las fechas
+  let resultados = []
+  
+  info.forEach(a=>{
+    if (a['fechaCompara'] >= rangoFechas.inicio && a['fechaCompara' ] <= rangoFechas.final) resultados.push(a)
+  })
+  //filtrar por sucursal
+
+  // console.log(this.SearchSucursal);
+  let sucu
+  if (this.SearchSucursal['id']) sucu= this.SearchSucursal.id
+  let filtro_sucursal = []
+  if (sucu) {
+    filtro_sucursal = resultados.filter(r=>r['sucursal'] == sucu)
+  }else{
+    filtro_sucursal = resultados
+  }
+  const reporte = {_pagos: 0, _gastos:0, _operacion:0,utilidad:0,_depositos:0}
+  //realizar las operaciones de cada uno de los pagos, gastos_orden y gastos_operacion
+  filtro_sucursal.map(i=>{
+    if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
+    if (i['historial'] === 'gasto') reporte._gastos += i['monto']
+    if (i['historial'] === 'pago') reporte._pagos += i['monto']
+    if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
+    const {sucursal} = this.sucursales.find(s=>s['id'] === i['sucursal'])
+    i['sucursalShow'] = sucursal
+  })
+  //asiganar las fechas al control de calendario
+  this.range_busqueda.controls['start'].setValue(new Date(rangoFechas.inicio))
+  this.range_busqueda.controls['end'].setValue(new Date(rangoFechas.final))
+  //asignacion de valores para reporte
+  // console.log((reporte._pagos + reporte._depositos));
+  
+  reporte.utilidad = (reporte._pagos + reporte._depositos) -  (reporte._gastos + reporte._operacion)
+  
+  // console.log(reporte);
+  
+  this.reporte = reporte
+
+  //mandar informacion a la tabla!
+  this.dataSourceResporteGastos.data = filtro_sucursal
+  this.newPagination('data')
+    this.realizaOtras_op()
   }
   consulta_gastosDiarios(){
     const starCountRef = ref(db, `gastosDiarios`)
@@ -408,7 +396,7 @@ export class ReporteGastosComponent implements OnInit {
             arreglo.forEach(a=>{
               const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora'])
               a['fechaCompara'] = fechaCompara_
-              const infoGasto = {...a}
+              const infoGasto = {...a,claveDia:ck1}
               // os_historial.push(infoGasto)
               registrosFInales.push(infoGasto)
             })
@@ -416,134 +404,92 @@ export class ReporteGastosComponent implements OnInit {
         });
         // console.log(registrosFInales);
         this.arr_GastosDiarios = registrosFInales
-        this.realizaOp()
+        // this.realizaOtras_op()
       }else{
-        this.realizaOp()
+        // this.realizaOtras_op()
       }
     })
   }
-  realizaOp(){
+  realizaOtras_op(){
+    const gastos  = this.arr_historialPG_ordenes.filter(r=>r['historial'] === 'gasto')
+    const info = this.arr_GastosDiarios.concat(gastos).concat(this.arr_gastosOperacion)
     
-    const info = this.arr_gastosOperacion.concat( this.arr_historialPG_ordenes ).concat(this.arr_GastosDiarios)
-    console.log(info);
     
-    
-    // console.log(reporte);
-    let rangoFechas = {inicio: new Date(), final: new Date()}
-
-    // fechas de consulta o filtrado numero es (dias / meses / anios ) a restar o sumar
-    // tipo es si se sumara o restara la variable numero
-    // donde es que tipo sera (+,-) dia mes o  anios
-    let numero: number =0, tipo ='resta',donde='dia'
-    let fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-    switch (this.valor) {
-      case 'hoy':
-        donde= 'dia'
-        numero=0
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
-        break;
-      case 'ayer':
-        numero = 1
-        donde = 'dia'
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha2, final: fechas.fecha2}
-        break;
-      case 'ult_7Dias':
-        numero = 7
-        donde = 'dia'
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha2, final: fechas.fecha1}
-        break;
-      case 'ult_30Dias':
-        numero = 30
-        donde = 'dia'
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha2, final: fechas.fecha1}
-        break;
-      case 'ult_mes':
-        donde = 'mes'
-        numero = 1
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
-        break;
-      case 'este_anio':
-        numero = 0
-        donde = 'anio'
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
-        break;
-      case 'ult_anio':
-        donde = 'anio'
-        numero = 1
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
-        break;
-      case 'personalizado':
-        const {start, end} = this.range_busqueda.value
-          if (start && end) {
-            if (start['_d'] && end['_d']) {
-              rangoFechas = {inicio: start['_d'], final: end['_d']}
-            }
-          }
-        
-        break;
-    
-      default:
-        donde= 'dia'
-        numero=0
-        fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
-        rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
-        break;
+    let rangoFechas = {inicio: this.fechas_get.inicio, final: this.fechas_get.final}
+    let resultados = []
+    info. forEach((a)=>{
+      if (a['fechaCompara'] >= rangoFechas.inicio && a['fechaCompara' ] <= rangoFechas.final) resultados.push(a)
+    })
+    let sucu
+    if (this.SearchSucursal['id']) sucu= this.SearchSucursal.id
+    let filtro_sucursal = []
+    if (sucu) {
+      filtro_sucursal = resultados.filter(r=>r['sucursal'] == sucu)
+    }else{
+      filtro_sucursal = resultados
     }
-  //filtrar por las fechas
-  let resultados = []
-  // console.log(info);
-  
-  info.forEach(a=>{
-    if (a['fechaCompara'] >= rangoFechas.inicio && a['fechaCompara' ] <= rangoFechas.final) resultados.push(a)
-  })
-  //filtrar por sucursal
-  let filtro_sucursal = []
-  if (this.SUCURSAL !== 'Todas') {
-    filtro_sucursal = resultados.filter(r=>r['sucursal'] == this.SUCURSAL)
-  }else{
-    filtro_sucursal = resultados
-  }
-  const reporte = {_pagos: 0, _gastos:0, _operacion:0,utlidad:0,_depositos:0}
-  //realizar las operaciones de cada uno de los pagos, gastos_orden y gastos_operacion
-  filtro_sucursal.map(i=>{
-    if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
-    if (i['historial'] === 'gasto') reporte._gastos += i['monto']
-    if (i['historial'] === 'pago') reporte._pagos += i['monto']
-    if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
-    const {sucursal} = this.sucursales.find(s=>s['id'] === i['sucursal'])
-    i['sucursalShow'] = sucursal
-  })
-  //asiganar las fechas al control de calendario
-  this.range_busqueda.controls['start'].setValue(new Date(rangoFechas.inicio))
-  this.range_busqueda.controls['end'].setValue(new Date(rangoFechas.final))
-  //asignacion de valores para reporte
-  // console.log((reporte._pagos + reporte._depositos));
-  
-  reporte.utlidad = (reporte._pagos + reporte._depositos) -  (reporte._gastos + reporte._operacion)
-  
-  
-  this.reporte = reporte
 
-  //mandar informacion a la tabla!
-  this.dataSourceGastosDia.data = filtro_sucursal
-  this.newPagination('data')
+    const reporte = { _gastos:0, utilidad:0,_depositos:0,_operacion:0}
+    console.log(filtro_sucursal);
+
+    filtro_sucursal.map((i)=>{
+      if (i['status']) {
+        if (i['historial'] === 'gasto') reporte._gastos += i['monto']
+        // if (i['historial'] === 'pago') reporte._pagos += i['monto']
+        if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
+        if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
+      }
+      const {sucursal} = this.sucursales.find(s=>s['id'] === i['sucursal'])
+      i['sucursalShow'] = sucursal
+      const forma_pago =  this.metodospago.find(m=>Number(m['valor']) === Number(i['metodo']))
+      i['metodoShow'] = forma_pago.show
+    })
+    reporte.utilidad = (reporte._depositos) -  (reporte._gastos + reporte._operacion)
+    // console.log(reporte);
+    this.reporte_diario = reporte
+    // console.log(filtro_sucursal);
+    
+    
+    this.dataSourceGastosDia.data = filtro_sucursal
+    this.newPagination('dias')
+    
+    
+  }
+
+  elimina(data:any){
+    if (data['id']) {
+      const updates = {}
+      // HistorialGastos
+      // HistorialPagos
+      if (data['tipo'] === 'deposito') {
+        updates[`gastosDiarios/${data['sucursal']}/${data['claveDia']}/${data['id']}/status`] = false;
+      }else if (data['historial'] === 'gasto') {
+        updates[`recepciones/${data['claveID']}/HistorialGastos/${data['id']}/status`] = false;
+      }else if (data['historial'] === 'pago') {
+        updates[`recepciones/${data['claveID']}/HistorialPagos/${data['id']}/status`] = false;
+      }
+      this._publicos.mensaje_pregunta('Eliminar registro').then(({respuesta})=>{
+        if (respuesta) {
+          update(ref(db), updates).then(()=>{
+            this._publicos.mensajeSwal('Acción correcta')
+          })
+        }
+      })      
+    }
     
   }
   ///paginacion de los resultados
   newPagination(data:string){
     //despues de la asiganacion de la data esperar .5 segundos para realizar paginacion
     setTimeout(() => {
-    if (data==='data') {
-      this.dataSourceGastosDia.paginator = this.paginator;
-      this.dataSourceGastosDia.sort = this.sort
-    }
+      if (data==='data') {
+        this.dataSourceResporteGastos.paginator = this.ResporteGastospaginator;
+        this.dataSourceResporteGastos.sort = this.ResporteGastossort
+      }
+      if (data==='dias') {
+        this.dataSourceGastosDia.paginator = this.paginator;
+        this.dataSourceGastosDia.sort = this.sort
+      }
     }, 500)
   }
   cambia(cual:string){

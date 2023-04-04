@@ -326,7 +326,8 @@ export class ServiciosPublicosService {
                 operacion : string,
                 tipo : string,
                 numero : number,
-                hora? : string
+                hora? : string,
+                ayer?:boolean
             ) {
                 if (hora) {} else {
                     fecha.setHours(0, 0, 0, 0)
@@ -370,13 +371,19 @@ export class ServiciosPublicosService {
                     // console.log('aqui');
 
                     if (tipo === 'dia') {
-
                         FechaActual.setDate(fecha.getDate() - numero)
-                        fecha1 = FechaActual2
+                        FechaActual.setHours(0, 0, 0, 0)
+                        fecha1 = FechaActual
 
-                        FechaActual2.setDate(fecha.getDate())
-                        FechaActual.setHours(23, 59, 59, 0)
-                        fecha2 = FechaActual
+                        // FechaActual2.setDate(fecha.getDate())
+                        if (ayer) {
+                            FechaActual2.setDate(fecha.getDate() - numero)
+                        }else{
+                            FechaActual2.setDate(fecha.getDate())
+                        }
+
+                        FechaActual2.setHours(23, 59, 59, 0)
+                        fecha2 = FechaActual2
 
                     } else if (tipo === 'mes') {
 
@@ -386,19 +393,19 @@ export class ServiciosPublicosService {
                         fecha1 = new Date(
                             FechaActual.getFullYear(),
                             FechaActual.getMonth() - numero,
-                            1
+                            1, 0, 0, 0, 0
                         )
                         fecha2 = new Date(
                             FechaActual.getFullYear(),
                             FechaActual.getMonth() - numero,
-                            diasMes
+                            diasMes, 23, 59, 59, 999
                         )
 
                     } else if (tipo === 'anio') {
 
                         FechaActual.setFullYear(fecha.getFullYear() - numero)
-                        fecha1 = new Date(FechaActual.getFullYear(), 0, 1)
-                        fecha2 = new Date(FechaActual.getFullYear(), 11, 31)
+                        fecha1 = new Date(FechaActual.getFullYear(), 0, 1, 0, 0, 0, 0)
+                        fecha2 = new Date(FechaActual.getFullYear(), 11, 31, 23, 59, 59, 999)
                     }
                 }
 
@@ -410,10 +417,11 @@ export class ServiciosPublicosService {
             }
             convierte_fechaString_personalizada(fecha : Date) {
                 const f1 = new Date(fecha);
-                let string_fecha = '', stringHora='', fechaString= new Date(fecha)
+                let string_fecha = '', stringHora='',stringNumeros='', fechaString= new Date(fecha)
                 string_fecha = `${f1.getDate()}/${f1.getMonth() + 1}/${f1.getFullYear()}`
                 stringHora =`${fecha.getHours()}:${fecha.getMinutes()}:${fecha.getSeconds()}`
-                return {string_fecha,stringHora,fechaString}
+                stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`
+                return {string_fecha,stringHora,fechaString,stringNumeros}
             }
             obtenerFechaCompleta(fecha : any) {
                 // let fecha = '21/12/2022' console.log(fecha);

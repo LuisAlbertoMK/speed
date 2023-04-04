@@ -119,6 +119,7 @@ export class RealizaDepositoComponent implements OnInit {
             concepto: infoFormulario['concepto'],
             monto: infoFormulario['monto'],
             metodo:1,
+            status:true,
             tipo:'deposito'
           }
           const clave = this._publicos.generaClave()

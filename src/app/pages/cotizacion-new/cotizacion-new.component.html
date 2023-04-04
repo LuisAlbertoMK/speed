@@ -857,81 +857,48 @@
         </div>
       </div>
 
-      <pre>{{reporte | json}}</pre>
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end mb-2 mt-1 text-center" *ngIf="infoCotizacion.desgloce.UB">
+      <!-- <pre>{{reporte | json}}</pre> -->
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end mb-2 mt-1 text-center">
         <strong class="fs-3"
-          [ngClass]="{'text-danger': infoCotizacion.desgloce.UB <55, 'text-success':infoCotizacion.desgloce.UB >=55}">
-          U.B {{infoCotizacion.desgloce.UB}} %
+          [ngClass]="{'text-danger': reporte['UB'] <55, 'text-success':reporte['UB'] >=55}">
+          U.B {{reporte['UB'] | monedas:'%'}}
         </strong>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-6">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <div class="card border-danger mb-3">
           <div class="card-header text-center">Normal</div>
           <div class="card-body text-danger ">
             <h5 class="card-title"></h5>
             <div class="row">
-              <ng-container *ngFor="let d of camposDesgloce">
-                <ng-container *ngIf="infoCotizacion['desgloce'][d.valor]">
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                    <label>{{d.show | capitalizarUno}}</label>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-                    <label>{{infoCotizacion['desgloce'][d.valor]  * 1.30 | monedas}}</label>
-                  </div>
-                </ng-container>
-                
+              <ng-container *ngFor="let campo of camposReporte">
+                <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo['valor']] * 1.30 | monedas}}</strong></div>
               </ng-container>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                <label>{{infoCotizacion['desgloce']['total'] * 1.30  | numerosLetras}}</label>
-              </div>
-              <ng-container *ngIf="meses>0">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                  <label>{{meses}} {{'MeSEs' | capitalizarUno}} </label>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-                  <label>{{infoCotizacion['desgloce']['meses'] * 1.30  | monedas}}</label>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                  <label>{{infoCotizacion['desgloce']['meses'] * 1.30  | numerosLetras}}</label>
-                </div>
+              <ng-container *ngIf="reporte['meses']>0">
+                <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte['meses'] * 1.30 | monedas}}</strong></div>
               </ng-container>
               
-              
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{reporte['total'] * 1.30  | numerosLetras}}</strong></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-6">
-        <div class="card mb-3 border-success">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <div class="card border-success mb-3">
           <div class="card-header text-center">Flotilla</div>
-          <div class="card-body text-success">
+          <div class="card-body text-success ">
             <h5 class="card-title"></h5>
             <div class="row">
-              <ng-container *ngFor="let d of camposDesgloce">
-                <ng-container *ngIf="infoCotizacion['desgloce'][d.valor]">
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                    <label>{{d.show | capitalizarUno}}</label>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-                    <label>{{infoCotizacion['desgloce'][d.valor] | monedas}}</label>
-                  </div>
-                </ng-container>
+              <ng-container *ngFor="let campo of camposReporte">
+                <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo['valor']]  | monedas}}</strong></div>
               </ng-container>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                <label>{{infoCotizacion['desgloce']['total'] | numerosLetras}}</label>
-              </div>
-              <ng-container *ngIf="meses>0">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                  <label>{{meses}} {{'MeSEs' | capitalizarUno}} </label>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-                  <label>{{infoCotizacion['desgloce']['meses']  | monedas}}</label>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                  <label>{{infoCotizacion['desgloce']['meses']  | numerosLetras}}</label>
-                </div>
+              <ng-container *ngIf="reporte['meses']>0">
+                <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte['meses'] | monedas}}</strong></div>
               </ng-container>
-              
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{reporte['total']  | numerosLetras}}</strong></div>
             </div>
           </div>
         </div>

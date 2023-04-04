@@ -555,7 +555,7 @@ export class PdfService {
       
       if (data['infoCotizacion'].formaPago == 1) {
         const contenido =documentDefinition.content
-        if (data['desgloce'].descuento>0) {
+        if (data['reporte'].descuento>0) {
           documentDefinition.content = [...contenido,
             {
               layout: 'noBorders',
@@ -572,22 +572,22 @@ export class PdfService {
                   [
                     { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
                     { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform(data['desgloce'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
-                    { text: `${letras(data['desgloce'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
+                    { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
                     { text: `Descuento: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform(data['desgloce'].descuento)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform(data['reporte'].descuento)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
                     { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                     { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform(data['desgloce'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
                     { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                     { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform(data['desgloce'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                    { text: `${transform(data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
                   ]
                 ]
               }
@@ -610,17 +610,17 @@ export class PdfService {
                   [
                     { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
                     { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform(data['desgloce'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
-                    { text: `${letras(data['desgloce'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
+                    { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
                     { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform(data['desgloce'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
                     { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                     { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform(data['desgloce'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                    { text: `${transform(data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
                   ]
                 ]
               }
@@ -646,22 +646,22 @@ export class PdfService {
                 ],
                 [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                   { text: `Subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                  { text: `${transform( data['desgloce'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                  { text: `${transform( data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                 ],
                 [
                   { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
                   { text: `Iva: `, bold: true, alignment: 'right', style:'sucursal' },
-                  { text: `${transform( data['desgloce'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                  { text: `${transform( data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                 ],
                 [
-                  { text: `${letras(data['desgloce'].meses)}`, bold: true, alignment: 'center', style:'sucursal' },
+                  { text: `${letras(data['reporte'].meses)}`, bold: true, alignment: 'center', style:'sucursal' },
                   { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                  { text: `${transform( data['desgloce'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                  { text: `${transform( data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
                 ],
                 [
                   { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                   { text: `Total ${data['formaPago'].nombre}: `, bold: true, alignment: 'right', style:'sucursal' },
-                  { text: `${transform( data['desgloce'].meses)}`, bold: true, alignment: 'right', style:'sucursal'}
+                  { text: `${transform( data['reporte'].meses)}`, bold: true, alignment: 'right', style:'sucursal'}
                 ],
                 [
                   { text: `${''}`, bold: true, alignment: 'center', style:'sucursal' },
