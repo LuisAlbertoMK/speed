@@ -75,7 +75,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCardModule} from '@angular/material/card';
 import localeES from '@angular/common/locales/es'
 registerLocaleData(localeES)
-
+import * as $ from 'jquery';
 //traducir
 import {TranslateModule} from '@ngx-translate/core';
 import { LoginComponent } from './components/login/login.component';
