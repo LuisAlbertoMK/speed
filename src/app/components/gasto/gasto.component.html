@@ -72,6 +72,19 @@
                   </div>
                 </div>
               </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="dataRecepcion || muestraLista">
+                <div class="mb-1 row">
+                  <label [ngClass]="{'text-danger': validaCampo('facturaRemision'),'text-success': !validaCampo('facturaRemision')}" for="facturaRemision"
+                    class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Factura / Nota</label>
+                  <div class="col-sm-8 col-md-6 col-lg-6 col-12">
+                    <select id="facturaRemision" [ngModel]="''" class="form-select form-select-sm" formControlName="facturaRemision" >
+                      <option value="">Selecciona</option>
+                      <option value="refaccion" class="text-capitalize">Factura</option>
+                      <option value="mo" class="text-capitalize">Nota</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
                 <div class="mb-1 row">
                   <label [ngClass]="{'text-danger': validaCampo('monto'),'text-success': !validaCampo('monto')}" for="monto"
@@ -109,7 +122,7 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
                 <div class="mb-1 row">
                   <label [ngClass]="{'text-danger': validaCampo('referencia'),'text-success': !validaCampo('referencia')}"
-                    for="referencia" class="col-sm-4 col-md-4 col-lg-3 col-form-label">Referencia </label>
+                    for="referencia" class="col-sm-4 col-md-4 col-lg-3 col-form-label">Proveedor / Referencia </label>
                   <div class="col-sm-8 col-md-8 col-lg-9">
                     <textarea style="width: 100%" formControlName="referencia" id="referencia"></textarea>
                   </div>

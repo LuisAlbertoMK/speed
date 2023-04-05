@@ -11,9 +11,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+
 import Swal from 'sweetalert2';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -82,8 +82,8 @@ export class ReporteGastosComponent implements OnInit {
   fevchas = ['hoy','ayer','ult_7Dias','ult_30Dias','ult_mes','este_anio','ult_anio']
   fechasSeleccionadas = {inicio: '', final:''}
   range_busqueda = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl(),
+    start: new FormControl(Date),
+    end: new FormControl(Date),
   });
   reporte = {_pagos: 0, _gastos:0, _operacion:0,utilidad:0}
   campos_Reporte = [
@@ -107,16 +107,19 @@ export class ReporteGastosComponent implements OnInit {
     {valor:'_depositos',show:'Depositos'},
     {valor:'utilidad',show:'Utilidad'},
    ]
+   usuario:string
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.rol()
     this.listaSucursales()
+    this.lista_pagosGastos_OS()
+    this.revisarCambios()
+    
     // this.listaGastosDiarios()
     // this.lista_gastosOperacion()
-    // this.lista_pagosGastos_OS()
-    this.consulta_gastosDiarios()
-    this.revisarCambios()
+    
+    // this.consulta_gastosDiarios()
   }
 
   validaCampo(campo: string){
@@ -126,7 +129,8 @@ export class ReporteGastosComponent implements OnInit {
     if (localStorage.getItem('dataSecurity')) {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])    
+      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+      this.usuario = this._security.servicioDecrypt(variableX['usuario'])  
       if (this.SUCURSAL !=='Todas') {
         // let nu = []
         // this.columnasGastosDia[0] = null
@@ -141,7 +145,9 @@ export class ReporteGastosComponent implements OnInit {
       if (snapshot.exists()) {
         this.sucursales= this._publicos.crearArreglo2(snapshot.val())
       }
-    })
+    },{
+        onlyOnce: true
+      })
   }
   ordenarElementos(campo:string){
     // declaracion y asiganacion de resultados de la tabla
@@ -196,73 +202,102 @@ export class ReporteGastosComponent implements OnInit {
       })
     }
   }
-  revisarCambios(){
-    const starCountRef = ref(db, `gastosDiarios`)
-    onValue(starCountRef, (snapshot) => {
-      this.lista_gastosOperacion()
-    })
+  async revisarCambios(){
+    const starCountRef = ref(db, 'gastosDiarios')
+     await  onValue(starCountRef, (snapshot) => {
+      let registrosFInales = []
+      if (snapshot.exists()) {
+        const data = snapshot.val()
+        const claves = Object.keys(snapshot.val())
+        claves.forEach(c => {
+          // console.log(data[c]);
+          const clavesDias = Object.keys(data[c])
+          // console.log(clavesDias);
+          // clavesDias
+          clavesDias.forEach((ck1)=>{
+            const arreglo = this._publicos.crearArreglo2(data[c][ck1])
+            // console.log(arreglo);
+            arreglo.forEach(a=>{
+              const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora'])
+              a['fechaCompara'] = fechaCompara_
+              const infoGasto = {...a,claveDia:ck1}
+              // os_historial.push(infoGasto)
+              registrosFInales.push(infoGasto)
+            })
+          })
+        });
+          this.arr_GastosDiarios = registrosFInales
+          // this.realizaOtras_op()
+          this.obternerfechas()
+      }else{
+        this.arr_GastosDiarios = registrosFInales
+        // this.realizaOtras_op()
+        // this.obternerfechas()
+      }
+      }
+      // ,{
+      //   onlyOnce: true
+      // }
+      
+      )
     const starCountRef1 = ref(db, `HistorialGastosOperacion`)
-    onValue(starCountRef1, (snapshot) => {
-      this.lista_gastosOperacion()
-    })
+    await onValue(starCountRef1, (snapshot) => {
+        if (snapshot.exists()) {
+          this.arr_gastosOperacion = this._publicos.crearArreglo2(snapshot.val())
+          this.arr_gastosOperacion.map(a=>{
+            //obtener la fecha en formato string para compar correctamente fechas
+            const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
+            a['fechaCompara'] = fechaCompara_
+          })
+          // console.log(this.arr_gastosOperacion);
+          this.obternerfechas()
+        }else{
+          this.arr_gastosOperacion = []
+          // this.obternerfechas()
+        }
+      })
+      const starCountRef2 = ref(db, `recepciones`)
+      await onValue(starCountRef2, (snapshot) => {
+        if (snapshot.exists()) {
+          let arreglo = this._publicos.crearArreglo2(snapshot.val())
+          // console.log(arreglo);
+          let os_historial = []
+          arreglo.forEach(os=>{
+            if (os['HistorialGastos']) {
+              let gastos_historial = this._publicos.crearArreglo2(os['HistorialGastos'])
+              gastos_historial.forEach((a)=>{
+                const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
+                a['fechaCompara'] = fechaCompara_
+                const infoGasto = {...a,historial:'gasto',claveID:os['id'],no_os:os['no_os']}
+                os_historial.push(infoGasto)
+              })
+            }
+            if (os['HistorialPagos']) {
+              let pago_historial = this._publicos.crearArreglo2(os['HistorialPagos'])
+              pago_historial.forEach((a)=>{
+                const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
+                a['fechaCompara'] = fechaCompara_
+                const infoGasto = {...a,historial:'pago',claveID:os['id'],no_os:os['no_os']}
+                os_historial.push(infoGasto)
+              })
+            }
+          })
+          // console.log(os_historial);
+          this.arr_historialPG_ordenes = os_historial
+          this.obternerfechas()
+        }else{
+          this.arr_historialPG_ordenes = []
+          // this.obternerfechas()     
+        }
+      })
+    
 	
   }
   //listar los gastos de operacion
-  lista_gastosOperacion(){
-    const starCountRef = ref(db, `HistorialGastosOperacion`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.arr_gastosOperacion = this._publicos.crearArreglo2(snapshot.val())
-        this.arr_gastosOperacion.map(a=>{
-          //obtener la fecha en formato string para compar correctamente fechas
-          const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
-          a['fechaCompara'] = fechaCompara_
-        })
-        // console.log(this.arr_gastosOperacion);
-        this.lista_pagosGastos_OS()
-      }else{
-        this.arr_gastosOperacion = []
-        this.lista_pagosGastos_OS()
-      }
-    })
-  }
+
   //listar los pagos y gastos de orden se servicio
   lista_pagosGastos_OS(){
-    const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        let arreglo = this._publicos.crearArreglo2(snapshot.val())
-        // console.log(arreglo);
-        let os_historial = []
-        arreglo.forEach(os=>{
-          if (os['HistorialGastos']) {
-            let gastos_historial = this._publicos.crearArreglo2(os['HistorialGastos'])
-            gastos_historial.forEach((a)=>{
-              const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
-              a['fechaCompara'] = fechaCompara_
-              const infoGasto = {...a,historial:'gasto',claveID:os['id'],no_os:os['no_os']}
-              os_historial.push(infoGasto)
-            })
-          }
-          if (os['HistorialPagos']) {
-            let pago_historial = this._publicos.crearArreglo2(os['HistorialPagos'])
-            pago_historial.forEach((a)=>{
-              const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
-              a['fechaCompara'] = fechaCompara_
-              const infoGasto = {...a,historial:'pago',claveID:os['id'],no_os:os['no_os']}
-              os_historial.push(infoGasto)
-            })
-          }
-        })
-        // console.log(os_historial);
-        this.arr_historialPG_ordenes = os_historial
-        this.realizaOp()
-      }else{
-        this.arr_historialPG_ordenes = []
-        this.realizaOp()      
-      }
-
-    })
+    
   }
   selected(){
     this.valor = 'personalizado'
@@ -270,24 +305,21 @@ export class ReporteGastosComponent implements OnInit {
     const {start, end} = this.range_busqueda.value
     if (start && end) {
       if (start['_d'] && end['_d']) {
-        this.realizaOp()
+        this.fechas_get = {inicio: start['_d'], final: end['_d']}
+        this.obternerfechas()
       }
     }
   }
-  realizaOp(){
-    
-    
-    const info = this.arr_gastosOperacion.concat( this.arr_historialPG_ordenes )
-    // console.log(info);
-
-    // console.log(reporte);
+  obternerfechas(){
     let rangoFechas = {inicio: new Date(), final: new Date()}
-
-    // fechas de consulta o filtrado numero es (dias / meses / anios ) a restar o sumar
-    // tipo es si se sumara o restara la variable numero
-    // donde es que tipo sera (+,-) dia mes o  anios
+    
+    
+    // console.log(start);
+    
+    
     let numero: number =0, tipo ='resta',donde='dia'
     let fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
+    
     switch (this.valor) {
       case 'hoy':
         donde= 'dia'
@@ -317,102 +349,79 @@ export class ReporteGastosComponent implements OnInit {
         donde = 'anio', numero = 1;
         fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
         break;
-      case 'personalizado':
-        const {start, end} = this.range_busqueda.value
-          if (start && end) {
-            if (start['_d'] && end['_d']) rangoFechas = {inicio: start['_d'], final: end['_d']} 
-          }
-        break;
       default:
         donde= 'dia', numero=0
         fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
         break;
     }
-    if (this.valor !== 'personalizado') {
-      rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
+    rangoFechas = {inicio: fechas.fecha1, final: fechas.fecha2}
+    if (this.valor ==='personalizado') {
+      const newfeha = new Date(this.fechas_get.inicio)
+            const newfeha2 = new Date(this.fechas_get.final)
+            newfeha.setHours(0,0,0,0)
+            newfeha2.setHours(23,59,59,0)
+            rangoFechas.inicio = newfeha
+            rangoFechas.final = newfeha2
     }
+    //asignacion de las fechas para la busqueda
+    this.fechas_get = rangoFechas    
 
-    this.fechas_get = rangoFechas
-  //filtrar por las fechas
-  let resultados = []
-  
-  info.forEach(a=>{
-    if (a['fechaCompara'] >= rangoFechas.inicio && a['fechaCompara' ] <= rangoFechas.final) resultados.push(a)
-  })
-  //filtrar por sucursal
-
-  // console.log(this.SearchSucursal);
-  let sucu
-  if (this.SearchSucursal['id']) sucu= this.SearchSucursal.id
-  let filtro_sucursal = []
-  if (sucu) {
-    filtro_sucursal = resultados.filter(r=>r['sucursal'] == sucu)
-  }else{
-    filtro_sucursal = resultados
-  }
-  const reporte = {_pagos: 0, _gastos:0, _operacion:0,utilidad:0,_depositos:0}
-  //realizar las operaciones de cada uno de los pagos, gastos_orden y gastos_operacion
-  filtro_sucursal.map(i=>{
-    if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
-    if (i['historial'] === 'gasto') reporte._gastos += i['monto']
-    if (i['historial'] === 'pago') reporte._pagos += i['monto']
-    if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
-    const {sucursal} = this.sucursales.find(s=>s['id'] === i['sucursal'])
-    i['sucursalShow'] = sucursal
-  })
-  //asiganar las fechas al control de calendario
-  this.range_busqueda.controls['start'].setValue(new Date(rangoFechas.inicio))
-  this.range_busqueda.controls['end'].setValue(new Date(rangoFechas.final))
-  //asignacion de valores para reporte
-  // console.log((reporte._pagos + reporte._depositos));
-  
-  reporte.utilidad = (reporte._pagos + reporte._depositos) -  (reporte._gastos + reporte._operacion)
-  
-  // console.log(reporte);
-  
-  this.reporte = reporte
-
-  //mandar informacion a la tabla!
-  this.dataSourceResporteGastos.data = filtro_sucursal
-  this.newPagination('data')
+    this.range_busqueda.controls['start'].setValue(new Date(rangoFechas.inicio))
+    this.range_busqueda.controls['end'].setValue(new Date(rangoFechas.final))
+    this.realizaOp()
     this.realizaOtras_op()
   }
-  consulta_gastosDiarios(){
-    const starCountRef = ref(db, `gastosDiarios`)
-    onValue(starCountRef, (snapshot) => {
-      let registrosFInales = []
-      if (snapshot.exists()) {
-        // console.log(snapshot.val());
-        const data = snapshot.val()
-        const claves = Object.keys(snapshot.val())
-        claves.forEach(c => {
-          // console.log(data[c]);
-          const clavesDias = Object.keys(data[c])
-          // console.log(clavesDias);
-          // clavesDias
-          clavesDias.forEach((ck1)=>{
-            const arreglo = this._publicos.crearArreglo2(data[c][ck1])
-            // console.log(arreglo);
-            arreglo.forEach(a=>{
-              const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora'])
-              a['fechaCompara'] = fechaCompara_
-              const infoGasto = {...a,claveDia:ck1}
-              // os_historial.push(infoGasto)
-              registrosFInales.push(infoGasto)
-            })
-          })
-        });
-        // console.log(registrosFInales);
-        this.arr_GastosDiarios = registrosFInales
-        // this.realizaOtras_op()
-      }else{
-        // this.realizaOtras_op()
-      }
+  realizaOp(){
+    const info = this.arr_gastosOperacion.concat( this.arr_historialPG_ordenes )
+   
+    //filtrar por las fechas
+    let resultados = []
+    
+    info.forEach(a=>{
+      if (a['fechaCompara'] >= this.fechas_get.inicio && a['fechaCompara' ] <= this.fechas_get.final) resultados.push(a)
     })
+    //filtrar por sucursal
+  
+    // console.log(this.SearchSucursal);
+    let sucu
+    if (this.SearchSucursal['id']) sucu= this.SearchSucursal.id
+    let filtro_sucursal = []
+    if (sucu) {
+      filtro_sucursal = resultados.filter(r=>r['sucursal'] == sucu)
+    }else{
+      filtro_sucursal = resultados
+    }
+    const reporte = {_pagos: 0, _gastos:0, _operacion:0,utilidad:0,_depositos:0}
+    //realizar las operaciones de cada uno de los pagos, gastos_orden y gastos_operacion
+    filtro_sucursal.map(i=>{
+      if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
+      if (i['historial'] === 'gasto') reporte._gastos += i['monto']
+      if (i['historial'] === 'pago') reporte._pagos += i['monto']
+      if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
+      const {sucursal} = this.sucursales.find(s=>s['id'] === i['sucursal'])
+      i['sucursalShow'] = sucursal
+    })
+    //asiganar las fechas al control de calendario
+   
+    //asignacion de valores para reporte
+    // console.log((reporte._pagos + reporte._depositos));
+    
+    reporte.utilidad = (reporte._pagos + reporte._depositos) -  (reporte._gastos + reporte._operacion)
+    
+    // console.log(reporte);
+    
+    this.reporte = reporte
+  
+    //mandar informacion a la tabla!
+    this.dataSourceResporteGastos.data = filtro_sucursal
+    this.newPagination('data')
   }
+  
   realizaOtras_op(){
     const gastos  = this.arr_historialPG_ordenes.filter(r=>r['historial'] === 'gasto')
     const info = this.arr_GastosDiarios.concat(gastos).concat(this.arr_gastosOperacion)
+    
+    // console.log(info);
     
     
     let rangoFechas = {inicio: this.fechas_get.inicio, final: this.fechas_get.final}
@@ -422,6 +431,8 @@ export class ReporteGastosComponent implements OnInit {
     })
     let sucu
     if (this.SearchSucursal['id']) sucu= this.SearchSucursal.id
+    // console.log(sucu);
+    
     let filtro_sucursal = []
     if (sucu) {
       filtro_sucursal = resultados.filter(r=>r['sucursal'] == sucu)
@@ -429,8 +440,11 @@ export class ReporteGastosComponent implements OnInit {
       filtro_sucursal = resultados
     }
 
+    // console.log(filtro_sucursal);
+    
+
     const reporte = { _gastos:0, utilidad:0,_depositos:0,_operacion:0}
-    console.log(filtro_sucursal);
+    // console.log(filtro_sucursal);
 
     filtro_sucursal.map((i)=>{
       if (i['status']) {
@@ -438,6 +452,7 @@ export class ReporteGastosComponent implements OnInit {
         // if (i['historial'] === 'pago') reporte._pagos += i['monto']
         if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
         if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
+        if (i['tipo'] === 'ayer') reporte._depositos += i['monto']
       }
       const {sucursal} = this.sucursales.find(s=>s['id'] === i['sucursal'])
       i['sucursalShow'] = sucursal
@@ -448,6 +463,46 @@ export class ReporteGastosComponent implements OnInit {
     // console.log(reporte);
     this.reporte_diario = reporte
     // console.log(filtro_sucursal);
+    // if (reporte.utilidad>0) {
+      if(this.valor ==='hoy'){
+
+      
+      if (this.SearchSucursal['id']) {
+        const { fecha2 } = this._publicos.getMesFecha(new Date(),'suma','dia',1)
+        // console.log(fecha2);
+        const {stringNumeros,string_fecha} = this._publicos.convierte_fechaString_personalizada(fecha2)
+        // console.log(stringNumeros,string_fecha);
+        const updates = {};
+        // const id = this._publicos.generaClave()
+        const tempData = {
+          
+              concepto:"Sobrante dia anterior",
+              fecha: string_fecha,
+              // fechaCompara:fecha2,
+              hora:'0:0:0',
+              metodo:1,
+              monto:Number(reporte.utilidad),
+              // rol:this.ROL,
+              status:true,
+              sucursal:this.SearchSucursal['id'],
+              tipo:"ayer",
+              // usuario: this.usuario
+
+        }
+        updates[`gastosDiarios/${this.SearchSucursal['id']}/${stringNumeros}/ayer`] = tempData;
+        
+        
+        update(ref(db), updates).then(()=>{
+          // this._publicos.swalToast('registro exitoso!')
+          // console.log(tempData);
+        })
+        // console.log(updates);
+        
+      }
+    }
+      
+      
+    // }
     
     
     this.dataSourceGastosDia.data = filtro_sucursal

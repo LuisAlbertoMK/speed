@@ -417,11 +417,12 @@ export class ServiciosPublicosService {
             }
             convierte_fechaString_personalizada(fecha : Date) {
                 const f1 = new Date(fecha);
+                const hora = new Date(fecha);
                 let string_fecha = '', stringHora='',stringNumeros='', fechaString= new Date(fecha)
                 string_fecha = `${f1.getDate()}/${f1.getMonth() + 1}/${f1.getFullYear()}`
-                stringHora =`${fecha.getHours()}:${fecha.getMinutes()}:${fecha.getSeconds()}`
+                stringHora =`${hora.getHours()}:${hora.getMinutes()}:${hora.getSeconds()}`
                 stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`
-                return {string_fecha,stringHora,fechaString,stringNumeros}
+                return {string_fecha,stringHora,fechaString,stringNumeros,hora}
             }
             obtenerFechaCompleta(fecha : any) {
                 // let fecha = '21/12/2022' console.log(fecha);
@@ -1585,6 +1586,25 @@ export class ServiciosPublicosService {
                                                           if (answer.faltantes.length) answer.ok = false 
                                                           answer.faltante_s = answer.faltantes.join(', ')
                                                           return answer
+                                                        }
+
+                                                        swalToast(mensaje:string){
+                                                            const Toast = Swal.mixin({
+                                                                toast: true,
+                                                                position: 'top-end',
+                                                                showConfirmButton: false,
+                                                                timer: 3000,
+                                                                // timerProgressBar: true,
+                                                                // didOpen: (toast) => {
+                                                                //   toast.addEventListener('mouseenter', Swal.stopTimer)
+                                                                //   toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                                                // }
+                                                              })
+                                                              
+                                                              Toast.fire({
+                                                                icon: 'success',
+                                                                title: mensaje
+                                                              })
                                                         }
 
                                                     }

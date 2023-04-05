@@ -126,6 +126,7 @@ export class RealizaDepositoComponent implements OnInit {
           const claveDia = getTime2.fechaNumeros
           updates[`gastosDiarios/${infoFormulario['sucursal']}/${claveDia}/${clave}`] = infoSave
           update(ref(db), updates).then(()=>{
+            this.resetForm()
             this._publicos.mensajeSwal('Deposito realizado correctamente')
             this.showHideForm.emit( {show: false})
           })
@@ -140,6 +141,18 @@ export class RealizaDepositoComponent implements OnInit {
 
   //emitir cancelar
   cancela(){
+    this.resetForm()
     this.showHideForm.emit( {show: false})
+  }
+  resetForm(){
+    let sucursal = '';
+    (this.sucursal ==='Todas') ? sucursal = '': sucursal= this.sucursal
+    this.formDeposito.reset({
+      monto:'',
+      concepto:'',
+      sucursal: sucursal,
+      usuario: this.usuario,
+      rol: this.rol
+    })
   }
 }

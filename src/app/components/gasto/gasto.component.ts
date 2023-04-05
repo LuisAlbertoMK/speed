@@ -115,6 +115,7 @@ export class GastoComponent implements OnInit {
       sucursal: [sucursal,[Validators.required]],
       usuario: [this.usuario, [Validators.required]],
       gasto_tipo:['',[]],
+      facturaRemision:['',[]],
       rol: [this.rol, [Validators.required]],
     })
   }

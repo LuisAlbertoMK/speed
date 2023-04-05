@@ -15,8 +15,8 @@
             {{SearchSucursal['sucu']}}
           </button>
             <mat-menu #menuSucursales="matMenu">
-              <button mat-menu-item (click)="SearchSucursal = {id: null,sucu: 'Todas'}; realizaOp()">Todas</button>
-              <button mat-menu-item (click)="SearchSucursal = {id: item['id'],sucu: item['sucursal']}; realizaOp()" *ngFor="let item of sucursales">{{item['sucursal']}}</button>
+              <button mat-menu-item (click)="SearchSucursal = {id: null,sucu: 'Todas'}; obternerfechas()">Todas</button>
+              <button mat-menu-item (click)="SearchSucursal = {id: item['id'],sucu: item['sucursal']}; obternerfechas()" *ngFor="let item of sucursales">{{item['sucursal']}}</button>
             </mat-menu>
           </ng-container>
           
@@ -30,7 +30,7 @@
           
 
           <mat-menu #menuFechas="matMenu">
-            <button mat-menu-item *ngFor="let item of fevchas" (click)="valor = item; realizaOp()">{{item}}</button>
+            <button mat-menu-item *ngFor="let item of fevchas" (click)="valor = item; obternerfechas()">{{item}}</button>
             <button mat-menu-item  (click)="valor = 'personalizado'; picker.open();">personalizado</button>
           </mat-menu>
             <div class="row justify-content-end mb-3">
