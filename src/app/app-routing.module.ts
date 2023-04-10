@@ -34,6 +34,7 @@ import { AuthPruebaComponent } from './components/auth-prueba/auth-prueba.compon
 
 import { Loginv1Component } from './components/loginv1/loginv1.component';
 import { ReporteGastosComponent } from './pages/reporte-gastos/reporte-gastos.component';
+import { EntregaOrdenComponent } from './pages/entrega-orden/entrega-orden.component';
 
 const routes: Routes = [];
 
@@ -76,6 +77,7 @@ const APP_ROUTES: Routes = [
   { path: 'loginv1', component: Loginv1Component},
   { path: 'reporteGastos', component: ReporteGastosComponent},
   { path: 'pruebaAuth', component: AuthPruebaComponent},
+  { path: 'entregaRecepcion', component: EntregaOrdenComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, {useHash:false});
