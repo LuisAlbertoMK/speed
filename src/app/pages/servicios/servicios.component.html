@@ -508,12 +508,12 @@
                                                   
                                                 </td>
                                                 <td class="fw-bolder text-center">
-                                                  <input type="number" min="1" max="90000"  [value]="item['cantidad']"
+                                                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1" max="90000"  [value]="item['cantidad']"
                                                   (change)="actualizaEle($event,element,i,1)">
                                                   <!-- (change)="actualizaElemento($event,element['index'],i,in,2)" (keyup)="actualizaElemento($event,element['index'],i,in,2)" -->
                                                 </td>
                                                 <td class="fw-bolder text-center">
-                                                  <input type="number" min="0" max="90000"  [value]="item['costo']"
+                                                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" max="90000"  [value]="item['costo']"
                                                   (change)="actualizaEle($event,element,i,2)">
                                                   <!-- (change)="actualizaElemento($event,element['index'],i,in,2)" (keyup)="actualizaElemento($event,element['index'],i,in,2)" -->
                                                 </td>
@@ -568,14 +568,9 @@
                                                 </td>
                                                 <td class="text-center">
                                                   <ng-container *ngIf="item.tipo === 'paquete'">
-      
-                                                    <!-- &nbsp; <i class="fa fa-search-plus fa-xs text-primary"
-                                                      (click)="elementospaqueteShow(item)" data-bs-toggle="modal"
-                                                      data-bs-target="#elemtosPaquete"></i> -->
                                                       <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" [href]="'#'+item['id']" role="button" aria-expanded="false" aria-controls="collapseExample" [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
-                                                        <i class="fa fa-layer-plus"></i>
+                                                        <i class="fa fa-arrow-down"></i>
                                                       </a>
-                                                      
                                                   </ng-container>
                                                 </td>
                                               </tr>
@@ -605,10 +600,10 @@
                                                                 </small>
                                                               </td>
                                                               <td class="text-center">
-                                                                <input type="number" min="1" max="20"  [value]="ite['cantidad']" (change)="actualizaElemento($event,element['index'],i,in,1)" (keyup)="actualizaElemento($event,element['index'],i,in,1)">
+                                                                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1" max="20"  [value]="ite['cantidad']" (change)="actualizaElemento($event,element['index'],i,in,1)" (keyup)="actualizaElemento($event,element['index'],i,in,1)">
                                                               </td>
                                                               <td class="text-end" [ngStyle]="{'min-width':(miniColumnas)*.8+'px'}">
-                                                                <input type="number" min="0" max="90000"  [value]="ite['costo']" (change)="actualizaElemento($event,element['index'],i,in,2)" (keyup)="actualizaElemento($event,element['index'],i,in,2)">
+                                                                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" max="90000"  [value]="ite['costo']" (change)="actualizaElemento($event,element['index'],i,in,2)" (keyup)="actualizaElemento($event,element['index'],i,in,2)">
                                                               </td>
                                                               <td class="text-end">{{ite['precio'] | monedas}}</td>
                                                               <td class="text-end">
@@ -693,6 +688,7 @@
                           </div>
                         </mat-tab>
                         <mat-tab label="Detalles">
+                          
                           <ng-container *ngIf="element['detallesPersonalizados']; else elseTemplate">
                             <div class="row m-1">
                               <div class="col">
@@ -704,21 +700,30 @@
                             </div>
                           </ng-container>
                           <ng-template #elseTemplate>
-                            <div class="row m-2">
+                            <!-- <div class="row m-2">
                               <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                 <p class="fs-4 fw-bolder">No existe ninguna imagen de detalles</p>
                               </div>
-                            </div>
+                            </div> -->
                           </ng-template>
                           <ng-container *ngIf="element['detalles']; else elseTemplate1">
                             <div class="row m-1">
-      
-                              <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start"
-                                *ngFor="let det of element['detalles']; let i = index">
-                                <p [ngClass]="{'text-success': det['checado'],'text-secondary': !det['checado']}">
-                                  <strong>{{i + 1}}: {{splitNombreDetalles(det.id)}} </strong>
-                                </p>
-                              </div>
+                                <ng-container *ngFor="let det of element['detalles']; let i = index">
+                                  <ng-container *ngIf="det['checado']">
+                                    <!-- <p [ngClass]="{'text-success': det['checado'],'text-secondary': !det['checado']}">
+                                      <strong>{{i + 1}}: {{splitNombreDetalles(det.id)}} </strong>
+                                    </p> -->
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start">
+                                      <img [src]="'../../../assets/imagenes_detalles/'+det['id']+'.jpg'" [alt]="det['id']" width="150px" height="150px">
+                                    </div>
+                                  </ng-container>
+                                </ng-container>
+                                
+                              <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start"
+                                >
+                                
+                                
+                              </div> -->
       
                             </div>
                           </ng-container>

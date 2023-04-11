@@ -1828,33 +1828,46 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
   generaPdfRemision(){
     const valoresForm = this.FormComplementos.value
     if (this.FormComplementos.valid) {
-      ///obtenemos la forma de pago de la recepcion
-      const {metodo, show} = this.metodospago.find(f=>f['metodo']  === Number(valoresForm.formaPago))
-      //agregamos la  informacion para pdf
-      let observaciones = '  '
-      if (valoresForm['observaciones']) observaciones = valoresForm['observaciones']
-      let agrega = {
-        kilometraje: valoresForm.kilometraje,
-        facturaRemision: valoresForm.facturaRemision,
-        formaPago: show,
-        observaciones: observaciones,
-      }
-      const ifoPdf = {...agrega, ...this.dataRecepcion}
-      console.log(ifoPdf);
+      //mandamos adevertencia (mensaje)
+      this._publicos.swalPrevisualizar('se recomienda previsualizar antes de continuar')
+      .then(({accion})=>{
+        console.log(accion);
+        ///obtenemos la forma de pago de la recepcion
+        const {metodo, show} = this.metodospago.find(f=>f['metodo']  === Number(valoresForm.formaPago))
+        let observaciones = '  '
+        //agregamos la  informacion para pdf
+        if (valoresForm['observaciones']) observaciones = valoresForm['observaciones']
+        let agrega = {
+          kilometraje: valoresForm.kilometraje,
+          facturaRemision: valoresForm.facturaRemision,
+          formaPago: show,
+          observaciones: observaciones,
+        }
+        const ifoPdf = {...agrega, ...this.dataRecepcion}
+        console.log(ifoPdf);
+        this._pdf.crearPdfRemision(ifoPdf)
+        // en caso de ser correcto realizar 
+        .then((pdf_ans)=>{
+          const pdfDocGenerator = pdfMake.createPdf(pdf_ans);
+          if (accion === 'previsualizar') {
+            pdfDocGenerator.open();
+          }else{
+            pdfDocGenerator.download(`${ifoPdf['no_os']}.pdf`);
+          }
+        })
+        // en caso de de exista algun error al generar pddf
+        .catch(err=>{
+          this._publicos.mensajeSwalError('No se pudo geerar el pdf, intente de nuevo o verifique informacion')
+        })
+        
+      })
+      
+      
+      
 
       
       //hacemos la construccion del pdf
-      this._pdf.crearPdfRemision(ifoPdf)
-      // en caso de ser correcto realizar 
-      .then((pdf_ans)=>{
-        const pdfDocGenerator = pdfMake.createPdf(pdf_ans);
-        pdfMake.createPdf(pdf_ans).open();
-        pdfMake.createPdf(pdf_ans).download();
-      })
-      // en caso de de exista algun error al generar pddf
-      .catch(err=>{
-        this._publicos.mensajeSwalError('No se pudo geerar el pdf, intente de nuevo o verifique informacion')
-      })
+      
     }else{
       this._publicos.swalToastError('llenar datos necesarios')
     }

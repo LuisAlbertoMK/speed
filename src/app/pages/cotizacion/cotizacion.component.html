@@ -85,8 +85,108 @@
                   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" [color]="'warn'" style="width: 100%;">
                     <mat-tab label="Elementos Cotización">
                       <div class="row m-2">
+                        <div class="table-responsive">
+                          <table class="table table-sm">
+                            <thead>
+                              <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-start">Nombre</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end">Costo</th>
+                                <th class="text-end">Precio</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-center"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container *ngFor="let ele of element['elementos']; index as i">
+
+                              
+                              
+                              <tr >
+                                <th class="text-center">{{i + 1}}</th>
+                                <th class="text-start">{{ele['nombre'] | capitalizarUno }}</th>
+                                <th class="text-center">{{ele['cantidad']}}</th>
+                                <th class="text-end">{{ele['costo'] | monedas}}</th>
+                                <th class="text-end">{{ele['precio'] | monedas}}</th>
+                                <th class="text-end">
+                                  <ng-container *ngIf="ele['costo'] > 0; else elseCosto">
+                                    {{ele['costo'] * ele['cantidad'] | monedas}}
+                                  </ng-container>
+                                  <ng-template #elseCosto>
+                                    {{ele['precio'] * ele['cantidad'] | monedas}}
+                                  </ng-template>
+                                  
+                                </th>
+                                <th class="text-center">
+                                  <ng-container *ngIf="ele.tipo === 'paquete'">
+                                    <a class="" data-bs-toggle="collapse" [href]="'#'+ele['id']" role="button" aria-expanded="false" aria-controls="collapseExample" [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+                                      <i class="btn btn-primary btn-xs btn-sm fa fa-arrow-down"></i>
+                                    </a>
+                                    
+                                </ng-container>
+                                </th>
+                              </tr>
+                              <ng-container *ngIf="ele.tipo === 'paquete'">
+                                <tr>
+                                  <td colspan="7" class="table-active" class="collapse" [id]="ele['id']">
+                                    <!-- <div > -->
+                                      <div class="card card-body table-responsive">
+                                        <table class="table">
+                                          <thead>
+                                            <tr>
+                                              <th class="text-center">#</th>
+                                              <th class="text-start">Nombre</th>
+                                              <th class="text-center">Cantidad</th>
+                                              <th class="text-end">Costo sobrescrito</th>
+                                              <th class="text-end" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Precio</th>
+                                              <th class="text-end" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">subtotal</th>
+                                              <!-- <th></th> -->
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let ite of ele['elementos']; let in = index">
+                                              <th class="text-center" scope="row">{{in +1 }}</th>
+                                              <td class="text-start">{{ite['nombre'] | capitalizarUno}} 
+                                                <small [ngClass]="{'tipo-mo': ite['tipo'] === 'MO', 'tipo-refaccion': ite['tipo'] === 'refaccion'}">
+                                                 - {{ite['tipo']}}
+                                                </small>
+                                              </td>
+                                              <td class="text-center">
+                                                {{ite['cantidad']}}
+                                                <!-- <input type="number" min="1" max="20"  [value]="ite['cantidad']" (change)="actualizaElemento($event,element['index'],i,in,1)" (keyup)="actualizaElemento($event,element['index'],i,in,1)"> -->
+                                              </td>
+                                              <td class="text-end" [ngStyle]="{'min-width':(miniColumnas)*.8+'px'}">
+                                                {{ite['costo'] | monedas}}
+                                                <!-- <input type="number" min="0" max="90000"  [value]="ite['costo']" (change)="actualizaElemento($event,element['index'],i,in,2)" (keyup)="actualizaElemento($event,element['index'],i,in,2)"> -->
+                                              </td>
+                                              <td class="text-end">{{ite['precio'] | monedas}}</td>
+                                              <td class="text-end">
+                                                <!-- {{ite['subtotal'] | monedas}} -->
+                                                <ng-container *ngIf="ite['costo'] > 0; else elseCosto">
+                                                  {{ite['costo'] * ite['cantidad'] | monedas}}
+                                                </ng-container>
+                                                <ng-template #elseCosto>
+                                                  {{ite['precio'] * ite['cantidad'] | monedas}}
+                                                </ng-template>
+                                              </td>
+                                              <!-- <td (click)="actualizaElemento(element['index'],i,in)"><i class="fa fa-edit pointer text-success" ></i></td> -->
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    <!-- </div> -->
+                                  </td>
+                                  
+                                </tr>
+                              </ng-container>
+                            </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
                         <ng-container *ngFor="let sub of element.elementos; let ind = index">
-                          <ng-container *ngFor="let campo of camposElementosPrincipal">
+                          <!-- {{sub}} -->
+                          <!-- <ng-container *ngFor="let campo of camposElementosPrincipal">
                             <div class="col-lg-4 col-md-4 col-sm-6 col-12">
                               <strong>{{sub[campo]}} &nbsp;</strong>
                               <i class="fa fa-search-plus text-primary" aria-hidden="true"
@@ -96,7 +196,7 @@
                               <i class="fa fa-search-plus text-success" *ngIf="sub.tipo !== 'paquete'"
                                 (click)="nuevaElemento(sub,element.margen)"></i>
                             </div>
-                          </ng-container>
+                          </ng-container> -->
                         </ng-container>
                       </div>
                     </mat-tab>

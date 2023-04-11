@@ -59,6 +59,17 @@ export class ServiciosPublicosService {
     ]
     constructor(private http : HttpClient) {}
     url: string
+    soloNumeros(evt){
+        var code = (evt.which) ? evt.which : evt.keyCode;
+    
+        if(code==8) { // backspace.
+          return true;
+        } else if(code>=48 && code<=57) { // is a number.
+          return true;
+        } else{ // other keys.
+          return false;
+        }
+    }
     convierteFecha(fecha : string) {
         // fecha = '11/5/2022'
         let fechCorrecta = ''
@@ -116,11 +127,7 @@ export class ServiciosPublicosService {
                     if ((a[campo] !== null && a[campo] !== undefined && a[campo] !== '') && (b[campo] !== null && b[campo] !== undefined && b[campo] !== '')) {
                         const fechaSplit = a[campo].split('/')
                         const fechaSplit2 = b[campo].split('/')
-                        const fecha = new Date(
-                            Number(fechaSplit[2]),
-                            Number(fechaSplit[0]),
-                            Number(fechaSplit[1])
-                        );
+                        const fecha = new Date(Number(fechaSplit[2]),Number(fechaSplit[0]),Number(fechaSplit[1]));
                         const fecha2 = new Date(
                             Number(fechaSplit2[2]),
                             Number(fechaSplit2[0]),
@@ -154,22 +161,8 @@ export class ServiciosPublicosService {
                     if ((a[campo] !== null && a[campo] !== undefined && a[campo] !== '') && (b[campo] !== null && b[campo] !== undefined && b[campo] !== '')) {
                         const fechaSplit = a[campo].split(':')
                         const fechaSplit2 = b[campo].split(':')
-                        const fecha = new Date(
-                            0,
-                            0,
-                            0,
-                            Number(fechaSplit[0]),
-                            Number(fechaSplit[1]),
-                            Number(fechaSplit[2])
-                        );
-                        const fecha2 = new Date(
-                            0,
-                            0,
-                            0,
-                            Number(fechaSplit2[0]),
-                            Number(fechaSplit2[1]),
-                            Number(fechaSplit2[2])
-                        );
+                        const fecha = new Date(0,0,0,Number(fechaSplit[0]),Number(fechaSplit[1]),Number(fechaSplit[2]));
+                        const fecha2 = new Date(0,0,0,Number(fechaSplit2[0]),Number(fechaSplit2[1]),Number(fechaSplit2[2]));
                         if (fecha > fecha2) {
                             return 1;
                         }
@@ -201,8 +194,8 @@ export class ServiciosPublicosService {
                 nuevoArreglo = nuevoArreglo.reverse()
             }
             return nuevoArreglo
-        }
-        restaFechasTaller = function (f1) {
+    }
+    restaFechasTaller = function (f1) {
             const dateHoy: Date = new Date()
             const fecha1 = `${dateHoy.getDate()}/${dateHoy.getMonth() + 1}/${dateHoy.getFullYear()}`
             var aFecha1 = f1.split('/');
@@ -217,8 +210,8 @@ export class ServiciosPublicosService {
             var dias = Math.floor(dif / (1000 * 60 * 60 * 24));
             // console.log(dias);
             return dias;
-        }
-        getFechaHora(fechaa? : Date) {
+    }
+    getFechaHora(fechaa? : Date) {
             let fechas = new Date();
             let fechaNumeros = '',
                 fechaNumerosAyer,
@@ -304,8 +297,8 @@ export class ServiciosPublicosService {
                     fechaManianaNumeros,
                     fechaManiana
                 }
-            }
-            fechaDiasPlus(fecha : Date, diasSum? : number, tipo? : string) {
+    }
+    fechaDiasPlus(fecha : Date, diasSum? : number, tipo? : string) {
                 let diasPlus = new Date(fecha)
                 if (tipo) {
                     if (tipo = 'resta') {
@@ -320,8 +313,8 @@ export class ServiciosPublicosService {
                     diasPlus.setHours(0, 0, 0, 0)
                 }
                 return diasPlus
-            }
-            getMesFecha(
+    }
+    getMesFecha(
                 fecha : Date,
                 operacion : string,
                 tipo : string,
@@ -414,8 +407,8 @@ export class ServiciosPublicosService {
                 // new Date(MesActual.getFullYear(), MesActual.getMonth(), diasMes)
 
                 return {diasMes, fecha1, fecha2}
-            }
-            convierte_fechaString_personalizada(fecha : Date) {
+    }
+    convierte_fechaString_personalizada(fecha : Date) {
                 const f1 = new Date(fecha);
                 const hora = new Date(fecha);
                 let string_fecha = '', stringHora='',stringNumeros='', fechaString= new Date(fecha)
@@ -423,8 +416,8 @@ export class ServiciosPublicosService {
                 stringHora =`${hora.getHours()}:${hora.getMinutes()}:${hora.getSeconds()}`
                 stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`
                 return {string_fecha,stringHora,fechaString,stringNumeros,hora}
-            }
-            obtenerFechaCompleta(fecha : any) {
+    }
+    obtenerFechaCompleta(fecha : any) {
                 // let fecha = '21/12/2022' console.log(fecha);
                 const fec = fecha.split('/')
                 const nueva = `${fec[1]}/${fec[0]}/${fec[2]}`
@@ -458,8 +451,8 @@ export class ServiciosPublicosService {
                 const numeroDia = new Date(date).getDay();
                 const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
                 return fechaPDF
-            }
-            construyeFechaString(fecha : string, hora? : string) {
+    }
+    construyeFechaString(fecha : string, hora? : string) {
                 const splitFecha = fecha.split('/')
                 let horaNew = '00:00:00'
                 if (hora) 
@@ -476,8 +469,8 @@ export class ServiciosPublicosService {
                 )
 
                 return fechaNew
-            }
-            fechaNueva(fecha) {
+    }
+    fechaNueva(fecha) {
                 const date: Date = new Date(fecha);
                 const months = [
                     "Enero",
@@ -504,8 +497,8 @@ export class ServiciosPublicosService {
                 ];
                 const numeroDia = new Date(date).getDay();
                 return `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
-            }
-            getRecepciones() {
+    }
+    getRecepciones() {
 
                 let data: any = []
                 let arreglo: any = [];
@@ -665,9 +658,8 @@ export class ServiciosPublicosService {
                     })
 
                     return arreglo
-                }
-
-                convierteALetrasCantidad(num) {
+    }
+    convierteALetrasCantidad(num) {
                     let unidad,
                         decena,
                         centenas,
@@ -856,8 +848,8 @@ export class ServiciosPublicosService {
                         }
                     //NumeroALetras()
                     return NumeroALetras(num)
-                }
-                redondeado(value : number, simbolo? : string) {
+    }
+    redondeado(value : number, simbolo? : string) {
                     let symbol = '';
                     (!simbolo)
                         ? symbol = '$ '
@@ -944,8 +936,8 @@ export class ServiciosPublicosService {
                                     return `${symbol} 0.00`
                                 }
 
-                            }
-                            redondeado2(value : number, symbol : boolean) {
+    }
+    redondeado2(value : number, symbol : boolean) {
                                 let simbolo = ''
                                 if (symbol) {
                                     simbolo = '$ '
@@ -984,54 +976,47 @@ export class ServiciosPublicosService {
                                     return `${simbolo}0.00`
                                 }
 
-                            }
+    }
+    costodePaquete(array : any, margen : number) {
+        const info = { mo: 0,refacciones1: 0,refacciones2: 0,UB: 0,flotilla: 0,normal: 0,precio: 0}
+        let mo = 0, refacciones1 = 0, refacciones2 = 0, suma = 0
+        array.forEach(a => {
+            if (a['tipo'] === 'MO') {
+                if (!a['costo']) a['costo'] = 0;
+                
+                (a['costo'] > 0)
+                    ? mo += (a['cantidad'] * a['costo'])
+                    : mo += (a['cantidad'] * a['precio'])
+            } else {
+                if (a['costo'] > 0) {
+                    refacciones1 += a['cantidad'] * a['costo']
+                    refacciones2 += a['cantidad'] * a['costo']
+                } else {
+                    refacciones1 += a['cantidad'] * a['precio']
+                    refacciones2 += a['cantidad'] * (a['precio'] * (1 + (margen / 100)))
+                }
+            }
+        })
+        info.mo = mo;
+        info.refacciones1 = refacciones1;
+        info.refacciones2 = refacciones2;
+        suma = mo + refacciones2
+        // info.UB = ((suma - refacciones1) * 100) / suma
+        info.UB =100- ((refacciones1 * 100) / suma)
 
-                            costodePaquete(array : any, margen : number) {
-                                const info = {
-                                        mo: 0,
-                                        refacciones1: 0,
-                                        refacciones2: 0,
-                                        UB: 0,
-                                        flotilla: 0,
-                                        normal: 0,
-                                        precio: 0
-                                    }
-                                    let mo = 0,
-                                        refacciones1 = 0,
-                                        refacciones2 = 0,
-                                        suma = 0
+        //la primera formula que se me entrego
+        // desgloce.UB = ((desgloce.subtotal - desgloce.refacciones_1) * 100) / desgloce.subtotal
+        // La segunda formula que se me entrego
+        // desgloce.UB2 = 100 - ((desgloce.refacciones_2 * 100) / desgloce.total)
 
-                                    array.forEach(a => {
-                                        if (a['tipo'] === 'MO') {
-                                            if (!a['costo']) 
-                                                a['costo'] = 0;
-                                            
-                                            (a['costo'] > 0)
-                                                ? mo += (a['cantidad'] * a['costo'])
-                                                : mo += (a['cantidad'] * a['precio'])
-                                        } else {
-                                            if (a['costo'] > 0) {
-                                                refacciones1 += a['cantidad'] * a['costo']
-                                                refacciones2 += a['cantidad'] * a['costo']
-                                            } else {
-                                                refacciones1 += a['cantidad'] * a['precio']
-                                                refacciones2 += a['cantidad'] * (a['precio'] * (1 + (margen / 100)))
-                                            }
-                                        }
-                                    })
-                                    info.mo = mo;
-                                    info.refacciones1 = refacciones1;
-                                    info.refacciones2 = refacciones2;
-                                    suma = mo + refacciones2
-                                    info.UB = ((suma - refacciones1) * 100) / suma
-                                    info.flotilla = suma
-                                    info.normal = suma * (1 + (margen / 100))
-                                    return info
-                                }
-                                isObject(valor) {
+        info.flotilla = suma
+        info.normal = suma * (1 + (margen / 100))
+        return info
+    }
+    isObject(valor) {
                                     return valor instanceof Object;
-                                }
-                                async recuperaDataArreglo(campos : any[], data : any) {
+    }
+    async recuperaDataArreglo(campos : any[], data : any) {
                                     let Necesaria = {}
                                     const camposRecuperar = campos
                                     const camposInfo = Object.keys(data)
@@ -1046,22 +1031,22 @@ export class ServiciosPublicosService {
                                         }
                                     }
                                     return Necesaria
-                                }
-                                recuperaData(campos : any[], data : any) {
+    }
+    recuperaData(campos : any[], data : any) {
                                     let Necesaria = {}
                                     campos.forEach(element => {
                                         Necesaria[element] = data[element]
                                     });
                                     return Necesaria
-                                }
-                                nuevaRecuperacionData(data : any, camposRecuperar : any[]) {
+    }
+    nuevaRecuperacionData(data : any, camposRecuperar : any[]) {
                                     let Necesaria = {}
                                     camposRecuperar.forEach(recupera => {
                                         Necesaria[recupera] = data[recupera]
                                     })
                                     return Necesaria
-                                }
-                                crearArreglo2(arrayObj : object) {
+    }
+    crearArreglo2(arrayObj : object) {
                                     const arrayGet: any[] = [];
                                     if (arrayObj === null) {
                                         return [];
@@ -1074,8 +1059,8 @@ export class ServiciosPublicosService {
                                             arrayGet.push(arraypush);
                                         });
                                     return arrayGet;
-                                }
-                                crearArreglo(clientesObj : object) {
+    }
+    crearArreglo(clientesObj : object) {
                                     const clientes: any[] = []
                                     if (clientesObj === null) {
                                         return []
@@ -1087,8 +1072,8 @@ export class ServiciosPublicosService {
                                             clientes.push(cliente)
                                         })
                                     return clientes
-                                }
-                                ordernarPorCampo(arreglo : any, campo : string) {
+    }
+    ordernarPorCampo(arreglo : any, campo : string) {
                                     arreglo.sort(function (a, b) {
                                         if (a[campo] > b[campo]) {
                                             return 1;
@@ -1099,8 +1084,8 @@ export class ServiciosPublicosService {
                                         return 0;
                                     })
                                     return arreglo
-                                }
-                                mensajeCorrecto(mensaje : string) {
+    }
+    mensajeCorrecto(mensaje : string) {
                                     const Toast = Swal.mixin({
                                         toast: true,
                                         position: 'center',
@@ -1114,8 +1099,8 @@ export class ServiciosPublicosService {
                                     })
 
                                     Toast.fire({icon: 'success', title: mensaje})
-                                }
-                                mensajeIncorrecto(mensaje : string) {
+    }
+    mensajeIncorrecto(mensaje : string) {
                                     const Toast = Swal.mixin({
                                         toast: true,
                                         position: 'center',
@@ -1129,31 +1114,31 @@ export class ServiciosPublicosService {
                                     })
 
                                     Toast.fire({icon: 'error', title: mensaje});
-                                }
-                                async mensaje_pregunta(mensaje) {
-                                    let mensajeAnswer = {
-                                        respuesta: false
-                                    }
-                                    await Swal
-                                        .fire({
-                                            title: `${mensaje} ?`,
-                                            showDenyButton: false,
-                                            showCancelButton: true,
-                                            confirmButtonText: 'Confirmar',
-                                            denyButtonText: `Don't save`,
-                                            cancelButtonText: `Cancelar`
-                                        })
-                                        .then((result) => {
-                                            /* Read more about isConfirmed, isDenied below */
-                                            if (result.isConfirmed) {
-                                                mensajeAnswer.respuesta = true
-                                            } else if (result.isDenied) {
-                                                mensajeAnswer.respuesta = false
-                                            }
-                                        })
-                                    return mensajeAnswer
-                                }
-                                async ObtenerTotalesPaquete(cant : number, array : any[], margen : number) {
+    }
+    async mensaje_pregunta(mensaje) {
+        let mensajeAnswer = {
+            respuesta: false
+        }
+        await Swal
+            .fire({
+                title: `${mensaje} ?`,
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: 'Confirmar',
+                denyButtonText: `Don't save`,
+                cancelButtonText: `Cancelar`
+            })
+            .then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    mensajeAnswer.respuesta = true
+                } else if (result.isDenied) {
+                    mensajeAnswer.respuesta = false
+                }
+            })
+        return mensajeAnswer
+    }
+    async ObtenerTotalesPaquete(cant : number, array : any[], margen : number) {
                                     let data = {
                                             totalMO: 0,
                                             refacciones1: 0,
@@ -1202,8 +1187,8 @@ export class ServiciosPublicosService {
                                             data.precio = refacciones1
                                             data.flotilla = (refacciones1 * (1 + (25 / 100))) + totalMO
                                             return data
-                                        }
-                                        SwalTipoSobrescrito(costo : number) {
+    }
+    SwalTipoSobrescrito(costo : number) {
                                             Swal.fire({
                                                 title: 'Costo de paquete sobrescrito',
                                                 icon: 'info',
@@ -1214,10 +1199,10 @@ export class ServiciosPublicosService {
                                                 confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
                                                 confirmButtonAriaLabel: 'Thumbs up, great!'
                                             })
-                                        }
-                                        mensajeElemento(info : any) {
-                                            Swal.fire(
-                                                {title: '<h2 class="fw-bold text-uppercase">Información confidencial</h2>', html: `
+    }
+    mensajeElemento(info : any) {
+        Swal.fire(
+        {title: '<h2 class="fw-bold text-uppercase">Información confidencial</h2>', html: `
       <h2 >${status}</h2>
       <table class="table">
         <tbody>
@@ -1244,9 +1229,8 @@ export class ServiciosPublicosService {
           
         </tbody>
       </table>
-      `}
-                                            )
-                                        }
+      `})
+    }
                                         restaFechas = function (f1 : any, f2 : any) {
                                             var aFecha1 = f1.split('/');
                                             var aFecha2 = f2.split('/');
@@ -1350,8 +1334,15 @@ export class ServiciosPublicosService {
                                                 if (data['iva']) 
                                                     desgloce.iva = desgloce.subtotal * .16
                                                 desgloce.total = desgloce.subtotal + desgloce.iva
+
+
+                                                //la primera formula que se me entrego
                                                 desgloce.UB = ((desgloce.subtotal - desgloce.refacciones_1) * 100) / desgloce.subtotal
+                                                // La segunda formula que se me entrego
                                                 desgloce.UB2 = 100 - ((desgloce.refacciones_2 * 100) / desgloce.total)
+
+
+
                                                 this
                                                     .formasPAgo
                                                     .map(f => {
@@ -1624,5 +1615,25 @@ export class ServiciosPublicosService {
                                                                 title: mensaje
                                                               })
                                                         }
+async swalPrevisualizar(mensaje:string){
+    const answer = {accion:''}
+    await Swal.fire({
+        title: `${mensaje}`,
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Previsualizar',
+        denyButtonText: `Continuar con entrega`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            answer.accion = 'previsualizar'
+        //   Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+        //   Swal.fire('Changes are not saved', '', 'info')
+            answer.accion = 'continuar'
+        }
+      })
+      return answer
+}
 
                                                     }

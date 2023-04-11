@@ -1160,8 +1160,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.dataRecepcion.detalles[index].checado = val._checked
   }
   cambiarSattus(index:number, val:any){
-    this.dataRecepcion.checkList[index].status = val.value
-    // this.verificarInformacion()
+    this.dataRecepcion.checkList[index].status = val
     this.revisarAvance()
   }
   obtenerFecha(fecha:any){
@@ -1348,8 +1347,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           infoSave['fecha_recibido'] = timeRequest.fecha
           infoSave['hora_recibido'] = timeRequest.hora
           infoSave['status'] = 'recibido'
+          infoSave['detalles'] = this.dataRecepcion.detalles
           infoSave['checkList'] = this.dataRecepcion.checkList;
-          (!this.SinDetalles) ?  infoSave['detalles'] = [] : infoSave['detalles'] = this.dataRecepcion.detalles
+          // (!this.SinDetalles) ?  infoSave['detalles'] = [] : infoSave['detalles'] = this.dataRecepcion.detalles
           infoSave['servicios'] = this.dataRecepcion.elementos
           infoSave['servicios_original'] = this.dataRecepcion.elementos
 
@@ -1467,7 +1467,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     const camposVerificar = ['checkList','cliente','fechaPromesa','fecha_recibido','hora_recibido','iva',
     'margen','no_os','servicios','servicios_original','status','sucursal','formaPago','servicio',
-    'vehiculo','firmaCliente']
+    'vehiculo','firmaCliente','detalles']
 
 
     
@@ -2188,6 +2188,12 @@ comenzar(){
       this._publicos.mensajeSwal('ocurrio un error')
     }
    
+  }
+
+  valideKey(evt:any){
+    return this._publicos.soloNumeros(evt)
+    // console.log('aqui');
+    // (event.charCode >= 48 && event.charCode <= 57)
   }
   
 }

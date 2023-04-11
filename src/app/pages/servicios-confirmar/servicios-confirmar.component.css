@@ -252,8 +252,20 @@ mat-button-toggle-group {
 
 
 
-.mat-button-toggle-checked {
+ .mat-button-toggle#mat-button-toggle-1{
   background-color: #64B687;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+ }
+ .red{
+  background-color: red !important;
+ }
+
+
+.mat-button-toggle-checked{
+  background-color: #1982d8;
   border-radius: 5px;
   color: white;
   cursor: pointer;

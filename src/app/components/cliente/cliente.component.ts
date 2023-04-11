@@ -7,6 +7,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database"
 import Swal from 'sweetalert2';
 import { EmailsService } from 'src/app/services/emails.service';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -31,7 +32,6 @@ export class ClienteComponent implements OnInit {
   form_cliente: FormGroup;
   formaEmpresa: FormGroup;
   listaEmpresas=[]
-  SUCURSAL:string
   sucursales =[]
   Sucursales = []
   correoExistente: boolean= false
@@ -44,15 +44,21 @@ export class ClienteComponent implements OnInit {
   contadroClientes= 0
   infonew = {}
   muestraFormEmpresa:boolean = false
-
+  
   correo_utilizado: string = 'personal'
   correos = [{value:'personal', show:'Personal'},{value:'sucursal', show:'Sucursal'}];
+  
+  ROL:string
+  SUCURSAL:string
+  
+
   constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
-    private _clientes: ClientesService,private _mail: EmailsService) {
+    private _clientes: ClientesService,private _mail: EmailsService,private _security:EncriptadoService) {
       this.heroeSlec = new EventEmitter()
     }
 
   ngOnInit(): void {
+    this.roles()
     this.crearFormularioClientes()
     this.crearFormEmpresa()
     this.listaSucursales()
@@ -60,6 +66,11 @@ export class ClienteComponent implements OnInit {
     this.listaClientes()
 
     this.perteneceA()
+  }
+  roles(){
+    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+    this.ROL = this._security.servicioDecrypt(variableX['rol'])
+    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
   }
   perteneceA(){
     if (this.id) {
@@ -83,6 +94,7 @@ export class ClienteComponent implements OnInit {
       telefono_fijo: this.data['telefono_fijo'],
       correo: this.data['correo'],
     })
+
   }
   listaClientes(){
     const starCountRef = ref(db, `clientes`)
@@ -138,6 +150,7 @@ export class ClienteComponent implements OnInit {
       sucursal:[sucursal,[Validators.required]],
       empresa:['',[]]
     })
+
   }
   crearFormEmpresa(){
     this.formaEmpresa = this.fb.group({

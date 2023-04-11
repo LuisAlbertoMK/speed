@@ -87,39 +87,55 @@ export class ServiciosService {
     return answer
   }
   realizarPagos(data){
-    let answer = {total : data['desgloce'].total ,subtotal: data['desgloce'].subtotal,pagado:0, debe:0, gastos:0, utilidad_iva:0, utilidad:0, real_gastos_mo:0, real_gastos_refaccion:0,real_pagos_mo:0, real_pagos_refaccion:0, total_real_refacciones:0,total_real_mo:0}
-
+    let answer = {total : data['desgloce'].total ,subtotal: data['desgloce'].subtotal,pagado:0, debe:0, gastos:0, utilidad_iva:0, utilidad:0, real_gastos_mo:0, real_gastos_refaccion:0,real_pagos_mo:0, real_pagos_refaccion:0, total_real_refacciones:0,total_real_mo:0,total_ul:0}
+    
     let total_gastos = 0, pagado = 0
     let HistorialGastos = [], HistorialPagos = []
-    data['HistorialGastos'] ? HistorialGastos =  data['HistorialGastos'] : HistorialGastos = []
+    if (data['HistorialGastos2']) HistorialGastos =  data['HistorialGastos2']
+    // data['HistorialGastos'] ?  : HistorialGastos = []
 
-      for (let index = 0; index < HistorialGastos.length; index++) {
-        const element = HistorialGastos[index];
-        if (element['status']) {
-          total_gastos += element['monto']
-          if(element['gasto_tipo'] === 'refaccion'){
-            answer.real_gastos_refaccion += element['monto']
-          }else{
-            answer.real_gastos_mo += element['monto']
-          }
+    data['gastos_'].forEach(g=>{
+      if (g['status']) {
+        total_gastos += g['monto']
+        if(g['gasto_tipo'] === 'refaccion'){
+          answer.real_gastos_refaccion += g['monto']
+        }else{
+          answer.real_gastos_mo += g['monto']
         }
-        
       }
+    })
+
+      // for (let index = 0; index < HistorialGastos.length; index++) {
+      //   const element = HistorialGastos[index];
+      //   if (element['status']) {
+      //     total_gastos += element['monto']
+      //     if(element['gasto_tipo'] === 'refaccion'){
+      //       answer.real_gastos_refaccion += element['monto']
+      //     }else{
+      //       answer.real_gastos_mo += element['monto']
+      //     }
+      //   }
+        
+      // }
       
     
-    data['HistorialPagos'] ? HistorialPagos =  data['HistorialPagos'] : HistorialPagos = []
-    
-      for (let index = 0; index < HistorialPagos.length; index++) {
-        const element = HistorialPagos[index];
-        if (element['status']) {
-          pagado += element['monto']
-          // if(element['gasto_tipo'] === 'refaccion'){
-          //   answer.real_pagos_refaccion += element['monto']
-          // }else{
-          //   answer.real_pagos_mo += element['monto']
-          // }
-        }
+    if(data['HistorialGastos2'] ) HistorialPagos =  data['HistorialGastos2']
+    data['pagos_'].forEach(p=>{
+      if (p['status']) {
+        answer.pagado += p['monto']
       }
+    })
+      // for (let index = 0; index < HistorialPagos.length; index++) {
+      //   const element = HistorialPagos[index];
+      //   if (element['status']) {
+      //     pagado += element['monto']
+      //     // if(element['gasto_tipo'] === 'refaccion'){
+      //     //   answer.real_pagos_refaccion += element['monto']
+      //     // }else{
+      //     //   answer.real_pagos_mo += element['monto']
+      //     // }
+      //   }
+      // }
       answer.total_real_refacciones =   answer.real_pagos_refaccion - answer.real_gastos_refaccion
       answer.total_real_mo =   answer.real_pagos_mo - answer.real_gastos_mo
       answer.debe = answer.total - pagado
@@ -127,6 +143,7 @@ export class ServiciosService {
       answer.gastos = total_gastos
       answer.utilidad = answer.subtotal - answer.gastos
       answer.utilidad_iva = answer.total - answer.gastos
+      answer.total_ul = answer.pagado - (answer.real_gastos_refaccion + answer.real_gastos_mo )
     return answer 
   }
   

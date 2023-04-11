@@ -163,36 +163,76 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
         // console.log(cotizaciones);
         if (contenido) {
           // console.log(this.clientes);
-          console.time('Execution Time');
+          
+        // console.log(cotizaciones);
         
           
-          cotizaciones.map((cot,index)=>{
-            cot['index'] = index
-              this.clientes.forEach(cli=>{
-                if(cot['cliente'] !== cli['id']) return
-                cot['infoCliente'] = cli
-                const vehiculos = cli['vehiculos']
-                // console.log(vehiculos);
-                vehiculos.forEach(v=>{
-                  if(v['id']!==cot['vehiculo']) return
-                  cot['infoVehiculo'] = v
-                })
-                // if (this.SUCURSAL === 'Todas') {
-                  this.sucursales.forEach(s=>{
-                    if(cli['sucursal'] !== s['id']) return
-                    cot['infoSucursal'] = s
-                  })
-                // }
-              })
-          })
-          console.timeEnd('Execution Time');
+          
+          
           if (!this.cotizaciones.length) {
+            console.log('las cotizaciones estan en blanco');
+            console.time('Execution Time');
             // console.log('llenar de cero');
             let cotiza = [];
             (this.SUCURSAL === 'Todas') ? cotiza = cotizaciones : cotiza =cotizaciones.filter(c=>c['sucursal'] === this.SUCURSAL)
+            
+            
+          
+            cotiza.map((cot,index)=>{
+              cot['index'] = index
+                this.clientes.forEach(cli=>{
+                  if(cot['cliente'] !== cli['id']) return
+                  cot['infoCliente'] = cli
+                  const vehiculos = cli['vehiculos']
+                  // console.log(vehiculos);
+                  vehiculos.forEach(v=>{
+                    if(v['id']!==cot['vehiculo']) return
+                    cot['infoVehiculo'] = v
+                  })
+                  // if (this.SUCURSAL === 'Todas') {
+                    this.sucursales.forEach(s=>{
+                      if(cli['sucursal'] !== s['id']) return
+                      cot['infoSucursal'] = s
+                    })
+                  // }
+                })
+                // cot['infoadi'] = this._publicos.costodePaquete(cot['elementos'][''], cot['margen'])
+                let elementos = []
+                if(cot['elementos']) elementos = cot['elementos']
+                elementos.map(e=>{
+                  if (e['tipo'] === 'paquete') {
+                    let element =[]
+                    if(e['elementos']) element = e['elementos']
+                    e['reporteInterno'] = this._publicos.costodePaquete(element, cot['margen'])
+                    e['precio'] = e['reporteInterno']['flotilla']
+                  } 
+                })
+            })
+            // console.log(cotiza);
+            console.timeEnd('Execution Time');
             this.cotizaciones = cotiza            
+            // this.dataSourceCotizaciones.data = this.cotizaciones
             this.newPagination('cotizaciones')
           }else{
+            cotizaciones.map((cot,index)=>{
+              cot['index'] = index
+                this.clientes.forEach(cli=>{
+                  if(cot['cliente'] !== cli['id']) return
+                  cot['infoCliente'] = cli
+                  const vehiculos = cli['vehiculos']
+                  // console.log(vehiculos);
+                  vehiculos.forEach(v=>{
+                    if(v['id']!==cot['vehiculo']) return
+                    cot['infoVehiculo'] = v
+                  })
+                  // if (this.SUCURSAL === 'Todas') {
+                    this.sucursales.forEach(s=>{
+                      if(cli['sucursal'] !== s['id']) return
+                      cot['infoSucursal'] = s
+                    })
+                  // }
+                })
+            })
             // console.log(`compara data --> cotizaciones: ${cotizaciones.length} - existentes: ${this.cotizaciones.length}`);
             //primero sin es mayor los nuevos registros a los antiguos
             if (cotizaciones.length > this.cotizaciones.length) {
@@ -210,7 +250,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
                 cot['infoCliente'] = cotizaciones[index].infoCliente
               })
             }
-                      
+            // this.dataSourceCotizaciones.data = this.cotizaciones
             this.newPagination('cotizaciones')
           }
           
@@ -221,20 +261,8 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     })
     
   }
-  
-
-
-
-
-
-
-
 
   
-  // colocarCotizaciones(){
-  //   this.dataSourceCotizaciones.data = this.Listacotizaciones
-  //   this.newPagination('cotizaciones')
-  // }
   nueva(dataGeneral:any,margen:number){
       this._publicos.ObtenerTotalesPaquete(dataGeneral.cantidad,dataGeneral.elementos,margen).then((ans:any)=>{
         this.infoPawuete.dataGeneral = dataGeneral
@@ -268,20 +296,38 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
       this.dataSourceCotizaciones.data = this.cotizaciones
       this.dataSourceCotizaciones.paginator = this.paginatorCotizaciones;
       this.dataSourceCotizaciones.sort = this.sortCotizaciones
+    }else if (data==='filtrados') {
+      // this.dataSourceCotizaciones.data = this.cotizaciones
+      this.dataSourceCotizaciones.paginator = this.paginatorCotizaciones;
+      this.dataSourceCotizaciones.sort = this.sortCotizaciones
     }
-    // }else if (data==='paquetes') {
-    //   this.dataSourcePaquetes.paginator = this.paginatorPaquetes;
-    //   this.dataSourcePaquetes.sort = this.sortPaquetes
-    // }
     }, 500)
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceCotizaciones.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSourceCotizaciones.paginator) {
-      this.dataSourceCotizaciones.paginator.firstPage();
+    if (filterValue) {
+      const bus_filter = filterValue.trim().toLowerCase()
+      const busqueda = this.cotizaciones
+      let resultados = []
+      busqueda.forEach(c=>{
+        // const campos = ['index','no_cotizacion','placas','cliente']
+        // const campos2 = ['infoCliente','infoSucursal','infoVehiculo']
+        
+        if (String(c['no_cotizacion']).trim().toLowerCase().includes(bus_filter))  resultados.push(c)
+        if (String(c['infoCliente']['fullname']).trim().toLowerCase().includes(bus_filter))  resultados.push(c)
+        if (String(c['infoVehiculo']['placas']).trim().toLowerCase().includes(bus_filter))  resultados.push(c)
+      })
+      // console.log(resultados);
+      this.dataSourceCotizaciones.data = resultados
+      
+      if (this.dataSourceCotizaciones.paginator) {
+        this.dataSourceCotizaciones.paginator.firstPage();
+      }
+      this.newPagination('filtrados')
+    }else{
+      this.newPagination('cotizaciones')
     }
+    
   }
   generaReporteExcel(){
     const info = this.dataSourceCotizaciones.data

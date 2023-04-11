@@ -261,7 +261,7 @@
               <div class="col-lg-6 col-md-12 col-sm-12">
                 <div class="mb-1">
                   <label for="precio" class="form-label">Costo por Hora</label>
-                  <input type="number" class="form-control form-control-sm" id="precio" formControlName="precio"
+                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
                     [class.is-invalid]="validarManoObra('precio')">
                   <small *ngIf="validarManoObra('precio')" class="text-danger">
                     campo requerido
@@ -383,7 +383,7 @@
               <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                 <div class="mb-1">
                   <label for="stock" class="form-label">Stock</label>
-                  <input type="number" class="form-control form-control-sm" id="stock" formControlName="stock"
+                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="stock" formControlName="stock"
                     [class.is-invalid]="validarRefaccion('stock')" maxlength="6">
                   <small *ngIf="validarRefaccion('stock')" class="text-danger">
                     campo requerido
@@ -393,7 +393,7 @@
               <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                 <div class="mb-1">
                   <label for="precio" class="form-label">Precio</label>
-                  <input type="number" class="form-control form-control-sm" id="precio" formControlName="precio"
+                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
                     [class.is-invalid]="validarRefaccion('precio')" maxlength="6">
                   <small *ngIf="validarRefaccion('precio')" class="text-danger">
                     campo requerido
@@ -540,7 +540,7 @@
                       <ng-container *ngIf="tipo === 'MO'">Horas</ng-container>
                       <ng-container *ngIf="tipo !== 'MO'">Cantidad</ng-container>
                     </label>
-                    <input type="number" class="form-control form-control-sm" id="cantidad" formControlName="cantidad"
+                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="cantidad" formControlName="cantidad"
                       [class.is-invalid]="validarFormularioPaqueteAgregar('cantidad')" maxlength="20"
                       (ngModelChange)="obtenerSubtotal()" min="1" >
                     <small *ngIf="validarFormularioPaqueteAgregar('cantidad')" class="text-danger">
@@ -553,7 +553,7 @@
                     <label for="cantidad" class="form-label">
                       <ng-container >Costo</ng-container>
                     </label>
-                    <input type="number" class="form-control form-control-sm" id="precio" formControlName="precio"
+                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
                       [class.is-invalid]="validarFormularioPaqueteAgregar('precio')" maxlength="20"
                       (ngModelChange)="obtenerSubtotal()" min="1" >
                     <small *ngIf="validarFormularioPaqueteAgregar('precio')" class="text-danger">
@@ -567,7 +567,7 @@
                     <label for="cantidad" class="form-label">
                       <ng-container >Normal</ng-container>
                     </label>
-                    <input type="number" class="form-control form-control-sm" id="total" formControlName="total" [attr.disabled]="true">
+                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="total" formControlName="total" [attr.disabled]="true">
                     <small *ngIf="validarFormularioPaqueteAgregar('total')" class="text-danger">
                       campo requerido
                     </small>
@@ -578,7 +578,7 @@
                     <label for="cantidad" class="form-label">
                       <ng-container >Flotilla</ng-container>
                     </label>
-                    <input type="number" class="form-control form-control-sm" id="subtotal" formControlName="subtotal" [attr.disabled]="true">
+                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="subtotal" formControlName="subtotal" [attr.disabled]="true">
                     <small *ngIf="validarFormularioPaqueteAgregar('subtotal')" class="text-danger">
                       campo requerido
                     </small>
@@ -871,7 +871,7 @@
             <div class="col-lg-2 col-md-2 col-sm-3 col-6">
               <div class="mb-1 ">
                 <label for="cantidad" class="form-label">Cantidad</label>
-                <input type="number" class="form-control form-control-sm" id="cantidad" formControlName="cantidad"
+                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="cantidad" formControlName="cantidad"
                 (keyup)="actualizaTotalElemento()" (change)="actualizaTotalElemento()"
                   [class.is-invalid]="validarelemento('cantidad')">
               </div>
@@ -880,7 +880,7 @@
             <div class="col-lg-2 col-md-2 col-sm-3 col-6">
               <div class="mb-1 precio">
                 <label for="precio" class="form-label">precio</label>
-                <input type="number" class="form-control form-control-sm" id="precio" formControlName="precio"
+                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
                 (keyup)="actualizaTotalElemento()" (change)="actualizaTotalElemento()"
                   [class.is-invalid]="validarelemento('precio')">
               </div>

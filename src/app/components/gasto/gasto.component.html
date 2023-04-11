@@ -90,7 +90,7 @@
                   <label [ngClass]="{'text-danger': validaCampo('monto'),'text-success': !validaCampo('monto')}" for="monto"
                     class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Monto de pago </label>
                   <div class="col-sm-8 col-md-6 col-lg-6 col-12">
-                    <input id="monto" type="number" min="0" max="10000000" class="form-control form-control-sm"
+                    <input id="monto" type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" max="10000000" class="form-control form-control-sm"
                       formControlName="monto">
                   </div>
                 </div>

@@ -347,7 +347,7 @@
             <div class="mb-3 row">
               <label for="margen" class="col-sm-4 col-form-label">Margen:</label>
               <div class="col-sm-8">
-                <input type="number" (change)="cambiarMargen(marg.value)" #marg [(ngModel)]="margen" id="margen"
+                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" (change)="cambiarMargen(marg.value)" #marg [(ngModel)]="margen" id="margen"
                   class="form-control form-control-sm" min="25" max="100">
               </div>
             </div>
@@ -616,7 +616,8 @@
             <label for="kilometraje">Kilometraje: </label>
           </div>
           <div class="col-auto">
-            <input type="number" id="kilometraje" 
+            <!-- onkeypress="valideKey(event);" -->
+            <input type="number" id="kilometraje" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
             (change)="revisarAvance()" [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
               class="form-control form-control-sm" min="0">
           </div>
@@ -629,21 +630,44 @@
           <ng-container *ngIf="item['id'] === 'nivel_gasolina'; else elseTemplate">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start m-1"><strong>{{item.mostrar | capitalizarUno}}</strong>:</div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start m-1">
-              <mat-button-toggle-group [ngModel]="item.status" aria-label="Font Style" >
-                <mat-button-toggle (click)="cambiarSattus(index,val)" #val [value]="ite" *ngFor="let ite of item.opciones">
-                  {{ite | capitalizarUno}}</mat-button-toggle>
-              </mat-button-toggle-group>
+              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <ng-container *ngFor="let ite of item['opciones']">
+                  <input type="radio" class="btn-check" [checked]="item['status'] === ite" name="btnradio" [id]="ite" autocomplete="off" checked>
+                  <label class="btn btn-sm "  (click)="cambiarSattus(index,ite)" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"
+                  [ngClass]="
+                  {'btn-outline-danger': ite==='vacio','btn-outline-success': ite==='lleno',
+                  'btn-outline-warning': ite!=='lleno' && ite!=='vacio'}
+                  "
+                  [for]="ite">{{ite}}</label>
+                </ng-container>
+               
+              </div>
+              <!-- <mat-button-toggle-group [ngModel]="item.status" aria-label="Font Style" >
+                <ng-container *ngFor="let ite of item['opciones']">
+                  <mat-button-toggle class="red" [id]="ite" (click)="cambiarSattus(index,val)" #val [value]="ite" >
+                    {{ite | capitalizarUno}}</mat-button-toggle>
+                </ng-container>
+                
+                
+              </mat-button-toggle-group> -->
             </div>
           </ng-container>
           <ng-template #elseTemplate>
           <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start m-1"><strong>{{item.mostrar | capitalizarUno}}</strong>:</div>
           <div class="col-lg-7 col-md-7 col-sm-12 col-12 text-start m-1">
             <!-- {{item['id']}} -->
-                     
-            <mat-button-toggle-group [ngModel]="item.status" aria-label="Font Style" >
+            <ng-container *ngFor="let ite of item['opciones']">
+              <input type="radio" class="btn-check" [checked]="item['status'] === ite" [name]="item['id']+ite" [id]="item['id']+ite" autocomplete="off" checked>
+              <label class="btn btn-sm " (click)="cambiarSattus(index,ite)" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"
+              [ngClass]="
+              {'btn-outline-danger': ite==='no' || ite ==='dañado','btn-outline-success': ite==='si'}
+              " 
+              [for]="item['id']+ite">{{ite}}</label>
+            </ng-container> 
+            <!-- <mat-button-toggle-group [ngModel]="item.status" aria-label="Font Style" >
               <mat-button-toggle (click)="cambiarSattus(index,val)" #val [value]="ite" *ngFor="let ite of item.opciones">
                 {{ite | capitalizarUno}}</mat-button-toggle>
-            </mat-button-toggle-group>
+            </mat-button-toggle-group> -->
           </div>
           </ng-template>
           

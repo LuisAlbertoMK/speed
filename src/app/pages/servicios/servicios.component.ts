@@ -378,18 +378,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
                 }
               }
             });
-            if (!cot['HistorialPagos']) {
-              cot['HistorialPagos'] = []
-            } else{
-              const arreglo1 = this.crearArreglo2(cot['HistorialPagos'])
-              cot['HistorialPagos'] = arreglo1
-            }
-            if (!cot['HistorialGastos']) {
-              cot['HistorialGastos'] = []
-            }else{
-              const arreglo1 = this.crearArreglo2(cot['HistorialGastos'])
-              cot['HistorialGastos'] = arreglo1
-            }
+            // if (!cot['HistorialPagos']) {
+            //   cot['HistorialPagos'] = []
+            // } else{
+            //   const arreglo1 = this.crearArreglo2(cot['HistorialPagos'])
+            //   cot['HistorialPagos'] = arreglo1
+            // }
+            // if (!cot['HistorialGastos']) {
+            //   cot['HistorialGastos'] = []
+            // }else{
+            //   const arreglo1 = this.crearArreglo2(cot['HistorialGastos'])
+            //   cot['HistorialGastos'] = arreglo1
+            // }
             
             cot['desgloce'] = this._publicos.realizarOperacion(cot,'servicios')
 
@@ -405,8 +405,23 @@ export class ServiciosComponent implements OnInit, OnDestroy {
               updates[`recepciones/${cot['id']}/diasSucursal`] = difference/(1000 * 3600 * 24);
               update(ref(db), updates);
             }
+            let nuevosPagos = []
+            if(cot['HistorialPagos']) nuevosPagos = this.crearArreglo2(cot['HistorialPagos'])
+            // cot['HistorialPagos'] = nuevosPagos
+            cot['pagos_'] = nuevosPagos
+            
+            let nuevosGastos = []
+            if(cot['HistorialGastos']) nuevosGastos = this.crearArreglo2(cot['HistorialGastos'])
+            // cot['HistorialGastos'] = nuevosGastos
+            cot['gastos_'] = nuevosGastos
+
             cot['_pagos']  = this._servicios.realizarPagos(cot)
+            
           })
+          // console.log('aqui');
+          // console.log(elementosX);
+
+          
           
           let filtrados =  [];
           (this.SUCURSAL === 'Todas') ? filtrados = elementosX: filtrados = elementosX.filter(c=>c['sucursal'] === this.SUCURSAL)
@@ -651,13 +666,13 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
   generaCamposReporte(data:any){
     this.dataSource.data = data
-    this.newPagination('servicios')
     const reporte = this._publicos.generaCamposReporte(data,this.fechaBusqueda)
     this.camposReporte.tiempoEstancia = reporte.tiempoEstancia
     this.camposReporte.ticket = reporte.ticket
     this.camposReporte.horas_totales = reporte.horas_totales
     this.camposReporte.horas_servicios = reporte.horas_estancia
     this.camposReporte.servicios = data.length
+    this.newPagination('servicios')
   }
 
   rol(){
@@ -844,28 +859,27 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
   async ordenamiento(campo:string,ordena:boolean){
     let nuevos = []
-    this.servicios.map((o)=>{
-        const cual = this.fechaBusqueda
-        switch (cual) {
-          case 'cancelado':
-            nuevos = this.servicios.filter(o=>o['status'] === 'cancelado')
-            break;
-          case 'entregado':
-            nuevos = this.servicios.filter(o=>o['status'] === 'entregado')
-            break;
-          case 'recibido':
-            //  = this.servicios.filter(o=>o['status'] === 'entregado')
-            const filtro = this.servicios.filter(o=>o['status'] !== 'cancelado' )
-            nuevos = this.servicios.filter(o=>o['status'] !== 'entregado')
-            break;
-        
-          default:
-            break;
-        }
-    })
-    this.dataSource.data =  await this._publicos.ordenamiento(nuevos,campo,ordena)
-    this.newPagination('recepciones')
+    const cual = this.fechaBusqueda
+    switch (cual) {
+      case 'cancelado':
+        nuevos = this.recepciones.filter(o=>o['status'] === 'cancelado')
+        break;
+      case 'entregado':
+        nuevos = this.recepciones.filter(o=>o['status'] === 'entregado')
+        break;
+      case 'recibido':
+        //  = this.recepciones.filter(o=>o['status'] === 'entregado')
+        const filtro = this.recepciones.filter(o=>o['status'] !== 'cancelado' )
+        nuevos = filtro.filter(o=>o['status'] !== 'entregado')
+        break;
+      default:
+        const f2 = this.recepciones.filter(o=>o['status'] !== 'cancelado' )
+        nuevos = f2.filter(o=>o['status'] !== 'entregado')
+        break;
+    }
     this.ordena = ordena
+    this.dataSource.data = await this._publicos.ordenamiento(nuevos,campo,ordena)
+    this.newPagination('recepciones')
   }
   ivaChange(data:any,iva:boolean){
     // console.log('change: '+ iva);
