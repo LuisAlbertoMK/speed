@@ -129,6 +129,7 @@ import { MoRefaccionesComponent } from './components/mo-refacciones/mo-refaccion
 import { ReporteGastosComponent } from './pages/reporte-gastos/reporte-gastos.component';
 import { RealizaDepositoComponent } from './components/realiza-deposito/realiza-deposito.component';
 import { EntregaOrdenComponent } from './pages/entrega-orden/entrega-orden.component';
+import { DataFacturacionClienteComponent } from './components/data-facturacion-cliente/data-facturacion-cliente.component';
 
 // import { getDutchPaginatorIntl } from "../app/models/tras";
 
@@ -198,7 +199,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MoRefaccionesComponent,
     ReporteGastosComponent,
     RealizaDepositoComponent,
-    EntregaOrdenComponent
+    EntregaOrdenComponent,
+    DataFacturacionClienteComponent
   ],
   imports: [
     FullCalendarModule,

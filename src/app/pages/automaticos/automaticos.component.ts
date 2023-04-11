@@ -36622,6 +36622,9 @@ recepciones = {
     // this.operaciones()
     // this.consultaArbol()
   }
+  mirespuesta(answ:any){
+    console.log(answ);
+  }
   operaciones(){
     
   }

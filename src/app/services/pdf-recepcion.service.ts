@@ -938,10 +938,10 @@ export class PdfRecepcionService {
   if (!data['infoCliente'].empresa) {
     data['infoCliente'].empresa = data['infoCliente'].tipo
   }
-  let dataFacturacion = {rfc: ' -----------  '  ,factura: ' -----------  ' }
+  let dataFacturacion = {rfc: ' -----------  '  ,razon: ' -----------  ' }
   if (data['facturaRemision'] === 'factura') {
     dataFacturacion.rfc = data['dataFacturacion'].rfc
-    dataFacturacion.factura = data['dataFacturacion'].factura
+    dataFacturacion.razon = data['dataFacturacion'].razon
   }
   // console.log(dataFacturacion);
   
@@ -998,7 +998,7 @@ export class PdfRecepcionService {
                   [ {  text: `${data['no_os']}`,bold: true, alignment: 'center', style:'sucursal'} ],
                   [ { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 }, ],
                   [ {  text: `Costo total de servicio`,bold: true, alignment: 'center', style:'sucursal' ,fillColor: '#FF6969', color:'white'} ],
-                  [ {  text: `${redondeado2(obtenerTotal(data['servicios'], data['facturaRemision']).total)}`,bold: true, alignment: 'center', style:'sucursal' } ],
+                  [ {  text: `${redondeado2(obtenerTotal(data['servicios'], data['facturaRemision'],data['margen']).total)}`,bold: true, alignment: 'center', style:'sucursal' } ],
                 ]
               }
             }
@@ -1089,7 +1089,7 @@ export class PdfRecepcionService {
             {  text: `R.F.C`,bold: true, alignment: 'left', style:'terminos2'},
           ],
           [ 
-            {  text: `${transformMayus(dataFacturacion.factura)}`,bold: true, alignment: 'center', style:'sucursal'},
+            {  text: `${transformMayus(dataFacturacion.razon)}`,bold: true, alignment: 'center', style:'sucursal'},
             {  text: `${transformMayus(dataFacturacion.rfc)}`,bold: true, alignment: 'center', style:'sucursal'},
           ],
         ]
@@ -1225,19 +1225,19 @@ export class PdfRecepcionService {
                   {  text: `${data['facturaRemision']}`,bold: true, alignment: 'center', style:'terminos2'},
                 ],
                 [ 
-                  {  text: `${letras(obtenerTotal(data['servicios'],data['facturaRemision']).total)}`,bold: true, alignment: 'center', style:'content'},
+                  {  text: `${letras(obtenerTotal(data['servicios'],data['facturaRemision'],data['margen']).total)}`,bold: true, alignment: 'center', style:'content'},
                   {  text: `SUBTOTAL`,bold: true, alignment: 'right', style:'content'},
-                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision']).subtotal)}`,bold: true, alignment: 'right', style:'content'},
+                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision'],data['margen']).subtotal)}`,bold: true, alignment: 'right', style:'content'},
                 ],
                 [ 
                   {  text: ``,bold: true, alignment: 'center', style:'content'},
                   {  text: `IVA`,bold: true, alignment: 'right', style:'content'},
-                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision']).iva)}`,bold: true, alignment: 'right', style:'content'},
+                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision'],data['margen']).iva)}`,bold: true, alignment: 'right', style:'content'},
                 ],
                 [ 
                   {  text: ``,bold: true, alignment: 'center', style:'content'},
                   {  text: `TOTAL`,bold: true, alignment: 'right', style:'content'},
-                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision']).total)}`,bold: true, alignment: 'right', style:'content'},
+                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision'],data['margen']).total)}`,bold: true, alignment: 'right', style:'content'},
                 ],
               ]
             }
@@ -1257,14 +1257,14 @@ export class PdfRecepcionService {
                   {  text: `${data['facturaRemision']}`,bold: true, alignment: 'center', style:'terminos2'},
                 ],
                 [ 
-                  {  text: `${letras(obtenerTotal(data['servicios'],data['facturaRemision']).total)}`,bold: true, alignment: 'center', style:'content'},
+                  {  text: `${letras(obtenerTotal(data['servicios'],data['facturaRemision'], data['margen']).total)}`,bold: true, alignment: 'center', style:'content'},
                   {  text: `SUBTOTAL`,bold: true, alignment: 'right', style:'content'},
-                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision']).subtotal)}`,bold: true, alignment: 'right', style:'content'},
+                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision'], data['margen']).subtotal)}`,bold: true, alignment: 'right', style:'content'},
                 ],
                 [ 
                   {  text: ``,bold: true, alignment: 'center', style:'content'},
                   {  text: `TOTAL`,bold: true, alignment: 'right', style:'content'},
-                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision']).total)}`,bold: true, alignment: 'right', style:'content'},
+                  {  text: `${redondeado2(obtenerTotal(data['servicios'],data['facturaRemision'], data['margen']).total)}`,bold: true, alignment: 'right', style:'content'},
                 ],
               ]
             }
@@ -1444,29 +1444,96 @@ function transformMayus(value: string, ...args: unknown[]): unknown {
   const cadena = String(value).toUpperCase()  
   return cadena;
 }
-function obtenerTotal(servicios,facturaRemision){
+function obtenerTotal(servicios,facturaRemision,marg){
   let filtrados = servicios.filter(f=>f['aprobado'])
+  const reporte = {mo:0, refacciones_1:0,refacciones_ad:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0,total:0,iva:0}
+
+  const margen = (1 + (marg/100))
+  const norm_ = 1.30
+  filtrados.map((e, index)=>{      
+    e['index'] = index
+    if (e['tipo'] ==='refaccion') {
+      let pre = e['precio']
+      let operacion = (e['cantidad']* pre) * margen
+      if (e['costo']>0) {
+        pre = e['costo']
+        operacion = (e['cantidad']* pre) * margen
+        reporte.sobrescrito_refaccion += operacion
+      }else{
+        reporte.refacciones_1 += operacion
+      }
+      e['flotilla'] = operacion
+      e['normal'] = operacion * norm_
+      reporte.refacciones_ad += e['precio']
+    }else  if (e['tipo'] ==='MO') {
+      let pre = e['precio']
+      let operacion = (e['cantidad']* pre)
+      if (e['costo']>0) {
+        pre = e['costo']
+        operacion = (e['cantidad']* pre)
+        reporte.sobrescrito_mo += operacion
+      }else{
+        reporte.mo += operacion
+      }
+      e['flotilla'] = operacion
+      e['normal'] = operacion * norm_
+    }else if (e['tipo'] ==='paquete') {
+      let element_internos = []
+      if (e['elementos']) element_internos = e['elementos']
+      const reporte_interno = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0}
   
-  filtrados.map((e,index)=>{
-    e['index'] = index + 1
-    if (e['costo'] > 0) {
-      e['precio'] = e['costo']
-      e['total'] = e['costo'] *  e['cantidad']
-    }else{
-      // e['precio'] = e['precio']
-      e['total'] = e['precio'] *  e['cantidad']
+      if (e['costo']>0) {
+        const operacion = e['cantidad'] * e['costo']
+        e['flotilla'] = operacion
+        e['normal'] = operacion * norm_
+        reporte.sobrescrito_paquetes += operacion
+      }else{
+        element_internos.map(e_interno=>{
+          if (e_interno['tipo'] ==='refaccion') {
+            let pre = e_interno['precio']
+            let operacion = (e_interno['cantidad']* pre) * margen
+            if (e_interno['costo']>0) {
+              pre = e_interno['costo']
+              operacion = (e_interno['cantidad']* pre) * margen
+              reporte.sobrescrito_refaccion += operacion
+              reporte_interno.sobrescrito_refaccion += operacion
+            }else{
+              reporte.refacciones_1 += operacion
+              reporte_interno.refacciones_1 += operacion
+            }
+            e_interno['flotilla'] = operacion
+            e_interno['normal'] = operacion * norm_
+            reporte.refacciones_ad += e_interno['precio']
+          }else  if (e_interno['tipo'] ==='MO') {
+            let pre = e_interno['precio']
+            let operacion = (e_interno['cantidad']* pre)
+            if (e_interno['costo']>0) {
+              pre = e_interno['costo']
+              operacion = (e_interno['cantidad']* pre)
+              reporte.sobrescrito_mo += operacion
+              reporte_interno.sobrescrito_mo += operacion
+            }else{
+              reporte.mo += operacion
+              reporte_interno.mo += operacion
+            }
+            e_interno['flotilla'] = operacion
+            e_interno['normal'] = operacion * norm_
+          }
+        })
+        e['reporte_interno'] = reporte_interno
+        e['flotilla'] = (reporte_interno.mo+ reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion + reporte_interno.refacciones_1)
+        e['normal'] = e['flotilla'] * norm_
+      }
     }
   })
-  
-  let total = 0, subtotal = 0, iva = 0
-  filtrados.forEach(e => {
-    subtotal += e['total']
-  });
-  total = subtotal
-  if (facturaRemision === 'factura') {
-    total = subtotal * 1.16
+  let subtotal = reporte.refacciones_1 + reporte.mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_mo + reporte.sobrescrito_refaccion
+  let iva = 0
+  let total = subtotal
+  if(facturaRemision === 'factura'){
     iva = subtotal * .16
+    total = subtotal + iva
   }
+  
   return {total, subtotal, iva}
 }
 function letras(num: number, ...args: unknown[]): unknown {
