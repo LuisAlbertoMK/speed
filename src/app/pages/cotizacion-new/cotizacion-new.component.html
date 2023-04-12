@@ -419,10 +419,11 @@
             <ng-container matColumnDef="nombre">
               <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize text-end"
                 [ngStyle]="{'min-width':(miniColumnas)*1.3+'px'}"> nombre </th>
-              <td mat-cell *matCellDef="let element" class="td-2"> {{element.nombre | capitalizarUno}}
+              <td mat-cell *matCellDef="let element" class="td-2"> 
                 <strong
                   [ngClass]="{'tipo-mo':element.tipo === 'MO','tipo-refaccion':element.tipo === 'refaccion','tipo-paquete':element.tipo === 'paquete'}">
-                  {{element.tipo}}</strong>
+                  {{element.nombre | capitalizarUno}}</strong>
+                  <!-- {{element.tipo}} -->
               </td>
             </ng-container>
             <ng-container matColumnDef="cantidad">
@@ -482,7 +483,14 @@
                 </span> 
 
                  </th>
-              <td mat-cell *matCellDef="let element" class="text-end"> {{element.normal | monedas}} </td>
+              <td mat-cell *matCellDef="let element" class="text-end"> 
+                <ng-container *ngIf="element.costo > 0; else elseTemplate">
+                  {{element.costo * 1.30 | monedas}}
+                </ng-container>
+                <ng-template #elseTemplate>
+                  {{element.precio * 1.30 | monedas}}
+                </ng-template>
+                
             </ng-container>
             <ng-container matColumnDef="flotilla">
               <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
@@ -499,7 +507,15 @@
                 </span>
               
               </th>
-              <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla | monedas}} </td>
+              <td mat-cell *matCellDef="let element" class="text-end">
+              <ng-container *ngIf="element.costo > 0; else elseTemplate">
+                {{element.costo | monedas}}
+              </ng-container>
+              <ng-template #elseTemplate>
+                {{element.precio | monedas}}
+              </ng-template>
+              
+              </td>
             </ng-container>
             <ng-container matColumnDef="opciones">
               <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-center"
@@ -710,7 +726,15 @@
                               <td class="text-end">
                                 {{item.precio | monedas}}
                               </td>
-                              <td class="text-end">{{item['flotilla'] | monedas}}</td>
+                              <td class="text-end">
+                                <!-- {{item | json}} -->
+                                <ng-container *ngIf="item.costo>  0; else elseTemplate">
+                                  {{item.costo * item.cantidad | monedas}}
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                  {{item.precio * item.cantidad | monedas}}
+                                </ng-template>
+                              </td>
                               <td class="text-end">
                                 <i class="fa fa-trash btn btn-sm btn-danger fa-xs m-1"
                                   (click)="EliminaSubrelemento(indexPadre,indexHijo)"></i>
@@ -860,8 +884,8 @@
       <!-- <pre>{{reporte | json}}</pre> -->
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end mb-2 mt-1 text-center">
         <strong class="fs-3"
-          [ngClass]="{'text-danger': reporte['UB'] <55, 'text-success':reporte['UB'] >=55}">
-          U.B {{reporte['UB'] | monedas:'%'}}
+          [ngClass]="{'text-danger': reporte['ub'] <55, 'text-success':reporte['ub'] >=55}">
+          U.B {{reporte['ub'] | monedas:'%'}}
         </strong>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -871,8 +895,10 @@
             <h5 class="card-title"></h5>
             <div class="row">
               <ng-container *ngFor="let campo of camposReporte">
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo['valor']] * 1.30 | monedas}}</strong></div>
+                <ng-container *ngIf="reporte[campo['valor']]>0">
+                  <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
+                  <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo['valor']] * 1.30 | monedas}}</strong></div>
+                </ng-container>
               </ng-container>
               <ng-container *ngIf="reporte['meses']>0">
                 <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div>
@@ -891,8 +917,11 @@
             <h5 class="card-title"></h5>
             <div class="row">
               <ng-container *ngFor="let campo of camposReporte">
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo['valor']]  | monedas}}</strong></div>
+                <ng-container *ngIf="reporte[campo['valor']]>0">
+                  <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
+                  <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo['valor']]  | monedas}}</strong></div>
+                </ng-container>
+                
               </ng-container>
               <ng-container *ngIf="reporte['meses']>0">
                 <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div>

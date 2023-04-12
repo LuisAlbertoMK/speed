@@ -60,7 +60,7 @@ camposDesgloce = [
 
   infoCotizacion:any={cliente:{},vehiculo:{},elementos:[],sucursal:{},
                       data:{iva:true,formaPago:1,servicio:1,margen:25,descuento:0,promocion:'ninguna'},
-                      desgloce:{...this.camposDesgloce['valor']},
+                      reporte:{...this.camposDesgloce['valor']},
                       nota:'',descripcion:''
                     }
   informacionValidad:boolean = false
@@ -166,15 +166,22 @@ camposDesgloce = [
   empresas=[]
   ordenamiento : boolean = true
 
-  reporte = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0, subtotal:0,sobrescrito_paquetes:0, iva:0, total:0,UB:0}
+  reporte = {
+    iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
+    subtotal:0, total:0, ub:0, meses:0, descuento:0
+  }
+
+  
 
   camposReporte = [
+    {valor:'refacciones_a',show:'Refacciones costo'},
     {valor:'mo',show:'Mano de obra'},
-    {valor:'refacciones_1',show:'Refacciones'},
+    {valor:'refacciones_v',show:'Refacciones precio'},
     {valor:'sobrescrito_mo',show:'Precio sobrescrito MO'},
     {valor:'sobrescrito_refaccion',show:'Precio sobrescrito Refacciones'},
     {valor:'sobrescrito_paquetes',show:'Precio sobrescrito paquetes'},
     {valor:'iva',show:'iva'},
+    {valor:'subtotal',show:'subtotal'},
     {valor:'total',show:'Total'},
   ]
   
@@ -741,118 +748,94 @@ camposDesgloce = [
   }
 
   realizarOperaciones(){
-    const elementos:any[] = this.infoCotizacion.elementos
     const margen = (1 + (this.margen/100))
-    const norm_ = 1.30
-    const reporte = {mo:0, refacciones_1:0,refacciones_ad:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0}
-    if(elementos.length) {
-      elementos.map((e, index)=>{
-        e['index'] = index
-        if (e['tipo'] ==='refaccion') {
-          let pre = e['precio']
-          let operacion = (e['cantidad']* pre) * margen
-          if (e['costo']>0) {
-            pre = e['costo']
-            operacion = (e['cantidad']* pre) * margen
-            reporte.sobrescrito_refaccion += operacion
-          }else{
-            reporte.refacciones_1 += operacion
-          }
-          e['flotilla'] = operacion
-          e['normal'] = operacion * norm_
-          reporte.refacciones_ad += e['precio']
-        }else  if (e['tipo'] ==='MO') {
-          let pre = e['precio']
-          let operacion = (e['cantidad']* pre)
-          if (e['costo']>0) {
-            pre = e['costo']
-            operacion = (e['cantidad']* pre)
-            reporte.sobrescrito_mo += operacion
-          }else{
-            reporte.mo += operacion
-          }
-          e['flotilla'] = operacion
-          e['normal'] = operacion * norm_
-        }else if (e['tipo'] ==='paquete') {
-          let element_internos = []
-          if (e['elementos']) element_internos = e['elementos']
-          const reporte_interno = {mo:0, refacciones_1:0, sobrescrito_mo:0,sobrescrito_refaccion:0}
-      
-          if (e['costo']>0) {
-            const operacion = e['cantidad'] * e['costo']
-            e['flotilla'] = operacion
-            e['normal'] = operacion * norm_
-            reporte.sobrescrito_paquetes += operacion
-          }else{
-            element_internos.map(e_interno=>{
-              if (e_interno['tipo'] ==='refaccion') {
-                let pre = e_interno['precio']
-                let operacion = (e_interno['cantidad']* pre) * margen
-                if (e_interno['costo']>0) {
-                  pre = e_interno['costo']
-                  operacion = (e_interno['cantidad']* pre) * margen
-                  reporte.sobrescrito_refaccion += operacion
-                  reporte_interno.sobrescrito_refaccion += operacion
-                }else{
-                  reporte.refacciones_1 += operacion
-                  reporte_interno.refacciones_1 += operacion
-                }
-                e_interno['flotilla'] = operacion
-                e_interno['normal'] = operacion * norm_
-                reporte.refacciones_ad += e_interno['precio']
-              }else  if (e_interno['tipo'] ==='MO') {
-                let pre = e_interno['precio']
-                let operacion = (e_interno['cantidad']* pre)
-                if (e_interno['costo']>0) {
-                  pre = e_interno['costo']
-                  operacion = (e_interno['cantidad']* pre)
-                  reporte.sobrescrito_mo += operacion
-                  reporte_interno.sobrescrito_mo += operacion
-                }else{
-                  reporte.mo += operacion
-                  reporte_interno.mo += operacion
-                }
-                e_interno['flotilla'] = operacion
-                e_interno['normal'] = operacion * norm_
-              }
-            })
-            e['reporte_interno'] = reporte_interno
-            e['flotilla'] = (reporte_interno.mo+ reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion + reporte_interno.refacciones_1)
-            e['normal'] = e['flotilla'] * norm_
-          }
+    const elementos:any[] = this.infoCotizacion.elementos
+    const reporte = {
+      iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
+      subtotal:0, total:0, ub:0, meses:0, descuento:0
+    }
+    elementos.map((e,index)=>{
+      e['index'] = index
+      const pre = e.costo >0 ? e.costo : e.precio;
+      const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
+      if (e.costo > 0) {
+        if (e.tipo === 'refaccion') {
+          reporte.sobrescrito_refaccion += operacion;
+        } else if (e.tipo === "MO") {
+          reporte.sobrescrito_mo += operacion;
+        }else {
+          reporte.sobrescrito_paquetes += operacion;
+          const info = this.reportePaquete(e.elementos,margen)
+          e['reporte_interno'] = info
+          e['precio'] = info.total
         }
-      })
-    }
-    const suma = reporte.mo + reporte.sobrescrito_mo + reporte.refacciones_1 + reporte.sobrescrito_refaccion + reporte.sobrescrito_paquetes
- 
-    let iva = 0, total= suma, subtotal= suma, UB=0
+      }else{
+        if (e.tipo === 'refaccion') {
+          reporte.refacciones_a += operacion;
+        } else if (e.tipo === "MO") {
+          reporte.mo += operacion;
+        }else {
+          const info = this.reportePaquete(e.elementos,margen)
+          e['reporte_interno'] = info;
+          e['precio'] = info.total;
 
-    if(this.iva) {
-      total = suma * 1.16
-      iva = suma *.16
-    }else{
-      total = suma
-    }
-    UB = (total - reporte.refacciones_ad)*100/total
-
-    // console.log(typeof this.formaPago);
-
-    this.formasPAgo.forEach(f=>{
-      if (Number(this.formaPago) === Number(f['id'])) {
-        if (f['id'] == 1) {
-          total = total - this.descuento
-        }else{
-          const operacion = total * (1 + (f['interes'] / 100))
-          reporte['meses'] = operacion;
-          (f['numero']>0) ? this.meses = f['numero'] : this.meses = 0
+          reporte.mo += info.mo;
+          reporte.refacciones_a += info.refacciones;
+          reporte.sobrescrito_mo += info.sobrescrito_mo;
+          reporte.sobrescrito_refaccion += info.sobrescrito_refaccion;
+          // console.log('costo normal',info);
         }
       }
     })
+    
+    reporte.refacciones_v = (reporte.refacciones_a * margen)
 
-    this.reporte = {...reporte,iva,subtotal,total,UB}
+    const suma = reporte.mo + reporte.refacciones_v + reporte.sobrescrito_mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_refaccion
 
+    reporte.subtotal = suma;
+
+    (this.iva) ? reporte.total = suma * 1.16 : reporte.total = suma;
+
+    if (this.iva) reporte.iva = suma * .16 ;
+    
+    reporte.ub = (reporte.total - reporte.refacciones_v)*100/reporte.total
+
+    const enCaso_meses = this.formasPAgo.find(f=>Number(f['id']) === Number(this.formaPago))
+    // console.log(enCaso_meses);
+    if (Number(enCaso_meses['id']) === 1) {
+      reporte.descuento = this.descuento
+      reporte.total -= reporte.descuento
+    }else{
+      reporte.descuento = 0
+      const operacion = reporte.total * (1 + (enCaso_meses['interes'] / 100))
+      reporte.meses = operacion;
+      (enCaso_meses['numero']>0) ? this.meses = enCaso_meses['numero'] : this.meses = 0
+    }
+    
+    this.reporte = {...reporte}
+    // console.log(elementos);
+    // console.log(reporte);
     this.infoCotizacion['reporte'] = this.reporte
+
     this.realizarInfo(elementos)
+    // console.log(this.infoCotizacion);
+    
+    
+  }
+
+  reportePaquete(elementos:any[],margen:number){
+    const reporte_interno = { mo: 0, refacciones: 0, sobrescrito_mo: 0, sobrescrito_refaccion: 0 };
+    elementos.forEach((e_interno) => {
+      const pre_interno = e_interno.costo > 0 ? e_interno.costo : e_interno.precio;
+      const operacion_interno = e_interno.tipo === 'refaccion' ? e_interno.cantidad * pre_interno : e_interno.cantidad * pre_interno;
+      if (e_interno.costo > 0) {
+        (e_interno.tipo === 'refaccion') ? reporte_interno.sobrescrito_refaccion += operacion_interno : reporte_interno.sobrescrito_mo += operacion_interno;
+      }else{
+        (e_interno.tipo === 'refaccion') ? reporte_interno.refacciones += operacion_interno : reporte_interno.mo += operacion_interno;
+      }
+    })
+    const suma = reporte_interno.mo + (reporte_interno.refacciones * margen) + reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion
+    return  {...reporte_interno, total: suma}
   }
   async comprobarInfoCliente(){
     const valor = this.myControlClientes.value;
@@ -988,8 +971,6 @@ camposDesgloce = [
     this.indexPaquete = null
   }
   eliminaElemento(index:number){
-    console.log(index);
-    
     const elementos:any[] = this.infoCotizacion.elementos
     elementos[index] = null
     this.infoCotizacion.elementos = elementos.filter(e=>e)
@@ -1012,10 +993,10 @@ camposDesgloce = [
     this.infoCotizacion.elementos[indexPadre].elementos[indexHijo].cantidad = cantidad
     this.realizarOperaciones()
   }
-  async cambiaCosto(event: Event,indexPadre:number,indexHijo:number){
+  cambiaCosto(event: Event,indexPadre:number,indexHijo:number){
     const costo:number = Number((event.target as HTMLInputElement).value);
     this.infoCotizacion.elementos[indexPadre].elementos[indexHijo].costo = costo
-    await this.realizarOperaciones()
+    this.realizarOperaciones()
   }
   cambiaPrecioSubrelemento(event: Event,indexPadre:number,indexHijo:number){
     const costo:number = Number((event.target as HTMLInputElement).value);

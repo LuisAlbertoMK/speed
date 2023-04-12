@@ -934,6 +934,7 @@ export class PdfRecepcionService {
 
    const nuevasdocumentDefinitionimages = {}
    nuevasdocumentDefinitionimages['logo'] = `${(await this.getBase64ImageFromURL('../../assets/logoSpeedPro/Logo-Speedpro.png'))}`
+   nuevasdocumentDefinitionimages['firma'] = `${data['firma']}`
   //  console.log(nuevasdocumentDefinitionimages);
   if (!data['infoCliente'].empresa) {
     data['infoCliente'].empresa = data['infoCliente'].tipo
@@ -1301,8 +1302,14 @@ export class PdfRecepcionService {
         
                 body: [
                   [ {  text: `FIRMA DE CONFORMIDAD`,bold: true, alignment: 'center', style:'terminos2'} ],
-                  [ {  columns: [ { width: '100%', text: ` `, } ], columnGap: 10 } ],
-                  [ {  columns: [ { width: '100%', text: ` `, } ], columnGap: 10 } ],
+                  [ {
+                    image: `firma`,
+                    height: 50,
+                    width: 90,
+                    aling: 'center',
+                    valing: 'center',
+                    alignment:'center'
+                  } ],
                   [ {  text: `__________________________`,bold: true, alignment: 'center', style:'terminos2'} ],
                 ]
               }

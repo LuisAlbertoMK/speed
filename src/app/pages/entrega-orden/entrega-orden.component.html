@@ -1,65 +1,65 @@
 <!-- <button
     class="btn btn-sm btn-outline-primary m-5"
-    (click)="generaPdfRemision()">Genera</button> -->
+    (click)="obtenerFirma()">Img firmas</button> -->
 
 <div class="card">
     <div class="card-body">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                 <h2 class="text-primary">
-                    <strong>informacion de recepcion # {{data['no_os']}}</strong>
+                    <strong>informacion de recepcion # {{dataRecepcion['no_os']}}</strong>
                 </h2>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="data['infoCliente']">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['infoCliente']">
                 <div class="row border">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                         <h1>Informacion de cliente</h1>
                     </div>
                     <ng-container *ngFor="let campo of camposCliente">
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 text-start" *ngIf="data['infoCliente'][campo['valor']]">
-                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{data['infoCliente'][campo['valor']]}}</strong></p>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12 text-start" *ngIf="dataRecepcion['infoCliente'][campo['valor']]">
+                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{dataRecepcion['infoCliente'][campo['valor']]}}</strong></p>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="data['infoVehiculo']">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['infoVehiculo']">
                 <div class="row border">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                         <h1>Informacion de vehiculo</h1>
                     </div>
                     <ng-container *ngFor="let campo of camposVehiculo">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="data['infoVehiculo'][campo['valor']]">
-                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{data['infoVehiculo'][campo['valor']]}}</strong></p>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="dataRecepcion['infoVehiculo'][campo['valor']]">
+                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{dataRecepcion['infoVehiculo'][campo['valor']]}}</strong></p>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="data['infoTecnico']">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['infoTecnico']">
                 <div class="row border">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                         <h1>Informacion de Tecnico</h1>
                     </div>
                     <ng-container *ngFor="let campo of camposTecnico">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="data['infoTecnico'][campo['valor']]">
-                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{data['infoTecnico'][campo['valor']]}}</strong></p>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="dataRecepcion['infoTecnico'][campo['valor']]">
+                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{dataRecepcion['infoTecnico'][campo['valor']]}}</strong></p>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="data['ckeckList']">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['ckeckList']">
                 <div class="row border">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                         <h1>Check list</h1>
                     </div>
-                    <ng-container *ngFor="let campo of data['ckeckList']">
+                    <ng-container *ngFor="let campo of dataRecepcion['ckeckList']">
                         <!-- {{campo | json}} -->
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="data['ckeckList']">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="dataRecepcion['ckeckList']">
                             <p class="text-uppercase">{{campo['mostrar']}} : <strong class="text-uppercase">{{campo['status']}}</strong></p>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="data['servicios']">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['servicios']">
                 <div class="row border">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                         <h1>Servicios</h1>
@@ -81,36 +81,29 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let campo of data['servicios']; let i = index" [ngClass]="{'eliminado': !campo['aprobado']}">
-                            <th class="text-center" scope="row">{{i + 1}}</th>
-                            <td class="text-start" >{{campo['nombre']}}</td>
-                            <td class="text-start" >{{campo['tipo']}}</td>
-                            <td class="text-center" >{{campo['cantidad']}}</td>
-                            <td class="text-end" >{{campo['precio'] | monedas}}</td>
-                            <td class="text-end" >{{campo['costo'] | monedas}}</td>
-                            <td class="text-end" *ngIf="campo['costo'] > 0">{{campo['costo'] * campo['cantidad']| monedas}}</td>
-                            <td class="text-end" *ngIf="campo['costo'] <= 0">{{campo['precio'] * campo['cantidad']| monedas}}</td>
-                            <td class="text-end" >
-                                menu aqui 
-                            </td>
-                          </tr>
+                            <ng-container *ngFor="let campo of dataRecepcion['servicios']; let i = index">
+                                
+                                <tr  *ngIf="campo['aprobado']">
+                                    <th class="text-center" scope="row">{{i + 1}}</th>
+                                    <td class="text-start" >{{campo['nombre']}}</td>
+                                    <td class="text-start" >{{campo['tipo']}}</td>
+                                    <td class="text-center" >{{campo['cantidad']}}</td>
+                                    <td class="text-end" >{{campo['precio'] | monedas}}</td>
+                                    <td class="text-end" >{{campo['costo'] | monedas}}</td>
+                                    <td class="text-end" *ngIf="campo['costo'] > 0">{{campo['costo'] * campo['cantidad']| monedas}}</td>
+                                    <td class="text-end" *ngIf="campo['costo'] <= 0">{{campo['precio'] * campo['cantidad']| monedas}}</td>
+                                    <td class="text-end" >
+                                        menu aqui 
+                                    </td>
+                                  </tr>
+                            </ng-container>
+                            
+                          
                         </tbody>
                       </table>
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="data['ckeckList']">
-                <div class="row border">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                        <h1>Desgloce</h1>
-                    </div>
-                    <ng-container *ngFor="let campo of data['ckeckList']">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="data['ckeckList']">
-                            <p class="text-uppercase">{{campo['mostrar']}} : <strong class="text-uppercase">{{campo['status']}}</strong></p>
-                        </div>
-                    </ng-container>
-                </div>
-            </div> -->
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                 <h1>Formulario de complementos <strong class="text-danger text-uppercase">{{FormComplementos.controls['facturaRemision'].value }}</strong></h1>
                 <form  [formGroup]="FormComplementos" class="m-2">
@@ -196,8 +189,10 @@
                             </div>
                         </div>
                 </form>
-                <div class="col-12 text-center" style="font-size: 11;" >
+                <div class="col-12 text-center">
                     <canvas #firmaDigital id="main-canvas" class="fluid" style="touch-action:none;" ></canvas>
+                    <br>
+                    <button class="btn btn-sm btn-outline-danger" (click)="obtenerFirma('clean')">Limpiar</button>
                     <br>
                     <h3 class="fw-bolder">Firma de cliente</h3>
                   </div>
@@ -220,14 +215,21 @@
                     <ng-container *ngFor="let campo of camposDesgloce">
                         <!-- {{campo | json}} -->
                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="reporte[campo['valor']]">
-                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{reporte[campo['valor']] | monedas}}</strong></p>
+                            <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{reporte[campo['valor']] | monedas:campo.symbolo}}</strong></p>
                         </div>
                     </ng-container>
                 </div>
             </div>
-            <div class="col text-center">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mt-1">
                 <button class="btn btn-sm btn-primary" (click)="validarTipo()">Entregar vehiculo</button>
             </div>
+            <ng-container *ngIf="faltantes">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mt-1" >
+                    Informacion faltante: <strong class="text-danger">{{faltantes}}</strong>
+                </div>
+            </ng-container>
+            
+            
         </div>
         </div>
         <div>

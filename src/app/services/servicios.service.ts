@@ -143,7 +143,7 @@ export class ServiciosService {
       answer.gastos = total_gastos
       answer.utilidad = answer.subtotal - answer.gastos
       answer.utilidad_iva = answer.total - answer.gastos
-      answer.total_ul = answer.pagado - (answer.real_gastos_refaccion + answer.real_gastos_mo )
+      // answer.total_ul = (answer.real_gastos_refaccion + answer.real_gastos_mo )
     return answer 
   }
   

@@ -120,13 +120,24 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   ordena:boolean = true; info:any=[]; indexxx:number = null; element:any =[]
 
   camposDesgloce = [
-    {nombre:'subtotal',valor:'subtotal'}, {nombre:'IVA',valor:'iva'},{nombre:'total',valor:'total'},
-    {nombre:'costo de refacción',valor:'refacciones_1'},{nombre:'precio de venta refacción',valor:'refacciones_2'},
-    {nombre:'MO',valor:'mo'},
-    // {nombre:'sobrescrito mo',valor:'sobrescrito_mo'},{nombre:'sobrescrito R',valor:'sobrescrito_refaccion'},
-    {nombre:'Sobrescrito',valor:'sobrescrito'},
-    {nombre: 'U.B',valor:'UB'},
+    {show:'MO',valor:'mo'},
+    {show:'costo de refacción',valor:'refacciones_a'},
+    {show:'precio de venta refacción',valor:'refacciones_v'},
+    {show:'Sobrescrito',valor:'sobrescrito'},
+    {show:'subtotal',valor:'subtotal'},
+    {show:'IVA',valor:'iva'},
+    {show:'total',valor:'total'},
+    {show: 'U.B estimada',valor:'ub',symbolo:'%'},
   ]
+  camposGastosPagos = [
+    {show:'U.B real',valor:'ub',symbolo:'%'},
+    {show:'Pagado',valor:'gastos'},
+    {show:'Gastos',valor:'pagos'},
+    {show:'Utilidad',valor:'utilidad'},
+  ]
+  // iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
+  //         subtotal:0, total:0, ub:0, meses:0, descuento:0
+
   // UB:'0',mo:0,refacciones_1:0,refacciones_2:0,subtotal:0,iva:0,sobrescrito_mo:0,sobrescrito_refaccion:0,total:0 
   informacionReporteEspecifico:any=[]
 
@@ -352,9 +363,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
                   elementosX.push({...ser})
                 }
               })
-          elementosX.map(async (cot,index)=>{   
+          elementosX.map((cot,index)=>{   
             // console.log(cot['id']);
-            this.clientes.map(async (cli)=>{
+            this.clientes.map( (cli)=>{
               if(cot['cliente'] === cli['id']) {
               // console.log(cli);
                 cot['infoCliente'] = cli
@@ -366,33 +377,21 @@ export class ServiciosComponent implements OnInit, OnDestroy {
                 }
               }
             })
-            const ser = cot['servicios']
-            ser.map((element,index) => {
-              if (element['tipo'] === 'paquete') {
-                if (element['costo']>0) {
-                  // ser[index].flotilla = element['costo']
-                }else{
-                  const costo = this._publicos.costodePaquete( element['elementos'],cot['margen'])
-                  // ser[index].flotilla = costo.totalPaquete
-                  ser[index].precio = costo.flotilla
-                }
-              }
-            });
-            // if (!cot['HistorialPagos']) {
-            //   cot['HistorialPagos'] = []
-            // } else{
-            //   const arreglo1 = this.crearArreglo2(cot['HistorialPagos'])
-            //   cot['HistorialPagos'] = arreglo1
-            // }
-            // if (!cot['HistorialGastos']) {
-            //   cot['HistorialGastos'] = []
-            // }else{
-            //   const arreglo1 = this.crearArreglo2(cot['HistorialGastos'])
-            //   cot['HistorialGastos'] = arreglo1
-            // }
+            // const ser = cot['servicios']
+            // ser.map((element,index) => {
+            //   if (element['tipo'] === 'paquete') {
+            //     if (element['costo']>0) {
+            //       // ser[index].flotilla = element['costo']
+            //     }else{
+            //       const costo = this._publicos.costodePaquete( element['elementos'],cot['margen'])
+            //       // ser[index].flotilla = costo.totalPaquete
+            //       ser[index].precio = costo.flotilla
+            //     }
+            //   }
+            // });
             
-            cot['desgloce'] = this._publicos.realizarOperacion(cot,'servicios')
-
+            
+            
             cot['infoSucursal'] = this.sucursales.find(o=>o['id'] === cot['sucursal'])
             cot['index'] = index
             if (cot['status'] !=='entregado' && cot['fecha_recibido']) {
@@ -414,9 +413,39 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             if(cot['HistorialGastos']) nuevosGastos = this.crearArreglo2(cot['HistorialGastos'])
             // cot['HistorialGastos'] = nuevosGastos
             cot['gastos_'] = nuevosGastos
-
-            cot['_pagos']  = this._servicios.realizarPagos(cot)
             
+            // cot['_pagos']  = this._servicios.realizarPagos(cot)
+            
+            
+            if(!cot.descuento) cot.descuento = 0
+            if(!cot.servicios) cot.servicios = []
+            const envia_temp = {
+              elementos: cot.servicios,
+              margen_get: cot.margen,
+              iva: cot.iva,
+              formaPago: cot.formaPago,
+              descuento: cot.descuento,
+            }
+            
+            
+            // if (cot['no_os'] ==='CU0323GE00017') {
+              // console.log(cot.no_os);
+              // console.log(cot.servicios);
+              
+              // cot['desgloce'] = this._publicos.realizarOperacion(cot,'servicios')
+              const info = this._publicos.realizarOperaciones_2(envia_temp)
+              // console.log(info);
+              cot['desgloce'] = info.reporte
+              const envia_temp_gastos = {
+                historial_gastos: cot['gastos_'],
+                historial_pagos: cot['pagos_']
+              }
+              // const reportes = this._publicos.realizarOperaciones_real(envia_temp_gastos)
+              // console.log(reportes);
+              cot['_pagos'] = this._publicos.realizarOperaciones_real(envia_temp_gastos)
+              // console.log('ub',if);
+              
+            // }
           })
           // console.log('aqui');
           // console.log(elementosX);

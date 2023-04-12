@@ -1615,25 +1615,168 @@ export class ServiciosPublicosService {
                                                                 title: mensaje
                                                               })
                                                         }
-async swalPrevisualizar(mensaje:string){
-    const answer = {accion:''}
-    await Swal.fire({
-        title: `${mensaje}`,
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Previsualizar',
-        denyButtonText: `Continuar con entrega`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-            answer.accion = 'previsualizar'
-        //   Swal.fire('Saved!', '', 'success')
-        } else if (result.isDenied) {
-        //   Swal.fire('Changes are not saved', '', 'info')
-            answer.accion = 'continuar'
+    async swalPrevisualizar(mensaje:string){
+        const answer = {accion:''}
+        await Swal.fire({
+            title: `${mensaje}`,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Previsualizar',
+            denyButtonText: `Continuar con entrega`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                answer.accion = 'previsualizar'
+            //   Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+            //   Swal.fire('Changes are not saved', '', 'info')
+                answer.accion = 'continuar'
+            }
+          })
+          return answer
+    }
+    realizarOperaciones_2(data:any){
+        
+        const  { elementos, margen_get, iva, formaPago, descuento } = data
+        
+        const margen = (1 + (margen_get/100))
+        
+        const reporte = {
+          iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
+          subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
         }
-      })
-      return answer
-}
+        elementos.map((e,index)=>{
+          e['index'] = index
+          const pre = e.costo >0 ? e.costo : e.precio;
+          const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
+          if (e.costo > 0) {
+            if (e.tipo === 'refaccion') {
+              reporte.sobrescrito_refaccion += operacion;
+            } else if (e.tipo === "MO") {
+              reporte.sobrescrito_mo += operacion;
+            }else {
+              reporte.sobrescrito_paquetes += operacion;
+              const info = this.reportePaquete(e.elementos,margen)
+              e['reporte_interno'] = info
+              e['precio'] = info.total
+            }
+          }else{
+            if (e.tipo === 'refaccion') {
+              reporte.refacciones_a += operacion;
+            } else if (e.tipo === 'MO') {
+              reporte.mo += operacion;
+            }else {
+                
+                const info = this.reportePaquete(e.elementos,margen)
+                e['reporte_interno'] = info;
+                e['precio'] = info.total;
+      
+                reporte.mo += info.mo;
+                reporte.refacciones_a += info.refacciones;
+                reporte.sobrescrito_mo += info.sobrescrito_mo;
+                reporte.sobrescrito_refaccion += info.sobrescrito_refaccion;
+              // console.log('costo normal',info);
+            }
+          }
+        })
+        
+        reporte.refacciones_v = (reporte.refacciones_a * margen)
+    
+        const suma = reporte.mo + reporte.refacciones_v + reporte.sobrescrito_mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_refaccion
+        reporte.sobrescrito = reporte.sobrescrito_mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_refaccion
+        reporte.subtotal = suma;
+    
+        (iva) ? reporte.total = suma * 1.16 : reporte.total = suma;
+    
+        if (iva) reporte.iva = suma * .16 ;
+        
+        reporte.ub = (reporte.total - reporte.refacciones_v)*100/reporte.total
+    
+        const enCaso_meses = this.formasPAgo.find(f=>Number(f['id']) === Number(formaPago))
+        // console.log(enCaso_meses);
+        if (Number(enCaso_meses['id']) === 1) {
+          reporte.descuento = descuento
+          reporte.total -= reporte.descuento
+        }else{
+          reporte.descuento = 0
+          const operacion = reporte.total * (1 + (enCaso_meses['interes'] / 100))
+          reporte.meses = operacion;
+        }
+        return {elementos, reporte}
+    }
+    
+    reportePaquete(elementos:any,margen:number){
+        if(!elementos) elementos = []
+        const reporte_interno = { mo: 0, refacciones: 0, sobrescrito_mo: 0, sobrescrito_refaccion: 0 };
+        elementos.forEach((e_interno) => {
+          const pre_interno = e_interno.costo > 0 ? e_interno.costo : e_interno.precio;
+          const operacion_interno = e_interno.tipo === 'refaccion' ? e_interno.cantidad * pre_interno : e_interno.cantidad * pre_interno;
+          if (e_interno.costo > 0) {
+            (e_interno.tipo === 'refaccion') ? reporte_interno.sobrescrito_refaccion += operacion_interno : reporte_interno.sobrescrito_mo += operacion_interno;
+          }else{
+            (e_interno.tipo === 'refaccion') ? reporte_interno.refacciones += operacion_interno : reporte_interno.mo += operacion_interno;
+          }
+        })
+        const suma = reporte_interno.mo + (reporte_interno.refacciones * margen) + reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion
+        return  {...reporte_interno, total: suma}
+    }
+    realizarOperaciones_real(hitoriales:any){
+        const { historial_gastos, historial_pagos } = hitoriales
+        const reporte_gastos = {mo:0, refacciones:0,ub:0}
+        const reporte_pagos = {total:0}
+        const reporte_utilidad = {utilidad:0}
+        historial_gastos.forEach(gasto => {
+            if(gasto.status){
+                (gasto.gasto_tipo ==='mo') ?
+                reporte_gastos.mo += gasto['monto'] : 
+                reporte_gastos.refacciones += gasto['monto']
+            }
+        });
+        historial_pagos.forEach(pago => {
+            if(pago.status) reporte_pagos.total += pago.monto 
+        });
 
-                                                    }
+        const gastos = reporte_gastos.mo + reporte_gastos.refacciones
+
+        reporte_gastos.ub = 100 - ((reporte_gastos.refacciones * 100) / gastos)
+
+        reporte_utilidad.utilidad = reporte_pagos.total - gastos
+
+        return {...reporte_gastos, gastos: gastos,pagos:reporte_pagos.total,utilidad:reporte_utilidad.utilidad}
+    }
+
+   
+
+            descargarImagenTemp(dataURL:any){
+                if (navigator.userAgent.indexOf('safari')>-1 && navigator.userAgent.indexOf('Chrome')===-1) {
+                  window.open(dataURL)
+                  return dataURL
+                }else{
+                  const blob = this.UrltoBlob(dataURL)
+                  const url = window.URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                    // a.href = url
+                    console.log(this.UrltoBlob(dataURL));
+                    console.log(dataURL);
+                    
+                    return blob
+                  // a.download,' = nombre
+                  // this.firma = blob
+                  // document.body.appendChild(a)
+                  // a.click()
+                  // window.URL.revokeObjectURL(url)
+                }
+              }
+              UrltoBlob(dataURL:any){    
+                const partes = dataURL.split(';base64,')
+                const contentType = partes[0].split(':')[1]
+                const raw = window.atob(partes[1])
+                const rawL = raw.length
+                const array = new Uint8Array(rawL)
+                for(let i=0; i<rawL;i++){
+                  array[i]= raw.charCodeAt(i)
+                }
+                return new Blob([array],{type: contentType})
+              }
+
+ }
