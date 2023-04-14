@@ -1068,7 +1068,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
               updates[`recepciones/${data.id}/fecha_entregado`] = fecha_cancelado;
               update(ref(db), updates).then(async ()=>{
                 await this._email.EmailCambioStatus(infoEmail).then((ans:any)=>{})
-              });
+              });}
+            if (stat === 'entregado') {
+              this.router.navigateByUrl(`/entregaRecepcion/${data['id']}`)
             }else{
               set(ref(db, `recepciones/${data.id}/status`), stat )
               .then(async () => {

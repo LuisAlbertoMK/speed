@@ -7,6 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { UploadPDFService } from 'src/app/services/upload-pdf.service';
+import Swal from 'sweetalert2';
+import { EmailsService } from 'src/app/services/emails.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -84,9 +87,10 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
   }
 
   faltantes:string
-
+  aunPuedeRealizarEntrega:boolean = true
   
-  constructor(private _pdf: PdfRecepcionService, private fb: FormBuilder, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService) { }
+  constructor(private _pdf: PdfRecepcionService, private fb: FormBuilder, private _upload: UploadPDFService,
+    private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,private _email:EmailsService) { }
 
   ngOnInit(): void {  
     // console.log(this.data);
@@ -97,6 +101,10 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
   ngAfterViewInit() {
     this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
   }
+  Style(){
+    return (this.aunPuedeRealizarEntrega) ? '':'none'
+  }
+
   consultaInformacion(){
     // console.log(this.rutaActiva.snapshot.params['idRecepcion']);
     this.idRecepcion = this.rutaActiva.snapshot.params['idRecepcion']
@@ -125,17 +133,10 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
               
                 this.cliente = dataRecepcion['cliente']
                 integra['infoCliente'] = dataCliente
-                integra['dataFacturacion'] = dataCliente['dataFacturacion']
+                // integra['dataFacturacion'] = dataCliente['dataFacturacion']
                 ///traer los datos de facturacion y puede ser que sean mas de uno por eso se convierte en arreglo
                 //por default utilizamos el primero que encontramos
-                if (dataCliente['dataFacturacion']) {
-                  const facturacion = this._publicos.crearArreglo2(dataCliente['dataFacturacion'])
-                  if (facturacion.length) {
-                    integra['dataFacturacion'] =  facturacion[0]
-                  }else{
-                    integra['dataFacturacion'] =  null
-                  }
-                }
+                
                 //los vehiculos se convierte en areglo y buscamos el vehiculo correcto para mostrar esa informacion en el pdf
                 if (dataCliente['vehiculos']) {
                   const vehiculos = this._publicos.crearArreglo2(dataCliente['vehiculos'])
@@ -146,6 +147,9 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
                // ya que en el pdf se revisa si es factura o remision 
                const aprobados = integra['servicios'].filter(a=>a['aprobado'])
                integra['servicios'] = aprobados
+               if (integra.status ==='entregado' || integra.status ==='cancelado') {
+                this.aunPuedeRealizarEntrega = false
+               }
                this.dataRecepcion = integra
                this.validaTipo2()
                this.realizaOperaciones()
@@ -262,11 +266,12 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
     })
     if(this.SignaturePad.isEmpty())answer.faltantes.push('firma cliente')
     if(answer.faltantes.length) answer.ok = false
+    
     return answer
   }
   //verificamos si el formulario extra es valido para pdoer continuar con la generacion de pdf
   generaPdfRemision(){
-    const {ok, faltantes} = this.validacionesFormComplementos()
+    const { ok, faltantes } = this.validacionesFormComplementos()
 
     if (ok) {
       this.faltantes = null
@@ -279,15 +284,18 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
           let observaciones = '  '
           //agregamos la  informacion para pdf
           if (valoresForm['observaciones']) observaciones = valoresForm['observaciones']
+          const getTime = this._publicos.getFechaHora()
           let agrega = {
             kilometraje: valoresForm.kilometraje,
             facturaRemision: valoresForm.facturaRemision,
             formaPago: show,
             observaciones: observaciones,
-            firma: this.SignaturePad.toDataURL()
+            firma: this.SignaturePad.toDataURL(),
+            fecha_entregado:getTime.fecha,
+            hora_entregado: getTime.hora
           }
           const ifoPdf = {...agrega, ...this.dataRecepcion}
-          console.log(ifoPdf);
+          // console.log(ifoPdf);
           this._pdf.crearPdfRemision(ifoPdf)
           // en caso de ser correcto realizar 
           .then((pdf_ans)=>{
@@ -295,11 +303,67 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
             if (accion === 'previsualizar') {
               pdfDocGenerator.open();
             }else if(accion === 'continuar'){
-              pdfDocGenerator.download(`${ifoPdf['no_os']}.pdf`);
+              const updates = {}
+              
+              updates[`recepciones/${this.idRecepcion}/fecha_entregado`] = getTime.fecha
+              updates[`recepciones/${this.idRecepcion}/hora_entregado`] = getTime.hora
+              pdfDocGenerator.getBlob((blob)=>{
+                this._upload.uploadRecepcion(blob,`${ifoPdf['no_os']}`)
+                .then((answer)=>{
+                  // console.log(' estamos en subida de pdf');
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'info',
+                    title: 'Espere porfavor...',
+                    showConfirmButton: false,
+                    timer: 5000
+                  })
+                  Swal.isLoading()
+                  const intervalo_PDF = setInterval(()=>{
+                    if (answer.ruta) {
+                      //aqui esperamos a que la ruta se obtenga esto sucede una vez se sube el arachivo
+                      // console.log('tenemos la ruta del pdf');
+                      clearInterval(intervalo_PDF)
+                      updates[`recepciones/${this.idRecepcion}/pathPDF`] = answer.ruta
+                      updates[`recepciones/${this.idRecepcion}/status`] = 'entregado'
+                      let correos= []
+                      if (this.dataRecepcion['infoSucursal']['correo']) correos.push(this.dataRecepcion['infoSucursal']['correo'])
+                      if (this.dataRecepcion['infoCliente']['correo']) correos.push(this.dataRecepcion['infoCliente']['correo'])
+                      if (this.dataRecepcion['infoCliente']['correo_sec']) correos.push(this.dataRecepcion['infoCliente']['correo_sec'])
+                      const conceptos = []
+                      this.dataRecepcion['servicios'].map(e=>{
+                        conceptos.push(e['nombre'])
+                      })
+                      const dataCorreo = {
+                        correos,
+                        cliente: this.dataRecepcion['infoCliente'],
+                        sucursal: this.dataRecepcion['infoSucursal'],
+                        vehiculo: this.dataRecepcion['infoVehiculo'],
+                        conceptos: conceptos.join(', '),
+                        data: this.dataRecepcion
+                      }
+                      // console.log(dataCorreo);
+                      
+                      update(ref(db), updates).then(()=>{
+                        this._publicos.swalToast('entrega de recepcion correcta!!')
+                        this._email.EmailCotizacion(dataCorreo)
+                        pdfDocGenerator.download(`${ifoPdf['no_os']}.pdf`);
+                      })
+                    }
+                  },100)
+                })
+                .catch()
+                .finally()
+              })
+              // this._upload.uploadRecepcion(pdf_ans,'')
+              // update(ref(db), updates)
+              // pdfDocGenerator.download(`${ifoPdf['no_os']}.pdf`);
             }
           })
           // en caso de de exista algun error al generar pddf
           .catch(err=>{
+            console.log(err);
+            
             this._publicos.mensajeSwalError('No se pudo geerar el pdf, intente de nuevo o verifique informacion')
           })
           

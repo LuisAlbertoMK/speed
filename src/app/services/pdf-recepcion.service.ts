@@ -1145,7 +1145,7 @@ export class PdfRecepcionService {
             {  text: `${data['infoVehiculo'].color}`,bold: true, alignment: 'center', style:'sucursal'},
             {  text: `${data['infoVehiculo'].no_motor}`,bold: true, alignment: 'center', style:'sucursal'},
             {  text: `${data['kilometraje']}`,bold: true, alignment: 'center', style:'sucursal'},
-            {  text: `${data['ckeckList'][25].status}`,bold: true, alignment: 'center', style:'sucursal'},
+            {  text: ``,bold: true, alignment: 'center', style:'sucursal'},
           ],
         ]
       }
