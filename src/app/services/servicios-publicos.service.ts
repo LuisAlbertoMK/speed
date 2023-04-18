@@ -1597,24 +1597,30 @@ export class ServiciosPublicosService {
                                                                 title: mensaje
                                                               })
                                                         }
-                                                        swalToastError(mensaje:string){
-                                                            const Toast = Swal.mixin({
-                                                                toast: true,
-                                                                position: 'top-end',
-                                                                showConfirmButton: false,
-                                                                timer: 3000,
-                                                                // timerProgressBar: true,
-                                                                // didOpen: (toast) => {
-                                                                //   toast.addEventListener('mouseenter', Swal.stopTimer)
-                                                                //   toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                                                // }
-                                                              })
-                                                              
-                                                              Toast.fire({
-                                                                icon: 'error',
-                                                                title: mensaje
-                                                              })
-                                                        }
+        swalToastCenter(mensaje:string){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'center',
+                showConfirmButton: false,
+                timer: 2000,
+              })
+              Toast.fire({
+                icon: 'success',
+                title: mensaje
+              })
+        }
+        swalToastError(mensaje:string){
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            })                                             
+              Toast.fire({
+                icon: 'error',
+                title: mensaje
+              })
+        }
     async swalPrevisualizar(mensaje:string){
         const answer = {accion:''}
         await Swal.fire({
@@ -1639,7 +1645,7 @@ export class ServiciosPublicosService {
         
         const  { elementos, margen_get, iva, formaPago, descuento } = data
         
-        const margen = (1 + (margen_get/100))
+        const margen = margen_get
         
         const reporte = {
           iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
@@ -1652,7 +1658,7 @@ export class ServiciosPublicosService {
           if (e.costo > 0) {
             if (e.tipo === 'refaccion') {
               reporte.sobrescrito_refaccion += operacion;
-            } else if (e.tipo === "MO") {
+            } else if (e.tipo === "MO" || e.tipo ==='mo') {
               reporte.sobrescrito_mo += operacion;
             }else {
               reporte.sobrescrito_paquetes += operacion;
@@ -1663,7 +1669,7 @@ export class ServiciosPublicosService {
           }else{
             if (e.tipo === 'refaccion') {
               reporte.refacciones_a += operacion;
-            } else if (e.tipo === 'MO') {
+            } else if (e.tipo === 'MO' || e.tipo ==='mo') {
               reporte.mo += operacion;
             }else {
                 
@@ -1706,19 +1712,27 @@ export class ServiciosPublicosService {
     }
     
     reportePaquete(elementos:any,margen:number){
+        const margen_get = 1 + (margen/100)
         if(!elementos) elementos = []
-        const reporte_interno = { mo: 0, refacciones: 0, sobrescrito_mo: 0, sobrescrito_refaccion: 0 };
-        elementos.forEach((e_interno) => {
+        const reporte_interno = { mo: 0, refacciones: 0, refacciones_v:0, sobrescrito_mo: 0, sobrescrito_refaccion: 0 ,ub:0};
+        elementos.forEach((e_interno, index) => {
+            e_interno['index'] = index
           const pre_interno = e_interno.costo > 0 ? e_interno.costo : e_interno.precio;
           const operacion_interno = e_interno.tipo === 'refaccion' ? e_interno.cantidad * pre_interno : e_interno.cantidad * pre_interno;
           if (e_interno.costo > 0) {
             (e_interno.tipo === 'refaccion') ? reporte_interno.sobrescrito_refaccion += operacion_interno : reporte_interno.sobrescrito_mo += operacion_interno;
-          }else{
+            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen_get : e_interno['total'] = operacion_interno
+        }else{
             (e_interno.tipo === 'refaccion') ? reporte_interno.refacciones += operacion_interno : reporte_interno.mo += operacion_interno;
-          }
+            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen_get : e_interno['total'] = operacion_interno
+            }
         })
-        const suma = reporte_interno.mo + (reporte_interno.refacciones * margen) + reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion
-        return  {...reporte_interno, total: suma}
+        reporte_interno.refacciones_v = reporte_interno.refacciones * margen_get
+        const suma = reporte_interno.mo + (reporte_interno.refacciones_v) + reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion
+        // reporte_interno.ub = (suma - reporte_interno.refacciones)*100 / suma
+        reporte_interno.ub = 100 - ((reporte_interno.refacciones_v * 100) / suma )
+
+        return  {...reporte_interno, total: suma, margen_get}
     }
     realizarOperaciones_real(hitoriales:any){
         const { historial_gastos, historial_pagos } = hitoriales

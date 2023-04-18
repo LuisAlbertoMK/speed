@@ -1,16 +1,14 @@
 <div class="card">
     <div class="card-body">
         <div class="row mb-3">
-            
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 text-end" >
                 <h4>Buscar elemento en catalogo</h4>
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
                 
-                <input type="input" class="form-control form-control-sm" (ngModelChange)="verificaElemento()"
+                <input type="text" class="form-control form-control-sm" (ngModelChange)="verificaElemento()"
                      placeholder="Nombre de Refaccón / MO"
                      aria-label="Nombre"
-                     matInput
                      [formControl]="myControl"
                      [matAutocomplete]="auto"
                      >

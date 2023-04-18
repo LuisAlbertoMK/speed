@@ -157,12 +157,14 @@ export class MoRefaccionesComponent implements OnInit  {
     claves.forEach((c)=>{
       if (info[c]  ) {
         nuevaInfo[c] = info[c]
-      }else if(c ==='costo'){
-        nuevaInfo[c] = Number(info[c])
-      }else{
-
       }
     })
+    if(!nuevaInfo['costo']) nuevaInfo['costo'] =  0
+    // if(!nuevaInfo['precio']) nuevaInfo['precio'] =  0
+
+    
+    
+    
 
     // console.log(nuevaInfo);
 
@@ -172,41 +174,41 @@ export class MoRefaccionesComponent implements OnInit  {
       if (respuesta) {
         //verificar si es nuevo o si esta en c atalogo
         nuevaInfo['aprobado'] = true
+        
         if (nuevaInfo['id']) {
-          // this.dataElemento.emit( {data: nuevaInfo})
-          this._publicos.mensajeSwal('Se agrego elemento')
-          let PC:number = nuevaInfo['precio']
-          if (nuevaInfo['tipo'] === 'refaccion') {
-            if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
-            nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC) * 1.25)
-          }else{
-            if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
-            nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC))
-          }
+
+          const cantidad = nuevaInfo['cantidad']
           
+          const mul = (nuevaInfo['costo']>0) ? nuevaInfo['costo'] : nuevaInfo['precio']
+
+          nuevaInfo['total'] = mul * cantidad
+
           this.dataElemento.emit(  nuevaInfo )
+
+          this._publicos.mensajeSwal('Se agrego elemento')
+
           this.limpiarControl()
         }else{
           //agregar nueva clave
           nuevaInfo['id'] = this._publicos.generaClave()
          ///verificar donde se guardara (ya que se manejan dos distintas direcciones para mo / refacciones
-          if (nuevaInfo['tipo'] === 'refaccion') {
-            let PC:number = nuevaInfo['precio']
-            if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
-            nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC) * 1.25)
-            updates[`refacciones/${nuevaInfo['id']}`] = nuevaInfo;
-          }else{
-            let PC:number = nuevaInfo['precio']
-            if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
-            nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC))
-            updates[`manos_obra/${nuevaInfo['id']}`] = nuevaInfo;
-          }
+          // if (nuevaInfo['tipo'] === 'refaccion') {
+          //   let PC:number = nuevaInfo['precio']
+          //   if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
+          //   nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC) * 1.25)
+          //   updates[`refacciones/${nuevaInfo['id']}`] = nuevaInfo;
+          // }else{
+          //   let PC:number = nuevaInfo['precio']
+          //   if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
+          //   nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC))
+          //   updates[`manos_obra/${nuevaInfo['id']}`] = nuevaInfo;
+          // }
 
           
           // console.log(updates);
           // update(ref(db), updates).then(()=>{
             this._publicos.mensajeSwal('Se agrego elemento')
-            this.dataElemento.emit(  nuevaInfo)
+            this.dataElemento.emit( nuevaInfo )
             this.limpiarControl()
           // this.dataElemento.emit( {data: nuevaInfo})
           // })

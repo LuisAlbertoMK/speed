@@ -3,189 +3,185 @@
     <div class="row">
       <div class="col-12">
         <ol class="breadcrumb float-sm-right">
-          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="'/'+regresar">Regresar</a></li> -->
-          <li class="breadcrumb-item active">Modificar servicios recepción</li>
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/servicios']">Regresar</a></li>
+          <li class="breadcrumb-item active">Modifica O.S</li>
         </ol>
       </div>
     </div>
   </div>
 </div>
-
-<ng-container *ngIf="cliente && vehiculo">
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3 text-uppercase mb-2">
-      Orden de servicio <strong>#{{dataRecepcion.general['no_os']}}</strong>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="card border-dark">
-        <div class="card-body text-dark">
-          <h3 class="text-center text-uppercase"><strong>Información de cliente #
-              {{dataRecepcion.cliente['no_cliente']}}</strong></h3>
-          <div class="row card-text text-start">
-            <ng-container *ngFor="let item of camposCliente">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="dataRecepcion.cliente[item]">
-                {{item.toUpperCase()}}:<strong class="fs-6 text-uppercase"> {{dataRecepcion.cliente[item]}} </strong>
-              </div>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" *ngIf="dataRecepcion">
+        <h2 class="">
+            informacion de recepcion # 
+            <strong class="text-primary"> {{dataRecepcion['no_os']}}</strong> 
+            <strong class="text-uppercase text-danger">&nbsp;{{dataRecepcion['status']}}</strong>
+        </h2>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="dataRecepcion['infoCliente']">
+        <div class="row border">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <h1>Informacion de cliente</h1>
+          </div>
+          <!-- <pre>{{dataRecepcion['infoCliente'] | json}}</pre> -->
+          <ng-container *ngFor="let campo of camposCliente">
+            <ng-container *ngIf="dataRecepcion['infoCliente'][campo['valor']]">
+              <div class="col-lg-4 col-md-6 col-sm-6 col-12 text-start" >
+                <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{dataRecepcion['infoCliente'][campo['valor']]}}</strong></p>
+            </div>
             </ng-container>
-          </div>
+          </ng-container>
         </div>
       </div>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="card border-dark">
-        <div class="card-body text-dark">
-          <h3 class="text-center text-uppercase"><strong>Información de vehiculo #
-              {{dataRecepcion.vehiculo['placas']}}</strong></h3>
-          <div class="row card-text text-start">
-            <ng-container *ngFor="let item of camposVehiculo">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="dataRecepcion.vehiculo[item]">
-                {{item.toUpperCase()}}:<strong class="fs-6 text-uppercase"> {{dataRecepcion.vehiculo[item]}} </strong>
-              </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['infoVehiculo']">
+        <div class="row border">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <h1>Informacion de vehiculo</h1>
+            </div>
+            <ng-container *ngFor="let campo of camposVehiculo">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="dataRecepcion['infoVehiculo'][campo['valor']]">
+                    <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{dataRecepcion['infoVehiculo'][campo['valor']]}}</strong></p>
+                </div>
             </ng-container>
-          </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="row">
-
-    <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-      <button (click)="muestraPaquetes(!showPaquetes);" class="btn btn-sm btn-primary m-1">
-        Agrega paquete
-        <i class="fa" [ngClass]="{'fa-plus': !showPaquetes,'fa-minus': showPaquetes}"></i>
-      </button>
-      <button (click)="muestraFormElemento(!showFormElemento)" class="btn btn-sm btn-primary m-1">
-        Agrega elemento
-        <i class="fa" [ngClass]="{'fa-plus': !showFormElemento,'fa-minus': showFormElemento}"></i>
-      </button>
-      <!-- <button class="btn btn-sm btn-danger" (click)="restaurarOriginales()"
-      *ngIf="dataRecepcion.elementos_originales.length">
-      Restaurar elementos
-      <i class="fa fa-redo-alt"></i>
-    </button> -->
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-      <div class="form-group row">
-        <label  class="col-sm-2 col-form-label">Tecnico</label>
-        <div class="col-sm-10">
-          <select #tecnicoSelect class="form-control form-control-sm" (change)="cambiarTecnico(tecnicoSelect.value)">
-            <option value=""></option>
-            <option [selected]="dataRecepcion['tecnico'] == item['id']" [value]="item['id']" *ngFor="let item of listaTecnicos">{{item['usuario']}}</option>
-          </select>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['infoTecnico']">
+        <div class="row border">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <h1>Informacion de Tecnico</h1>
+            </div>
+            <ng-container *ngFor="let campo of camposTecnico">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="dataRecepcion['infoTecnico'][campo['valor']]">
+                    <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{dataRecepcion['infoTecnico'][campo['valor']]}}</strong></p>
+                </div>
+            </ng-container>
         </div>
       </div>
-      
-    </div>
-
-    <ng-container *ngIf="showPaquetes">
-      <div class="row mb-3">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-          <button class="btn btn-sm btn-primary m-1" (click)="filtrarPaquetes('modelo')"
-            [disabled]="!modeloFiltro">Modelo</button>
-          <button class="btn btn-sm btn-danger m-1" (click)="filtrarPaquetes('todos')"
-            [disabled]="modeloFiltro">Todos</button>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" *ngIf="dataRecepcion['ckeckList']">
+        <div class="row border">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <h1>Check list</h1>
+            </div>
+            <ng-container *ngFor="let campo of dataRecepcion['ckeckList']">
+                <!-- {{campo | json}} -->
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="dataRecepcion['ckeckList']">
+                    <p class="text-uppercase">{{campo['mostrar']}} : <strong class="text-uppercase">{{campo['status']}}</strong></p>
+                </div>
+            </ng-container>
         </div>
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-            <mat-form-field appearance="standard" class="col-lg-8 col-md-8 col-sm-8 col-12">
-              <mat-label>Busqueda de paquetes</mat-label>
-              <input matInput (keyup)="applyFilter($event,'paquetes')" placeholder="SpeedPro" #inputPaquetes
-                id="filtroPaquetes">
-            </mat-form-field>
-          </div>
-
-          <div class="mat-elevation-z8 table-responsive ">
-            <table #Paquetes="matSort" matSort mat-table [dataSource]="dataSourcePaquetes" multiTemplateDataRows>
-
-              <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef class="text-capitalize"> index </th>
-                <td mat-cell *matCellDef="let element" class="text-start">{{element.index}} </td>
-              </ng-container>
-              <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef class="text-capitalize"> nombre </th>
-                <td mat-cell *matCellDef="let element" class="text-start"> {{element.nombre | capitalizarUno}} </td>
-              </ng-container>
-              <ng-container matColumnDef="precio">
-                <th mat-header-cell *matHeaderCellDef class="text-capitalize"> precio </th>
-                <td mat-cell *matCellDef="let element" class="text-end"> {{element.refacciones1 | monedas}} </td>
-              </ng-container>
-              <ng-container matColumnDef="normal">
-                <th mat-header-cell *matHeaderCellDef class="text-capitalize"> normal </th>
-                <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla * 1.30 | monedas}} </td>
-              </ng-container>
-              <ng-container matColumnDef="flotilla">
-                <th mat-header-cell *matHeaderCellDef class="text-capitalize"> flotilla </th>
-                <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla | monedas}} </td>
-              </ng-container>
-              <ng-container matColumnDef="opciones">
-                <th mat-header-cell *matHeaderCellDef class="text-capitalize"> opciones </th>
-                <td mat-cell *matCellDef="let element" class="text-end">
-                  <button class="btn btn-sm" (click)="colocarpaquete(element)">
-                    <i class="fa fa-layer-plus btn btn-sm btn-success"></i>
-                  </button>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 text-end m-1">
+        <button class="btn btn-sm btn-primary ml-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-toggle="modal" data-bs-target="#modalPaquete">Agregar paquete </button>
+        <button class="btn btn-sm btn-primary ml-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-toggle="modal" data-bs-target="#modalMOrefaccion">Agregar elemento </button>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mat-elevation-z8 table-responsive" *ngIf="dataRecepcion['servicios']">
+          <table #elements="matSort" matSort mat-table [dataSource]="dataSource" multiTemplateDataRows>
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> index  </th>
+              <td mat-cell *matCellDef="let element" class="text-start">{{element.index + 1 | json}}</td>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> nombre </th>
+              <td mat-cell *matCellDef="let element" class="text-start" >
+                <strong
+                  [ngClass]="{'tipo-mo':element.tipo === 'MO' || element.tipo === 'mo','tipo-refaccion':element.tipo === 'refaccion','tipo-paquete':element.tipo === 'paquete'}">
+                  {{element.nombre | capitalizarUno}}</strong>
                 </td>
-              </ng-container>
-              <ng-container matColumnDef="expand">
-                <th mat-header-cell *matHeaderCellDef aria-label="row actions"
-                  [ngStyle]="{'min-width':(miniColumnas)*.4+'px'}">&nbsp;</th>
-                <td mat-cell *matCellDef="let element">
-                  <!-- <i class="fa fa-layer-plus btn btn-sm text-primary" (click)="agregarCotizacion(element)"></i> -->
-                  <!-- <i class="fa fa-edit btn btn-sm text-primary" data-bs-toggle="modal" data-bs-target="#InformacionPaquete"(click)="DataActualizaPaquete(element)"></i> -->
-                  <!-- <i class="fa fa-edit btn btn-sm text-primary"  data-bs-toggle="modal" data-bs-target="#paqueteAgrega" (click)="verificaInformacionPaquete(element)"></i>
+            </ng-container>
+            <ng-container matColumnDef="cantidad">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> cantidad </th>
+              <td mat-cell *matCellDef="let element" class="text-start"> {{element.cantidad | capitalizarUno}} </td>
+            </ng-container>
+            <ng-container matColumnDef="costo">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> costo </th>
+              <td mat-cell *matCellDef="let element" class="text-end"> {{element.costo | monedas}} </td>
+            </ng-container>
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> precio </th>
+              <td mat-cell *matCellDef="let element" class="text-end"> {{element.precio | monedas}} </td>
+            </ng-container>
+            <ng-container matColumnDef="normal">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> normal </th>
+              <td mat-cell *matCellDef="let element" class="text-end">{{element.total * 1.30 | monedas}}  </td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> total </th>
+              <td mat-cell *matCellDef="let element" class="text-end"> {{element.total | monedas}} </td>
+            </ng-container>
+            <ng-container matColumnDef="opciones">
+              <th mat-header-cell *matHeaderCellDef class="text-capitalize"> opciones </th>
+              <td mat-cell *matCellDef="let element" class="text-end">
+                <!-- <button class="btn btn-sm" (click)="colocarpaquete(element)">
+                  <i class="fa fa-layer-plus btn btn-sm btn-success"></i>
+                </button> -->
+                <!-- -->
+                <i class="fa fa-trash btn btn-sm btn-danger fa-xs m-1" (click)="eliminaElemento(element['index'])" ></i>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions"
+                [ngStyle]="{'min-width':(miniColumnas)*.4+'px'}">&nbsp;</th>
+              <td mat-cell *matCellDef="let element">
+                <!-- <i class="fa fa-layer-plus btn btn-sm text-primary" (click)="agregarCotizacion(element)"></i> -->
+                <!-- <i class="fa fa-edit btn btn-sm text-primary" data-bs-toggle="modal" data-bs-target="#InformacionPaquete"(click)="DataActualizaPaquete(element)"></i> -->
+                <!-- <i class="fa fa-edit btn btn-sm text-primary"  data-bs-toggle="modal" data-bs-target="#paqueteAgrega" (click)="verificaInformacionPaquete(element)"></i>
                 <i *ngIf="element.status" class="fa fa-ban btn btn-sm text-danger" (click)="changeStatusPaquete(element,false)"></i>
                 <i *ngIf="!element.status" class="fa fa-check btn btn-sm text-success" (click)="changeStatusPaquete(element,true)"></i> -->
-                  <button mat-icon-button aria-label="expand row"
-                    (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-
-
-              <ng-container matColumnDef="expandedDetail">
-                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpandpaquetes.length -1 ">
-                  <div class="example-element-detail"
-                    [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-
-                    <div class="table-responsive">
-                      <table class="table" style="width: 100%;">
-                        <thead>
-                          <tr>
-                            <th colspan="8" class="col text-center fs-5">U.B
-                              <strong [ngClass]="{'text-danger':element.UB<55,'text-success':element.UB>=55}">
-                                {{element.UB}} %
-                              </strong>
-                            </th>
-                          </tr>
-                          <tr>
-                            <th scope="col" class="text-capitalize">#</th>
-                            <th scope="col" class="text-capitalize">nombre</th>
-                            <th scope="col" class="text-capitalize">cantidad</th>
-                            <th scope="col" class="text-capitalize">precio</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let item of element.elementos; let i = index" class="anima">
-                            <th scope="row" class="text-center">{{i +1}}</th>
-                            <td class="text-start text-capitalize">{{item.nombre | capitalizarUno}}
-                              <strong
-                                [ngClass]="{'tipo-mo':item.tipo === 'MO','tipo-refaccion':item.tipo === 'refaccion'}"
-                                class="tipo-mo text-uppercase">
-                                ( {{item.tipo}} )
-                              </strong>
-                            </td>
-                            <td class="text-center">{{item.cantidad}}</td>
-                            <td class="text-end">{{item.precio | monedas}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <!-- <div class="row bg-black" style="width: 100%;">
+                <button mat-icon-button aria-label="expand row" *ngIf="element['tipo'] === 'paquete'"
+                  (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                  <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                  <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                <div class="example-element-detail row"
+                  [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                  <div class="example-element-description">
+                    <div class="row">
                       <ng-container *ngIf="element.elementos">
+                        <!-- <pre>{{element | json}}</pre> -->
                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                          
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th colspan="8" class="col text-center fs-5" *ngIf="element['reporte_interno'].ub">U.B
+                                    <strong [ngClass]="{'text-danger':element['reporte_interno'].ub<55,'text-success':element['reporte_interno'].ub>=55}">
+                                      {{element['reporte_interno'].ub  | monedas:'%'}}
+                                    </strong>
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th scope="col" class="text-capitalize">#</th>
+                                  <th scope="col" class="text-capitalize">nombre</th>
+                                  <th scope="col" class="text-capitalize">cantidad</th>
+                                  <th scope="col" class="text-capitalize">precio</th>
+                                  <th scope="col" class="text-capitalize"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let item of element.elementos; let i = index" class="anima">
+                                  <th scope="row" class="text-center">{{i +1}}</th>
+                                  <td class="text-start text-capitalize">
+                                    <strong
+                                      [ngClass]="{'tipo-mo':item.tipo === 'mo' || item.tipo === 'MO','tipo-refaccion':item.tipo === 'refaccion'}"
+                                      class="tipo-mo">
+                                       {{item.nombre | capitalizarUno}} 
+                                    </strong>
+                                  </td>
+                                  <td class="text-center">{{item.cantidad}}</td>
+                                  <td class="text-end">{{item.total | monedas}}</td>
+                                  <td>
+                                    <i class="fa fa-trash btn btn-sm btn-danger" aria-hidden="true"  (click)="eliminaSubElemento(item['index'], element['index'])"></i>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </ng-container>
                       <ng-container *ngIf="!element.elementos">
@@ -193,425 +189,74 @@
                           <i class="fa fa-warning text-info fa-2x"></i> <strong>Paquete sin elementos</strong>
                         </div>
                       </ng-container>
-                    </div> -->
-                  </div>
-                </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpandpaquetes"></tr>
-              <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpandpaquetes;"
-                class="example-element-row " [ngClass]="{'false':!element.status }"
-                [class.example-expanded-row]="expandedElement === element">
-
-              </tr>
-              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-            </table>
-            <mat-paginator #PaquetesPaginator role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="showFormElemento">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-        <mat-slide-toggle [(ngModel)]="guardarEnCatalogo" [disabled]="formElemento.controls['id'].value">Guardar
-          en catalogo</mat-slide-toggle>
-      </div>
-      <form [formGroup]="formElemento" (ngSubmit)="colocarElemento()">
-        <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-12">
-            <div class="row">
-              <label for="nombre" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">nombre</label>
-              <div class="col-9 col-sm-9 col-md-9 col-lg-9 ">
-                <input type="hidden" class="form-control form-control-sm" id="nombre" formControlName="nombre">
-                <input type="search" class="form-control form-control-sm text-uppercase" id="elementos"
-                  [formControl]="myControl" (ngModelChange)="verificaInforElemento('principal')"
-                  [matAutocomplete]="autoElementos" placeholder="Buscar por: nombre elemento">
-
-                <mat-autocomplete autoActiveFirstOption #autoElementos="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                    <strong
-                      [ngClass]="{'tipo-mo': option['tipo']==='MO','tipo-refaccion': option['tipo']==='refaccion'}">
-                      {{option['nombre'] | capitalizarUno}}
-                    </strong>
-                  </mat-option>
-                </mat-autocomplete>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12">
-            <div class="mb-1 row">
-              <label for="cantidad" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">
-                <ng-container *ngIf="formElemento.controls['tipo'].value === 'refaccion'">cantidad</ng-container>
-                <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'">Horas</ng-container>
-              </label>
-              <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="1" id="cantidad"
-                  formControlName="cantidad">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12">
-            <div class="mb-1 row">
-              <label for="precio" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">
-                <ng-container *ngIf="formElemento.controls['tipo'].value === 'refaccion'">precio</ng-container>
-                <ng-container *ngIf="formElemento.controls['tipo'].value === 'MO'">Costo</ng-container>
-              </label>
-              <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="1" id="precio" formControlName="precio">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12">
-            <div class="mb-1 row">
-              <label for="costo"
-                class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">Sobrescrito</label>
-              <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="0" id="costo" formControlName="costo">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12">
-            <div class="mb-1 row">
-              <label for="tipo" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">tipo</label>
-              <div class="col-9 col-sm-9 col-md-9 col-lg-9 ">
-                <select [ngModel]="formElemento.controls['tipo'].value" class="form-select form-select-sm"
-                  formControlName="tipo">
-                  <option value="MO">Mano obra</option>
-                  <option value="refaccion">Refaccion</option>
-                </select>
-              </div>
-            </div>
-
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="formElemento.controls['tipo'].value === 'refaccion'">
-            <div class="mb-1 row ">
-              <label for="marca" class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">marca</label>
-              <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                <div class="input-group mb-3">
-                  <select class="form-select form-select-sm" id="marca" [(ngModel)]="marcaSelect"
-                    formControlName="marca">
-                    <option value="">Ninguna</option>
-                    <option [selected]="marca.id === marcaSelect" value="marca.id"
-                      *ngFor="let marca of refaccionesMarcas">{{marca.marca}}</option>
-                  </select>
-                  <button class="btn btn-outline-primary" type="button" id="button-addon2"
-                    (click)="mensajeMarca()">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="mb-1 row">
-              <label for="descripcion"
-                class="col-3 col-sm-3 col-md-3 col-lg-3 col-form-label text-capitalize">descripcion</label>
-              <div class="col-9 col-sm-9 col-md-9 col-lg-9">
-                <textarea id="descripcion" cols="30" rows="3" formControlName="descripcion"
-                  style="width: 100%;"></textarea>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-            <button type="submit" [disabled]="formElemento.invalid ?'disabled':null"
-              class="btn btn-sm btn-primary col-lg-3 col-md-3 col-sm-4 col-10 m-1">Colocar</button>
-
-            <!-- <button type="button"
-            class="btn btn-sm btn-danger col-lg-3 col-md-3 col-sm-4 col-10 m-1">Cancelar</button> -->
-          </div>
-        </div>
-      </form>
-    </ng-container>
-    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-    <mat-checkbox class="example-margin" (change)="seleccionarAlls()" [(ngModel)]="seleccionarTodo">Seleccionar todo
-    </mat-checkbox>
-  </div> -->
-    <!-- <div class="card border-secondary col-lg-12 col-md-12 col-sm-12 col-12">
-    <div class="card-body">
-
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3 fw-bolder">
-          Elementos recepción
-        </div>
-        <ng-container>
-          <div class="col-lg-6 col-md-6 col-sm-6 col-12  text-start"
-            *ngFor="let servicio of dataRecepcion.servicios; let index = index ">
-            
-            <mat-checkbox type="checkbox" class="example-margin" [id]="servicio.id + '-' + index"
-              [checked]="servicio.aprobado" #val (change)="accionesRealiza(index,val)">
-              <strong class="fs-6" *ngIf="servicio.tipo === 'MO'" class="tipo-mo">
-                {{servicio.nombre | capitalizarUno}}
-              </strong>
-              <strong class="fs-6" *ngIf="servicio.tipo === 'refaccion'" class="tipo-refaccion">
-                {{servicio.nombre | capitalizarUno}}
-              </strong>
-              <strong class="fs-6" *ngIf="servicio.tipo === 'paquete'" class="tipo-paquete">
-                {{servicio.nombre | capitalizarUno}}
-              </strong>
-              {{servicio.precio | monedas}}
-            </mat-checkbox>
-            <mat-icon class="text-danger" (click)="eliminaElemento(index)">restore_from_trash</mat-icon>
-            <mat-icon class="text-primary" *ngIf="servicio.tipo === 'paquete'"
-             (click)="muestraDetallespaquete(servicio)" data-bs-toggle="modal" data-bs-target="#DetallesPaquete">search</mat-icon>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-  </div> -->
-
-
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-end">
-          <div class="mb-3 row">
-            <label for="margen" class="col-sm-4 col-form-label">Margen:</label>
-            <div class="col-sm-8">
-              <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" (change)="cambiarMargen(marg.value)" #marg [(ngModel)]="margen" id="margen"
-                class="form-control form-control-sm" min="25" max="100">
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-8 col-md-8 col-sm-6 col-12 text-end">
-          <mat-checkbox class="example-margin" #ivaChange (change)="cambiarIva(ivaChange)" [(ngModel)]="dataRecepcion['iva']">IVA</mat-checkbox>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="mat-elevation-z8 table-responsive ">
-    <table #elements="matSort" matSort mat-table [dataSource]="dataSource" multiTemplateDataRows>
-      <ng-container matColumnDef="index">
-        <th mat-header-cell *matHeaderCellDef class="text-capitalize"> index </th>
-        <td mat-cell *matCellDef="let element" class="text-start"> {{element.index + 1 | capitalizarUno}} </td>
-      </ng-container>
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef class="text-capitalize"> nombre </th>
-        <td mat-cell *matCellDef="let element" class="text-start"> {{element.nombre | capitalizarUno}} </td>
-      </ng-container>
-      <ng-container matColumnDef="cantidad">
-        <th mat-header-cell *matHeaderCellDef class="text-capitalize"> cantidad </th>
-        <td mat-cell *matCellDef="let element" class="text-start"> {{element.cantidad | capitalizarUno}} </td>
-      </ng-container>
-      <ng-container matColumnDef="costo">
-        <th mat-header-cell *matHeaderCellDef class="text-capitalize"> Sobrescrito </th>
-        <td mat-cell *matCellDef="let element" class="text-end"> {{element.costo | monedas}} </td>
-      </ng-container>
-      <ng-container matColumnDef="precio">
-        <th mat-header-cell *matHeaderCellDef class="text-capitalize"> precio </th>
-        <td mat-cell *matCellDef="let element" class="text-end"> {{element.precio | monedas}} </td>
-      </ng-container>
-      <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef class="text-capitalize"> total </th>
-        <td mat-cell *matCellDef="let element" class="text-end"> {{element.flotilla | monedas}} </td>
-      </ng-container>
-      <ng-container matColumnDef="opciones">
-        <th mat-header-cell *matHeaderCellDef class="text-capitalize"> opciones </th>
-        <td mat-cell *matCellDef="let element" class="text-end">
-          <button class="btn btn-sm" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
-                                              [matMenuTriggerFor]="menu" [ngClass]="{
-                                            'btn-primary': element['status'] === 'aprobado',
-                                            'btn-danger': element['status'] === 'noAprobado',
-                                            'btn-success': element['status'] === 'terminar',
-                                            'btn-warning': element['status'] === 'cancelar'
-                                          }">{{element['showStatus']}}</button>
-          <mat-menu #menu="matMenu">
-            <button *ngIf="element['status'] !== 'aprobado'" mat-menu-item
-              class="animaMenu"
-              (click)="accionElemento(element,element['index'],'aprobado','Aprobado',true)">Aprobado</button>
-            <button *ngIf="element['status'] !== 'noAprobado'" mat-menu-item
-              class="animaMenu"
-              (click)="accionElemento(element,element['index'],'noAprobado','No aprobado',false)">No
-              aprobado</button>
-            <button *ngIf="element['status'] !== 'terminar'" mat-menu-item
-              class="animaMenu"
-              (click)="accionElemento(element,element['index'],'terminar','Terminado',true)">Terminar</button>
-            <!-- <button *ngIf="element['status'] !== 'cancelar'" mat-menu-item
-              class="animaMenu"
-              (click)="accionElemento(element,element['index'],'cancelar','No terminado',true)">No
-              terminado</button> -->
-            <button *ngIf="element['status'] !== 'eliminar'" mat-menu-item
-              class="animaMenu"
-              (click)="accionElemento(element,element['index'],'eliminar','Eliminado', false)">Eliminar</button>
-          </mat-menu>
-          <!-- <ng-container *ngIf="element.status!=='entregado' && element.status !=='cancelado'">
-            <i class="fas fa-times-square fa-xs btn btn-sm text-warning" *ngIf="!element.aprobado && !element.terminado"
-              (click)="accionElemento(element.index,'aprobar',true,element)"></i>
-            <i class="fas fa-check-square fa-xs btn btn-sm text-success" *ngIf="element.aprobado && !element.terminado"
-              (click)="accionElemento(element.index,'aprobar',false,element)"></i>
-            <i class="fas fa-check-double fa-xs btn btn-sm text-primary" *ngIf="element.aprobado && !element.terminado"
-              (click)="accionElemento(element.index,'terminar',true,element)"></i>
-            <i class="fas fa-ban fa-xs btn btn-sm text-secondary"
-              *ngIf=" element.terminado && (ROL ==='SuperSU' || ROL === 'Administrador' || ROL === 'Gerente')"
-              (click)="accionElemento(element.index,'terminar',false,element)"></i>
-            <i class="fas fa-trash fa-xs btn btn-sm text-danger"
-              *ngIf="ROL ==='SuperSU' || ROL === 'Administrador' || ROL ==='Gerente' && !element.terminado"
-              (click)="accionElemento(element.index,'eliminar',true,element)"></i>
-          </ng-container> -->
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
-          &nbsp;</th>
-        <td mat-cell *matCellDef="let element">
-          <!-- <i class="fa fa-layer-plus btn btn-sm text-primary" (click)="agregarCotizacion(element)"></i> -->
-          <!-- <i class="fa fa-edit btn btn-sm text-primary" data-bs-toggle="modal" data-bs-target="#InformacionPaquete"(click)="DataActualizaPaquete(element)"></i> -->
-          <!-- <i class="fa fa-edit btn btn-sm text-primary"  data-bs-toggle="modal" data-bs-target="#paqueteAgrega" (click)="verificaInformacionPaquete(element)"></i>
-        <i *ngIf="element.status" class="fa fa-ban btn btn-sm text-danger" (click)="changeStatusPaquete(element,false)"></i>
-        <i *ngIf="!element.status" class="fa fa-check btn btn-sm text-success" (click)="changeStatusPaquete(element,true)"></i> -->
-          <button mat-icon-button aria-label="expand row"
-            (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-            <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-            <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-      <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-          <div class="row example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-            <!-- <div class="example-element-description"> -->
-              <div class="row m-1">
-                <ng-container *ngIf="element.elementos">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                    <div class="table-responsive">
-                      <table class="table" style="width: 100%;">
-                        <thead>
-                          <tr>
-                            <th colspan="8" class="col text-center fs-5">U.B
-                              <strong [ngClass]="{'text-danger':element.UB<55,'text-success':element.UB>=55}">
-                                {{element.UB}} %
-                              </strong>
-                            </th>
-                          </tr>
-                          <tr>
-                            <th scope="col" class="text-capitalize">#</th>
-                            <th scope="col" class="text-capitalize">nombre</th>
-                            <th scope="col" class="text-capitalize">cantidad</th>
-                            <th scope="col" class="text-capitalize">precio</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let item of element.elementos; let i = index" class="anima">
-                            <th scope="row" class="text-center">{{i +1}}</th>
-                            <td class="text-start text-capitalize">{{item.nombre | capitalizarUno}}
-                              <strong
-                                [ngClass]="{'tipo-mo':item.tipo === 'MO','tipo-refaccion':item.tipo === 'refaccion'}"
-                                class="tipo-mo text-uppercase">
-                                ( {{item.tipo}} )
-                              </strong>
-                            </td>
-                            <td class="text-center">{{item.cantidad}}</td>
-                            <td class="text-end">{{item.precio | monedas}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
-                </ng-container>
-                <ng-container *ngIf="!element.elementos">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3">
-                    <i class="fa fa-warning text-info fa-2x"></i> <strong>Paquete sin elementos</strong>
-                  </div>
-                </ng-container>
-              </div>
-            <!-- </div> -->
-          </div>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-      <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"  class="example-element-row anima"
-      [ngClass]="{'serAprobado': !element['aprobado'] }" [class.example-expanded-row]="expandedElement === element" >
-        <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
-      </tr>
-      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-    </table>
-    <mat-paginator #elementsPaginator role="group" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
-  </div>
-  <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-  <mat-checkbox class="example-margin" (change)="cambiarIva()" [(ngModel)]="IVA">IVA</mat-checkbox>
-</div> -->
-  <br><br>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-3 mb-2 ">
-    Desgloce de operación
-  </div>
-  <div class="row">
-    <ng-container *ngFor="let item of camposDesgloce">
-      <div class="col-lg-4 col-md-4 col-sm-4 col-6">
-        <div class="card-deck">
-
-        
-        <div class="card">
-          <div class="card-body  text-end">
-            <ng-container *ngIf="item.valor ==='UB'; else elseUB">
-              <h5 class="text-center text-uppercase fs-6">{{item['nombre'] }}</h5>
-              <strong [ngClass]="{'text-danger': dataRecepcion.desgloce['UB'] <55 }" class="fs-4">
-                {{dataRecepcion.desgloce[item.valor] | monedas:'%'}}</strong>
-            </ng-container>
-            <ng-template #elseUB>
-              <ng-container *ngIf="item.valor === 'sobrescrito'; else elsesobrescrito">
-                <h5 class="text-center text-uppercase fs-6">Sobrescrito</h5>
-                <strong  class="fs-4">
-                  {{dataRecepcion.desgloce[item.valor] | monedas}}</strong>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-start">M.O</div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end fw-bolder">
-                    {{dataRecepcion.desgloce['sobrescrito_mo'] | monedas}}</div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-start">Refacciones</div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end fw-bolder">
-                    {{dataRecepcion.desgloce['sobrescrito_refaccion'] | monedas}}
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-start">Paquetes</div>
-                  <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end fw-bolder">
-                    {{dataRecepcion.desgloce['sobrescrito_paquete'] | monedas}}
-                  </div>
                 </div>
-              </ng-container>
-              <ng-template #elsesobrescrito>
-                <h5 class="text-center text-uppercase fs-6">{{item['nombre']}}</h5>
-                <strong class="fs-4">{{dataRecepcion.desgloce[item.valor] | monedas}}</strong>
-              </ng-template>
-              
-            </ng-template>
-
-          </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" class="anima"></tr>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                class="example-element-row " [ngClass]="{'false':!element.status }"
+                [class.example-expanded-row]="expandedElement === element">
+                <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+          </table>
+          <mat-paginator #elementsPaginator role="group" [pageSizeOptions]="[20, 50, 100]"></mat-paginator>
+      </div>
+      <!-- *ngIf="reporte" -->
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1" >
+        <div class="row border">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <h1>Desgloce</h1>
+            </div>
+            <ng-container *ngFor="let campo of camposDesgloce">
+                <!-- {{campo | json}} -->
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start" *ngIf="reporte[campo['valor']]">
+                    <p class="text-uppercase">{{campo['show']}} : <strong class="text-uppercase">{{reporte[campo['valor']] | monedas:campo.symbolo}}</strong></p>
+                </div>
+            </ng-container>
         </div>
       </div>
-      </div>
-    </ng-container>
+      
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">...</div>
+    </div>
+  </div>
 </div>
-</ng-container>
-<div class="mb-5"></div>
 
-<div class="modal fade" id="DetallesPaquete" tabindex="-1" aria-hidden="true">
+
+<!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mt-2" *ngIf="dataRecepcion"> -->
+  <button class="btn btn-primary btn-sm saveBtn"><i class="fas fa-save "></i></button>
+<!-- </div> -->
+
+
+<div class="modal fade" id="modalMOrefaccion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div
     class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Detalles de paquete</h3>
+      <div class="modal-header ml-3">
+        <h2 class="modal-title text-primary " id="exampleModalLabel">Agregar elemento</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">cantidad</th>
-              <th scope="col">precio / costo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of elementosPaquete; let i = index">
-              <td>{{ i + 1}}</td>
-              <td>{{item.nombre}}</td>
-              <td>{{item.cantidad}}</td>
-              <td>{{item.precio}}</td>
-              <td>{{item.descripcion}}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="modal-body m-2">
+        <app-mo-refacciones (dataElemento)="getInfoElemento( $event )"></app-mo-refacciones>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
-        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalPaquete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <h2 class="modal-title text-primary " id="exampleModalLabel">Agregar paquete</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-2">
+        <!-- <app-mo-refacciones></app-mo-refacciones> -->
+        <app-paquetes (infoPaquete)="infopaquete( $event)"></app-paquetes>
       </div>
     </div>
   </div>

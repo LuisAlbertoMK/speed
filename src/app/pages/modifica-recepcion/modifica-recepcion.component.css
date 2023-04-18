@@ -78,3 +78,38 @@ table {
     background-color: lavender;
     font-weight: bolder;
   }
+  tr.anima:hover{
+    background-color: lavender;
+  }
+  tr.anima{
+    height: 35px;
+  }
+
+  .saveBtn{
+    font-size: 16px; /* Cambiar el tamaño de la tipografia */
+    text-transform: uppercase; /* Texto en mayusculas */
+    font-weight: bold; /* Fuente en negrita o bold */
+    color: #ffffff; /* Color del texto */
+    border-radius: 50%; /* Borde del boton */
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: all 300ms ease 0ms;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+  }
+  .saveBtn:hover {
+    background-color: #d82a2a; /* Color de fondo al pasar el cursor */
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-7px);
+  }
+  @media only screen and (max-width: 600px) {
+    .saveBtn {
+     font-size: 14px;
+     padding: 12px 20px;
+     bottom: 20px;
+     right: 20px;
+   }
+ } 

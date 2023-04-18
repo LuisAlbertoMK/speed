@@ -162,22 +162,11 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
       then(({contenido,cotizaciones})=>{
         // console.log(cotizaciones);
         if (contenido) {
-          // console.log(this.clientes);
-          
-        // console.log(cotizaciones);
-        
-          
-          
-          
           if (!this.cotizaciones.length) {
-            console.log('las cotizaciones estan en blanco');
-            console.time('Execution Time');
-            // console.log('llenar de cero');
+            // console.log('las cotizaciones estan en blanco');
             let cotiza = [];
             (this.SUCURSAL === 'Todas') ? cotiza = cotizaciones : cotiza =cotizaciones.filter(c=>c['sucursal'] === this.SUCURSAL)
             
-            
-          
             cotiza.map((cot,index)=>{
               cot['index'] = index
                 this.clientes.forEach(cli=>{
@@ -209,7 +198,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
                 })
             })
             // console.log(cotiza);
-            console.timeEnd('Execution Time');
+            
             this.cotizaciones = cotiza            
             // this.dataSourceCotizaciones.data = this.cotizaciones
             this.newPagination('cotizaciones')

@@ -19,7 +19,6 @@
                     <strong class="text-primary"> {{dataRecepcion['no_os']}}</strong> 
                     <strong class="text-uppercase text-danger">&nbsp;{{dataRecepcion['status']}}</strong>
                 </h2>
-
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end" *ngIf="dataRecepcion['pathPDF']">
                 
@@ -140,7 +139,7 @@
                                                 <input
                                                     id="kilometraje"
                                                     type="number"
-                                                    onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                                                    
                                                     min="0"
                                                     max="10000000"
                                                     class="form-control form-control-sm"

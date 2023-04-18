@@ -71,23 +71,29 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   ROL:string = ''
   update:boolean = false
   ngOnInit(): void {
-    this.listadoClientes()
-    this.listadoVehiculos()
+    // this.listadoClientes()
+    // this.listadoVehiculos()
     this.nombreSucursal()
-    this.brow()
+    // this.brow()
     this.AsiganacionVariablesSesion()
-    this.MonitoreUsuario()
-    // this.MonitoreoUnico()
-    this.listaSucursales()
-    this.obtCitas()
-    this.recordatoriosVerificacion()
-    this.verificacionPorvehiculos()
-    this.recordatoriosCotizaciones()
-    this.cambiosSys()
+    // this.MonitoreUsuario()
+    // // this.MonitoreoUnico()
+    // this.listaSucursales()
+    // this.obtCitas()
+    // this.recordatoriosVerificacion()
+    // this.verificacionPorvehiculos()
+    // this.recordatoriosCotizaciones()
+    // this.cambiosSys()
     // this.logeado()
+    this.comprobarTimeExpira()
   }
   ngAfterViewInit() {
     
+  }
+  comprobarTimeExpira(){
+    let now = new Date()
+    const expira = Number(localStorage.getItem('expira'))
+    let expiraTimee = new Date(expira)
   }
   cambiosSys(){
     const starCountRef = ref(db, `configuraciones/cambiosPlataforma`)
@@ -135,6 +141,8 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+    
+    // console.log(variableX);
     
 // console.log(this._security.servicioDecrypt(variableX['usuario']));
 

@@ -95,9 +95,7 @@ export class Loginv1Component implements OnInit {
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        // console.log(user);
-        this.obternerInformacion()
-
+        this.obternerInformacion(userCredential['_tokenResponse'])
         // ...
       })
       .catch((error) => {
@@ -132,7 +130,6 @@ export class Loginv1Component implements OnInit {
   }
   logout(){
     signOut(auth).then(() => {
-      // this.obternerInformacion()
       localStorage.removeItem('dataSecurity')
       // this.leerToken()
     }).catch((error) => {
@@ -153,7 +150,9 @@ export class Loginv1Component implements OnInit {
   }
 
 
-  obternerInformacion(){
+  obternerInformacion(info:any){
+    // console.log(info);
+    
     onAuthStateChanged(auth, (data:any) => {
       if (data) {
         const uid = data.uid;
@@ -180,6 +179,7 @@ export class Loginv1Component implements OnInit {
                 sesion: true,
                 usuario: this._security.servicioEncriptado(existeUsuario['id']),
                 alias: this._security.servicioEncriptado(existeUsuario['usuario']),
+                refresh_token: this._security.servicioEncriptado(info['refreshToken']),
               }
               localStorage.setItem('dataSecurity',JSON.stringify(variableX))
               if (this.recordarme) {

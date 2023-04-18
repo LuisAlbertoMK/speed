@@ -40,61 +40,62 @@ export class LoginComponent implements AfterViewInit,OnInit {
 
   ngOnInit(): void {
     this.leerToken()
-    if (localStorage.getItem('email') && localStorage.getItem('password')) {
-      this.conversionDecryptOutputEmail = CryptoJS.AES.decrypt(localStorage.getItem('email').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8); 
-      this.conversionDecryptOutputPassword = CryptoJS.AES.decrypt(localStorage.getItem('password').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8); 
-      this.usuario.email =  this.conversionDecryptOutputEmail
-      this.usuario.password = this.conversionDecryptOutputPassword
-      this.recordarme = true
-    }
-    if (localStorage.getItem('email') ) {
-      this.conversionDecryptOutputEmail = CryptoJS.AES.decrypt(localStorage.getItem('email').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8); 
-      this.usuario.email =  this.conversionDecryptOutputEmail
-      this.recordarme = true
-    }
+    // if (localStorage.getItem('email') && localStorage.getItem('password')) {
+    //   this.conversionDecryptOutputEmail = CryptoJS.AES.decrypt(localStorage.getItem('email').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8); 
+    //   this.conversionDecryptOutputPassword = CryptoJS.AES.decrypt(localStorage.getItem('password').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8); 
+    //   this.usuario.email =  this.conversionDecryptOutputEmail
+    //   this.usuario.password = this.conversionDecryptOutputPassword
+    //   this.recordarme = true
+    // }
+    // if (localStorage.getItem('email') ) {
+    //   this.conversionDecryptOutputEmail = CryptoJS.AES.decrypt(localStorage.getItem('email').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8); 
+    //   this.usuario.email =  this.conversionDecryptOutputEmail
+    //   this.recordarme = true
+    // }
   }
   ngAfterViewInit() {
     this.estaAutenticado()
   }
   login(form: NgForm){
+    console.log('dimos click aqui');
     
     if (form.invalid) { return}
     this.validandoInfo = true
     this._auth.login(this.usuario).subscribe(
       (resp:any)=>{
-        // console.log(resp)
-        this.conversionEncryptOutputCorreo = CryptoJS.AES.encrypt(this.usuario.email.trim(), this.encPassword.trim()).toString()
-        this.conversionEncryptOutputPassword = CryptoJS.AES.encrypt(this.usuario.password.trim(), this.encPassword.trim()).toString()
-        get(child(dbRef, `usuarios`)).then((snapshot) => {
-          if (snapshot.exists()) {
-            let usuarios =this.crearArreglo2(snapshot.val())
-            usuarios.forEach(usuario => {
-              if (((usuario.correo).toLowerCase()  === (resp.email).toLowerCase()) && usuario.status ) {
-                localStorage.setItem('email',this.conversionEncryptOutputCorreo)
-                localStorage.setItem('password',this.conversionEncryptOutputPassword)
-                // localStorage.setItem('tipoUsuario',CryptoJS.AES.encrypt(usuario.rol.trim(), this.encPassword.trim()).toString())
-                localStorage.setItem('tipoUsuario',usuario.rol)
-                localStorage.setItem('sesion','true')
-                localStorage.setItem('sucursal',usuario.sucursal)
-                localStorage.setItem('status',usuario.status)
-                localStorage.setItem('usuario',usuario.id)
-                localStorage.setItem('alias',usuario.usuario)
-                this.acceso = true
-                this.bloquea = true
-                this.mensajeCorrecto('Accesando espere ...')
-                this.accesa()
-              }
-              if (((usuario.correo).toLowerCase()  === resp.email) && !usuario.status ) {
-                this.mensajeIncorrecto(`Usuario inhabilitado <strong> contactar al administrador</strong>`)
-                this.bloquea = false
-              }
-            })
-          } else {
-            // console.log("No data available");
-          }
-        }).catch((error) => {
-          console.error(error);
-        })
+        console.log(resp)
+        // this.conversionEncryptOutputCorreo = CryptoJS.AES.encrypt(this.usuario.email.trim(), this.encPassword.trim()).toString()
+        // this.conversionEncryptOutputPassword = CryptoJS.AES.encrypt(this.usuario.password.trim(), this.encPassword.trim()).toString()
+        // get(child(dbRef, `usuarios`)).then((snapshot) => {
+        //   if (snapshot.exists()) {
+        //     let usuarios =this.crearArreglo2(snapshot.val())
+        //     usuarios.forEach(usuario => {
+        //       if (((usuario.correo).toLowerCase()  === (resp.email).toLowerCase()) && usuario.status ) {
+        //         localStorage.setItem('email',this.conversionEncryptOutputCorreo)
+        //         localStorage.setItem('password',this.conversionEncryptOutputPassword)
+        //         // localStorage.setItem('tipoUsuario',CryptoJS.AES.encrypt(usuario.rol.trim(), this.encPassword.trim()).toString())
+        //         localStorage.setItem('tipoUsuario',usuario.rol)
+        //         localStorage.setItem('sesion','true')
+        //         localStorage.setItem('sucursal',usuario.sucursal)
+        //         localStorage.setItem('status',usuario.status)
+        //         localStorage.setItem('usuario',usuario.id)
+        //         localStorage.setItem('alias',usuario.usuario)
+        //         this.acceso = true
+        //         this.bloquea = true
+        //         this.mensajeCorrecto('Accesando espere ...')
+        //         this.accesa()
+        //       }
+        //       if (((usuario.correo).toLowerCase()  === resp.email) && !usuario.status ) {
+        //         this.mensajeIncorrecto(`Usuario inhabilitado <strong> contactar al administrador</strong>`)
+        //         this.bloquea = false
+        //       }
+        //     })
+        //   } else {
+        //     // console.log("No data available");
+        //   }
+        // }).catch((error) => {
+        //   console.error(error);
+        // })
       },
       (err)=>{
         // console.log(err);
@@ -107,14 +108,14 @@ export class LoginComponent implements AfterViewInit,OnInit {
   accesa(){
     setTimeout(() => {
       if (this.acceso) {
-        window.location.href = '/inicio'
+        // window.location.href = '/inicio'
         // this.router.navigateByUrl('/inicio')
       }
     }, 1100)
   }
   leerToken(){
     if (localStorage.getItem('sesion') && localStorage.getItem('token')) {
-          window.location.href = '/inicio'
+          // window.location.href = '/inicio'
     }
   }
   estaAutenticado():boolean{
