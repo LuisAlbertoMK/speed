@@ -54,7 +54,7 @@ export class PdfRecepcionService {
     nuevasdocumentDefinitionimages['faros_frontales'] = `${(await bases('../../assets/imagenes_detalles/faros_frontales.jpg')).url}`
     nuevasdocumentDefinitionimages['faros_posteriores'] = `${(await bases('../../assets/imagenes_detalles/faros_posteriores.jpg')).url}`
     nuevasdocumentDefinitionimages['frontal'] = `${(await bases('../../assets/imagenes_detalles/frontal.jpg')).url}`
-    nuevasdocumentDefinitionimages['lateralDerecho'] = `${(await bases('../../assets/imagenes_detalles/lateralDerecho.jpg')).url}`
+    nuevasdocumentDefinitionimages['lateralDerecho'] = `${(await bases('../../assets/imagenes_detalles/lateralderecho.jpg')).url}`
     nuevasdocumentDefinitionimages['parabrisas'] = `${(await bases('../../assets/imagenes_detalles/parabrisas.jpg')).url}`
     nuevasdocumentDefinitionimages['parabrisas_posterior'] = `${(await bases('../../assets/imagenes_detalles/parabrisas_posterior.jpg')).url}`
     nuevasdocumentDefinitionimages['paragolpes_frontal'] = `${(await bases('../../assets/imagenes_detalles/paragolpes_frontal.jpg')).url}`
@@ -629,7 +629,9 @@ export class PdfRecepcionService {
     
     let todasLasImagenes =[]
     
-    limites_.sort()
+    limites_.sort(function(a, b) {
+      return a - b;
+    });
     
     limites_.forEach((a,index) => {
       let muestra = []
@@ -1194,7 +1196,6 @@ export class PdfRecepcionService {
         ]
       }
     },
-    { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },
     { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },
     this.table(
       data['servicios'],

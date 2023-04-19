@@ -1645,7 +1645,7 @@ export class ServiciosPublicosService {
         
         const  { elementos, margen_get, iva, formaPago, descuento } = data
         
-        const margen = margen_get
+        const margen = 1 + (margen_get / 100)
         
         const reporte = {
           iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 

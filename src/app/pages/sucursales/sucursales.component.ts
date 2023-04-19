@@ -110,6 +110,9 @@ export class SucursalesComponent implements OnInit {
     const starCountRef = ref(db, 'sucursales')
         onValue(starCountRef, (snapshot) => {
           this.listaArrarySucursales = this.crearArreglo2( snapshot.val())
+        }, 
+        {
+          onlyOnce: true
         })
   }
   getInformacionSucursal(id:string){

@@ -133,15 +133,20 @@ export class EntregaOrdenComponent implements OnInit,AfterViewInit {
               
                 this.cliente = dataRecepcion['cliente']
                 integra['infoCliente'] = dataCliente
+                
                 // integra['dataFacturacion'] = dataCliente['dataFacturacion']
                 ///traer los datos de facturacion y puede ser que sean mas de uno por eso se convierte en arreglo
                 //por default utilizamos el primero que encontramos
-                
+                if(dataCliente['dataFacturacion']){
+                  const facturas = this._publicos.crearArreglo2(dataCliente['dataFacturacion'])
+                  integra['dataFacturacion'] = facturas[0]
+                }
                 //los vehiculos se convierte en areglo y buscamos el vehiculo correcto para mostrar esa informacion en el pdf
                 if (dataCliente['vehiculos']) {
                   const vehiculos = this._publicos.crearArreglo2(dataCliente['vehiculos'])
                   integra['infoVehiculo'] =  vehiculos.find(v=>v['id'] === dataRecepcion['vehiculo'])
                 }
+                
                 
                //asignamos la informacion y realizamos la validacion si cuenta con datos de facturacion (se requiera o no)
                // ya que en el pdf se revisa si es factura o remision 

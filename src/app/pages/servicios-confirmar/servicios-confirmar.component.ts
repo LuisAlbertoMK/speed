@@ -465,47 +465,53 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const tipo = this.rutaActiva.snapshot.params['tipo']
     // console.log(ID);
     // console.log(tipo);
+    
+    
     if (tipo === 'cotizacion') {
-      this.cotizaciones.map((cot)=>{
-        if(cot['id']!== ID) return
-        const elementos = cot['elementos']
-        elementos.map(ele=>{
-          // console.log(ele);
-          if (ele['costo']>0) {
-            ele['flotilla'] =  ele['costo']
-          }else{
-            if (ele['tipo'] === 'paquete') {
-              const desgloce = this._publicos.costodePaquete(ele['elementos'], cot['margen'])
-              ele['flotilla'] =  desgloce.flotilla
-              ele['desgloce'] =  desgloce
+      // console.log('cotizacion');
+      
+      setTimeout(() => {
+        this.cotizaciones.map((cot)=>{
+          if(cot['id']!== ID) return
+          const elementos = cot['elementos']
+          elementos.map(ele=>{
+            // console.log(ele);
+            if (ele['costo']>0) {
+              ele['flotilla'] =  ele['costo']
             }else{
-              // console.log(ele['precio'] * ele['cantidad']);
-              ele['flotilla'] =  ele['precio'] * ele['cantidad']
+              if (ele['tipo'] === 'paquete') {
+                const desgloce = this._publicos.costodePaquete(ele['elementos'], cot['margen'])
+                ele['flotilla'] =  desgloce.flotilla
+                ele['desgloce'] =  desgloce
+              }else{
+                // console.log(ele['precio'] * ele['cantidad']);
+                ele['flotilla'] =  ele['precio'] * ele['cantidad']
+              }
             }
-          }
-          ele['aprobado'] = true
-          ele['showStatus'] = 'Aprobado'  
-          ele['status'] = 'aprobado' 
-        })
-        this.dataRecepcion.elementos = elementos
-        this.realizarOperaciones()
-        this.clientes.map(clie=>{
-          if(clie['id'] !== cot['cliente']) return
-          this.dataRecepcion.cliente = clie
-          this.dataRecepcion.data['cliente'] = clie['id']
-          this.dataRecepcion.vehiculos = clie['vehiculos']
-          this.dataRecepcion.sucursal = clie['infoSucursal']
-          this.dataRecepcion.data['sucursal'] = clie['sucursal']
-          
-          const vehiculos = clie['vehiculos']
-          vehiculos.map(v=>{
-            if(v['id'] !== cot['vehiculo']) return
-              this.dataRecepcion.data['vehiculo'] = v['id']
-              this.dataRecepcion.vehiculo = v
+            ele['aprobado'] = true
+            ele['showStatus'] = 'Aprobado'  
+            ele['status'] = 'aprobado' 
           })
+          this.dataRecepcion.elementos = elementos
+          this.realizarOperaciones()
+          this.clientes.map(clie=>{
+            if(clie['id'] !== cot['cliente']) return
+            this.dataRecepcion.cliente = clie
+            this.dataRecepcion.data['cliente'] = clie['id']
+            this.dataRecepcion.vehiculos = clie['vehiculos']
+            this.dataRecepcion.sucursal = clie['infoSucursal']
+            this.dataRecepcion.data['sucursal'] = clie['sucursal']
+            
+            const vehiculos = clie['vehiculos']
+            vehiculos.map(v=>{
+              if(v['id'] !== cot['vehiculo']) return
+                this.dataRecepcion.data['vehiculo'] = v['id']
+                this.dataRecepcion.vehiculo = v
+            })
+          })
+          this.validaciones()
         })
-        this.validaciones()
-      })
+      }, 200);
     }else if(tipo === 'cliente'){
       this.clientes.map(clie=>{
         if (clie['id'] !== ID) return
@@ -1152,9 +1158,20 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     // this.verificarInformacion()
   }
   revisarDeatllesNinguno(){
-    for (let index = 0; index < this.dataRecepcion.detalles.length; index++) {
-       this.dataRecepcion.detalles[index].checado = false;
-    }
+    // console.log(this.SinDetalles);
+    
+    setTimeout(() => {
+      if (this.SinDetalles) {
+        for (let index = 0; index < this.dataRecepcion.detalles.length; index++) {
+          this.dataRecepcion.detalles[index].checado = false;
+       }
+      }else{
+        for (let index = 0; index < this.dataRecepcion.detalles.length; index++) {
+          this.dataRecepcion.detalles[index].checado = true;
+       }
+      }
+    }, 100);
+    
   }
   revisarDeatlles(index:number,val:any){
     this.dataRecepcion.detalles[index].checado = val._checked

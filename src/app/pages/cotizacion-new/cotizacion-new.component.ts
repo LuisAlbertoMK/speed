@@ -194,15 +194,15 @@ camposDesgloce = [
               ) { }
   async ngOnInit() {
     this.primero()
-    
-    this.listaMarcas_refacciones()
+    this.listaMO()
+    this.listaRefacciones()
+    // this.listaMarcas_refacciones()
     this.consultaMarcas()
-    this.colores_autos()
-    this.crearFormElemento()
+    // this.colores_autos()
+    // this.crearFormElemento()
     this.listaSucursales()
     // this.Listaclientes()
-    await this.listaMO()
-    await this.listaRefacciones()
+
     this.listaPaquetes()
     this.autoComplete()
     this.realizarOperaciones()
@@ -219,6 +219,7 @@ camposDesgloce = [
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
           this.ROL = this._security.servicioDecrypt(variableX['rol'])
           this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
+          // this.rol()
   }
   listadoEmpresas(){
     const starCountRef = ref(db, `empresas`)
@@ -373,7 +374,7 @@ camposDesgloce = [
           if(this.clientes.length){
             setTimeout(() => {
               this.rol()
-            }, 100);
+            }, 500);
           } 
         }else{
           this.clientes = []
@@ -437,8 +438,39 @@ camposDesgloce = [
         if(cot['id']!== ID) return
         const info_cotizacion = cot
         if (!info_cotizacion['id']) return
-          this.infoCotizacion.elementos = info_cotizacion.elementos
+          
           // this.dataSource.data =
+          // console.log(info_cotizacion.elementos);
+          // console.log(this.manos_obra);
+          // console.log(this.refacciones);
+          
+          const unidos = this.manos_obra.concat(this.refacciones)
+          // console.log(unidos);
+          
+
+          const elementos = (info_cotizacion.elementos) ? info_cotizacion.elementos : []  
+
+          elementos.map(e=>{
+            if(e['tipo'] === 'paquete'){
+              const elementos_internos = (e['elementos']) ? e['elementos'] : []
+              elementos_internos.map(e=>{
+                if(e['catalogo'] || e['enCatalogo']){
+                  const info = unidos.find(u=>u['id'] === e['IDreferencia'])
+                  const camposNuevos = ['id','nombre','precio','status','tipo']
+                  camposNuevos.forEach(c=>{
+                    (!info[c]) ? e[c] = '' : e[c] = info[c]
+                  })
+                }
+                e['tipo'] = String(e['tipo']).toLowerCase()
+                e['costo'] = 0
+                e['aprobado'] = true
+              })
+            }
+          
+          })         
+
+          this.infoCotizacion.elementos = info_cotizacion.elementos
+
           this.newPagination('elementos')
           
           const campData = Object.keys(info_cotizacion)
@@ -1174,6 +1206,8 @@ camposDesgloce = [
   }
   async guardarCotizacion(){
     // return
+    
+    
     this.validarInformacion().then(({valida,faltantes,data})=>{
       this.valida = valida
       if(!valida) {

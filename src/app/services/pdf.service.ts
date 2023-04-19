@@ -240,12 +240,7 @@ export class PdfService {
       }
        
     }
-    function capUno(value: string, ...args: unknown[]): unknown {
-      const cadena = String(value).toLowerCase()
-      let arr =[...cadena]
-      arr[0] = arr[0].toUpperCase()
-      return arr.join('');
-    }
+    
     function buildTableBody(data, columns, showHeaders, headers) {
       var body = [];
       if(showHeaders) {
@@ -724,6 +719,12 @@ export class PdfService {
     }
 
   }
+  
 
 }
-
+function capUno(value: string, ...args: unknown[]): unknown {
+  const cadena = String(value).toLowerCase()
+  let arr =[...cadena]
+  arr[0] = arr[0].toUpperCase()
+  return arr.join('');
+}
