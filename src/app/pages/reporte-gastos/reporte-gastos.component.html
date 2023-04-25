@@ -265,7 +265,40 @@
                               </ng-template>
                             </span>
                       </th>
-                      <td mat-cell *matCellDef="let element" class="text-center text-capitalize"> {{element['tipo'] }}  </td>
+                      <td mat-cell *matCellDef="let element" class="text-center text-capitalize">
+                        
+                        <ng-container *ngIf="element.tipo === 'deposito'; else elseDeposito">
+                          <i class="fa fa-plus text-primary"></i>
+                        </ng-container>
+                        <ng-template #elseDeposito>
+                          <i class="fa fa-minus text-danger"></i>
+                        </ng-template>
+                        {{element['tipo'] }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="no_os">
+                      <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1.5 +'px'}"
+                      (click)="ordenamiento = !ordenamiento; ordenarElementos('no_os')"> 
+                          <span class="pointer" style="width: 100%;">no_os / Referencia &nbsp;
+                              <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                                <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                              </ng-container>
+                              <ng-template #elseOrdenamiento>
+                                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                              </ng-template>
+                            </span>
+                      </th>
+                      <td mat-cell *matCellDef="let element" class="text-start text-capitalize">
+                        
+                      <ng-container *ngIf="element['tipo'] === 'operacion'; else elseOperacion">
+                         {{element['referencia'] }} 
+                      </ng-container>
+                      <ng-template #elseOperacion>
+                        {{element['no_os'] }} 
+                        
+                      </ng-template>
+                      
+                      </td>
                     </ng-container>
                     <ng-container matColumnDef="fecha">
                       <th mat-header-cell *matHeaderCellDef class="text-capitalize text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"

@@ -1658,6 +1658,7 @@ export class ServiciosPublicosService {
           if (e.costo > 0) {
             if (e.tipo === 'refaccion') {
               reporte.sobrescrito_refaccion += operacion;
+              e['total'] = operacion * margen
             } else if (e.tipo === "MO" || e.tipo ==='mo') {
               reporte.sobrescrito_mo += operacion;
             }else {
@@ -1665,10 +1666,12 @@ export class ServiciosPublicosService {
               const info = this.reportePaquete(e.elementos,margen)
               e['reporte_interno'] = info
               e['precio'] = info.total
+              e['total'] = info.total
             }
           }else{
             if (e.tipo === 'refaccion') {
               reporte.refacciones_a += operacion;
+              e['total'] = operacion * margen
             } else if (e.tipo === 'MO' || e.tipo ==='mo') {
               reporte.mo += operacion;
             }else {
@@ -1676,7 +1679,7 @@ export class ServiciosPublicosService {
                 const info = this.reportePaquete(e.elementos,margen)
                 e['reporte_interno'] = info;
                 e['precio'] = info.total;
-      
+                e['total'] = info.total
                 reporte.mo += info.mo;
                 reporte.refacciones_a += info.refacciones;
                 reporte.sobrescrito_mo += info.sobrescrito_mo;
@@ -1792,5 +1795,14 @@ export class ServiciosPublicosService {
                 }
                 return new Blob([array],{type: contentType})
               }
+
+    dataCorreo(sucursal, cliente){
+        const answer = {correos:[]}
+        answer.correos.push(sucursal.correo)
+        if (cliente.correo) answer.correos.push(cliente.correo) 
+        if (cliente.correo_sec) answer.correos.push(cliente.correo_sec) 
+
+        return answer.correos
+    }
 
  }

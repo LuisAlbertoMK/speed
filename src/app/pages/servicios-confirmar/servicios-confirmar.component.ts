@@ -36,6 +36,7 @@ import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
 
 import { UploadPDFService } from '../../services/upload-pdf.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
+import { file } from 'pdfkit';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
@@ -179,7 +180,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     'Capo',
     'Paragolpes_frontal',
     'Paragolpes_posterior',
-    'Techo',
+    'techo',
     'espejo_derecho',
     'espejo_izquierdo',
     'faros_frontales',
@@ -201,10 +202,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   detallesFaltantes = ''
   onSelect(event) {
-    // if(this.files.length>0){
-    //   this.files=[]
-    //   this.archivos=[]
-    // }
     this.archivos =[]
     this.files.push(...event.addedFiles);
     for(const f of this.files) {
@@ -293,13 +290,14 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   valida:boolean = true
   cuales:string = ''
-  dataImagen:any;
+  // dataImagen:any;
 
-  pasosFaltantes = {servicios: false, checkList: false, firmaCliente: false, entrega: false}
+  pasosFaltantes = {servicios: false,detalles: false, checkList: false, firmaCliente: false, entrega: false}
 
   recorridoPasos = ['servicios', 'checkList', 'firmaCliente', 'entrega']
 
   empresaList = []
+  personalizados = []
   constructor(
     private router: Router, private rutaActiva: ActivatedRoute, private _formBuilder: FormBuilder, private _clientes:ClientesService,
     private _uploadfirma: UploadFirmaService,private _mail:EmailsService, private fb: FormBuilder, private _publicos:ServiciosPublicosService,
@@ -328,34 +326,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.listadoTecnicos()
     this.consultaMarcas()
     this.colores_autos()
-    
-    // this.generaNombreRecepcion()
-    this.filtro_date()
-    // this.lista_cameras()
-    this.getBase64ImageFromURL('../../../assets/logoSpeedPro/Logo-Speedpro.png').then((val:any)=>{
-      this.dataImagen = val
-    })
+   
   }
   
-  async getBase64ImageFromURL(url:any) {
-    return new Promise((resolve, reject) => {
-      var img = new Image();
-      img.setAttribute("crossOrigin", "anonymous");
-      img.onload = () => {
-        var canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-        var dataURL = canvas.toDataURL("image/png");
-        resolve(dataURL);
-      };
-      img.onerror = error => {
-        reject(error);
-      };
-      img.src = url;
-    });
-  }
+  
 
   crearFormObservaciones(){
     this.observaciones = this.fb.group({
@@ -414,7 +388,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           if(this.clientes.length){
             setTimeout(() => {
               this.rol()
-            }, 100);
+            }, 500);
           } 
         }else{
           this.clientes = []
@@ -555,9 +529,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       })
   }
 
-  filtro_date(){
-    
-  }
+  
   litaSucursales(){
     const starCountRef = ref(db, `sucursales`)
         onValue(starCountRef, (snapshot) => {
@@ -1158,8 +1130,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     // this.verificarInformacion()
   }
   revisarDeatllesNinguno(){
-    // console.log(this.SinDetalles);
-    
     setTimeout(() => {
       if (this.SinDetalles) {
         for (let index = 0; index < this.dataRecepcion.detalles.length; index++) {
@@ -1170,6 +1140,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           this.dataRecepcion.detalles[index].checado = true;
        }
       }
+      // this.validaciones()
     }, 100);
     
   }
@@ -1201,22 +1172,18 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   limpiarFirma(){
     this.SignaturePad.clear()
     this.imgFirma = null
-    this.dataRecepcion['firmaCliente'] = ''
+    this.dataRecepcion.firma = null
     this.revisarAvance()
-    // this.verificarInformacion()
   }
   firmar(){
     const u = this.SignaturePad.toDataURL()
     if (!this.SignaturePad.isEmpty()) {
-       this.descargar(u).then((ans:any)=>{
-          this.imgFirma = ans
-          this.revisarAvance()
-      })
+      this.dataRecepcion.firma = u
     }else{
-      this.imgFirma = null
-      this._publicos.mensajeIncorrecto('La firma no puede estar vacia!!')
-      this.revisarAvance()
+      this.dataRecepcion.firma = null
+      this._publicos.swalToastError('La firma no puede estar vacia')
     }
+    this.revisarAvance()
   }
 
   async descargar(dataURL:any){
@@ -1348,204 +1315,27 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     return elementos && elementos.no_cliente ? elementos.no_cliente : '';
   }
 
-
-  async continua_respuesta(){
-      
-      const camposDataRecupera = ['cliente','fechaPromesa','iva','margen','no_os','sucursal','vehiculo','aprobado','formaPago','servicio']
-
-      const newPostKey = push(child(ref(db), 'posts')).key
-      await this._publicos.recuperaDataArreglo(camposDataRecupera,this.dataRecepcion.data).then((ans)=>{
-        const infoSucursal = this.dataRecepcion.sucursal['sucursal']
-        this._servicios.no_OS(infoSucursal,'GE').then(async (answer:string)=>{
-          let infoSave = {...ans}        
-          // infoSave = ans
-          infoSave['no_os'] = answer
-          const timeRequest = this._publicos.getFechaHora()
-          infoSave['fecha_recibido'] = timeRequest.fecha
-          infoSave['hora_recibido'] = timeRequest.hora
-          infoSave['status'] = 'recibido'
-          infoSave['detalles'] = this.dataRecepcion.detalles
-          infoSave['checkList'] = this.dataRecepcion.checkList;
-          // (!this.SinDetalles) ?  infoSave['detalles'] = [] : infoSave['detalles'] = this.dataRecepcion.detalles
-          infoSave['servicios'] = this.dataRecepcion.elementos
-          infoSave['servicios_original'] = this.dataRecepcion.elementos
-
-          await this._uploadfirma.upload(this.imgFirma,newPostKey,answer,'recepcion').then((ansFirma:any)=>{
-            let miinter
-            Swal.fire({
-              title: 'Subiendo firma de cliente',
-              text: 'Esperando ...',
-              timer: 10000,
-              showConfirmButton: false,
-              allowOutsideClick: false
-            })
-            Swal.isLoading()
-            const inter = setInterval(async () => {
-              if (ansFirma.ruta) {
-                        infoSave['firmaCliente'] = ansFirma.ruta
-                        // this.realizarRecepcion(newPostKey,infoSave)
-                        Swal.close()
-                        // console.log('tenemos la ruta',ansFirma.ruta);
-                        clearInterval(inter); 
-                        this.thisver(newPostKey,infoSave)
-                        // await this._uploadFiles.guardarFotografias(this.archivos,infoSave['no_os'])
-            } else if(ansFirma.error.length){
-                Swal.close()
-                this._publicos.mensajeIncorrecto('Ocurrio un error')
-                console.log(ansFirma.error); // este error es por si la imagen de la firma no se subio correctamente
-            }
-            },500)
-          })
+  generaBS64(){
+    let personalizados = []
+    this.files.forEach((a, index)=>{
+      var blob = new Blob([a], {type: 'image/png'});
+      var reader = new FileReader();
+      reader.readAsDataURL(blob); 
+      reader.onloadend = function() {
+        // var base64data = reader.result;       
+        personalizados.push({ 
+          nombre: `img${index}`,
+          base64data: reader.result
         })
-      })
-     
+      }
+    })
+    this.personalizados = personalizados
   }
-  async returnUrl(){
-    let detallesPersonalizados = []
-    for (let index = 0; index < this.archivos.length ; index++) {
-      const foto = this.archivos[index];
-      if (foto.url) {
-            // b.textContent = String(Swal.getTimerLeft())
-            // clearInterval(intervalo1)
-            const data = await {campo:foto.nombreArchivo, url:foto.url}
-            detallesPersonalizados.push(data)
-            // b.textContent = `${contador}`
-          }
-    }
-    return detallesPersonalizados
-  }
-  async thisver(newPostKey:string,infoSav:any){
+  
 
-    
-    // console.log(infoSav);
-    if (this.archivos.length) {
-      let timerInterval
-      Swal.fire({
-        title: 'Espere porfavor!',
-        // html: 'I will close in <b></b> milliseconds.',
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading()
-          const b = Swal.getHtmlContainer().querySelector('b')
-          timerInterval = setInterval(async () => {
-            // b.textContent = String(Swal.getTimerLeft())
-            // setTimeout(async ()=>{
-              const urlSS:any[] = await this.returnUrl()
-              infoSav['detallesPersonalizados'] = urlSS
-            // },1200)
-          }, 100)
-        },
-        willClose: () => {
-          clearInterval(timerInterval)
-        }
-      }).then((result) => {
-        /* Read more about handling dismissals below */
-        if (result.dismiss === Swal.DismissReason.timer) {
-          // console.log('I was closed by the timer')
-          // console.log(infoSav);
-          this.realizarRecepcion(newPostKey,infoSav)
-        }
-      })
-    }else{
-      this.realizarRecepcion(newPostKey,infoSav)
-    }
-  }
-  async subirFotografias(newPostKey:string){
-    let subidas = false
-    const ruta = `recepciones/fotografiasDetalles/${newPostKey}/`
-    await this._uploadFiles.guardarFotografias(this.archivos,ruta)
-    let contadorImagenes = this.archivos.length
-    let intervaloFotografias = setInterval(()=>{
-      let contadorSubidos = 0
-        for (let index = 0; index < this.archivos.length; index++) {
-          const element = this.archivos[index];
-          if (element.progreso >=100) {
-            contadorSubidos++
-          }
-          if (contadorSubidos === contadorImagenes) {
-            clearInterval(intervaloFotografias)
-            // console.log('todas las imagenes se subieron correctamente');
-            subidas = true
-          }
-        }
-    },500)
-
-    return subidas
-    
-  }
-
-  realizarRecepcion(newPostKey:string,data:any){
-    // VERIFICAR QUE LA INFORMACION 
-    
-    // console.log(data);
-    
-
-
-    const camposVerificar = ['checkList','cliente','fechaPromesa','fecha_recibido','hora_recibido','iva',
-    'margen','no_os','servicios','servicios_original','status','sucursal','formaPago','servicio',
-    'vehiculo','firmaCliente','detalles']
-
-
-    
-    const camposRecibidos = Object.keys(data)
-    
-    
-    if(data['tecnico']) camposVerificar.push('tecnico')
-    
-    camposRecibidos.sort()
-        camposVerificar.sort()
-        let contadorNoexisten:number = 0, contadorCorrectos:number = 0, arregloNOexisten=[], arregloExisten=[]
-        for (let camposVerifica = 0; camposVerifica < camposVerificar.length; camposVerifica++) {
-          const verifica = camposVerificar[camposVerifica];
-          if (!data[verifica] && verifica!=='tecnico') {
-            contadorNoexisten++
-            arregloNOexisten.push(verifica)
-          }else{
-            contadorCorrectos++
-            arregloExisten.push(verifica)
-          }
-        }
-
-        
-        if (camposVerificar.length === contadorCorrectos) {
-          this.mensajeError = null
-          let serviciosLista = []
-          for (let index = 0; index < this.dataRecepcion.elementos.length; index++) {
-            const element = this.dataRecepcion.elementos[index];
-            serviciosLista.push(element.nombre)
-          }
-          const arregloString = serviciosLista.join(', ')
-          let desgloce ={}
-        
-          
-            let desgloceMin:any[] = []
-    
-            if (this.IVA) {
-              let desglocse=[{nombre: 'Refacciones', valor:'refacciones2'},
-              {nombre: 'MO', valor:'totalMO'},{nombre: 'Subtotal', valor:'subtotal'},{nombre: 'IVA', valor:'IVA'},
-              {nombre: 'Total', valor:'total'}]
-              for (let index = 0; index < desglocse.length; index++) {
-                const element = desglocse[index];
-                desgloceMin.push(`${element.nombre}: ${this._publicos.redondeado(this.dataRecepcion.data[element.valor])} <br>`)
-              }
-            }else{
-              let desglocse=[{nombre: 'Refacciones', valor:'refacciones2'},{nombre: 'MO', valor:'totalMO'},{nombre: 'Total', valor:'total'}]
-              for (let index = 0; index < desglocse.length; index++) {
-                const element = desglocse[index];
-                desgloceMin.push(`${element.nombre}: ${this._publicos.redondeado(this.dataRecepcion.data[element.valor])} <br>`)
-              }
-            }
-            this.gurdarFinal(newPostKey,data,arregloString,desgloceMin.join(' '))
-          
-          
-        }else{
-          this._publicos.mensajeIncorrecto(`Falta información`)
-          const texto = arregloNOexisten.join(', ')      
-          this.mensajeError = texto
-        }
-    
-  }
+  
+  
+ 
 
   validaciones(){
     const answer = {valida: true,faltantes:[]}
@@ -1562,6 +1352,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       }
     })
     // this.dataRecepcion['cliente']['correo'] = null
+    if(!this.dataRecepcion.firma) answer.faltantes.push('Firma cliente')
+    if(this.diasEntrega === null ) answer.faltantes.push('Fecha promesa')
+    
     if (answer.faltantes.length) answer.valida = false
     
     if (answer.faltantes.length) {
@@ -1571,41 +1364,92 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.detallesFaltantes = null
     }
 
+
     // this.progreso = 100
      this.revisarAvance()
+    //  console.log(this.dataRecepcion);
+     
     
     return answer
   }
 
   revisarAvance(){
+    this.generaBS64()
     //verificar los pasos que no estan completos y que se requieren
     //ademas de obtener el porcentaje de avance
-    this.pasosFaltantes = {servicios: true, checkList: true, firmaCliente: true, entrega: true}
+    const pasosFaltantes = {servicios: true,detalles: true,  checkList: true, firmaCliente: true, entrega: true}
 
     let avance = 0;    const porcentaje =100/5
 
+    
+
     const servicios = this.dataRecepcion['elementos'].filter(o=>o['aprobado']);
 
-    (servicios.length) ?  avance += porcentaje : this.pasosFaltantes.servicios = false;
+    if(servicios.length) { avance += porcentaje } else { pasosFaltantes.servicios = false}
+    if(this.SinDetalles) { avance += porcentaje } else {
+      // pasosFaltantes.detalles = false
+      for (let index = 0; index < this.dataRecepcion.detalles.length; index++) {
+        if (!this.dataRecepcion.detalles[index].checado) pasosFaltantes.detalles = false
+      }
+    }
     
     const elementos = this.dataRecepcion.checkList.filter(o=>!o.status);
     
-    (!elementos.length && this.kilometraje>0) ?  avance += porcentaje : this.pasosFaltantes.checkList = false;
+    if(!elementos.length && this.kilometraje>0) {
+      avance += porcentaje
+    }else{
+      pasosFaltantes.checkList = false;
+    }
 
-    (this.diasEntrega !== null) ? avance += porcentaje : this.pasosFaltantes.entrega = false;
+    (this.diasEntrega !== null) ? avance += porcentaje : pasosFaltantes.entrega = false;
 
-    (this.imgFirma !== null) ? avance += porcentaje : this.pasosFaltantes.firmaCliente = false;
+    (this.dataRecepcion.firma !== null) ? avance += porcentaje : pasosFaltantes.firmaCliente = false;
 
-
-    (this.SinDetalles) ? avance += porcentaje : avance += porcentaje
+    this.pasosFaltantes = pasosFaltantes
 
     this.progreso = avance
+    
+  }
+  async continua_respuesta(){
+    
+    const camposDataRecupera = ['cliente','fechaPromesa','iva','margen','no_os','sucursal','vehiculo','aprobado','formaPago','servicio']
 
-  }
-  verIma(){
-    console.log(this.archivos);
-  }
-  gurdarFinal(newPostKey:string,data:any,arregloString:string,desgloce:any){
+    const newPostKey = push(child(ref(db), 'posts')).key
+    await this._publicos.recuperaDataArreglo(camposDataRecupera,this.dataRecepcion.data).then((ans)=>{
+      const infoSucursal = this.dataRecepcion.sucursal['sucursal']
+      this._servicios.no_OS(infoSucursal,'GE').then(async (answer:string)=>{
+        let infoSave = {...ans}        
+        // infoSave = ans
+        infoSave['no_os'] = answer
+        const timeRequest = this._publicos.getFechaHora()
+        infoSave['fecha_recibido'] = timeRequest.fecha
+        infoSave['hora_recibido'] = timeRequest.hora
+        infoSave['status'] = 'recibido'
+        infoSave['detalles'] = this.dataRecepcion.detalles
+        infoSave['checkList'] = this.dataRecepcion.checkList;
+        infoSave['servicios'] = this.dataRecepcion.elementos
+
+        infoSave['personalizados'] = this.personalizados
+        let serviciosLista = []
+        for (let index = 0; index < this.dataRecepcion.elementos.length; index++) {
+          const element = this.dataRecepcion.elementos[index];
+          serviciosLista.push(element.nombre)
+        }
+        const arregloString = serviciosLista.join(', ')
+        infoSave['arregloString'] = arregloString
+        // this.realizarRecepcion(newPostKey,inf)
+        // console.log(this.personalizados);
+        
+        // console.log(infoSave);
+        const desgloce = {}
+        infoSave['desgloce'] = desgloce
+        this.gurdarFinal(newPostKey,infoSave)
+        
+      })
+    })
+   
+}
+  gurdarFinal(newPostKey:string,data:any){
     Swal.fire({
       title: 'Espere generando PDF!',
       text: 'esperando ...',
@@ -1615,32 +1459,15 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     })
     Swal.isLoading()
 
-    // console.log(data);
-    let personalizados = []    
-    if (this.archivos.length) {
-       this.archivos.forEach((a)=>{
-        const infoPer = {
-          nombre: a['nombreArchivo'],
-          url: a['url'],
-        }
-        personalizados.push(infoPer)
-       })
-    }
-    this.dataRecepcion['personalizados'] = personalizados
-
-    
-    let correos:any[] =[]
-    correos.push(this.dataRecepcion.sucursal['correo']);    
-    (this.dataRecepcion.cliente['correo'])? correos.push(this.dataRecepcion.cliente['correo']):'';
-    (this.dataRecepcion.cliente['correo_sec'])? correos.push(this.dataRecepcion.cliente['correo_sec']):''
+    const correos = this._publicos.dataCorreo(this.dataRecepcion['sucursal'], this.dataRecepcion['cliente'])
 
     const dataMail = {
       correos,
       no_os: data['no_os'],
       cliente: this.dataRecepcion.cliente,
       vehiculo: this.dataRecepcion.vehiculo,
-      arregloString,
-      desgloce
+      arregloString: data['arregloString'],
+      desgloce: data['desgloce']
     }    
     data['notifico'] = true
 
@@ -1664,14 +1491,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       fecha: this._publicos.getFechaHora().fecha,
       detalles: this.dataRecepcion['detalles'],
       elementos: this.dataRecepcion['elementos'],
-      imagenBase64: this.dataImagen,
       sucursal: this.dataRecepcion['sucursal'],
       vehiculo: this.dataRecepcion['vehiculo'],
-      personalizados: this.dataRecepcion['personalizados'],
-      firmaCliente: data['firmaCliente']
+      personalizados:data['personalizados'],
+      firmaCliente: this.dataRecepcion.firma
     }
-    
-    
+
     
     this._pdfRecepcion.obtenerImege(infoPdf).then((pdfReturn:any)=>{
       const pdfDocGenerator = pdfMake.createPdf(pdfReturn);

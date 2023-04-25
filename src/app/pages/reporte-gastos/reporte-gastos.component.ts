@@ -55,7 +55,7 @@ export class ReporteGastosComponent implements OnInit {
   @ViewChild('ResporteGastos') ResporteGastossort: MatSort //elementos
 
   dataSourceGastosDia = new MatTableDataSource(); //elementos
-  columnasGastosDia:string[] = ['sucursal','concepto','metodo','monto','tipo','fecha','opciones']
+  columnasGastosDia:string[] = ['sucursal','no_os','concepto','metodo','monto','tipo','fecha','opciones']
   @ViewChild('GastosDiaPaginator') paginator: MatPaginator //elementos
   @ViewChild('GastosDia') sort: MatSort //elementos
 
@@ -465,8 +465,6 @@ export class ReporteGastosComponent implements OnInit {
     // console.log(filtro_sucursal);
     // if (reporte.utilidad>0) {
       if(this.valor ==='hoy'){
-
-      
       if (this.SearchSucursal['id']) {
         const { fecha2 } = this._publicos.getMesFecha(new Date(),'suma','dia',1)
         // console.log(fecha2);
@@ -503,6 +501,8 @@ export class ReporteGastosComponent implements OnInit {
       
       
     // }
+    
+    console.log(filtro_sucursal);
     
     
     this.dataSourceGastosDia.data = filtro_sucursal

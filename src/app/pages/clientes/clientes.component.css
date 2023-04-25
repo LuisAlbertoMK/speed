@@ -83,6 +83,9 @@
     transform: rotate(45deg);
     cursor: pointer;
   }
+  .pointer{
+    cursor: pointer;
+  }
   #btn-mas:checked~ .btn-mas{
     background-color: #151589;
   }
@@ -115,42 +118,13 @@
     overflow: hidden;
     display: flex;
   }
-  
-  .example-element-diagram {
-    min-width: 80px;
-    border: 2px solid black;
-    padding: 8px;
-    font-weight: lighter;
-    margin: 8px 0;
-    height: 104px;
-  }
-  
-  .example-element-symbol {
-    font-weight: bold;
-    font-size: 40px;
-    line-height: normal;
-  }
-  
-  .example-element-description {
-    padding: 16px;
-  }
-  
-  .example-element-description-attribution {
-    opacity: 0.5;
-  }
-  mat-tab-group{
-    width: 100%;
-  }
-  ::ng-deep .mat-tooltip {
-    font-size: 1em;
-    min-width: 200px;
-  }
-
-  /* ::ng-deep.swal2-container {
-    z-index: 1000000;
-} */
-
-  
+::ng-deep .cdk-overlay-container {
+  z-index: 1055 !important;
+}
+::ng-deep .mat-tooltip {
+  font-size: 1em;
+  min-width: 200px;
+}
 
   
   

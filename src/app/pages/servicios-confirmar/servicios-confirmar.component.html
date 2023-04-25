@@ -428,7 +428,7 @@
   <mat-step>
     <ng-template matStepLabel>Rayar detalles</ng-template>
     <div class="row mt-1">
-      
+      <!-- <button class="btn btn-sm " (click)="generaBS64()">base64 archivos</button> -->
 
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
 
@@ -745,11 +745,11 @@
       
       <!-- <button class="btn btn-danger m-1 " (click)="subirFirma()">subirFirma</button> -->
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
         <strong><span class="text-danger">Recuerda presionar el boton de "Firmar recepción" para guardar la firma</span></strong>
       </div>
-    </div>
+    </div> -->
     <!-- (ngSubmit)="guardarCliente()" -->
     
     <!-- <pre> 
@@ -762,10 +762,10 @@
   </mat-step>
 </mat-stepper>
 
-<div class="progress">
+<!-- <div class="progress">
   <div class="progress-bar" role="progressbar" [ngStyle]="{'width': progreso+'%'}" aria-valuemin="0"
     aria-valuemax="100"></div>
-</div>
+</div> -->
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-danger m-2" *ngIf="mensajeError">
     <p>Información Faltante: </p>

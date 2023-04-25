@@ -884,8 +884,15 @@
                       <th scope="row">{{i + 1}}</th>
                       <td style="width: 60%;">
                         <strong [ngClass]="{'text-danger': !pago['status'],'text-success': pago['status']}">
-                          {{pago['monto'] | monedas}} ( {{MetodosPago[pago['metodo'] - 1].muestra}} ) <strong class="text-uppercase">[ {{pago['gasto_tipo'] }} ]</strong>
-                        </strong>
+                          {{pago['monto'] | monedas}} ( {{MetodosPago[pago['metodo'] - 1].muestra}} ) 
+                       
+                        <ng-container *ngIf="!pago['status']; else elseElimado">
+                            Eliminado
+                        </ng-container>
+                        <ng-template #elseElimado>
+                            Aprobado
+                        </ng-template>
+                      </strong>
                         <br>
                         <small class="fw-lighter">
                           <strong> {{pago['concepto'] | capitalizarUno}}
@@ -930,6 +937,14 @@
                       <strong [ngClass]="{'text-danger': !g['status'],'text-success': g['status']}">
                         {{g['monto'] | monedas}} ( {{MetodosPago[g['metodo'] - 1].muestra}} )
                         <strong class="text-uppercase">[ {{g['gasto_tipo'] }} ]</strong>
+                        <ng-container *ngIf="!g['status']; else elseElimado">
+                            Eliminado
+                        </ng-container>
+                        <ng-template #elseElimado>
+                            Aprobado
+                        </ng-template>
+                        
+                        
                       </strong> <br>
                       <!-- <small><p>{{}}</p></small> -->
                       <small class="fw-lighter">

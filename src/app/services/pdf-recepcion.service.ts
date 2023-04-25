@@ -73,24 +73,26 @@ export class PdfRecepcionService {
     nuevasdocumentDefinitionimages['techo'] = `${(await bases('../../assets/imagenes_detalles/techo.jpg')).url}`
     nuevasdocumentDefinitionimages['firmaCliente'] = `${data['firmaCliente']}`
 
-    
+    let pers2 = []
+    const personalizados:any[] = data['personalizados']
+    await personalizados.forEach(p=>{
+      nuevasdocumentDefinitionimages[p.nombre] = `${p.base64data}`
+      const temp = {id: p.nombre, checado: true}
+      pers2.push(temp)
+    })
+
     let person_ =[]
-    
-    if (data['personalizados'].length) {
-      // console.log('anexar al pdf las imagenes de personalizados');
-      person_ = data['personalizados']
-    }
 
     person_.forEach((p)=>{
       const nombre = p['nombre'].split('.')
       nuevasdocumentDefinitionimages[nombre[0].toLowerCase()] = `${p['url']}`
     })
+    
     const checados = data['detalles'].filter(d=>d['checado'])
-    data['conjuntos'] = checados.concat(person_)
+    data['conjuntos'] = checados.concat(person_).concat(pers2)
     return this.pdf(data,nuevasdocumentDefinitionimages)
   }
   async pdf(data:any, bibliotecaVirtual:any){
-
     const colorTextoPDF: string = '#1215F4';
     const dat = data
     if (!dat['cliente']['empresa']) {
@@ -632,7 +634,7 @@ export class PdfRecepcionService {
     limites_.sort(function(a, b) {
       return a - b;
     });
-    
+
     limites_.forEach((a,index) => {
       let muestra = []
       if (index ===0) {

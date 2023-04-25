@@ -105,7 +105,6 @@ export class PagoComponent implements OnInit {
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
-      referencia:['',[Validators.minLength(5), Validators.maxLength(250)]],
       fecha:[this.selected,[Validators.required]],
       sucursal: [sucursal,[Validators.required]],
       usuario: [this.usuario, [Validators.required]],
