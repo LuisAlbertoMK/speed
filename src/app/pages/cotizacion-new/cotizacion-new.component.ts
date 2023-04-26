@@ -204,8 +204,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.infoCotizacion.iva = this.checksBox.controls['iva'].value
     this.infoCotizacion.reporte = this._publicos.realizarOperaciones_2(this.infoCotizacion).reporte
     this.infoCotizacion.elementos = this._publicos.realizarOperaciones_2(this.infoCotizacion).elementos
-    console.log(this.infoCotizacion.elementos);
-    
     this.dataSource.data = this.infoCotizacion.elementos
     this.newPagination()
   }
@@ -239,8 +237,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
   }
   validaciones(){
-    const obligatorios = ['cliente','sucursal','vehiculo','iva','servicio', 'margen_get','formaPago','elementos']
-    const opcionales = ['promocion','descuento','descripcion','nota']
+    const obligatorios = ['cliente','sucursal','vehiculo','servicio', 'margen_get','formaPago','elementos']
+    const opcionales = ['promocion','descuento','descripcion','nota','iva']
     let camposObligatorios = [], camposOpcionales =[]
 
     const valores_Form = this.formPlus.value
@@ -256,14 +254,22 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     opcionales.forEach(c=>{
       if(!this.infoCotizacion[c]) camposOpcionales.push(c)
     })
-    console.log(this.infoCotizacion);
+    // console.log(this.infoCotizacion);
     this.obligatorios = null
     this.opcionales = null
     this.obligatorios = camposObligatorios.join(', ')
     this.opcionales = camposOpcionales.join(', ')
+    if (camposObligatorios.length) {
+      this._publicos.swalToastError('Falta informacion')
+    }else{
+      this.continuarCotizacion()
+    }
+  }
+  continuarCotizacion(){
+    const correos = this._publicos.dataCorreo(this.infoCotizacion.sucursal,this.infoCotizacion.cliente)
+    console.log(correos);
     
   }
-
 
   newPagination(){
     setTimeout(() => {
