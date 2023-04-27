@@ -108,6 +108,7 @@ export class PaquetesComponent implements OnInit {
           p['tipo'] = 'paquete'
           p['aprobado'] = true
           p['cantidad'] = 1
+          p['costo'] = 0
           // p['total'] = reporte['total']
         })
 

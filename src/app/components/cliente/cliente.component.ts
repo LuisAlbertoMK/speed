@@ -66,6 +66,7 @@ export class ClienteComponent implements OnInit {
     this.listaClientes()
 
     this.perteneceA()
+    
   }
   roles(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -271,7 +272,7 @@ export class ClienteComponent implements OnInit {
     (info_get['correo_sec']) ? saveInfo['correo_sec'] = String(info_get['correo_sec']).trim(): null;
     (info_get['telefono_fijo']) ? saveInfo['telefono_fijo'] = String(info_get['telefono_fijo']).trim(): null;
     (info_get['empresa']) ? saveInfo['empresa'] = String(info_get['empresa']).trim(): null;
-    console.log(saveInfo);
+    // console.log(saveInfo);
     
     let contador = 0
     const updates = {};

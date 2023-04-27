@@ -9,6 +9,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import Swal from 'sweetalert2';
 
 
 const db = getDatabase()
@@ -48,6 +49,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   ROL:String
   SUCURSAL:string
 
+  clientes_arr=[]
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService){}
 
   ngOnInit() {
@@ -71,9 +73,10 @@ export class ClientesComponent implements AfterViewInit, OnInit {
           const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
           c.vehiculos = vehiculos
         })
-        console.log(clientes);
+        this.clientes_arr = clientes
+        // console.log(clientes);
         
-        this.dataSourceClientes.data = clientes
+        
         this.newPagination('clientes')
       }else{
         this.dataSourceClientes.data = []
@@ -94,7 +97,6 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
   clientesInfo(info:any){
     if (info['registro']) {
-      // this.showFormCliente = !info['oculta']
       this._publicos.mensajeCorrecto('registro de cliente correcto')
     }else if(info['actualizacion']){
       this._publicos.mensajeCorrecto('actualizacion de cliente correcto')
@@ -125,9 +127,12 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       // console.log('id de vehiculo');
       if (data['id']) {
         setTimeout(() => {
-          // console.log(data['id']);
-          
+         
+          // Swal.fire('','','info')
+          this._publicos.mensajeOK('Se carago la información',2000)
+          // Swal.isLoading()
           this.vehiculo = data
+          // Swal.close()
         } , 300);
       }
     }
@@ -145,6 +150,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   newPagination(data:string){
     setTimeout(() => {
     if (data==='clientes') {
+      this.dataSourceClientes.data = this.clientes_arr
       this.dataSourceClientes.paginator = this.paginatorClientes;
       this.dataSourceClientes.sort = this.sortClientes
     }

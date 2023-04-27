@@ -213,3 +213,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-margin {
   margin: 0 10px;
 }
+
+.mat-tab-group {
+  margin-bottom: 48px;
+}

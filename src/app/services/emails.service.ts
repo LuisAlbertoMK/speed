@@ -134,12 +134,12 @@ export class EmailsService {
   }
   async EmailCotizacion(data:any){
     const dataEmail = {
-      filename: `${data['data'].no_cotizacion}.pdf`,
-      pathPDF: data['data'].pdf,
+      filename: `${data.filename}.pdf`,
+      pathPDF: data.pathPDF,
       subject: 'Nueva cotización SpeedPro',
       tipo:'cotizacion',
       emailAnexa:data['correos'],
-      filtro_conceptos: data['conceptos']
+      filtro_conceptos: data.filtro_conceptos
     }
     // console.log(dataEmail);
     const dataMail = await this.template(data['cliente'],data['vehiculo'],dataEmail)

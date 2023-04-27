@@ -1666,7 +1666,7 @@ export class ServiciosPublicosService {
               const info = this.reportePaquete(e.elementos,margen)
               e['reporte_interno'] = info
               e['precio'] = info.total
-              e['total'] = info.total
+              e['total'] = operacion
             }
           }else{
             if (e.tipo === 'refaccion') {
@@ -1675,7 +1675,6 @@ export class ServiciosPublicosService {
             } else if (e.tipo === 'MO' || e.tipo ==='mo') {
               reporte.mo += operacion;
             }else {
-                
                 const info = this.reportePaquete(e.elementos,margen)
                 e['reporte_interno'] = info;
                 e['precio'] = info.total;
@@ -1704,7 +1703,7 @@ export class ServiciosPublicosService {
         const enCaso_meses = this.formasPAgo.find(f=>Number(f['id']) === Number(formaPago))
         // console.log(enCaso_meses);
         if (Number(enCaso_meses['id']) === 1) {
-          reporte.descuento = descuento
+          reporte.descuento = Number(descuento)
           reporte.total -= reporte.descuento
         }else{
           reporte.descuento = 0
@@ -1715,7 +1714,7 @@ export class ServiciosPublicosService {
     }
     
     reportePaquete(elementos:any,margen:number){
-        const margen_get = 1 + (margen/100)
+        // const margen_get = 1 + (margen/100)
         if(!elementos) elementos = []
         const reporte_interno = { mo: 0, refacciones: 0, refacciones_v:0, sobrescrito_mo: 0, sobrescrito_refaccion: 0 ,ub:0};
         elementos.forEach((e_interno, index) => {
@@ -1724,18 +1723,18 @@ export class ServiciosPublicosService {
           const operacion_interno = e_interno.tipo === 'refaccion' ? e_interno.cantidad * pre_interno : e_interno.cantidad * pre_interno;
           if (e_interno.costo > 0) {
             (e_interno.tipo === 'refaccion') ? reporte_interno.sobrescrito_refaccion += operacion_interno : reporte_interno.sobrescrito_mo += operacion_interno;
-            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen_get : e_interno['total'] = operacion_interno
+            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen : e_interno['total'] = operacion_interno
         }else{
             (e_interno.tipo === 'refaccion') ? reporte_interno.refacciones += operacion_interno : reporte_interno.mo += operacion_interno;
-            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen_get : e_interno['total'] = operacion_interno
+            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen : e_interno['total'] = operacion_interno
             }
         })
-        reporte_interno.refacciones_v = reporte_interno.refacciones * margen_get
+        reporte_interno.refacciones_v = reporte_interno.refacciones * margen
         const suma = reporte_interno.mo + (reporte_interno.refacciones_v) + reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion
         // reporte_interno.ub = (suma - reporte_interno.refacciones)*100 / suma
         reporte_interno.ub = 100 - ((reporte_interno.refacciones_v * 100) / suma )
 
-        return  {...reporte_interno, total: suma, margen_get}
+        return  {...reporte_interno, total: suma, margen}
     }
     realizarOperaciones_real(hitoriales:any){
         const { historial_gastos, historial_pagos } = hitoriales
@@ -1804,5 +1803,65 @@ export class ServiciosPublicosService {
 
         return answer.correos
     }
+    async generaNombreCotizacion(infoSucursal:string,rol:string){
+        let mes = ''; let sucursal= '', nuevoRol:string ='',secuencia=''; let ceros = '', cuantas:number = 0
+        let no_cotizacion:string = ''
+        // const timeReques = await this._publicos.getFechaHora()
+      
+        const date: Date = new Date()
+      
+        const anio = String(date.getFullYear())
+        let muestra = anio.slice(anio.length-2,anio.length)
+      
+        if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
+        await get(child(dbRef, `cotizacionesRealizadas`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            let nuev:any[] = this.crearArreglo2(snapshot.val())
+            cuantas = nuev.length
+          }
+        }).catch((error) => {
+          // console.error(error);
+        });
+        const inicio = String(cuantas).length
+        const final = 5
+        for (let index = inicio; index < final ; index++) {
+          ceros = `${ceros}0`
+        }
+        secuencia = `${ceros}${cuantas + 1}`
+        const nombreSucursal:string = infoSucursal      
+        sucursal = nombreSucursal.slice(0,2).toUpperCase() 
+        const rolString:string = rol      
+        nuevoRol = rolString.slice(0,2).toUpperCase() 
+    
+        no_cotizacion = `${sucursal}${mes}${muestra}${nuevoRol}${secuencia}`
+        
+        return no_cotizacion
+      }
 
+      obtenerNombresElementos(elementos:any[]){
+        const answer = {cadena: '', arr:[]}
+            elementos.forEach(e=>{
+                answer.arr.push(e['nombre'])
+            })
+        return answer.arr.join(', ')
+      }
+
+      mensajeOK(mensaje: string, time){
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: mensaje,
+            showConfirmButton: false,
+            timer: time
+          })
+      }
+      mensajeNOT(mensaje: string, time){
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: mensaje,
+            showConfirmButton: false,
+            timer: time
+          })
+      }
  }

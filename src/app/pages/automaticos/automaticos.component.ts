@@ -37025,5 +37025,9 @@ recepcionesChange(){
       break;
   }
   }
+  infoCliente(dataCliente){
+    console.log(dataCliente);
+    
+  }
   
 }

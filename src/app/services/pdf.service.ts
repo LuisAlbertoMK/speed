@@ -12,9 +12,19 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
   providedIn: 'root'
 })
 export class PdfService {
-
+  formasPago=[
+    {id:'1',pago:'contado',interes:0,numero:0},
+    {id:'2',pago:'3 meses',interes:4.49,numero:3},
+    {id:'3',pago:'6 meses',interes:6.99,numero:6},
+    {id:'4',pago:'9 meses',interes:9.90,numero:9},
+    {id:'5',pago:'12 meses',interes:11.95,numero:12},
+    {id:'6',pago:'18 meses',interes:17.70,numero:18},
+    {id:'7',pago:'24 meses',interes:24.,numero:24}
+  ]
   constructor(public _publicos:ServiciosPublicosService) { }
-  async pdf(dataImagen:any,data:any,detalles:boolean){
+  async pdf(data:any,detalles:boolean){
+     
+    
     function table(data, columns, witdhsDef, showHeaders, headers, layoutDef) {
       return {
           table: {
@@ -25,6 +35,34 @@ export class PdfService {
           layout: layoutDef
       };
     }
+    const nuevasdocumentDefinitionimages = {}
+      nuevasdocumentDefinitionimages['logo'] = `${(await bases('../../assets/logoSpeedPro/Logo-Speedpro.png')).url}`
+      async function bases(URL:any) {
+        const dataaa = {url: '', logo:''}
+        await getBase64ImageFromURL(URL).then((val:any)=>{
+          dataaa.url = val
+        })
+        return dataaa
+      }
+      function getBase64ImageFromURL(url:string) {
+        return new Promise((resolve, reject) => {
+          var img = new Image();
+          img.setAttribute("crossOrigin", "anonymous");
+          img.onload = () => {
+            var canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            var dataURL = canvas.toDataURL("image/png");
+            resolve(dataURL);
+          };
+          img.onerror = error => {
+            reject(error);
+          };
+          img.src = url;
+        });
+      }
 
     
     
@@ -251,15 +289,15 @@ export class PdfService {
           var i = 0;
           // console.log(row);
           if(row['costo'] > 0){
-            row['flotilla2'] = transform(row['costo'] * row['cantidad'])
-            row['normal'] = transform((row['costo'] * row['cantidad'])* 1.30)
+            row['flotilla2'] = transform(row['total'])
+            row['normal'] = transform(row['total'] * 1.30)
             columns.forEach(function(column) {
               dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
               i++;
               })
           }else{
-            row['flotilla2'] = transform(row['flotilla'])
-            row['normal'] = transform(row['flotilla'] * 1.30)
+            row['flotilla2'] = transform(row['total'])
+            row['normal'] = transform(row['total'] * 1.30)
             columns.forEach(function(column) {
               dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
           i++;
@@ -310,7 +348,7 @@ export class PdfService {
                          
                 if (detalles) {
                   // ( ${column.flotilla} )
-                  data2.push(` ${i}.- ${capUno(column.nombre)} ( ${transform(column['subtotal'])} ) `)
+                  data2.push(` ${i}.- ${capUno(column.nombre)} ( ${transform(column['total'])} ) `)
                 }else{
                   data2.push(` ${i}.- ${capUno(column.nombre)} `)
                 }
@@ -370,7 +408,7 @@ export class PdfService {
                 [ { text: 'Operadora de Servicios Automotrices integrales del Centro del pais Speed Service GAFEAG SA De CV',
                 bold: true, alignment: 'center', style:'operadora' },
                 {
-                  image: `${dataImagen}`,
+                  image: `logo`,
                   height: 70,
                   width: 190,
                   aling: 'center',
@@ -393,7 +431,7 @@ export class PdfService {
             columns: [
               {
                 width: '100%',
-                text: `${data.sucursal}`,
+                text: `${data.sucursal.sucursal},${data.sucursal.direccion}, ${data.sucursal.correo}, Tel. ${data.sucursal.telefono}`,
                 style: 'sucursal'
               }
             ],
@@ -405,7 +443,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Fecha', style:'title' },
-              {width: '35%', text: `${data['infoCotizacion'].fecha}`,  style:'info' },
+              {width: '35%', text: `${data.fecha}`,  style:'info' },
               {width: '15%', text: 'Promocion', style:'title' },
               {width: '35%', text: `FLOTILLA`,  style:'info'  },
             ]
@@ -413,9 +451,9 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Cliente', style:'title' },
-              {width: '35%', text: `${data['cliente'].fullname}`,  style:'info'},
+              {width: '35%', text: `${data.cliente.nombre} ${data.cliente.apellidos}`,  style:'info'},
               {width: '15%', text: 'COT#', style:'title' },
-              {width: '35%', text: `${data['infoCotizacion'].no_cotizacion}`,  style:'info'},
+              {width: '35%', text: `${data.no_cotizacion}`,  style:'info'},
             ]
           },
           {
@@ -519,7 +557,7 @@ export class PdfService {
           },
           {
                 columns: [
-                  {width: '100%', text: `Nota: ${data['infoCotizacion']['nota']}`,style:'content'},
+                  {width: '100%', text: `Nota: ${data.nota}`,style:'content'},
                 ]
           },
           {
@@ -545,10 +583,13 @@ export class PdfService {
           anotherStyle: { italics: true, align: 'center'},
           vencimiento: { italics: true, align: 'right', color: 'red', fontSize: 8}
         },
+        images:{},
         alignment: {alignment:'right'}
       }
+
+    
       
-      if (data['infoCotizacion'].formaPago == 1) {
+      if(data.formaPago === '1') {
         const contenido =documentDefinition.content
         if (data['reporte'].descuento>0) {
           documentDefinition.content = [...contenido,
@@ -562,7 +603,7 @@ export class PdfService {
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' }, '', '' ],
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                     { text: `Forma de pago:`, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${data['formaPago'].nombre}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `Contado`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
                     { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
@@ -600,7 +641,7 @@ export class PdfService {
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' }, '', '' ],
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                     { text: `Forma de pago:`, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${data['formaPago'].nombre}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `Contado`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
                     { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
@@ -621,10 +662,9 @@ export class PdfService {
               }
             }
           ]
-          
         }
-        
       }else{
+        const dataformaPago = this.formasPago.find(p=>p.id === data.formaPago)
         const contenido =documentDefinition.content
         documentDefinition.content = [...contenido,
           {
@@ -637,7 +677,7 @@ export class PdfService {
                 [ { text: '', bold: true, alignment: 'center', style:'terminos' }, '', '' ],
                 [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                   { text: `Forma de pago:`, bold: true, alignment: 'right', style:'sucursal' },
-                  { text: `${data['formaPago'].nombre}`, bold: true, alignment: 'right', style:'sucursal' }
+                  { text: `${dataformaPago.numero} meses`, bold: true, alignment: 'right', style:'sucursal' }
                 ],
                 [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                   { text: `Subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
@@ -655,7 +695,7 @@ export class PdfService {
                 ],
                 [
                   { text: ``, bold: true, alignment: 'center', style:'sucursal' },
-                  { text: `Total ${data['formaPago'].nombre}: `, bold: true, alignment: 'right', style:'sucursal' },
+                  { text: `Total a ${dataformaPago.numero} meses: `, bold: true, alignment: 'right', style:'sucursal' },
                   { text: `${transform( data['reporte'].meses)}`, bold: true, alignment: 'right', style:'sucursal'}
                 ],
                 [
@@ -680,11 +720,12 @@ export class PdfService {
             headerRows: 1,
             widths: [ 'auto'],
             body: [
-              [ { text: `fecha de vencimiento ${data['infoCotizacion'].vencimiento}`, style:'vencimiento'}]
+              [ { text: `fecha de vencimiento ${data.vencimiento}`, style:'vencimiento'}]
             ]
           }
         }
       ]
+      documentDefinition.images = nuevasdocumentDefinitionimages
       return documentDefinition
   }
   redondeado(value: number,symbol:boolean){

@@ -64,7 +64,7 @@
                           data-bs-target="#modalNewVehiculo"></i>  
         <!-- <i class="fa fa-books text-danger m-1 pointer" #tooltip="matTooltip" matTooltip="Historial de cliente"></i>   -->
         <i class="fa fa-calculator text-success m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar cotizacion"
-        [routerLink]="'/cotizacionNueva/'+row.id+'/cliente'" ></i>  
+        [routerLink]="'/cotizacionNueva/'+row.id+'/cliente/null'" ></i>  
         <i class="fa fa-car-garage text-danger m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar recepcion"
         [routerLink]="'/ServiciosConfirmar/'+row.id+'/cliente'"></i>  
       </td>
@@ -84,8 +84,8 @@
       <div class="example-element-detail"
            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
            <!-- <div class="example-element-description"> -->
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <!-- <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12"> -->
                 <!-- aqui lista de vehiculos -->
                 <div class="table-responsive">
                   <table class="table">
@@ -98,6 +98,7 @@
                         <th scope="col">Color</th>
                         <th scope="col">anio</th>
                         <th scope="col">engomado</th>
+                        <th scope="col">&nbsp;</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -109,12 +110,22 @@
                         <td>{{v.color}}</td>
                         <td>{{v.anio}}</td>
                         <td>{{v.engomado}}</td>
+                        <td>
+                          <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion"
+                          (click)="cargaDataVehiculo(v,'vehiculo')" 
+                          data-bs-toggle="modal" data-bs-target="#modalNewVehiculo"></i>
+
+                            <!-- (click)="cargaDataVehiculo(row,'cliente')" data-bs-toggle="modal"
+                          data-bs-target="#modalNewVehiculo" -->
+                          <i class="fa fa-calculator text-success m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar cotizacion"
+                            [routerLink]="'/cotizacionNueva/'+element.id+'/vehiculo/'+v.id" ></i>  
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-              </div>
-            </div>
+              <!-- </div>
+            </div> -->
            <!-- </div> -->
        
       </div>

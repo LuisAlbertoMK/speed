@@ -67,7 +67,7 @@ const APP_ROUTES: Routes = [
   { path: 'recordatorios', component: RecordartoriosComponent ,  canActivate:[AuthGuard]},
   { path: 'historial-vehiculo/:idvehiculo', component: HistorialVehiculoComponent ,  canActivate:[AuthGuard]},
   { path: 'historial-cliente/:rutaAnterior/:idCliente', component: HistorialClienteComponent ,  canActivate:[AuthGuard]},
-  { path: 'cotizacionNueva/:ID/:tipo', component: CotizacionNewComponent ,  canActivate:[AuthGuard]},
+  { path: 'cotizacionNueva/:ID/:tipo/:extra', component: CotizacionNewComponent ,  canActivate:[AuthGuard]},
   { path: 'home', component: HomeComponent },
   { path: 'vehiculos/:rutaAnterior/:accion', component: VehiculosComponent,canActivate:[AuthGuard] },
   { path: 'ServiciosConfirmar/:ID/:tipo', component: ServiciosConfirmarComponent,canActivate:[AuthGuard] },

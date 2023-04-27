@@ -46,51 +46,73 @@ registerLocaleData(localeES, 'es');
   ],
 })
 export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
-  contadorPendientes:number = 0
-  //autocompletado
-  myControl = new FormControl('');
-  filteredOptions: Observable<any[]>;
-  // paginacion material
-  //displayedColumns: string[] = ['position', 'name', 'weight', 'opciones'];
-  displayedColumns2: string[] = ['cargo', 'correo', 'telefono', 'opciones'];
+  miniColumnas:number = 100
+  ROL:string; SUCURSAL:string
+  sucursales=[]
+  paquete: string = 'paquete'
+   refaccion: string = 'refaccion'
+   mo: string = 'mo'
 
-  //rol de usuario
-  ROL: string = '';
-  SUCURSAL: string = '';
-  //resultados mostrar conjuntos de refacciones
-  //ancho minimo de columnas
-  miniColumnas: number = 100;
-  
-  //tabla cotizaciones
-  displayedColumnsCotizaciones: string[] = ['index','no_cotizacion' ,'cliente', 'vehiculo'];
-  displayedColumnsCotizacionesExtended: string[] = [...this.displayedColumnsCotizaciones,'expand'];
-  dataSourceCotizaciones = new MatTableDataSource();
-  expandedElement: any | null;
+   // tabla
+   dataSource = new MatTableDataSource(); //cotizaciones
+   cotizaciones = ['index','no_cotizacion','cliente','placas']; //cotizaciones
+   columnsToDisplayWithExpand = [...this.cotizaciones, 'opciones', 'expand']; //cotizaciones
+   expandedElement: any | null; //cotizaciones
+   @ViewChild('cotizacionesPaginator') paginator: MatPaginator //cotizaciones
+   @ViewChild('cotizaciones') sort: MatSort //cotizaciones
 
 
-  @ViewChild('pag_cotiza') paginatorCotizaciones: MatPaginator;
-  @ViewChild('tab_coti') sortCotizaciones: MatSort;
-  //tabla cotizaciones
+   camposDesgloce = [
+    {valor:'mo', show:'mo'},
+    // {valor:'refacciones_a', show:'refacciones a'},
+    {valor:'refacciones_v', show:'refacciones'},
+    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
+    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
+    {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'descuento', show:'descuento'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+    {valor:'meses', show:'meses'},
+  ]
+  camposCliente=[
+    {valor: 'no_cliente', show:'# Cliente'},
+    {valor: 'nombre', show:'Nombre'},
+    {valor: 'apellidos', show:'Apellidos'},
+    {valor: 'correo', show:'Correo'},
+    {valor: 'correo_sec', show:'Correo adicional'},
+    {valor: 'telefono_fijo', show:'Tel. Fijo'},
+    {valor: 'telefono_movil', show:'Tel. cel.'},
+    {valor: 'tipo', show:'Tipo'},
+    {valor: 'empresa', show:'Empresa'},
+    {valor: 'sucursal', show:'Sucursal'}
+  ]
+  camposVehiculo=[
+    {valor: 'placas', show:'Placas'},
+    {valor: 'marca', show:'marca'},
+    {valor: 'modelo', show:'modelo'},
+    {valor: 'anio', show:'añio'},
+    {valor: 'categoria', show:'categoria'},
+    {valor: 'cilindros', show:'cilindros'},
+    {valor: 'engomado', show:'engomado'},
+    {valor: 'color', show:'color'},
+    {valor: 'transmision', show:'transmision'},
+    {valor: 'no_motor', show:'No. Motor'},
+    {valor: 'vinChasis', show:'vinChasis'},
+    {valor: 'marcaMotor', show:'marcaMotor'}
+  ]
+  formasPago=[
+    {id:'1',pago:'contado',interes:0,numero:0},
+    {id:'2',pago:'3 meses',interes:4.49,numero:3},
+    {id:'3',pago:'6 meses',interes:6.99,numero:6},
+    {id:'4',pago:'9 meses',interes:9.90,numero:9},
+    {id:'5',pago:'12 meses',interes:11.95,numero:12},
+    {id:'6',pago:'18 meses',interes:17.70,numero:18},
+    {id:'7',pago:'24 meses',interes:24.,numero:24}
+  ]
 
-
-  Listacotizaciones:any[]=[]
-
-  camposCliente=['nombre','correo','correo_sec','telefono_fijo','telefono_movil','tipo','empresa']
-  camposVehiculo=['placas','marca','modelo','anio','categoria','cilindros','engomado','color','transmision','no_motor','vinChasis','marcaMotor']
-  camposElementos =['nombre','cantidad','precio']
-  camposElementosPrincipal =['nombre']
-  camposElementosPaquete =[...this.camposElementos,'cantidad']
-  camposDesgloce =['totalMO','refacciones1','refacciones2','precio','flotilla']
-
-
-  infoPawuete={dataGeneral:'',elementos:[],data:{totalMO:0,refacciones1:0,refacciones2:0,precio:0,flotilla:0}}
-  infoElemento:any =[]
-
-
-
-  sucursales:any[]=[];
-  clientes:any=[];
-  cotizaciones:any[]=[];
+  cotizacionesList=[]
   constructor(
     private fb: FormBuilder, private _publicos: ServiciosPublicosService,
     private _formBuilder: FormBuilder, private _security:EncriptadoService,
@@ -104,7 +126,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   async ngOnInit() {
-    this.listaSucursales()
+    // this.listaSucursales()
     this.rol();
     
   }
@@ -115,211 +137,47 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-    if (this.ROL === null) {
-      this.router.navigateByUrl('/loginv1')
-    }
-    // (this.SUCURSAL !== 'Todas') ? this.infoCotizacion.sucursal = await this.infoRuta(`sucursales/${this.SUCURSAL}`):''
-  }
-  listaSucursales(){
-    this._sucursales.consultaSucursales().then(({contenido,data})=>{
-      if (contenido) {
-        this.sucursales = data
-        this.Listaclientes()
-      }
+    const starCountRef = ref(db, `sucursales`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
+        this.sucursales = this._publicos.crearArreglo2(snapshot.val())
+        // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
+        this.accion()
+      } 
+    }, {
+      onlyOnce: true
     })
   }
-  async Listaclientes(){
-    const starCountRefClientes = ref(db, `clientes`)
-    await onValue(starCountRefClientes, (snapshot) => {
-      this._clientes.ListaClientes().then(async ({existe,clientes})=>{
-        if (existe) {
-          
-          let clientes_nuevos = [];
-          (this.SUCURSAL !== 'Todas')? clientes_nuevos = clientes.filter(o=>o.sucursal === this.SUCURSAL): clientes_nuevos  = clientes;
-          clientes_nuevos.map(async(c)=>{
-            if (!c['vehiculos']){ c['vehiculos'] = []; return }
-            const arreglo_vehiculos = await  this._publicos.crearArreglo2(c['vehiculos'])
-            c['vehiculos'] = arreglo_vehiculos
-          })
-         
-          this.clientes = clientes_nuevos
-          await this.ListaCotizaciones()
-          if(this.clientes.length){
-            setTimeout(() => {
-              this.rol()
-            }, 100);
-          } 
-        }else{
-          this.clientes = []
-        }
-      })
-    })
-  }
-  async ListaCotizaciones(){
+  accion(){
+    // console.log(this.sucursales);
+    //obtener las Realizadas
     const starCountRef = ref(db, `cotizacionesRealizadas`)
-    onValue(starCountRef, async (snapshot) => {
-      await this._cotizaciones.cotizacionesFull().
-      then(({contenido,cotizaciones})=>{
-        // console.log(cotizaciones);
-        if (contenido) {
-          if (!this.cotizaciones.length) {
-            // console.log('las cotizaciones estan en blanco');
-            let cotiza = [];
-            (this.SUCURSAL === 'Todas') ? cotiza = cotizaciones : cotiza =cotizaciones.filter(c=>c['sucursal'] === this.SUCURSAL)
-            
-            cotiza.map((cot,index)=>{
-              cot['index'] = index
-                this.clientes.forEach(cli=>{
-                  if(cot['cliente'] !== cli['id']) return
-                  cot['infoCliente'] = cli
-                  const vehiculos = cli['vehiculos']
-                  // console.log(vehiculos);
-                  vehiculos.forEach(v=>{
-                    if(v['id']!==cot['vehiculo']) return
-                    cot['infoVehiculo'] = v
-                  })
-                  // if (this.SUCURSAL === 'Todas') {
-                    this.sucursales.forEach(s=>{
-                      if(cli['sucursal'] !== s['id']) return
-                      cot['infoSucursal'] = s
-                    })
-                  // }
-                })
-                // cot['infoadi'] = this._publicos.costodePaquete(cot['elementos'][''], cot['margen'])
-                let elementos = []
-                if(cot['elementos']) elementos = cot['elementos']
-                elementos.map(e=>{
-                  if (e['tipo'] === 'paquete') {
-                    let element =[]
-                    if(e['elementos']) element = e['elementos']
-                    e['reporteInterno'] = this._publicos.costodePaquete(element, cot['margen'])
-                    e['precio'] = e['reporteInterno']['flotilla']
-                  } 
-                })
-            })
-            // console.log(cotiza);
-            
-            this.cotizaciones = cotiza            
-            // this.dataSourceCotizaciones.data = this.cotizaciones
-            this.newPagination('cotizaciones')
-          }else{
-            cotizaciones.map((cot,index)=>{
-              cot['index'] = index
-                this.clientes.forEach(cli=>{
-                  if(cot['cliente'] !== cli['id']) return
-                  cot['infoCliente'] = cli
-                  const vehiculos = cli['vehiculos']
-                  // console.log(vehiculos);
-                  vehiculos.forEach(v=>{
-                    if(v['id']!==cot['vehiculo']) return
-                    cot['infoVehiculo'] = v
-                  })
-                  // if (this.SUCURSAL === 'Todas') {
-                    this.sucursales.forEach(s=>{
-                      if(cli['sucursal'] !== s['id']) return
-                      cot['infoSucursal'] = s
-                    })
-                  // }
-                })
-            })
-            // console.log(`compara data --> cotizaciones: ${cotizaciones.length} - existentes: ${this.cotizaciones.length}`);
-            //primero sin es mayor los nuevos registros a los antiguos
-            if (cotizaciones.length > this.cotizaciones.length) {
-              const inicio = this.cotizaciones.length
-              for (let index = inicio; index < cotizaciones.length; index++) {
-                const cotizacion = cotizaciones[index]
-                this.cotizaciones.push(cotizacion)
-              }
-            }else if(cotizaciones.length < this.cotizaciones.length){
-              this.cotizaciones  = cotizaciones
-            }else if(cotizaciones.length == this.cotizaciones.length){
-              const camposRecupera = ['infoCliente']
-              this.cotizaciones.map((cot,index)=>{
-                if (JSON.stringify(this.cotizaciones[index]) == JSON.stringify(cotizaciones[index])) return
-                cot['infoCliente'] = cotizaciones[index].infoCliente
-              })
-            }
-            // this.dataSourceCotizaciones.data = this.cotizaciones
-            this.newPagination('cotizaciones')
-          }
-          
-          // console.log(this.cotizaciones);
-          
-        }
-      })
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const cotizaciones = this._publicos.crearArreglo2(snapshot.val()) 
+        cotizaciones.map(c=>{
+          if (!c.formaPago) c.formaPago = '1'  
+            const formads= this.formasPago.find(f=>f.id === String(c.formaPago))
+            if (formads.pago) c.pagoName = formads.pago
+        })  
+        this.cotizacionesList = cotizaciones
+        this.newPagination()
+      }
+    }, {
+      onlyOnce: true
     })
-    
   }
 
-  
-  nueva(dataGeneral:any,margen:number){
-      this._publicos.ObtenerTotalesPaquete(dataGeneral.cantidad,dataGeneral.elementos,margen).then((ans:any)=>{
-        this.infoPawuete.dataGeneral = dataGeneral
-        this.infoPawuete.elementos = dataGeneral.elementos
-        this.infoPawuete.data.totalMO = ans.totalMO
-        this.infoPawuete.data.refacciones1 = ans.refacciones1
-        this.infoPawuete.data.refacciones2 = ans.refacciones2
-        this.infoPawuete.data.precio = ans.precio
-        this.infoPawuete.data.flotilla = ans.flotilla
-      })
-  }
-  nuevaElemento(dataGeneral:any,margen:number){
-    let operacion = 0
-    if (dataGeneral.costo>0) {
-      operacion =  dataGeneral.costo * dataGeneral.cantidad
-    }else{
-      operacion =  dataGeneral.precio * dataGeneral.cantidad
-    }
-    if (dataGeneral.tipo === 'MO') {
-      dataGeneral.flotilla = operacion
-    }else{
-      const nueva = operacion * ((margen / 100 ) + 1)
-      dataGeneral.flotilla = nueva
-    }
-    this.infoElemento =  dataGeneral
-    this._publicos.mensajeElemento(dataGeneral)
-  }
-  newPagination(data:string){
+  //paginacion de las cotizaciones
+  newPagination(){
     setTimeout(() => {
-    if (data==='cotizaciones') {
-      this.dataSourceCotizaciones.data = this.cotizaciones
-      this.dataSourceCotizaciones.paginator = this.paginatorCotizaciones;
-      this.dataSourceCotizaciones.sort = this.sortCotizaciones
-    }else if (data==='filtrados') {
-      // this.dataSourceCotizaciones.data = this.cotizaciones
-      this.dataSourceCotizaciones.paginator = this.paginatorCotizaciones;
-      this.dataSourceCotizaciones.sort = this.sortCotizaciones
-    }
+      this.dataSource.data = this.cotizacionesList
+    // if (data==='elementos') {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort
+    // }
     }, 500)
   }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue) {
-      const bus_filter = filterValue.trim().toLowerCase()
-      const busqueda = this.cotizaciones
-      let resultados = []
-      busqueda.forEach(c=>{
-        // const campos = ['index','no_cotizacion','placas','cliente']
-        // const campos2 = ['infoCliente','infoSucursal','infoVehiculo']
-        
-        if (String(c['no_cotizacion']).trim().toLowerCase().includes(bus_filter))  resultados.push(c)
-        if (String(c['infoCliente']['fullname']).trim().toLowerCase().includes(bus_filter))  resultados.push(c)
-        if (String(c['infoVehiculo']['placas']).trim().toLowerCase().includes(bus_filter))  resultados.push(c)
-      })
-      // console.log(resultados);
-      this.dataSourceCotizaciones.data = resultados
-      
-      if (this.dataSourceCotizaciones.paginator) {
-        this.dataSourceCotizaciones.paginator.firstPage();
-      }
-      this.newPagination('filtrados')
-    }else{
-      this.newPagination('cotizaciones')
-    }
-    
-  }
-  generaReporteExcel(){
-    const info = this.dataSourceCotizaciones.data
-    this._exportExcel.exportToExcelCotizaciones(info,'Cotizaciones')
-  }
+  
 }
