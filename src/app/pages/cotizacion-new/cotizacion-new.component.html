@@ -245,12 +245,12 @@
                     {{item.nombre | capitalizarUno}}
                   </td>
                   <td class="text-center">
-                    <input  type="number" min="0" [value]="row.cantidad" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
+                    <input  type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1" [value]="row.cantidad" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
                             (change)="editarSubelemento('cantidad',row,item, cantidadEle.value)" #cantidadEle>
                     <!-- {{item.cantidad}} -->
                   </td>
                   <td class="text-end">
-                    <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
+                    <input  type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" [value]="row.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
                             (change)="editarSubelemento('costo',row,item, cantidadCosto.value)" #cantidadCosto>
                           <!-- {{item.costo | monedas}} -->
                   </td>
