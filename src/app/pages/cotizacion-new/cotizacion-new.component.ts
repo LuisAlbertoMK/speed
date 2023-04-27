@@ -1,7 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { child, get, getDatabase, onValue, push, ref, update } from "firebase/database";
+import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onChildChanged, onChildRemoved} from "firebase/database";
+
+
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import { map, startWith } from 'rxjs/operators';
@@ -73,7 +75,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     {valor: 'telefono_movil', show:'Tel. cel.'},
     {valor: 'tipo', show:'Tipo'},
     {valor: 'empresa', show:'Empresa'},
-    {valor: 'sucursal', show:'Sucursal'}
+    // {valor: 'sucursal', show:'Sucursal'}
   ]
   camposVehiculo=[
     {valor: 'placas', show:'Placas'},
@@ -140,6 +142,10 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   cliente:string = null
 
   vehiculoData:string = null
+  idPaqueteEditar: number
+  idPaqueteEditarBoolean: boolean = false
+
+  modeloVehiculo:string = null
   constructor(
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
     private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
@@ -147,10 +153,62 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
+    // this.verificaCmabiis()
   }
   ngAfterViewInit(): void {
     // this.crearFormPlus()
   }
+  verificarInfoVehiculos(){
+    if (this.infoCotizacion.cliente['id']) {
+      const starCountRef = ref(db, `clientes/${this.infoCotizacion.cliente['id']}/vehiculos`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+          this.infoCotizacion.vehiculos = vehiculos
+        }else{
+          this.infoCotizacion.vehiculos = []
+        }
+      },{
+          onlyOnce: true
+      })
+    } 
+  }
+  ///mensaje para poder agregar un paquete que no esta en el catalogo
+  async mensajePaquete(){
+    // this.mostrarPaquetes = false
+    const { value: nombrePaquete } = await Swal.fire({
+      title: 'Ingresa nombre de paquete',
+      input: 'text',
+      // inputLabel: 'paquete',
+      inputValue: '',
+      showCancelButton: true,
+      inputValidator: (value:any) => {
+        const caracteresMinimos:number = String(value).length
+        if (!value || caracteresMinimos<4) {
+          return 'Necesitas escribir nombre de paquete con 3 caracteres minimos'
+        }else{
+          return null
+        }
+      }
+    })
+    if (nombrePaquete) {
+      
+      const tempData = {
+        elementos: [],
+        nombre: nombrePaquete,
+        aprobado: true,
+        // id: this._publicos.generaClave(),
+        tipo: this.paquete,
+        cantidad: 1,
+        costo: 0
+      }
+      this.infoCotizacion.elementos.push(tempData)
+      this.realizaOperaciones()
+      // this.colocarpaquete([{nombre:nombrePaquete,id:newPostKey}])
+    }
+  }
+  
+  
   crearFormPlus(){
     this.formPlus = this._formBuilder.group({
       servicio:[1,[Validators.required]],
@@ -215,6 +273,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
             const ve= cliente.vehiculos.find(v=>v['id'] === extra)
             this.infoCotizacion.vehiculo = ve
             this.extra = extra
+            this.modeloVehiculo = ve['modelo']
           }
 
 
@@ -242,6 +301,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                 this.infoCotizacion.vehiculos = this._publicos.crearArreglo2(snapshotCliente.val())
               }
             })
+          this.modeloVehiculo = info.vehiculo['modelo']
           this.extra = info.vehiculo.id
           this.realizaOperaciones()
         } 
@@ -261,6 +321,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     if (cliente.error) {
       this._publicos.mensajeNOT('Intenta nuevamente',3000)
     }else{
+      this.infoCotizacion.vehiculo = null
+      this.extra = null
       this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
       this.infoCotizacion.cliente = cliente
       if ( cliente.vehiculos) {
@@ -293,6 +355,10 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
           this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
           this.infoCotizacion.cliente = cliente
           this.infoCotizacion.vehiculos = cliente.vehiculos
+          //si existe vehiculo seleccinado conservar
+          if (this.extra) {
+            this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
+          }
           this.realizaOperaciones()
         }
       })
@@ -335,15 +401,31 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   vehiculoInfo(info:any){
     if (info['registro']) {
       this._publicos.mensajeCorrecto('Accion correcra')
+      
+      this.extra =  info.vehiculo.id
+      this.infoCotizacion.vehiculos = []
+      const starCountRef = ref(db, `clientes/${this.infoCotizacion.cliente['id']}/vehiculos`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+          this.infoCotizacion.vehiculos = vehiculos
+          const filtrov = vehiculos.find(v=>v.id === this.extra)
+          this.infoCotizacion.vehiculo = filtrov
+          this.modeloVehiculo = filtrov['modelo']
+        }
+      })
     }else{
       this._publicos.mensajeIncorrecto('Accion no realizada')
     }
   }
-  
   // aqui agregamos la informacion del elemento que se agrega mediante el evento que se emite el evento trae toda la informacion
   // del elemento en cuestion lo colaocamos y realizamos operaciones
   elementoInfo( event){
-    this.infoCotizacion.elementos.push(event)
+    if (this.idPaqueteEditarBoolean) {
+      this.infoCotizacion.elementos[this.idPaqueteEditar]['elementos'].push(event)
+    }else{
+      this.infoCotizacion.elementos.push(event)
+    }
     this.realizaOperaciones()
   }
   //de la misma manera que elemento asiganamos la informacion del evento paquetes y realizamos operaciones
@@ -414,6 +496,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.infoCotizacion.reporte = this._publicos.realizarOperaciones_2(this.infoCotizacion).reporte
     this.infoCotizacion.elementos = this._publicos.realizarOperaciones_2(this.infoCotizacion).elementos
     this.dataSource.data = this.infoCotizacion.elementos
+    // console.log(this.infoCotizacion.elementos);
     
     this.newPagination()
   }
@@ -421,7 +504,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   vehiculo(IDVehiculo){
     if (IDVehiculo) {
       this.infoCotizacion.vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === IDVehiculo)
+      // infoCotizacion.vehiculo['modelo']
+      this.modeloVehiculo = this.infoCotizacion.vehiculo['modelo']
+      this.extra = IDVehiculo
     }else{
+      this.modeloVehiculo = null
       this.infoCotizacion.vehiculo = null
     }
   }
@@ -492,6 +579,35 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     if(!this.infoCotizacion.cliente['empresa'])  this.infoCotizacion.cliente['empresa'] = ''
     // en caso de que no tenga nota asiganamos un string vacio
     if(!this.infoCotizacion.nota)  this.infoCotizacion.nota = ''
+
+    // console.log('antes de todo revisar los paquetes no guardados ');
+    //primero se filtra la informacion a solo paquetes
+    const filter = this.infoCotizacion.elementos.filter(e=>e.tipo === 'paquete')
+    // console.log('los paquetes que no estan en catalogo son: ',filter);
+    //despues filtramos los paquetes que  no tengan id
+    const filtroNotID = filter.filter(f=>!f.id)
+    // console.log('los paquetes que no tienen id son: ',filtroNotID);
+
+
+    //los paquees que no han sido registrados se guardan automaticamente 
+    filtroNotID.forEach(p=>{
+      const campos = ['elementos','nombre','tipo']
+      const recuperada = {
+        ...this._publicos.recuperaData(campos,p),
+        cilindros: this.infoCotizacion.vehiculo['cilindros'],
+        marca: this.infoCotizacion.vehiculo['marca'],
+        modelo: this.infoCotizacion.vehiculo['modelo'],
+        status: true,
+        enCatalogo: true
+      }
+
+      const clave = `paquetes/${this._publicos.generaClave()}`;
+      const updates = { [clave]: recuperada };
+      
+      update(ref(db), updates);
+    })
+    
+    
    
     //hacemos el llamdo de la funcion para la creaciion del pdf    
     this._pdf.pdf(this.infoCotizacion,this.checksBox.controls['detalles'].value).then((ansPDF)=>{

@@ -1,11 +1,27 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/cotizacion']">cotizacion</a></li>
+          <li class="breadcrumb-item active">Nueva cotizacion</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
 
-<app-clientes-list (dataCliente)="infoCliente ( $event )" [sucursal]="SUCURSAL" class="m-1" *ngIf="tipo ==='new'"></app-clientes-list>
+
+
+
+<app-clientes-list (dataCliente)="infoCliente ( $event )" [sucursal]="SUCURSAL" class="m-1" ></app-clientes-list>
 <div class="card border-dark" >
   <div class="card-body">
     <h1>Informacion de cliente 
 
       <ng-container *ngIf="infoCotizacion.cliente['id']">
-        <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion"
+        <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion" 
         (click)="cargaDataCliente(infoCotizacion.cliente)" data-bs-toggle="modal" data-bs-target="#modalNewUser"></i>
       </ng-container>
     </h1>
@@ -22,20 +38,19 @@
 </div>
 <div class="card border-dark">
   <div class="card-body">
-    <h1>Informacion de vehiculo</h1>
-    <ng-container *ngIf="infoCotizacion.cliente">
-      <button class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cargaDataVehiculo(infoCotizacion.cliente,'vehiculo')">
-        <i class="fa fa-car"></i>
-      </button>
-    </ng-container>
-    
-    <div class="form-group" *ngIf="infoCotizacion.vehiculos.length">
+    <ng-container *ngIf="infoCotizacion.cliente['id']">
       <label for="exampleInputEmail1">Placas de vehiculos disponibles</label>
-      <select class="form-select form-select-sm text-uppercase" [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
-        <option  [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos" class="text-uppercase" >{{v.placas}}</option>
-      </select>
-      <small id="helpPlacas" class="form-text text-muted">Selecciona vehiculo</small>
-    </div>
+      <i class="fa fa-sync pointer btn btn-sm btn-outline-primary" (click)="verificarInfoVehiculos()"></i>
+      <div class="input-group mb-3">
+        <select class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
+          <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
+        </select>
+        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cargaDataVehiculo(infoCotizacion.cliente,'vehiculo')" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
+          <i class="fa fa-car"></i>
+        </button>
+      </div>
+    </ng-container>
+    <h1>Informacion de vehiculo</h1>
     <div class="row" *ngIf="infoCotizacion.vehiculo">
       <ng-container *ngFor="let item of camposVehiculo">
         <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoCotizacion.vehiculo[item.valor]">
@@ -130,7 +145,8 @@
 <div class="card border-dark">
   <div class="card-body text-end">
     <button  data-bs-toggle="modal" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Agregar paquete</button>
-    <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Agregar elemento</button>
+    <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="idPaqueteEditar = null; idPaqueteEditarBoolean = false">Agregar elemento</button>
+    <button   class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="mensajePaquete()">Nuevo paquete</button>
     <!-- <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary">Elemento</button> -->
   </div>
 </div>
@@ -186,6 +202,10 @@
       <td mat-cell *matCellDef="let row"> 
       <!-- aqui el btn para eliminar -->
       <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaElemento(row)"></i>
+      <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" 
+              (click)="idPaqueteEditar = row.index; idPaqueteEditarBoolean = true">
+              <i class="fa fa-plus"></i>
+            </button>
       </td>
     </ng-container>
    
@@ -355,11 +375,11 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div
   class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
   <div class="modal-content">
-    <div class="modal-header ml-3">
+    <!-- <div class="modal-header ml-3">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
+    </div> -->
     <div class="modal-body m-2">
-      <app-paquetes (infoPaquete)="infopaquete( $event)"></app-paquetes>
+      <app-paquetes [modelo]="modeloVehiculo" (infoPaquete)="infopaquete( $event)" ></app-paquetes>
     </div>
   </div>
 </div>
@@ -406,13 +426,11 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body m-2">
-        mierda
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            <!-- (click)="cargaDataCliente('')" -->
           </div>
-        </div>
+        </div> -->
         <ng-container *ngIf="cliente; else elseVehiculo">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
@@ -424,7 +442,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
               <ng-container *ngIf="vehiculoData; else elseIDvehiculo">
-                tiene cliente
+                <!-- tiene cliente -->
                 <!-- <app-vehiculo [vehiculo]="vehiculoData['id']" [vehiculoDat]="vehiculoData" [cliente]="vehiculoData['id']" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo> -->
                 <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" [cliente]="vehiculoData['id']"></app-vehiculo>
               </ng-container>

@@ -55,7 +55,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
 
    // tabla
    dataSource = new MatTableDataSource(); //cotizaciones
-   cotizaciones = ['index','no_cotizacion','cliente','placas']; //cotizaciones
+   cotizaciones = ['index','no_cotizacion','searchName','searchPlacas']; //cotizaciones
    columnsToDisplayWithExpand = [...this.cotizaciones, 'opciones', 'expand']; //cotizaciones
    expandedElement: any | null; //cotizaciones
    @ViewChild('cotizacionesPaginator') paginator: MatPaginator //cotizaciones
@@ -160,6 +160,8 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
           if (!c.formaPago) c.formaPago = '1'  
             const formads= this.formasPago.find(f=>f.id === String(c.formaPago))
             if (formads.pago) c.pagoName = formads.pago
+            c['searchName'] = `${c.cliente['nombre']} ${c.cliente['apellidos']}`
+            c['searchPlacas'] = `${c.vehiculo['placas']}`
         })  
         this.cotizacionesList = cotizaciones
         this.newPagination()
@@ -167,6 +169,14 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     }, {
       onlyOnce: true
     })
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   //paginacion de las cotizaciones

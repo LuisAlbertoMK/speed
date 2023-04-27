@@ -11,13 +11,15 @@
   </div>
 </div>
 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-  <!-- <button class="btn btn-success btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
-    [routerLink]="'/ServiciosConfirmar/new/new'"> <i class="fad fa-layer-plus"></i> Recepción </button> -->
+  <button class="btn btn-success btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
+    [routerLink]="'/ServiciosConfirmar/new/new'"> <i class="fad fa-layer-plus"></i> Recepción </button>
   <a role="button" class="btn btn-primary btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
     [routerLink]="['/cotizacionNueva/new/new/null']"><i class="fad fa-layer-plus"></i>
     Cotizacón </a>
 </div>
-
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+  <input type="text" class="form-control form-control-sm" placeholder="Buscar" (keyup)="applyFilter($event)">
+</div>
 
 <div class="mat-elevation-z8 table-responsive">
   <table #cotizaciones="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
@@ -34,21 +36,21 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> # Cotizacion </th>
       <td mat-cell *matCellDef="let row" class="text-uppercase"
       [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}">
-        <strong>{{row.no_cotizacion }}</strong>  
+        {{row.no_cotizacion }}
     </td>
     </ng-container>
 
-    <ng-container matColumnDef="cliente">
+    <ng-container matColumnDef="searchName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
-      <td mat-cell *matCellDef="let row" > 
-        <strong class="text-uppercase">{{row.cliente.nombre }} {{row.cliente.apellidos }}</strong>  
+      <td mat-cell *matCellDef="let row" class="text-uppercase"> 
+        {{row.cliente.nombre }} {{row.cliente.apellidos }} 
       </td>
     </ng-container>
-  <ng-container matColumnDef="placas">
+  <ng-container matColumnDef="searchPlacas">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Placas </th>
     <td mat-cell *matCellDef="let row" class="text-uppercase">
       <!-- {{row.total | monedas}} -->
-      <strong>{{row.vehiculo.placas }}</strong>  
+      {{row.vehiculo.placas }}
     </td>
   </ng-container>
     <!-- Fruit Column -->

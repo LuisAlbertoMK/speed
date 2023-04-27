@@ -25,7 +25,7 @@ const dbRef = ref(getDatabase());
 export class PaquetesComponent implements OnInit {
 
   listaPaquetes = []
-  @Input() modelo:any = null
+  @Input() modelo:string
   @Output() infoPaquete : EventEmitter<any>
   miniColumnas:number = 100
 
@@ -36,6 +36,8 @@ export class PaquetesComponent implements OnInit {
   expandedElement: any | null; //paquetes
   listaRefacciones= []
   listaMO =  []
+  listaPaquetes_arr=[]
+  filtrar:boolean = true
   @ViewChild('paquetesPaginator') paginator: MatPaginator //paquetes
   @ViewChild('paquetes') sort: MatSort //paquetes
 
@@ -46,7 +48,7 @@ export class PaquetesComponent implements OnInit {
 
   ngOnInit(): void {
     this.consultaMO()
-    // this.consultaPaquetes()
+    // this.modelo = 'Fiesta'
   }
   consultaMO(){
     const starCountRef = ref(db, `manos_obra`)
@@ -112,16 +114,27 @@ export class PaquetesComponent implements OnInit {
           // p['total'] = reporte['total']
         })
 
-        const filtrados = paquetes.filter(p=>p['elementos'].length)
-        // console.log(filtrados);
-        
-        this.dataSourcePaquetes.data = filtrados
-        this.newPagination('paquetes')
+        this.listaPaquetes_arr = paquetes.filter(p=>p['elementos'].length);
+        // (this.modelo) ? this.aplicaFiltro(true) : this.aplicaFiltro(false)
+        this.aplicaFiltro(false)
       } else {
-        this.dataSourcePaquetes.data = []
         this.newPagination('paquetes')
       }
     })
+  }
+  aplicaFiltro(filtro:boolean){
+    if (filtro) {
+      if (this.modelo) {
+        const filtroModelo = this.listaPaquetes_arr.filter(f=>f['modelo'] === this.modelo)
+        this.dataSourcePaquetes.data = filtroModelo
+      }else{
+        this.dataSourcePaquetes.data = this.listaPaquetes_arr
+      }
+    }else{
+      this.dataSourcePaquetes.data = this.listaPaquetes_arr
+    }
+    
+    this.newPagination('paquetes')
   }
   dataElement(data:any){
     if (data['id']) {
@@ -129,9 +142,18 @@ export class PaquetesComponent implements OnInit {
       this._publicos.swalToastCenter('paquete agregado correcamente!')
     }
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourcePaquetes.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSourcePaquetes.paginator) {
+      this.dataSourcePaquetes.paginator.firstPage();
+    }
+  }
   newPagination(tabla:String){
     setTimeout(() => {
       if (tabla === 'paquetes') {
+        
         this.dataSourcePaquetes.paginator = this.paginator
         this.dataSourcePaquetes.sort = this.sort
       }

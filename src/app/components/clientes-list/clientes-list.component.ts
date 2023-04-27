@@ -6,6 +6,7 @@ import { ServiciosPublicosService } from '../../services/servicios-publicos.serv
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -23,14 +24,21 @@ export class ClientesListComponent implements OnInit {
   @Output() dataCliente : EventEmitter<any>
   @Input() sucursal :string
 
-  constructor(private _publicos: ServiciosPublicosService) {
+  ROL:string; SUCURSAL:string
+
+  constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService) {
     this.dataCliente = new EventEmitter()
   }
 
   ngOnInit(): void {
+    this.rol()
     this.listarClientes()
     this.automaticos()
-    
+  }
+  rol(){
+    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+    this.ROL = this._security.servicioDecrypt(variableX['rol'])
+    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
   }
   listarClientes(){
     const starCountRef = ref(db, `clientes`)
@@ -41,10 +49,12 @@ export class ClientesListComponent implements OnInit {
           if (cliente['vehiculos']) cliente['vehiculos'] = this._publicos.crearArreglo2(cliente['vehiculos'])
           if (!cliente.correo) cliente.correo = ''
         })
-        this.listaClientes_arr = clientes
+        if (this.SUCURSAL === 'Todas') {
+          this.listaClientes_arr = clientes
+        }else{
+          this.listaClientes_arr = clientes.filter(c=>c.sucursal === this.SUCURSAL)
+        }
       }
-    },{
-      onlyOnce: true
     })
   }
 

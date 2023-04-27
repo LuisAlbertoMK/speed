@@ -129,7 +129,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
         setTimeout(() => {
          
           // Swal.fire('','','info')
-          this._publicos.mensajeOK('Se carago la información',2000)
+          this._publicos.mensajeOK('Se cargo la información',2000)
           // Swal.isLoading()
           this.vehiculo = data
           // Swal.close()
