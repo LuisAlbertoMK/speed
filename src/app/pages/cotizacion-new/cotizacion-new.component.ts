@@ -271,9 +271,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
             
           if (extra) {
             const ve= cliente.vehiculos.find(v=>v['id'] === extra)
-            this.infoCotizacion.vehiculo = ve
-            this.extra = extra
-            this.modeloVehiculo = ve['modelo']
+            if(ve){
+              this.infoCotizacion.vehiculo = ve
+              this.extra = extra
+              this.modeloVehiculo = ve['modelo']
+            }
           }
 
 
@@ -515,7 +517,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   //realizamos las valiudaciones para informar al cliente que campos son obligatorios y opcionales en caso de que no se contenga la informacion
   //necesaria para generar el pdf, subirlo y registrar cotizacion
   validaciones(){
-    const obligatorios = ['cliente','sucursal','servicio', 'margen_get','formaPago']
+    const obligatorios = ['sucursal','servicio', 'margen_get','formaPago']
     const opcionales = ['promocion','descuento','descripcion','nota','iva']
     let camposObligatorios = [], camposOpcionales =[]
 
@@ -527,10 +529,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     obligatorios.forEach(c=>{
       if(!this.infoCotizacion[c]) camposObligatorios.push(c)
     })
-    if (!this.infoCotizacion.vehiculo || !this.infoCotizacion.vehiculo['id']){
-      // ['id']
-      camposObligatorios.push('vehiculo')
-    }  
+    if (!this.infoCotizacion.cliente['id']) camposObligatorios.push('cliente')
+    if (!this.infoCotizacion.vehiculo || !this.infoCotizacion.vehiculo['id']) camposObligatorios.push('vehiculo')
+
     if (!this.infoCotizacion.elementos.length)  camposObligatorios.push('elementos')
     opcionales.forEach(c=>{
       if(!this.infoCotizacion[c]) camposOpcionales.push(c)
