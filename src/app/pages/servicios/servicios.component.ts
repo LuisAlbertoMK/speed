@@ -117,7 +117,16 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     {valor: 'eliminado'  , show: 'Eliminar'},
     {valor: 'cancelado'  , show: 'Cancelado'}
   ]
-
+  statusOS = [
+    {valor: 'espera'   , show: 'Espera'},
+    {valor: 'recibido'   , show: 'Recibido'},
+    {valor: 'autorizado'  , show: 'Autorizado'},
+    {valor: 'terminado'   , show: 'Terminado'},
+    {valor: 'entregado'  , show: 'Entregado'},
+    {valor: 'cancelado'  , show: 'Cancelado'}
+  ]
+  // 'espera','autorizado','recibido','terminado','entregado','cancelado'
+  indexEdicionRecepcion: number; indexEdicionRecepcionBoolean: boolean =  false 
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
     private _servicios:ServiciosService, private _usuarios:UsuariosService, private _security:EncriptadoService,
@@ -158,7 +167,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           // console.log(recep.id);
           recep.searchCliente = recep.cliente['nombre']
           recep.searchPlacas = recep.vehiculo['placas']
+          // if (recep.id === '-NJLWImtmWlFAvUZDPof') {
+            const getTime  = this._publicos.getFechaHora()
+            recep.diasSucursal = this._publicos.calcularDias(recep.fecha_recibido, getTime.fecha)
+          // }
+          const updates = {
+            [`recepciones/${recep.id}/diasSucursal`]: recep.diasSucursal
+          };
+          update(ref(db), updates)
+          .then(() => {});
+          
         })
+        // console.log(this.recepciones_arr);
         
         this.dataSource.data = this.recepciones_arr
         this.newPagination()
@@ -208,6 +228,49 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.dataSource.data = this.recepciones_arr
     this.newPagination()
   }
+  statusServicio(padre, status){
+    const padreID = padre.id
+    const padreIndex = padre.index
+    
+
+    //     espera
+    // recibido
+    // autorizado
+    // terminado
+    // entregado
+    // cancelado
+    const  aprobado = (status === 'recibido' || status === 'autorizado') ? true:  false
+    // cambiar el status de la recepcion
+
+
+    this.recepciones_arr[padreIndex].status = status
+    this.dataSource.data = this.recepciones_arr
+    this.newPagination()
+
+
+  }
+  //para actualizar el tecnico de la orden de servicio
+  infoTecnico(event){
+    if (!event) {
+      this._publicos.swalToastError('intenta de nuevo')
+    }else{
+      //realizamos al pregunta si o no
+      this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
+        if (respuesta) {
+          const updates = {
+            [`recepciones/${this.recepciones_arr[this.indexEdicionRecepcion].id}/tecnico`]: event.id,
+            [`recepciones/${this.recepciones_arr[this.indexEdicionRecepcion].id}/showNameTecnico`]: event.usuario
+          };
+          update(ref(db), updates)
+            .then(() => {
+              this.recepciones_arr[this.indexEdicionRecepcion].showNameTecnico = event.usuario
+              this.recepciones_arr[this.indexEdicionRecepcion].tecnico = event.id
+              this._publicos.swalToast('Tecnico actualizado correctamente!!')
+            });
+        }
+      })
+    }
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -223,6 +286,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     // }
     }, 500)
   }
+
 
   //cuando quiera abandonar la apgina pregutar si desea enviar los email
   verificaServiciosPendientesEmail(){

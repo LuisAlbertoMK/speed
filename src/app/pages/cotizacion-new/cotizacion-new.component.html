@@ -203,7 +203,7 @@
       <!-- aqui el btn para eliminar -->
       <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaElemento(row)"></i>
       <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" 
-              (click)="idPaqueteEditar = row.index; idPaqueteEditarBoolean = true">
+              (click)="idPaqueteEditar = row.index; idPaqueteEditarBoolean = true" *ngIf="row.tipo === paquete">
               <i class="fa fa-plus"></i>
             </button>
       </td>

@@ -71604,5 +71604,9 @@ recepcionesChange(){
 
     
   }
+  infoTecnico(event){
+  console.log(event);
+  
+  }
   
 }

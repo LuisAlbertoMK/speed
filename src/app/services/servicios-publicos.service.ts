@@ -1877,4 +1877,40 @@ export class ServiciosPublicosService {
             timer: time
           })
       }
+      calcularDias(fechaInicio: string, fechaFin: string): number {
+
+        // const aqui_time = fechaInicio.split('/')
+        // const aqui_time2 = fechaFin.split('/')
+        // const fec_Recibido = new Date(
+        //     Number(aqui_time[2]),
+        //     Number(aqui_time[1])- 1,
+        //     Number(aqui_time[0])
+        // )
+        // const fec_fin = new Date(
+        //     Number(aqui_time2[2]),
+        //     Number(aqui_time2[1])- 1,
+        //     Number(aqui_time2[0])
+        // )
+             
+        // const fecha1 = new Date(fec_Recibido);
+        // const fecha2 = new Date(fec_fin);
+    
+        // fecha1.setHours(0,0,0,0)
+        // fecha2.setHours(0,0,0,0)
+        // // Calculamos la diferencia en milisegundos entre las dos fechas
+        // const diff = fecha2.getTime() - fecha1.getTime();
+        // // Convertimos la diferencia a días y la redondeamos
+        // const diasTranscurridos = Math.round(diff / (1000 * 60 * 60 * 24));
+        
+    
+        // return diasTranscurridos;
+        const date1 = new Date(fechaInicio.split('/').reverse().join('-'));
+        const date2 = new Date(fechaFin.split('/').reverse().join('-'));
+        
+        // Calculamos la diferencia en días entre las dos fechas
+        const diffTime = date2.getTime() - date1.getTime()
+        const diasTranscurridos = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        return diasTranscurridos;
+      }
  }
