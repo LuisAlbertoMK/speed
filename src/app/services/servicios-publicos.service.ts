@@ -1643,52 +1643,60 @@ export class ServiciosPublicosService {
     }
     realizarOperaciones_2(data:any){
         
-        const  { elementos, margen_get, iva, formaPago, descuento } = data
+        const  { elementos, margen_get, iva, formaPago, descuento, servicios, margen } = data
+
+        const ocupados = (servicios) ?  servicios: elementos
+        const margen1_0 = (margen_get) ?  margen_get: margen
         
-        const margen = 1 + (margen_get / 100)
+        const margenOcupado = 1 + (margen1_0 / 100)
         
         const reporte = {
           iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
           subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
         }
-        elementos.map((e,index)=>{
+        ocupados.map((e,index)=>{
+        
           e['index'] = index
           const pre = e.costo >0 ? e.costo : e.precio;
           const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
           if (e.costo > 0) {
             if (e.tipo === 'refaccion') {
-              reporte.sobrescrito_refaccion += operacion;
-              e['total'] = operacion * margen
+              if(e.aprobado) reporte.sobrescrito_refaccion += operacion;
+              e['total'] = operacion * margenOcupado
             } else if (e.tipo === "MO" || e.tipo ==='mo') {
-              reporte.sobrescrito_mo += operacion;
+                if(e.aprobado) reporte.sobrescrito_mo += operacion;
+              e['total'] = operacion
             }else {
-              reporte.sobrescrito_paquetes += operacion;
-              const info = this.reportePaquete(e.elementos,margen)
+            if(e.aprobado) reporte.sobrescrito_paquetes += operacion;
+              const info = this.reportePaquete(e.elementos,margenOcupado)
+              e['elementos'] = info.elementos
               e['reporte_interno'] = info
               e['precio'] = info.total
               e['total'] = operacion
             }
           }else{
             if (e.tipo === 'refaccion') {
-              reporte.refacciones_a += operacion;
-              e['total'] = operacion * margen
+              if(e.aprobado) reporte.refacciones_a += operacion;
+              e['total'] = operacion * margenOcupado
             } else if (e.tipo === 'MO' || e.tipo ==='mo') {
-              reporte.mo += operacion;
+              if(e.aprobado) reporte.mo += operacion;
+              e['total'] = operacion
             }else {
-                const info = this.reportePaquete(e.elementos,margen)
+                const info = this.reportePaquete(e.elementos,margenOcupado)
+                e['elementos'] = info.elementos
                 e['reporte_interno'] = info;
                 e['precio'] = info.total;
                 e['total'] = info.total
-                reporte.mo += info.mo;
-                reporte.refacciones_a += info.refacciones;
-                reporte.sobrescrito_mo += info.sobrescrito_mo;
-                reporte.sobrescrito_refaccion += info.sobrescrito_refaccion;
+                if(e.aprobado) reporte.mo += info.mo;
+                if(e.aprobado) reporte.refacciones_a += info.refacciones;
+                if(e.aprobado) reporte.sobrescrito_mo += info.sobrescrito_mo;
+                if(e.aprobado) reporte.sobrescrito_refaccion += info.sobrescrito_refaccion;
               // console.log('costo normal',info);
             }
           }
         })
         
-        reporte.refacciones_v = (reporte.refacciones_a * margen)
+        reporte.refacciones_v = (reporte.refacciones_a * margenOcupado)
     
         const suma = reporte.mo + reporte.refacciones_v + reporte.sobrescrito_mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_refaccion
         reporte.sobrescrito = reporte.sobrescrito_mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_refaccion
@@ -1698,19 +1706,24 @@ export class ServiciosPublicosService {
     
         if (iva) reporte.iva = suma * .16 ;
         
-        reporte.ub = (reporte.total - reporte.refacciones_v)*100/reporte.total
-    
+        const refaccionesv = (reporte.refacciones_v >= 0) ? reporte.refacciones_v : 0
+        
+        if (reporte.total >0 ) reporte.ub = (reporte.total - refaccionesv)*100/reporte.total 
+
+        
         const enCaso_meses = this.formasPAgo.find(f=>Number(f['id']) === Number(formaPago))
         // console.log(enCaso_meses);
         if (Number(enCaso_meses['id']) === 1) {
           reporte.descuento = Number(descuento)
+          if(!reporte.descuento) reporte.descuento = 0
           reporte.total -= reporte.descuento
         }else{
           reporte.descuento = 0
           const operacion = reporte.total * (1 + (enCaso_meses['interes'] / 100))
           reporte.meses = operacion;
-        }
-        return {elementos, reporte}
+        }        
+
+        return {ocupados, reporte}
     }
     
     reportePaquete(elementos:any,margen:number){
@@ -1734,7 +1747,7 @@ export class ServiciosPublicosService {
         // reporte_interno.ub = (suma - reporte_interno.refacciones)*100 / suma
         reporte_interno.ub = 100 - ((reporte_interno.refacciones_v * 100) / suma )
 
-        return  {...reporte_interno, total: suma, margen}
+        return  {...reporte_interno, total: suma, margen, elementos}
     }
     realizarOperaciones_real(hitoriales:any){
         const { historial_gastos, historial_pagos } = hitoriales

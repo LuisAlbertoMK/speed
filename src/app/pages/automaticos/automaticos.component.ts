@@ -71566,20 +71566,32 @@ recepcionesChange(){
       const infoCliente = clientes_arr.find(f=>f.id === objectArr[ser].cliente)
       const vehiculo = infoCliente['vehiculos'].find(v=>v.id === objectArr[ser].vehiculo)
       const sucursal = sucursales_arr.find(f=>f.id === objectArr[ser].sucursal)
-      objectArr[ser].elementos = objectArr[ser].servicios
       objectArr[ser].formaPago = 1
-      const reporte = this._publicos.realizarOperaciones_2(objectArr[ser])
+      objectArr[ser].margen_get = objectArr[ser].margen
       
+      objectArr[ser].servicios.map(r=>{
+        if(r.tipo === 'paquete'){
+          // r.aprobado = true
+          const elementos = (r.elementos) ? r.elementos : []
+          elementos.map(sub=>{
+            sub.aprobado = true
+          })
+        }
+      })
+      // objectArr[ser].elementos = objectArr[ser].servicios
+    
+
+      const reporte = this._publicos.realizarOperaciones_2(objectArr[ser])
       const todo = {
         ...objectArr[ser],
         cliente: infoCliente,
         vehiculo,
-        servicios: reporte.elementos,
+        servicios: reporte.ocupados,
         reporte: reporte.reporte,
         sucursal
       }
       const campos = ['ckeckList','cliente','detalles','diasSucursal','fechaPromesa','fecha_entregado',
-                      'fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen',
+                      'fecha_recibido','formaPago','hora_entregado','hora_recibido','iva','margen','vehiculo',
                       'no_os','reporte','servicio','servicios','servicios_original','status','tecnico','sucursal'
       ]
       objectArr[ser] = this._publicos.recuperaData(campos, todo)

@@ -496,7 +496,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     this.infoCotizacion.iva = this.checksBox.controls['iva'].value
     this.infoCotizacion.reporte = this._publicos.realizarOperaciones_2(this.infoCotizacion).reporte
-    this.infoCotizacion.elementos = this._publicos.realizarOperaciones_2(this.infoCotizacion).elementos
+    this.infoCotizacion.elementos = this._publicos.realizarOperaciones_2(this.infoCotizacion).ocupados
     this.dataSource.data = this.infoCotizacion.elementos
     // console.log(this.infoCotizacion.elementos);
     

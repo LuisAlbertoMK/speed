@@ -1,3 +1,21 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active">Servicios</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+    <input type="text" class="form-control form-control-sm" placeholder="Buscar" (keyup)="applyFilter($event)">
+  </div>
+</div>
+
 
 
 <div class="mat-elevation-z8 table-responsive">
@@ -6,7 +24,7 @@
     <!-- ID Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
-      <td mat-cell *matCellDef="let row" >
+      <td mat-cell *matCellDef="let row">
         {{row.index + 1 }}
     </td>
     </ng-container>
@@ -20,48 +38,32 @@
     <!-- Progress Column -->
     <ng-container matColumnDef="searchCliente">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
-      <td mat-cell *matCellDef="let row"> 
-      <!-- <input type="number" min="1"  maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [value]="row.cantidad" 
-      (change)="editar('cantidad',row, cantidadEle.value)" #cantidadEle> -->
-      {{row.searchCliente}}
+      <td mat-cell *matCellDef="let row" class="text-uppercase"> 
+        {{row.searchCliente}}
       </td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="searchPlacas">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Placas </th>
-      <td mat-cell *matCellDef="let row"> 
+      <td mat-cell *matCellDef="let row" class="text-uppercase"> 
           {{row.searchPlacas}}
-        <!-- <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
-      (change)="editar('costo',row, cantidadEle.value)" #cantidadEle> -->
-      <!-- {{row.sobrescrito | monedas}} -->
-         </td>
-    </ng-container>
-  <!-- Fruit Column -->
-  
-    <!-- Fruit Column -->
-    <ng-container matColumnDef="opciones">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
-      <td mat-cell *matCellDef="let row"> 
-      <!-- aqui el btn para eliminar -->
-      <!-- <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaElemento(row)"></i>
-      <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" 
-              (click)="idPaqueteEditar = row.index; idPaqueteEditarBoolean = true">
-              <i class="fa fa-plus"></i>
-            </button> -->
       </td>
     </ng-container>
-   
-
+  <!-- Fruit Column -->
+    <ng-container matColumnDef="opciones">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
+      <td mat-cell *matCellDef="let row">
+      </td>
+    </ng-container>
+     <!-- expand Column -->
     <ng-container matColumnDef="expand">
       <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
       <td mat-cell *matCellDef="let element">
-        <!-- <ng-container *ngIf="element.tipo === paquete"> -->
           <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
             <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
             <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
           </button>
-        <!-- </ng-container> -->
       </td>
     </ng-container>
     <ng-container matColumnDef="expandedDetail">
@@ -69,6 +71,76 @@
         <div class="example-element-detail"
              [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
              <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+              <mat-tab label="Elementos">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="text-center" scope="col">#</th>
+                        <th class="text-start" scope="col">Nombre</th>
+                        <th class="text-center" scope="col">Cantidad</th>
+                        <th class="text-end" scope="col">Costo</th>
+                        <th class="text-end" scope="col">Precio</th>
+                        <th class="text-end" scope="col">Total</th>
+                        <th class="text-end" scope="col">&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of row.servicios; let i = index">
+                        <th class="text-center" scope="row">{{i +  1 }}</th>
+                        <td class="text-start" 
+                        [ngClass]="{'tipo-paquete': item.tipo === paquete,'tipo-mo': item.tipo === mo || item.tipo === 'MO','tipo-refaccion': item.tipo === refaccion}">
+                          {{item.nombre | capitalizarUno}}
+                        </td>
+                        <td class="text-center">{{item.cantidad}} </td>
+                        <td class="text-end"> {{item.costo}} </td>
+                        <td class="text-end"> {{item.precio | monedas}}</td>
+                        <td class="text-end"> {{item.total | monedas}}</td>
+                        <td class="text-end">
+                         <strong class="m-1" [ngClass]="{'text-success': item.aprobado, 'text-danger': !item.aprobado}">
+                          <i class="fa" [ngClass]="{'fa-check-double': item.aprobado,'fa-times': !item.aprobado }"></i>                          
+                         </strong>
+                          <!-- <button mat-button > -->
+                            <i class="fa fa-tasks pointer m-1" [matMenuTriggerFor]="menu"></i>
+                          <!-- </button> -->
+                          <mat-menu #menu="matMenu">
+                            <button mat-menu-item *ngFor="let itemMenu of estatusServicioUnico"
+                             (click)="accionServicio(row,item,itemMenu.valor)" >{{itemMenu.show}}</button>
+                          </mat-menu>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>  
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
+                  <div class="card border-success mb-3">
+                    <div class="card-header text-center">Degloce
+                      <strong [ngClass]="{'text-danger': row.reporte['ub'] < 55,'text-success': row.reporte['ub'] >= 55}">
+                        U.B: {{row.reporte['ub'] | monedas:'%'}}
+                      </strong>
+                      
+                    </div>
+                    <div class="card-body text-success ">
+                      <h5 class="card-title"></h5>
+                      <div class="row">
+                        
+                        <ng-container *ngFor="let campo of camposDesgloce">
+                          <ng-container *ngIf="row.reporte[campo['valor']] > 0">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">{{campo['show']}}</div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{row.reporte[campo.valor]  | monedas}}</strong></div>
+                          </ng-container>
+                          
+                        </ng-container>
+                        <!-- <ng-container *ngIf="row.reporte['meses'] !== 0"> -->
+                          <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
+                          <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{row.reporte['meses'] | monedas}}</strong></div> -->
+                        <!-- </ng-container> -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{row.reporte['total']  | numerosLetras}}</strong></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
               <mat-tab label="Cliente">
                 <div class="card border-dark">
                   <div class="card-body">
@@ -119,4 +191,8 @@
   </table>
 
   <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
+
+<div class="row m-2">
+  <div class="col"></div>
 </div>

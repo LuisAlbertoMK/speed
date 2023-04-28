@@ -110,11 +110,15 @@ export class EmailsService {
         from: dataEmail.correos[0],
         email: dataEmail.correos,
         subject: dataEmail.subject,
-        mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.fullname}</strong>.
-        <br>Se le informa que hubo cambios en su O.S #${dataEmail.os} del vehiculo ${vehiculo.marca} ${vehiculo.modelo} con placas ${vehiculo.placas.toUpperCase()} ,
-         color ${vehiculo.color} anexo el resumen de la O.S: ${dataEmail.resumen}. <br> desgloce de operacion <br> ${dataEmail.desgloce}`,
+        // mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.fullname}</strong>.
+        // <br>Se le informa que hubo cambios en su O.S #${dataEmail.os} del vehiculo ${vehiculo.marca} ${vehiculo.modelo} con placas ${vehiculo.placas.toUpperCase()} ,
+        //  color ${vehiculo.color} anexo el resumen de la O.S: ${dataEmail.resumen}. <br> desgloce de operacion <br> ${dataEmail.desgloce}`,
+        mensaje: `Estimado/a ${cliente.nombre} ${cliente.apellidos} <br>
+        Le informamos que se han realizado cambios de la recepcion ${dataEmail.no_os} del vehiculo ${vehiculo.marca} ${vehiculo.modelo} con placas ${vehiculo.placas.toUpperCase()}, color ${vehiculo.color} anexo el resumen de la O.S: ${dataEmail.resumen}. <br> desgloce de operacion <br> ${dataEmail.desgloce}
+        <br>Gracias por confiar en nosotros. <br> <small>Cualquier duda o aclaración favor de ponerse en contacto con nosotros</small>`
       }
     }
+
     
     return tempEmail
   }
@@ -184,7 +188,7 @@ export class EmailsService {
       cliente: data.cliente,
       vehiculo: data.vehiculo,
       resumen:data.resumen,
-      os:data.os,
+      no_os:data.no_os,
       desgloce: data.desgloce
     }
     const dataMail = await this.template(data.cliente,data.vehiculo,dataEmail)

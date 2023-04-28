@@ -110,6 +110,14 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   refaccion: string = 'refaccion'
   mo: string = 'mo'
 
+  estatusServicioUnico = [
+    {valor: 'aprobado'   , show: 'Aprobar'},
+    {valor: 'Noaprobado'  , show: 'No Aprobado'},
+    {valor: 'terminar'   , show: 'Terminado'},
+    {valor: 'eliminado'  , show: 'Eliminar'},
+    {valor: 'cancelado'  , show: 'Cancelado'}
+  ]
+
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
     private _servicios:ServiciosService, private _usuarios:UsuariosService, private _security:EncriptadoService,
@@ -122,6 +130,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      ngOnDestroy(){
       
       // this.consultaSucursales()
+      this.verificaServiciosPendientesEmail()
      
      }
     ngOnInit(): void {
@@ -146,9 +155,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         this.recepciones_arr = this._publicos.crearArreglo2(snapshot.val())
         this.recepciones_arr.map((recep,index)=>{
           recep.index  = index
+          // console.log(recep.id);
           recep.searchCliente = recep.cliente['nombre']
-          console.log(recep.id);
-          
           recep.searchPlacas = recep.vehiculo['placas']
         })
         
@@ -160,7 +168,53 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         onlyOnce: true
     })
   }
+  accionServicio(padre, hijo, status){
+    //tomamos el id de padre en este caso la recepcion
+    const padreID = padre.id
+    const padreIndex = padre.index
+    const HijoIndex = hijo.index
 
+    const  aprobado = (status === 'aprobado' || status === 'terminar') ? true:  false
+
+    if (aprobado) {
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = status
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = true
+    }else if (status === 'cancelado' || status === 'Noaprobado') {
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = status
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = false
+    } if (status === 'eliminado') {
+      //realizar la elimiancion y nuevo array sin el eliminado
+      const servicios = [...this.recepciones_arr[padreIndex].servicios];
+      servicios[HijoIndex] = null;
+      const serviciosFiltrados = servicios.filter(servicio => servicio !== null);
+      serviciosFiltrados.forEach((servicio, index) => servicio.index = index);
+      this.recepciones_arr[padreIndex].servicios = serviciosFiltrados;
+     
+    }
+    
+    const {reporte, ocupados} = this._publicos.realizarOperaciones_2(this.recepciones_arr[padreIndex])
+    
+    this.recepciones_arr[padreIndex].reporte = reporte
+    this.recepciones_arr[padreIndex].servicios = ocupados
+    this.recepciones_arr[padreIndex].notificar = true
+
+    const updates = {};
+    updates[`recepciones/${padreID}`] = this.recepciones_arr[padreIndex];
+    update(ref(db), updates).then(()=>{
+      this._publicos.swalToast('accion  correcta!')
+    });
+
+    
+    this.dataSource.data = this.recepciones_arr
+    this.newPagination()
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
   newPagination(){
     setTimeout(() => {
     // if (data==='elementos') {
@@ -168,6 +222,59 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.dataSource.sort = this.sort
     // }
     }, 500)
+  }
+
+  //cuando quiera abandonar la apgina pregutar si desea enviar los email
+  verificaServiciosPendientesEmail(){
+    const enviarEmail = this.recepciones_arr.filter(recepcion=>recepcion.notificar)
+    // console.log(enviarEmail);
+    if (enviarEmail.length) {
+      this._publicos.mensaje_pregunta('notificar a clientes de cambios?').then(({respuesta})=>{
+        if (respuesta) {
+          enviarEmail.forEach(recepcion=>{
+
+            const { sucursal, cliente, servicios, reporte, no_os, vehiculo,id, index} = recepcion;
+      
+            const correos = this._publicos.dataCorreo(sucursal,cliente)
+            
+            const info = servicios.map(({ nombre, aprobado }) => {
+              const status = aprobado ? 'aprobado' : 'no aprobado';
+              return `Servicio ${nombre.toLowerCase()}: ${status}`;
+            }).join(', ');
+      
+            const clavesReporte = Object.keys(reporte);
+            const infoReporte = ['Anexo el desglose de O.S:<br>'];
+            clavesReporte.forEach((c) => {
+              if (reporte[c] > 0 && c !== 'refacciones_a' && c !== 'ub') {
+                const nombre = c === 'refacciones_v' ? 'refacciones' : c;
+                infoReporte.push(`${nombre}: ${this._publicos.redondeado2(reporte[c], true)}<br>`);
+              }
+            });
+            
+            const infoCorreo = {
+              subject: 'Le informamos que se han realizado cambios en su información de la O.S #' + recepcion.no_os,
+              correos,
+              cliente,
+              vehiculo,
+              no_os,
+              resumen: info,
+              desgloce: infoReporte.join(' ')
+            }
+            // console.log(infoCorreo);
+      
+            this._email.cambioInformacionOS(infoCorreo)
+            const updates = {};
+            updates[`recepciones/${id}/notificar`] = false;
+            update(ref(db), updates).then(()=>{
+              this.recepciones_arr[index].notificar = false 
+            });
+          })
+        }
+      })
+      
+    }
+    
+    
   }
 
   

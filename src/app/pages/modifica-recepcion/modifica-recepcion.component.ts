@@ -181,7 +181,7 @@ export class ModificaRecepcionComponent implements OnInit {
               
               integra['elementos'] = servicios
               integra['reporte'] = this._publicos.realizarOperaciones_2(integra).reporte
-              integra['servicios'] = this._publicos.realizarOperaciones_2(integra).elementos
+              integra['servicios'] = this._publicos.realizarOperaciones_2(integra).ocupados
               this.dataRecepcion = integra              
               this.realizarInfo(integra['servicios'])
                this.realizaOperaciones()
