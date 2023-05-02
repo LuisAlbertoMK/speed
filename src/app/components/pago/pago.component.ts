@@ -136,7 +136,7 @@ export class PagoComponent implements OnInit {
         const fechaSave = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
         dataSave['fecha'] = fechaSave
       }
-    (String(pagoData['referencia']).length >0 )? dataSave['referencia'] = pagoData['referencia'] : ''
+    // (String(pagoData['referencia']).length >0 )? dataSave['referencia'] = pagoData['referencia'] : ''
     answer.dataSave = dataSave
     let invcalidos = []
     const mapdataSave = Object.keys(dataSave)
@@ -202,7 +202,7 @@ export class PagoComponent implements OnInit {
       this.formPago.controls['sucursal'].setValue('')
     }else{
       const data = this.ordenes.find(os=>os['id'] === id)
-      this.formPago.controls['sucursal'].setValue(data['sucursal'])
+      this.formPago.controls['sucursal'].setValue(data['sucursal'].id)
     } 
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -213,10 +213,6 @@ export class PagoComponent implements OnInit {
       }else{
         this.formPago.controls['fecha'].setValue('')
       }
-  }
-  nuevoevento(){
-    console.log('aqui');
-    
   }
   cancela(){
     this.showPagoHide.emit( {show: false})

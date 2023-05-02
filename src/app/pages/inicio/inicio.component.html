@@ -28,6 +28,7 @@
         </div>
       </div>
     </div>
+    
     <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/catalogos']">
       <div class="info-box">
         <div class="info-box-content">
@@ -37,12 +38,20 @@
       </div>
     </div>
     <!-- <ng-container *ngIf="mostrarAdministracion"> -->
-      <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" *ngIf="ROL !=='Técnico/Ayudante'" aria-current="page"
+      <!-- <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" *ngIf="ROL !=='Técnico/Ayudante'" aria-current="page"
       [routerLink]="['/administracion']">
       <div class="info-box">
         <div class="info-box-content">
           <h3 class="card-title fw-bold">Administración</h3>
           <p class="card-text"><i class="fad fa-hand-holding-usd fa-2x"></i></p>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer" aria-current="page" [routerLink]="['/reporteGastos']">
+      <div class="info-box">
+        <div class="info-box-content">
+          <h3 class="card-title fw-bold">Reporte de gastos</h3>
+          <p class="card-text"><i class="fa fa-book fa-2x"></i></p>
         </div>
       </div>
     </div>

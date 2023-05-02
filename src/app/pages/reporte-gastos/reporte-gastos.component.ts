@@ -113,8 +113,7 @@ export class ReporteGastosComponent implements OnInit {
   ngOnInit(): void {
     this.rol()
     this.listaSucursales()
-    this.lista_pagosGastos_OS()
-    this.revisarCambios()
+   
     
     // this.listaGastosDiarios()
     // this.lista_gastosOperacion()
@@ -144,10 +143,12 @@ export class ReporteGastosComponent implements OnInit {
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         this.sucursales= this._publicos.crearArreglo2(snapshot.val())
+        this.lista_pagosGastos_OS()
+        this.revisarCambios()
       }
-    },{
-        onlyOnce: true
-      })
+    }, {
+      onlyOnce: true
+    })
   }
   ordenarElementos(campo:string){
     // declaracion y asiganacion de resultados de la tabla
@@ -175,6 +176,7 @@ export class ReporteGastosComponent implements OnInit {
     //mostrar los detalles de gasto
   detalles(data:any){
     if (data['id']) {
+      if(!data.no_os) data.no_os = ''
       Swal.fire({
         title: '<strong>Detalles</strong>',
         // icon: 'info',
@@ -391,14 +393,16 @@ export class ReporteGastosComponent implements OnInit {
     }else{
       filtro_sucursal = resultados
     }
+    
+    
     const reporte = {_pagos: 0, _gastos:0, _operacion:0,utilidad:0,_depositos:0}
     //realizar las operaciones de cada uno de los pagos, gastos_orden y gastos_operacion
-    filtro_sucursal.map(i=>{
+    filtro_sucursal.forEach(i=>{
       if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
       if (i['historial'] === 'gasto') reporte._gastos += i['monto']
       if (i['historial'] === 'pago') reporte._pagos += i['monto']
       if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
-      const {sucursal} = this.sucursales.find(s=>s['id'] === i['sucursal'])
+      const {sucursal} = this.sucursales.find(s=>s['id'] === i.sucursal)
       i['sucursalShow'] = sucursal
     })
     //asiganar las fechas al control de calendario
@@ -498,13 +502,6 @@ export class ReporteGastosComponent implements OnInit {
         
       }
     }
-      
-      
-    // }
-    
-    console.log(filtro_sucursal);
-    
-    
     this.dataSourceGastosDia.data = filtro_sucursal
     this.newPagination('dias')
     

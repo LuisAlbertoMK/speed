@@ -77,7 +77,7 @@ export class GastoComponent implements OnInit {
         ordenados.forEach((recep)=>{
           const tempData = {
             id: recep['id'], no_os: recep['no_os'], fecha: recep['fecha_recibido'], 
-            hora: recep['hora_recibido'], sucursal: recep['sucursal']
+            hora: recep['hora_recibido'], sucursal: recep.sucursal['id']
           }
           recepciones_arra.push(tempData)
         })

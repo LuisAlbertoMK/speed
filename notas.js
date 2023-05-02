@@ -35,7 +35,13 @@ let problemas_24042023 =
     {problema:'quitar referencia en pago', status:'OK'},
 
 ]
-
-//TODO: "falta registrar fecha y hora,  subir pdf,  y enviar correo"
-
-//TODO agregar diseño de cotizacion new agregar vehiculo
+let problemas_02052023 = 
+[
+    {problema:'REVISAR PORQUE NO APARECEN LOS GASTOS DE O.S ', status:'OK'},
+    {problema:'monto total de ventas, aparaezacan los totales de ordenes', status:'PENDIENTE'},
+    {problema:'gastos totales de operacion', status:'PENDIENTE'},
+    {problema:'monto total de iva', status:'PENDIENTE'},
+    {problema:'(desgloce isNoSubstitutionTemplateLiteral, iva, total)', status:'PENDIENTE'},
+    {problema:'CUANTO QUEDa LIBRE DEdespues de refacciones sobre el subtotal de ventas', status:'PENDIENTE'},
+    {problema:'cuanto queda libre despues de monto de operaciones y refacciones sobre el subtotal de ventas solo entregadas', status:'PENDIENTE'},
+]
