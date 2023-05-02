@@ -79,7 +79,7 @@
       <div class="mb-1 row">
         <label for="margen_get" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Margen</label>
         <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <input type="number" min="25" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" formControlName="margen_get" [value]="infoCotizacion.margen_get"  [class.is-invalid]="validaCampo('margen_get')" id="margen_get">
+          <input type="number" min="25" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" formControlName="margen_get" [value]="infoCotizacion.margen_get" [class.is-invalid]="validaCampo('margen_get')" id="margen_get">
           <small *ngIf="validaCampo('margen_get')" class="text-danger">Seleccionar margen {{infoCotizacion.margen_get}}</small>
         </div>
       </div>
@@ -116,7 +116,7 @@
           <!-- <select class=" form-select  form-select-sm" formControlName="descuento" 
             [class.is-invalid]="validaCampo('descuento')" id="descuento">
           </select> -->
-          <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" formControlName="descuento" #desc (change)="accionesExtra('descuento', desc.value)" (keyup)="accionesExtra('descuento', desc.value)"  [class.is-invalid]="validaCampo('descuento')" id="descuento">
+          <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" formControlName="descuento" #desc (change)="accionesExtra('descuento', desc.value)" (keyup)="accionesExtra('descuento', desc.value)"  [class.is-invalid]="validaCampo('descuento')" id="descuento" class="smallInput">
           <small *ngIf="validaCampo('descuento')" class="text-danger">Introduce descuento valido</small>
         </div>
       </div>
@@ -175,7 +175,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
       <td mat-cell *matCellDef="let row"> 
       <input type="number" min="1"  maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [value]="row.cantidad" 
-      (change)="editar('cantidad',row, cantidadEle.value)" #cantidadEle>
+      (change)="editar('cantidad',row, cantidadEle.value)" #cantidadEle class="smallInput">
       </td>
     </ng-container>
 
@@ -185,7 +185,7 @@
       <td mat-cell *matCellDef="let row"> 
 
         <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
-      (change)="editar('costo',row, cantidadEle.value)" #cantidadEle>
+      (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
       <!-- {{row.sobrescrito | monedas}} -->
          </td>
     </ng-container>
@@ -245,12 +245,12 @@
                     {{item.nombre | capitalizarUno}}
                   </td>
                   <td class="text-center">
-                    <input  type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="1" [value]="row.cantidad" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
-                            (change)="editarSubelemento('cantidad',row,item, cantidadEle.value)" #cantidadEle>
+                    <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="smallInput"
+                            (change)="editarSubelemento('cantidad',row,item, cantidadSub.value)" #cantidadSub>
                     <!-- {{item.cantidad}} -->
                   </td>
                   <td class="text-end">
-                    <input  type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" min="0" [value]="row.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
+                    <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="smallInput"
                             (change)="editarSubelemento('costo',row,item, cantidadCosto.value)" #cantidadCosto>
                           <!-- {{item.costo | monedas}} -->
                   </td>
@@ -288,6 +288,15 @@
   <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>
 
+<div class="row m-2 mt-2">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+    <h3>
+      <strong class="text-success" [ngClass]="{'text-danger': infoCotizacion.reporte['ub'] <55}">
+        U.B estimada {{infoCotizacion.reporte['ub'] | monedas: '%'}}
+      </strong>
+    </h3>
+  </div>
+</div>
 <div class="row mt-2">
 
 <div class="col-lg-6 col-md-6 col-sm-12 col-12">

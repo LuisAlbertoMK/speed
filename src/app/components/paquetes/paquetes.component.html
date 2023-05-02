@@ -24,12 +24,12 @@
               <ng-container matColumnDef="modelo">
                 <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
                   [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> modelo </th>
-                <td mat-cell *matCellDef="let element" class="text-center"> {{element.modelo }}</td>
+                <td mat-cell *matCellDef="let element" class="text-start"> {{element.modelo }}</td>
               </ng-container>
               <ng-container matColumnDef="marca">
                 <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
                   [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> marca </th>
-                <td mat-cell *matCellDef="let element" class="text-center"> {{element.marca + 1}}</td>
+                <td mat-cell *matCellDef="let element" class="text-start"> {{element.marca + 1}}</td>
               </ng-container>
               <ng-container matColumnDef="precio">
                 <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
@@ -92,13 +92,7 @@
                 
                 </th>
                 <td mat-cell *matCellDef="let element" class="text-end">
-                <ng-container *ngIf="element.costo > 0; else elseTemplate">
-                  {{element.costo | monedas}}
-                </ng-container>
-                <ng-template #elseTemplate>
-                  {{element.precio | monedas}}
-                </ng-template>
-                
+                {{element.precio | monedas}}                
                 </td>
               </ng-container>
               <ng-container matColumnDef="opciones">
@@ -145,7 +139,7 @@
                           <table class="table">
                             <thead>
                               <tr>
-                                <th colspan="8" class="col text-center fs-5">U.B {{element.reporte_interno['ub'] | monedas:'%'}}</th>
+                                <!-- <th colspan="8" class="col text-center fs-5">U.B {{element.reporte_interno['ub'] | monedas:'%'}}</th> -->
                               </tr>
                               <tr>
                                 <th scope="col" class="text-capitalize">#</th>
@@ -170,12 +164,7 @@
                                 <!-- <td> {{item.costo | monedas}} </td> -->
                                 <td class="text-end"> {{item.precio | monedas}} </td>
                                 <td class="text-end">
-                                  <ng-container *ngIf="item.costo>  0; else elseTemplate">
-                                    {{item.costo * item.cantidad | monedas}}
-                                  </ng-container>
-                                  <ng-template #elseTemplate>
-                                    {{item.precio * item.cantidad | monedas}}
-                                  </ng-template>
+                                 {{item.total | monedas}}
                                 </td>
                               </tr>
                             </tbody>

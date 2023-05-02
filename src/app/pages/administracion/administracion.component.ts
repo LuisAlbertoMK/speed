@@ -305,7 +305,7 @@ export class AdministracionComponent implements OnInit {
             //     if (v['id'] === d['vehiculo']) d['infoVehiculo'] = v
             //   })
             // })
-            d['desgloce'] = this._publicos.realizarOperacion(d,'servicios')
+            // d['desgloce'] = this._publicos.realizarOperacion(d,'servicios')
             const ser = d['servicios']
             ser.forEach((element,index) => {
               if (element['tipo'] === 'paquete' && element['aprobado']) {

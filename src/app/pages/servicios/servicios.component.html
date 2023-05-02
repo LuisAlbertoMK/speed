@@ -127,6 +127,7 @@
                         <td class="text-end"> {{item.precio | monedas}}</td>
                         <td class="text-end"> {{item.total | monedas}}</td>
                         <td class="text-end">
+                          {{item.showStatus}}
                          <strong class="m-1" [ngClass]="{'text-success': item.aprobado, 'text-danger': !item.aprobado}">
                           <i class="fa" [ngClass]="{'fa-check-double': item.aprobado,'fa-times': !item.aprobado }"></i>                          
                          </strong>
@@ -137,6 +138,8 @@
                             <button mat-menu-item *ngFor="let itemMenu of estatusServicioUnico"
                              (click)="accionServicio(row,item,itemMenu.valor)" >{{itemMenu.show}}</button>
                           </mat-menu>
+                          <!-- {{item.showStatus}} || {{item.status}} -->
+
                         </td>
                       </tr>
                     </tbody>

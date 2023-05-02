@@ -188,27 +188,34 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         onlyOnce: true
     })
   }
-  accionServicio(padre, hijo, status){
+  accionServicio(padre, hijo, statusGet){
     //tomamos el id de padre en este caso la recepcion
     const padreID = padre.id
     const padreIndex = padre.index
     const HijoIndex = hijo.index
 
-    const  aprobado = (status === 'aprobado' || status === 'terminar') ? true:  false
+    const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
 
     if (aprobado) {
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = status
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = true
-    }else if (status === 'cancelado' || status === 'Noaprobado') {
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = status
+      const showStatus1 =  (statusGet === 'terminar') ? 'Terminado' : 'En espera'
+
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = aprobado
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = showStatus1
+
+    }else if (statusGet === 'cancelado' || statusGet === 'Noaprobado') {
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
       this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = false
-    } if (status === 'eliminado') {
-      //realizar la elimiancion y nuevo array sin el eliminado
-      const servicios = [...this.recepciones_arr[padreIndex].servicios];
-      servicios[HijoIndex] = null;
-      const serviciosFiltrados = servicios.filter(servicio => servicio !== null);
-      serviciosFiltrados.forEach((servicio, index) => servicio.index = index);
-      this.recepciones_arr[padreIndex].servicios = serviciosFiltrados;
+      this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = 'En espera'
+    } if (statusGet === 'eliminado') {
+      this.recepciones_arr[padreIndex].servicios = this.recepciones_arr[padreIndex].servicios.filter((servicio, index) => {
+        if (index !== HijoIndex) {
+            servicio.index = index;
+            return true;
+        }
+        return false;
+    });
+    
      
     }
     
@@ -233,18 +240,30 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const padreIndex = padre.index
     
 
-    //     espera
+    // espera
     // recibido
     // autorizado
     // terminado
     // entregado
     // cancelado
-    const  aprobado = (status === 'recibido' || status === 'autorizado') ? true:  false
-    // cambiar el status de la recepcion
 
 
-    this.recepciones_arr[padreIndex].status = status
-    this.dataSource.data = this.recepciones_arr
+    // const  aprobado = (status === 'espera' || status === 'cancelado') ? false:  true
+    const servicios = this.recepciones_arr[padreIndex].servicios;
+
+    servicios.forEach(servicio => {
+      if(servicio.aprobado && (status === 'terminado' || status === 'entregado')) {
+        servicio.status = 'terminar';
+        servicio.showStatus = 'Terminado';
+      } else {
+        servicio.status = 'Aprobado';
+        servicio.showStatus = 'En espera';
+      }
+    });
+    
+    this.recepciones_arr[padreIndex].servicios = servicios;
+    this.recepciones_arr[padreIndex].status = status;
+    this.dataSource.data = this.recepciones_arr;
     this.newPagination()
 
 

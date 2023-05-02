@@ -216,65 +216,99 @@ export class ClienteComponent implements OnInit {
   validarCampo(campo: string){
     return this.form_cliente.get(campo).invalid && this.form_cliente.get(campo).touched
   }
-  async actualizaNoCliente(){
-    const nombre = String(this.form_cliente.controls['nombre'].value).trim()
-    const apellidos = String(this.form_cliente.controls['apellidos'].value).trim()
+  // async actualizaNoCliente(){
+  //   const nombre = String(this.form_cliente.controls['nombre'].value).trim()
+  //   const apellidos = String(this.form_cliente.controls['apellidos'].value).trim()
 
-    let sucu = this.sucursal;
-    (this.sucursal === 'Todas')? sucu = this.form_cliente.controls['sucursal'].value : sucu = this.sucursal
-    const id = String(this.form_cliente.controls['id'].value).trim()
-    if (!id) {
-      if ((nombre.length >=2) && (apellidos.length >=2 ) && (sucu)) {
-        const date: Date = new Date()
-        if (sucu!=='Todas' && sucu) {
-          this._sucursales.inforSucursalUnica(sucu).then((data)=>{
-            const numeroCliente:number = this.contadroClientes//(this.clientes.length) + 1
-            const nombreS:string = data['sucursal']
-            let mes = ''; let secuencia=''; let ceros = ''
-            const anio = String(date.getFullYear())
-            if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
-            for (let index = String(numeroCliente).length; index < 4 ; index++) {
-              ceros = `${ceros}0`
-            }
-            secuencia = `${ceros}${numeroCliente}`
-            let nombreCotizacion = `${ nombre.slice(0,2)}${apellidos.slice(0,2)}${ String(nombreS).slice(0,2)}${mes}${anio.slice(anio.length-2,anio.length)}${secuencia}`
-            this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion.toUpperCase())
-          })
-          .catch((error)=>{this._publicos.mensajeIncorrecto('error: ' + error)})
-        }
-      }else{
-        this.form_cliente.controls['no_cliente'].setValue('')
-      }
+  //   let sucu = this.sucursal;
+  //   (this.sucursal === 'Todas')? sucu = this.form_cliente.controls['sucursal'].value : sucu = this.sucursal
+  //   const id = String(this.form_cliente.controls['id'].value).trim()
+  //   if (!id) {
+  //     if ((nombre.length >=2) && (apellidos.length >=2 ) && (sucu)) {
+  //       const date: Date = new Date()
+  //       if (sucu!=='Todas' && sucu) {
+  //         this._sucursales.inforSucursalUnica(sucu).then((data)=>{
+  //           const numeroCliente:number = this.contadroClientes//(this.clientes.length) + 1
+  //           const nombreS:string = data['sucursal']
+  //           let mes = ''; let secuencia=''; let ceros = ''
+  //           const anio = String(date.getFullYear())
+  //           if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
+  //           for (let index = String(numeroCliente).length; index < 4 ; index++) {
+  //             ceros = `${ceros}0`
+  //           }
+  //           secuencia = `${ceros}${numeroCliente}`
+  //           let nombreCotizacion = `${ nombre.slice(0,2)}${apellidos.slice(0,2)}${ String(nombreS).slice(0,2)}${mes}${anio.slice(anio.length-2,anio.length)}${secuencia}`
+  //           this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion.toUpperCase())
+  //         })
+  //         .catch((error)=>{this._publicos.mensajeIncorrecto('error: ' + error)})
+  //       }
+  //     }else{
+  //       this.form_cliente.controls['no_cliente'].setValue('')
+  //     }
+  //   }
+
+  // }
+  async actualizaNoCliente() {
+    const nombre = this.form_cliente.controls['nombre'].value?.trim();
+    const apellidos = this.form_cliente.controls['apellidos'].value?.trim();
+    const id = this.form_cliente.controls['id'].value?.trim();
+    let sucursal = this.sucursal;
+  
+    if (this.sucursal === 'Todas') {
+      sucursal = this.form_cliente.controls['sucursal'].value;
     }
-
+  
+    if (!id && nombre?.length >= 2 && apellidos?.length >= 2 && sucursal) {
+      try {
+        const data = await this._sucursales.inforSucursalUnica(sucursal);
+        const numeroCliente = this.contadroClientes;
+        const nombreSucursal = data['sucursal'];
+        const date = new Date();
+        const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+        const anio = date.getFullYear().toString().slice(-2);
+        const secuencia = numeroCliente.toString().padStart(4, '0');
+        const nombreCotizacion = `${nombre?.slice(0, 2)}${apellidos?.slice(0, 2)}${nombreSucursal?.slice(0, 2)}${mes}${anio}${secuencia}`;
+        this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion.toUpperCase());
+      } catch (error) {
+        this._publicos.mensajeIncorrecto(`error: ${error}`);
+      }
+    } else if(id) {
+      // this.form_cliente.controls['no_cliente'].setValue('');
+    } else {
+      this.form_cliente.controls['no_cliente'].setValue('');
+    }
   }
+  
   guardarCliente(){
 
-    // this.correo_utilizado === 'sucursal'
-
-    const info_get = this.form_cliente.value
-    let saveInfo = {
-      no_cliente: String(info_get['no_cliente']).trim(),
-      nombre: String(info_get['nombre']).trim(),
-      apellidos: String(info_get['apellidos']).trim(),
-      fullname: String(`${info_get['nombre']} ${info_get['apellidos']}`).trim(),
-      
-      telefono_movil: String(info_get['telefono_movil']).trim(),
-      tipo: String(info_get['tipo']).trim(),
-      sucursal: String(info_get['sucursal']).trim(),
-    };
+    const info_get = this.form_cliente.value;
+      const saveInfo = {
+        no_cliente: info_get.no_cliente?.trim(),
+        nombre: info_get.nombre?.trim(),
+        apellidos: info_get.apellidos?.trim(),
+        fullname: `${info_get.nombre} ${info_get.apellidos}`.trim(),
+        telefono_movil: info_get.telefono_movil?.trim(),
+        tipo: info_get.tipo?.trim(),
+        sucursal: info_get.sucursal?.trim(),
+      };
 
     if(this.correo_utilizado ==='personal'){
       saveInfo['correo'] = String(info_get['correo']).trim()
-    }else{
-    //  const {correo} =  this.Sucursales.find(s=>s['id'] === saveInfo['sucursal'] )
     }
+    
     (info_get['correo_sec']) ? saveInfo['correo_sec'] = String(info_get['correo_sec']).trim(): null;
     (info_get['telefono_fijo']) ? saveInfo['telefono_fijo'] = String(info_get['telefono_fijo']).trim(): null;
     (info_get['empresa']) ? saveInfo['empresa'] = String(info_get['empresa']).trim(): null;
-    // console.log(saveInfo);
-    
-    let contador = 0
+
+    if (info_get.correo_sec) {
+      saveInfo['correo_sec'] = info_get.correo_sec.trim();
+    }
+    if (info_get.telefono_fijo) {
+      saveInfo['telefono_fijo'] = info_get.telefono_fijo.trim();
+    }
+    if (info_get.empresa) {
+      saveInfo['empresa'] = info_get.empresa.trim();
+    }
     const updates = {};
     if (this.id) {
       const campos = ['no_cliente','nombre','apellidos','correo','telefono_movil','tipo','sucursal','correo_sec','telefono_fijo','empresa']

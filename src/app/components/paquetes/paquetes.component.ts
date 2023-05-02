@@ -81,40 +81,41 @@ export class PaquetesComponent implements OnInit {
   consultaPaquetes(){
     const unidos = this.listaMO.concat(this.listaRefacciones)
     // const aqui = unidos.filter(u=>u['id']  === '-NE2JJZu_LtUYJXSBola')
-    // console.log(aqui);
+    // console.log(unidos);
     
     const starCountRef = ref(db, `paquetes`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         const paquetes= this._publicos.crearArreglo2(snapshot.val())
-        paquetes.map((p, index)=>{
-          p['index'] = index
-          const elementos_internos = (p['elementos']) ? p['elementos'] : []
-          elementos_internos.map(e=>{
-            if(e['catalogo'] || e['enCatalogo']){
-              const info = unidos.find(u=>u['id'] === e['IDreferencia'])
-              const camposNuevos = ['id','nombre','precio','status','tipo']
-              camposNuevos.forEach(c=>{
-                (!info[c]) ? e[c] = '' : e[c] = info[c]
-              })
+            for (const [index, p] of paquetes.entries()) {
+              const {elementos, reporte} = this._publicos.reportePaquete(p.elementos, 1.25);
+              const elementosActualizados = elementos.map((e) => {
+                if (e.catalogo || e.enCatalogo) {
+                  const info = unidos.find((u) => u.id === e.IDreferencia) ?? {};
+                  const camposNuevos = ['id', 'nombre', 'tipo'];
+          
+                  camposNuevos.forEach((c) => {
+                    e[c] = info[c] ?? '';
+                  });
+                }
+                return e;
+              });
+          
+              paquetes[index] = {
+                ...p,
+                index,
+                elementos: elementosActualizados,
+                reporte,
+                precio: reporte.total,
+                total: reporte.total,
+                tipo: 'paquete',
+                aprobado: true,
+                cantidad: 1,
+                costo: 0,
+              };
             }
-            e['tipo'] = String(e['tipo']).toLowerCase()
-            e['costo'] = 0
-            e['aprobado'] = true
-          })
-          const reporte = this._publicos.reportePaquete(elementos_internos,25)
-          p['elementos'] = elementos_internos
-          p['reporte_interno'] = reporte
-          p['precio'] = reporte['total']
-          p['total'] = reporte['total']
-          p['tipo'] = 'paquete'
-          p['aprobado'] = true
-          p['cantidad'] = 1
-          p['costo'] = 0
-          // p['total'] = reporte['total']
-        })
-
-        this.listaPaquetes_arr = paquetes.filter(p=>p['elementos'].length);
+        this.listaPaquetes_arr = paquetes.filter((p) => p.elementos.length);
+        // this.listaPaquetes_arr = paquetes.filter(p=>p['elementos'].length);
         // (this.modelo) ? this.aplicaFiltro(true) : this.aplicaFiltro(false)
         this.aplicaFiltro(false)
       } else {
@@ -123,17 +124,11 @@ export class PaquetesComponent implements OnInit {
     })
   }
   aplicaFiltro(filtro:boolean){
-    if (filtro) {
-      if (this.modelo) {
-        const filtroModelo = this.listaPaquetes_arr.filter(f=>f['modelo'] === this.modelo)
-        this.dataSourcePaquetes.data = filtroModelo
-      }else{
-        this.dataSourcePaquetes.data = this.listaPaquetes_arr
-      }
-    }else{
-      this.dataSourcePaquetes.data = this.listaPaquetes_arr
+    let data = this.listaPaquetes_arr;
+    if (filtro && this.modelo) {
+      data = data.filter((paquete) => paquete.modelo === this.modelo);
     }
-    
+    this.dataSourcePaquetes.data = data;
     this.newPagination('paquetes')
   }
   dataElement(data:any){

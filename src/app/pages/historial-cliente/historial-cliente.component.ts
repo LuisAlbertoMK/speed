@@ -681,15 +681,15 @@ export class HistorialClienteComponent implements OnInit {
     
   }
   nueva(dataGeneral:any,margen:number){
-    this._publicos.ObtenerTotalesPaquete(dataGeneral.cantidad,dataGeneral.elementos,margen).then((ans:any)=>{
-      this.infoPawuete.dataGeneral = dataGeneral
-      this.infoPawuete.elementos = dataGeneral.elementos
-      this.infoPawuete.data.totalMO = ans.totalMO
-      this.infoPawuete.data.refacciones1 = ans.refacciones1
-      this.infoPawuete.data.refacciones2 = ans.refacciones2
-      this.infoPawuete.data.precio = ans.precio
-      this.infoPawuete.data.flotilla = ans.flotilla
-    })
+    // this._publicos.ObtenerTotalesPaquete(dataGeneral.cantidad,dataGeneral.elementos,margen).then((ans:any)=>{
+    //   this.infoPawuete.dataGeneral = dataGeneral
+    //   this.infoPawuete.elementos = dataGeneral.elementos
+    //   this.infoPawuete.data.totalMO = ans.totalMO
+    //   this.infoPawuete.data.refacciones1 = ans.refacciones1
+    //   this.infoPawuete.data.refacciones2 = ans.refacciones2
+    //   this.infoPawuete.data.precio = ans.precio
+    //   this.infoPawuete.data.flotilla = ans.flotilla
+    // })
 }
 
   isSticky(columna:string) {

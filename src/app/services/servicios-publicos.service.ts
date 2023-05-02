@@ -72,20 +72,29 @@ export class ServiciosPublicosService {
     }
     convierteFecha(fecha : string) {
         // fecha = '11/5/2022'
-        let fechCorrecta = ''
-        if (fecha !== '' && fecha !== undefined) {
-            const newC = fecha.split('/')
-            newC[0] = String(Number(parseInt(newC[0])))
-            newC[1] = String(Number(parseInt(newC[1])))
-            if (Number(newC[0]) < 10) {
-                newC[0] = '0' + newC[0]
-            }
-            if (Number(newC[1]) < 10) {
-                newC[1] = '0' + newC[1]
-            }
-            fechCorrecta = `${newC[0]}/${newC[1]}/${newC[2]}`
-        }
-        return fechCorrecta
+        // let fechCorrecta = ''
+        // if (fecha !== '' && fecha !== undefined) {
+        //     const newC = fecha.split('/')
+        //     newC[0] = String(Number(parseInt(newC[0])))
+        //     newC[1] = String(Number(parseInt(newC[1])))
+        //     if (Number(newC[0]) < 10) {
+        //         newC[0] = '0' + newC[0]
+        //     }
+        //     if (Number(newC[1]) < 10) {
+        //         newC[1] = '0' + newC[1]
+        //     }
+        //     fechCorrecta = `${newC[0]}/${newC[1]}/${newC[2]}`
+        // }
+        // return fechCorrecta
+        if (!fecha) return '';
+  
+      const [dia, mes, anio] = fecha.split('/');
+      
+      const diaFormateado = dia.padStart(2, '0');
+      const mesFormateado = mes.padStart(2, '0');
+      
+      return `${diaFormateado}/${mesFormateado}/${anio}`;
+    
     }
     ordenamiento(arreglo : any[], campo : string, ordena : boolean) {
         const campoSpli = campo.split('_')
@@ -212,6 +221,38 @@ export class ServiciosPublicosService {
             return dias;
     }
     getFechaHora(fechaa? : Date) {
+        
+            // const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+            // const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+            
+            // const date = new Date(inputDate);
+            // const fecha = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+            // const fechaNumeros = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}`;
+            // const fechaPDF = `${dias[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+            // const vencimiento = new Date(date.setDate(date.getDate() + 20)).toLocaleDateString();
+            // const Mes = months[date.getMonth()];
+          
+            // const ayer = new Date(date.setDate(date.getDate() - 1));
+            // ayer.setHours(0, 0, 0, 0);
+            // const fechaNumerosAyer = `${ayer.getDate()}${ayer.getMonth() + 1}${ayer.getFullYear()}`;
+          
+            // const fechaManiana = new Date(date.setDate(date.getDate() + 2));
+            // fechaManiana.setHours(0, 0, 0, 0);
+            // const fechaM = `${fechaManiana.getDate()}/${fechaManiana.getMonth() + 1}/${fechaManiana.getFullYear()}`;
+            // const fechaManianaNumeros = `${fechaManiana.getDate()}${fechaManiana.getMonth() + 1}${fechaManiana.getFullYear()}`;
+            
+            // return { 
+            //   fecha,fechaPDF,vencimiento,Mes,fechaM,
+            //   diaReturn: dias[fechaManiana.getDay()],
+            //   fechaNumeros,
+            //   ayer,
+            //   fechaNumerosAyer,
+            //   fehaHoy: inputDate,
+            //   fechaManianaNumeros,
+            //   fechaManiana
+            // };
+          
+          
             let fechas = new Date();
             let fechaNumeros = '',
                 fechaNumerosAyer,
@@ -408,50 +449,45 @@ export class ServiciosPublicosService {
 
                 return {diasMes, fecha1, fecha2}
     }
-    convierte_fechaString_personalizada(fecha : Date) {
-                const f1 = new Date(fecha);
-                const hora = new Date(fecha);
-                let string_fecha = '', stringHora='',stringNumeros='', fechaString= new Date(fecha)
-                string_fecha = `${f1.getDate()}/${f1.getMonth() + 1}/${f1.getFullYear()}`
-                stringHora =`${hora.getHours()}:${hora.getMinutes()}:${hora.getSeconds()}`
-                stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`
-                return {string_fecha,stringHora,fechaString,stringNumeros,hora}
-    }
-    obtenerFechaCompleta(fecha : any) {
-                // let fecha = '21/12/2022' console.log(fecha);
-                const fec = fecha.split('/')
-                const nueva = `${fec[1]}/${fec[0]}/${fec[2]}`
-                // console.log(nueva);
-                const date: Date = new Date(nueva);
-                // console.log(date);
-
-                const months = [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ];
-                const dias = [
-                    'Domingo',
-                    'Lunes',
-                    'Martes',
-                    'Miércoles',
-                    'Jueves',
-                    'Viernes',
-                    'Sábado'
-                ];
-                const numeroDia = new Date(date).getDay();
-                const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
-                return fechaPDF
-    }
+    // convierte_fechaString_personalizada(fecha : Date) {
+    //             const f1 = new Date(fecha);
+    //             const hora = new Date(fecha);
+    //             let string_fecha = '', stringHora='',stringNumeros='', fechaString= new Date(fecha)
+    //             string_fecha = `${f1.getDate()}/${f1.getMonth() + 1}/${f1.getFullYear()}`
+    //             stringHora =`${hora.getHours()}:${hora.getMinutes()}:${hora.getSeconds()}`
+    //             stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`
+    //             return {string_fecha,stringHora,fechaString,stringNumeros,hora}
+    // }
+    convierte_fechaString_personalizada(fecha: Date) {
+        const f1 = new Date(fecha);
+        const hora = new Date(fecha);
+        const string_fecha = `${f1.getDate()}/${f1.getMonth() + 1}/${f1.getFullYear()}`;
+        const stringHora = `${hora.getHours()}:${hora.getMinutes()}:${hora.getSeconds()}`;
+        const stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`;
+        return {string_fecha, stringHora, fechaString: new Date(fecha), stringNumeros, hora};
+      }
+      
+    // obtenerFechaCompleta(fecha : any) {
+    //             const fec = fecha.split('/')
+    //             const nueva = `${fec[1]}/${fec[0]}/${fec[2]}`
+    //             const date: Date = new Date(nueva);
+    //             const months = [ "Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre" ];
+    //             const dias = [ 'Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    //             const numeroDia = new Date(date).getDay();
+    //             const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+    //             return fechaPDF
+    // }
+    obtenerFechaCompleta(fecha: string): string {
+        const [day, month, year] = fecha.split('/');
+        const date = new Date(+year, +month - 1, +day);
+        const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        const dayOfWeek = days[date.getDay()];
+        const monthName = months[date.getMonth()];
+        const formattedDate = `${dayOfWeek} ${date.getDate()} ${monthName} ${date.getFullYear()}`;
+        return formattedDate;
+      }
+      
     construyeFechaString(fecha : string, hora? : string) {
                 const splitFecha = fecha.split('/')
                 let horaNew = '00:00:00'
@@ -471,194 +507,15 @@ export class ServiciosPublicosService {
                 return fechaNew
     }
     fechaNueva(fecha) {
-                const date: Date = new Date(fecha);
-                const months = [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ];
-                const dias = [
-                    'Domingo',
-                    'Lunes',
-                    'Martes',
-                    'Miércoles',
-                    'Jueves',
-                    'Viernes',
-                    'Sábado'
-                ];
-                const numeroDia = new Date(date).getDay();
-                return `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+        const date: Date = new Date(fecha);
+        const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        const numeroDia = new Date(date).getDay();
+        return `${days[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
     }
-    getRecepciones() {
-
-                let data: any = []
-                let arreglo: any = [];
-                let arregloReturn: any = []
-                const starCountRef = ref(db, `recepciones`)
-                onValue(starCountRef, (snapshot) => {
-                    if (snapshot.exists()) {
-                        arreglo = this.crearArreglo2(snapshot.val())
-                        for (let index = 0; index < arreglo.length; index++) {
-
-                            // console.log(arreglo[index]);
-
-                            if (arreglo[index].status !== 'entregado') {
-                                // console.log(arreglo[index].fecha_estimada);
-                                // console.log(this.restaFechasTaller(arreglo[index].fecha_recibido));
-                                const dias = this.restaFechasTaller(arreglo[index].fecha_recibido)
-                                set(ref(db, `recepciones/${arreglo[index].id}/diasSucursal`), dias)
-                                    .then(
-                                        () => {
-                                            // Data saved successfully!
-                                        }
-                                    )
-                                    .catch((error) => {
-                                        // The write failed...
-                                    });
-                            }
-
-                            get(child(dbRef, `clientes/${arreglo[index].cliente}`))
-                                .then((snapCliente) => {
-                                    if (snapCliente.exists()) {
-                                        // console.log(snapCliente.val());
-                                        const cliente = snapCliente.val()
-                                        arreglo[index].dataCliente = cliente
-                                        arreglo[index].nombre = String(`${cliente.nombre} ${cliente.apellidos}`).toUpperCase()
-                                    } else {
-                                        console.log("No data available");
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.error(error);
-                                });
-                            get(child(dbRef, `vehiculos/${arreglo[index].vehiculo}`))
-                                .then(
-                                    (snapVehiculo) => {
-                                        if (snapVehiculo.exists()) {
-                                            // console.log(snapshot.val());
-                                            const vehiculo = snapVehiculo.val()
-                                            arreglo[index].dataVehiculo = vehiculo
-                                            arreglo[index].placas = String(vehiculo.placas).toUpperCase()
-                                        } else {
-                                            console.log("No data available");
-                                        }
-                                    }
-                                )
-                                .catch((error) => {
-                                    console.error(error);
-                                });
-                        }
-
-                        for (let ing = 0; ing < arreglo.length; ing++) {
-                            const element = arreglo[ing].servicios
-
-                                let refacciones = 0,
-                                    mo = 0,
-                                    total = 0
-                                for (let ingd = 0; ingd < element.length; ingd++) {
-                                    const ele = element[ingd];
-                                    if (ele.aprobado) {
-                                        const cantidadP = ele.cantidad
-                                        // console.log(cantidadP);
-                                        let precioF = 0
-                                        if (ele.tipo === 'paquete') {
-                                            // console.log(ele.nombre);
-                                            const elementos = ele.elementos
-                                            for (let indEle = 0; indEle < elementos.length; indEle++) {
-                                                const ele1 = elementos[indEle];
-
-                                                const cantidadE = ele1.cantidad
-                                                let costo = 0
-                                                if (ele1.tipo === 'MO') {
-
-                                                    // precioF=precioF+ opera mo = mo + opera
-                                                    for (let indcantidad = 1; indcantidad <= cantidadE; indcantidad++) {
-                                                        const opera = indcantidad * ele1
-                                                            .precio
-                                                            elementos[indEle]
-                                                            .flotilla = opera
-                                                        elementos[indEle].normal = elementos[indEle].flotilla * 1.30
-                                                        costo = elementos[indEle].flotilla
-                                                    }
-                                                    precioF = precioF + costo
-                                                    mo = mo + costo
-                                                } else if (ele1.tipo === 'refaccion') {
-                                                    for (let indcantidad = 1; indcantidad <= cantidadE; indcantidad++) {
-                                                        const opera = indcantidad * ele1
-                                                            .precio
-                                                            elementos[indEle]
-                                                            .flotilla = opera
-                                                        elementos[indEle].normal = elementos[indEle].flotilla * 1.30
-                                                        costo = elementos[indEle].flotilla
-                                                    }
-                                                    elementos[indEle].total = costo
-                                                    precioF = precioF + costo
-                                                    refacciones = refacciones + costo
-                                                }
-                                            }
-                                            element[ingd].total = precioF
-                                        } else if (ele.tipo === 'MO') {
-                                            let costo = 0
-                                            for (let indcantidad = 1; indcantidad <= cantidadP; indcantidad++) {
-                                                const opera = indcantidad * ele
-                                                    .precio
-                                                    element[ingd]
-                                                    .total = opera
-                                                costo = element[ingd].total
-                                            }
-                                            mo = mo + costo
-                                        } else if (ele.tipo === 'refaccion') {
-                                            // console.log(ele[ingd] + `${ingd}`);
-                                            let costo = 0
-                                            for (let indcantidad = 1; indcantidad <= cantidadP; indcantidad++) {
-                                                const opera = indcantidad * ele
-                                                    .precio
-                                                    element[ingd]
-                                                    .total = opera
-                                                costo = element[ingd].total
-                                            }
-                                            refacciones = refacciones + costo
-                                        }
-                                    }
-                                    // console.log('FIN');
-
-                                    arreglo[ing].costoMO = mo
-                                    arreglo[ing].costorefacciones = refacciones
-                                    if (arreglo[ing].iva) {
-                                        arreglo[ing].costoFlotilla = mo + (refacciones) * 1.25
-                                        arreglo[ing].costoFlotillaCuantoIVA = (mo + (refacciones) * 1.25) * .16
-                                        arreglo[ing].costoFlotillaIVA = (mo + (refacciones) * 1.25) * 1.16
-                                    } else {
-                                        arreglo[ing].costoFlotilla = mo + (refacciones) * 1.25
-                                    }
-                                }
-                                for (let ind = 0; ind < arreglo.length; ind++) {
-                                    const element = arreglo[ind];
-                                    arreglo[ind].fecha_recibido = this.convierteFecha(element.fecha_recibido)
-                                    if (arreglo[ind].fecha_entregado) {
-                                        arreglo[ind].fecha_entregado = this.convierteFecha(element.fecha_entregado)
-                                    }
-                                }
-                                arregloReturn = arreglo
-                            }
-                            // console.log(arreglo); let ruta:string = starCountRef.toString()
-                            // console.log(this.http.get(`${ruta}.json`)); data =
-                            // this.http.get(`${ruta}.json`) .pipe(   map(this.crearArreglo2) )
-
-                        }
-                    })
-
-                    return arreglo
-    }
+    
+   
+    
     convierteALetrasCantidad(num) {
                     let unidad,
                         decena,
@@ -849,6 +706,7 @@ export class ServiciosPublicosService {
                     //NumeroALetras()
                     return NumeroALetras(num)
     }
+    
     redondeado(value : number, simbolo? : string) {
                     let symbol = '';
                     (!simbolo)
@@ -1014,7 +872,7 @@ export class ServiciosPublicosService {
         return info
     }
     isObject(valor) {
-                                    return valor instanceof Object;
+        return valor instanceof Object;
     }
     async recuperaDataArreglo(campos : any[], data : any) {
                                     let Necesaria = {}
@@ -1040,50 +898,29 @@ export class ServiciosPublicosService {
                                     return Necesaria
     }
     nuevaRecuperacionData(data : any, camposRecuperar : any[]) {
-                                    let Necesaria = {}
-                                    camposRecuperar.forEach(recupera => {
-                                        Necesaria[recupera] = data[recupera]
-                                    })
-                                    return Necesaria
+                                    // let Necesaria = {}
+                                    // camposRecuperar.forEach(recupera => {
+                                    //     Necesaria[recupera] = data[recupera]
+                                    // })
+                                    // return Necesaria
+
+        const necessary = {};
+        camposRecuperar.forEach((recupera) => necessary[recupera] = data[recupera]);
+        return necessary;
     }
-    crearArreglo2(arrayObj : object) {
-                                    const arrayGet: any[] = [];
-                                    if (arrayObj === null) {
-                                        return [];
-                                    }
-                                    Object
-                                        .keys(arrayObj)
-                                        .forEach((key) => {
-                                            const arraypush: any = arrayObj[key];
-                                            arraypush.id = key;
-                                            arrayGet.push(arraypush);
-                                        });
-                                    return arrayGet;
+    // crearArreglo2(arrayObj : object) {
+    crearArreglo2(arrayObj: Record<string, any> | null): any[] {
+            if (!arrayObj) return []; 
+            return Object.entries(arrayObj).map(([key, value]) => ({ ...value, id: key }));
     }
+    // }
     crearArreglo(clientesObj : object) {
-                                    const clientes: any[] = []
-                                    if (clientesObj === null) {
-                                        return []
-                                    }
-                                    Object
-                                        .keys(clientesObj)
-                                        .forEach(key => {
-                                            const cliente: any = clientesObj[key]
-                                            clientes.push(cliente)
-                                        })
-                                    return clientes
+        const clientes: any[] = clientesObj ? Object.values(clientesObj) : [];
+        return clientes;
     }
     ordernarPorCampo(arreglo : any, campo : string) {
-                                    arreglo.sort(function (a, b) {
-                                        if (a[campo] > b[campo]) {
-                                            return 1;
-                                        }
-                                        if (a[campo] < b[campo]) {
-                                            return -1;
-                                        }
-                                        return 0;
-                                    })
-                                    return arreglo
+        arreglo.sort((a, b) => b[campo].localeCompare(a[campo]));
+        return arreglo;
     }
     mensajeCorrecto(mensaje : string) {
                                     const Toast = Swal.mixin({
@@ -1138,56 +975,7 @@ export class ServiciosPublicosService {
             })
         return mensajeAnswer
     }
-    async ObtenerTotalesPaquete(cant : number, array : any[], margen : number) {
-                                    let data = {
-                                            totalMO: 0,
-                                            refacciones1: 0,
-                                            refacciones2: 0,
-                                            precio: 0,
-                                            flotilla: 0
-                                        }
-                                        const elementosGet = array
-                                            let totalMO = 0,
-                                                refacciones1 = 0,
-                                                refacciones2 = 0;
-                                            for (let indexcant = 1; indexcant <= cant; indexcant++) {
-                                                for (let index = 0; index < elementosGet.length; index++) {
-                                                    const element = elementosGet[index];
-                                                    const cantidad = element.cantidad
-                                                    if (element.tipo === 'MO') {
-                                                        let newPrecio = 0,
-                                                            total = 0;
-                                                        (element.costo > 0)
-                                                            ? newPrecio = element.costo
-                                                            : newPrecio = element.precio
-                                                        for (let cantidadS = 1; cantidadS <= cantidad; cantidadS++) {
-                                                            total = cantidadS * newPrecio
-                                                        }
-                                                        totalMO = totalMO + total
-                                                    } else if (element.tipo === 'refaccion') {
-                                                        let newPrecio = 0,
-                                                            total = 0,
-                                                            total2 = 0;
-                                                        (element.costo > 0)
-                                                            ? newPrecio = element.costo
-                                                            : newPrecio = element.precio
-                                                        for (let cantidadS = 1; cantidadS <= cantidad; cantidadS++) {
-                                                            total = cantidadS * newPrecio
-                                                            total2 = (cantidadS * newPrecio) * ((margen / 100) + 1)
-                                                        }
-                                                        refacciones1 = refacciones1 + total
-                                                        // refacciones2 = refacciones2 + total2
-                                                    }
-                                                }
-                                            }
-                                            data.totalMO = totalMO
-                                            data.refacciones1 = refacciones1
-                                            data.refacciones2 = refacciones1 * (1 + (25 / 100))
-
-                                            data.precio = refacciones1
-                                            data.flotilla = (refacciones1 * (1 + (25 / 100))) + totalMO
-                                            return data
-    }
+   
     SwalTipoSobrescrito(costo : number) {
                                             Swal.fire({
                                                 title: 'Costo de paquete sobrescrito',
@@ -1231,267 +1019,53 @@ export class ServiciosPublicosService {
       </table>
       `})
     }
-                                        restaFechas = function (f1 : any, f2 : any) {
-                                            var aFecha1 = f1.split('/');
-                                            var aFecha2 = f2.split('/');
-                                            var fFecha1 = Date.UTC(aFecha1[2], aFecha1[1] - 1, aFecha1[0]);
-                                            var fFecha2 = Date.UTC(aFecha2[2], aFecha2[1] - 1, aFecha2[0]);
-                                            var dif = fFecha2 - fFecha1;
-                                            var dias = Math.floor(dif / (1000 * 60 * 60 * 24));
-                                            return dias;
-                                        }
+    restaFechas = function (f1 : any, f2 : any) {
+        var aFecha1 = f1.split('/');
+        var aFecha2 = f2.split('/');
+        var fFecha1 = Date.UTC(aFecha1[2], aFecha1[1] - 1, aFecha1[0]);
+        var fFecha2 = Date.UTC(aFecha2[2], aFecha2[1] - 1, aFecha2[0]);
+        var dif = fFecha2 - fFecha1;
+        var dias = Math.floor(dif / (1000 * 60 * 60 * 24));
+        return dias;
+    }
 
-                                        obtenerFechaJava(fecha) {
+    obtenerFechaJava(fecha) {
+        const fecha_string = this.convierteFecha(fecha)
+        const split_string = fecha_string.split('/')
+        const fecha_return = new Date(
+            Number(split_string[2]),
+            Number(split_string[1]) - 1,
+            Number(split_string[0])
+        )
+        return fecha_return
+    }
+                                        
+                                            
+    mensaje(mensaje : string, tipo : number) {
+        switch (tipo) {
+            case 1:
+                Swal.fire(`${mensaje}`, '', 'success')
+                break;
+            case 1:
+                Swal.fire(`${mensaje}`, '', 'success')
+                break;
+            default:
+                break;
+        }
+    }
 
-                                            const fecha_string = this.convierteFecha(fecha)
-                                            const split_string = fecha_string.split('/')
-                                            const fecha_return = new Date(
-                                                Number(split_string[2]),
-                                                Number(split_string[1]) - 1,
-                                                Number(split_string[0])
-                                            )
-
-                                            return fecha_return
-                                        }
-                                        realizarOperacion(data : any, deQuien : string) {
-                                            const desgloce = {
-                                                    UB: 0,
-                                                    UB2: 0,
-                                                    mo: 0,
-                                                    refacciones_1: 0,
-                                                    refacciones_2: 0,
-                                                    subtotal: 0,
-                                                    iva: 0,
-                                                    sobrescrito: 0,
-                                                    sobrescrito_mo: 0,
-                                                    sobrescrito_refaccion: 0,
-                                                    sobrescrito_paquete: 0,
-                                                    total: 0
-                                                }
-                                                let mo = 0,
-                                                    refacciones_1 = 0,
-                                                    sobrescrito_mo = 0,
-                                                    sobrescrito_refaccion = 0,
-                                                    sobrescrito_paquete = 0
-                                                let elementos = [];
-
-                                                if (data[deQuien]) 
-                                                    elementos = data[deQuien]
-                                                elementos.forEach(ele => {
-                                                    if (ele['aprobado']) {
-                                                        if (ele['costo'] > 0) {
-                                                            if (ele['tipo'] === 'MO') {
-                                                                sobrescrito_mo += ele['costo'] * ele['cantidad']
-                                                            } else if (ele['tipo'] === 'refaccion') {
-                                                                sobrescrito_refaccion += ele['costo'] * ele['cantidad']
-                                                            } else if (ele['tipo'] === 'paquete') {
-                                                                sobrescrito_paquete += ele['costo'] * ele['cantidad']
-                                                            }
-                                                        } else {
-                                                            if (ele.tipo === 'MO') {
-                                                                (ele['costo'] > 0)
-                                                                    ? sobrescrito_mo += ele['cantidad'] * ele['costo']
-                                                                    : mo += ele['cantidad'] * ele['precio']
-                                                            } else if (ele.tipo === 'refaccion') {
-                                                                (ele['costo'] > 0)
-                                                                    ? sobrescrito_refaccion += ele['cantidad'] * ele['costo']
-                                                                    : refacciones_1 += ele['cantidad'] * ele['precio']
-                                                            } else if (ele.tipo === 'paquete') {
-                                                                let elementos = [];
-                                                                if (ele['elementos']) 
-                                                                    elementos = ele['elementos']
-                                                                elementos.forEach(subele => {
-                                                                    if (subele.tipo === 'MO') {
-                                                                        (subele['costo'] > 0)
-                                                                            ? sobrescrito_mo += subele['cantidad'] * subele['costo']
-                                                                            : mo += subele['cantidad'] * subele['precio']
-                                                                    } else if (subele.tipo === 'refaccion') {
-                                                                        (subele['costo'] > 0)
-                                                                            ? sobrescrito_refaccion += subele['cantidad'] * subele['costo']
-                                                                            : refacciones_1 += subele['cantidad'] * subele['precio']
-                                                                    }
-                                                                });
-                                                            }
-                                                        }
-                                                    }
-                                                });
-                                                desgloce.sobrescrito_paquete = sobrescrito_paquete
-                                                desgloce.sobrescrito_refaccion = sobrescrito_refaccion
-                                                desgloce.sobrescrito_mo = sobrescrito_mo
-                                                let suma = sobrescrito_paquete + sobrescrito_refaccion +
-                                                        sobrescrito_mo
-
-                                                desgloce.sobrescrito = suma
-                                                desgloce.mo = mo
-                                                desgloce.refacciones_1 = refacciones_1
-                                                desgloce.refacciones_2 = refacciones_1 * (1 + (data['margen'] / 100))
-                                                let suma2 = mo + desgloce.refacciones_2
-                                                let descuento = 0
-                                                if (data['descuento']) 
-                                                    descuento = data['descuento']
-                                                desgloce.subtotal = (suma + suma2) - descuento
-                                                // desgloce.total = desgloce.subtotal
-                                                if (data['iva']) 
-                                                    desgloce.iva = desgloce.subtotal * .16
-                                                desgloce.total = desgloce.subtotal + desgloce.iva
-
-
-                                                //la primera formula que se me entrego
-                                                desgloce.UB = ((desgloce.subtotal - desgloce.refacciones_1) * 100) / desgloce.subtotal
-                                                // La segunda formula que se me entrego
-                                                desgloce.UB2 = 100 - ((desgloce.refacciones_2 * 100) / desgloce.total)
-
-
-
-                                                this
-                                                    .formasPAgo
-                                                    .map(f => {
-                                                        if (f.id != data['formaPago']) 
-                                                            return
-                                                        const operacion = desgloce.total * (1 + (f['interes'] / 100))
-                                                        desgloce['meses'] = operacion;
-                                                    })
-                                                return desgloce
-                                            }
-                                            async realizarOperaciones(data : any, deQuien : string) {
-                                                const desgloce = {
-                                                    UB: 0,
-                                                    mo: 0,
-                                                    refacciones_1: 0,
-                                                    refacciones_2: 0,
-                                                    subtotal: 0,
-                                                    iva: 0,
-                                                    sobrescrito: 0,
-                                                    sobrescrito_mo: 0,
-                                                    sobrescrito_refaccion: 0,
-                                                    sobrescrito_paquete: 0,
-                                                    total: 0
-                                                }
-                                                let elementos = [];
-                                                (!data[deQuien])
-                                                    ? elementos = []
-                                                    : elementos = data[deQuien]
-                                                // console.log(data['id']);
-                                                let mo = 0,
-                                                    refacciones_1 = 0,
-                                                    sobrescrito_mo = 0,
-                                                    sobrescrito_refaccion = 0
-                                                await elementos.forEach((ele, index) => {
-                                                    if (ele['aprobado']) {
-                                                        ele['index'] = index
-                                                        if (ele['costo'] > 0) {
-                                                            ele['flotilla'] = ele['cantidad'] * ele['costo']
-                                                        } else {
-                                                            ele['flotilla'] = ele['cantidad'] * ele['precio']
-                                                        }
-                                                        if (ele['tipo'] === 'MO') {
-                                                            if (ele['costo'] > 0) {
-                                                                sobrescrito_mo = sobrescrito_mo + (ele['costo'] * ele['cantidad'])
-                                                            } else {
-                                                                if (ele['precio'] > 0) 
-                                                                    mo = mo + (ele['precio'] * ele['cantidad'])
-                                                            }
-                                                        } else if (ele['tipo'] === 'refaccion') {
-                                                            if (ele['costo'] > 0) {
-                                                                sobrescrito_refaccion = sobrescrito_refaccion + (
-                                                                    ele['costo'] * ele['cantidad']
-                                                                )
-                                                            } else {
-                                                                refacciones_1 = refacciones_1 + (ele['precio'] * ele['cantidad'])
-                                                            }
-                                                        } else if (ele['tipo'] === 'paquete') {
-                                                            // if(!ele['elementos']) ele['elementos'] = []
-                                                            if (ele['costo'] > 0) {
-                                                                ele['flotilla'] = ele['costo']
-                                                                desgloce.sobrescrito_paquete += ele['costo']
-                                                            } else {
-                                                                let subelementos = [];
-                                                                (!ele['elementos'])
-                                                                    ? subelementos = []
-                                                                    : subelementos = ele['elementos']
-                                                                subelementos.forEach(e => {
-                                                                    if (e['tipo'] === 'MO') {
-                                                                        if (e['costo'] > 0) {
-                                                                            sobrescrito_mo = sobrescrito_mo + (e['costo'] * e['cantidad'])
-                                                                        } else {
-                                                                            if (e['precio'] > 0) 
-                                                                                mo = mo + (e['precio'] * e['cantidad'])
-                                                                        }
-                                                                    } else if (e['tipo'] === 'refaccion') {
-                                                                        if (e['costo'] > 0) {
-                                                                            sobrescrito_refaccion = sobrescrito_refaccion + (e['costo'] * e['cantidad'])
-                                                                        } else {
-                                                                            refacciones_1 = refacciones_1 + (e['precio'] * e['cantidad'])
-                                                                        }
-                                                                    }
-                                                                })
-
-                                                            }
-                                                        }
-                                                    }
-                                                })
-
-                                                desgloce.mo = mo
-                                                desgloce.sobrescrito_mo = sobrescrito_mo
-                                                // desgloce.sobrescrito_paquete = sobrescrito_paquete
-                                                desgloce.sobrescrito_refaccion = sobrescrito_refaccion
-                                                desgloce.refacciones_1 = refacciones_1
-                                                desgloce.refacciones_2 = refacciones_1 * (1 + (data['margen'] / 100))
-                                                let descuento = 0
-                                                if (data['descuento']) 
-                                                    descuento = data['descuento']
-                                                desgloce.subtotal = (
-                                                    desgloce.mo + desgloce.refacciones_2 + desgloce.sobrescrito_mo + desgloce.sobrescrito_refaccion
-                                                ) - descuento
-                                                desgloce.total = desgloce.subtotal
-                                                if (data['iva']) {
-                                                    desgloce.iva = desgloce.subtotal * .16
-                                                    desgloce.total = desgloce.subtotal + desgloce.iva
-                                                }
-                                                desgloce.UB = 100 - ((desgloce.refacciones_1 * 100) / desgloce.total)
-
-                                                // 100 - () console.log(desgloce); console.log(this.formaPago);
-                                                desgloce.sobrescrito = desgloce.sobrescrito_mo + desgloce.sobrescrito_paquete +
-                                                        desgloce
-                                                    .sobrescrito_refaccion
-                                                    this
-                                                    .formasPAgo
-                                                    .map(f => {
-                                                        if (f.id != data['formaPago']) 
-                                                            return
-                                                        const operacion = desgloce.total * (1 + (f['interes'] / 100))
-                                                        desgloce['meses'] = operacion;
-                                                        // console.log(f); (f['numero']>0) ? this.meses = f['numero'] : this.meses = 0
-                                                    })
-
-                                                return desgloce
-                                            }
-                                            mensaje(mensaje : string, tipo : number) {
-
-                                                switch (tipo) {
-                                                    case 1:
-                                                        Swal.fire(`${mensaje}`, '', 'success')
-                                                        break;
-                                                    case 1:
-                                                        Swal.fire(`${mensaje}`, '', 'success')
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-                                            }
-
-                                            mensajeSwal(mensaje : string) {
-                                                Swal.fire({
-                                                    position: 'center', icon: 'success', title: mensaje, showConfirmButton: true,
-                                                    // timer: 1500
-                                                })
-                                            }
-                                            mensajeSwalError(mensaje : string) {
-                                                Swal.fire({
-                                                    position: 'center', icon: 'error', title: mensaje, showConfirmButton: true,
-                                                    // timer: 1500
-                                                })
-                                            }
+    mensajeSwal(mensaje : string) {
+        Swal.fire({
+            position: 'center', icon: 'success', title: mensaje, showConfirmButton: true,
+            // timer: 1500
+        })
+    }
+    mensajeSwalError(mensaje : string) {
+        Swal.fire({
+            position: 'center', icon: 'error', title: mensaje, showConfirmButton: true,
+            // timer: 1500
+        })
+    }
 
                                             generaCamposReporte(data : any[], busqueda : string) {
                                                 let tiempoEstancia = 0,
@@ -1566,61 +1140,56 @@ export class ServiciosPublicosService {
                                                             return reporte
                                                         }
 
-                                                        generaClave() {
-                                                            return push(child(ref(db), 'posts')).key
-                                                        }
-                                                        realizaValidaciones(campos:any[], data:any){
-                                                          const answer = {faltantes: [], faltante_s:'', ok:true}
-                                                          campos.forEach((campo)=>{
-                                                            if (!data[campo]) answer.faltantes.push(campo)
-                                                          })
-                                                          if (answer.faltantes.length) answer.ok = false 
-                                                          answer.faltante_s = answer.faltantes.join(', ')
-                                                          return answer
-                                                        }
+    generaClave() {
+        return push(child(ref(db), 'posts')).key
+    }
+    realizaValidaciones(campos:any[], data:any){
+      const answer = {faltantes: [], faltante_s:'', ok:true}
+      campos.forEach((campo)=>{
+        if (!data[campo]) answer.faltantes.push(campo)
+      })
+      if (answer.faltantes.length) answer.ok = false 
+      answer.faltante_s = answer.faltantes.join(', ')
+      return answer
+    }
 
-                                                        swalToast(mensaje:string){
-                                                            const Toast = Swal.mixin({
-                                                                toast: true,
-                                                                position: 'top-end',
-                                                                showConfirmButton: false,
-                                                                timer: 3000,
-                                                                // timerProgressBar: true,
-                                                                // didOpen: (toast) => {
-                                                                //   toast.addEventListener('mouseenter', Swal.stopTimer)
-                                                                //   toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                                                // }
-                                                              })
-                                                              
-                                                              Toast.fire({
-                                                                icon: 'success',
-                                                                title: mensaje
-                                                              })
-                                                        }
-        swalToastCenter(mensaje:string){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'center',
-                showConfirmButton: false,
-                timer: 2000,
-              })
-              Toast.fire({
-                icon: 'success',
-                title: mensaje
-              })
-        }
-        swalToastError(mensaje:string){
-            const Toast = Swal.mixin({
+    swalToast(mensaje:string){
+        const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000,
-            })                                             
-              Toast.fire({
-                icon: 'error',
-                title: mensaje
-              })
-        }
+          })
+          
+          Toast.fire({
+            icon: 'success',
+            title: mensaje
+          })
+    }
+    swalToastCenter(mensaje:string){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center',
+            showConfirmButton: false,
+            timer: 2000,
+            })
+            Toast.fire({
+            icon: 'success',
+            title: mensaje
+            })
+    }
+    swalToastError(mensaje:string){
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        })                                             
+            Toast.fire({
+            icon: 'error',
+            title: mensaje
+            })
+    }
     async swalPrevisualizar(mensaje:string){
         const answer = {accion:''}
         await Swal.fire({
@@ -1650,104 +1219,124 @@ export class ServiciosPublicosService {
         
         const margenOcupado = 1 + (margen1_0 / 100)
         
-        const reporte = {
+        const reporteGeneral = {
           iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
           subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
         }
         ocupados.map((e,index)=>{
         
-          e['index'] = index
+          e.index = index
           const pre = e.costo >0 ? e.costo : e.precio;
           const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
           if (e.costo > 0) {
             if (e.tipo === 'refaccion') {
-              if(e.aprobado) reporte.sobrescrito_refaccion += operacion;
-              e['total'] = operacion * margenOcupado
+              if(e.aprobado) reporteGeneral.sobrescrito_refaccion += operacion;
+              e.total = operacion * margenOcupado
             } else if (e.tipo === "MO" || e.tipo ==='mo') {
-                if(e.aprobado) reporte.sobrescrito_mo += operacion;
-              e['total'] = operacion
+                if(e.aprobado) reporteGeneral.sobrescrito_mo += operacion;
+              e.total = operacion
             }else {
-            if(e.aprobado) reporte.sobrescrito_paquetes += operacion;
-              const info = this.reportePaquete(e.elementos,margenOcupado)
-              e['elementos'] = info.elementos
-              e['reporte_interno'] = info
-              e['precio'] = info.total
-              e['total'] = operacion
+                const  {elementos, reporte} = this.reportePaquete(e.elementos,margenOcupado);
+                e.elementos = elementos
+                e.reporte = reporte
+                e.precio = reporte.total
+                e.total = operacion
+                // if(e.aprobado) e.costo += operacion;
+                if(e.aprobado) {
+                    reporteGeneral.sobrescrito_paquetes += operacion
+                }
             }
           }else{
             if (e.tipo === 'refaccion') {
-              if(e.aprobado) reporte.refacciones_a += operacion;
-              e['total'] = operacion * margenOcupado
+              if(e.aprobado) reporteGeneral.refacciones_a += operacion;
+              e.total = operacion * margenOcupado
             } else if (e.tipo === 'MO' || e.tipo ==='mo') {
-              if(e.aprobado) reporte.mo += operacion;
-              e['total'] = operacion
+              if(e.aprobado) reporteGeneral.mo += operacion;
+              e.total = operacion
             }else {
-                const info = this.reportePaquete(e.elementos,margenOcupado)
-                e['elementos'] = info.elementos
-                e['reporte_interno'] = info;
-                e['precio'] = info.total;
-                e['total'] = info.total
-                if(e.aprobado) reporte.mo += info.mo;
-                if(e.aprobado) reporte.refacciones_a += info.refacciones;
-                if(e.aprobado) reporte.sobrescrito_mo += info.sobrescrito_mo;
-                if(e.aprobado) reporte.sobrescrito_refaccion += info.sobrescrito_refaccion;
+                const {elementos, reporte} = this.reportePaquete(e.elementos,margenOcupado)
+                e.elementos = elementos
+                e.reporte = reporte;
+                e.precio = reporte.total;
+                e.total = reporte.total
+                if(e.aprobado) {
+                    reporteGeneral.mo += reporte.mo * e.cantidad;
+                    reporteGeneral.refacciones_a += reporte.refacciones * e.cantidad;
+                    reporteGeneral.sobrescrito_mo += reporte.sobrescrito_mo * e.cantidad;
+                    reporteGeneral.sobrescrito_refaccion += reporte.sobrescrito_refaccion * e.cantidad;
+                } 
               // console.log('costo normal',info);
             }
           }
         })
         
-        reporte.refacciones_v = (reporte.refacciones_a * margenOcupado)
+        reporteGeneral.refacciones_v = (reporteGeneral.refacciones_a * margenOcupado)
     
-        const suma = reporte.mo + reporte.refacciones_v + reporte.sobrescrito_mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_refaccion
-        reporte.sobrescrito = reporte.sobrescrito_mo + reporte.sobrescrito_paquetes + reporte.sobrescrito_refaccion
-        reporte.subtotal = suma;
+        const suma = reporteGeneral.mo + reporteGeneral.refacciones_v + reporteGeneral.sobrescrito_mo + reporteGeneral.sobrescrito_paquetes + reporteGeneral.sobrescrito_refaccion
+        reporteGeneral.sobrescrito = reporteGeneral.sobrescrito_mo + reporteGeneral.sobrescrito_paquetes + reporteGeneral.sobrescrito_refaccion
+        reporteGeneral.subtotal = suma;
     
-        (iva) ? reporte.total = suma * 1.16 : reporte.total = suma;
+        (iva) ? reporteGeneral.total = suma * 1.16 : reporteGeneral.total = suma;
     
-        if (iva) reporte.iva = suma * .16 ;
+        if (iva) reporteGeneral.iva = suma * .16 ;
         
-        const refaccionesv = (reporte.refacciones_v >= 0) ? reporte.refacciones_v : 0
+        const refaccionesv = (reporteGeneral.refacciones_v >= 0) ? reporteGeneral.refacciones_v : 0
         
-        if (reporte.total >0 ) reporte.ub = (reporte.total - refaccionesv)*100/reporte.total 
+        if (reporteGeneral.total >0 ) reporteGeneral.ub = (reporteGeneral.total - refaccionesv)*100/reporteGeneral.total 
 
         
         const enCaso_meses = this.formasPAgo.find(f=>Number(f['id']) === Number(formaPago))
         // console.log(enCaso_meses);
         if (Number(enCaso_meses['id']) === 1) {
-          reporte.descuento = Number(descuento)
-          if(!reporte.descuento) reporte.descuento = 0
-          reporte.total -= reporte.descuento
+          reporteGeneral.descuento = Number(descuento)
+          if(!reporteGeneral.descuento) reporteGeneral.descuento = 0
+          reporteGeneral.total -= reporteGeneral.descuento
         }else{
-          reporte.descuento = 0
-          const operacion = reporte.total * (1 + (enCaso_meses['interes'] / 100))
-          reporte.meses = operacion;
+          reporteGeneral.descuento = 0
+          const operacion = reporteGeneral.total * (1 + (enCaso_meses['interes'] / 100))
+          reporteGeneral.meses = operacion;
         }        
 
-        return {ocupados, reporte}
+        return { reporte: reporteGeneral, ocupados}
     }
     
     reportePaquete(elementos:any,margen:number){
-        // const margen_get = 1 + (margen/100)
-        if(!elementos) elementos = []
-        const reporte_interno = { mo: 0, refacciones: 0, refacciones_v:0, sobrescrito_mo: 0, sobrescrito_refaccion: 0 ,ub:0};
-        elementos.forEach((e_interno, index) => {
-            e_interno['index'] = index
-          const pre_interno = e_interno.costo > 0 ? e_interno.costo : e_interno.precio;
-          const operacion_interno = e_interno.tipo === 'refaccion' ? e_interno.cantidad * pre_interno : e_interno.cantidad * pre_interno;
-          if (e_interno.costo > 0) {
-            (e_interno.tipo === 'refaccion') ? reporte_interno.sobrescrito_refaccion += operacion_interno : reporte_interno.sobrescrito_mo += operacion_interno;
-            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen : e_interno['total'] = operacion_interno
-        }else{
-            (e_interno.tipo === 'refaccion') ? reporte_interno.refacciones += operacion_interno : reporte_interno.mo += operacion_interno;
-            (e_interno.tipo === 'refaccion') ? e_interno['total'] = operacion_interno * margen : e_interno['total'] = operacion_interno
-            }
-        })
-        reporte_interno.refacciones_v = reporte_interno.refacciones * margen
-        const suma = reporte_interno.mo + (reporte_interno.refacciones_v) + reporte_interno.sobrescrito_mo + reporte_interno.sobrescrito_refaccion
-        // reporte_interno.ub = (suma - reporte_interno.refacciones)*100 / suma
-        reporte_interno.ub = 100 - ((reporte_interno.refacciones_v * 100) / suma )
+        if (!elementos) elementos = [];
 
-        return  {...reporte_interno, total: suma, margen, elementos}
+        const reporte_interno = {mo: 0,refacciones: 0,refacciones_v: 0,sobrescrito_mo: 0,sobrescrito_refaccion: 0,ub: 0,total: 0};
+        
+        elementos.forEach((e_interno, index) => {
+          e_interno.index = index;
+        
+          const pre_interno = e_interno.costo > 0 ? e_interno.costo : e_interno.precio;
+          const operacion_interno = e_interno.cantidad * pre_interno;
+        
+          if (e_interno.costo > 0) {
+            e_interno.tipo === 'refaccion'
+              ? (reporte_interno.sobrescrito_refaccion += operacion_interno)
+              : (reporte_interno.sobrescrito_mo += operacion_interno);
+        
+              e_interno.total = operacion_interno * (e_interno.tipo === 'refaccion' ? margen : 1);
+          } else {
+            e_interno.tipo === 'refaccion'
+              ? (reporte_interno.refacciones += operacion_interno)
+              : (reporte_interno.mo += operacion_interno);
+        
+            e_interno.total = operacion_interno * (e_interno.tipo === 'refaccion' ? margen : 1);
+          }
+        });
+        
+        reporte_interno.refacciones_v = reporte_interno.refacciones * margen;
+        reporte_interno.total =
+          reporte_interno.mo +
+          reporte_interno.refacciones_v +
+          reporte_interno.sobrescrito_mo +
+          reporte_interno.sobrescrito_refaccion;
+        reporte_interno.ub = 100 - (reporte_interno.refacciones_v * 100) / reporte_interno.total;
+        
+        return { reporte: { ...reporte_interno }, elementos };
+        // return null
+        
     }
     realizarOperaciones_real(hitoriales:any){
         const { historial_gastos, historial_pagos } = hitoriales
@@ -1773,92 +1362,110 @@ export class ServiciosPublicosService {
 
         return {...reporte_gastos, gastos: gastos,pagos:reporte_pagos.total,utilidad:reporte_utilidad.utilidad}
     }
-
-   
-
-            descargarImagenTemp(dataURL:any){
-                if (navigator.userAgent.indexOf('safari')>-1 && navigator.userAgent.indexOf('Chrome')===-1) {
-                  window.open(dataURL)
-                  return dataURL
-                }else{
-                  const blob = this.UrltoBlob(dataURL)
-                  const url = window.URL.createObjectURL(blob)
-                  const a = document.createElement('a')
-                    // a.href = url
-                    console.log(this.UrltoBlob(dataURL));
-                    console.log(dataURL);
-                    
-                    return blob
-                  // a.download,' = nombre
-                  // this.firma = blob
-                  // document.body.appendChild(a)
-                  // a.click()
-                  // window.URL.revokeObjectURL(url)
-                }
-              }
-              UrltoBlob(dataURL:any){    
-                const partes = dataURL.split(';base64,')
-                const contentType = partes[0].split(':')[1]
-                const raw = window.atob(partes[1])
-                const rawL = raw.length
-                const array = new Uint8Array(rawL)
-                for(let i=0; i<rawL;i++){
-                  array[i]= raw.charCodeAt(i)
-                }
-                return new Blob([array],{type: contentType})
-              }
+    descargarImagenTemp(dataURL:any){
+      if (navigator.userAgent.indexOf('safari')>-1 && navigator.userAgent.indexOf('Chrome')===-1) {
+        window.open(dataURL)
+        return dataURL
+      }else{
+        const blob = this.UrltoBlob(dataURL)
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+          // a.href = url
+          console.log(this.UrltoBlob(dataURL));
+          console.log(dataURL);
+          
+          return blob
+        // a.download,' = nombre
+        // this.firma = blob
+        // document.body.appendChild(a)
+        // a.click()
+        // window.URL.revokeObjectURL(url)
+      }
+    }
+    UrltoBlob(dataURL:any){    
+        const partes = dataURL.split(';base64,')
+        const contentType = partes[0].split(':')[1]
+        const raw = window.atob(partes[1])
+        const rawL = raw.length
+        const array = new Uint8Array(rawL)
+        for(let i=0; i<rawL;i++){
+            array[i]= raw.charCodeAt(i)
+        }
+        return new Blob([array],{type: contentType})
+    }
 
     dataCorreo(sucursal, cliente){
-        const answer = {correos:[]}
-        answer.correos.push(sucursal.correo)
-        if (cliente.correo) answer.correos.push(cliente.correo) 
-        if (cliente.correo_sec) answer.correos.push(cliente.correo_sec) 
-
-        return answer.correos
-    }
-    async generaNombreCotizacion(infoSucursal:string,rol:string){
-        let mes = ''; let sucursal= '', nuevoRol:string ='',secuencia=''; let ceros = '', cuantas:number = 0
-        let no_cotizacion:string = ''
-        // const timeReques = await this._publicos.getFechaHora()
-      
-        const date: Date = new Date()
-      
-        const anio = String(date.getFullYear())
-        let muestra = anio.slice(anio.length-2,anio.length)
-      
-        if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
-        await get(child(dbRef, `cotizacionesRealizadas`)).then((snapshot) => {
-          if (snapshot.exists()) {
-            let nuev:any[] = this.crearArreglo2(snapshot.val())
-            cuantas = nuev.length
-          }
-        }).catch((error) => {
-          // console.error(error);
-        });
-        const inicio = String(cuantas).length
-        const final = 5
-        for (let index = inicio; index < final ; index++) {
-          ceros = `${ceros}0`
+        const correos = [sucursal.correo];
+        if (cliente.correo) {
+          correos.push(cliente.correo);
         }
-        secuencia = `${ceros}${cuantas + 1}`
-        const nombreSucursal:string = infoSucursal      
-        sucursal = nombreSucursal.slice(0,2).toUpperCase() 
-        const rolString:string = rol      
-        nuevoRol = rolString.slice(0,2).toUpperCase() 
+        if (cliente.correo_sec) {
+          correos.push(cliente.correo_sec);
+        }
+        return correos;
+    }
+    // async generaNombreCotizacion(infoSucursal:string,rol:string){
+    //     let mes = ''; let sucursal= '', nuevoRol:string ='',secuencia=''; let ceros = '', cuantas:number = 0
+    //     let no_cotizacion:string = ''
+    //     // const timeReques = await this._publicos.getFechaHora()
+      
+    //     const date: Date = new Date()
+      
+    //     const anio = String(date.getFullYear())
+    //     let muestra = anio.slice(anio.length-2,anio.length)
+      
+    //     if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
+    //     await get(child(dbRef, `cotizacionesRealizadas`)).then((snapshot) => {
+    //       if (snapshot.exists()) {
+    //         let nuev:any[] = this.crearArreglo2(snapshot.val())
+    //         cuantas = nuev.length
+    //       }
+    //     }).catch((error) => {
+    //       // console.error(error);
+    //     });
+    //     const inicio = String(cuantas).length
+    //     const final = 5
+    //     for (let index = inicio; index < final ; index++) {
+    //       ceros = `${ceros}0`
+    //     }
+    //     secuencia = `${ceros}${cuantas + 1}`
+    //     const nombreSucursal:string = infoSucursal      
+    //     sucursal = nombreSucursal.slice(0,2).toUpperCase() 
+    //     const rolString:string = rol      
+    //     nuevoRol = rolString.slice(0,2).toUpperCase() 
     
-        no_cotizacion = `${sucursal}${mes}${muestra}${nuevoRol}${secuencia}`
+    //     no_cotizacion = `${sucursal}${mes}${muestra}${nuevoRol}${secuencia}`
         
-        return no_cotizacion
+    //     return no_cotizacion
+    //   }
+      async generaNombreCotizacion(infoSucursal:string,rol:string){
+        const date: Date = new Date()
+        const year = date.getFullYear().toString().slice(-2)
+        const month = (date.getMonth() + 1).toString().padStart(2, '0')
+        const nombreSucursal:string = infoSucursal.slice(0,2).toUpperCase()
+        const nuevoRol:string = rol.slice(0,2).toUpperCase()
+      
+        const cotizacionesSnapshot = await get(child(dbRef, `cotizacionesRealizadas`))
+        const cotizacionesArray = cotizacionesSnapshot.exists() ? this.crearArreglo2(cotizacionesSnapshot.val()) : []
+        const secuencia = (cotizacionesArray.length + 1).toString().padStart(5, '0')
+        
+        return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
       }
+      
 
-      obtenerNombresElementos(elementos:any[]){
-        const answer = {cadena: '', arr:[]}
-            elementos.forEach(e=>{
-                answer.arr.push(e['nombre'])
-            })
-        return answer.arr.join(', ')
+    //   obtenerNombresElementos(elementos:any[]){
+    //     const answer = {cadena: '', arr:[]}
+    //         elementos.forEach(e=>{
+    //             answer.arr.push(e['nombre'])
+    //         })
+    //     return answer.arr.join(', ')
+    //   }
+
+    obtenerNombresElementos(elementos) {
+        const nombres = elementos.map(e => e.nombre);
+        return nombres.join(', ');
       }
-
+      
       mensajeOK(mensaje: string, time){
         Swal.fire({
             position: 'center',
@@ -1879,31 +1486,6 @@ export class ServiciosPublicosService {
       }
       calcularDias(fechaInicio: string, fechaFin: string): number {
 
-        // const aqui_time = fechaInicio.split('/')
-        // const aqui_time2 = fechaFin.split('/')
-        // const fec_Recibido = new Date(
-        //     Number(aqui_time[2]),
-        //     Number(aqui_time[1])- 1,
-        //     Number(aqui_time[0])
-        // )
-        // const fec_fin = new Date(
-        //     Number(aqui_time2[2]),
-        //     Number(aqui_time2[1])- 1,
-        //     Number(aqui_time2[0])
-        // )
-             
-        // const fecha1 = new Date(fec_Recibido);
-        // const fecha2 = new Date(fec_fin);
-    
-        // fecha1.setHours(0,0,0,0)
-        // fecha2.setHours(0,0,0,0)
-        // // Calculamos la diferencia en milisegundos entre las dos fechas
-        // const diff = fecha2.getTime() - fecha1.getTime();
-        // // Convertimos la diferencia a días y la redondeamos
-        // const diasTranscurridos = Math.round(diff / (1000 * 60 * 60 * 24));
-        
-    
-        // return diasTranscurridos;
         const date1 = new Date(fechaInicio.split('/').reverse().join('-'));
         const date2 = new Date(fechaFin.split('/').reverse().join('-'));
         

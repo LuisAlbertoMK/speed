@@ -194,10 +194,10 @@ export class ModificaRecepcionComponent implements OnInit {
   realizarInfo(servicios:any[]){
     // console.log(servicios);
     servicios.map(s=>{
-      const info = this._publicos.reportePaquete(s.elementos,this.dataRecepcion['margen'])
-      s['reporte_interno'] = info;
-      s['precio'] = info.total;
-      s['total'] = info.total;
+      const {elementos, reporte} = this._publicos.reportePaquete(s.elementos,this.dataRecepcion['margen'])
+      s['reporte_interno'] = reporte;
+      s['precio'] = reporte.total;
+      s['total'] = reporte.total;
     })
     this.dataSource.data = servicios
     this.newPagination('servicios')

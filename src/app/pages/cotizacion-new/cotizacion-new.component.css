@@ -98,3 +98,7 @@ tr.anima{
   /* background-color: blue !important; */
   /* text-align:  right !important; */
 }
+
+input.smallInput {
+  max-width: 60px;
+}
