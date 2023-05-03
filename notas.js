@@ -41,7 +41,20 @@ let problemas_02052023 =
     {problema:'monto total de ventas, aparaezacan los totales de ordenes', status:'PENDIENTE'},
     {problema:'gastos totales de operacion', status:'PENDIENTE'},
     {problema:'monto total de iva', status:'PENDIENTE'},
-    {problema:'(desgloce isNoSubstitutionTemplateLiteral, iva, total)', status:'PENDIENTE'},
+    {problema:'(desgloce subtotal, iva, total)', status:'PENDIENTE'},
     {problema:'CUANTO QUEDa LIBRE DEdespues de refacciones sobre el subtotal de ventas', status:'PENDIENTE'},
     {problema:'cuanto queda libre despues de monto de operaciones y refacciones sobre el subtotal de ventas solo entregadas', status:'PENDIENTE'},
 ]
+
+
+// monto total de iva : de que se obtiene esta parte?
+// cuanto queda libre despues de refacciones sobre el total de ventas : aqui se requiere sobre los pagos y gastos o los servicios realizados en cada o.S?
+
+
+
+//  primero filtrar las ordenes con status entregado
+//  segundo filtrar las ordenes y filtrar gastos de operacion dentro de las fechas
+//  tercero obtener el historial de pagos y gastos
+//  cuarto realizar las operaciones para obtener el iva,total_g_operacione, subtotal, total, libre
+
+//solo falta filtrar gastos de operacion por sucursalng

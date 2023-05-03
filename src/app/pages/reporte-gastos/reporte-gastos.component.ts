@@ -24,11 +24,11 @@ const dbRef = ref(getDatabase());
 export class ReporteGastosComponent implements OnInit {
   miniColumnas:number = 100
   metodospago = [
-    {valor:1, show:'Efectivo', ocupa:'Efectivo'},
-    {valor:2, show:'Cheque', ocupa:'Cheque'},
-    {valor:3, show:'Tarjeta', ocupa:'Tarjeta'},
-    {valor:4, show:'Transferencia', ocupa:'Transferencia'},
-    {valor:4, show:'Credito', ocupa:'credito'},
+    {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
+    {valor:'2', show:'Cheque', ocupa:'Cheque'},
+    {valor:'3', show:'Tarjeta', ocupa:'Tarjeta'},
+    {valor:'4', show:'Transferencia', ocupa:'Transferencia'},
+    {valor:'5', show:'Credito', ocupa:'credito'},
     // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
     // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
     {valor:6, show:'Terminal BBVA', ocupa:'BBVA'},
@@ -108,12 +108,24 @@ export class ReporteGastosComponent implements OnInit {
     {valor:'utilidad',show:'Utilidad'},
    ]
    usuario:string
+
+   reporteShowGE = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0}
+  camposreporteShowGE = [
+    {valor:'operacion', show:'Gastos de operacion' },
+    {valor:'gastosmoRefacciones', show:'Gastos de ordenes' },
+    {valor:'subtotal', show:'Subtotal' },
+    {valor:'iva', show:'IVA' },
+    {valor:'total', show:'Total' },
+    {valor:'libreSinIVA', show:'libre antes de IVA' },
+    {valor:'libreIva', show:'libre con IVA' },
+  ]
+   recepciones_arr = []
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.rol()
-    // this.listaSucursales()
-   
+    this.listaSucursales()
+     
     
     // this.listaGastosDiarios()
     // this.lista_gastosOperacion()
@@ -133,9 +145,9 @@ export class ReporteGastosComponent implements OnInit {
       if (this.SUCURSAL !=='Todas') {
         // let nu = []
         // this.columnasGastosDia[0] = null
-        this.SearchSucursal = {id: this.SUCURSAL,sucu: 'esta'}; 
+        this.SearchSucursal = {id: this.SUCURSAL,sucu: 'esta'};
         this.columnasGastosDia.shift()
-      }  
+      }
     }
   }
   listaSucursales(){
@@ -210,31 +222,31 @@ export class ReporteGastosComponent implements OnInit {
       let registrosFInales = []
       if (snapshot.exists()) {
         const data = snapshot.val()
+        // console.log(data);
+        // console.log(this._publicos.crearArreglo2(snapshot.val()));
+        
         const claves = Object.keys(snapshot.val())
-        claves.forEach(c => {
-          // console.log(data[c]);
-          const clavesDias = Object.keys(data[c])
-          // console.log(clavesDias);
+        claves.forEach(clave => {
+          // console.log(data[clave]);
+          const clavesDias = Object.keys(data[clave])
           // clavesDias
-          clavesDias.forEach((ck1)=>{
-            const arreglo = this._publicos.crearArreglo2(data[c][ck1])
+          clavesDias.forEach((claveDia)=>{
+            const arreglo = this._publicos.crearArreglo2(data[clave][claveDia])
             // console.log(arreglo);
             arreglo.forEach(a=>{
-              const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora'])
-              a['fechaCompara'] = fechaCompara_
-              const infoGasto = {...a,claveDia:ck1}
+              a.fechaCompara= this._publicos.construyeFechaString(a['fecha'],a['hora'])
               // os_historial.push(infoGasto)
-              registrosFInales.push(infoGasto)
+              registrosFInales.push(Object({...a,claveDia:claveDia}))
             })
           })
         });
           this.arr_GastosDiarios = registrosFInales
           // this.realizaOtras_op()
-          this.obternerfechas()
+          
       }else{
-        this.arr_GastosDiarios = registrosFInales
+        // this.arr_GastosDiarios = registrosFInales
         // this.realizaOtras_op()
-        // this.obternerfechas()
+        
       }
       }
       // ,{
@@ -245,55 +257,59 @@ export class ReporteGastosComponent implements OnInit {
     const starCountRef1 = ref(db, `HistorialGastosOperacion`)
     await onValue(starCountRef1, (snapshot) => {
         if (snapshot.exists()) {
-          this.arr_gastosOperacion = this._publicos.crearArreglo2(snapshot.val())
-          this.arr_gastosOperacion.map(a=>{
-            //obtener la fecha en formato string para compar correctamente fechas
-            const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
-            a['fechaCompara'] = fechaCompara_
-          })
-          // console.log(this.arr_gastosOperacion);
-          this.obternerfechas()
+
+          const gastosoperacion = this._publicos.crearArreglo2(snapshot.val())
+          
+          gastosoperacion.forEach(a => {
+             //obtener la fecha en formato string para compar correctamente fechas
+            a.fechaCompara = this._publicos.construyeFechaString(a.fecha, a.hora_registro);
+          });
+          this.arr_gastosOperacion = (this.SUCURSAL !== 'Todas') ? 
+            gastosoperacion.filter(f => f.sucursal === this.SUCURSAL) :
+            gastosoperacion;
+
+          this.revisaOpciones()
         }else{
           this.arr_gastosOperacion = []
-          // this.obternerfechas()
+          
         }
       })
+      
       const starCountRef2 = ref(db, `recepciones`)
       await onValue(starCountRef2, (snapshot) => {
         if (snapshot.exists()) {
-          let arreglo = this._publicos.crearArreglo2(snapshot.val())
+          const arreglo = this._publicos.crearArreglo2(snapshot.val());
           // console.log(arreglo);
-          let os_historial = []
-          arreglo.forEach(os=>{
-            if (os['HistorialGastos']) {
-              let gastos_historial = this._publicos.crearArreglo2(os['HistorialGastos'])
-              gastos_historial.forEach((a)=>{
-                const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
-                a['fechaCompara'] = fechaCompara_
-                const infoGasto = {...a,historial:'gasto',claveID:os['id'],no_os:os['no_os']}
-                os_historial.push(infoGasto)
-              })
-            }
-            if (os['HistorialPagos']) {
-              let pago_historial = this._publicos.crearArreglo2(os['HistorialPagos'])
-              pago_historial.forEach((a)=>{
-                const fechaCompara_ = this._publicos.construyeFechaString(a['fecha'],a['hora_registro'])
-                a['fechaCompara'] = fechaCompara_
-                const infoGasto = {...a,historial:'pago',claveID:os['id'],no_os:os['no_os']}
-                os_historial.push(infoGasto)
-              })
-            }
-          })
-          // console.log(os_historial);
+          
+          let os_historial = [];
+          arreglo.forEach(os => {
+            const historialGastos = os.HistorialGastos ? this._publicos.crearArreglo2(os.HistorialGastos) : [];
+            const historialPagos = os.HistorialPagos ? this._publicos.crearArreglo2(os.HistorialPagos) : [];
+            
+            historialGastos.map(g=>{g.historial = 'HistorialGastos'; g.iva = os.iva })
+            historialPagos.map(g=>{g.iva = os.iva })
+
+            historialGastos. concat(historialPagos).forEach((a) => {
+              a.fechaCompara = this._publicos.construyeFechaString(a['fecha'], a['hora_registro']);
+              const tipoHistorial = a.historial === 'HistorialGastos' ? 'gasto' : 'pago';
+              const infoGasto = {...a, historial: tipoHistorial, claveID: os['id'], no_os: os['no_os']};
+              os_historial.push(infoGasto);
+            });
+            os.historialGastos = historialGastos
+          });
+
+          this.recepciones_arr = arreglo
+         
           this.arr_historialPG_ordenes = os_historial
           this.obternerfechas()
+          this.revisaOpciones()
+          
         }else{
           this.arr_historialPG_ordenes = []
-          // this.obternerfechas()     
+               
         }
       })
-    
-	
+
   }
   //listar los gastos de operacion
 
@@ -312,12 +328,12 @@ export class ReporteGastosComponent implements OnInit {
       }
     }
   }
+  
   obternerfechas(){
+    
+    
+      
     let rangoFechas = {inicio: new Date(), final: new Date()}
-    
-    
-    // console.log(start);
-    
     
     let numero: number =0, tipo ='resta',donde='dia'
     let fechas = this._publicos.getMesFecha(new Date(),tipo,donde,numero)
@@ -372,41 +388,133 @@ export class ReporteGastosComponent implements OnInit {
     this.range_busqueda.controls['end'].setValue(new Date(rangoFechas.final))
     this.realizaOp()
     this.realizaOtras_op()
+    
+    
+
+  }
+  revisaOpciones(){
+    this.reporteShowGE =  nuevaFUnc(this.recepciones_arr,this.arr_gastosOperacion, this.fechas_get)
+    
+    function nuevaFUnc(recepciones, gastos_operacion,rangoFechas){
+
+      const filtrarEntregados:any[] = recepciones.filter(r=>r.status === 'entregado')
+
+      const reporteEND = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0}
+
+      const gastosFechas = gastos_operacion.filter(a => a.fechaCompara >= rangoFechas.inicio && a.fechaCompara <= rangoFechas.final)
+
+
+      gastosFechas.forEach(g => {
+        if(g.status) reporteEND.operacion += g.monto
+      })
+
+      const historialGastos = filtrarEntregados.filter(a => a.fechaCompara >= rangoFechas.inicio && a.fechaCompara <= rangoFechas.final)
+       
+      historialGastos.forEach(os=>{
+          const gastos = os.historialGastos || []
+          gastos.forEach(g => {
+            if(g.status) reporteEND.gastosmoRefacciones += g.monto
+          });
+        const {reporte} = os
+        const {subtotal, total, iva} = reporte
+        reporteEND.subtotal  += subtotal
+        reporteEND.total     += total
+        if(os.iva){
+          reporteEND.iva     += iva
+        }
+      })
+
+
+      reporteEND.libreSinIVA = reporteEND.subtotal - reporteEND.gastosmoRefacciones
+      reporteEND.libreIva = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+
+      return reporteEND
+      
+    }
   }
   realizaOp(){
-    const info = this.arr_gastosOperacion.concat( this.arr_historialPG_ordenes )
-   
-    //filtrar por las fechas
-    let resultados = []
-    
-    info.forEach(a=>{
-      if (a['fechaCompara'] >= this.fechas_get.inicio && a['fechaCompara' ] <= this.fechas_get.final) resultados.push(a)
-    })
-    //filtrar por sucursal
   
-    // console.log(this.SearchSucursal);
-    let sucu
-    if (this.SearchSucursal['id']) sucu= this.SearchSucursal.id
-    let filtro_sucursal = []
-    if (sucu) {
-      filtro_sucursal = resultados.filter(r=>r['sucursal'] == sucu)
-    }else{
-      filtro_sucursal = resultados
-    }
+    const sucu = this.SearchSucursal.id || '';
+    const resultados = this.arr_gastosOperacion.concat( this.arr_historialPG_ordenes )
+      .map(a => {
+        const { show } = this.metodospago.find(m => m.valor === String(a.metodo))
+        a.metodoShow = show
+        return a
+      })
+      .filter(a => a.fechaCompara >= this.fechas_get.inicio && a.fechaCompara <= this.fechas_get.final)
+  
+    const filtro_sucursal = sucu ? resultados.filter(r => r.sucursal === sucu) : resultados
+
     
     
     const reporte = {_pagos: 0, _gastos:0, _operacion:0,utilidad:0,_depositos:0}
     //realizar las operaciones de cada uno de los pagos, gastos_orden y gastos_operacion
     filtro_sucursal.forEach(i=>{
-      if (i['tipo'] === 'operacion') reporte._operacion += i['monto']
-      if (i['historial'] === 'gasto') reporte._gastos += i['monto']
-      if (i['historial'] === 'pago') reporte._pagos += i['monto']
-      if (i['tipo'] === 'deposito') reporte._depositos += i['monto']
-      const {sucursal} = this.sucursales.find(s=>s['id'] === i.sucursal)
-      i['sucursalShow'] = sucursal
+
+      let { tipo, historial, monto, sucursal } = i;
+
+      const { sucursal: sucursalShow } = this.sucursales.find(s => s['id'] === sucursal);
+      i.sucursalShow = sucursalShow;
+
+      switch (tipo) {
+        case 'operacion':
+          reporte._operacion += monto;
+          break;
+        case 'deposito':
+          reporte._depositos += monto;
+          break;
+        default:
+          break;
+      }
+
+      switch (historial) {
+        case 'gasto':
+          reporte._gastos += monto;
+          break;
+        case 'pago':
+          reporte._pagos += monto;
+          break;
+        default:
+          break;
+      }
+      
     })
-    //asiganar las fechas al control de calendario
-   
+    // this.reporteShowGE = nuevaFunction(filtro_sucursal)
+    function nuevaFunction(data){
+      // console.log(this.data);
+      // console.log(this.arr_gastosOperacion);
+      const reporte = {iva:0, refacciones:0, total:0, subtotal:0, otroTotal :0, operacion:0, libre:0}
+      const gastos = data.filter(f=>f.historial === 'gasto')
+      const pago = data.filter(f=>f.historial === 'pago')
+      
+      const refacciones = gastos.filter(f=>f.gasto_tipo === 'refaccion')
+      const operacion = data.filter(f=>f.tipo === 'operacion')
+      operacion.forEach(op => {
+        if(op.status) reporte.operacion += op.monto
+      });
+      pago.forEach(p=>{
+        if(p.status ) {
+          reporte.total += p.monto
+        }
+        if(p.status && p.iva){
+          reporte.iva += ( p.monto - (p.monto / 1.16)) 
+          reporte.subtotal += p.monto / 1.16 
+        }
+      })
+      // console.log(data);
+      // console.log(refacciones);
+      // console.log(pago);
+      
+      refacciones.forEach(r=>{
+        if(r.status ) reporte.refacciones += r.monto
+        
+      })
+      reporte.otroTotal = reporte.subtotal * 1.16
+      reporte.libre = reporte.total - reporte.refacciones -reporte.operacion
+      // console.log(reporte);
+      // this.reporteShowGE.iva = reporte.iva
+      return reporte
+    }
     //asignacion de valores para reporte
     // console.log((reporte._pagos + reporte._depositos));
     
@@ -417,6 +525,8 @@ export class ReporteGastosComponent implements OnInit {
     this.reporte = reporte
   
     //mandar informacion a la tabla!
+    // console.log(filtro_sucursal);
+    
     this.dataSourceResporteGastos.data = filtro_sucursal
     this.newPagination('data')
   }
@@ -502,6 +612,8 @@ export class ReporteGastosComponent implements OnInit {
         
       }
     }
+    // console.log(filtro_sucursal);
+    
     this.dataSourceGastosDia.data = filtro_sucursal
     this.newPagination('dias')
     
@@ -513,14 +625,17 @@ export class ReporteGastosComponent implements OnInit {
       const updates = {}
       // HistorialGastos
       // HistorialPagos
-      if (data['tipo'] === 'deposito') {
-        updates[`gastosDiarios/${data['sucursal']}/${data['claveDia']}/${data['id']}/status`] = false;
-      }else if (data['historial'] === 'gasto') {
-        updates[`recepciones/${data['claveID']}/HistorialGastos/${data['id']}/status`] = false;
-      }else if (data['historial'] === 'pago') {
-        updates[`recepciones/${data['claveID']}/HistorialPagos/${data['id']}/status`] = false;
+      const { tipo, sucursal, claveDia, id, historial, claveID } = data;
+      if (tipo === 'deposito') {
+        updates[`gastosDiarios/${sucursal}/${claveDia}/${id}/status`] = false;
+      }else if (historial === 'gasto') {
+        updates[`recepciones/${claveID}/HistorialGastos/${id}/status`] = false;
+      }else if (historial === 'pago') {
+        updates[`recepciones/${claveID}/HistorialPagos/${id}/status`] = false;
       }
-      this._publicos.mensaje_pregunta('Eliminar registro').then(({respuesta})=>{
+      this._publicos
+      .mensaje_pregunta('Eliminar registro')
+      .then(({respuesta})=>{
         if (respuesta) {
           update(ref(db), updates).then(()=>{
             this._publicos.mensajeSwal('Acción correcta')
@@ -532,18 +647,18 @@ export class ReporteGastosComponent implements OnInit {
   }
   ///paginacion de los resultados
   newPagination(data:string){
-    //despues de la asiganacion de la data esperar .5 segundos para realizar paginacion
     setTimeout(() => {
-      if (data==='data') {
-        this.dataSourceResporteGastos.paginator = this.ResporteGastospaginator;
-        this.dataSourceResporteGastos.sort = this.ResporteGastossort
+      configurarPaginadorYOrdenador(this.dataSourceResporteGastos, this.ResporteGastospaginator, this.ResporteGastossort);
+      configurarPaginadorYOrdenador(this.dataSourceGastosDia, this.paginator, this.sort);
+    }, 500);
+    function configurarPaginadorYOrdenador(dataSource, paginador, ordenador) {
+      if (dataSource && paginador && ordenador) {
+        dataSource.paginator = paginador;
+        dataSource.sort = ordenador;
       }
-      if (data==='dias') {
-        this.dataSourceGastosDia.paginator = this.paginator;
-        this.dataSourceGastosDia.sort = this.sort
-      }
-    }, 500)
+    }
   }
+
   cambia(cual:string){
     // muestraForms
     // nos quedamos en que quwremos ocultar los forlularios segun el valor del mismo

@@ -1271,9 +1271,9 @@ export class ServiciosPublicosService {
         })
         
         reporteGeneral.refacciones_v = (reporteGeneral.refacciones_a * margenOcupado)
-    
-        const suma = reporteGeneral.mo + reporteGeneral.refacciones_v + reporteGeneral.sobrescrito_mo + reporteGeneral.sobrescrito_paquetes + reporteGeneral.sobrescrito_refaccion
         reporteGeneral.sobrescrito = reporteGeneral.sobrescrito_mo + reporteGeneral.sobrescrito_paquetes + reporteGeneral.sobrescrito_refaccion
+        
+        const suma = reporteGeneral.mo + reporteGeneral.refacciones_v + reporteGeneral.sobrescrito
         reporteGeneral.subtotal = suma;
     
         (iva) ? reporteGeneral.total = suma * 1.16 : reporteGeneral.total = suma;
