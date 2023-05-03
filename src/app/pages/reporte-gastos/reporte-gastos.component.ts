@@ -297,18 +297,18 @@ export class ReporteGastosComponent implements OnInit {
             });
 
             if(os.status === 'entregado'){
-              console.log(os.id);
-              console.log(os.no_os);
+              // console.log(os.id);
+              // console.log(os.no_os);
               
-              console.log(os.fecha_entregado);
-              console.log(os.hora_entregado);
+              // console.log(os.fecha_entregado);
+              // console.log(os.hora_entregado);
               if(!os.fecha_entregado && ! os.hora_entregado) {
                 os.fecha_entregado = this._publicos.getFechaHora().fecha
                 os.hora_entregado = '23:59:59:00'
               }
-              os.fechaComparaInicio = this._publicos.construyeFechaString(os.fecha_entregado, os.hora_entregado);
-              os.fechaComparaFinal = this._publicos.construyeFechaString(os.fecha_entregado, os.hora_entregado);
-              console.log(os);
+              os.fechaCompara = this._publicos.construyeFechaString(os.fecha_entregado, os.hora_entregado);
+              // os.fechaComparaFinal = this._publicos.construyeFechaString(os.fecha_entregado, os.hora_entregado);
+              // console.log(os);
               
             }
             
@@ -429,8 +429,8 @@ export class ReporteGastosComponent implements OnInit {
       
       
 
-      const historialGastos = filtrarEntregados.filter(a => a.fechaComparaInicio >= rangoFechas.inicio && a.fechaComparaFinal <= rangoFechas.final)
-      console.log(historialGastos);
+      const historialGastos = filtrarEntregados.filter(a => a.fechaCompara >= rangoFechas.inicio && a.fechaCompara <= rangoFechas.final)
+      // console.log(historialGastos);
       
       historialGastos.forEach(os=>{
           const gastos = os.historialGastosF || []
