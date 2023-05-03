@@ -250,16 +250,26 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     // const  aprobado = (status === 'espera' || status === 'cancelado') ? false:  true
     const servicios = this.recepciones_arr[padreIndex].servicios;
-
+    const {fecha, hora} = this._publicos.getFechaHora()
+    const updates = {};
+        
     servicios.forEach(servicio => {
       if(servicio.aprobado && (status === 'terminado' || status === 'entregado')) {
         servicio.status = 'terminar';
         servicio.showStatus = 'Terminado';
+        updates[`recepciones/${padreID}/fecha_entregado`] = fecha;
+        updates[`recepciones/${padreID}/hora_entregado`] = hora;
       } else {
         servicio.status = 'Aprobado';
         servicio.showStatus = 'En espera';
+        updates[`recepciones/${padreID}/fecha_entregado`] = null;
+        updates[`recepciones/${padreID}/hora_entregado`] = null;
+        updates[`recepciones/${padreID}/fecha_recibido`] = fecha;
+        updates[`recepciones/${padreID}/hora_recibido`] = hora;
       }
     });
+
+    update(ref(db), updates);
     
     this.recepciones_arr[padreIndex].servicios = servicios;
     this.recepciones_arr[padreIndex].status = status;

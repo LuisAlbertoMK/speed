@@ -46,6 +46,14 @@ let problemas_02052023 =
     {problema:'cuanto queda libre despues de monto de operaciones y refacciones sobre el subtotal de ventas solo entregadas', status:'PENDIENTE'},
 ]
 
+let problemas_03052023 = 
+[
+    {problema:'Determinar el rango de fechas por el cual se buscara', status:'PENDIENTE'},   
+]
+
+// git add .
+// git commit -m "Administracion change problemas_02052023"
+// git push -u origin main
 
 // monto total de iva : de que se obtiene esta parte?
 // cuanto queda libre despues de refacciones sobre el total de ventas : aqui se requiere sobre los pagos y gastos o los servicios realizados en cada o.S?

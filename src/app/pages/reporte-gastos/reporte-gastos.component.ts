@@ -268,7 +268,7 @@ export class ReporteGastosComponent implements OnInit {
             gastosoperacion.filter(f => f.sucursal === this.SUCURSAL) :
             gastosoperacion;
 
-          this.revisaOpciones()
+          // this.revisaOpciones()
         }else{
           this.arr_gastosOperacion = []
           
@@ -295,14 +295,32 @@ export class ReporteGastosComponent implements OnInit {
               const infoGasto = {...a, historial: tipoHistorial, claveID: os['id'], no_os: os['no_os']};
               os_historial.push(infoGasto);
             });
-            os.historialGastos = historialGastos
-          });
 
+            if(os.status === 'entregado'){
+              console.log(os.id);
+              console.log(os.no_os);
+              
+              console.log(os.fecha_entregado);
+              console.log(os.hora_entregado);
+              if(!os.fecha_entregado && ! os.hora_entregado) {
+                os.fecha_entregado = this._publicos.getFechaHora().fecha
+                os.hora_entregado = '23:59:59:00'
+              }
+              os.fechaComparaInicio = this._publicos.construyeFechaString(os.fecha_entregado, os.hora_entregado);
+              os.fechaComparaFinal = this._publicos.construyeFechaString(os.fecha_entregado, os.hora_entregado);
+              console.log(os);
+              
+            }
+            
+            os.historialGastosF = historialGastos
+            
+          });
+          
           this.recepciones_arr = arreglo
          
           this.arr_historialPG_ordenes = os_historial
           this.obternerfechas()
-          this.revisaOpciones()
+          // this.revisaOpciones()
           
         }else{
           this.arr_historialPG_ordenes = []
@@ -388,30 +406,34 @@ export class ReporteGastosComponent implements OnInit {
     this.range_busqueda.controls['end'].setValue(new Date(rangoFechas.final))
     this.realizaOp()
     this.realizaOtras_op()
-    
-    
-
-  }
-  revisaOpciones(){
+    // this.revisaOpciones()
+    // console.log(this.fechas_get);
+    // console.log(this.recepciones_arr);
+    // console.log(this.arr_gastosOperacion);
     this.reporteShowGE =  nuevaFUnc(this.recepciones_arr,this.arr_gastosOperacion, this.fechas_get)
+    
     
     function nuevaFUnc(recepciones, gastos_operacion,rangoFechas){
 
-      const filtrarEntregados:any[] = recepciones.filter(r=>r.status === 'entregado')
+      const filtrarEntregados = recepciones.filter(r=>r.status === 'entregado')
 
       const reporteEND = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0}
 
       const gastosFechas = gastos_operacion.filter(a => a.fechaCompara >= rangoFechas.inicio && a.fechaCompara <= rangoFechas.final)
-
+     
+      
 
       gastosFechas.forEach(g => {
         if(g.status) reporteEND.operacion += g.monto
       })
+      
+      
 
-      const historialGastos = filtrarEntregados.filter(a => a.fechaCompara >= rangoFechas.inicio && a.fechaCompara <= rangoFechas.final)
-       
+      const historialGastos = filtrarEntregados.filter(a => a.fechaComparaInicio >= rangoFechas.inicio && a.fechaComparaFinal <= rangoFechas.final)
+      console.log(historialGastos);
+      
       historialGastos.forEach(os=>{
-          const gastos = os.historialGastos || []
+          const gastos = os.historialGastosF || []
           gastos.forEach(g => {
             if(g.status) reporteEND.gastosmoRefacciones += g.monto
           });
@@ -431,6 +453,10 @@ export class ReporteGastosComponent implements OnInit {
       return reporteEND
       
     }
+
+  }
+  revisaOpciones(){
+    
   }
   realizaOp(){
   
@@ -479,44 +505,6 @@ export class ReporteGastosComponent implements OnInit {
       }
       
     })
-    // this.reporteShowGE = nuevaFunction(filtro_sucursal)
-    function nuevaFunction(data){
-      // console.log(this.data);
-      // console.log(this.arr_gastosOperacion);
-      const reporte = {iva:0, refacciones:0, total:0, subtotal:0, otroTotal :0, operacion:0, libre:0}
-      const gastos = data.filter(f=>f.historial === 'gasto')
-      const pago = data.filter(f=>f.historial === 'pago')
-      
-      const refacciones = gastos.filter(f=>f.gasto_tipo === 'refaccion')
-      const operacion = data.filter(f=>f.tipo === 'operacion')
-      operacion.forEach(op => {
-        if(op.status) reporte.operacion += op.monto
-      });
-      pago.forEach(p=>{
-        if(p.status ) {
-          reporte.total += p.monto
-        }
-        if(p.status && p.iva){
-          reporte.iva += ( p.monto - (p.monto / 1.16)) 
-          reporte.subtotal += p.monto / 1.16 
-        }
-      })
-      // console.log(data);
-      // console.log(refacciones);
-      // console.log(pago);
-      
-      refacciones.forEach(r=>{
-        if(r.status ) reporte.refacciones += r.monto
-        
-      })
-      reporte.otroTotal = reporte.subtotal * 1.16
-      reporte.libre = reporte.total - reporte.refacciones -reporte.operacion
-      // console.log(reporte);
-      // this.reporteShowGE.iva = reporte.iva
-      return reporte
-    }
-    //asignacion de valores para reporte
-    // console.log((reporte._pagos + reporte._depositos));
     
     reporte.utilidad = (reporte._pagos + reporte._depositos) -  (reporte._gastos + reporte._operacion)
     
