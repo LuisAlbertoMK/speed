@@ -112,7 +112,7 @@ export class ReporteGastosComponent implements OnInit {
 
   ngOnInit(): void {
     this.rol()
-    this.listaSucursales()
+    // this.listaSucursales()
    
     
     // this.listaGastosDiarios()

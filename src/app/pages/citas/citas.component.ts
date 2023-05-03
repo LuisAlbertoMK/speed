@@ -11,7 +11,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import 'moment/locale/es';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi, Calendar, FullCalendarComponent } from '@fullcalendar/angular';
 import { INITIAL_EVENTS, createEventId } from './event-utils'
-import esLocale from '@fullcalendar/core/locales/es';
+// import esLocale from '@fullcalendar/core/locales/es';
 
 
 
@@ -215,7 +215,7 @@ export class CitasComponent implements OnInit {
     },
     plugins: [ bootstrapPlugin ],
     themeSystem: 'bootstrap',
-    locale: esLocale,
+    // locale: esLocale,
     initialView: 'dayGridMonth',
     // initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,

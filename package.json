@@ -57,6 +57,7 @@
     "pdfkit": "^0.13.0",
     "pdfmake": "^0.2.5",
     "rxjs": "~7.5.0",
+    "sheetjs": "^2.0.0",
     "signature_pad": "^4.0.5",
     "sweetalert2": "^11.4.8",
     "tslib": "^2.3.0",
