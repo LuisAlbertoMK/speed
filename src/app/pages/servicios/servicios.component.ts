@@ -126,7 +126,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     {valor: 'cancelado'  , show: 'Cancelado'}
   ]
   // 'espera','autorizado','recibido','terminado','entregado','cancelado'
-  indexEdicionRecepcion: number; indexEdicionRecepcionBoolean: boolean =  false 
+  indexEdicionRecepcion: number; indexEdicionRecepcionBoolean: boolean =  false
+  dataOcupadaOS:any = {}
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
     private _servicios:ServiciosService, private _usuarios:UsuariosService, private _security:EncriptadoService,
@@ -156,6 +157,10 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     }, {
         onlyOnce: true
     })
+  }
+  cargaIndexPadre(data){
+    console.log(data);
+    this.dataOcupadaOS = {...data}
   }
   acciones(){
     const starCountRef = ref(db, `recepciones`)
@@ -283,7 +288,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     if (!event) {
       this._publicos.swalToastError('intenta de nuevo')
     }else{
-      //realizamos al pregunta si o no
       this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
         if (respuesta) {
           const updates = {
