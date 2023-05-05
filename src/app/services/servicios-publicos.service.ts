@@ -1495,4 +1495,25 @@ export class ServiciosPublicosService {
         
         return diasTranscurridos;
       }
+      calcularDiasEntrega(fechaInicio: Date, fechaFin: Date): number {
+
+        const date1 = new Date(fechaInicio);
+        const date2 = new Date(fechaFin);
+        
+        // Calculamos la diferencia en días entre las dos fechas
+        const diffTime = date2.getTime() - date1.getTime()
+        const diasTranscurridos = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        return diasTranscurridos;
+      }
+      reseteaHoras(fecha:Date){
+        // const startOfDay = fecha => {
+            const copy = new Date(fecha);
+            copy.setHours(0, 0, 0, 0);
+            return copy;
+        //   };
+
+        // return startOfDay
+      }
+      
  }

@@ -142,7 +142,7 @@
               <div class="mb-3 row">
                 <label for="" class="col-sm-4 col-form-label">Color de pluma</label>
                 <div class="col-sm-8">
-                  <select class="form-select form-select-sm" (change)="colorPlumaClick(plumaColor.value)" aria-label=".form-select-sm example" #plumaColor>
+                  <select class="form-select form-select-sm" (change)="colorPluma = plumaColor.value" aria-label=".form-select-sm example" #plumaColor>
                     <option [value]="item.color" *ngFor="let item of coloresPluma">{{item.show}}</option>
                   </select>
                 </div>
@@ -286,7 +286,31 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Fecha de entrega</ng-template>
-    aqui opcion 1
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+        
+          <div class="input-group mb-3">
+            <input class="form-control" readonly [matDatepicker]="picker" (dateChange)="addEvent('change', $event)">
+            <mat-datepicker #picker></mat-datepicker>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary"  (click)="picker.open()" type="button" id="button-addon2"><i class="fa fa-calendar-alt"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <label class="text-success fs-4" [ngClass]="{'text-danger':infoConfirmar.diasEntrega > 3}">
+            Dias para entrega: <strong>
+              {{infoConfirmar.diasEntrega}}
+            </strong>
+          </label>
+        </div>
+
+      </div>
+    <!-- <button class="btn btn-sm btn-primary" (click)="picker.open()">
+      <i class="fa fa-calendar-alt"></i> Abrir calendario
+    </button>
+      <input class="form-control form-control-sm" readonly [matDatepicker]="picker" (dateChange)="addEvent('change', $event)"> -->
+      
     <br>
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
@@ -303,3 +327,14 @@
   </mat-step>
   
 </mat-vertical-stepper>
+
+<div class="row">
+  <div class="col text-center">
+    <button (click)="realizaValidaciones()">Realizar recepcion</button>
+    <h3>Datos faltantes: {{validaciones}}</h3>
+  </div>
+</div>
+
+<div class="row mb-3 mt-3">
+  <div class="col"></div>
+</div>

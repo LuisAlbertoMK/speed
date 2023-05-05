@@ -284,8 +284,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
   actualizarReporteIVA(data){
     setTimeout(()=>{
-      console.log(data);
-      
       // if(data.id && data.index){
         const updates = {};
         const reporte = this._publicos.realizarOperaciones_2(data).reporte

@@ -37,6 +37,7 @@ import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
 import { UploadPDFService } from '../../services/upload-pdf.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
 import { file } from 'pdfkit';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
@@ -62,8 +63,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   ROL:string =''; SUCURSAL:string ='';
 
   //TODO: aqui la informacion que es nueva
-  infoConfirmar={cliente:{}, vehiculo:{},sucursal:{}, reporte:{},checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25,
-  detalles:[]}    
+  infoConfirmar=
+  {cliente:{}, vehiculo:{},sucursal:{}, reporte:{},
+  checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25,
+  detalles:[],diasEntrega: null }    
   camposDesgloce = [
     {valor:'mo', show:'mo'},
     // {valor:'refacciones_a', show:'refacciones a'},
@@ -210,6 +213,13 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:''}
     
   ]
+  rangeFechaEntrega = new FormGroup({
+    start: new FormControl(new Date),
+    end: new FormControl(new Date),
+  });
+  fechas_get = {start: new Date(), end: new Date()}
+
+  validaciones: string = null
   //TODO: aqui la informacion que es nueva
 
 
@@ -307,6 +317,17 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       })
     },100)
     
+  }
+ 
+  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+    // this.events.push(`${type}: ${event.value}`);
+    // console.log(event.value);
+    const fecha = event.value
+ 
+    const startI = this._publicos.reseteaHoras(fecha['_d'])
+    const hoy = this._publicos.reseteaHoras(new Date())
+    const dias =this._publicos.calcularDiasEntrega(hoy,startI)
+    this.infoConfirmar.diasEntrega = dias
   }
 
   ///cambiar status de check
@@ -425,9 +446,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const context = mainCanvas.getContext("2d")
     context.clearRect(0,0,700,500);
   }
-  colorPlumaClick(color:String){
-    this.colorPluma = `${color}`
-  }
+  // colorPlumaClick(color:String){
+  //   this.colorPluma = `${color}`
+  // }
   async guardarImagenCanvas(){
     // this.disableBtnGuardarIMG = true
     // this.blobDetallesPersonalizado = null
@@ -724,5 +745,42 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     .catch((err) => {
       console.error(`${err.name}: ${err.message}`);
     });
+  }
+  //realizar acciones con la informacion de la recepcion
+  realizaValidaciones(){
+    const {cliente, vehiculo,sucursal, reporte, checkList, servicios, iva, formaPago, margen, detalles, diasEntrega} = this.infoConfirmar
+    // cliente:{}, vehiculo:{},sucursal:{}, reporte:{},
+    // checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25,
+    // detalles:[],diasEntrega: null
+
+    let faltantes = []
+
+    //verificar si existenservicios aprobados
+
+  const serviciosValidos = servicios.filter(s=>s.aprobado)
+  const checkListValidos = checkList.filter(s=>s.status !== '')
+    
+  // console.log(serviciosValidos);
+  // console.log(servicios);
+  // console.log(checkListValidos);
+  // console.log(checkList);
+  
+
+
+    if (!cliente['id'])  faltantes.push('Cliente') 
+    if (!cliente['correo'])  faltantes.push('correo de cliente') 
+    if (!vehiculo['id'])  faltantes.push('vehiculo') 
+    if (!sucursal['id'])  faltantes.push('sucursal') 
+    if (!reporte)  faltantes.push('reporte') 
+    if (!serviciosValidos.length)  faltantes.push('servicios') 
+    if (checkListValidos.length !== checkList.length)  faltantes.push('checkList') 
+    if (!iva)  faltantes.push('iva') 
+    // if (!formaPago)  faltantes.push('formaPago') 
+    // if (!margen)  faltantes.push('margen') 
+    if (diasEntrega >=0 )  faltantes.push('Dia de entrega') 
+    // console.log(faltantes);
+
+    this.validaciones = faltantes.join(', ')
+    
   }
 }

@@ -86,13 +86,13 @@
     <ng-container matColumnDef="fechaRecibido">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Recibido </th>
       <td mat-cell *matCellDef="let row" class="text-uppercase"> 
-        {{row.fecha_recibido}} {{row.hora_recibido}}
+        {{row.fecha_recibido}} 
       </td>
     </ng-container>
     <ng-container matColumnDef="fechaEntregado">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Entrega </th>
       <td mat-cell *matCellDef="let row" class="text-uppercase"> 
-        {{row.fecha_entregado}} {{row.hora_entregado}}
+        {{row.fecha_entregado}}
       </td>
     </ng-container>
 
@@ -124,7 +124,7 @@
         <div class="example-element-detail row"
              [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
              <div class="row">              
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
                 Tecnico <strong class="text-uppercase"> {{row.showNameTecnico}}</strong>
                 <button class="btn btn-sm btn-default" #tooltip="matTooltip" matTooltip="Cambiar tecnico" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+row.id" aria-expanded="false" aria-controls="tecnicoChange">
                   <i class="fa fa-sync fa-spin" ></i>
@@ -151,8 +151,8 @@
                     >{{itemMenu.show}}</button>
                     <!--  -->
                 </mat-menu>
-
-
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                 <p> Dias en sucursal: <strong class="text-uppercase"> {{row.diasSucursal}}</strong></p>
                 <p> Fecha recibido: <strong class="text-uppercase"> {{row.fecha_recibido}} {{row.hora_recibido}}</strong></p>
                 <p> Fecha entregado: <strong class="text-uppercase"> {{row.fecha_entregado}} {{row.hora_entregado}}</strong></p>
