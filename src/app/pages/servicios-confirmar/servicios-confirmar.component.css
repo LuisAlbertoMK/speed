@@ -290,3 +290,9 @@ canvas#main-canvas{
   border:1px solid black
 }
 
+button.ajustado-width{
+  min-width: 100px;
+}
+input.smallInput {
+  max-width: 60px;
+}

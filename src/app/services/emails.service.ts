@@ -210,6 +210,7 @@ export class EmailsService {
       arregloString: data.arregloString,
       desgloce: data.desgloce
     }
+    
     const dataMail = await this.template(cliente,vehiculo,dataEmail)
     console.log(dataMail);
     // return this.http.post(url,dataMail).subscribe()

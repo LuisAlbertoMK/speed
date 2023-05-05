@@ -897,17 +897,16 @@ export class ServiciosPublicosService {
                                     });
                                     return Necesaria
     }
-    nuevaRecuperacionData(data : any, camposRecuperar : any[]) {
-                                    // let Necesaria = {}
-                                    // camposRecuperar.forEach(recupera => {
-                                    //     Necesaria[recupera] = data[recupera]
-                                    // })
-                                    // return Necesaria
-
-        const necessary = {};
-        camposRecuperar.forEach((recupera) => necessary[recupera] = data[recupera]);
+    nuevaRecuperacionData(data: any, camposRecuperar: any[]) {
+        const necessary: any = {};
+        camposRecuperar.forEach((recupera) => {
+          if (data[recupera] !== undefined && data[recupera] !== null) {
+            necessary[recupera] = data[recupera];
+          }
+        });
         return necessary;
-    }
+      }
+      
     // crearArreglo2(arrayObj : object) {
     crearArreglo2(arrayObj: Record<string, any> | null): any[] {
             if (!arrayObj) return []; 
@@ -1462,8 +1461,7 @@ export class ServiciosPublicosService {
     //   }
 
     obtenerNombresElementos(elementos) {
-        const nombres = elementos.map(e => e.nombre);
-        return nombres.join(', ');
+        return elementos.map(({nombre}) => String(nombre).toLowerCase()).join(', ');
       }
       
       mensajeOK(mensaje: string, time){
@@ -1514,6 +1512,17 @@ export class ServiciosPublicosService {
         //   };
 
         // return startOfDay
+      }
+
+      construyeDesgloceEmail(desgloce:any){
+        let arreglo = []
+        const claves = Object.keys(desgloce)
+        claves.forEach(c=>{
+            if (desgloce[c]>0) {
+                arreglo.push(`${c}: ${this.redondeado2(desgloce[c],true)} <br>`)
+            }
+        })
+        return arreglo.join(', ')
       }
       
  }

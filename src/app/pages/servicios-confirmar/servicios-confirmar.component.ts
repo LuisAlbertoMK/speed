@@ -1,43 +1,40 @@
-import { Component,HostListener, OnInit, ViewChild, Output,EventEmitter,AfterViewInit, ElementRef} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getDatabase, onValue, ref, set, get, child, push,update } from 'firebase/database';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { child, get, getDatabase, onValue, ref, update } from 'firebase/database';
 import SignaturePad from 'signature_pad';
 import { UploadFirmaService } from 'src/app/services/upload-firma.service';
 
-import Swal from 'sweetalert2';
-import {map, startWith} from 'rxjs/operators';
 import { EmailsService } from 'src/app/services/emails.service';
-import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 
-import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { CatalogosService } from '../../services/catalogos.service';
 import { ClientesService } from '../../services/clientes.service';
+import { ServiciosService } from '../../services/servicios.service';
 import { SucursalesService } from '../../services/sucursales.service';
 import { VehiculosService } from '../../services/vehiculos.service';
-import { ServiciosService } from '../../services/servicios.service';
-import { CatalogosService } from '../../services/catalogos.service';
 
-import { FileItem } from 'src/app/models/FileItem.model';
 import html2canvas from 'html2canvas';
+import { FileItem } from 'src/app/models/FileItem.model';
+import { CotizacionService } from 'src/app/services/cotizacion.service';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { PdfRecepcionService } from '../../services/pdf-recepcion.service';
 import { UploadFileService } from '../../services/upload-file.service';
 import { UsuariosService } from '../../services/usuarios.service';
-import { EncriptadoService } from 'src/app/services/encriptado.service';
-import { CotizacionService } from 'src/app/services/cotizacion.service';
-import { PdfRecepcionService } from '../../services/pdf-recepcion.service';
 
-import  pdfMake  from "pdfmake/build/pdfmake";
-import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts.js";
 
-import { UploadPDFService } from '../../services/upload-pdf.service';
-import { EmpresasService } from 'src/app/services/empresas.service';
-import { file } from 'pdfkit';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { EmpresasService } from 'src/app/services/empresas.service';
+import { UploadPDFService } from '../../services/upload-pdf.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
@@ -59,14 +56,17 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   @HostListener('dragover',['$event'])
   @Output() mouseSobre: EventEmitter<boolean> = new EventEmitter()
   miniColumnas:number = 100
-
+  numeroDias: number = null
   ROL:string =''; SUCURSAL:string ='';
-
+  listaSucursales_arr =[]
   //TODO: aqui la informacion que es nueva
   infoConfirmar=
-  {cliente:{}, vehiculo:{},sucursal:{}, reporte:{},
-  checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25,
-  detalles:[],diasEntrega: null }    
+  {
+    cliente:{}, vehiculo:{},sucursal:{}, reporte:{}, no_os:null,
+    checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25, personalizados: [],
+    detalles:[],diasEntrega: this.numeroDias, fecha_promesa: null, firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
+    fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null
+  }    
   camposDesgloce = [
     {valor:'mo', show:'mo'},
     // {valor:'refacciones_a', show:'refacciones a'},
@@ -178,39 +178,39 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   ///check list
   checkList = [
-    {valor:"antena",show:'antena', opciones: [ "si","no","dañado"],status:''},
-    {valor:"birlo_seguridad",show:'birlo seguridad', opciones: [ "si","no","dañado"],status:''},
-    {valor:"bocinas",show:'bocinas', opciones: [ "si","no","dañado"],status:''},
-    {valor:"botones_interiores",show:'botones interiores', opciones: [ "si","no","dañado"],status:''},
-    {valor:"boxina_claxon",show:'boxina claxon', opciones: [ "si","no","dañado"],status:''},
-    {valor:"calefaccion",show:'calefaccion', opciones: [ "si","no","dañado"],status:''},
-    {valor:"cenicero",show:'cenicero', opciones: [ "si","no","dañado"],status:''},
-    {valor:"cristales",show:'cristales', opciones: [ "si","no","dañado"],status:''},
-    {valor:"encendedor",show:'encendedor', opciones: [ "si","no","dañado"],status:''},
-    {valor:"espejo_retorvisor",show:'espejo retrovisor', opciones: [ "si","no","dañado"],status:''},
-    {valor:"espejos_laterales",show:'espejos laterales', opciones: [ "si","no","dañado"],status:''},
-    {valor:"estuche_herramientas",show:'estuche herramientas', opciones: [ "si","no","dañado"],status:''},
-    {valor:"extintor",show:'extintor', opciones: [ "si","no","dañado"],status:''},
-    {valor:"gato",show:'gato', opciones: [ "si","no","dañado"],status:''},
-    {valor:"golpes_y_carroceria",show:'golpes y carroceria', opciones: [ "si","no","dañado"],status:''},
-    {valor:"instrumentos_tablero",show:'instrumentos tablero', opciones: [ "si","no","dañado"],status:''},
-    {valor:"interiores",show:'interiores', opciones: [ "si","no","dañado"],status:''},
-    {valor:"limpiadores",show:'limpiadores', opciones: [ "si","no","dañado"],status:''},
-    {valor:"llanta_refaccion",show:'llanta refaccion', opciones: [ "si","no","dañado"],status:''},
-    {valor:"llave_cruz",show:'llave cruz', opciones: [ "si","no","dañado"],status:''},
-    {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],"luces": [ "si","no","dañado"],status:''},
-    {valor:"maneral_gato",show:'maneral gato', opciones: [ "si","no","dañado"],status:''},
-    {valor:"manijas_interiores",show:'manijas interiores', opciones: [ "si","no","dañado"],status:''},
-    {valor:"molduras_completas",show:'molduras completas', opciones: [ "si","no","dañado"],status:''},
-    {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:''},
-    {valor:"radio",show:'radio', opciones: [ "si","no","dañado"],status:''},
-    {valor:"tapetes",show:'tapetes', opciones: [ "si","no","dañado"],status:''},
-    {valor:"tapon_combustible",show:'tapon combustible', opciones: [ "si","no","dañado"],status:''},
-    {valor:"tapones_llantas",show:'tapones llantas', opciones: [ "si","no","dañado"],status:''},
-    {valor:"tapones_motor",show:'tapones motor', opciones: [ "si","no","dañado"],status:''},
-    {valor:"tarjeta_de_circulacion",show:'tarjeta de circulacion', opciones: [ "si","no"],status:''},
-    {valor:"testigos_en_tablero",show:'testigos en tablero', opciones: [ "si","no"],status:''},
-    {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:''}
+    {valor:"antena",show:'antena', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"birlo_seguridad",show:'birlo seguridad', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"bocinas",show:'bocinas', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"botones_interiores",show:'botones interiores', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"boxina_claxon",show:'boxina claxon', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"calefaccion",show:'calefaccion', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"cenicero",show:'cenicero', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"cristales",show:'cristales', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"encendedor",show:'encendedor', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"espejo_retorvisor",show:'espejo retrovisor', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"espejos_laterales",show:'espejos laterales', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"estuche_herramientas",show:'estuche herramientas', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"extintor",show:'extintor', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"gato",show:'gato', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"golpes_y_carroceria",show:'golpes y carroceria', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"instrumentos_tablero",show:'instrumentos tablero', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"interiores",show:'interiores', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"limpiadores",show:'limpiadores', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"llanta_refaccion",show:'llanta refaccion', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"llave_cruz",show:'llave cruz', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],"luces": [ "si","no","dañado"],status:'si'},
+    {valor:"maneral_gato",show:'maneral gato', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"manijas_interiores",show:'manijas interiores', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"molduras_completas",show:'molduras completas', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:'1/4'},
+    {valor:"radio",show:'radio', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"tapetes",show:'tapetes', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"tapon_combustible",show:'tapon combustible', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"tapones_llantas",show:'tapones llantas', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"tapones_motor",show:'tapones motor', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"tarjeta_de_circulacion",show:'tarjeta de circulacion', opciones: [ "si","no"],status:'si'},
+    {valor:"testigos_en_tablero",show:'testigos en tablero', opciones: [ "si","no"],status:'si'},
+    {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:'si'}
     
   ]
   rangeFechaEntrega = new FormGroup({
@@ -220,6 +220,30 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   fechas_get = {start: new Date(), end: new Date()}
 
   validaciones: string = null
+
+   // tabla
+   dataSource = new MatTableDataSource(); //elementos
+   elementos = ['nombre','cantidad','sobrescrito','precio']; //elementos
+   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
+   expandedElement: any | null; //elementos
+   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
+   @ViewChild('elements') sort: MatSort //elementos
+
+  @ViewChild('firmaDigital',{static:true}) signatureElement:any; SignaturePad:any;
+
+  idPaqueteEditar: number
+  idPaqueteEditarBoolean: boolean = false
+
+  camposGuardar = [
+    'checkList','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os'
+  ]
+
+  datCliente:any
+  cliente:string = null
+
+  extra:string
+  modeloVehiculo:string = null
+  vehiculoData:string = null
   //TODO: aqui la informacion que es nueva
 
 
@@ -236,7 +260,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.listaSucursales()
   }
   ngAfterViewInit() {
-    // this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
+    this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
   }
   
   
@@ -251,7 +275,17 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-    this.rol()
+    
+    const starCountRef = ref(db, `sucursales`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        // let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+        this.listaSucursales_arr = this._publicos.crearArreglo2(snapshot.val())
+        this.rol()
+      }
+    }, {
+        onlyOnce: true
+    })
   }
   
   async rol(){
@@ -266,8 +300,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       onValue(starCountRef, async (snapshot) => {
         if (snapshot.exists()) {
           console.log(snapshot.val());
-          const {cliente, vehiculo, elementos, reporte,  iva, formaPago, margen_get} = snapshot.val()
-          const infoCotizacion = snapshot.val()
+          const {cliente, vehiculo, servicio ,elementos, reporte, sucursal, iva, formaPago, margen_get} = snapshot.val()
+          // const infoCotizacion = snapshot.val()
           let vehiculos = []
           await get(child(dbRef, `clientes/${cliente.id}/vehiculos`)).then((snapVehiculos) => {
             if (snapVehiculos.exists()) {
@@ -281,22 +315,26 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           this.infoConfirmar.servicios = elementos
           this.infoConfirmar.formaPago = formaPago
           this.infoConfirmar.margen = margen_get
-          this.infoConfirmar.reporte = reporte
-
+          this.infoConfirmar.sucursal = sucursal
+          
           this.infoConfirmar.detalles = this.detalles_rayar
           this.infoConfirmar.checkList = this.checkList
-
-
+          this.infoConfirmar.servicio = servicio
           this.infoConfirmar.iva = iva
+          this.extra = vehiculo.id
+          this.infoConfirmar.reporte = this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte
+          // this.infoConfirmar.servicios = 
+          // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).ocupados);
+          // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte);
+          
+
+          this.realizaOperaciones()
           
         }
       }, {
           onlyOnce: true
         })
     }
-    
-    
-    
   }
 
   cambiaAprobado(index, aprobado){
@@ -326,9 +364,70 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
  
     const startI = this._publicos.reseteaHoras(fecha['_d'])
     const hoy = this._publicos.reseteaHoras(new Date())
-    const dias =this._publicos.calcularDiasEntrega(hoy,startI)
-    this.infoConfirmar.diasEntrega = dias
+    // const dias =
+    this.infoConfirmar.diasEntrega = this._publicos.calcularDiasEntrega(hoy,startI)
+    this.infoConfirmar.fecha_promesa = this._publicos.convierte_fechaString_personalizada(fecha['_d']).fechaString
   }
+
+  infopaquete( event ){
+    const originalArray = event.elementos;
+    const copiedArray = originalArray.slice();
+    const tempDate =  {...event, elementos: copiedArray }    
+    this.infoConfirmar.servicios.push(tempDate)
+    this.realizaOperaciones()
+  }
+  elementoInfo( event){
+    this.infoConfirmar.servicios.push(event)
+    this.realizaOperaciones()
+  }
+  editar(donde:string ,data,cantidad){
+    if (donde === 'cantidad' && cantidad <= 0) cantidad = 1
+    if (donde === 'costo' && cantidad <= 0) cantidad = 0
+
+    this.infoConfirmar.servicios[data.index][donde] = Number(cantidad)
+   
+    this.realizaOperaciones()
+  }
+  eliminaElemento(data){
+    this.infoConfirmar.servicios = this.infoConfirmar.servicios.filter((_, index) => index !== data.index);
+    this.realizaOperaciones()
+  }
+  editarSubelemento(donde:string ,data,item,cantidad){
+
+    const elementos = [...data.elementos]
+
+    if (donde === 'cantidad' && cantidad <= 0) cantidad = 1
+    if (donde === 'costo' && cantidad <= 0) cantidad = 0
+    elementos[item.index][donde] = Number(cantidad)
+
+    this.infoConfirmar.servicios[data.index].elementos = elementos
+
+    this.realizaOperaciones()
+  }
+  eliminaSubElemento(data,item){
+    const elementos = data.elementos.slice();
+    elementos.splice(item.index, 1);
+    this.infoConfirmar.servicios[data.index].elementos = elementos;
+    this.realizaOperaciones()
+}
+
+realizaOperaciones(){
+  setTimeout(() => {
+    const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoConfirmar)
+    this.dataSource.data = ocupados
+    this.infoConfirmar.servicios = ocupados
+    this.infoConfirmar.reporte = reporte
+    this.newPagination()
+  }, 100);
+}
+newPagination(){
+  setTimeout(() => {
+  // if (data==='elementos') {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort
+  // }
+  }, 500)
+}
 
   ///cambiar status de check
   cambiarStatusCheckList(index, status){
@@ -449,42 +548,58 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   // colorPlumaClick(color:String){
   //   this.colorPluma = `${color}`
   // }
-  async guardarImagenCanvas(){
+  primeraAccion(){
+    Swal.fire(
+      {
+        icon: 'info',
+        title: 'Generando...',
+        text: 'Espere porfavor',
+        // footer: '<a href="">Why do I have this issue?</a>'
+        allowOutsideClick: false,
+        showConfirmButton: false
+      }
+    )
+    Swal.isLoading()
+    setTimeout(()=>{
+      this.guardarImagenCanvas()
+    },100)
+  }
+  guardarImagenCanvas(){
     // this.disableBtnGuardarIMG = true
     // this.blobDetallesPersonalizado = null
-    await html2canvas(document.querySelector("#main-canvas")).then(async(canvas) => {
-      const datURL = await canvas.toDataURL()
+    
+    html2canvas(document.querySelector("#main-canvas")).then((canvas) => {
+      const datURL = canvas.toDataURL()
       const blob = this.UrltoBlob(datURL)
       
-      const file = new File([blob], `detallesPersonalizado.png`,{
+      const file = new File([blob], `detallespersonalizado.png`,{
         type: blob.type,
       })
       // this.blobDetallesPersonalizado = blob
-      this.archTemp={
-        archivo:blob,
-        nombreArchivo:'detallesPersonalizado',
-        estaSubiendo:false,
-        progreso:0
-      }
-      this.nombre= 'detallesPersonalizado'
-      //primero verificar si existe
-      let existe = false
-      this.archivos.forEach((a)=>{
-        if (a['nombreArchivo'] === 'detallesPersonalizado' || a['nombreArchivo'] === 'detallesPersonalizado.png') existe = true
-      })
+      this.archTemp = {
+        archivo: blob,
+        nombreArchivo: 'detallespersonalizado.png',
+        estaSubiendo: false,
+        progreso: 0
+      };
+      
+      this.nombre = 'detallespersonalizado.png';
+      
+      const existe = this.archivos.some(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
       
       if (existe) {
-        this.archivos.forEach((a,index)=>{
-          if (a['nombreArchivo'] === 'detallesPersonalizado' || a['nombreArchivo'] === 'detallesPersonalizado.png') this.archivos[index] = this.archTemp
-        })
-        this.files.forEach((a,index)=>{
-          if (a['name'] === 'detallesPersonalizado.png') this.files[index] = file
-        })
-      }else{
-        this.archivos.push(this.archTemp)
-        this.files.push(file)
+        const archIndex = this.archivos.findIndex(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
+        this.archivos[archIndex] = this.archTemp;
+      
+        const fileIndex = this.files.findIndex(f => f.name === 'detallespersonalizado.png');
+        this.files[fileIndex] = file;
+      } else {
+        this.archivos.push(this.archTemp);
+        this.files.push(file);
       }
+      Swal.close();
     });
+   
    }
   ///accciones con el drop zone
   onSelect(event) {
@@ -504,10 +619,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   onRemove(event) {
     this.files.splice(this.files.indexOf(event), 1)
     // console.log(this.files);
-   const da =  [...this.archivos] 
-   let da2 = [...da]
-    this.archivos = da2.filter(o=>o.nombreArchivo ==='detallesPersonalizado.png')
-
+  //  const da =  [...this.archivos] 
+  //  let da2 = [...da]
+    // this.archivos = da2.filter(o=>o.nombreArchivo ==='detallesPersonalizado.png')
+    this.archivos = []
     
     for(const f of this.files) {
       this.archTemp={
@@ -520,6 +635,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.archivos.push(this.archTemp)
     }
     // console.log(this.archivos);
+    console.log(this.archivos);
     
   }
   myFilter = (d: Date | null): boolean => {
@@ -746,41 +862,265 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       console.error(`${err.name}: ${err.message}`);
     });
   }
+  //acciones con la firma
+  limpiarFirma(){
+    this.SignaturePad.clear()
+    this.infoConfirmar.firma_cliente = null
+  }
+  firmar(){
+    const u = this.SignaturePad.toDataURL()
+    if (!this.SignaturePad.isEmpty()) {
+      this.infoConfirmar.firma_cliente = u
+    }else{
+      this.infoConfirmar.firma_cliente = null
+      this._publicos.swalToastError('La firma no puede estar vacia')
+    }
+  }
+  infoTecnico(event){
+    if (!event) {
+      this._publicos.swalToastError('intenta de nuevo')
+    }else{
+      this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
+        if (respuesta) {
+          this.infoConfirmar.tecnico = event.id
+          this.infoConfirmar.showNameTecnico = event.usuario
+        }
+      })
+    }
+  }
+  infoCliente(event){
+    if (!event) {
+      this._publicos.swalToastError('intenta de nuevo')
+    }else{
+      this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
+        if (respuesta) {
+          console.log(event);
+          const camposCliente  = [ 'id' ,'no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','empresa','sucursal']
+          this.infoConfirmar.cliente = this._publicos.nuevaRecuperacionData(event,camposCliente)
+          this.infoConfirmar.vehiculos = (event.vehiculos) ? event.vehiculos : []
+          this.infoConfirmar.vehiculo = {}
+          
+          // this.infoConfirmar.tecnico = event.id
+          // this.infoConfirmar.showNameTecnico = event.usuario
+        }
+      })
+    }
+  }
+  //cargar la informacion del cliente para poder editar
+  cargaDataCliente(cliente:any){
+    this.datCliente = null
+    // this.vehiculo = null
+    if (cliente) {
+      setTimeout(() => {
+        this.datCliente = cliente
+      } , 200);
+    }
+  }
+
+vehiculoInfo(info:any){
+  if (info['registro']) {
+    this._publicos.mensajeCorrecto('Accion correcra')
+    
+    this.extra =  info.vehiculo.id
+    this.infoConfirmar.vehiculos = []
+    const starCountRef = ref(db, `clientes/${this.infoConfirmar.cliente['id']}/vehiculos`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+        this.infoConfirmar.vehiculos = vehiculos
+        const filtrov = vehiculos.find(v=>v.id === this.extra)
+        this.infoConfirmar.vehiculo = filtrov
+        this.modeloVehiculo = filtrov['modelo']
+      }
+    })
+  }else{
+    this._publicos.mensajeIncorrecto('Accion no realizada')
+  }
+}
+vehiculoInfonew(idVehiculo:string){
+  console.log(idVehiculo);
+  this.extra = idVehiculo
+  this.infoConfirmar.vehiculo = this.infoConfirmar.vehiculos.find(v=>v.id === idVehiculo)
+}
+cargaDataVehiculo(data:any,quien:string){
+  // console.log(data);
+  this.cliente = null
+  this.vehiculoData = null
+  if (quien === 'cliente') {
+    
+    // console.log('id de cliente');
+    if (data['id']) {
+      setTimeout(() => {
+        this.cliente = data['id']
+      } , 300);
+    }
+  }
+  if (quien === 'vehiculo') {
+    
+    // console.log('id de vehiculo');
+    if (data['id']) {
+      setTimeout(() => {
+       
+        // Swal.fire('','','info')
+        this._publicos.mensajeOK('Se cargo la información',2000)
+        // Swal.isLoading()
+        this.vehiculoData = data
+        // Swal.close()
+      } , 300);
+    }
+  }
+  
+}
+  
   //realizar acciones con la informacion de la recepcion
   realizaValidaciones(){
-    const {cliente, vehiculo,sucursal, reporte, checkList, servicios, iva, formaPago, margen, detalles, diasEntrega} = this.infoConfirmar
-    // cliente:{}, vehiculo:{},sucursal:{}, reporte:{},
-    // checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25,
-    // detalles:[],diasEntrega: null
+    
+    const {cliente, vehiculo,sucursal, reporte, checkList, servicios,firma_cliente ,iva, formaPago, margen, detalles, fecha_promesa} = this.infoConfirmar
 
     let faltantes = []
-
-    //verificar si existenservicios aprobados
-
-  const serviciosValidos = servicios.filter(s=>s.aprobado)
-  const checkListValidos = checkList.filter(s=>s.status !== '')
+    // const serviciosValidos = servicios.filter(s=>s.aprobado)
+    // const checkListValidos = checkList.filter(s=>s.status !== '')
     
-  // console.log(serviciosValidos);
-  // console.log(servicios);
-  // console.log(checkListValidos);
-  // console.log(checkList);
-  
-
-
     if (!cliente['id'])  faltantes.push('Cliente') 
-    if (!cliente['correo'])  faltantes.push('correo de cliente') 
-    if (!vehiculo['id'])  faltantes.push('vehiculo') 
-    if (!sucursal['id'])  faltantes.push('sucursal') 
-    if (!reporte)  faltantes.push('reporte') 
-    if (!serviciosValidos.length)  faltantes.push('servicios') 
-    if (checkListValidos.length !== checkList.length)  faltantes.push('checkList') 
-    if (!iva)  faltantes.push('iva') 
-    // if (!formaPago)  faltantes.push('formaPago') 
-    // if (!margen)  faltantes.push('margen') 
-    if (diasEntrega >=0 )  faltantes.push('Dia de entrega') 
-    // console.log(faltantes);
+    if (!cliente['correo'])  faltantes.push('Correo de cliente') 
+    if (!vehiculo['id'])  faltantes.push('Vehiculo') 
+    if (!sucursal['id'])  faltantes.push('Sucursal') 
+    if (!reporte)  faltantes.push('Reporte') 
+    if (!servicios.some(s => s.aprobado)) faltantes.push('Servicios');
+    if (checkList.some(s => s.status === '')) faltantes.push('CheckList');
+    if (!fecha_promesa) faltantes.push('Fecha promesa') 
+    if (!firma_cliente) faltantes.push('Firma cliente') 
 
-    this.validaciones = faltantes.join(', ')
+    this.validaciones = faltantes.length > 0 ? faltantes.join(', ') : null;
+
+    if (!this.validaciones) {
+      this.continuar()
+    }else{
+      this._publicos.swalToastError('LLenar toda informacion')
+    }
+  }
+  continuar(){
+    this.infoConfirmar.personalizados = this.archivos
+    this.infoConfirmar.personalizados = []
+    let arregloPer = []
     
+    this.archivos.forEach((a,index)=>{
+      // console.log(descargar(a.archivo));
+      const nuevonombre = a.nombreArchivo.split('.').slice(0, -1).join('')
+      const asigando = nuevonombre.replace(/ /g, '').slice(0, 10)
+      const aqui = `${asigando.toLowerCase()}${index}`
+      var file    = a.archivo
+      var reader  = new FileReader();
+      blobToBase64(file).then((ans)=>{
+        arregloPer.push(Object({ nombre: aqui, data64: ans }))
+      })
+      function blobToBase64(blob) {
+        return new Promise((resolve, _) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+      }
+    })
+
+    this.infoConfirmar.personalizados = arregloPer
+    
+    this._pdfRecepcion.obtenerImege(this.infoConfirmar).then((pdfReturn:any) => {
+      const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
+      // pdfDocGenerator.open();
+      
+      const {sucursal, cliente,vehiculo, servicios, reporte} = this.infoConfirmar
+
+      // console.log();
+      const nueva = {
+        mo: reporte['mo'],
+        refacciones: reporte['refacciones_v'],
+        sobrescrito: reporte['sobrescrito'],
+        subtotal: reporte['subtotal'],
+        iva: reporte['iva'],
+        total: reporte['total'],
+      }
+      this._servicios.generateOSNumber(sucursal['sucursal'],this.ROL).then((no_os)=>{
+        const dataMail = {
+          correos: this._publicos.dataCorreo(sucursal, cliente),
+          no_os,
+          filename : `${no_os}.pdf`,
+          cliente: cliente,
+          vehiculo:vehiculo,
+          arregloString: this._publicos.obtenerNombresElementos(servicios),
+          desgloce: this._publicos.construyeDesgloceEmail(nueva)
+        }
+        this.infoConfirmar.no_os = no_os
+        // console.log(dataMail);
+        Swal.fire({
+          title: 'Opciones de recepcion',
+          html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: 'Previsualizar PDF cotizacion',
+          denyButtonText: `Guardar y enviar correo`,
+          cancelButtonText:`cancelar`
+  
+        }).then((result) => {
+          // si se confirma previsualizacion genera pdf en nueva ventana del navegador
+          if (result.isConfirmed) {
+            
+            pdfDocGenerator.open()
+            // console.log(this.infoConfirmar.personalizados);
+          } else if (result.isDenied) {
+            
+            // console.log(this.infoConfirmar.personalizados);            
+            // si presiono guardar y enviar obtenemos el blob del pdf para poder subirlo a firebasecloud
+            pdfDocGenerator.getBlob(async (blob) => {
+              //una vez tenemos el blob realizamos la peticion de subida del pdf
+              this._pdf.uploadRecepcion(blob, dataMail.filename).then((ans)=>{
+                let intervalo = setInterval(()=>{
+                  // console.log(ans);
+                  if (ans.ruta) {
+                    clearInterval(intervalo)
+                    this.infoConfirmar.pathPDF = ans.ruta
+                    dataMail['pathPDF'] = ans.ruta
+                    const updates = {}
+    //                 status:null, diasSucursal:0,
+    // fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null
+                    this.infoConfirmar.status = 'recibido'
+                    this.infoConfirmar.diasSucursal = 0
+                    this.infoConfirmar.fecha_recibido = this._publicos.getFechaHora().fecha
+                    this.infoConfirmar.hora_recibido = this._publicos.getFechaHora().hora
+                    this.infoConfirmar.notifico = true
+                    this.infoConfirmar.servicio = 1
+                    updates[`recepciones/${this._publicos.generaClave()}`] = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
+                    console.log(updates);
+                    this._mail.EmailRecepcion(dataMail)
+
+                    update(ref(db), updates).then(()=>{
+                      this.files = []
+                      this.archivos = []
+                      this.nombre = null
+                      this.infoConfirmar=
+                      {
+                        cliente:{}, vehiculo:{},sucursal:{}, reporte:{},no_os:null,
+                        checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25, personalizados: [],
+                        detalles:[],diasEntrega: this.numeroDias, fecha_promesa: null, firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
+                        fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null
+                      }
+                      this.router.navigateByUrl('/servicios')
+                    })
+
+                    
+
+                    
+                  }
+                },100)
+              })
+            })
+          }
+        })
+      })
+      
+      
+      
+      
+    })
   }
 }

@@ -52,7 +52,7 @@ let problemas_03052023 =
 ]
 
 // git add .
-// git commit -m "problemas_04052023-3"
+// git commit -m "problemas_04052023-4"
 // git push -u origin main
 
 // monto total de iva : de que se obtiene esta parte?

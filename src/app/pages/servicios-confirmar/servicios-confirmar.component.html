@@ -11,14 +11,17 @@
     </div>
   </div>
 </div>
+
+<app-clientes-list (dataCliente)="infoCliente ( $event )"></app-clientes-list>
 <div class="card border-dark" >
   <div class="card-body">
     <h1>Informacion de cliente 
 
       <ng-container *ngIf="infoConfirmar.cliente['id']">
-        <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion" 
+        <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion"
+        (click)="cargaDataCliente(infoConfirmar.cliente)" data-bs-toggle="modal" data-bs-target="#modalNewUser"
         ></i>
-        <!-- (click)="cargaDataCliente(infoConfirmar.cliente)" data-bs-toggle="modal" data-bs-target="#modalNewUser" -->
+        <!--  -->
       </ng-container>
     </h1>
 
@@ -39,12 +42,12 @@
       <i class="fa fa-sync pointer btn btn-sm btn-outline-primary"></i>
       <!-- (click)="verificarInfoVehiculos()" de arriba -->
       <div class="input-group mb-3">
-        <!-- abajo  [ngModel]="extra" #valV (change)="vehiculo( valV.value )"-->
-        <select class=" form-select  form-select-sm text-uppercase" >
+        <!-- abajo  "-->
+        <select class=" form-select  form-select-sm text-uppercase" [ngModel]="extra" #valV (change)="vehiculoInfonew( valV.value )" >
           <option [value]="v.id" *ngFor="let v of infoConfirmar.vehiculos">{{v.placas}}</option>
         </select>
-        <button class="btn btn-sm btn-warning" >
-          <!-- data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cargaDataVehiculo(infoConfirmar.cliente,'vehiculo')" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo" -->
+        <button class="btn btn-sm btn-warning" 
+          data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cargaDataVehiculo(infoConfirmar.cliente,'vehiculo')" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo" >
           <i class="fa fa-car"></i>
         </button>
       </div>
@@ -63,7 +66,13 @@
 <mat-vertical-stepper [linear]="false" #stepper >
   <mat-step class="border-1">
     <ng-template matStepLabel>Servicios a realizar</ng-template>
-    <section class="example-section">
+    <br>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+      <button  data-bs-toggle="modal" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">Agregar paquete</button>
+      <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" >Agregar elemento</button>
+    </div>
+    <br>
+    <!-- <section class="example-section">
       <mat-checkbox 
       class="example-margin"
       (click)="cambiaAprobado(item.index, !item.aprobado)"
@@ -72,11 +81,144 @@
       [ngClass]="{'tipo-mo': item.tipo === mo,'tipo-refaccion': item.tipo === refaccion,'tipo-paquete': item.tipo === paquete}">
       {{item.nombre | capitalizarUno}} {{item.precio | monedas}}
     </mat-checkbox>
-    </section>
+    </section> -->
+    <div class="mat-elevation-z8 table-responsive">
+      <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+    
+        <!-- ID Column -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+          <td mat-cell *matCellDef="let row" 
+          [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}">
+            <strong>{{row.nombre | capitalizarUno}}</strong>  
+        </td>
+        </ng-container>
+    
+        <!-- Progress Column -->
+        <ng-container matColumnDef="cantidad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
+          <td mat-cell *matCellDef="let row"> 
+          <input type="number" min="1"  maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [value]="row.cantidad" 
+          (change)="editar('cantidad',row, cantidadEle.value)" #cantidadEle class="smallInput">
+          </td>
+        </ng-container>
+    
+        <!-- Name Column -->
+        <ng-container matColumnDef="sobrescrito">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo sobrescrito </th>
+          <td mat-cell *matCellDef="let row"> 
+    
+            <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
+          (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
+          <!-- {{row.sobrescrito | monedas}} -->
+             </td>
+        </ng-container>
+      <!-- Fruit Column -->
+      <ng-container matColumnDef="precio">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+        <td mat-cell *matCellDef="let row">
+          {{row.total | monedas}}
+        </td>
+      </ng-container>
+        <!-- Fruit Column -->
+        <ng-container matColumnDef="opciones">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
+          <td mat-cell *matCellDef="let row"> 
+          <!-- aqui el btn para eliminar -->
+          <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaElemento(row)"></i>
+          <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" 
+                  (click)="idPaqueteEditar = row.index; idPaqueteEditarBoolean = true" *ngIf="row.tipo === paquete">
+                  <i class="fa fa-plus"></i>
+                </button>
+          </td>
+        </ng-container>
+       
+    
+        <ng-container matColumnDef="expand">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="element.tipo === paquete">
+              <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+              </button>
+            </ng-container>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail"
+                 [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Cantidad</th>
+                      <th scope="col">Costo</th>
+                      <th scope="col">Precio</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of row.elementos; let i = index">
+                      <th scope="row">{{i +  1 }}</th>
+                      <td class="text-start" [ngClass]="{'tipo-mo': item.tipo === mo,'tipo-refaccion': item.tipo === refaccion}">
+                        {{item.nombre | capitalizarUno}}
+                      </td>
+                      <td class="text-center">
+                        <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="smallInput"
+                                (change)="editarSubelemento('cantidad',row,item, cantidadSub.value)" #cantidadSub>
+                        <!-- {{item.cantidad}} -->
+                      </td>
+                      <td class="text-end">
+                        <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="smallInput"
+                                (change)="editarSubelemento('costo',row,item, cantidadCosto.value)" #cantidadCosto>
+                              <!-- {{item.costo | monedas}} -->
+                      </td>
+                      <td class="text-end">{{item.precio | monedas}}</td>
+                      <td class="text-end">{{item.total | monedas}}</td>
+                      <td class="text-end">
+                        <!-- (click)="eliminaElemento(row)" -->
+                        <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaSubElemento(row,item)" ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+            </div>
+          </td>
+        </ng-container>
+      
+    
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+            class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element"
+            >
+            <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    
+        <!-- Row shown when there is no matching data. -->
+        <!-- <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr> -->
+      </table>
+    
+      <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
     <br>
+    
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
       <div class="card border-success mb-3">
-        <div class="card-header text-center">Flotilla</div>
+        <div class="card-header text-center">
+          Desgloce 
+          <mat-checkbox class="example-margin" [(ngModel)]="infoConfirmar.iva" (click)="realizaOperaciones()">IVA</mat-checkbox>
+        </div>
         <div class="card-body text-success ">
           <h5 class="card-title"></h5>
           <div class="row">
@@ -96,128 +238,119 @@
         </div>
       </div>
     </div>
-
-    <!-- <button mat-button matStepperPrevious>Anterior</button> -->
-    <br>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-        <button class="btn btn-sm btn-primary m-1" matStepperNext>Siguiente</button>
-      </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+      <button class="btn btn-sm btn-primary m-1"  [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperNext>Siguiente</button>
     </div>
   </mat-step>
   
   <mat-step>
     <ng-template matStepLabel>Rayar detalles de vehiculo</ng-template>
     <div class="row">
-      <mat-tab-group animationDuration="0ms">
-        <mat-tab label="Check detalles">
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-              <mat-checkbox type="checkbox" class="example-margin" (click)="cambiaTodosCheckA(sinDetalles)" [(ngModel)]="sinDetalles">Sin detalles</mat-checkbox>
-            </div>
-            <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4" *ngFor="let item of infoConfirmar.detalles; let i = index">
-              <img [src]="'../../../assets/imagenes_detalles/'+item.valor+'.jpg'" class="card-img-top  rayar" [alt]="item.show" width="150px" height="150px">
-              <div class="card-body">
-                <ng-container class="card-text">
-                  <mat-checkbox type="checkbox" [checked]="item.status" class="example-margin" [id]="item.valor" (click)=" cambiarCheck( i, !item.status )">
-                    {{item.show}}
-                  </mat-checkbox>
-                </ng-container>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+        <mat-tab-group animationDuration="0ms">
+          <mat-tab label="Check detalles">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                <mat-checkbox type="checkbox" class="example-margin" (click)="cambiaTodosCheckA(sinDetalles)" [(ngModel)]="sinDetalles">Sin detalles</mat-checkbox>
               </div>
-            </div>
-          </div>
-        </mat-tab>
-        <mat-tab label="Personalizado">
-          <br>
-          <div class="row">
-            <div class="col">
-              <button class="btn btn-sm btn-primary m-1" (click)="principal()">Reiniciar</button>
-              <!--  -->
-              <button class="btn btn-sm btn-success m-1" (click)="guardarImagenCanvas()" >Guardar</button>
-                          <!-- [disabled]="disableBtnGuardarIMG || !contieneIMG" -->
-                          <!--  -->
-            </div>
-            
-            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-              <div class="mb-3 row">
-                <label for="" class="col-sm-4 col-form-label">Color de pluma</label>
-                <div class="col-sm-8">
-                  <select class="form-select form-select-sm" (change)="colorPluma = plumaColor.value" aria-label=".form-select-sm example" #plumaColor>
-                    <option [value]="item.color" *ngFor="let item of coloresPluma">{{item.show}}</option>
-                  </select>
+              <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4" *ngFor="let item of infoConfirmar.detalles; let i = index">
+                <img [src]="'../../../assets/imagenes_detalles/'+item.valor+'.jpg'" class="card-img-top  rayar" [alt]="item.show" width="150px" height="150px">
+                <div class="card-body">
+                  <ng-container class="card-text">
+                    <mat-checkbox type="checkbox" [checked]="item.status" class="example-margin" [id]="item.valor" (click)=" cambiarCheck( i, !item.status )">
+                      {{item.show}}
+                    </mat-checkbox>
+                  </ng-container>
                 </div>
               </div>
             </div>
-          </div>
-          <main class="main-container">
-            <canvas #detalles id="main-canvas" width="500" height="500"></canvas>
-          </main>
-          <br>
-        </mat-tab>
-        <mat-tab label="Fotografias o imagenes">
-          <br>
-          <!--  -->
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-              <ng-container *ngIf="cameraStart; else elseCameraStart">
-                <i class="fa fa-sync text-primary fa-2x m-1" (click)="getCamera(!camaraVuelta)" ></i>
-                <i class="fa fa-toggle-on fa-2x m-1 text-danger" (click)="cameraOFF()" #tooltip="matTooltip"
-                matTooltip="Apagar camara"></i>
-                <i class="fa fa-camera-retro fa-2x m-1 text-success m-1" (click)="sacarFoto()" #tooltip="matTooltip"
-                  matTooltip="Tomar foto"></i>
-              </ng-container>
-              <ng-template #elseCameraStart>
-                <i class="fa fa-camera fa-2x m-1 text-success" (click)="dimensiones()" #tooltip="matTooltip"
-                matTooltip="Encender camara"></i>
-              </ng-template>                    
-              <ng-container *ngIf="foto_tomada; else elseFotoCancela">
-                  <i class="fa fa-trash fa-2x text-danger m-1" (click)="cancelarFoto()" #tooltip="matTooltip"
-                  matTooltip="Eliminar foto"></i>
-                  <i class="fa fa-save fa-2x text-primary m-1" (click)="guardaImagen()" #tooltip="matTooltip"
-                  matTooltip="Guardar foto"></i>
-              </ng-container>
-              <ng-template #elseFotoCancela>
-                  
-              </ng-template>
+          </mat-tab>
+          <mat-tab label="Personalizado">
+            <br>
+            <div class="row">
+              <div class="col">
+                <button class="btn btn-sm btn-primary m-1" (click)="principal()">Reiniciar</button>
+                <!--  -->
+                <button class="btn btn-sm btn-success m-1" (click)="primeraAccion()" >Guardar</button>
+                            <!-- [disabled]="disableBtnGuardarIMG || !contieneIMG" -->
+                            <!--  -->
+              </div>
+              
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-3 row">
+                  <label for="" class="col-sm-4 col-form-label">Color de pluma</label>
+                  <div class="col-sm-8">
+                    <select class="form-select form-select-sm" (change)="colorPluma = plumaColor.value" aria-label=".form-select-sm example" #plumaColor>
+                      <option [value]="item.color" *ngFor="let item of coloresPluma">{{item.show}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" id="divCamera" [hidden]="!cameraStart" 
-                    style="width: 100%;" >
-                      <!-- style="position: absolute; top: 0;visibility:hidden; left: 0;opacity: 0;" -->
-                      <ng-container *ngIf="foto_tomada; else elseFoto">
-                        <img [src]="foto_tomada"  alt="" class="img-thumbnail">
-                      </ng-container>
-                      <ng-template #elseFoto>
-                        <div class="row">
-                          <div class="col text-center">
-                            <video  style="position:relative;" muted #videoContainer [width]="sizeScreen.w" [height]="sizeScreen.h"></video>
+            <main class="main-container">
+              <canvas #detalles id="main-canvas" width="500" height="500"></canvas>
+            </main>
+            <br>
+          </mat-tab>
+          <mat-tab label="Fotografias o imagenes">
+            <br>
+            <!--  -->
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                <ng-container *ngIf="cameraStart; else elseCameraStart">
+                  <i class="fa fa-sync text-primary fa-2x m-1" (click)="getCamera(!camaraVuelta)" ></i>
+                  <i class="fa fa-toggle-on fa-2x m-1 text-danger" (click)="cameraOFF()" #tooltip="matTooltip"
+                  matTooltip="Apagar camara"></i>
+                  <i class="fa fa-camera-retro fa-2x m-1 text-success m-1" (click)="sacarFoto()" #tooltip="matTooltip"
+                    matTooltip="Tomar foto"></i>
+                </ng-container>
+                <ng-template #elseCameraStart>
+                  <i class="fa fa-camera fa-2x m-1 text-success" (click)="dimensiones()" #tooltip="matTooltip"
+                  matTooltip="Encender camara"></i>
+                </ng-template>                    
+                <ng-container *ngIf="foto_tomada; else elseFotoCancela">
+                    <i class="fa fa-trash fa-2x text-danger m-1" (click)="cancelarFoto()" #tooltip="matTooltip"
+                    matTooltip="Eliminar foto"></i>
+                    <i class="fa fa-save fa-2x text-primary m-1" (click)="guardaImagen()" #tooltip="matTooltip"
+                    matTooltip="Guardar foto"></i>
+                </ng-container>
+                <ng-template #elseFotoCancela>
+                    
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center" id="divCamera" [hidden]="!cameraStart" 
+                      style="width: 100%;" >
+                        <!-- style="position: absolute; top: 0;visibility:hidden; left: 0;opacity: 0;" -->
+                        <ng-container *ngIf="foto_tomada; else elseFoto">
+                          <img [src]="foto_tomada"  alt="" class="img-thumbnail">
+                        </ng-container>
+                        <ng-template #elseFoto>
+                          <div class="row">
+                            <div class="col text-center">
+                              <video  style="position:relative;" muted #videoContainer [width]="sizeScreen.w" [height]="sizeScreen.h"></video>
+                            </div>
                           </div>
-                        </div>
-                      </ng-template>
-                      <canvas style="position: absolute; top: 0;visibility:hidden; left: 0;opacity: 0;"  width="640" height="480"  class="js-canvas" #myCanvas></canvas>
-                    </div>
-          <ngx-dropzone (change)="onSelect($event)" class="well drop-zone" [multiple]="true"
-                      accept="image/jpeg,image/jpg,image/png">
-                      <ngx-dropzone-label>Arrastra o click aqui las fotografias!</ngx-dropzone-label>
-                      <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f"
-                        [removable]="true" (removed)="onRemove(f)">
-                        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                      </ngx-dropzone-image-preview>
-                    </ngx-dropzone>
-        </mat-tab>
+                        </ng-template>
+                        <canvas style="position: absolute; top: 0;visibility:hidden; left: 0;opacity: 0;"  width="640" height="480"  class="js-canvas" #myCanvas></canvas>
+                      </div>
+            <ngx-dropzone (change)="onSelect($event)" class="well drop-zone" [multiple]="true"
+                        accept="image/jpeg,image/jpg,image/png">
+                        <ngx-dropzone-label>Arrastra o click aqui las fotografias!</ngx-dropzone-label>
+                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f"
+                          [removable]="true" (removed)="onRemove(f)">
+                          <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                        </ngx-dropzone-image-preview>
+                      </ngx-dropzone>
+          </mat-tab>
       </mat-tab-group>
-      
-    </div>
-    <br>
-    <div class="row">
+      </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-        <button class="btn btn-sm btn-danger m-1" matStepperPrevious>Anterior</button>
-        <button class="btn btn-sm btn-primary m-1" matStepperNext>Siguiente</button>
+        <button class="btn btn-sm btn-danger m-1"  [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperPrevious>Anterior</button>
+        <button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperNext>Siguiente</button>
       </div>
     </div>
-    
   </mat-step>
-  
   <mat-step>
     <ng-template matStepLabel>ChekList elementos de vehiculo</ng-template>
     <div class="row">
@@ -271,18 +404,12 @@
             </div>
             </ng-template>
           </div>
-        </div>
-      
-    </div>
-    
-    <br>
-    <div class="row">
+      </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-        <button class="btn btn-sm btn-danger m-1" matStepperPrevious>Anterior</button>
-        <button class="btn btn-sm btn-primary m-1" matStepperNext>Siguiente</button>
+        <button class="btn btn-sm btn-danger m-1"  [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperPrevious>Anterior</button>
+        <button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperNext>Siguiente</button>
       </div>
     </div>
-    
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Fecha de entrega</ng-template>
@@ -290,7 +417,7 @@
         <div class="col-lg-4 col-md-4 col-sm-6 col-12">
         
           <div class="input-group mb-3">
-            <input class="form-control" readonly [matDatepicker]="picker" (dateChange)="addEvent('change', $event)">
+            <input class="form-control" readonly [matDatepickerFilter]="myFilter" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)">
             <mat-datepicker #picker></mat-datepicker>
             <div class="input-group-append">
               <button class="btn btn-outline-secondary"  (click)="picker.open()" type="button" id="button-addon2"><i class="fa fa-calendar-alt"></i></button>
@@ -304,37 +431,134 @@
             </strong>
           </label>
         </div>
-
-      </div>
-    <!-- <button class="btn btn-sm btn-primary" (click)="picker.open()">
-      <i class="fa fa-calendar-alt"></i> Abrir calendario
-    </button>
-      <input class="form-control form-control-sm" readonly [matDatepicker]="picker" (dateChange)="addEvent('change', $event)"> -->
-      
-    <br>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-        <button class="btn btn-sm btn-danger m-1" matStepperPrevious>Anterior</button>
-        <button class="btn btn-sm btn-primary m-1" matStepperNext>Siguiente</button>
-      </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <app-lista-tecnicos [sucursal]="infoConfirmar.sucursal['id']"  (dataTecnico)="infoTecnico ( $event )"></app-lista-tecnicos>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+          <button class="btn btn-sm btn-danger m-1"   [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperPrevious>Anterior</button>
+          <button class="btn btn-sm btn-primary m-1"  [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"  matStepperNext>Siguiente</button>
+        </div>
     </div>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Firma de cliente</ng-template>
-    
-    <br>
-    <button class="btn btn-sm btn-primary" matStepperPrevious>Anterior</button>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+        <canvas #firmaDigital class="fluid" style="touch-action:none"></canvas>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+        <button class="btn btn-sm btn-danger m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperPrevious >Anterior</button>
+        <button class="btn btn-sm btn-danger m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="limpiarFirma()"   *ngIf="infoConfirmar.firma_cliente">Limpiar Firma</button>
+        <button class="btn btn-sm btn-success m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="firmar()"  *ngIf="!infoConfirmar.firma_cliente">Firmar recepción</button>
+      </div>
+    </div>
   </mat-step>
   
 </mat-vertical-stepper>
-
 <div class="row">
-  <div class="col text-center">
-    <button (click)="realizaValidaciones()">Realizar recepcion</button>
-    <h3>Datos faltantes: {{validaciones}}</h3>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+    <button (click)="realizaValidaciones()" class="btn btn-sm btn-primary">Realizar recepcion</button>
   </div>
 </div>
+<ng-container *ngIf="validaciones">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-center text-danger">
+      <h3>Datos faltantes: {{validaciones}}</h3>
+    </div>
+  </div>
+</ng-container>
+
+
 
 <div class="row mb-3 mt-3">
   <div class="col"></div>
+</div>
+
+
+<div class="modal fade" id="modalPaquetes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <!-- <div class="modal-header ml-3">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div> -->
+    <div class="modal-body m-2">
+      <app-paquetes [modelo]="infoConfirmar.vehiculo['modelo']" (infoPaquete)="infopaquete( $event)" ></app-paquetes>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal fade" id="modalElemento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <div class="modal-header ml-3">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body m-2">
+      <app-mo-refacciones (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="modalNewUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ng-container *ngIf="datCliente; else elseNewCliente">
+          <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
+        </ng-container>
+        <ng-template #elseNewCliente>
+          <div class="row">
+            <div class="col text-center">
+              <app-cliente (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalNewVehiculo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <!-- <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div> -->
+        <ng-container *ngIf="cliente; else elseVehiculo">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <app-vehiculo [cliente]="cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #elseVehiculo>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <ng-container *ngIf="vehiculoData; else elseIDvehiculo">
+                <!-- tiene cliente -->
+                <!-- <app-vehiculo [vehiculo]="vehiculoData['id']" [vehiculoDat]="vehiculoData" [cliente]="vehiculoData['id']" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo> -->
+                <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" [cliente]="vehiculoData['id']"></app-vehiculo>
+              </ng-container>
+              <ng-template #elseIDvehiculo>
+                no tiene cliente
+                registra  vehiculo desde 0
+              </ng-template>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
 </div>

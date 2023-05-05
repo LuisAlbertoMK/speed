@@ -51,6 +51,24 @@ export class ServiciosService {
     no_OS = `${sucursal}${mes}${muestra}${nuevoRol}${secuencia}` 
     return no_OS
   }
+  async generateOSNumber(infoSucursal: string, rol: string) {
+    const date = new Date();
+    const anio = date.getFullYear().toString().slice(-2);
+    const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+    const nombreSucursal = infoSucursal.slice(0, 2).toUpperCase();
+    const nuevoRol = rol.slice(0, 2).toUpperCase();
+  
+    let cuantas = 0;
+    await get(child(dbRef, 'recepciones')).then((snapshot) => {
+      if (snapshot.exists()) {
+        cuantas = this._publicos.crearArreglo2(snapshot.val()).length;
+      }
+    })
+  
+    const secuencia = (cuantas + 1).toString().padStart(5, '0');
+    return `${nombreSucursal}${mes}${anio}${nuevoRol}${secuencia}`;
+  }
+  
 
   async getRecepcionUnica(ID:string){
     let answer ={informacion:false,data:{infoCliente:[],infoVehiculo:[]},error:''}

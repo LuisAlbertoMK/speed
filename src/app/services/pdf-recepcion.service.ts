@@ -71,22 +71,28 @@ export class PdfRecepcionService {
     nuevasdocumentDefinitionimages['puerta_posterior'] = `${(await bases('../../assets/imagenes_detalles/puerta_posterior.jpg')).url}`
     nuevasdocumentDefinitionimages['tirador_posterior'] = `${(await bases('../../assets/imagenes_detalles/tirador_posterior.jpg')).url}`
     nuevasdocumentDefinitionimages['techo'] = `${(await bases('../../assets/imagenes_detalles/techo.jpg')).url}`
-    nuevasdocumentDefinitionimages['firmaCliente'] = `${data['firmaCliente']}`
+    nuevasdocumentDefinitionimages['firma_cliente'] = `${data['firma_cliente']}`
+
 
     let pers2 = []
-    const personalizados:any[] = data['personalizados']
+    const personalizados:any[] = data.personalizados
+    
+    
     await personalizados.forEach(p=>{
-      nuevasdocumentDefinitionimages[p.nombre] = `${p.base64data}`
+      nuevasdocumentDefinitionimages[p.nombre] = `${p.data64}`
       const temp = {id: p.nombre, checado: true}
       pers2.push(temp)
     })
+    // console.log(nuevasdocumentDefinitionimages);
+    
 
     let person_ =[]
 
     person_.forEach((p)=>{
-      const nombre = p['nombre'].split('.')
-      nuevasdocumentDefinitionimages[nombre[0].toLowerCase()] = `${p['url']}`
+      // const nombre = p['nombre'].split('.')
+      nuevasdocumentDefinitionimages[p.nombre] = `${p['url']}`
     })
+    // console.log('error');
     
     const checados = data['detalles'].filter(d=>d['checado'])
     data['conjuntos'] = checados.concat(person_).concat(pers2)
@@ -95,15 +101,17 @@ export class PdfRecepcionService {
   async pdf(data:any, bibliotecaVirtual:any){
     const colorTextoPDF: string = '#1215F4';
     const dat = data
-    if (!dat['cliente']['empresa']) {
-      dat['cliente']['empresa'] =''
+    if (!data.cliente['empresa']) {
+      data.cliente['empresa'] =''
+      data.cliente['empresaShow'] =''
+
     }else{
-      dat['cliente']['empresa']
+      data.cliente['empresa']
+      data.cliente['empresaShow']
     }
 
-
     function Combustble(){
-      let {status} = dat['checkList'].find(c=>c['id'] === 'nivel_gasolina')
+      let {status} = dat['checkList'].find(c=>c['valor'] === 'nivel_gasolina')
       let fullpath = ''
       switch (status) {
         case 'vacio':
@@ -148,7 +156,7 @@ export class PdfRecepcionService {
       data.forEach((e)=>{
         i++
         
-        aqui.push({ text: `${transform(e['mostrar'])}: ${e['status'].toUpperCase()}`,alignment: 'left', style:'info3' })
+        aqui.push({ text: `${transform(e['show'])}: ${e['status'].toUpperCase()}`,alignment: 'left', style:'info3' })
         // console.log(aqui);
         
         if (i == multiplos[mul]) {
@@ -236,6 +244,7 @@ export class PdfRecepcionService {
       };
     }
     let totalRecepcion = 0
+    const mulIVA = (data.iva) ? 1.16 : 1
 
     function buildTableBody(elements, columns, showHeaders, headers) {
       var body = [];
@@ -245,12 +254,12 @@ export class PdfRecepcionService {
       // console.log(elements);
       
       filtrados.forEach(function (row) {
-        totalRecepcion+= row['flotilla']
+        totalRecepcion+= row['total']
           var dataRow = [];
           var i = 0;
           // console.log(row['nombre']);
           columns.forEach(function(column) {
-            if (column==='flotilla') {
+            if (column==='total') {
               // console.log(redondeado2(row[column]));
               dataRow.push({text: `${redondeado2(row[column])}`,alignment: headers[i].alignmentChild,style:'content' });
               i++;
@@ -268,6 +277,7 @@ export class PdfRecepcionService {
       })
       return body;
     }
+    const muliva = (data.iva) ? .16 : 0
     let documentDefinition = {
       footer: function(currentPage, pageCount) {
         return [
@@ -440,7 +450,7 @@ export class PdfRecepcionService {
                 body: [
                   [ 
                     { text: `Nombre:`,alignment: 'left', style:'info' },
-                    { text: `${dat['cliente'].fullname}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${dat.cliente.nombre} ${dat.cliente.apellidos}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Tel:`,alignment: 'left', style:'info' },
@@ -499,7 +509,8 @@ export class PdfRecepcionService {
         widths: [ '25%','25%','25%','25%'],
 
         body: [
-          [{ text: `${da[0][1].text}`,fillColor: '#8AD3AD', color:'#1C5121',alignment: 'left', style:'info' },da[0][1],da[0][2],da[0][3]],
+          // [{ text: `${da[0][1].text}`,fillColor: '#8AD3AD', color:'#1C5121',alignment: 'left', style:'info' },da[0][1],da[0][2],da[0][3]],
+          [da[0][0],da[0][1],da[0][2],da[0][3]],
           [da[1][0],da[1][1],da[1][2],da[1][3]],
           [da[2][0],da[2][1],da[2][2],da[2][3]],
           [da[3][0],da[3][1],da[3][2],da[3][3]],
@@ -523,8 +534,8 @@ export class PdfRecepcionService {
           [ { text: `Servicios solicitados`,alignment: 'left', style:'info2' }, { text: `Autorización`,alignment: 'center', style:'info2' }],
           [ 
             table(
-              dat['elementos'],
-              ['tipo', 'nombre','flotilla'],
+              dat.servicios,
+              ['tipo', 'nombre','total'],
               ['15%', '65%', '20%'],
               true,
               [ {text:'Tipo', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'center'},
@@ -547,7 +558,7 @@ export class PdfRecepcionService {
                   [ { text: `Nombre y Firma.`,alignment: 'center', style:'info3' }],
                   [ { text: ` `,alignment: 'center', style:'info3' }],
                   [ {
-                    image: `firmaCliente`,
+                    image: `firma_cliente`,
                     height: 50,
                     width: 150,
                     aling: 'center',
@@ -571,9 +582,7 @@ export class PdfRecepcionService {
                 headerRows: 1,
                 widths: [ '100%'],
         
-                body: [
-                  [ { text: `Total presupuesto: ${redondeado2(totalRecepcion)}`,alignment: 'right', style:'info2' } ],                      
-                ]
+                body:retornbody(data.iva)
               }
             }, 
             ///espacio necesario para la columna dos 
@@ -586,7 +595,7 @@ export class PdfRecepcionService {
 
     { columns: [ { width: '100%', text: { text: `Cantidad con letra`,alignment: 'center', style:'info2' }, } ], columnGap: 10 },
 
-    { columns: [ { width: '100%', text: { text: `${this.letrasNumeros(totalRecepcion)}`,alignment: 'center', style:'info2' }, } ], columnGap: 10 },
+    { columns: [ { width: '100%', text: { text: `${this.letrasNumeros(totalRecepcion * mulIVA)}`,alignment: 'center', style:'info2' }, } ], columnGap: 10 },
 
     { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },
 
@@ -602,6 +611,24 @@ export class PdfRecepcionService {
     // { text: `E) Cualquier diagnóstico y cotización que no sea autorizada tendra un costo minimo de $ 499.00 pesos'`,alignment: 'justify', style:'terminos' },
     ]
     let limites_ = []
+
+    function retornbody(iva){
+
+      let rb = []
+      if (iva){
+        rb = [
+          [ { text: `Subtotal: ${redondeado2(totalRecepcion )}`,alignment: 'right', style:'info2' } ],                      
+          [ { text: `I.V.A: ${redondeado2(totalRecepcion * muliva)}`,alignment: 'right', style:'info2' } ],                      
+          [ { text: `Total presupuesto: ${redondeado2(totalRecepcion * mulIVA)}`,alignment: 'right', style:'info2' } ], 
+        ]
+      }else{
+        rb = [
+          [ { text: `Subtotal: ${redondeado2(totalRecepcion )}`,alignment: 'right', style:'info2' } ],                    
+          [ { text: `Total presupuesto: ${redondeado2(totalRecepcion * mulIVA)}`,alignment: 'right', style:'info2' } ],    
+        ]
+      }
+      return rb
+    }
 
     let donde = dat['conjuntos']
 
@@ -938,7 +965,7 @@ export class PdfRecepcionService {
 
    const nuevasdocumentDefinitionimages = {}
    nuevasdocumentDefinitionimages['logo'] = `${(await this.getBase64ImageFromURL('../../assets/logoSpeedPro/Logo-Speedpro.png'))}`
-   nuevasdocumentDefinitionimages['firma'] = `${data['firma']}`
+   nuevasdocumentDefinitionimages['firma_cliente'] = `${data['firma_cliente']}`
   //  console.log(nuevasdocumentDefinitionimages);
   if (!data['infoCliente'].empresa) {
     data['infoCliente'].empresa = data['infoCliente'].tipo
@@ -1306,7 +1333,7 @@ export class PdfRecepcionService {
                 body: [
                   [ {  text: `FIRMA DE CONFORMIDAD`,bold: true, alignment: 'center', style:'terminos2'} ],
                   [ {
-                    image: `firma`,
+                    image: `firma_cliente`,
                     height: 50,
                     width: 90,
                     aling: 'center',
