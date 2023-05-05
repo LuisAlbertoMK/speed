@@ -55,14 +55,15 @@ const dbRef = ref(getDatabase());
 })
 export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
+  @HostListener('dragover',['$event'])
+  @Output() mouseSobre: EventEmitter<boolean> = new EventEmitter()
   miniColumnas:number = 100
 
   ROL:string =''; SUCURSAL:string ='';
 
-
-
   //TODO: aqui la informacion que es nueva
-  infoConfirmar={cliente:{}, vehiculo:{},sucursal:{}, reporte:{},checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25}
+  infoConfirmar={cliente:{}, vehiculo:{},sucursal:{}, reporte:{},checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25,
+  detalles:[]}    
   camposDesgloce = [
     {valor:'mo', show:'mo'},
     // {valor:'refacciones_a', show:'refacciones a'},
@@ -140,16 +141,75 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   mo: string = 'mo'
 
   sinDetalles: boolean = true
+  kilometraje:number =1234; diasEntrega:number = null
 
   coloresPluma= [
+    {show:'Negro', color:'#010101'},
     {show:'Azul', color:'#444BF2'},
     {show:'Amarillo', color:'#C9D612'},
     {show:'Naranja', color:'#FFA30A'},
-    {show:'Negro', color:'#010101'},
     {show:'Rojo', color:'#F30F05'},
     {show:'Verde', color:'#3DD400'},
   ]
   colorPluma:string = '#010101'
+
+  nombre:string //nombre de la imagen
+  context!: CanvasRenderingContext2D;
+  @ViewChild('videoContainer', { static: false }) videoContainer!: ElementRef;
+  @ViewChild('myCanvas', { static: false }) myCanvas!: ElementRef;
+  //trabajar con los archivos en dropzone
+  files: File[] = []
+  archivos: FileItem[]=[]
+  archTemp:any;
+
+  //acciones con la camara
+  cameraStart:boolean = false
+  nombres_cameras = []
+  camera_select:string = null
+  camaraTrasera:boolean = true
+  foto_tomada = null
+  camaraVuelta = true
+  stream:any
+  fotografias:boolean = false;
+  sizeScreen = {w:0,h:0}
+
+  ///check list
+  checkList = [
+    {valor:"antena",show:'antena', opciones: [ "si","no","dañado"],status:''},
+    {valor:"birlo_seguridad",show:'birlo seguridad', opciones: [ "si","no","dañado"],status:''},
+    {valor:"bocinas",show:'bocinas', opciones: [ "si","no","dañado"],status:''},
+    {valor:"botones_interiores",show:'botones interiores', opciones: [ "si","no","dañado"],status:''},
+    {valor:"boxina_claxon",show:'boxina claxon', opciones: [ "si","no","dañado"],status:''},
+    {valor:"calefaccion",show:'calefaccion', opciones: [ "si","no","dañado"],status:''},
+    {valor:"cenicero",show:'cenicero', opciones: [ "si","no","dañado"],status:''},
+    {valor:"cristales",show:'cristales', opciones: [ "si","no","dañado"],status:''},
+    {valor:"encendedor",show:'encendedor', opciones: [ "si","no","dañado"],status:''},
+    {valor:"espejo_retorvisor",show:'espejo retrovisor', opciones: [ "si","no","dañado"],status:''},
+    {valor:"espejos_laterales",show:'espejos laterales', opciones: [ "si","no","dañado"],status:''},
+    {valor:"estuche_herramientas",show:'estuche herramientas', opciones: [ "si","no","dañado"],status:''},
+    {valor:"extintor",show:'extintor', opciones: [ "si","no","dañado"],status:''},
+    {valor:"gato",show:'gato', opciones: [ "si","no","dañado"],status:''},
+    {valor:"golpes_y_carroceria",show:'golpes y carroceria', opciones: [ "si","no","dañado"],status:''},
+    {valor:"instrumentos_tablero",show:'instrumentos tablero', opciones: [ "si","no","dañado"],status:''},
+    {valor:"interiores",show:'interiores', opciones: [ "si","no","dañado"],status:''},
+    {valor:"limpiadores",show:'limpiadores', opciones: [ "si","no","dañado"],status:''},
+    {valor:"llanta_refaccion",show:'llanta refaccion', opciones: [ "si","no","dañado"],status:''},
+    {valor:"llave_cruz",show:'llave cruz', opciones: [ "si","no","dañado"],status:''},
+    {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],"luces": [ "si","no","dañado"],status:''},
+    {valor:"maneral_gato",show:'maneral gato', opciones: [ "si","no","dañado"],status:''},
+    {valor:"manijas_interiores",show:'manijas interiores', opciones: [ "si","no","dañado"],status:''},
+    {valor:"molduras_completas",show:'molduras completas', opciones: [ "si","no","dañado"],status:''},
+    {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:''},
+    {valor:"radio",show:'radio', opciones: [ "si","no","dañado"],status:''},
+    {valor:"tapetes",show:'tapetes', opciones: [ "si","no","dañado"],status:''},
+    {valor:"tapon_combustible",show:'tapon combustible', opciones: [ "si","no","dañado"],status:''},
+    {valor:"tapones_llantas",show:'tapones llantas', opciones: [ "si","no","dañado"],status:''},
+    {valor:"tapones_motor",show:'tapones motor', opciones: [ "si","no","dañado"],status:''},
+    {valor:"tarjeta_de_circulacion",show:'tarjeta de circulacion', opciones: [ "si","no"],status:''},
+    {valor:"testigos_en_tablero",show:'testigos en tablero', opciones: [ "si","no"],status:''},
+    {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:''}
+    
+  ]
   //TODO: aqui la informacion que es nueva
 
 
@@ -213,7 +273,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           this.infoConfirmar.margen = margen_get
           this.infoConfirmar.reporte = reporte
 
-          this.infoConfirmar.checkList = this.detalles_rayar
+          this.infoConfirmar.detalles = this.detalles_rayar
+          this.infoConfirmar.checkList = this.checkList
 
 
           this.infoConfirmar.iva = iva
@@ -241,12 +302,427 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   cambiaTodosCheckA(status){
     setTimeout(() => {
-      this.infoConfirmar.checkList.map(c=>{
+      this.infoConfirmar.detalles.map(c=>{
         c.status = status
       })
     },100)
     
   }
 
+  ///cambiar status de check
+  cambiarStatusCheckList(index, status){
+    this.infoConfirmar.checkList[index].status = status
+  }
+  ///acciones con el canvas
+  async principal(){
+    // const mainCanvas = document.getElementById("")
+    this.limpiarCanvas()
+    // this.disableBtnGuardarIMG = false
+    // this.contieneIMG = false
+    const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
+    // console.log(mainCanvas);
+    if (!mainCanvas) return
+    
+    const context = mainCanvas.getContext("2d")
+    var miimagen = new Image()
+    miimagen.src = '../../../assets/fondoVehiculo.png'
+    context.drawImage(miimagen,0,0,w(),h())
+    function w() {return mainCanvas.width;}
+    function h() {return  mainCanvas.height;}
+    miimagen.onload = function(){
+      context.drawImage(miimagen,0,0,w(),h())
+    }
+    let initialX; let initialY; let initialTX; let initialTY; let points =[]
+    const dibujar = (cursorX, cursorY)=>{
+      context.beginPath()
+      context.moveTo(initialX,initialY)
+      context.lineWidth = 3
+      context.strokeStyle =`${this.colorPluma}`
+      context.lineCap = "round"
+      context.lineJoin = "round"
+      context.lineTo(cursorX, cursorY)
+      context.stroke()
+      initialX = cursorX
+      initialY = cursorY
+    }
+    const mouseDown =(evt)=>{      
+      // this.contieneIMG = true
+      initialX = evt.offsetX
+      initialY = evt.offsetY
+      dibujar(initialX,initialY)
+      mainCanvas.addEventListener("mousemove", mouseMoving);      
+    }
+    const mouseMoving = (evt)=>{
+      dibujar(evt.offsetX, evt.offsetY)
+    }
+    
+    const mouseUp = ()=>{
+      mainCanvas.removeEventListener("mousemove",mouseMoving)
+    }
+    mainCanvas.addEventListener('mousedown',mouseDown)
+    mainCanvas.addEventListener('mouseup',mouseUp)
+    
+
+    ///eventos de touch
+    const touchDown =(evt)=>{ 
+      // this.contieneIMG = true
+      const rect =  mainCanvas.getBoundingClientRect()
+      const prevPos = {
+        x: evt.targetTouches[0].clientX - rect.left,
+        y: evt.targetTouches[0].clientY - rect.top,
+      }
+      initialTX = prevPos.x
+      initialTY = prevPos.y
+      // dibujartouch(initialTX,initialTY)
+      mainCanvas.addEventListener("touchmove", touchMoving);
+    }
+    const touchMoving = (evt)=>{
+      const rect =  mainCanvas.getBoundingClientRect()
+      const prevPos = {
+        x: evt.targetTouches[0].clientX - rect.left,
+        y: evt.targetTouches[0].clientY - rect.top,
+      }
+      initialTX = prevPos.x
+      initialTY = prevPos.y
+      // dibujartouch(initialTX, initialTY )
+      writeSingle(prevPos)
+
+    }
+    const writeSingle = (prevPos, emit = true)=>{
+      points.push(prevPos)
+      if (points.length>3) {
+        const prevPost = points[points.length  -1]
+        const currentPos = points[points.length  -2]
+        drawInCanvas(prevPos,currentPos)
+      }
+    }
+    const drawInCanvas = (prevPos:any,currentPos:any)=>{
+        if (!context) {
+          return
+        }
+        context.beginPath()
+        if(prevPos){
+          context.moveTo(prevPos.x,prevPos.y)
+          context.lineWidth = 3
+          context.strokeStyle =`${this.colorPluma}`
+          context.lineCap = "round"
+          context.lineJoin = "round"
+          context.lineTo(currentPos.x,currentPos.y)
+          context.stroke()
+        }
+    }
+    const touchUp = ()=>{    
+      points =[]  
+      mainCanvas.removeEventListener("touchmove",touchMoving)
+    }
+    mainCanvas.addEventListener('touchstart',touchDown)
+    mainCanvas.addEventListener('touchend',touchUp)
+
+  }
+  limpiarCanvas() {
+    const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
+    if (!mainCanvas) return
+    const context = mainCanvas.getContext("2d")
+    context.clearRect(0,0,700,500);
+  }
+  colorPlumaClick(color:String){
+    this.colorPluma = `${color}`
+  }
+  async guardarImagenCanvas(){
+    // this.disableBtnGuardarIMG = true
+    // this.blobDetallesPersonalizado = null
+    await html2canvas(document.querySelector("#main-canvas")).then(async(canvas) => {
+      const datURL = await canvas.toDataURL()
+      const blob = this.UrltoBlob(datURL)
+      
+      const file = new File([blob], `detallesPersonalizado.png`,{
+        type: blob.type,
+      })
+      // this.blobDetallesPersonalizado = blob
+      this.archTemp={
+        archivo:blob,
+        nombreArchivo:'detallesPersonalizado',
+        estaSubiendo:false,
+        progreso:0
+      }
+      this.nombre= 'detallesPersonalizado'
+      //primero verificar si existe
+      let existe = false
+      this.archivos.forEach((a)=>{
+        if (a['nombreArchivo'] === 'detallesPersonalizado' || a['nombreArchivo'] === 'detallesPersonalizado.png') existe = true
+      })
+      
+      if (existe) {
+        this.archivos.forEach((a,index)=>{
+          if (a['nombreArchivo'] === 'detallesPersonalizado' || a['nombreArchivo'] === 'detallesPersonalizado.png') this.archivos[index] = this.archTemp
+        })
+        this.files.forEach((a,index)=>{
+          if (a['name'] === 'detallesPersonalizado.png') this.files[index] = file
+        })
+      }else{
+        this.archivos.push(this.archTemp)
+        this.files.push(file)
+      }
+    });
+   }
+  ///accciones con el drop zone
+  onSelect(event) {
+    this.archivos =[]
+    this.files.push(...event.addedFiles);
+    for(const f of this.files) {
+      this.archTemp={
+        archivo:f,
+        nombreArchivo:f.name,
+        estaSubiendo:false,
+        progreso:0
+      }
+      this.nombre=f.name
+      this.archivos.push(this.archTemp)
+    }
+  }
+  onRemove(event) {
+    this.files.splice(this.files.indexOf(event), 1)
+    // console.log(this.files);
+   const da =  [...this.archivos] 
+   let da2 = [...da]
+    this.archivos = da2.filter(o=>o.nombreArchivo ==='detallesPersonalizado.png')
+
+    
+    for(const f of this.files) {
+      this.archTemp={
+        archivo:f,
+        nombreArchivo:f.name,
+        estaSubiendo:false,
+        progreso:0
+      }
+      this.nombre=f.name
+      this.archivos.push(this.archTemp)
+    }
+    // console.log(this.archivos);
+    
+  }
+  myFilter = (d: Date | null): boolean => {
+    // console.log(d);
+    const fecha = new Date(d)
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    if (fecha < yesterday) {
+      return null
+    }else{
+      const day = fecha.getDay()
+      return day !== 0;
+    }
+    // Prevent Saturday and Sunday from being selected.
+  };
+
+  public onDragEnter(event:any){
+    this.mouseSobre.emit(true)
+  }
+  ///con el
+
+  //acciones con la camara
+  async getCamera(valor){
+     
+    const stream = this.videoContainer.nativeElement
+ 
+    if(navigator.mediaDevices.getUserMedia){
+      let nueva = {}
+      this.camaraVuelta = valor
+      if (this.camaraVuelta) {
+        
+        let op = {audio: false, video: { facingMode: {exact: "environment"} }}
+
+        nueva = op
+       
+        // this.camaraTrasera = await navigator.mediaDevices.getUserMedia(nueva).then(o=>{ return true}).catch((a)=>{return false})
+        await navigator.mediaDevices.getUserMedia(nueva)
+        .then((str)=>{
+          this.cameraStart = true
+          stream.srcObject = str
+          stream.play()
+          this.stream = stream
+        })
+        .catch((error)=>{
+                  // console.log(error);
+            this.getCamera(false)
+
+                  // this._publicos.mensajeIncorrecto('error de camara')
+                  // camaraTrasera
+              })
+      }else{
+        // if (!this.camaraTrasera) {
+          nueva =  {audio: false, video: { facingMode: "user" }}
+        // }
+        await navigator.mediaDevices.getUserMedia(nueva)
+        .then((str)=>{
+          this.cameraStart = true
+          stream.srcObject = str
+          stream.play()
+          this.stream = stream
+        })
+        .catch((error)=>{
+          // console.log(error);
+          this._publicos.mensajeIncorrecto('error de camara')
+          // camaraTrasera
+      })
+      }
+    }
+    
+
+    //   if(navigator.mediaDevices.getUserMedia){
+    //     // facingMode:'user'   para camara selfie
+    //     // facingMode: { exact: "environment" }  para camara exterior
+    //     // const unica = this.nombres_cameras.find(o=>o['id'] === this.camera_select)
+    //     let nueva = {}
+    //     let op = {audio: false, video: { facingMode: {exact: "environment"} }}
+
+    //     nueva = op
+       
+    //     this.camaraTrasera = await navigator.mediaDevices.getUserMedia(nueva).then(o=>{ return true}).catch((a)=>{return false})
+    //     // console.log(this.camaraTrasera);
+    //     // this._publicos.mensajeCorrecto('boolean: '+this.camaraTrasera)
+        
+    //     if (!this.camaraTrasera) {
+    //       nueva =  {audio: false, video: { facingMode: "user" }}
+    //     } // op = { audio:false, video: { facingMode: "user" } }
+    //     await navigator.mediaDevices.getUserMedia(nueva)
+    //     .then((str)=>{
+    //       this.cameraStart = true
+    //       stream.srcObject = str
+    //       stream.play()
+    //       this.stream = stream
+    //     })
+    //     .catch((error)=>{
+    //         // console.log(error);
+    //         this._publicos.mensajeIncorrecto('error de camara')
+    //         // camaraTrasera
+    //     })
+    // }
+  }
+  async cameraOFF(){
+    this.foto_tomada = ''
+    this.cameraStart = false
+    this.cancelarFoto()
+  }
+  sacarFoto(){
+    const canvas = this.myCanvas.nativeElement
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(this.stream, 0,0,640,480);
+    const dataURL = canvas.toDataURL("image/png");
+    // console.log(dataURL);
+    this.foto_tomada = dataURL
+  }
+  guardaImagen(){
+    if (!this.foto_tomada) return
+    const canvas = this.myCanvas.nativeElement
+    const dataURL = canvas.toDataURL("image/png");
+    const blob = this.UrltoBlob(dataURL)
+    const name_1 = new Date().getTime()
+    const file = new File([blob], `foto_${name_1}.png`,{
+      type: blob.type,
+    })
+    this.files.push(file)
+    this.foto_tomada = ''
+    this.archivos = []
+    for(const f of this.files) {
+      this.archTemp={
+        archivo:f,
+        nombreArchivo:f.name,
+        estaSubiendo:false,
+        progreso:0
+      }
+      this.nombre=f.name
+      this.archivos.push(this.archTemp)
+    }
   
+    setTimeout(() => {
+      this.cancelarFoto()
+      // this.getCamera()
+    }, 200);
+  }
+  UrltoBlob(dataURL:any){    
+    const partes = dataURL.split(';base64,')
+    const contentType = partes[0].split(':')[1]
+    const raw = window.atob(partes[1])
+    const rawL = raw.length
+    const array = new Uint8Array(rawL)
+    for(let i=0; i<rawL;i++){
+      array[i]= raw.charCodeAt(i)
+    }    
+    return new Blob([array],{type: contentType})
+  }
+  cancelarFoto(){
+    // this.getCamera()
+
+    if (!this.cameraStart) {
+      const stream = this.videoContainer.nativeElement 
+      stream.srcObject.getTracks()[0].stop()
+      return
+    }
+
+    this.foto_tomada = ''
+    setTimeout(() => {
+      this.dimensiones()
+    }, 200);
+  }
+  async dimensiones(){
+    
+    var panelIzquierda = document.getElementById("divCamera")
+    // var rect = panelIzquierda.getBoundingClientRect();
+
+    // const screen = await window.screen
+    const size_max_w = 720
+    const size_max_h = 600
+    const size_min_w = 480
+    const size_min_h = 320
+    let ancho = size_min_w, alto = size_min_h
+
+    // console.log(panelIzquierda.clientHeight)
+    const ancho_contenedor = panelIzquierda.clientHeight
+    if ( ancho_contenedor > size_min_w  && ancho_contenedor < size_max_w ) ancho = ancho_contenedor
+    const alto_contenedor = panelIzquierda.offsetHeight
+    if ( alto_contenedor > size_min_h  && alto_contenedor < size_max_h )  alto = alto_contenedor 
+    // console.log('aqui');
+    // console.log('ancho',ancho);
+    // console.log('alto',alto);
+    this.sizeScreen.h = alto 
+    this.sizeScreen.w = ancho
+    // console.log();
+    
+    this.getCamera(true)
+  }
+  lista_cameras(){
+    this.fotografias = true
+    this.nombres_cameras = []
+    navigator.mediaDevices.enumerateDevices()
+    .then((devices) => {
+      // console.log(devices);
+      const filterCameras = devices.filter(d=>d['kind'] === 'videoinput')
+      if (filterCameras.length === 1) {
+        const temp = {
+          id: filterCameras[0].deviceId,
+          label: filterCameras[0].label,
+          kind: filterCameras[0].kind,
+          type: 'InputDeviceInfo'
+        }
+        this.nombres_cameras.push(temp)
+        this.camera_select = filterCameras[0].deviceId
+        
+      }
+      devices.map(device=>{
+        if (device.kind === 'videoinput') {
+          const temp = {
+            id: device.deviceId,
+            label: device.label,
+            kind: device.kind,
+            type: 'InputDeviceInfo'
+          }
+          this.nombres_cameras.push(temp)
+        }
+      })
+    })
+    .catch((err) => {
+      console.error(`${err.name}: ${err.message}`);
+    });
+  }
 }

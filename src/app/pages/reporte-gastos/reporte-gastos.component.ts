@@ -410,7 +410,17 @@ export class ReporteGastosComponent implements OnInit {
     // console.log(this.fechas_get);
     // console.log(this.recepciones_arr);
     // console.log(this.arr_gastosOperacion);
-    this.reporteShowGE =  nuevaFUnc(this.recepciones_arr,this.arr_gastosOperacion, this.fechas_get)
+    // console.log(this.SearchSucursal);
+    
+    const resultados1 = this.SearchSucursal.sucu === 'Todas'
+        ? this.recepciones_arr
+        : this.recepciones_arr.filter(s => s.sucursal.id === this.SearchSucursal.id);
+
+    const resultados2 = this.SearchSucursal.sucu === 'Todas'
+    ? this.arr_gastosOperacion
+    : this.arr_gastosOperacion.filter(s => s.sucursal === this.SearchSucursal.id);
+
+    this.reporteShowGE =  nuevaFUnc(resultados1,resultados2, this.fechas_get)
     
     
     function nuevaFUnc(recepciones, gastos_operacion,rangoFechas){

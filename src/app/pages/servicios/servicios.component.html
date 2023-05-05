@@ -10,13 +10,54 @@
     </div>
   </div>
 </div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+  <button class="btn btn-success btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
+    [routerLink]="'/ServiciosConfirmar/new/new'"> <i class="fad fa-layer-plus"></i> Recepción </button>
+  <a role="button" class="btn btn-primary btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
+    [routerLink]="['/cotizacionNueva/new/new/null']"><i class="fad fa-layer-plus"></i>
+    Cotizacón </a>
+</div>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
     <input type="text" class="form-control form-control-sm" placeholder="Buscar" (keyup)="applyFilter($event)">
   </div>
 </div>
 
-indexPadre: {{indexEdicionRecepcion}}
+<!-- indexPadre: {{indexEdicionRecepcion}} -->
+
+
+<button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuStatusOS">
+  Busqueda {{busquedaStatus | capitalizarUno}}
+</button>
+<mat-menu #menuStatusOS="matMenu">
+  <button mat-menu-item (click)="busqueda('todos')" >todos</button>
+  <button mat-menu-item (click)="busqueda(item.valor)" *ngFor="let item of statusOS">{{item.show}}</button>
+</mat-menu>
+<button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuSucursales" *ngIf="SUCURSAL === 'Todas'">
+  Busqueda {{busquedaSucursalStringShow | capitalizarUno}}
+</button>
+<mat-menu #menuSucursales="matMenu">
+  <button mat-menu-item (click)="busquedaSucursal('Todas','Todas')" >Todas</button>
+  <button mat-menu-item (click)="busquedaSucursal(item.id,item.sucursal)" *ngFor="let item of sucursales_arr">{{item.sucursal}}</button>
+</mat-menu>
+<button class="btn btn-sm btn-primary" (click)="picker.open()">
+  <i class="fa fa-calendar-alt"></i>
+</button>
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+    <mat-date-range-input [formGroup]="fechas_filtro" [rangePicker]="picker" style=" overflow:hidden;">
+      <input matStartDate formControlName="start" readonly  (dateChange)="cambioFecha()">
+      <input matEndDate formControlName="end" readonly (dateChange)="cambioFecha()">
+    </mat-date-range-input>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </div>
+  
+</div>
+
+
+  
+<!-- <p>Selected range: {{fechas_filtro.value | json}}</p> -->
 
 <div class="mat-elevation-z8 table-responsive">
   <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
@@ -40,6 +81,18 @@ indexPadre: {{indexEdicionRecepcion}}
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
       <td mat-cell *matCellDef="let row" class="text-uppercase"> 
         {{row.searchCliente}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="fechaRecibido">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Recibido </th>
+      <td mat-cell *matCellDef="let row" class="text-uppercase"> 
+        {{row.fecha_recibido}} {{row.hora_recibido}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="fechaEntregado">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Entrega </th>
+      <td mat-cell *matCellDef="let row" class="text-uppercase"> 
+        {{row.fecha_entregado}} {{row.hora_entregado}}
       </td>
     </ng-container>
 
@@ -87,6 +140,10 @@ indexPadre: {{indexEdicionRecepcion}}
                 <strong class="text-uppercase" [ngClass]="{'text-secondary': ['espera', 'cancelado'].includes(row.status) ,'text-success': row.status === 'recibido','text-primary': row.status === 'autorizado','text-danger': row.status === 'terminado', 'text-info': row.status === 'entregado'}"
                 >{{row.status}}</strong>
                 </button>
+                <mat-checkbox class="example-margin m-1"  (click)="actualizarReporteIVA(row)" [(ngModel)]="row.iva">IVA</mat-checkbox>
+                <!-- <section class="example-section">
+                  
+                </section> -->
                 
                           <!-- </button> -->
                 <mat-menu #menuStatus="matMenu">
@@ -94,11 +151,36 @@ indexPadre: {{indexEdicionRecepcion}}
                     >{{itemMenu.show}}</button>
                     <!--  -->
                 </mat-menu>
-                Dias en sucursal: <strong class="text-uppercase"> {{row.diasSucursal}}</strong>
+
+
+                <p> Dias en sucursal: <strong class="text-uppercase"> {{row.diasSucursal}}</strong></p>
+                <p> Fecha recibido: <strong class="text-uppercase"> {{row.fecha_recibido}} {{row.hora_recibido}}</strong></p>
+                <p> Fecha entregado: <strong class="text-uppercase"> {{row.fecha_entregado}} {{row.hora_entregado}}</strong></p>
               </div>
              </div>
              <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
               <mat-tab label="Elementos">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
+                  <div class="card border-success mb-3">
+                    <div class="card-header text-center">Desgloce
+                      <strong [ngClass]="{'text-danger': row.reporte['ub'] < 55,'text-success': row.reporte['ub'] >= 55}">
+                        U.B: {{row.reporte['ub'] | monedas:'%'}}
+                      </strong>
+                    </div>
+                    <div class="card-body text-success ">
+                      <h5 class="card-title"></h5>
+                      <div class="row">
+                        <ng-container *ngFor="let campo of camposDesgloce">
+                          <ng-container *ngIf="row.reporte[campo['valor']] > 0">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">{{campo['show']}}</div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{row.reporte[campo.valor]  | monedas}}</strong></div>
+                          </ng-container>
+                        </ng-container>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{row.reporte['total']  | numerosLetras}}</strong></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table">
                     <thead>
@@ -142,34 +224,7 @@ indexPadre: {{indexEdicionRecepcion}}
                     </tbody>
                   </table>
                 </div>  
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
-                  <div class="card border-success mb-3">
-                    <div class="card-header text-center">Desgloce
-                      <strong [ngClass]="{'text-danger': row.reporte['ub'] < 55,'text-success': row.reporte['ub'] >= 55}">
-                        U.B: {{row.reporte['ub'] | monedas:'%'}}
-                      </strong>
-                      
-                    </div>
-                    <div class="card-body text-success ">
-                      <h5 class="card-title"></h5>
-                      <div class="row">
-                        
-                        <ng-container *ngFor="let campo of camposDesgloce">
-                          <ng-container *ngIf="row.reporte[campo['valor']] > 0">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">{{campo['show']}}</div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{row.reporte[campo.valor]  | monedas}}</strong></div>
-                          </ng-container>
-                          
-                        </ng-container>
-                        <!-- <ng-container *ngIf="row.reporte['meses'] !== 0"> -->
-                          <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
-                          <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{row.reporte['meses'] | monedas}}</strong></div> -->
-                        <!-- </ng-container> -->
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{row.reporte['total']  | numerosLetras}}</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
               </mat-tab>
               <mat-tab label="Cliente">
                 <div class="card border-dark">

@@ -24,6 +24,7 @@ import { months } from 'moment';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { CotizacionService } from 'src/app/services/cotizacion.service';
+import { uniqueSort } from 'jquery';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -45,12 +46,15 @@ const dbRef = ref(getDatabase());
   ],
 })
 export class ServiciosComponent implements OnInit, OnDestroy {
+
+  ROL:string; SUCURSAL:string
   sucursales_arr=[]
   recepciones_arr=[]
+  miniColumnas:number = 100
 
   // tabla
   dataSource = new MatTableDataSource(); //elementos
-  elementos = ['id','no_os','searchCliente','searchPlacas']; //elementos
+  elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
   expandedElement: any | null; //elementos
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
@@ -128,6 +132,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   // 'espera','autorizado','recibido','terminado','entregado','cancelado'
   indexEdicionRecepcion: number; indexEdicionRecepcionBoolean: boolean =  false
   dataOcupadaOS:any = {}
+
+  busquedaStatus: string = 'todos'
+  busquedaSucursalString: string = 'Todas'
+  busquedaSucursalStringShow: string = 'Todas'
+  
+  fechas_filtro = new FormGroup({
+    start: new FormControl(Date),
+    end: new FormControl(Date),
+  });
+
+  fechas_get = {start: new Date(), end: new Date()}
+  
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
     private _servicios:ServiciosService, private _usuarios:UsuariosService, private _security:EncriptadoService,
@@ -152,11 +168,25 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-        this.acciones()
+        this.rol()
       }
     }, {
         onlyOnce: true
     })
+  }
+  rol(){
+    if (localStorage.getItem('dataSecurity')) {
+      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+      this.ROL = this._security.servicioDecrypt(variableX['rol'])
+      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+      if (this.SUCURSAL !=='Todas') {
+        this.busquedaSucursalString = this.SUCURSAL
+        const {sucursal} = this.sucursales_arr.find(s=>s.id === this.SUCURSAL)
+        this.busquedaSucursalStringShow = sucursal
+      }
+      
+      this.acciones()
+    }
   }
   cargaIndexPadre(data){
     console.log(data);
@@ -166,8 +196,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const starCountRef = ref(db, `recepciones`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        this.recepciones_arr = this._publicos.crearArreglo2(snapshot.val())
-        this.recepciones_arr.map((recep,index)=>{
+        const ordenes_s = this._publicos.crearArreglo2(snapshot.val())
+        ordenes_s.map((recep,index)=>{
           recep.index  = index
           // console.log(recep.id);
           recep.searchCliente = recep.cliente['nombre']
@@ -176,21 +206,33 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             const getTime  = this._publicos.getFechaHora()
             recep.diasSucursal = this._publicos.calcularDias(recep.fecha_recibido, getTime.fecha)
           // }
-          const updates = {
-            [`recepciones/${recep.id}/diasSucursal`]: recep.diasSucursal
-          };
-          update(ref(db), updates)
-          .then(() => {});
+          // const updates = {
+          //   [`recepciones/${recep.id}/diasSucursal`]: recep.diasSucursal
+          // };
+          // update(ref(db), updates)
+          // .then(() => {});
           
+          
+          recep.fecha_receibido_compara = this._publicos.construyeFechaString(recep.fecha_recibido)
+          if (recep.fecha_entregado) {
+            recep.fecha_entrega_compara = this._publicos.construyeFechaString(recep.fecha_entregado)
+          }
+          recep.fechaRecibido = `${recep.fecha_recibido} ${recep.hora_recibido}`
+          recep.fechaEntregado = `${recep.fecha_entregado} ${recep.hora_entregado}`
         })
-        // console.log(this.recepciones_arr);
+        this.fechas_get.start.setHours(0,0,0,0)
+        this.fechas_get.end.setHours(0,0,0,0)
+
+        this.recepciones_arr = (this.busquedaSucursalString === 'Todas') ? ordenes_s :  ordenes_s.filter(os=>os.sucursal.id === this.busquedaSucursalString)
+        setTimeout(()=>{
+          this.busqueda(this.busquedaStatus)
+          this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
+        },500)
         
-        this.dataSource.data = this.recepciones_arr
-        this.newPagination()
         
       }
-    }, {
-        onlyOnce: true
+    },{
+      onlyOnce: true
     })
   }
   accionServicio(padre, hijo, statusGet){
@@ -240,30 +282,39 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.dataSource.data = this.recepciones_arr
     this.newPagination()
   }
+  actualizarReporteIVA(data){
+    setTimeout(()=>{
+      console.log(data);
+      
+      // if(data.id && data.index){
+        const updates = {};
+        const reporte = this._publicos.realizarOperaciones_2(data).reporte
+        this.recepciones_arr[data.index].reporte = reporte
+        this.recepciones_arr[data.index].notificar = true
+        updates[`recepciones/${data.id}/reporte`] = reporte;
+        updates[`recepciones/${data.id}/iva`] = data.iva;
+        updates[`recepciones/${data.id}/notificar`] = true;
+        update(ref(db), updates)
+      // }
+    },200)
+  }
   statusServicio(padre, status){
     const padreID = padre.id
     const padreIndex = padre.index
     
-
-    // espera
-    // recibido
-    // autorizado
-    // terminado
-    // entregado
-    // cancelado
-
-
-    // const  aprobado = (status === 'espera' || status === 'cancelado') ? false:  true
     const servicios = this.recepciones_arr[padreIndex].servicios;
+    const infoIndex = this.recepciones_arr[padreIndex];
+    
     const {fecha, hora} = this._publicos.getFechaHora()
     const updates = {};
-        
     servicios.forEach(servicio => {
-      if(servicio.aprobado && (status === 'terminado' || status === 'entregado')) {
+      if(status === 'terminado' || status === 'entregado') {
         servicio.status = 'terminar';
         servicio.showStatus = 'Terminado';
         updates[`recepciones/${padreID}/fecha_entregado`] = fecha;
         updates[`recepciones/${padreID}/hora_entregado`] = hora;
+        infoIndex.fecha_entregado = fecha;
+        infoIndex.hora_entregado = hora;
       } else {
         servicio.status = 'Aprobado';
         servicio.showStatus = 'En espera';
@@ -271,17 +322,23 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         updates[`recepciones/${padreID}/hora_entregado`] = null;
         updates[`recepciones/${padreID}/fecha_recibido`] = fecha;
         updates[`recepciones/${padreID}/hora_recibido`] = hora;
+        infoIndex.fecha_recibido = fecha;
+        infoIndex.hora_recibido = hora;
+        infoIndex.fecha_entregado = null;
+        infoIndex.hora_entregado = null;
       }
     });
 
-    update(ref(db), updates);
+    infoIndex.servicios = servicios;
+    infoIndex.status = status;
+    infoIndex.notificar = true;
+    updates[`recepciones/${padreID}/status`] = status;
+    updates[`recepciones/${padreID}/notificar`] = true;
     
-    this.recepciones_arr[padreIndex].servicios = servicios;
-    this.recepciones_arr[padreIndex].status = status;
-    this.dataSource.data = this.recepciones_arr;
-    this.newPagination()
-
-
+    this.recepciones_arr[padreIndex] = infoIndex
+    update(ref(db), updates)
+    this.busqueda(this.busquedaStatus)
+    this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
   }
   //para actualizar el tecnico de la orden de servicio
   infoTecnico(event){
@@ -303,6 +360,79 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+  cambioFecha(){
+    const {start, end} = this.fechas_filtro.value
+
+    if (start && end) {
+      if (start['_d'] && end['_d']) {
+        const startOfDay = date => {
+          const copy = new Date(date);
+          copy.setHours(0, 0, 0, 0);
+          return copy;
+        };
+        const startI = startOfDay(start);
+        const startF = startOfDay(end);
+
+        this.fechas_get = {start: startI, end: startF}
+        this.busqueda(this.busquedaStatus)
+        this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
+      }
+    }
+  }
+  busqueda(busquedaStatusOS:string){
+    let nuevoFiltro = this.recepciones_arr;
+
+    if (busquedaStatusOS !== 'todos') {
+      nuevoFiltro = nuevoFiltro.filter(os => os.status === busquedaStatusOS);
+    }
+    
+    if (this.busquedaSucursalString !== 'Todas') {
+      nuevoFiltro = nuevoFiltro.filter(os => os.sucursal.id === this.busquedaSucursalString);
+    }
+    this.busquedaStatus = busquedaStatusOS
+    
+    const gastosFechas = nuevoFiltro.filter(a => a.fecha_receibido_compara >= this.fechas_get.start && a.fecha_receibido_compara <= this.fechas_get.end);
+    const gastosFechas2 = nuevoFiltro.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
+    const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
+  
+    this.dataSource.data = uniqueSort(unicos)
+    this.newPagination();
+  }
+  busquedaSucursal(busquedaStatusSucursal:string, nombre:string){
+    let filtrados = this.recepciones_arr
+    if (busquedaStatusSucursal === 'Todas') {
+      
+    
+      if (this.busquedaStatus !== 'todos') {
+        filtrados = filtrados.filter(os => os.status === this.busquedaStatus)
+      }
+    
+      // const gastosFechas = filtrados.filter(a => a.fecha_recibido >= this.fechas_get.start && a.fecha_recibido <= this.fechas_get.end)
+      
+    } else {
+      filtrados = this.recepciones_arr.filter(os => os.sucursal.id === busquedaStatusSucursal)
+    
+      if (this.busquedaStatus !== 'todos') {
+        filtrados = filtrados.filter(os => os.status === this.busquedaStatus)
+      }
+    
+      // const gastosFechas = filtrados.filter(a => a.fecha_recibido >= this.fechas_get.start && a.fecha_recibido <= this.fechas_get.end)
+      
+    }
+    
+
+    const gastosFechas = filtrados.filter(a => a.fecha_receibido_compara >= this.fechas_get.start && a.fecha_receibido_compara <= this.fechas_get.end);
+    const gastosFechas2 = filtrados.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
+    const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
+  
+    this.dataSource.data = uniqueSort(unicos)
+
+
+    this.busquedaSucursalString = busquedaStatusSucursal
+    this.busquedaSucursalStringShow = nombre
+    this.newPagination()
+    
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

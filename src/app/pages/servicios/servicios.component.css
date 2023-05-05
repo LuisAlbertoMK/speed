@@ -25,6 +25,9 @@
 a {
     text-decoration: none;
 }
+mat-form-field {
+  margin-right: 12px;
+}
 .example-table-container {
     position: relative;
     min-height: 200px;
