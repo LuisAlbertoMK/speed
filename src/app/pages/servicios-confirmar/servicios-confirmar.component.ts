@@ -892,9 +892,9 @@ newPagination(){
     if (!event) {
       this._publicos.swalToastError('intenta de nuevo')
     }else{
-      this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
+      this._publicos.mensaje_pregunta('Seguro de seleccionar cliente?').then(({respuesta})=>{
         if (respuesta) {
-          console.log(event);
+          // console.log(event);
           const camposCliente  = [ 'id' ,'no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','empresa','sucursal']
           this.infoConfirmar.cliente = this._publicos.nuevaRecuperacionData(event,camposCliente)
           this.infoConfirmar.vehiculos = (event.vehiculos) ? event.vehiculos : []

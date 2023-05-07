@@ -52,8 +52,9 @@ let problemas_03052023 =
 ]
 
 // git add .
-// git commit -m "problemas_04052023-4"
+// git commit -m "problemas_04052023-5"
 // git push -u origin main
+
 
 // monto total de iva : de que se obtiene esta parte?
 // cuanto queda libre despues de refacciones sobre el total de ventas : aqui se requiere sobre los pagos y gastos o los servicios realizados en cada o.S?
