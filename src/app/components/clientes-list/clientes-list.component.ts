@@ -25,15 +25,28 @@ export class ClientesListComponent implements OnInit {
   @Input() sucursal :string
 
   ROL:string; SUCURSAL:string
-
+  listaSucursales_arr= []
   constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService) {
     this.dataCliente = new EventEmitter()
   }
 
   ngOnInit(): void {
     this.rol()
-    this.listarClientes()
+    // this.listarClientes()
+    this.listaSucursales()
     this.automaticos()
+  }
+  listaSucursales(){
+    const starCountRef = ref(db, `sucursales`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.listaSucursales_arr = this._publicos.crearArreglo2(snapshot.val())
+        this.listarClientes()
+      }
+    }, {
+        onlyOnce: true
+      })
+	
   }
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -48,12 +61,13 @@ export class ClientesListComponent implements OnInit {
         clientes.map(cliente=>{
           if (cliente['vehiculos']) cliente['vehiculos'] = this._publicos.crearArreglo2(cliente['vehiculos'])
           if (!cliente.correo) cliente.correo = ''
+          const {sucursal} = this.listaSucursales_arr.find(s=>s.id === cliente.sucursal)
+          cliente.showSucursal = sucursal
+          if (cliente.dataFacturacion){
+            cliente.dataFacturacion = cliente.dataFacturacion['unica']
+          }
         })
-        if (this.SUCURSAL === 'Todas') {
-          this.listaClientes_arr = clientes
-        }else{
-          this.listaClientes_arr = clientes.filter(c=>c.sucursal === this.SUCURSAL)
-        }
+        this.listaClientes_arr = (this.SUCURSAL === 'Todas') ? clientes : clientes.filter(c=>c.sucursal === this.SUCURSAL)
       }
     })
   }

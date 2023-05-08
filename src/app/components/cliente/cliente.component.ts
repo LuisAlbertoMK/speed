@@ -317,10 +317,23 @@ export class ClienteComponent implements OnInit {
       })      
       saveInfo['id'] = this.id
       update(ref(db), updates).then(()=>{
-        this.heroeSlec.emit( {registro: true, cliente: saveInfo})
+        
+        get(child(dbRef, `clientes/${this.id}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            // this.infoConfirmar.dataFacturacion = snapshot.val()
+            const cliente = snapshot.val()
+            if (cliente.vehiculos) cliente.vehiculos = this._publicos.crearArreglo2(cliente.vehiculos)
+            if (cliente.dataFacturacion){
+              cliente.dataFacturacion = cliente.dataFacturacion['unica']
+            }
+            const {sucursal} = this.Sucursales.find(s=>s.id === cliente.sucursal)
+            cliente.showSucursal = sucursal
+            this.heroeSlec.emit(cliente)
+          }
+        })
       })
       .catch(()=>{
-        this.heroeSlec.emit( {registro: false})
+        this.heroeSlec.emit(false)
       })
       
     }else{
@@ -350,9 +363,9 @@ export class ClienteComponent implements OnInit {
             }
             await this._mail.EmailBienvenida(infocorreo)
         // }
-        this.heroeSlec.emit( {registro: true, cliente: saveInfo, oculta: true})
+        this.heroeSlec.emit( saveInfo )
         }).catch(()=>{
-          this.heroeSlec.emit( {registro: false, cliente: {}, oculta: false})
+          this.heroeSlec.emit( false)
         })
       // this._clientes.registraCliente(saveInfo)
     }

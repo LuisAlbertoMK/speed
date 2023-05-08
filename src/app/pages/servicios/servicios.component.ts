@@ -143,6 +143,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   });
 
   fechas_get = {start: new Date(), end: new Date()}
+  busquedaServicios:string = null
   
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
@@ -180,16 +181,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       if (this.SUCURSAL !=='Todas') {
+       
         this.busquedaSucursalString = this.SUCURSAL
         const {sucursal} = this.sucursales_arr.find(s=>s.id === this.SUCURSAL)
         this.busquedaSucursalStringShow = sucursal
-      }
-      
+      }    
       this.acciones()
+    }
+    if(localStorage.getItem('busquedaServicios')){
+      this.busquedaServicios = localStorage.getItem('busquedaServicios')
     }
   }
   cargaIndexPadre(data){
-    console.log(data);
     this.dataOcupadaOS = {...data}
   }
   acciones(){
@@ -206,11 +209,11 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             const getTime  = this._publicos.getFechaHora()
             recep.diasSucursal = this._publicos.calcularDias(recep.fecha_recibido, getTime.fecha)
           // }
-          // const updates = {
-          //   [`recepciones/${recep.id}/diasSucursal`]: recep.diasSucursal
-          // };
-          // update(ref(db), updates)
-          // .then(() => {});
+          const updates = {
+            [`recepciones/${recep.id}/diasSucursal`]: recep.diasSucursal
+          };
+          update(ref(db), updates)
+          .then(() => {});
           
           
           recep.fecha_receibido_compara = this._publicos.construyeFechaString(recep.fecha_recibido)
@@ -222,8 +225,33 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         })
         this.fechas_get.start.setHours(0,0,0,0)
         this.fechas_get.end.setHours(0,0,0,0)
+        const comparaOrdenes = (this.busquedaSucursalString === 'Todas') ? ordenes_s :  ordenes_s.filter(os=>os.sucursal.id === this.busquedaSucursalString)
+        if(!this.recepciones_arr.length){
+          this.recepciones_arr = comparaOrdenes
+        }else{
+          if (comparaOrdenes.length === this.recepciones_arr.length) {
+            comparaOrdenes.map((os, index)=>{
+                if (JSON.stringify(os) !== JSON.stringify(this.recepciones_arr[index])) {
+                  const camposRecupera = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva',
+                    'margen','sucursal','notificar','reporte','servicio','servicios','status','vehiculo','fecha_entregado','hora_entregado','tecnico','showNameTecnico']
+                    camposRecupera.forEach(c=>{
+                      // this.recepciones_arr[index][c] = os[c]
+                      if (os[c] !== this.recepciones_arr[index][c]) {
+                        this.recepciones_arr[index][c] = os[c];
+                      }
+                    })
+                }                
+            })
+          }else if(comparaOrdenes.length > this.recepciones_arr.length){
+            this.recepciones_arr.push(...comparaOrdenes.slice(this.recepciones_arr.length));
+          }else{
+            // this.recepciones_arr = ordenes_s
+            this.recepciones_arr.splice(comparaOrdenes.length, this.recepciones_arr.length - comparaOrdenes.length);
+          }
+        }
+        
+        
 
-        this.recepciones_arr = (this.busquedaSucursalString === 'Todas') ? ordenes_s :  ordenes_s.filter(os=>os.sucursal.id === this.busquedaSucursalString)
         setTimeout(()=>{
           this.busqueda(this.busquedaStatus)
           this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
@@ -231,9 +259,10 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         
         
       }
-    },{
-      onlyOnce: true
     })
+  }
+  sonIguales(obj1, obj2) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
   }
   accionServicio(padre, hijo, statusGet){
     //tomamos el id de padre en este caso la recepcion
@@ -438,14 +467,21 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+    localStorage.setItem('busquedaServicios',filterValue.trim().toLowerCase())
   }
   newPagination(){
     setTimeout(() => {
     // if (data==='elementos') {
+      if(this.busquedaServicios){
+        this.dataSource.filter = this.busquedaServicios
+        if (this.dataSource.paginator) {
+          this.dataSource.paginator.firstPage();
+        }
+      }
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
     // }
-    }, 500)
+    }, 300)
   }
 
 

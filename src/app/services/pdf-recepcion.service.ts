@@ -94,7 +94,7 @@ export class PdfRecepcionService {
     })
     // console.log('error');
     
-    const checados = data['detalles'].filter(d=>d['checado'])
+    const checados = data['detalles'].filter(d=>d.status)
     data['conjuntos'] = checados.concat(person_).concat(pers2)
     return this.pdf(data,nuevasdocumentDefinitionimages)
   }
@@ -671,8 +671,8 @@ export class PdfRecepcionService {
           if (donde[index_].id) {
             cual = `${donde[index_].id.toLowerCase()}`
           }else{
-            const nombre = donde[index_].nombre.split('.')
-            cual = `${nombre[0].toLowerCase()}`
+            const nombre:string = donde[index_].valor
+            cual = `${nombre.toLowerCase()}`
           }
           // console.log(cual);
           muestra.push(Object(
@@ -693,8 +693,8 @@ export class PdfRecepcionService {
           if (donde[index_].id) {
             cual = `${donde[index_].id.toLowerCase()}`
           }else{
-            const nombre = donde[index_].nombre.split('.')
-            cual = `${nombre[0].toLowerCase()}`
+            const nombre:string = donde[index_].valor
+            cual = `${nombre.toLowerCase()}`
           }
           // console.log(cual);
           muestra.push(Object(

@@ -23,7 +23,7 @@ export class DataFacturacionClienteComponent implements OnInit {
   
   formFacturacion: FormGroup
   faltantes:String
-
+  rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-V1-9][A-Z\d]{0,2}$/;
 
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, private _security:EncriptadoService) { 
     this.dataEmit = new EventEmitter()
@@ -33,13 +33,13 @@ export class DataFacturacionClienteComponent implements OnInit {
     this.crearFormFacturacion()
   }
   crearFormFacturacion(){
-    let clieID  = null
-    if (this.clienteID) clieID = this.clienteID
+    // let clieID  = null
+    // if (this.clienteID) clieID = this.clienteID
     this.formFacturacion = this.fb.group({
-      cliente:[clieID,[Validators.required]],
+      cliente:['',[Validators.required]],
       razon:['',[Validators.required,Validators.minLength(6)]],
       // rfc:['',[Validators.required,Validators.pattern("^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$")]],
-      rfc:['',[Validators.required,Validators.minLength(13),Validators.maxLength(14),Validators.pattern("^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))((-)?([A-Z\d]{3}))?$")]],
+      rfc:['',[Validators.required,Validators.minLength(13),Validators.maxLength(14),Validators.pattern(this.rfcPattern)]],
     })
   }
   validaCampo(campo: string){
@@ -48,6 +48,9 @@ export class DataFacturacionClienteComponent implements OnInit {
   async validaciones(){
     const answer = {ok: true, faltantes:[]}
     const campos = Object.keys(this.formFacturacion.value)
+    if (this.clienteID) {
+      this.formFacturacion.controls['cliente'].setValue(this.clienteID)
+    }
     const data = this.formFacturacion.value
     let faltantes = []
     campos.forEach((c)=>{
@@ -75,8 +78,8 @@ export class DataFacturacionClienteComponent implements OnInit {
         // this._publicos
         const dataForm = this.formFacturacion.value
         const tempData = { razon: dataForm.razon, rfc: dataForm.rfc }
-        const clave = this._publicos.generaClave()
-        updates[`clientes/${dataForm['cliente']}/dataFacturacion/${clave}`] = tempData
+        
+        updates[`clientes/${dataForm['cliente']}/dataFacturacion/unica`] = tempData
         console.log(updates);
         this.faltantes = null
         update(ref(db), updates).then(()=>{

@@ -62,7 +62,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   //TODO: aqui la informacion que es nueva
   infoConfirmar=
   {
-    cliente:{}, vehiculo:{},sucursal:{}, reporte:{}, no_os:null,
+    cliente:{}, vehiculo:{},sucursal:{}, reporte:{}, no_os:null, dataFacturacion: null,observaciones:null,
     checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25, personalizados: [],
     detalles:[],diasEntrega: this.numeroDias, fecha_promesa: null, firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
     fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null
@@ -85,13 +85,13 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     {valor: 'no_cliente', show:'# Cliente'},
     {valor: 'nombre', show:'Nombre'},
     {valor: 'apellidos', show:'Apellidos'},
-    {valor: 'correo', show:'Correo'},
-    {valor: 'correo_sec', show:'Correo adicional'},
     {valor: 'telefono_fijo', show:'Tel. Fijo'},
     {valor: 'telefono_movil', show:'Tel. cel.'},
     {valor: 'tipo', show:'Tipo'},
     {valor: 'empresa', show:'Empresa'},
-    {valor: 'sucursal', show:'Sucursal'}
+    {valor: 'showSucursal', show:'Sucursal'},
+    {valor: 'correo', show:'Correo'},
+    {valor: 'correo_sec', show:'Correo adicional'}
   ]
   camposVehiculo=[
     {valor: 'placas', show:'Placas'},
@@ -198,19 +198,20 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     {valor:"limpiadores",show:'limpiadores', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"llanta_refaccion",show:'llanta refaccion', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"llave_cruz",show:'llave cruz', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],"luces": [ "si","no","dañado"],status:'si'},
+    {valor:"luces",show:'Luces', opciones: ["si","no","dañado"],status:'si'},
     {valor:"maneral_gato",show:'maneral gato', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"manijas_interiores",show:'manijas interiores', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"molduras_completas",show:'molduras completas', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:'1/4'},
     {valor:"radio",show:'radio', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"tapetes",show:'tapetes', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"tapon_combustible",show:'tapon combustible', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"tapones_llantas",show:'tapones llantas', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"tapones_motor",show:'tapones motor', opciones: [ "si","no","dañado"],status:'si'},
+    {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:'si'},
     {valor:"tarjeta_de_circulacion",show:'tarjeta de circulacion', opciones: [ "si","no"],status:'si'},
+    {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],status:'si'},
     {valor:"testigos_en_tablero",show:'testigos en tablero', opciones: [ "si","no"],status:'si'},
-    {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:'si'}
+    {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:'1/4'}
     
   ]
   rangeFechaEntrega = new FormGroup({
@@ -235,7 +236,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   idPaqueteEditarBoolean: boolean = false
 
   camposGuardar = [
-    'checkList','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os'
+    'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os'
   ]
 
   datCliente:any
@@ -244,6 +245,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   extra:string
   modeloVehiculo:string = null
   vehiculoData:string = null
+
+  clienteId:string = null
+  observaciones:string = null
   //TODO: aqui la informacion que es nueva
 
 
@@ -289,18 +293,27 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   
   async rol(){
-    
+    Swal.fire({
+      title:'Cargando',
+      html:'Espere porfavor...',
+      showConfirmButton:false,
+      allowOutsideClick:false
+    })
+    Swal.isLoading()
     const ID = this.rutaActiva.snapshot.params['ID']
     const tipo = this.rutaActiva.snapshot.params['tipo']
-    console.log(ID);
-    console.log(tipo);
-
+    const extra = this.rutaActiva.snapshot.params['extra']
+    // console.log(ID);
+    // console.log(tipo);
+    this.infoConfirmar.checkList = this.checkList
+    this.infoConfirmar.detalles = this.detalles_rayar
     if(tipo === 'cotizacion'){
+      
       const starCountRef = ref(db, `cotizacionesRealizadas/${ID}`)
       onValue(starCountRef, async (snapshot) => {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
-          const {cliente, vehiculo, servicio ,elementos, reporte, sucursal, iva, formaPago, margen_get} = snapshot.val()
+          
+          const {cliente, vehiculo, servicio ,elementos, sucursal, iva, formaPago, margen_get} = snapshot.val()
           // const infoCotizacion = snapshot.val()
           let vehiculos = []
           await get(child(dbRef, `clientes/${cliente.id}/vehiculos`)).then((snapVehiculos) => {
@@ -308,6 +321,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
               vehiculos = this._publicos.crearArreglo2(snapVehiculos.val())
             }
           })
+          const infoSU =  this.listaSucursales_arr.find(s=>s.id === cliente.sucursal)
+          cliente.showSucursal = infoSU.sucursal
 
           this.infoConfirmar.cliente = cliente
           this.infoConfirmar.vehiculo = vehiculo
@@ -317,8 +332,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           this.infoConfirmar.margen = margen_get
           this.infoConfirmar.sucursal = sucursal
           
-          this.infoConfirmar.detalles = this.detalles_rayar
-          this.infoConfirmar.checkList = this.checkList
+          if(cliente.dataFacturacion){
+            this.infoConfirmar.dataFacturacion = cliente.dataFacturacion.unica
+          }else{
+            this.infoConfirmar.dataFacturacion = null
+          }
+          
           this.infoConfirmar.servicio = servicio
           this.infoConfirmar.iva = iva
           this.extra = vehiculo.id
@@ -326,15 +345,52 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           // this.infoConfirmar.servicios = 
           // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).ocupados);
           // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte);
-          
-
+          this.infoConfirmar.cliente = cliente
+          this.infoConfirmar.vehiculos = cliente.vehiculos
           this.realizaOperaciones()
+          Swal.close()
           
         }
       }, {
           onlyOnce: true
         })
     }
+    if(tipo === 'cliente' || tipo === 'vehiculo'){
+      const starCountRef = ref(db, `clientes/${ID}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+          const cliente = snapshot.val();
+          const vehiculos = (cliente.vehiculos) ? this._publicos.crearArreglo2(cliente.vehiculos) : []
+          if(cliente.dataFacturacion){
+            this.infoConfirmar.dataFacturacion = cliente.dataFacturacion.unica
+          }else{
+            this.infoConfirmar.dataFacturacion = null
+          }
+          const infoSU =  this.listaSucursales_arr.find(s=>s.id === cliente.sucursal)
+          cliente.showSucursal = infoSU.sucursal
+
+          if (extra) {
+            this.extra = extra
+            this.infoConfirmar.vehiculo = vehiculos.find(v=>v.id === extra)
+          }
+          // console.log(cliente);
+          
+          this.infoConfirmar.sucursal = infoSU
+          this.infoConfirmar.cliente = cliente
+          this.infoConfirmar.vehiculos = vehiculos
+          Swal.close()
+        }
+      }, {
+          onlyOnce: true
+        })
+    }
+    if(tipo === 'new') Swal.close()
+
+    // if(tipo === 'vehiculo'){
+
+    //   Swal.close()
+    // }
   }
 
   cambiaAprobado(index, aprobado){
@@ -892,16 +948,21 @@ newPagination(){
     if (!event) {
       this._publicos.swalToastError('intenta de nuevo')
     }else{
-      this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
+      this._publicos.mensaje_pregunta('Seguro que es el cliente de la o.s?').then(({respuesta})=>{
         if (respuesta) {
-          console.log(event);
-          const camposCliente  = [ 'id' ,'no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','empresa','sucursal']
+          const camposCliente  = [ 'id' ,'no_cliente','nombre','showSucursal','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','empresa','sucursal']
           this.infoConfirmar.cliente = this._publicos.nuevaRecuperacionData(event,camposCliente)
           this.infoConfirmar.vehiculos = (event.vehiculos) ? event.vehiculos : []
           this.infoConfirmar.vehiculo = {}
-          
-          // this.infoConfirmar.tecnico = event.id
-          // this.infoConfirmar.showNameTecnico = event.usuario
+          this.infoConfirmar.sucursal = this.listaSucursales_arr.find(s=>s.id === event.sucursal)
+          if(event.dataFacturacion){
+            this.infoConfirmar.dataFacturacion = event.dataFacturacion
+          }else{
+            this.infoConfirmar.dataFacturacion = null
+          }
+          if(this.extra){
+            this.infoConfirmar.vehiculo =  event.vehiculos.find(v=>v.id === this.extra)
+          }
         }
       })
     }
@@ -986,9 +1047,9 @@ cargaDataVehiculo(data:any,quien:string){
     if (!vehiculo['id'])  faltantes.push('Vehiculo') 
     if (!sucursal['id'])  faltantes.push('Sucursal') 
     if (!reporte)  faltantes.push('Reporte') 
-    if (!servicios.some(s => s.aprobado)) faltantes.push('Servicios');
-    if (checkList.some(s => s.status === '')) faltantes.push('CheckList');
-    if (!fecha_promesa) faltantes.push('Fecha promesa') 
+    if (!servicios.some(s => s.aprobado)) faltantes.push('Servicios a realizar');
+    if (checkList.some(s => s.status === '') || this.kilometraje <=0) faltantes.push('CheckList elementos de vehículo');
+    if (!fecha_promesa) faltantes.push('Fecha entrega') 
     if (!firma_cliente) faltantes.push('Firma cliente') 
 
     this.validaciones = faltantes.length > 0 ? faltantes.join(', ') : null;
@@ -1024,7 +1085,7 @@ cargaDataVehiculo(data:any,quien:string){
     })
 
     this.infoConfirmar.personalizados = arregloPer
-    
+    this.infoConfirmar.observaciones = this.observaciones
     this._pdfRecepcion.obtenerImege(this.infoConfirmar).then((pdfReturn:any) => {
       const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
       // pdfDocGenerator.open();
@@ -1089,6 +1150,7 @@ cargaDataVehiculo(data:any,quien:string){
                     this.infoConfirmar.hora_recibido = this._publicos.getFechaHora().hora
                     this.infoConfirmar.notifico = true
                     this.infoConfirmar.servicio = 1
+                    
                     updates[`recepciones/${this._publicos.generaClave()}`] = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
                     console.log(updates);
                     this._mail.EmailRecepcion(dataMail)
@@ -1099,7 +1161,7 @@ cargaDataVehiculo(data:any,quien:string){
                       this.nombre = null
                       this.infoConfirmar=
                       {
-                        cliente:{}, vehiculo:{},sucursal:{}, reporte:{},no_os:null,
+                        cliente:{}, vehiculo:{},sucursal:{}, reporte:{},no_os:null,dataFacturacion:{},observaciones:null,
                         checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25, personalizados: [],
                         detalles:[],diasEntrega: this.numeroDias, fecha_promesa: null, firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
                         fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null

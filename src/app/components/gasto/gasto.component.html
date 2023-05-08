@@ -5,7 +5,7 @@
     </button>
   </div>
 </div>
-
+<!-- <strong>{{sucursal}}</strong> -->
 <div class="card text-left">
     <div class="card-body">
       
@@ -54,7 +54,7 @@
                   </div>
                 </ng-container>
                 
-                <ng-container *ngIf="sucursal ==='Todas' && !muestraLista">
+                <ng-container *ngIf="SUCURSAL ==='Todas' && !muestraLista">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
                     <div class="mb-1 row">
                       <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
@@ -155,14 +155,19 @@
                           (dateChange)="addEvent('change', $event)" class="form-control form-control-sm">
                           <mat-datepicker #picker disabled="false"></mat-datepicker> -->
                           <mat-card class="demo-inline-calendar-card">
-                            <mat-calendar [(selected)]="selected" ></mat-calendar>
+                            <mat-calendar [(selected)]="selected"></mat-calendar>
+                            <!-- <mat-datepicker #picker class="demo-inline-calendar-card" [matDatepickerFilter]="myFilter"></mat-datepicker> -->
                           </mat-card>
+
+                          <!-- <input class="form-control" readonly [matDatepickerFilter]="myFilter" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)"> -->
+                          
                         <!-- </div> -->
                   </div> 
                 <!-- </div> -->
                 <!-- <p>Selected date: {{selected}}</p> -->
               <!-- </div> -->
             </div>
+            {{selected}}
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
             <button type="submit" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
@@ -172,6 +177,8 @@
           </div>
         </div>
       </form>
+
+      <pre>{{formGasto.value |json}}</pre>
       <ng-container *ngIf="informacionFaltante">
         <div class="col text-center">
           <p>Falta información: <strong class="text-danger">{{informacionFaltante}}</strong></p>

@@ -113,6 +113,9 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   ]
 
   cotizacionesList=[]
+  busqueda: string = null
+
+  indexPosicionamiento:number = null
   constructor(
     private fb: FormBuilder, private _publicos: ServiciosPublicosService,
     private _formBuilder: FormBuilder, private _security:EncriptadoService,
@@ -148,6 +151,12 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     }, {
       onlyOnce: true
     })
+    if(localStorage.getItem('busquedaCotizaciones')){
+        this.busqueda = localStorage.getItem('busquedaCotizaciones')
+    }
+    if(localStorage.getItem('indexSaveLocal')){
+        this.indexPosicionamiento = Number(localStorage.getItem('indexSaveLocal'))
+    }
   }
   accion(){
     // console.log(this.sucursales);
@@ -155,15 +164,23 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     const starCountRef = ref(db, `cotizacionesRealizadas`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        const cotizaciones = this._publicos.crearArreglo2(snapshot.val()) 
-        cotizaciones.map(c=>{
-          if (!c.formaPago) c.formaPago = '1'  
-            const formads= this.formasPago.find(f=>f.id === String(c.formaPago))
-            if (formads.pago) c.pagoName = formads.pago
-            c['searchName'] = `${c.cliente['nombre']} ${c.cliente['apellidos']}`
-            c['searchPlacas'] = `${c.vehiculo['placas']}`
-        })  
-        this.cotizacionesList = cotizaciones
+        const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
+        cotizaciones.forEach((cotizacion, index)=> {
+          cotizacion.formaPago = cotizacion.formaPago || '1';
+          cotizacion.index = index
+          const formaPago = this.formasPago.find(f => f.id === cotizacion.formaPago);
+          
+          if (formaPago) cotizacion.pagoName = formaPago.pago
+
+          
+          cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
+          cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
+        });
+        
+        this.cotizacionesList = this.SUCURSAL === 'Todas' 
+          ? cotizaciones 
+          : cotizaciones.filter(cotizacion => cotizacion.sucursal.id === this.SUCURSAL);
+        
         this.newPagination()
       }
     }, {
@@ -173,7 +190,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
+    localStorage.setItem('busquedaCotizaciones',filterValue.trim().toLowerCase())
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
@@ -183,11 +200,20 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   newPagination(){
     setTimeout(() => {
       this.dataSource.data = this.cotizacionesList
-    // if (data==='elementos') {
+      if (this.busqueda) {
+        this.dataSource.filter = this.busqueda
+          if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+          }
+      }
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
-    // }
     }, 500)
+  }
+
+  indexSaveLocal(index){
+    this.indexPosicionamiento = index
+    localStorage.setItem('indexSaveLocal',index)
   }
   
 }

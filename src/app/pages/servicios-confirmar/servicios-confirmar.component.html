@@ -16,23 +16,41 @@
 <div class="card border-dark" >
   <div class="card-body">
     <h1>Informacion de cliente 
-
       <ng-container *ngIf="infoConfirmar.cliente['id']">
         <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion"
         (click)="cargaDataCliente(infoConfirmar.cliente)" data-bs-toggle="modal" data-bs-target="#modalNewUser"
         ></i>
-        <!--  -->
       </ng-container>
     </h1>
 
-    
     <div class="row">
       <ng-container *ngFor="let item of camposCliente">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="infoConfirmar.cliente[item.valor]">
-          <strong class="text-uppercase">{{item.show}} </strong>: {{infoConfirmar.cliente[item.valor]}}
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoConfirmar.cliente[item.valor]">
+          <strong class="">{{item.show}} </strong>: {{infoConfirmar.cliente[item.valor]}}
         </div>
       </ng-container>
+      
     </div>
+    <ng-container *ngIf="infoConfirmar.cliente['id']">
+      <div class="row">
+        <div class="text-end">
+          <ng-container *ngIf="infoConfirmar.dataFacturacion; else elseFacturacion">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h4 class="card-title">Datos de facturacion</h4>
+                <p class="card-text">Razon social: <strong class="text-danger">{{infoConfirmar.dataFacturacion['razon']}}</strong></p>
+                <p class="card-text">RFC: <strong class="text-danger">{{infoConfirmar.dataFacturacion['rfc']}}</strong></p>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #elseFacturacion>
+            <button class="btn btn-sm btn-warning" (click)="clienteId =  infoConfirmar.cliente['id']"
+                data-bs-toggle="modal" data-bs-target="#modalFacturacion"  #tooltip="matTooltip" matTooltip="editar informacion de facturacion" >
+                <i class="fa fa-edit"></i></button>
+          </ng-template>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
 <div class="card border-dark">
@@ -72,16 +90,6 @@
       <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" >Agregar elemento</button>
     </div>
     <br>
-    <!-- <section class="example-section">
-      <mat-checkbox 
-      class="example-margin"
-      (click)="cambiaAprobado(item.index, !item.aprobado)"
-      [checked]="item.aprobado" 
-      *ngFor="let item of infoConfirmar.servicios"
-      [ngClass]="{'tipo-mo': item.tipo === mo,'tipo-refaccion': item.tipo === refaccion,'tipo-paquete': item.tipo === paquete}">
-      {{item.nombre | capitalizarUno}} {{item.precio | monedas}}
-    </mat-checkbox>
-    </section> -->
     <div class="mat-elevation-z8 table-responsive">
       <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
     
@@ -212,32 +220,40 @@
       <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>
     <br>
-    
-    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-      <div class="card border-success mb-3">
-        <div class="card-header text-center">
-          Desgloce 
-          <mat-checkbox class="example-margin" [(ngModel)]="infoConfirmar.iva" (click)="realizaOperaciones()">IVA</mat-checkbox>
-        </div>
-        <div class="card-body text-success ">
-          <h5 class="card-title"></h5>
-          <div class="row">
-            <ng-container *ngFor="let campo of camposDesgloce">
-              <ng-container *ngIf="infoConfirmar.reporte[campo['valor']] > 0">
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoConfirmar.reporte[campo.valor]  | monedas}}</strong></div>
+    <div class="row">
+      
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <div class="card border-success mb-3">
+          <div class="card-header text-center">
+            Desgloce 
+            <mat-checkbox class="example-margin" [(ngModel)]="infoConfirmar.iva" (click)="realizaOperaciones()">IVA</mat-checkbox>
+          </div>
+          <div class="card-body text-success ">
+            <h5 class="card-title"></h5>
+            <div class="row">
+              <ng-container *ngFor="let campo of camposDesgloce">
+                <ng-container *ngIf="infoConfirmar.reporte[campo['valor']] > 0">
+                  <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show'] | capitalizarUno}}</div>
+                  <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoConfirmar.reporte[campo.valor]  | monedas}}</strong></div>
+                </ng-container>
+                
               </ng-container>
-              
-            </ng-container>
-            <ng-container *ngIf="infoConfirmar.reporte['meses'] > 0">
-              <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
-              <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoConfirmar.reporte['meses'] | monedas}}</strong></div>
-            </ng-container>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{infoConfirmar.reporte['total']  | numerosLetras}}</strong></div>
+              <ng-container *ngIf="infoConfirmar.reporte['meses'] > 0">
+                <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
+                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoConfirmar.reporte['meses'] | monedas}}</strong></div>
+              </ng-container>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{infoConfirmar.reporte['total']  | numerosLetras}}</strong></div>
+            </div>
           </div>
         </div>
       </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <label>Observaciones: </label>
+        <textarea cols="10" rows="4" style="width: 100%;" [(ngModel)]="observaciones"></textarea>
+      </div>
     </div>
+    
+    
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
       <button class="btn btn-sm btn-primary m-1"  [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperNext>Siguiente</button>
     </div>
@@ -253,16 +269,20 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
                 <mat-checkbox type="checkbox" class="example-margin" (click)="cambiaTodosCheckA(sinDetalles)" [(ngModel)]="sinDetalles">Sin detalles</mat-checkbox>
               </div>
-              <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4" *ngFor="let item of infoConfirmar.detalles; let i = index">
-                <img [src]="'../../../assets/imagenes_detalles/'+item.valor+'.jpg'" class="card-img-top  rayar" [alt]="item.show" width="150px" height="150px">
-                <div class="card-body">
-                  <ng-container class="card-text">
-                    <mat-checkbox type="checkbox" [checked]="item.status" class="example-margin" [id]="item.valor" (click)=" cambiarCheck( i, !item.status )">
-                      {{item.show}}
-                    </mat-checkbox>
-                  </ng-container>
+              <ng-container *ngIf="!sinDetalles">
+                <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4" *ngFor="let item of infoConfirmar.detalles; let i = index">
+                  <img [src]="'../../../assets/imagenes_detalles/'+item.valor+'.jpg'" class="card-img-top  rayar" [alt]="item.show" width="150px" height="150px">
+                  <div class="card-body">
+                    <ng-container class="card-text">
+                      <mat-checkbox type="checkbox" [checked]="item.status" class="example-margin" [id]="item.valor" (click)=" cambiarCheck( i, !item.status )">
+                        {{item.show}}
+                      </mat-checkbox>
+                    </ng-container>
+                  </div>
                 </div>
-              </div>
+              </ng-container>
+              
+              
             </div>
           </mat-tab>
           <mat-tab label="Personalizado">
@@ -368,43 +388,32 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-12" [ngClass]="{'NoChecado':!item.status}"
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12" [ngClass]="{'NoChecado':!item.status}"
           *ngFor="let item of infoConfirmar.checkList; let index = index">
           <div class="row">
-            <ng-container *ngIf="item.valor === 'nivel_gasolina'; else elseTemplate">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start"><strong>{{item.show | capitalizarUno}}</strong>:</div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                  <ng-container *ngFor="let ite of item['opciones']">
-                    <input type="radio" class="btn-check" [checked]="item.status === ite" name="btnradio" [id]="ite" autocomplete="off" checked>
-                    <!-- (click)="cambiarSattus(index,ite)" -->
-                    <label class="btn btn-sm " (click)="cambiarStatusCheckList(index,ite)"  [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"
-                    [ngClass]="
-                    {'btn-outline-danger': ite==='vacio','btn-outline-success': ite==='lleno',
-                    'btn-outline-warning': ite!=='lleno' && ite!=='vacio'}
-                    "
-                    [for]="ite">{{ite}}</label>
-                  </ng-container>
-                </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" [ngClass]="{'col-lg-12 col-md-12': item.valor === 'nivel_gasolina'}"><strong>{{item.show | capitalizarUno}}</strong>:</div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" [ngClass]="{'col-lg-12 col-md-12': item.valor === 'nivel_gasolina'}">
+              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <ng-container *ngFor="let ite of item['opciones']">
+                  <input type="radio" class="btn-check" [checked]="item.status === ite" [name]="item.valor+ite" [id]="ite" autocomplete="off" checked>
+                  <!-- (click)="cambiarSattus(index,ite)"  -->
+                  <label class="btn btn-sm" (click)="cambiarStatusCheckList(index,ite)" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"
+                  [ngClass]="
+                  {'btn-outline-danger': ite==='no' || ite ==='dañado' || ite==='vacio', 'btn-outline-warning': ite!=='lleno' && ite!=='vacio' && ite!=='si',
+                  'btn-outline-success': ite==='si' || ite==='lleno'}
+                  " 
+                  [for]="item.valor+ite">{{ite}}</label>
+                </ng-container>
               </div>
-            </ng-container>
-            <ng-template #elseTemplate>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start m-1"><strong>{{item.show | capitalizarUno }}</strong>:</div>
-            <div class="col-lg-7 col-md-7 col-sm-12 col-12 text-start m-1">
-              <!-- {{item['id']}} -->
-              <ng-container *ngFor="let ite of item['opciones']">
-                <input type="radio" class="btn-check" [checked]="item.status === ite" [name]="item.valor+ite" [id]="ite" autocomplete="off" checked>
-                <!-- (click)="cambiarSattus(index,ite)"  -->
-                <label class="btn btn-sm" (click)="cambiarStatusCheckList(index,ite)" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"
-                [ngClass]="
-                {'btn-outline-danger': ite==='no' || ite ==='dañado','btn-outline-success': ite==='si'}
-                " 
-                [for]="item.valor+ite">{{ite}}</label>
-              </ng-container> 
-            </div>
-            </ng-template>
+              </div>
+
           </div>
+        </div>
       </div>
+      
+      
+      
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
         <button class="btn btn-sm btn-danger m-1"  [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperPrevious>Anterior</button>
         <button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperNext>Siguiente</button>
@@ -431,7 +440,7 @@
             </strong>
           </label>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="infoConfirmar.sucursal">
           <app-lista-tecnicos [sucursal]="infoConfirmar.sucursal['id']"  (dataTecnico)="infoTecnico ( $event )"></app-lista-tecnicos>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
@@ -461,9 +470,11 @@
   </div>
 </div>
 <ng-container *ngIf="validaciones">
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-center text-danger">
-      <h3>Datos faltantes: {{validaciones}}</h3>
+  <div class="row m-1">
+    <div class="card">
+      <div class="card-body text-center text-danger">
+        <h2>Datos faltantes: {{validaciones}}</h2>
+      </div>
     </div>
   </div>
 </ng-container>
@@ -483,7 +494,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     <!-- <div class="modal-header ml-3">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div> -->
-    <div class="modal-body m-2">
+    <div class="modal-body m-2" *ngIf="infoConfirmar.vehiculo">
       <app-paquetes [modelo]="infoConfirmar.vehiculo['modelo']" (infoPaquete)="infopaquete( $event)" ></app-paquetes>
     </div>
   </div>
@@ -558,6 +569,18 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
             </div>
           </div>
         </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalFacturacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <app-data-facturacion-cliente [clienteID]="clienteId"></app-data-facturacion-cliente>
       </div>
     </div>
   </div>

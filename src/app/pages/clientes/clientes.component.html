@@ -64,7 +64,7 @@
         <i class="fa fa-calculator text-success m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar cotizacion"
         [routerLink]="'/cotizacionNueva/'+row.id+'/cliente/null'" ></i>  
         <i class="fa fa-car-garage text-danger m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar recepcion"
-        [routerLink]="'/ServiciosConfirmar/'+row.id+'/cliente'"></i>  
+        [routerLink]="'/ServiciosConfirmar/'+row.id+'/cliente/null'"></i>  
       </td>
     </ng-container>
     <ng-container matColumnDef="expand">
@@ -116,7 +116,9 @@
                             <!-- (click)="cargaDataVehiculo(row,'cliente')" data-bs-toggle="modal"
                           data-bs-target="#modalNewVehiculo" -->
                           <i class="fa fa-calculator text-success m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar cotizacion"
-                            [routerLink]="'/cotizacionNueva/'+element.id+'/vehiculo/'+v.id" ></i>  
+                            [routerLink]="'/cotizacionNueva/'+element.id+'/vehiculo/'+v.id" ></i>
+                            <i class="fa fa-car-garage text-danger m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar recepcion"
+                              [routerLink]="'/ServiciosConfirmar/'+element.id+'/vehiculo/'+v.id"></i> 
                         </td>
                       </tr>
                     </tbody>

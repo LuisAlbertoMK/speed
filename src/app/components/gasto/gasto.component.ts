@@ -18,10 +18,11 @@ export class GastoComponent implements OnInit {
 
 
   @Input() dataRecepcion:any = null
+  // @Input() sucursal:any = null
 
   @Output() showGastoHide : EventEmitter<any>
 
-
+  ROL:string; SUCURSAL:string
 
   miniColumnas:number=100
   formGasto:FormGroup
@@ -37,8 +38,8 @@ export class GastoComponent implements OnInit {
     {metodo:3, show:'Tarjeta'},
     {metodo:4, show:'Transferencia'},
   ]
-  usuario:string
-  rol:string
+  
+  
 
   validaciones= [
   {valor: 'tipo', show:'Tipo de gasto'},
@@ -50,38 +51,60 @@ export class GastoComponent implements OnInit {
   {valor: 'fecha_registro', show:'Fecha de registro'},
   {valor: 'hora_registro', show:'Hora de registro'},
   {valor: 'sucursal', show:'Sucursal'},
-  {valor: 'usuario', show:'Usuario'},
   {valor: 'rol', show:'ROL'},
   
   ]
   Sucursales= []
-  sucursal:string
+  
   ordenes = []
   muestraLista:boolean = false
   fechaIIII:Date = new Date(2000,0,1) 
   ngOnInit(): void {
-    this.listaOrdenes()
+    this.rol()
     this.listaSucursales()
-    this.infoDATA()
     this.crearFormGasto()
+  }
+  rol(){
+    if (localStorage.getItem('dataSecurity')) {
+      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+      this.ROL = this._security.servicioDecrypt(variableX['rol'])
+      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+      this.listaOrdenes()
+      // this.acciones()
+    }
   }
   listaOrdenes(){
     const starCountRef = ref(db, `recepciones`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        let recepciones_arra = []
         const recepciones = this._publicos.crearArreglo2(snapshot.val())
-        const recep_1 = recepciones.filter(r=>r['status'] !== 'cancelado')
-        const recep_2 = recep_1.filter(r=>r['status'] !== 'entregado')
-        const ordenados = this._publicos.ordernarPorCampo(recep_2,'no_os')
-        ordenados.forEach((recep)=>{
-          const tempData = {
-            id: recep['id'], no_os: recep['no_os'], fecha: recep['fecha_recibido'], 
-            hora: recep['hora_recibido'], sucursal: recep.sucursal['id']
-          }
-          recepciones_arra.push(tempData)
-        })
-        this.ordenes = recepciones_arra
+        // espera
+        // recibido
+        // autorizado
+        // terminado
+        // entregado
+        // cancelado
+        function filtrarOrdenes(recepciones, sucursal) {
+          const rcp = recepciones
+            .filter(recep => {
+              const status = recep.status;
+              return (status !== 'entregado' && status !== 'cancelado' && status !== 'espera');
+            })
+            .map(recep => {
+              return {
+                id: recep.id,
+                no_os: recep.no_os,
+                fecha: recep.fecha_recibido,
+                hora: recep.hora_recibido,
+                sucursal: recep.sucursal.id,
+                status: recep.status
+              };
+            });
+            
+            return (sucursal === 'Todas') ? rcp : rcp.filter(os => os.sucursal === sucursal);
+        }
+        this.ordenes = filtrarOrdenes(recepciones, this.SUCURSAL);
+        console.log(this.ordenes);
         
       }
     })
@@ -94,16 +117,11 @@ export class GastoComponent implements OnInit {
     })
   }
   infoDATA(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    if (variableX['sucursal']) {
-      this.usuario = this._security.servicioDecrypt(variableX['usuario'])
-      this.sucursal = this._security.servicioDecrypt(variableX['sucursal'])
-      this.rol = this._security.servicioDecrypt(variableX['rol'])
-    }
+    
   }
   crearFormGasto(){
-    let sucursal = '';
-    (this.sucursal ==='Todas') ? sucursal = '': sucursal= this.sucursal
+    
+    const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
     this.formGasto = this.fb.group({
       tipo:['gasto',[Validators.required]],
       no_os:['',[]],
@@ -113,10 +131,8 @@ export class GastoComponent implements OnInit {
       referencia:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
       fecha:[this.selected,[Validators.required]],
       sucursal: [sucursal,[Validators.required]],
-      usuario: [this.usuario, [Validators.required]],
       gasto_tipo:['',[]],
       facturaRemision:['',[]],
-      rol: [this.rol, [Validators.required]],
     })
   }
   validaCampo(campo: string){
@@ -129,38 +145,41 @@ export class GastoComponent implements OnInit {
 
       this.validaciones.push({valor: 'no_os', show:'O.S'})
       this.validaciones.push({valor: 'gasto_tipo', show:'gasto_tipo'})
-      
+      this.formGasto.controls['no_os'].setValue('')
     }else{
       this.fechaIIII = new Date(2000,0,1) 
       this.muestraLista = false
       let nuevos = []
       nuevos = this.validaciones.filter(v=>v['valor'] !=='no_os')
       this.validaciones= nuevos.filter(v=>v['valor'] !=='gasto_tipo')
+      this.formGasto.controls['no_os'].setValue('')
     }
   }
   fechaInicio(id:string){
+    console.log(id);
+    this.formGasto.controls['no_os'].setValue(id)
     if (this.muestraLista && id) {
       const fechainicio = this.ordenes.find(os=>os['id'] === id)
       const aqui2 = fechainicio['fecha'].split('/')
-      this.formGasto.controls['sucursal'].setValue(fechainicio['sucursal'])
+      // this.formGasto.controls['sucursal'].setValue(fechainicio['sucursal'])
+      this.formGasto.controls['fecha'].setValue(fechainicio.fecha)
       this.fechaIIII= new Date(aqui2[2],aqui2[1] - 1,aqui2[0]) 
     }else{
-      this.formGasto.controls['sucursal'].setValue('')
-
+      this.formGasto.controls['no_os'].setValue('')
     }
   }
   myFilter = (d: Date | null): boolean => {
-    let fecha = new Date(d)
-    let yesterday = new Date(this.fechaIIII)
-    // yesterday.setDate(yesterday.getDate() - 1)
-    // console.log('HOY ==> ',fecha);
-    // console.log('YESTERDAY ==> ',yesterday);
+    // console.log(d);
+    const fecha = new Date(d)
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
     if (fecha < yesterday) {
       return null
     }else{
       const day = fecha.getDay()
       return day !== 0;
     }
+    // Prevent Saturday and Sunday from being selected.
   };
   async validaInformacion(){
     const answer = {valido: false, dataSave:{}, faltante:''}
@@ -170,17 +189,12 @@ export class GastoComponent implements OnInit {
     const dataSave = {
       tipo: pagoData['tipo'],  monto: pagoData['monto'],
       metodo: parseInt(pagoData['metodo']),no_os:pagoData['no_os'], concepto: pagoData['concepto'],  fecha: pagoData['fecha'],
-      fecha_registro: getFecha.fecha,  hora_registro: getFecha.hora,  sucursal: pagoData['sucursal'],
-      usuario: pagoData['usuario'],  referencia: pagoData['referencia'],  rol: pagoData['rol'],
+      sucursal: pagoData['sucursal'],
+      referencia: pagoData['referencia'],
       status: true,gasto_tipo: pagoData['gasto_tipo']
     };
-    let fecha = this.selected, date = null;
-    dataSave['fecha'] = '';
-    (fecha) ? date = new Date(this.selected): '';
-      if (date instanceof Date) {
-        const fechaSave = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
-        dataSave['fecha'] = fechaSave
-      }
+    
+    
 
       if (this.dataRecepcion) {
         this.muestraLista = true
@@ -243,7 +257,7 @@ export class GastoComponent implements OnInit {
 
             const updates = {}
             const newPostKey = push(child(ref(db), 'posts')).key
-            const campos = ['concepto','fecha','fecha_registro','referencia','hora_registro','metodo','monto','rol','status','tipo','sucursal'];
+            const campos = ['concepto','fecha','hora','fecha_registro','hora_registro','referencia','metodo','monto','status','tipo','sucursal'];
             let camposR = [...campos];
             
             if(this.muestraLista) {
@@ -254,9 +268,16 @@ export class GastoComponent implements OnInit {
               }else{
                 dataSave['tipo'] = 'operacion'
               }
-            }  
+            }
+            const {fecha, hora} = this._publicos.getFechaHora(this.selected)
+            const fecha1 = this._publicos.getFechaHora(dataSave['fecha'])
+            dataSave['fecha_registro'] = fecha
+            dataSave['hora_registro'] = hora
+            dataSave['fecha'] = fecha1.fecha
+            dataSave['hora'] = fecha1.hora
             const dataPrimary = this._publicos.nuevaRecuperacionData(dataSave,camposR)
             const dataSaveFinal = this._publicos.nuevaRecuperacionData(dataPrimary,campos)
+            console.log(dataSaveFinal);
             
             if(this.muestraLista) {
               updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
@@ -266,9 +287,10 @@ export class GastoComponent implements OnInit {
             // console.log(updates);
             
             update(ref(db), updates).then(()=>{
+              const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
               this.formGasto.reset({
-                tipo: '',  no_os: '',  usuario: this.usuario,
-                sucursal: this.sucursal, referencia: '', rol: this.rol
+                tipo: '',  no_os: '',monto:0, metodo:'', gasto_tipo: null,concepto:null,
+                sucursal: sucursal, referencia: '',fecha:null, facturaRemision:null
               })
               this._publicos.mensaje('registro gasto correto',1)
             }).catch(error =>{

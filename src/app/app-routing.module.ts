@@ -70,7 +70,7 @@ const APP_ROUTES: Routes = [
   { path: 'cotizacionNueva/:ID/:tipo/:extra', component: CotizacionNewComponent ,  canActivate:[AuthGuard]},
   { path: 'home', component: HomeComponent },
   { path: 'vehiculos/:rutaAnterior/:accion', component: VehiculosComponent,canActivate:[AuthGuard] },
-  { path: 'ServiciosConfirmar/:ID/:tipo', component: ServiciosConfirmarComponent,canActivate:[AuthGuard] },
+  { path: 'ServiciosConfirmar/:ID/:tipo/:extra', component: ServiciosConfirmarComponent,canActivate:[AuthGuard] },
   { path: 'modificaRecepcion/:rutaAnterior/:idRecepcion', component: ModificaRecepcionComponent,canActivate:[AuthGuard] },
   { path: 'automaticos', component: AutomaticosComponent },
   // { path: 'login', component: LoginComponent},

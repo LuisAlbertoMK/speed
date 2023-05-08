@@ -50,9 +50,13 @@ let problemas_03052023 =
 [
     {problema:'Determinar el rango de fechas por el cual se buscara', status:'PENDIENTE'},   
 ]
+let problemas_08052023 = 
+[
+    {problema:'Filtrar recepciones por sucursal y status', status:'PENDIENTE'},   
+]
 
 // git add .
-// git commit -m "problemas_04052023-4"
+// git commit -m "problemas_08052023-5"
 // git push -u origin main
 
 // monto total de iva : de que se obtiene esta parte?
@@ -64,5 +68,5 @@ let problemas_03052023 =
 //  segundo filtrar las ordenes y filtrar gastos de operacion dentro de las fechas
 //  tercero obtener el historial de pagos y gastos
 //  cuarto realizar las operaciones para obtener el iva,total_g_operacione, subtotal, total, libre
-
-//solo falta filtrar gastos de operacion por sucursalng
+// 
+//solo falta filtrar gastos de operacion por sucursal
