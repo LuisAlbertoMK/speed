@@ -952,9 +952,7 @@ export class ServiciosPublicosService {
                                     Toast.fire({icon: 'error', title: mensaje});
     }
     async mensaje_pregunta(mensaje) {
-        let mensajeAnswer = {
-            respuesta: false
-        }
+        let mensajeAnswer = { respuesta: false }
         await Swal
             .fire({
                 title: `${mensaje} ?`,
@@ -1214,7 +1212,7 @@ export class ServiciosPublicosService {
         const  { elementos, margen_get, iva, formaPago, descuento, servicios, margen } = data
 
         const ocupados = (servicios) ?  servicios: elementos
-        const margen1_0 = (margen_get) ?  margen_get: margen
+        const margen1_0 = (margen) ?   margen : margen_get
         
         const margenOcupado = 1 + (margen1_0 / 100)
         
@@ -1268,21 +1266,23 @@ export class ServiciosPublicosService {
             }
           }
         })
-        
-        reporteGeneral.refacciones_v = (reporteGeneral.refacciones_a * margenOcupado)
+        let refaccionesv = 0
+        if(reporteGeneral.refacciones_a > 0){
+            reporteGeneral.refacciones_v = (reporteGeneral.refacciones_a * margenOcupado)
+            refaccionesv = (reporteGeneral.refacciones_v >= 0) ? reporteGeneral.refacciones_v : 0
+        }
+
         reporteGeneral.sobrescrito = reporteGeneral.sobrescrito_mo + reporteGeneral.sobrescrito_paquetes + reporteGeneral.sobrescrito_refaccion
         
+
+        if (reporteGeneral.total >0 ) reporteGeneral.ub = (reporteGeneral.total - refaccionesv)*100/reporteGeneral.total 
+
         const suma = reporteGeneral.mo + reporteGeneral.refacciones_v + reporteGeneral.sobrescrito
         reporteGeneral.subtotal = suma;
     
         (iva) ? reporteGeneral.total = suma * 1.16 : reporteGeneral.total = suma;
     
         if (iva) reporteGeneral.iva = suma * .16 ;
-        
-        const refaccionesv = (reporteGeneral.refacciones_v >= 0) ? reporteGeneral.refacciones_v : 0
-        
-        if (reporteGeneral.total >0 ) reporteGeneral.ub = (reporteGeneral.total - refaccionesv)*100/reporteGeneral.total 
-
         
         const enCaso_meses = this.formasPAgo.find(f=>Number(f['id']) === Number(formaPago))
         // console.log(enCaso_meses);
@@ -1294,8 +1294,7 @@ export class ServiciosPublicosService {
           reporteGeneral.descuento = 0
           const operacion = reporteGeneral.total * (1 + (enCaso_meses['interes'] / 100))
           reporteGeneral.meses = operacion;
-        }        
-
+        }
         return { reporte: reporteGeneral, ocupados}
     }
     
@@ -1324,8 +1323,7 @@ export class ServiciosPublicosService {
             e_interno.total = operacion_interno * (e_interno.tipo === 'refaccion' ? margen : 1);
           }
         });
-        
-        reporte_interno.refacciones_v = reporte_interno.refacciones * margen;
+        if(reporte_interno.refacciones >0) reporte_interno.refacciones_v = reporte_interno.refacciones * margen;
         reporte_interno.total =
           reporte_interno.mo +
           reporte_interno.refacciones_v +

@@ -5,6 +5,7 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import Swal from 'sweetalert2';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -18,6 +19,7 @@ export class ListaTecnicosComponent implements OnInit {
   tecnico: string = 'tecnico'
   myControl = new FormControl('');
   filteredOptions: Observable<string[]>;
+  listaTecnicos_arr = []
 
 
   @Output() dataTecnico : EventEmitter<any>
@@ -40,13 +42,12 @@ export class ListaTecnicosComponent implements OnInit {
         this.listatecnicos_arr = usuarios.filter(u => u.rol === this.tecnico)
           .map(({usuario, rol, correo, id, status, sucursal}) => ({usuario, rol, correo, id, status, sucursal}));
       }
-    }, {
-        onlyOnce: true
-      })
+    })
   }
   tecnicoSeleccionado(data){
     if (data.id) {
       this.dataTecnico.emit( data )
+      this.myControl.setValue('')
     }else{
       this.dataTecnico.emit( false )
     }
@@ -56,9 +57,14 @@ export class ListaTecnicosComponent implements OnInit {
       startWith(''),
       map(value => {
         const name = typeof value === 'string' ? value : value?.name;
-        return name ? this._filter(name as string) : this.listatecnicos_arr.slice();
+        return name ? this._filter(name as string) : this.realizaFiltro() ;
       }),
     );
+  }
+  // this.listatecnicos_arr.slice()
+  realizaFiltro(){
+    // console.log(this.listatecnicos_arr);
+    return this.listatecnicos_arr.filter(r=>r.sucursal === this.sucursal)
   }
   displayFn(user: any): any {
     return user && `${user['usuario']}` ? `${user['usuario']}` : '';
@@ -70,13 +76,15 @@ export class ListaTecnicosComponent implements OnInit {
       const filterValue = value.toLowerCase();
       let resultados = this.listatecnicos_arr.filter(option => option['usuario'].toLowerCase().includes(filterValue));
     
-      if (!resultados.length) {
-        resultados = this.listatecnicos_arr.filter(option => option['correo'].toLowerCase().includes(filterValue));
-      }
-    
-      data = resultados;
+      if (!resultados.length)  resultados = this.listatecnicos_arr.filter(option => option['correo'].toLowerCase().includes(filterValue)); 
+      data = resultados.filter(r=>r.sucursal === this.sucursal)
     }
     return data
   }
+
+  //puedes refactorizar codigo y como te doy el codigo?
+  
+
+
 
 }

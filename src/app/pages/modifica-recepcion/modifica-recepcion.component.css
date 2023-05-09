@@ -112,4 +112,10 @@ table {
      bottom: 20px;
      right: 20px;
    }
- } 
+ }
+ input.smallInput {
+  max-width: 60px;
+}
+.pointer{
+  cursor: pointer;
+}

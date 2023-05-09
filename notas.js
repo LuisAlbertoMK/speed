@@ -56,11 +56,7 @@ let problemas_08052023 =
 ]
 
 // git add .
-<<<<<<< HEAD
-// git commit -m "problemas_08052023-5"
-=======
-// git commit -m "problemas_04052023-5"
->>>>>>> 977cdae19b110e49385ce3f7c7da9269b9571855
+// git commit -m "problemas_09052023-1"
 // git push -u origin main
 
 

@@ -42,258 +42,241 @@ const dbRef = ref(getDatabase());
 export class ModificaRecepcionComponent implements OnInit {
 
   miniColumnas:number = 100
-  ROL:string = '';SUCURSAL:string=''; 
-  
+  numeroDias: number = null
+  ROL:string =''; SUCURSAL:string ='';
+
+  infoConfirmar=
+  {
+    cliente:{}, vehiculo:{},sucursal:{}, reporte:{}, no_os:null, dataFacturacion: null,observaciones:null,
+    checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:1, margen: 25, personalizados: [],
+    detalles:[],diasEntrega: this.numeroDias, fecha_promesa: null, firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
+    fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null
+  }
+  camposDesgloce = [
+    {valor:'mo', show:'mo'},
+    // {valor:'refacciones_a', show:'refacciones a'},
+    {valor:'refacciones_v', show:'refacciones'},
+    // {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    // {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
+    // {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
+    {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'descuento', show:'descuento'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+    {valor:'meses', show:'meses'},
+  ]
+  camposCliente=[
+    {valor: 'no_cliente', show:'# Cliente'},
+    {valor: 'nombre', show:'Nombre'},
+    {valor: 'apellidos', show:'Apellidos'},
+    {valor: 'telefono_fijo', show:'Tel. Fijo'},
+    {valor: 'telefono_movil', show:'Tel. cel.'},
+    {valor: 'tipo', show:'Tipo'},
+    {valor: 'empresa', show:'Empresa'},
+    {valor: 'showSucursal', show:'Sucursal'},
+    {valor: 'correo', show:'Correo'},
+    {valor: 'correo_sec', show:'Correo adicional'}
+  ]
+  camposVehiculo=[
+    {valor: 'placas', show:'Placas'},
+    {valor: 'marca', show:'marca'},
+    {valor: 'modelo', show:'modelo'},
+    {valor: 'anio', show:'añio'},
+    {valor: 'categoria', show:'categoria'},
+    {valor: 'cilindros', show:'cilindros'},
+    {valor: 'engomado', show:'engomado'},
+    {valor: 'color', show:'color'},
+    {valor: 'transmision', show:'transmision'},
+    {valor: 'no_motor', show:'No. Motor'},
+    {valor: 'vinChasis', show:'vinChasis'},
+    {valor: 'marcaMotor', show:'marcaMotor'}
+  ]
+  paquete: string = 'paquete'
+  refaccion: string = 'refaccion'
+  mo: string = 'mo'
+
+  // tabla
   dataSource = new MatTableDataSource(); //elementos
-  elementos = ['index','nombre','cantidad','costo','precio','total']; //elementos
+  elementos = ['nombre','cantidad','sobrescrito','precio']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
   expandedElement: any | null; //elementos
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
   @ViewChild('elements') sort: MatSort //elementos
-  ///aaqui los nuevos campos para mostrar
-  id_recepcion = null
-  listaTecnicos = []
-  paquetes = []
-  paquetesListos:boolean = false
-  camposCliente=[
-    {valor:'nombre',show:'Nombre'},
-    {valor:'apellidos',show:'Apellidos'},
-    {valor:'correo',show:'Correo'},
-    {valor:'correo_sec',show:'Correo 2'},
-    {valor:'no_cliente',show:'# Cliente'},
-    {valor:'telefono_movil',show:'Tel. movil'},
-    {valor:'telefono_fijo',show:'Tel. Fijo'},
-    {valor:'tipo',show:'Tipo'}
+
+  idPaqueteEditar: number = -1
+  idPaqueteEditarBoolean: boolean = false
+
+  camposGuardar = [
+    'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os'
   ]
-  camposVehiculo=[
-    {valor:'placas',show:'placas'},
-    {valor:'marca',show:'marca'},
-    {valor:'modelo',show:'modelo'},
-    {valor:'anio',show:'anio'},
-    {valor:'categoria',show:'categoria'},
-    {valor:'cilindros',show:'cilindros'},
-    {valor:'color',show:'color'},
-    {valor:'engomado',show:'engomado'},
-    {valor:'marcaMotor',show:'marcaMotor'},
-    {valor:'no_motor',show:'no_motor'},
-    {valor:'transmision',show:'transmision'},
-    {valor:'vinChasis',show:'vinChasis'},
-  ]
-  camposTecnico=[
-    {valor:'usuario',show:'Nombre'},
-    {valor:'correo',show:'correo'},
-  ]
-  camposDesgloce = [
-    {show:'MO',valor:'mo'},
-    {show:'costo de refacción',valor:'refacciones_a'},
-    {show:'precio de venta refacción',valor:'refacciones_v'},
-    {show:'Sobrescrito',valor:'sobrescrito'},
-    {show:'subtotal',valor:'subtotal'},
-    {show:'IVA',valor:'iva'},
-    {show:'total',valor:'total'},
-    {show: 'U.B estimada',valor:'ub',symbolo:'%'},
-  ]
-  dataRecepcion={}
-  reporte = {
-    iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
-    subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
-  }
+
+  datCliente:any
+  cliente:string = null
+
+  extra:string
+  modeloVehiculo:string = null
+  vehiculoData:string = null
+
+  clienteId:string = null
+  observaciones:string = null
 
   constructor(private router: Router, private rutaActiva: ActivatedRoute,private fb: FormBuilder,private _email:EmailsService,
     private _sucursales: SucursalesService, private _servicios:ServiciosService, private _publicos:ServiciosPublicosService,
     private _security:EncriptadoService,private _catalogos:CatalogosService,private _usuarios: UsuariosService) { }
 
   ngOnInit(): void {
-    this.listadoTecnicos()
-    
     this.rol()
-    // this.autocompletar()
   }
-  listadoTecnicos(){
-    this._usuarios.listatecnicos().then(({contenido,data})=>{
-      if(contenido){
-        const tecnicos = data
-        if (this.SUCURSAL!=='Todas') {
-          const filtro = tecnicos.filter(o=>o.sucursal=== this.SUCURSAL)
-          this.listaTecnicos = filtro
-        }else{
-          this.listaTecnicos = tecnicos
-        }
-      }
-      
-    })
-  }
-
-
-  
   rol(){
-    
-    
-    
     if (localStorage.getItem('dataSecurity')) {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-
-    this.obtenerInformacionRecepcion()
+      this.ROL = this._security.servicioDecrypt(variableX['rol'])
+      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+      this.acciones()
     }
-
+  }
+  acciones(){
+    const ID = this.rutaActiva.snapshot.params['idRecepcion']
+    const tipo = this.rutaActiva.snapshot.params['rutaAnterior']
+    // console.log(ID);
+    // console.log(tipo);
+    const starCountRef = ref(db, `recepciones/${ID}`)
     
-    
-  }
-  obtenerInformacionRecepcion(){
-    // modificaRecepcion/:rutaAnterior/:idRecepcion
-    this.id_recepcion = this.rutaActiva.snapshot.params['idRecepcion']
-    if (this.id_recepcion) {
-      const starCountRef = ref(db, `recepciones/${this.id_recepcion}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          //asigancion de la informacion para obtener informacion de cliente, vehiculo y sucursal
-          const dataRecepcion = snapshot.val()
-          const integra = {...dataRecepcion}
-          integra['infoSucursal'] = this.infoSucursal(dataRecepcion['sucursal']).dataSucursal
-                this.infoTecnico(dataRecepcion['tecnico']).then(({okTecnico,dataTecnico})=>{
-                  integra['infoTecnico'] = dataTecnico
-                })
-          const startCliente = ref(db, `clientes/${dataRecepcion['cliente']}`)
-            onValue(startCliente, (snapshotc) => {
-              const dataCliente = snapshotc.val()
-              integra['infoCliente'] = dataCliente
-              if (dataCliente['vehiculos']) {
-                const vehiculos = this._publicos.crearArreglo2(dataCliente['vehiculos'])
-                integra['infoVehiculo'] =  vehiculos.find(v=>v['id'] === dataRecepcion['vehiculo'])
-              }
-              let servicios = []
-              if(dataRecepcion['servicios']) servicios = dataRecepcion['servicios']
-              const margen = (1 + (this.dataRecepcion['margen']/100))
-              servicios.map(s=>{
-                let mul =0;
-                (s['costo']> 0 ) ? mul = s['costo'] : mul = s['precio']
-                
-                // s['tipo'] = s['tipo'].toLowerCase()
-                if (s['tipo'] === 'refaccion') {
-                  s['total'] = (mul * s['cantidad']) * margen
-                }else{
-                  s['total'] = mul * s['cantidad']
-                }
-              })
-              // console.log(servicios);
-              
-              integra['elementos'] = servicios
-              integra['reporte'] = this._publicos.realizarOperaciones_2(integra).reporte
-              integra['servicios'] = this._publicos.realizarOperaciones_2(integra).ocupados
-              this.dataRecepcion = integra              
-              this.realizarInfo(integra['servicios'])
-               this.realizaOperaciones()
-              //  console.log(integra);
-              })
-        }
-      })
-    } 
-  }
-  realizarInfo(servicios:any[]){
-    // console.log(servicios);
-    servicios.map(s=>{
-      const {elementos, reporte} = this._publicos.reportePaquete(s.elementos,this.dataRecepcion['margen'])
-      s['reporte_interno'] = reporte;
-      s['precio'] = reporte.total;
-      s['total'] = reporte.total;
-    })
-    this.dataSource.data = servicios
-    this.newPagination('servicios')
-    this.realizaOperaciones()
-  }
-  infoSucursal(idSucursal:string){
-    const answer = {okSucursal:true, dataSucursal:{}}
-    const starCountRef = ref(db, `sucursales/${idSucursal}`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        answer.dataSucursal = snapshot.val()
-      } else {
-        answer.okSucursal = false
-      }
-    },
-    {
-      onlyOnce: true
-    })
-    return answer
-  }
-  async infoTecnico(idTecnico:string){
-    const answer = { okTecnico:true, dataTecnico:{} }
+        // console.log(snapshot.val());
+        const {cliente, vehiculo, servicio,servicios ,elementos, sucursal, iva, formaPago, margen} = snapshot.val()
+        this.infoConfirmar.cliente = cliente
+          this.infoConfirmar.vehiculo = vehiculo
+          // this.infoConfirmar.vehiculos = vehiculos
 
-    await get(child(dbRef, `usuarios/${idTecnico}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        answer.dataTecnico = snapshot.val()
+          this.infoConfirmar.formaPago = formaPago
+          this.infoConfirmar.margen = margen
+          this.infoConfirmar.sucursal = sucursal
+          
+          if(cliente.dataFacturacion){
+            this.infoConfirmar.dataFacturacion = cliente.dataFacturacion.unica
+          }else{
+            this.infoConfirmar.dataFacturacion = null
+          }
+          
+          this.infoConfirmar.servicio = servicio
+          this.infoConfirmar.iva = iva
+          this.extra = vehiculo.id
+          this.infoConfirmar.servicios = (servicios)? servicios : []
+          // this.infoConfirmar.reporte = this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte
+          // this.infoConfirmar.servicios = 
+          // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).ocupados);
+          // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte);
+          this.infoConfirmar.cliente = cliente
+          // this.infoConfirmar.vehiculos = cliente.vehiculos
+          this.realizaOperaciones()
       } else {
-       answer.okTecnico = false
+        // console.log("No data available");
+        this._publicos.mensaje_pregunta('No se encontro informacion algunoa').then(()=>{
+          this.router.navigateByUrl('/servicios')
+        })
       }
-    }).catch((error) => {
-      console.error(error);
-    });
-    return answer
+    })
   }
-  eliminaElemento(index:number){
-    const elementos:any[] = this.dataRecepcion['servicios']
-    elementos[index] = null
-    this.dataRecepcion['servicios'] = elementos.filter(e=>e)
-    this.realizarInfo(elementos.filter(e=>e))    
+
+  infoCliente(event){
+
+  }
+  infopaquete( event ){
+    const originalArray = event.elementos;
+    const copiedArray = originalArray.slice();
+    const tempDate =  {...event, elementos: copiedArray }
+    
+    // console.log(copiedArray);
+    copiedArray.forEach(element => {
+      element.aprobado = true
+    });
+     
+    this.infoConfirmar.servicios.push(tempDate)
+    this.realizaOperaciones()
+  }
+  elementoInfo( event){
+    event.aprobado = true
+    if(this.idPaqueteEditar >= 0){
+      this.infoConfirmar.servicios[this.idPaqueteEditar].elementos.push(event)
+    }else{
+      this.infoConfirmar.servicios.push(event)
+    }
+    this.realizaOperaciones()
+  }
+  editar(donde:string ,data,cantidad){
+    if (donde === 'cantidad' && cantidad <= 0) cantidad = 1
+    if (donde === 'costo' && cantidad <= 0) cantidad = 0
+
+    this.infoConfirmar.servicios[data.index][donde] = Number(cantidad)
+   
+    this.realizaOperaciones()
+  }
+  eliminaElemento(data){
+    this._publicos.mensaje_pregunta('Eliminar elemento ' + String(data.nombre).toLowerCase()).then(({respuesta})=>{
+      if(respuesta){
+        this.infoConfirmar.servicios = this.infoConfirmar.servicios.filter((_, index) => index !== data.index);
+        this.realizaOperaciones()
+      }
+    })
+    
+  }
+  editarSubelemento(donde:string ,data,item,cantidad){
+
+    const elementos = [...data.elementos]
+
+    if (donde === 'cantidad' && cantidad <= 0) cantidad = 1
+    if (donde === 'costo' && cantidad <= 0) cantidad = 0
+    elementos[item.index][donde] = Number(cantidad)
+
+    this.infoConfirmar.servicios[data.index].elementos = elementos
+
+    this.realizaOperaciones()
+  }
+  eliminaSubElemento(data,item){
+    this._publicos.mensaje_pregunta('Eliminar Subelemento ' + String(item.nombre).toLowerCase() ).then(({respuesta})=>{
+      if(respuesta){
+        const elementos = data.elementos.slice();
+        elementos.splice(item.index, 1);
+        this.infoConfirmar.servicios[data.index].elementos = elementos;
+        this.realizaOperaciones()
+      }
+    })
   }
   realizaOperaciones(){
-    // setTimeout(()=>{
-
-    let servicios = []
-    if(this.dataRecepcion['servicios']) servicios = this.dataRecepcion['servicios']
-    const aprobados = servicios.filter(o=>o['aprobado'])
-    
-    // const valoresForm = this.FormComplementos.value
-    if(!this.dataRecepcion['descuento']) this.dataRecepcion['descuento'] = 0
-    // if(!this.dataRecepcion['servicios']) this.dataRecepcion['servicios'] = []
-    const factura= this.dataRecepcion['iva']
-    const envia_temp = {
-      elementos: aprobados,
-      margen_get: this.dataRecepcion['margen'],
-      iva: factura,
-      formaPago: this.dataRecepcion['formaPago'],
-      descuento: this.dataRecepcion['descuento'],
-    }
-    // console.log(aprobados);
-    
-    const reporte = this._publicos.realizarOperaciones_2(envia_temp).reporte
-    this.reporte= reporte
-    // },100)
-  }
-  newPagination(table:string){
     setTimeout(() => {
-      if (table ==='servicios') {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort
-      }
-    },500)
-  }
-  getInfoElemento(data){
-    // dataElemento
-    // console.log(data);
-    
-    if (data['id']) {
-      this.dataRecepcion['servicios'].push(data)
-      this.realizarInfo(this.dataRecepcion['servicios'])
-    }
-  }
-  infopaquete(data){
-    console.log(data);
-    this.dataRecepcion['servicios'].push(data)
-    this.realizarInfo(this.dataRecepcion['servicios'])
-  }
-  eliminaSubElemento(subelement, element){
+      const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoConfirmar)
+      
+      this.dataSource.data = ocupados
+      this.infoConfirmar.servicios = ocupados
+      this.infoConfirmar.reporte = reporte
+      const ID = this.rutaActiva.snapshot.params['idRecepcion']
+      const updates = {
+        [`recepciones/${ID}/servicios`]: ocupados,
+        [`recepciones/${ID}/reporte`]: reporte
+      };
+      update(ref(db), updates);
+      this.newPagination()
+    }, 100);
 
-    let arregloOriginal = this.dataRecepcion['servicios'][element].elementos
-   
-    let arregloCopia = [...arregloOriginal];
-    arregloCopia[subelement]= null
-    const nuevoArreglo = arregloCopia.filter(o=>o!==null)
-    this.dataRecepcion['servicios'][element].elementos = nuevoArreglo
-    this.realizarInfo(this.dataRecepcion['servicios'])
-     console.log(nuevoArreglo);
-    
+  }
+  newPagination(){
+    setTimeout(() => {
+    // if (data==='elementos') {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort
+    // }
+    }, 500)
+  }
+  cargaDataCliente(cliente:any){
+    this.datCliente = null
+    // this.vehiculo = null
+    if (cliente) {
+      setTimeout(() => {
+        this.datCliente = cliente
+      } , 200);
+    }
   }
 }

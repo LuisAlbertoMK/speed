@@ -465,7 +465,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     elementos.splice(item.index, 1);
     this.infoConfirmar.servicios[data.index].elementos = elementos;
     this.realizaOperaciones()
-}
+  }
 
 realizaOperaciones(){
   setTimeout(() => {

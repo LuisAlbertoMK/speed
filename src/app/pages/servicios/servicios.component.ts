@@ -145,6 +145,10 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   fechas_get = {start: new Date(), end: new Date()}
   busquedaServicios:string = null
   
+  idSucursalOS: string = null
+
+  dataRecepcionEditar = null
+  
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
     private _servicios:ServiciosService, private _usuarios:UsuariosService, private _security:EncriptadoService,
@@ -181,7 +185,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       if (this.SUCURSAL !=='Todas') {
-       
         this.busquedaSucursalString = this.SUCURSAL
         const {sucursal} = this.sucursales_arr.find(s=>s.id === this.SUCURSAL)
         this.busquedaSucursalStringShow = sucursal
@@ -240,7 +243,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
                         this.recepciones_arr[index][c] = os[c];
                       }
                     })
-                }                
+                } 
             })
           }else if(comparaOrdenes.length > this.recepciones_arr.length){
             this.recepciones_arr.push(...comparaOrdenes.slice(this.recepciones_arr.length));
@@ -266,73 +269,105 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
   accionServicio(padre, hijo, statusGet){
     //tomamos el id de padre en este caso la recepcion
-    const padreID = padre.id
-    const padreIndex = padre.index
-    const HijoIndex = hijo.index
 
-    const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
-
-    if (aprobado) {
-      const showStatus1 =  (statusGet === 'terminar') ? 'Terminado' : 'En espera'
-
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = aprobado
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = showStatus1
-
-    }else if (statusGet === 'cancelado' || statusGet === 'Noaprobado') {
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = false
-      this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = 'En espera'
-    } if (statusGet === 'eliminado') {
-      this.recepciones_arr[padreIndex].servicios = this.recepciones_arr[padreIndex].servicios.filter((servicio, index) => {
-        if (index !== HijoIndex) {
-            servicio.index = index;
-            return true;
-        }
-        return false;
-    });
+    // console.log(padre);
     
-     
+    const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
+    const showStatus1 =  (statusGet === 'terminar') ? 'Terminado' : 'En espera'
+    const servicios = [...padre.servicios]
+    servicios.map((s,index)=>{
+      if(s.index === hijo.index){
+        s.status = statusGet
+        s.aprobado = aprobado
+        s.showStatus = showStatus1
+      }
+    })
+    if (statusGet === 'eliminado') {
+      this._publicos.mensaje_pregunta('Eliminar servicio de la orden').then(({respuesta})=>{
+        if (respuesta) {
+          servicios.splice(hijo.index, 1);
+          const { reporte } = this._publicos.realizarOperaciones_2(padre)
+          const updates = {
+            [`recepciones/${padre.id}/servicios`]: servicios,
+            [`recepciones/${padre.id}/reporte`]: reporte,
+          };
+          update(ref(db), updates)
+        }
+      })
+    }else{
+      const { reporte } = this._publicos.realizarOperaciones_2(padre)
+      const updates = {
+        [`recepciones/${padre.id}/servicios`]: servicios,
+        [`recepciones/${padre.id}/reporte`]: reporte,
+      };
+      update(ref(db), updates)
     }
     
-    const {reporte, ocupados} = this._publicos.realizarOperaciones_2(this.recepciones_arr[padreIndex])
     
-    this.recepciones_arr[padreIndex].reporte = reporte
-    this.recepciones_arr[padreIndex].servicios = ocupados
-    this.recepciones_arr[padreIndex].notificar = true
+    
+    
+    // update(ref(db), updates)
+    
+    
+    // const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
 
-    const updates = {};
-    updates[`recepciones/${padreID}`] = this.recepciones_arr[padreIndex];
-    update(ref(db), updates).then(()=>{
-      this._publicos.swalToast('accion  correcta!')
-    });
+    // if (aprobado) {
+    //   const showStatus1 =  (statusGet === 'terminar') ? 'Terminado' : 'En espera'
+
+    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
+    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = aprobado
+    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = showStatus1
+
+    // }else if (statusGet === 'cancelado' || statusGet === 'Noaprobado') {
+    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
+    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = false
+    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = 'En espera'
+    // } if (statusGet === 'eliminado') {
+    //   this.recepciones_arr[padreIndex].servicios = this.recepciones_arr[padreIndex].servicios.filter((servicio, index) => {
+    //     if (index !== HijoIndex) {
+    //         servicio.index = index;
+    //         return true;
+    //     }
+    //     return false;
+    // });
+    
+     
+    // }
+    
+    // const {reporte, ocupados} = this._publicos.realizarOperaciones_2(this.recepciones_arr[padreIndex])
+    
+    // this.recepciones_arr[padreIndex].reporte = reporte
+    // this.recepciones_arr[padreIndex].servicios = ocupados
+    // this.recepciones_arr[padreIndex].notificar = true
+
+    // const updates = {};
+    // updates[`recepciones/${padreID}`] = this.recepciones_arr[padreIndex];
+    // update(ref(db), updates).then(()=>{
+    //   this._publicos.swalToast('accion  correcta!')
+    // });
 
     
-    this.dataSource.data = this.recepciones_arr
-    this.newPagination()
+    // this.dataSource.data = this.recepciones_arr
+    // this.newPagination()
   }
   actualizarReporteIVA(data){
     setTimeout(()=>{
-      // if(data.id && data.index){
-        const updates = {};
         const reporte = this._publicos.realizarOperaciones_2(data).reporte
-        this.recepciones_arr[data.index].reporte = reporte
-        this.recepciones_arr[data.index].notificar = true
-        updates[`recepciones/${data.id}/reporte`] = reporte;
-        updates[`recepciones/${data.id}/iva`] = data.iva;
-        updates[`recepciones/${data.id}/notificar`] = true;
+        const { id, iva } = data;
+        const updates = {
+          [`recepciones/${id}/reporte`]: reporte,
+          [`recepciones/${id}/iva`]: iva,
+          [`recepciones/${id}/notificar`]: true
+        };
         update(ref(db), updates)
-      // }
     },200)
   }
   statusServicio(padre, status){
-    const padreID = padre.id
-    const padreIndex = padre.index
+    const padreID = padre.id;
+    const servicios = [...padre.servicios];
+    const { fecha, hora } = this._publicos.getFechaHora();
     
-    const servicios = this.recepciones_arr[padreIndex].servicios;
-    const infoIndex = this.recepciones_arr[padreIndex];
     
-    const {fecha, hora} = this._publicos.getFechaHora()
     const updates = {};
     servicios.forEach(servicio => {
       if(status === 'terminado' || status === 'entregado') {
@@ -340,8 +375,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         servicio.showStatus = 'Terminado';
         updates[`recepciones/${padreID}/fecha_entregado`] = fecha;
         updates[`recepciones/${padreID}/hora_entregado`] = hora;
-        infoIndex.fecha_entregado = fecha;
-        infoIndex.hora_entregado = hora;
       } else {
         servicio.status = 'Aprobado';
         servicio.showStatus = 'En espera';
@@ -349,23 +382,21 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         updates[`recepciones/${padreID}/hora_entregado`] = null;
         updates[`recepciones/${padreID}/fecha_recibido`] = fecha;
         updates[`recepciones/${padreID}/hora_recibido`] = hora;
-        infoIndex.fecha_recibido = fecha;
-        infoIndex.hora_recibido = hora;
-        infoIndex.fecha_entregado = null;
-        infoIndex.hora_entregado = null;
       }
     });
-
-    infoIndex.servicios = servicios;
-    infoIndex.status = status;
-    infoIndex.notificar = true;
     updates[`recepciones/${padreID}/status`] = status;
     updates[`recepciones/${padreID}/notificar`] = true;
+    updates[`recepciones/${padreID}/servicios`] = servicios;
     
-    this.recepciones_arr[padreIndex] = infoIndex
-    update(ref(db), updates)
-    this.busqueda(this.busquedaStatus)
-    this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
+    setTimeout(() => {
+      update(ref(db), updates).then(()=>{
+        this.busqueda(this.busquedaStatus)
+        this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
+      })
+    }, 500);
+    
+      
+    
   }
   //para actualizar el tecnico de la orden de servicio
   infoTecnico(event){
@@ -374,14 +405,13 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     }else{
       this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
         if (respuesta) {
+          // console.log(this.dataRecepcionEditar);
           const updates = {
-            [`recepciones/${this.recepciones_arr[this.indexEdicionRecepcion].id}/tecnico`]: event.id,
-            [`recepciones/${this.recepciones_arr[this.indexEdicionRecepcion].id}/showNameTecnico`]: event.usuario
+            [`recepciones/${this.dataRecepcionEditar}/tecnico`]: event.id,
+            [`recepciones/${this.dataRecepcionEditar}/showNameTecnico`]: event.usuario
           };
           update(ref(db), updates)
             .then(() => {
-              this.recepciones_arr[this.indexEdicionRecepcion].showNameTecnico = event.usuario
-              this.recepciones_arr[this.indexEdicionRecepcion].tecnico = event.id
               this._publicos.swalToast('Tecnico actualizado correctamente!!')
             });
         }
@@ -524,10 +554,12 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             // console.log(infoCorreo);
       
             this._email.cambioInformacionOS(infoCorreo)
-            const updates = {};
-            updates[`recepciones/${id}/notificar`] = false;
+            const updates = {
+              [`recepciones/${id}/notificar`] : false
+            };
+            
             update(ref(db), updates).then(()=>{
-              this.recepciones_arr[index].notificar = false 
+              this.recepciones_arr[index]['notificar'] = false 
             });
           })
         }
