@@ -54,9 +54,13 @@ let problemas_08052023 =
 [
     {problema:'Filtrar recepciones por sucursal y status', status:'PENDIENTE'},   
 ]
+let problemas_09052023 = 
+[
+    {problema:'Revisar administracion y reporte de gastos', status:'PENDIENTE'},   
+]
 
 // git add .
-// git commit -m "problemas_09052023-1"
+// git commit -m "problemas_09052023-2"
 // git push -u origin main
 
 
