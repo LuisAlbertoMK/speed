@@ -75,19 +75,22 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
-          <div class="mb-1 row text-start">
-            <label [ngClass]="{'text-danger': validaCampo('fecha'),'text-success': !validaCampo('fecha')}"
-              class="col-sm-3 col-md-4 col-lg-3 col-form-label">Fecha </label>
-            <div class="col-sm-9 col-md-8 col-lg-9">
-                <div class="input-group mb-3">
-                    <mat-card class="demo-inline-calendar-card">
-                      <mat-calendar [(selected)]="selected" ></mat-calendar>
-                    </mat-card>
-                  </div>
-            </div> 
+        <ng-container *ngIf="SUCURSAL === 'Todas'">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
+            <div class="mb-1 row text-start">
+              <label [ngClass]="{'text-danger': validaCampo('fecha'),'text-success': !validaCampo('fecha')}"
+                class="col-sm-3 col-md-4 col-lg-3 col-form-label">Fecha </label>
+              <div class="col-sm-9 col-md-8 col-lg-9">
+                  <div class="input-group mb-3">
+                      <mat-card class="demo-inline-calendar-card">
+                        <mat-calendar [(selected)]="selected" ></mat-calendar>
+                      </mat-card>
+                    </div>
+              </div> 
+            </div>
           </div>
-        </div>
+        </ng-container>
+        
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
           <button type="submit" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
             class="btn btn-sm btn-primary m-1">Registrar pago</button>
@@ -102,6 +105,6 @@
         <p>Falta información: <strong class="text-danger">{{informacionFaltante}}</strong></p>
       </div>
     </ng-container>
-    <!-- <pre>Formulario valido: {{formPago.valid }}</pre>
-    <pre>{{formPago.value |json}}</pre> -->
+    <!-- <pre>Formulario valido: {{formPago.valid }}</pre>-->
+    <!-- <pre>{{formPago.value |json}}</pre>  -->
   </div>

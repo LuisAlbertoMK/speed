@@ -75,4 +75,9 @@ table {
   .example-element-description-attribution {
     opacity: 0.5;
   }
-  
+  .extraInput{
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    width: 100%;
+  }

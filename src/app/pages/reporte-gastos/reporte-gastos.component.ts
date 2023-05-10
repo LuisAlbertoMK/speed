@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
@@ -31,6 +31,7 @@ const dbRef = ref(getDatabase());
       ),
     ]),
   ],
+  
 })
 export class ReporteGastosComponent implements OnInit {
   miniColumnas:number = 100
@@ -41,6 +42,8 @@ export class ReporteGastosComponent implements OnInit {
   pagosGastosOP_arr = []
   
   listaConjunta_arr = []
+
+  listaos_arr = []
   metodospago = [
     {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
     {valor:'2', show:'Cheque', ocupa:'Cheque'},
@@ -57,8 +60,13 @@ export class ReporteGastosComponent implements OnInit {
   mo: string = 'mo'
 
   fechas_get = {inicio:new Date(), final: new Date()}
+  fechas_getAdministracion = {inicio:new Date(), final: new Date()}
 
   rangeReporteGastos = new FormGroup({
+    start: new FormControl(Date),
+    end: new FormControl(Date),
+  });
+  rangeAdministracion = new FormGroup({
     start: new FormControl(Date),
     end: new FormControl(Date),
   });
@@ -71,18 +79,40 @@ export class ReporteGastosComponent implements OnInit {
   expandedElement: any | null; //elementos
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
   @ViewChild('elements') sort: MatSort //elementos
+  // tabla
+  dataSourceAdministracion = new MatTableDataSource(); //elementos
+  elementosAdministracion = ['id','sucursalShow','no_os','status','fecha_recibido','fecha_entregado']; //elementos
+  // elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
+  columnsToDisplayWithExpandAdministracion = [...this.elementosAdministracion, 'opciones', 'expand']; //elementos
+  // expandedElement: any | null; //elementos
+  @ViewChild('AdministracionPaginator') paginatorAdministracion: MatPaginator //elementos
+  @ViewChild('Administracion') sortAdministracion: MatSort //elementos
 
 
-  reporte = {operacion:0, gastos:0, pagos:0, depositos:0,utilidad:0}
+
+  reporte = {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
+  reporteAdministracion = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0}
 
   camposReporte = [
     {valor:'depositos', show:'Depositos'},
     {valor:'pagos', show:'Pagos'},
     {valor:'operacion', show:'Operacion'},
     {valor:'gastos', show:'Gastos'},
-    {valor:'utilidad', show:'Utilidad'},
+    {valor:'sobrante', show:'Sobrante'},
   ]
-
+  camposReporteAdministracion = [
+    {valor:'gastosmoRefacciones', show:'Gastos ordenes'},
+    {valor:'operacion', show:'Operacion'},
+    {valor:'subtotal', show:'Subtotal'},
+    {valor:'iva', show:'I.V.A'},
+    {valor:'libreSinIVA', show:'libre sin Iva'},
+    {valor:'libreIva', show:'Libre iva'},
+    {valor:'libre_neto', show:'Libre neto'},
+  ]
+  tiempoReal: true
+  realizaGasto:string = null
+  sucursalFiltro: string = 'Todas'
+  sucursalFiltroShow: string = 'Todas'
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -93,7 +123,7 @@ export class ReporteGastosComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      
+      this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
       const starCountRef = ref(db, `sucursales`)
         onValue(starCountRef, (snapshot) => {
           if (snapshot.exists()) {
@@ -103,7 +133,7 @@ export class ReporteGastosComponent implements OnInit {
             this.ordenesServicios()
           }
         }, {
-          onlyOnce: true
+          onlyOnce: !this.tiempoReal
         })
     }
   }
@@ -137,7 +167,7 @@ export class ReporteGastosComponent implements OnInit {
         
       }
     }, {
-        onlyOnce: true
+        onlyOnce: this.tiempoReal
       })
   }
   gastosOperacion(){
@@ -150,9 +180,10 @@ export class ReporteGastosComponent implements OnInit {
           const {sucursal} = this.sucursales_arr.find(s=>s.id === go.sucursal)
           go.sucursalShow = sucursal
           go.tipo = 'operacion'
-          go.fechaCompara = this._publicos.construyeFechaString(go.fecha)
+          // go.fechaCompara = this._publicos.construyeFechaString(go.fecha)
+          go.fecha_registro_compara = this._publicos.construyeFechaString(go.fecha_registro)
           gastosOperacion.push(go)
-        })
+        })        
         const filtro = (this.SUCURSAL === 'Todas') ? gastosOperacion : gastosOperacion.filter(g=>g.sucursal === this.SUCURSAL)
         this.gastosOperacion_arr = filtro
         // console.log('gastosOperacion_arr',filtro.length);
@@ -161,7 +192,7 @@ export class ReporteGastosComponent implements OnInit {
         }, 500);
       }
     }, {
-        onlyOnce: true
+        onlyOnce: this.tiempoReal
       })
   }
   ordenesServicios(){
@@ -185,14 +216,23 @@ export class ReporteGastosComponent implements OnInit {
           });
           const nuevosHistoriales = os.hitorial_gastos.concat(os.historial_pagos)
           nuevosHistoriales.forEach(histo => {
-            histo.fechaCompara = this._publicos.construyeFechaString(histo.fecha)
+            histo.fechaCompara = this._publicos.construyeFechaString(histo.fecha_registro)
+            
             const {sucursal} = this.sucursales_arr.find(s=>s.id === histo.sucursal)
             histo.sucursalShow = sucursal
             aquiDocumentos.push(histo)
           });
+          if(os.status === 'entregado'){
+            os.fecha_entregado_compara = this._publicos.construyeFechaString(os.fecha_entregado)
+          }
+          const {sucursal} = this.sucursales_arr.find(s=>s.id === os.sucursal.id)
+          os.sucursalShow = sucursal
         })
         const filtro = (this.SUCURSAL === 'Todas') ? aquiDocumentos : aquiDocumentos.filter(os=>os.sucursal === this.SUCURSAL)
         // console.log(filtro);
+        this.listaos_arr = (this.SUCURSAL === 'Todas') ? recepciones : recepciones.filter(os=>os.sucursal.id === this.SUCURSAL)
+        
+        this.operacionesAdmin()
         
         this.pagosGastosOP_arr = filtro
         // console.log('pagosGastosOP_arr',filtro.length);
@@ -204,7 +244,7 @@ export class ReporteGastosComponent implements OnInit {
         console.log("No data available");
       }
     }, {
-        onlyOnce: true
+        onlyOnce: this.tiempoReal
     })
   }
   unirResultados(){
@@ -219,7 +259,7 @@ export class ReporteGastosComponent implements OnInit {
         return a
       })
       .filter(a => a.fechaCompara >= this.fechas_get.inicio && a.fechaCompara <= this.fechas_get.final)
-      const reporte =  {operacion:0, gastos:0, pagos:0, depositos:0,utilidad:0}
+      const reporte =  {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
       // console.log(resultados);
       resultados.map((f,index)=>{
         f.index = index
@@ -228,27 +268,82 @@ export class ReporteGastosComponent implements OnInit {
         if (f.tipo === 'operacion') reporte.operacion += f.monto;
         (f.tipoNuevo === 'gasto') ? reporte.gastos += f.monto : reporte.pagos += f.monto
       })
-      reporte.utilidad = (reporte.pagos + reporte.depositos) -  (reporte.gastos + reporte.operacion)
+      reporte.sobrante = (reporte.depositos) -  (reporte.gastos + reporte.operacion)
       this.reporte = reporte
       this.dataSource.data = resultados
-      this.newPagination()
+      this.newPagination('reporte')
   }
-  cambiosFechas(){
-    const {start, end} = this.rangeReporteGastos.value
+  cambiosFechas(donde:string){
+    const {start, end} = (donde === 'admin') ? this.rangeAdministracion.value : this.rangeReporteGastos.value
     if (start && end) {
       if (start['_d'] && end['_d']) {
-        this.fechas_get = {inicio: start['_d'], final: end['_d']}
-        // this.obternerfechas()
-        this.unirResultados()
+        const fechaAsigan = {inicio: start['_d'], final: end['_d']}
+        if(donde === 'admin'){
+          this.fechas_getAdministracion = fechaAsigan
+          this.operacionesAdmin();
+        }else{
+          this.fechas_get = fechaAsigan
+          this.unirResultados()
+        }
       }
     }
   }
+  operacionesAdmin(){
+    console.log(this.sucursalFiltro);
+    
+    const reporteEND = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0}
+    const filtrarEntregados = this.listaos_arr.filter(r=>r.status === 'entregado')
+    console.log(filtrarEntregados);
+    
+    const filtrosSucursal = (this.sucursalFiltro === 'Todas') ? filtrarEntregados :  filtrarEntregados.filter(os=>os.sucursal.id === this.sucursalFiltro )
 
-  newPagination(){
-    setTimeout(() => {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, 500);
+    const gastosFechas = filtrosSucursal.filter(a => a.fecha_entregado_compara >= this.fechas_getAdministracion.inicio && a.fecha_entregado_compara <= this.fechas_getAdministracion.final)
+    this.dataSourceAdministracion.data = gastosFechas
+    
+    
+    this.newPagination('admin')
+    gastosFechas.forEach(os=>{
+       os.hitorial_gastos.forEach(gasto => {
+        if(gasto.status ) reporteEND.gastosmoRefacciones += gasto.monto
+      });
+      const {reporte} = os
+      const {subtotal, total, iva} = reporte
+      reporteEND.subtotal  += subtotal
+      reporteEND.total     += total
+      if(os.iva){
+        reporteEND.iva     += iva
+      }
+    })
+    
+    
+    const gastosOperacionFechas = this.gastosOperacion_arr.filter(a => a.fecha_registro_compara >= this.fechas_getAdministracion.inicio && a.fecha_registro_compara <= this.fechas_getAdministracion.final)
+    console.log(gastosOperacionFechas);
+    
+    
+    // const filtrosSucursal2 = (this.sucursalFiltro !== this.SUCURSAL) ? gastosOperacionFechas :  gastosOperacionFechas.filter(os=>os.sucursal.id === this.sucursalFiltro )
+    gastosOperacionFechas.forEach(element => {
+      if(element.status) reporteEND.operacion += element.monto
+    });
+    reporteEND.libreSinIVA = reporteEND.subtotal - reporteEND.gastosmoRefacciones
+    reporteEND.libreIva = reporteEND.total - (reporteEND.gastosmoRefacciones)
+    reporteEND.libre_neto = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+    //libre neto = total - (histo_g_o / historial_ordenes_gastos)
+
+    this.reporteAdministracion = reporteEND
+  }
+  newPagination(donde:string){
+    if (donde === 'admin') {
+      setTimeout(() => {
+        this.dataSourceAdministracion.paginator = this.paginatorAdministracion;
+        this.dataSourceAdministracion.sort = this.sortAdministracion;
+      }, 500);
+    }else{
+      setTimeout(() => {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, 500);
+    }
+    
   }
 
 }

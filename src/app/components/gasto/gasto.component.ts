@@ -23,7 +23,7 @@ export class GastoComponent implements OnInit {
   @Output() showGastoHide : EventEmitter<any>
 
   ROL:string; SUCURSAL:string
-
+  sucursales_arr=[]
   miniColumnas:number=100
   formGasto:FormGroup
   selected: Date | null;
@@ -59,9 +59,9 @@ export class GastoComponent implements OnInit {
   ordenes = []
   muestraLista:boolean = false
   fechaIIII:Date = new Date(2000,0,1) 
+  tiempoReal:boolean = true
   ngOnInit(): void {
     this.rol()
-    this.listaSucursales()
     this.crearFormGasto()
   }
   rol(){
@@ -69,7 +69,15 @@ export class GastoComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      this.listaOrdenes()
+      const starCountRef = ref(db, `sucursales`)
+        onValue(starCountRef, (snapshot) => {
+          if (snapshot.exists()) {
+            this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
+            this.listaOrdenes()
+          }
+        }, {
+          onlyOnce: !this.tiempoReal
+        })
       // this.acciones()
     }
   }
@@ -109,18 +117,8 @@ export class GastoComponent implements OnInit {
       }
     })
   }
-  listaSucursales(){
-    this._sucursales.consultaSucursales().then(({contenido,data})=>{
-      if (contenido) {
-        this.Sucursales = data
-      }
-    })
-  }
-  infoDATA(){
-    
-  }
+
   crearFormGasto(){
-    
     const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
     this.formGasto = this.fb.group({
       tipo:['gasto',[Validators.required]],
@@ -156,14 +154,15 @@ export class GastoComponent implements OnInit {
     }
   }
   fechaInicio(id:string){
-    console.log(id);
     this.formGasto.controls['no_os'].setValue(id)
     if (this.muestraLista && id) {
       const fechainicio = this.ordenes.find(os=>os['id'] === id)
       const aqui2 = fechainicio['fecha'].split('/')
       // this.formGasto.controls['sucursal'].setValue(fechainicio['sucursal'])
       this.formGasto.controls['fecha'].setValue(fechainicio.fecha)
-      this.fechaIIII= new Date(aqui2[2],aqui2[1] - 1,aqui2[0]) 
+      this.formGasto.controls['sucursal'].setValue(fechainicio.sucursal)
+      this.fechaIIII= new Date(aqui2[2],aqui2[1] - 1,aqui2[0])
+
     }else{
       this.formGasto.controls['no_os'].setValue('')
     }
@@ -184,6 +183,16 @@ export class GastoComponent implements OnInit {
   async validaInformacion(){
     const answer = {valido: false, dataSave:{}, faltante:''}
     const pagoData = this.formGasto.value
+    
+    let fecha = null
+    if(this.SUCURSAL === 'Todas'){
+      if (this.selected) {
+        if(this.selected['_d']) fecha = this._publicos.getFechaHora(this.selected['_d']).fecha
+      }
+    }else{
+      fecha = this._publicos.getFechaHora().fecha
+    }
+    this.formGasto.controls['fecha'].setValue(fecha)
 
     const getFecha = await this._publicos.getFechaHora()
     const dataSave = {
@@ -277,7 +286,7 @@ export class GastoComponent implements OnInit {
             dataSave['hora'] = fecha1.hora
             const dataPrimary = this._publicos.nuevaRecuperacionData(dataSave,camposR)
             const dataSaveFinal = this._publicos.nuevaRecuperacionData(dataPrimary,campos)
-            console.log(dataSaveFinal);
+            // console.log(dataSaveFinal);
             
             if(this.muestraLista) {
               updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
@@ -292,6 +301,7 @@ export class GastoComponent implements OnInit {
                 tipo: '',  no_os: '',monto:0, metodo:'', gasto_tipo: null,concepto:null,
                 sucursal: sucursal, referencia: '',fecha:null, facturaRemision:null
               })
+
               this._publicos.mensaje('registro gasto correto',1)
             }).catch(error =>{
 

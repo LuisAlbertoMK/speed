@@ -148,6 +148,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   idSucursalOS: string = null
 
   dataRecepcionEditar = null
+  tiempoReal = true
   
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
