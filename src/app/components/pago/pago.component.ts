@@ -192,12 +192,12 @@ export class PagoComponent implements OnInit {
     const updates = {
       [`recepciones/${info.no_os}/HistorialPagos/${this._publicos.generaClave()}`]: dataSave
     };
-    console.log(updates);
-    
-    
     update(ref(db), updates).then(()=>{
-      this._publicos.swalToast('Registro de pago correcto')
+      this._publicos.swalToast('Registro de gasto correcto')
       this.formPago.reset()
+    })
+    .catch(error=>{
+      this._publicos.swalToastError('Error al regisrar gasto')
     })
    }
     

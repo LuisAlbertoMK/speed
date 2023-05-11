@@ -17,6 +17,19 @@
   <a role="button" class="btn btn-primary btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
     [routerLink]="['/cotizacionNueva/new/new/null']"><i class="fad fa-layer-plus"></i>
     Cotizacón </a>
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      <button  class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
+      data-bs-toggle="modal"  data-bs-target="#modalDeposito"
+      >Nuevo deposito</button>
+    </ng-container>
+    
+    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" 
+    (click)="realizaGasto = 'gasto'"
+      data-bs-toggle="modal"  data-bs-target="#modalGasto">Nuevo gasto</button>
+    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
+    (click)="realizaGasto = 'pago'"
+    data-bs-toggle="modal"  data-bs-target="#modalGasto"
+    >Registra pago</button>
 </div>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
@@ -271,6 +284,91 @@
                         </div>
                       </div>
                     </mat-tab>
+                    <mat-tab label="Historial de pagos y gastos">
+                        
+                        <div class="row m-1">
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <h2>Historial de gastos</h2>
+                            <div class="table-responsive">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Concepto</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Referencia</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Fecha registro</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Tipo</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Metodo</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-end">Monto</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Status</th>
+                                    <th class="text-center"></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let item of row.hitorial_gastos; let i = index">
+                                    <th scope="row">{{i +1 }}</th>
+                                    <td class="text-start">{{item.concepto | capitalizarUno}}</td>
+                                    <td class="text-start">{{item.referencia | capitalizarUno}}</td>
+                                    <td class="text-start">{{item.fecha_registro}}</td>
+                                    <td class="text-start">{{item.gasto_tipo | capitalizarUno}}</td>
+                                    <td class="text-start">{{item.metodoShow | capitalizarUno}}</td>
+                                    <td class="text-end">{{item.monto | monedas}}</td>
+                                    <td class="text-start fw-bold" [ngClass]="{'text-success': item.status, 'text-danger': !item.status}">
+                                      <ng-container *ngIf="item.status; else elseTemplate">
+                                        Aprobado
+                                      </ng-container>
+                                      <ng-template #elseTemplate>
+                                        Eliminado
+                                      </ng-template>
+                                    </td>
+                                    <td class="text-center">
+                                      <i class="fa fa-trash text-danger pointer" (click)="EliminaPago(row.id,item.id,'gasto')"></i>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <h2>Historial de Pagos</h2>
+                            <div class="table-responsive">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Concepto</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Fecha registro</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Metodo</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-end">Monto</th>
+                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Status</th>
+                                    <th class="text-center">&nbsp;</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let item of row.historial_pagos; let i = index">
+                                    <th scope="row">{{i +1 }}</th>
+                                    <td class="text-start">{{item.concepto | capitalizarUno}}</td>
+                                    <td class="text-start">{{item.fecha_registro}}</td>
+                                    <td class="text-start">{{item.metodoShow | capitalizarUno}}</td>
+                                    <td class="text-end">{{item.monto | monedas}}</td>
+                                    <td class="text-start fw-bold" [ngClass]="{'text-success': item.status, 'text-danger': !item.status}">
+                                      <ng-container *ngIf="item.status; else elseTemplate">
+                                        Aprobado
+                                      </ng-container>
+                                      <ng-template #elseTemplate>
+                                        Eliminado
+                                      </ng-template>
+                                    </td>
+                                    <td class="text-center">
+                                      <i class="fa fa-trash text-danger pointer" (click)="EliminaPago(row.id,item.id,'pago')"></i>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                    </mat-tab>
                   </mat-tab-group>
                 </div>
              </div>
@@ -315,6 +413,34 @@
       </div> -->
       <div class="modal-body">
         <app-lista-tecnicos [sucursal]="idSucursalOS"  (dataTecnico)="infoTecnico ( $event )"></app-lista-tecnicos>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalGasto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <ng-container *ngIf="realizaGasto === 'gasto'; else elseTemplate">
+          <app-gasto ></app-gasto>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <app-pago></app-pago>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDeposito" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <app-realiza-deposito></app-realiza-deposito>
       </div>
     </div>
   </div>

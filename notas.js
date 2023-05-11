@@ -65,9 +65,13 @@ let problemas_10052023 =
     {problema:'Realizar micro reporte de gastos', status:'PENDIENTE'},   
     {problema:'Arreglar el formulario de gastos', status:'PENDIENTE'},   
 ]
+let problemas_11052023 = 
+[
+    {problema:'Registrar el sobrante del dia de hoy para mañana', status:'PENDIENTE'},   
+]
 
 // git add .
-// git commit -m "problemas_10052023"
+// git commit -m "problemas_11052023"
 // git push -u origin main
 
 

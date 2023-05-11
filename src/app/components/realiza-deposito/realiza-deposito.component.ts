@@ -123,8 +123,8 @@ export class RealizaDepositoComponent implements OnInit {
             tipo:'deposito'
           }
           const clave = this._publicos.generaClave()
-          const claveDia = getTime2.fechaNumeros
-          updates[`gastosDiarios/${infoFormulario['sucursal']}/${claveDia}/${clave}`] = infoSave
+          // const claveDia = getTime2.fechaNumeros
+          updates[`gastosDiarios/${infoFormulario['sucursal']}/${this._publicos.formatearFecha(new Date(), false)}/${clave}`] = infoSave
           update(ref(db), updates).then(()=>{
             this.resetForm()
             this._publicos.mensajeSwal('Deposito realizado correctamente')

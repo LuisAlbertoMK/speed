@@ -112,8 +112,7 @@ export class GastoComponent implements OnInit {
             return (sucursal === 'Todas') ? rcp : rcp.filter(os => os.sucursal === sucursal);
         }
         this.ordenes = filtrarOrdenes(recepciones, this.SUCURSAL);
-        console.log(this.ordenes);
-        
+        // console.log(this.ordenes);
       }
     })
   }
@@ -127,7 +126,7 @@ export class GastoComponent implements OnInit {
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
       referencia:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
-      fecha:[this.selected,[Validators.required]],
+      fecha:['',[Validators.required]],
       sucursal: [sucursal,[Validators.required]],
       gasto_tipo:['',[]],
       facturaRemision:['',[]],
@@ -180,10 +179,10 @@ export class GastoComponent implements OnInit {
     }
     // Prevent Saturday and Sunday from being selected.
   };
-  async validaInformacion(){
-    const answer = {valido: false, dataSave:{}, faltante:''}
-    const pagoData = this.formGasto.value
-    
+  validaInformacion(){
+    const answer = {valido: true, faltante:''}
+    const camposNecesariosOperacion = ['tipo','monto','metodo','concepto','fecha','sucursal','referencia']
+    const camposNecesariosOrden = ['tipo','no_os','monto','metodo','concepto','fecha','sucursal','referencia','gasto_tipo','facturaRemision']
     let fecha = null
     if(this.SUCURSAL === 'Todas'){
       if (this.selected) {
@@ -193,125 +192,145 @@ export class GastoComponent implements OnInit {
       fecha = this._publicos.getFechaHora().fecha
     }
     this.formGasto.controls['fecha'].setValue(fecha)
-
-    const getFecha = await this._publicos.getFechaHora()
-    const dataSave = {
-      tipo: pagoData['tipo'],  monto: pagoData['monto'],
-      metodo: parseInt(pagoData['metodo']),no_os:pagoData['no_os'], concepto: pagoData['concepto'],  fecha: pagoData['fecha'],
-      sucursal: pagoData['sucursal'],
-      referencia: pagoData['referencia'],
-      status: true,gasto_tipo: pagoData['gasto_tipo']
-    };
-    
-    
-
-      if (this.dataRecepcion) {
-        this.muestraLista = true
-        const inf = this.dataRecepcion
-        dataSave['tipo'] = 'orden'
-        dataSave['no_os'] = inf['id']
-        dataSave['sucursal'] = inf['sucursal']
+    const gastoData = this.formGasto.value
+    let faltantes = []
+    const revisar = (gastoData.tipo === 'gasto') ? camposNecesariosOperacion : camposNecesariosOrden
+    revisar.forEach(campo=>{
+      if(!gastoData[campo]) {
+        faltantes.push(campo)
+        answer.valido = false
       }
-      if (dataSave['tipo'] === 'orden') {
-        let nu =this.validaciones.filter(v=>v['valor']!=='gasto_tipo')
-        nu.push({show:'gasto_tipo',valor:'gasto_tipo'})
-        this.validaciones = nu
-      }else{
-        let nu =this.validaciones.filter(v=>v['valor']!=='gasto_tipo')
-        this.validaciones = nu
-      }
-      
-    (String(pagoData['referencia']).length >0 )? dataSave['referencia'] = pagoData['referencia'] : ''
-    answer.dataSave = dataSave
-
-    let invcalidos = []
-    const mapdataSave = Object.keys(dataSave)
-    await mapdataSave.map(v=>{
-        if (!dataSave[v]) {
-          this.validaciones.map(val=>{
-            if (val['valor'] === v) {
-              invcalidos.push(val['show'])
-            }
-          })
-        }
     })
-    if (!invcalidos.length) answer.valido = true 
-    answer.faltante = invcalidos.join(', ')
+    answer.faltante = faltantes.join(', ')
     return answer
   }
   registroGasto(){
-    this.validaInformacion().then(({valido,dataSave,faltante})=>{
+    const {valido, faltante} = this.validaInformacion()
+    if (valido) {
       this.informacionFaltante = ''
-      if (!valido) {
-        this.informacionFaltante = faltante
-        return Object.values( this.formGasto.controls ).forEach( control => {
-          if ( control instanceof FormGroup ) {
-            Object.values( control.controls ).forEach( control => control.markAsTouched() );
-          } else {
-            control.markAsTouched();
-          }
-        });
-      }else{
-        // console.log(dataSave);
-        Swal.fire({
-          title: 'Guardar Gasto?',
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: 'Confirmar',
-          denyButtonText: `Don't save`,
-          cancelButtonText:'Cancelar'
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-
-            const updates = {}
-            const newPostKey = push(child(ref(db), 'posts')).key
-            const campos = ['concepto','fecha','hora','fecha_registro','hora_registro','referencia','metodo','monto','status','tipo','sucursal'];
-            let camposR = [...campos];
-            
-            if(this.muestraLista) {
-              camposR.push('gasto_tipo','no_os'); campos.push('gasto_tipo')
-            }else{
-              if (this.dataRecepcion) {
-                dataSave['tipo'] = 'orden'
-              }else{
-                dataSave['tipo'] = 'operacion'
-              }
-            }
-            const {fecha, hora} = this._publicos.getFechaHora(this.selected)
-            const fecha1 = this._publicos.getFechaHora(dataSave['fecha'])
-            dataSave['fecha_registro'] = fecha
-            dataSave['hora_registro'] = hora
-            dataSave['fecha'] = fecha1.fecha
-            dataSave['hora'] = fecha1.hora
-            const dataPrimary = this._publicos.nuevaRecuperacionData(dataSave,camposR)
-            const dataSaveFinal = this._publicos.nuevaRecuperacionData(dataPrimary,campos)
-            // console.log(dataSaveFinal);
-            
-            if(this.muestraLista) {
-              updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
-            }else{
-              updates[`HistorialGastosOperacion/${newPostKey}`] = dataSaveFinal;
-            }
-            // console.log(updates);
-            
-            update(ref(db), updates).then(()=>{
-              const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
-              this.formGasto.reset({
-                tipo: '',  no_os: '',monto:0, metodo:'', gasto_tipo: null,concepto:null,
-                sucursal: sucursal, referencia: '',fecha:null, facturaRemision:null
-              })
-
-              this._publicos.mensaje('registro gasto correto',1)
-            }).catch(error =>{
-
-            })
-          } else if (result.isDenied) {
-            // Swal.fire('Changes are not saved', '', 'info')
-          }
-        })
+      const gastoData = this.formGasto.value
+      const updates = {}
+      const infoSave = {
+        concepto: gastoData.concepto,
+        fecha_registro: gastoData.fecha,
+        hora_registro: this._publicos.getFechaHora().hora,
+        metodo: gastoData.metodo,
+        monto: gastoData.monto,
+        referencia: gastoData.referencia,
+        status: true,
+        sucursal: gastoData.sucursal,
+        tipo: 'operacion'
       }
-    })
+      if(gastoData.tipo === 'orden') {
+        infoSave['tipo'] = 'orden'
+        infoSave['gasto_tipo'] = gastoData.gasto_tipo
+        updates[`recepciones/${gastoData.no_os}/HistorialGastos/${this._publicos.generaClave()}`] = infoSave;
+      }else{
+        updates[`HistorialGastosOperacion/${this._publicos.generaClave()}`] = infoSave;
+      }
+      const mensaaje = (gastoData.tipo === 'orden') ?  'orden' : 'operacion'
+      this._publicos.mensaje_pregunta(`Registrar gasto de ${mensaaje}?`).then(({respuesta})=>{
+        if (respuesta) {
+          update(ref(db), updates).then(()=>{
+            const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+            this.formGasto.reset({sucursal})
+            this._publicos.swalToast('Registro correcto de '+ mensaaje)
+          })
+          .catch(error=>{
+            this._publicos.swalToastError('Error al registrar gasto')
+          })
+        }
+      })
+      // if(this.muestraLista) {
+      //   updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
+      // }else{
+      //   updates[`HistorialGastosOperacion/${newPostKey}`] = dataSaveFinal;
+      // }
+    }else{
+      this.informacionFaltante = faltante
+      this._publicos.swalToastError('LLenar datos de formulario')
+    }
+     // this.validaInformacion().then(({valido,dataSave,faltante})=>{
+    //   this.informacionFaltante = ''
+    //   if (!valido) {
+    //     this.informacionFaltante = faltante
+    //     return Object.values( this.formGasto.controls ).forEach( control => {
+    //       if ( control instanceof FormGroup ) {
+    //         Object.values( control.controls ).forEach( control => control.markAsTouched() );
+    //       } else {
+    //         control.markAsTouched();
+    //       }
+    //     });
+    //   }else{
+    //     // console.log(dataSave);
+    //     Swal.fire({
+    //       title: 'Guardar Gasto?',
+    //       showDenyButton: false,
+    //       showCancelButton: true,
+    //       confirmButtonText: 'Confirmar',
+    //       denyButtonText: `Don't save`,
+    //       cancelButtonText:'Cancelar'
+    //     }).then((result) => {
+    //       /* Read more about isConfirmed, isDenied below */
+    //       if (result.isConfirmed) {
+
+    //         const updates = {}
+    //         const newPostKey = push(child(ref(db), 'posts')).key
+    //         const campos = ['concepto','hora_registro','fecha_registro','hora_registro','referencia','metodo','monto','status','tipo','sucursal'];
+    //         let camposR = [...campos];
+            
+    //         if(this.muestraLista) {
+    //           camposR.push('gasto_tipo','no_os'); campos.push('gasto_tipo')
+    //         }else{
+    //           if (this.dataRecepcion) {
+    //             dataSave['tipo'] = 'orden'
+    //           }else{
+    //             dataSave['tipo'] = 'operacion'
+    //           }
+    //         }
+    //         // const {fecha, hora} = this._publicos.getFechaHora(this.selected)
+    //         let fecha = null
+    //         if(this.SUCURSAL === 'Todas'){
+    //           if (this.selected) {
+    //             if(this.selected['_d']) fecha = this._publicos.getFechaHora(this.selected['_d']).fecha
+    //           }
+    //         }else{
+    //           fecha = this._publicos.getFechaHora().fecha
+    //         }
+    //         this.formGasto.controls['fecha'].setValue(fecha)
+
+    //         dataSave['fecha_registro'] = fecha
+    //         dataSave['hora_registro'] = this._publicos.getFechaHora().hora
+            
+    //         // dataSave['hora'] = fecha1.hora
+    //         console.log(dataSave);
+            
+    //         // console.log(dataSaveFinal);
+            
+    //         // if(this.muestraLista) {
+    //         //   updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
+    //         // }else{
+    //         //   updates[`HistorialGastosOperacion/${newPostKey}`] = dataSaveFinal;
+    //         // }
+    //         // // console.log(updates);
+            
+    //         // update(ref(db), updates).then(()=>{
+    //         //   const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+    //         //   this.formGasto.reset({
+    //         //     tipo: '',  no_os: '',monto:0, metodo:'', gasto_tipo: null,concepto:null,
+    //         //     sucursal: sucursal, referencia: '',fecha:null, facturaRemision:null
+    //         //   })
+
+    //         //   this._publicos.mensaje('registro gasto correto',1)
+    //         // }).catch(error =>{
+
+    //         // })
+    //       } else if (result.isDenied) {
+    //         // Swal.fire('Changes are not saved', '', 'info')
+    //       }
+    //     })
+    //   }
+    // })
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
       const date = new Date(event.value)

@@ -59,8 +59,8 @@ export class ReporteGastosComponent implements OnInit {
   refaccion: string = 'refaccion'
   mo: string = 'mo'
 
-  fechas_get = {inicio:new Date(), final: new Date()}
-  fechas_getAdministracion = {inicio:new Date(), final: new Date()}
+  fechas_get = {inicio:this._publicos.resetearHoras(new Date()), final: this._publicos.resetearHoras(new Date())}
+  fechas_getAdministracion = {inicio: this._publicos.resetearHoras(new Date()), final: this._publicos.resetearHoras(new Date())}
 
   rangeReporteGastos = new FormGroup({
     start: new FormControl(Date),
@@ -73,9 +73,9 @@ export class ReporteGastosComponent implements OnInit {
 
   // tabla
   dataSource = new MatTableDataSource(); //elementos
-  elementos = ['id','sucursalShow','metodoShow','status','concepto','referencia','monto','tipo','fecha']; //elementos
+  elementos = ['id','sucursalShow','no_os','metodoShow','status','concepto','referencia','monto','tipo','fecha']; //elementos
   // elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
-  columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
+  columnsToDisplayWithExpand = [...this.elementos, 'expand']; //elementos
   expandedElement: any | null; //elementos
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
   @ViewChild('elements') sort: MatSort //elementos
@@ -96,8 +96,8 @@ export class ReporteGastosComponent implements OnInit {
   camposReporte = [
     {valor:'depositos', show:'Depositos'},
     {valor:'pagos', show:'Pagos'},
-    {valor:'operacion', show:'Operacion'},
-    {valor:'gastos', show:'Gastos'},
+    {valor:'operacion', show:'Gastos de operación'},
+    {valor:'gastos', show:'Gastos de ordenes'},
     {valor:'sobrante', show:'Sobrante'},
   ]
   camposReporteAdministracion = [
@@ -105,6 +105,7 @@ export class ReporteGastosComponent implements OnInit {
     {valor:'operacion', show:'Operacion'},
     {valor:'subtotal', show:'Subtotal'},
     {valor:'iva', show:'I.V.A'},
+    {valor:'total', show:'total'},
     {valor:'libreSinIVA', show:'libre sin Iva'},
     {valor:'libreIva', show:'Libre iva'},
     {valor:'libre_neto', show:'Libre neto'},
@@ -113,6 +114,23 @@ export class ReporteGastosComponent implements OnInit {
   realizaGasto:string = null
   sucursalFiltro: string = 'Todas'
   sucursalFiltroShow: string = 'Todas'
+  HOY:Date = this._publicos.resetearHoras(new Date());
+  sucursalFiltroReporte: string = 'Todas'
+  sucursalFiltroShowReporte: string = 'Todas'
+  camposDesgloce = [
+    {valor:'mo', show:'mo'},
+    // {valor:'refacciones_a', show:'refacciones a'},
+    {valor:'refacciones_v', show:'refacciones'},
+    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
+    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
+    {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'descuento', show:'descuento'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+    {valor:'meses', show:'meses'},
+  ]
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -124,6 +142,7 @@ export class ReporteGastosComponent implements OnInit {
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
+      this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
       const starCountRef = ref(db, `sucursales`)
         onValue(starCountRef, (snapshot) => {
           if (snapshot.exists()) {
@@ -150,7 +169,7 @@ export class ReporteGastosComponent implements OnInit {
             const nuevosD = this._publicos.crearArreglo2(go[d])
             // const nuevosD = this._publicos.crearArreglo2(go[d] || [])
             nuevosD.forEach(registro=>{
-              registro.fechaCompara = this._publicos.construyeFechaString(registro.fecha)
+              registro.fechaCompara = this._publicos.construyeFechaString(registro.fecha_registro)
               const {sucursal} = this.sucursales_arr.find(s=>s.id === registro.sucursal)
               registro.sucursalShow = sucursal,
               // registro.tipo = 'diario'
@@ -181,11 +200,12 @@ export class ReporteGastosComponent implements OnInit {
           go.sucursalShow = sucursal
           go.tipo = 'operacion'
           // go.fechaCompara = this._publicos.construyeFechaString(go.fecha)
-          go.fecha_registro_compara = this._publicos.construyeFechaString(go.fecha_registro)
+          go.fechaCompara = this._publicos.construyeFechaString(go.fecha_registro)
           gastosOperacion.push(go)
         })        
         const filtro = (this.SUCURSAL === 'Todas') ? gastosOperacion : gastosOperacion.filter(g=>g.sucursal === this.SUCURSAL)
         this.gastosOperacion_arr = filtro
+        
         // console.log('gastosOperacion_arr',filtro.length);
         setTimeout(() => {
           this.unirResultados()
@@ -220,6 +240,7 @@ export class ReporteGastosComponent implements OnInit {
             
             const {sucursal} = this.sucursales_arr.find(s=>s.id === histo.sucursal)
             histo.sucursalShow = sucursal
+            histo.no_os = os.no_os
             aquiDocumentos.push(histo)
           });
           if(os.status === 'entregado'){
@@ -231,6 +252,7 @@ export class ReporteGastosComponent implements OnInit {
         const filtro = (this.SUCURSAL === 'Todas') ? aquiDocumentos : aquiDocumentos.filter(os=>os.sucursal === this.SUCURSAL)
         // console.log(filtro);
         this.listaos_arr = (this.SUCURSAL === 'Todas') ? recepciones : recepciones.filter(os=>os.sucursal.id === this.SUCURSAL)
+        // console.log(this.listaos_arr);
         
         this.operacionesAdmin()
         
@@ -248,8 +270,14 @@ export class ReporteGastosComponent implements OnInit {
     })
   }
   unirResultados(){
-    this.listaConjunta_arr = this.gastosOperacion_arr.concat( this.gastosDiarios_arr ).concat( this.pagosGastosOP_arr )
+    // const informa = this.gastosOperacion_arr.concat( this.gastosDiarios_arr ).concat( this.pagosGastosOP_arr )
+    const informa = [...this.gastosOperacion_arr, ...this.gastosDiarios_arr, ...this.pagosGastosOP_arr];
+    informa.forEach(con => {
+      con.no_os = con.no_os || '';
+    });
+    this.listaConjunta_arr = informa
     this.realizarOperaciones()
+    this.operacionesAdmin()
   }
   realizarOperaciones(){
     const resultados = this.listaConjunta_arr
@@ -260,24 +288,63 @@ export class ReporteGastosComponent implements OnInit {
       })
       .filter(a => a.fechaCompara >= this.fechas_get.inicio && a.fechaCompara <= this.fechas_get.final)
       const reporte =  {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
-      // console.log(resultados);
-      resultados.map((f,index)=>{
+
+      const nuevos = (this.sucursalFiltroReporte === 'Todas') ? resultados : resultados.filter(r=>r.sucursal === this.sucursalFiltroReporte)
+      nuevos.map((f,index)=>{
         f.index = index
         f.referencia = (f.referencia) ? f.referencia : ''
-        if (f.tipo === 'deposito') reporte.depositos += f.monto 
+        if (f.tipo === 'deposito' || f.tipo === 'sobrante') reporte.depositos += f.monto 
         if (f.tipo === 'operacion') reporte.operacion += f.monto;
-        (f.tipoNuevo === 'gasto') ? reporte.gastos += f.monto : reporte.pagos += f.monto
+        if(f.tipo !== 'sobrante'){
+          (f.tipoNuevo === 'gasto') ? reporte.gastos += f.monto : reporte.pagos += f.monto
+        }
+        
       })
       reporte.sobrante = (reporte.depositos) -  (reporte.gastos + reporte.operacion)
       this.reporte = reporte
-      this.dataSource.data = resultados
+
+      const _f1 = this.fechas_get.inicio
+      const _f2 = this.fechas_get.final
+      
+      if ((_f1.getTime() === _f2.getTime()) && (this.HOY.getTime() === _f1.getTime())) {
+            
+            const fechaSobrante = this._publicos.sumarRestarDiasFecha(_f1,1)
+            // console.log(fechaSobrante);
+            
+            if(!this._publicos.esDomingo(fechaSobrante)){
+              // console.log('es dia de la semana lunes - sabado');
+              // gastosDiarios
+              if(this.sucursalFiltroReporte !== 'Todas'){
+                // console.log('realiza las operaciones del dia');
+                const ruta =`gastosDiarios/${this.sucursalFiltroReporte}/${this._publicos.formatearFecha(_f1,false)}/sobrante`
+                
+                const tempData = {
+                  concepto: 'Sobrante del dia anterior',
+                  fecha_registro: this._publicos.getFechaHora(fechaSobrante).fecha,
+                  hora: '00:00:00',
+                  metodo: '1',
+                  monto: reporte.sobrante,
+                  sucursal: this.sucursalFiltroReporte,
+                  tipo: 'sobrante',
+                  status:true
+                }
+                const updates = { [ruta] : tempData};
+                update(ref(db), updates);
+              }
+            }else{
+              
+              // console.log('es domingo');
+            }
+      }
+
+      this.dataSource.data = nuevos
       this.newPagination('reporte')
   }
   cambiosFechas(donde:string){
     const {start, end} = (donde === 'admin') ? this.rangeAdministracion.value : this.rangeReporteGastos.value
     if (start && end) {
       if (start['_d'] && end['_d']) {
-        const fechaAsigan = {inicio: start['_d'], final: end['_d']}
+        const fechaAsigan = {inicio: this._publicos.resetearHoras(start['_d']), final: this._publicos.resetearHoras(end['_d'])}
         if(donde === 'admin'){
           this.fechas_getAdministracion = fechaAsigan
           this.operacionesAdmin();
@@ -289,15 +356,16 @@ export class ReporteGastosComponent implements OnInit {
     }
   }
   operacionesAdmin(){
-    console.log(this.sucursalFiltro);
-    
+
     const reporteEND = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0}
     const filtrarEntregados = this.listaos_arr.filter(r=>r.status === 'entregado')
-    console.log(filtrarEntregados);
     
     const filtrosSucursal = (this.sucursalFiltro === 'Todas') ? filtrarEntregados :  filtrarEntregados.filter(os=>os.sucursal.id === this.sucursalFiltro )
 
     const gastosFechas = filtrosSucursal.filter(a => a.fecha_entregado_compara >= this.fechas_getAdministracion.inicio && a.fecha_entregado_compara <= this.fechas_getAdministracion.final)
+    gastosFechas.map((g,index)=>{
+      g.index = index
+    })
     this.dataSourceAdministracion.data = gastosFechas
     
     
@@ -317,9 +385,7 @@ export class ReporteGastosComponent implements OnInit {
     
     
     const gastosOperacionFechas = this.gastosOperacion_arr.filter(a => a.fecha_registro_compara >= this.fechas_getAdministracion.inicio && a.fecha_registro_compara <= this.fechas_getAdministracion.final)
-    console.log(gastosOperacionFechas);
-    
-    
+
     // const filtrosSucursal2 = (this.sucursalFiltro !== this.SUCURSAL) ? gastosOperacionFechas :  gastosOperacionFechas.filter(os=>os.sucursal.id === this.sucursalFiltro )
     gastosOperacionFechas.forEach(element => {
       if(element.status) reporteEND.operacion += element.monto
@@ -344,6 +410,9 @@ export class ReporteGastosComponent implements OnInit {
       }, 500);
     }
     
+  }
+  ordenamiento(){
+
   }
 
 }

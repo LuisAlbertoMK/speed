@@ -1522,5 +1522,25 @@ export class ServiciosPublicosService {
         })
         return arreglo.join(', ')
       }
+      resetearHoras(fecha: Date){
+        fecha.setHours(0, 0, 0, 0);
+        return fecha;
+      }
+
+      sumarRestarDiasFecha(fecha, dias) {
+        const resultado = new Date(fecha);
+        resultado.setDate(resultado.getDate() + dias);
+        return resultado;
+      }
+      esDomingo(fecha) {
+        return fecha.getDay() === 0;
+      }
+      formatearFecha(fecha,simbolo:boolean) {
+        const dia = fecha.getDate().toString().padStart(2, '0');
+        const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fecha.getFullYear().toString();
+        return (simbolo) ? `${dia}/${mes}/${anio}` : `${dia}${mes}${anio}`;
+      }
+      
       
  }

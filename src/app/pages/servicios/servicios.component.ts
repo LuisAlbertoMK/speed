@@ -109,6 +109,17 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     {id:'6',pago:'18 meses',interes:17.70,numero:18},
     {id:'7',pago:'24 meses',interes:24.,numero:24}
   ]
+  metodospago = [
+    {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
+    {valor:'2', show:'Cheque', ocupa:'Cheque'},
+    {valor:'3', show:'Tarjeta', ocupa:'Tarjeta'},
+    {valor:'4', show:'Transferencia', ocupa:'Transferencia'},
+    {valor:'5', show:'Credito', ocupa:'credito'},
+    // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
+    // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
+    {valor:'6', show:'Terminal BBVA', ocupa:'BBVA'},
+    {valor:'7', show:'Terminal BANAMEX', ocupa:'BANAMEX'}
+  ]
 
   paquete: string = 'paquete'
   refaccion: string = 'refaccion'
@@ -149,6 +160,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
   dataRecepcionEditar = null
   tiempoReal = true
+  
+
+  realizaGasto:string = null
   
   constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
     private router: Router, private _email:EmailsService, private _exporter: ExporterService,
@@ -219,6 +233,19 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           update(ref(db), updates)
           .then(() => {});
           
+          recep.hitorial_gastos = (recep.HistorialGastos) ? this._publicos.crearArreglo2(recep.HistorialGastos) : []
+          recep.historial_pagos = (recep.HistorialPagos) ? this._publicos.crearArreglo2(recep.HistorialPagos) : []
+          
+          recep.historial_pagos.forEach(element => {
+            element.tipoNuevo = 'pago'
+            const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
+            element.metodoShow = show
+          });
+          recep.hitorial_gastos.forEach(element => {
+            element.tipoNuevo = 'gasto'
+            const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
+            element.metodoShow = show
+          });
           
           recep.fecha_receibido_compara = this._publicos.construyeFechaString(recep.fecha_recibido)
           if (recep.fecha_entregado) {
@@ -236,7 +263,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           if (comparaOrdenes.length === this.recepciones_arr.length) {
             comparaOrdenes.map((os, index)=>{
                 if (JSON.stringify(os) !== JSON.stringify(this.recepciones_arr[index])) {
-                  const camposRecupera = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva',
+                  const camposRecupera = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva','hitorial_gastos','historial_pagos',
                     'margen','sucursal','notificar','reporte','servicio','servicios','status','vehiculo','fecha_entregado','hora_entregado','tecnico','showNameTecnico']
                     camposRecupera.forEach(c=>{
                       // this.recepciones_arr[index][c] = os[c]
@@ -451,10 +478,12 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.busquedaStatus = busquedaStatusOS
     
     const gastosFechas = nuevoFiltro.filter(a => a.fecha_receibido_compara >= this.fechas_get.start && a.fecha_receibido_compara <= this.fechas_get.end);
-    const gastosFechas2 = nuevoFiltro.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
-    const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
-  
-    this.dataSource.data = uniqueSort(unicos)
+    // const gastosFechas2 = nuevoFiltro.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
+    // const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
+    // console.log(gastosFechas);
+    
+    // this.dataSource.data = uniqueSort(unicos)
+    this.dataSource.data = gastosFechas
     this.newPagination();
   }
   busquedaSucursal(busquedaStatusSucursal:string, nombre:string){
@@ -481,16 +510,32 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     
 
     const gastosFechas = filtrados.filter(a => a.fecha_receibido_compara >= this.fechas_get.start && a.fecha_receibido_compara <= this.fechas_get.end);
-    const gastosFechas2 = filtrados.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
-    const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
+    // const gastosFechas2 = filtrados.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
+    // const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
   
-    this.dataSource.data = uniqueSort(unicos)
+    // this.dataSource.data = uniqueSort(unicos)
+    this.dataSource.data = gastosFechas
 
 
     this.busquedaSucursalString = busquedaStatusSucursal
     this.busquedaSucursalStringShow = nombre
     this.newPagination()
     
+  }
+  EliminaPago(padre:string, idPG:string, donde:string){
+    const dondeUpdate = (donde === 'pago') ?  'HistorialPagos': 'HistorialGastos'
+    const updates = {[`recepciones/${padre}/${dondeUpdate}/${idPG}/status`]: false}
+
+    this._publicos.mensaje_pregunta('Eliminar '+ donde + '?').then(({respuesta})=>{
+      if (respuesta) {
+        update(ref(db), updates).then(()=>{
+          this._publicos.swalToast('Se elimino '+  donde)
+        })
+        .catch(error=>{
+          this._publicos.swalToastError('Error al eliminar '+  donde)
+        })
+      }
+    })    
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
