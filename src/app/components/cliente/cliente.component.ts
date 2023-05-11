@@ -398,7 +398,6 @@ export class ClienteComponent implements OnInit {
     const starCountRef = ref(db, `empresas`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        
         this._clientes.getEmpresas().then(({contenido, data})=>{
           if (contenido) {
             let empre = []

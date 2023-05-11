@@ -110,9 +110,8 @@ export class RealizaDepositoComponent implements OnInit {
           const getTime2 = this._publicos.getFechaHora()
           const updates = {};
           const infoSave = {
-            fecha: getTime.string_fecha,
+            fecha_registro: getTime.string_fecha,
             hora: getTime.stringHora,
-            fechaCompara: getTime.fechaString,
             sucursal: infoFormulario['sucursal'],
             rol: infoFormulario['rol'],
             usuario: infoFormulario['usuario'],

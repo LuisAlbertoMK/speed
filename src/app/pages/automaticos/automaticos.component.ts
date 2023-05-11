@@ -36612,6 +36612,7 @@ recepciones = {
       "vencimiento": "1/3/2023"
     }
   }
+  claveGenerada:string = null
 
   constructor(private _automaticos: AutomaticosService, private _encript: EncriptadoService, private _publicos: ServiciosPublicosService,
     private _security:EncriptadoService, public _router: Router, public _location: Location,private _pdfRecepcion: PdfRecepcionService
@@ -71607,6 +71608,9 @@ recepcionesChange(){
   infoTecnico(event){
   console.log(event);
   
+  }
+  generaClave(){
+    this.claveGenerada = this._publicos.generaClave()
   }
   
 }

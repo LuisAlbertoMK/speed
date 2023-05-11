@@ -494,7 +494,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       if (this.busquedaStatus !== 'todos') {
         filtrados = filtrados.filter(os => os.status === this.busquedaStatus)
       }
-    
       // const gastosFechas = filtrados.filter(a => a.fecha_recibido >= this.fechas_get.start && a.fecha_recibido <= this.fechas_get.end)
       
     } else {
