@@ -183,6 +183,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   ]
   diasBusqueda: number = 0
   rangoBusqueda = {valor:'hoy',show:'Hoy', dias: 0}
+
+
+  reporteEstancias = {  servicios_totales:0, ticket_total:0, ticketPromedio:0, diasSucursal_total:0, diasSucursal:0, horas_totales_totales:0, horas_totales:0}
+  camposEstancia = [
+    {valor: 'servicios_totales', show:'Numero servicios'},
+    {valor: 'ticket_total', show:'ticket total'},
+    {valor: 'ticketPromedio', show:'ticket promedio'},
+    {valor: 'diasSucursal_total', show:'dias Sucursal total'},
+    {valor: 'diasSucursal', show:'dias Sucursal promedio'},
+    {valor: 'horas_totales_totales', show:'horas totales'},
+    {valor: 'horas_totales', show:'horas totales promedio'},
+  ]
   constructor( 
     private _publicos: ServiciosPublicosService, 
     private _email:EmailsService, 
@@ -486,6 +498,33 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       const fecha = new Date(a[dondeBuscar]).getTime();
       return fecha >= start && fecha <= end;
     });
+    const reporte = {ticket:0, diasSucursal:0, horas_totales:0}
+    gastosFechas.forEach(element => {
+      reporte.ticket += element.reporte.total
+      if(element.diasSucursal) reporte.diasSucursal += element.diasSucursal
+      if(element.fecha_entrega_compara ){
+        reporte.horas_totales += this._publicos.obtenerHorasEntreFechas(element.fecha_recibido_compara, element.fecha_entrega_compara)
+      }else{
+        reporte.horas_totales += this._publicos.obtenerHorasEntreFechas(element.fecha_recibido_compara, new Date())
+      }
+    });
+    let ticketPromedio = 0, diasSucursal= 0, horas_totales=0
+    if (gastosFechas.length) {
+      ticketPromedio = reporte.ticket / gastosFechas.length
+      diasSucursal = reporte.diasSucursal / gastosFechas.length
+      horas_totales = reporte.horas_totales / gastosFechas.length
+    }
+    
+    this.reporteEstancias = 
+    {
+      servicios_totales: gastosFechas.length,
+      ticket_total: reporte.ticket,
+      ticketPromedio,
+      diasSucursal_total: reporte.diasSucursal,
+      diasSucursal,
+      horas_totales_totales: reporte.horas_totales,
+      horas_totales
+    }
     
     return gastosFechas;
   }

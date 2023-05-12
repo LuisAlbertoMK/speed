@@ -1562,14 +1562,18 @@ export class ServiciosPublicosService {
         return { inicio, final };
       }
       obtenerPrimerUltimoDiaAnio(anio) {
-        // Creamos una nueva fecha del 1 de enero del año especificado
         const primerDiaAnio = new Date(anio, 0, 1);
-        // Obtenemos el último día del año restando 1 milisegundo al primer día del siguiente año
         const ultimoDiaAnio = new Date(anio + 1, 0, 1, -1);
       
         return { primerDia: primerDiaAnio, ultimoDia: ultimoDiaAnio };
       }
-
+      obtenerHorasEntreFechas(fechaInicial, fechaFinal) {
+        const milisegundosPorHora = 1000 * 60 * 60;
+        const diferenciaEnMilisegundos = fechaFinal - fechaInicial;
+        const horas = diferenciaEnMilisegundos / milisegundosPorHora;
+        return horas;
+      }
+      
       
       
  }
