@@ -37,35 +37,65 @@
   </div>
 </div>
 
-
-<button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuStatusOS">
-  Busqueda {{busquedaStatus | capitalizarUno}}
-</button>
-<mat-menu #menuStatusOS="matMenu">
-  <button mat-menu-item (click)="busqueda('todos')" >todos</button>
-  <button mat-menu-item (click)="busqueda(item.valor)" *ngFor="let item of statusOS">{{item.show}}</button>
-</mat-menu>
-<button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuSucursales" *ngIf="SUCURSAL === 'Todas'">
-  Busqueda {{busquedaSucursalStringShow | capitalizarUno}}
-</button>
-<mat-menu #menuSucursales="matMenu">
-  <button mat-menu-item (click)="busquedaSucursal('Todas','Todas')" >Todas</button>
-  <button mat-menu-item (click)="busquedaSucursal(item.id,item.sucursal)" *ngFor="let item of sucursales_arr">{{item.sucursal}}</button>
-</mat-menu>
-<button class="btn btn-sm btn-primary" (click)="picker.open()">
-  <i class="fa fa-calendar-alt"></i>
-</button>
 <div class="row">
-  <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-    <mat-date-range-input [formGroup]="fechas_filtro" [rangePicker]="picker" style=" overflow:hidden;">
-      <input matStartDate formControlName="start" readonly  (dateChange)="cambioFecha()">
-      <input matEndDate formControlName="end" readonly (dateChange)="cambioFecha()">
-    </mat-date-range-input>
-    <mat-date-range-picker #picker></mat-date-range-picker>
+  <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-start">
+    <button class="btn btn-sm btn-primary" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuStatusOS">
+      Busqueda {{busquedaStatus | capitalizarUno}}
+    </button>
+    <mat-menu #menuStatusOS="matMenu">
+      <button mat-menu-item (click)="busquedaStatus = 'todos'" >todos</button>
+      <button mat-menu-item (click)="busquedaStatus = item.valor" *ngFor="let item of statusOS">{{item.show}}</button>
+    </mat-menu>
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      
+        <button class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuSucursales" >
+          Busqueda {{busquedaSucursalStringShow | capitalizarUno}}
+        </button>
+        <mat-menu #menuSucursales="matMenu">
+          <button mat-menu-item (click)="busquedaSucursalString = 'Todas'; busquedaSucursalStringShow = 'Todas'" >Todas</button>
+          <button mat-menu-item (click)="busquedaSucursalString = item.id; busquedaSucursalStringShow = item.sucursal" *ngFor="let item of sucursales_arr">{{item.sucursal}}</button>
+        </mat-menu>
+      
+    </ng-container>
   </div>
   
+  <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-end">
+      <div class="dropdown">
+        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Busqueda {{rangoBusqueda.show}}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" (click)="rangoBusqueda = item; nuevasBusquedas()" *ngFor="let item of menuListaBusqueda_arr">{{item.show}}</a></li>
+        </ul>
+      </div>
+      <!-- <pre>
+        {{rangoBusqueda | json}}
+      </pre> -->
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-end">
+    <div class="input-group mb-3 ">
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-date-range-input (click)="rangoBusqueda= {valor:'personalizado',show:'Personalizado',dias:0}; picker.open()" class="pointer form-control" [formGroup]="fechas_filtro" [rangePicker]="picker">
+        <input matStartDate class="mr-2" formControlName="start" readonly (dateChange)="nuevasBusquedas()" placeholder="Inicio">
+        <input matEndDate formControlName="end" readonly (dateChange)="rangoBusqueda= {valor:'personalizado',show:'Personalizado',dias:0};nuevasBusquedas()" placeholder="Final">
+      </mat-date-range-input>
+      <div class="input-group-append">
+        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="rangoBusqueda= {valor:'personalizado',show:'Personalizado',dias:0}; picker.open()">
+          <i class="fa fa-calendar-alt"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
+<mat-radio-group
+  aria-labelledby="example-radio-group-label"
+  class="example-radio-group"
+  [(ngModel)]="BusquedaTo" (ngModelChange)="nuevasBusquedas()">
+  <mat-radio-button class="example-radio-button" *ngFor="let search of busqueda2" [value]="search.valor">
+    {{search.show}}
+  </mat-radio-button>
+</mat-radio-group>
 
   
 <!-- <p>Selected range: {{fechas_filtro.value | json}}</p> -->
@@ -288,7 +318,7 @@
                         
                         <div class="row m-1">
                           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                            <h2>Historial de gastos</h2>
+                            <h2>Historial de gastos, Total de gastos: {{row.totalGastos | monedas}}</h2>
                             <div class="table-responsive">
                               <table class="table">
                                 <thead>
@@ -330,7 +360,7 @@
                             </div>
                           </div>
                           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                            <h2>Historial de Pagos</h2>
+                            <h2>Historial de Pagos, Total de pagos: {{row.totalPagos | monedas}}</h2>
                             <div class="table-responsive">
                               <table class="table">
                                 <thead>

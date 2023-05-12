@@ -153,7 +153,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     end: new FormControl(Date),
   });
 
-  fechas_get = {start: new Date(), end: new Date()}
+  fechas_get = {start: this._publicos.resetearHoras(new Date()), end: this._publicos.resetearHoras(new Date())}
   busquedaServicios:string = null
   
   idSucursalOS: string = null
@@ -164,11 +164,29 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
   realizaGasto:string = null
   
-  constructor( private _formBuilder: FormBuilder,private _publicos: ServiciosPublicosService, 
-    private router: Router, private _email:EmailsService, private _exporter: ExporterService,
-    private _servicios:ServiciosService, private _usuarios:UsuariosService, private _security:EncriptadoService,
-    private fb: FormBuilder, private _sucursales: SucursalesService,private _clientes:ClientesService,
-    private _cotizaciones: CotizacionService
+  BusquedaTo: string = 'fecha_recibido'
+
+  busqueda2 = [
+    {valor:'fecha_recibido', show:'Fecha de Recibido'},
+    {valor:'fecha_entregado', show:'Fecha de Entregado'},
+  ]
+  menuListaBusqueda_arr = [
+    {valor:'hoy',show:'Hoy', dias: 0},
+    {valor:'ayer',show:'Ayer', dias: -1},
+    {valor:'ult7dias',show:'Últimos 7 días', dias:-7},
+    {valor:'ult30dias',show:'Últimos 30 días', dias: -30},
+    {valor:'esteMes',show:'Este mes', dias: 0},
+    {valor:'ultMes',show:'Último mes', dias: 0},
+    {valor:'esteAnio',show:'Este año', dias: 0},
+    {valor:'ultAnio',show:'Último año', dias: 0},
+    {valor:'personalizado',show:'Personalizado',dias: 0},
+  ]
+  diasBusqueda: number = 0
+  rangoBusqueda = {valor:'hoy',show:'Hoy', dias: 0}
+  constructor( 
+    private _publicos: ServiciosPublicosService, 
+    private _email:EmailsService, 
+    private _security:EncriptadoService,
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
@@ -235,19 +253,23 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           
           recep.hitorial_gastos = (recep.HistorialGastos) ? this._publicos.crearArreglo2(recep.HistorialGastos) : []
           recep.historial_pagos = (recep.HistorialPagos) ? this._publicos.crearArreglo2(recep.HistorialPagos) : []
-          
+          let totalGastos = 0, totalPagos=0
           recep.historial_pagos.forEach(element => {
             element.tipoNuevo = 'pago'
             const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
             element.metodoShow = show
+            if(element.status) totalPagos += element.monto
           });
           recep.hitorial_gastos.forEach(element => {
             element.tipoNuevo = 'gasto'
             const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
             element.metodoShow = show
+            if(element.status) totalGastos += element.monto
           });
+          recep.totalGastos = totalGastos
+          recep.totalPagos = totalPagos
           
-          recep.fecha_receibido_compara = this._publicos.construyeFechaString(recep.fecha_recibido)
+          recep.fecha_recibido_compara = this._publicos.construyeFechaString(recep.fecha_recibido)
           if (recep.fecha_entregado) {
             recep.fecha_entrega_compara = this._publicos.construyeFechaString(recep.fecha_entregado)
           }
@@ -284,8 +306,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         
 
         setTimeout(()=>{
-          this.busqueda(this.busquedaStatus)
-          this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
+          this.nuevasBusquedas()
         },500)
         
         
@@ -296,10 +317,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
   }
   accionServicio(padre, hijo, statusGet){
-    //tomamos el id de padre en este caso la recepcion
-
-    // console.log(padre);
-    
     const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
     const showStatus1 =  (statusGet === 'terminar') ? 'Terminado' : 'En espera'
     const servicios = [...padre.servicios]
@@ -331,52 +348,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       update(ref(db), updates)
     }
     
-    
-    
-    
-    // update(ref(db), updates)
-    
-    
-    // const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
-
-    // if (aprobado) {
-    //   const showStatus1 =  (statusGet === 'terminar') ? 'Terminado' : 'En espera'
-
-    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
-    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = aprobado
-    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = showStatus1
-
-    // }else if (statusGet === 'cancelado' || statusGet === 'Noaprobado') {
-    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].status = statusGet
-    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].aprobado = false
-    //   this.recepciones_arr[padreIndex].servicios[HijoIndex].showStatus = 'En espera'
-    // } if (statusGet === 'eliminado') {
-    //   this.recepciones_arr[padreIndex].servicios = this.recepciones_arr[padreIndex].servicios.filter((servicio, index) => {
-    //     if (index !== HijoIndex) {
-    //         servicio.index = index;
-    //         return true;
-    //     }
-    //     return false;
-    // });
-    
-     
-    // }
-    
-    // const {reporte, ocupados} = this._publicos.realizarOperaciones_2(this.recepciones_arr[padreIndex])
-    
-    // this.recepciones_arr[padreIndex].reporte = reporte
-    // this.recepciones_arr[padreIndex].servicios = ocupados
-    // this.recepciones_arr[padreIndex].notificar = true
-
-    // const updates = {};
-    // updates[`recepciones/${padreID}`] = this.recepciones_arr[padreIndex];
-    // update(ref(db), updates).then(()=>{
-    //   this._publicos.swalToast('accion  correcta!')
-    // });
-
-    
-    // this.dataSource.data = this.recepciones_arr
-    // this.newPagination()
   }
   actualizarReporteIVA(data){
     setTimeout(()=>{
@@ -418,8 +389,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     
     setTimeout(() => {
       update(ref(db), updates).then(()=>{
-        this.busqueda(this.busquedaStatus)
-        this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
+        this.nuevasBusquedas()
       })
     }, 500);
     
@@ -446,81 +416,80 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       })
     }
   }
-  cambioFecha(){
-    const {start, end} = this.fechas_filtro.value
-
-    if (start && end) {
-      if (start['_d'] && end['_d']) {
-        const startOfDay = date => {
-          const copy = new Date(date);
-          copy.setHours(0, 0, 0, 0);
-          return copy;
-        };
-        const startI = startOfDay(start);
-        const startF = startOfDay(end);
-
-        this.fechas_get = {start: startI, end: startF}
-        this.busqueda(this.busquedaStatus)
-        this.busquedaSucursal(this.busquedaSucursalString,this.busquedaSucursalStringShow)
-      }
-    }
-  }
-  busqueda(busquedaStatusOS:string){
-    let nuevoFiltro = this.recepciones_arr;
-
-    if (busquedaStatusOS !== 'todos') {
-      nuevoFiltro = nuevoFiltro.filter(os => os.status === busquedaStatusOS);
-    }
-    
-    if (this.busquedaSucursalString !== 'Todas') {
-      nuevoFiltro = nuevoFiltro.filter(os => os.sucursal.id === this.busquedaSucursalString);
-    }
-    this.busquedaStatus = busquedaStatusOS
-    
-    const gastosFechas = nuevoFiltro.filter(a => a.fecha_receibido_compara >= this.fechas_get.start && a.fecha_receibido_compara <= this.fechas_get.end);
-    // const gastosFechas2 = nuevoFiltro.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
-    // const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
-    // console.log(gastosFechas);
-    
-    // this.dataSource.data = uniqueSort(unicos)
-    this.dataSource.data = gastosFechas
-    this.newPagination();
-  }
-  busquedaSucursal(busquedaStatusSucursal:string, nombre:string){
-    let filtrados = this.recepciones_arr
-    if (busquedaStatusSucursal === 'Todas') {
-      
-    
-      if (this.busquedaStatus !== 'todos') {
-        filtrados = filtrados.filter(os => os.status === this.busquedaStatus)
-      }
-      // const gastosFechas = filtrados.filter(a => a.fecha_recibido >= this.fechas_get.start && a.fecha_recibido <= this.fechas_get.end)
-      
-    } else {
-      filtrados = this.recepciones_arr.filter(os => os.sucursal.id === busquedaStatusSucursal)
-    
-      if (this.busquedaStatus !== 'todos') {
-        filtrados = filtrados.filter(os => os.status === this.busquedaStatus)
-      }
-    
-      // const gastosFechas = filtrados.filter(a => a.fecha_recibido >= this.fechas_get.start && a.fecha_recibido <= this.fechas_get.end)
-      
+ 
+  nuevasBusquedas(){
+    const {valor, dias} = this.rangoBusqueda;
+    const hoy = new Date()
+    let start= hoy, end = hoy
+    switch (valor) {
+      case 'hoy':
+      case 'ayer':
+      case 'ult7dias':
+      case 'ult30dias':
+        start = this._publicos.sumarRestarDiasFecha(hoy, dias);
+        end = hoy;
+        break;
+        case 'esteMes':
+          const valores = this._publicos.getFirstAndLastDayOfCurrentMonth(hoy)
+          start = valores.inicio
+          end = valores.final
+          break;
+        case 'ultMes':
+          const mesAnterior = this._publicos.sumarRestarMesesFecha(hoy,-1)
+          let {inicio, final} = this._publicos.getFirstAndLastDayOfCurrentMonth(mesAnterior)
+          start = inicio
+          end = final 
+          break;
+        case 'esteAnio':
+          const {primerDia, ultimoDia} = this._publicos.obtenerPrimerUltimoDiaAnio(hoy.getFullYear())
+          start = primerDia
+          end = ultimoDia
+          break;
+        case 'ultAnio':
+          const ultimoAnio = this._publicos.sumarRestarAniosFecha(hoy,-1)
+          const nuevosv = this._publicos.obtenerPrimerUltimoDiaAnio(ultimoAnio.getFullYear())
+          start = nuevosv.primerDia
+          end = nuevosv.ultimoDia
+          break;
+          case 'personalizado':
+            const calendar = this.fechas_filtro.value
+            if (calendar.start?.['_d'] && calendar.end?.['_d']) {
+              start = calendar.start['_d']
+              end = calendar.end['_d']
+            }
+            break;
+      default:
+        break;
     }
     
-
-    const gastosFechas = filtrados.filter(a => a.fecha_receibido_compara >= this.fechas_get.start && a.fecha_receibido_compara <= this.fechas_get.end);
-    // const gastosFechas2 = filtrados.filter(a => a.fecha_entrega_compara >= this.fechas_get.start && a.fecha_entrega_compara <= this.fechas_get.end);
-    // const unicos = [...new Set([...gastosFechas, ...gastosFechas2])];
-  
-    // this.dataSource.data = uniqueSort(unicos)
-    this.dataSource.data = gastosFechas
-
-
-    this.busquedaSucursalString = busquedaStatusSucursal
-    this.busquedaSucursalStringShow = nombre
+    this.fechas_get = {start: this._publicos.reseteaHoras( start ),end: this._publicos.reseteaHoras( end )}
+    this.dataSource.data = this.filtrarRecepciones(this.recepciones_arr,this.busquedaStatus,this.busquedaSucursalString,this.BusquedaTo, this.fechas_get)
     this.newPagination()
-    
   }
+  filtrarRecepciones(recepciones, busquedaStatus, busquedaSucursalString, BusquedaTo, fechas_get) {
+    let filtrados = recepciones;
+  
+    if (busquedaStatus !== 'todos') {
+      filtrados = filtrados.filter(os => os.status === busquedaStatus);
+    }
+  
+    if (busquedaSucursalString !== 'Todas') {
+      filtrados = filtrados.filter(os => os.sucursal.id === busquedaSucursalString);
+    }
+  
+    const dondeBuscar = (BusquedaTo === 'fecha_recibido') ? 'fecha_recibido_compara' : 'fecha_entrega_compara';
+    
+    const start = new Date(fechas_get.start).getTime();
+    const end = new Date(fechas_get.end).getTime();
+  
+    const gastosFechas = filtrados.filter(a => {
+      const fecha = new Date(a[dondeBuscar]).getTime();
+      return fecha >= start && fecha <= end;
+    });
+    
+    return gastosFechas;
+  }
+  
   EliminaPago(padre:string, idPG:string, donde:string){
     const dondeUpdate = (donde === 'pago') ?  'HistorialPagos': 'HistorialGastos'
     const updates = {[`recepciones/${padre}/${dondeUpdate}/${idPG}/status`]: false}

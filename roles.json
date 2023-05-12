@@ -10,6 +10,8 @@ onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
 modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down modal-dialog-scrollable
 col-lg-12 col-md-12 col-sm-12 col-12
 
+.col-lg-12.col-md-12.col-sm-12.col-12
+
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 const db = getDatabase()

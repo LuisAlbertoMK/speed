@@ -103,7 +103,7 @@ export class PagoComponent implements OnInit {
           const rcp = recepciones
             .filter(recep => {
               const status = recep.status;
-              return (status !== 'entregado' && status !== 'cancelado' && status !== 'espera');
+              return (status !== 'cancelado' && status !== 'espera');
             })
             .map(recep => {
               return {
@@ -119,8 +119,7 @@ export class PagoComponent implements OnInit {
             return (sucursal === 'Todas') ? rcp : rcp.filter(os => os.sucursal === sucursal);
         }
         this.ordenes = filtrarOrdenes(recepciones, this.SUCURSAL);
-        // console.log(this.ordenes);
-        
+
       }
       
     })
@@ -170,14 +169,13 @@ export class PagoComponent implements OnInit {
   }
   registroPago(){
     const {valido, faltante} = this.validaInformacion()
-  //  console.log(valido, faltante);
+  
    if(!valido) {
     this._publicos.swalToastError('Llenar datos de formulario')
     this.informacionFaltante = faltante
    }else{
      this.informacionFaltante = null
-    console.log('proceder a guardar');
-    // updates[`recepciones/${dataSave['no_os']}/HistorialPagos/${newPostKey}`] = recuperados;
+    
     const info = this.formPago.value
     const dataSave = {
         concepto:        info.concepto,
@@ -207,9 +205,6 @@ export class PagoComponent implements OnInit {
       this.formPago.controls['sucursal'].setValue('')
     }else{
       const data = this.ordenes.find(os=>os['id'] === id)
-      console.log(data);
-      
-      // this.formPago.controls['sucursal'].setValue(data['sucursal'].id)
       this.formPago.controls['sucursal'].setValue(data.sucursal)
     } 
   }

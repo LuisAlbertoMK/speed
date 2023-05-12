@@ -61,7 +61,7 @@ export class ListaProblemasComponent implements OnInit {
 
   // tabla
   dataSource = new MatTableDataSource(); //elementos
-  elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
+  elementos = ['id','sucursalShow','fecha_registro','hora_registro','resuelto','revisado','status']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
   expandedElement: any | null; //elementos
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
@@ -125,6 +125,8 @@ export class ListaProblemasComponent implements OnInit {
       // console.log(updates);
       
         update(ref(db), updates).then(()=>{
+          const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+          this.formProblema.reset({sucursal})
           this._publicos.swalToast('Registro de problema correcto')
         })
         .catch(err=>{
@@ -150,13 +152,20 @@ export class ListaProblemasComponent implements OnInit {
     const starCountRef = ref(db, `problemasPlataforma`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        const problemas = this._publicos.crearArreglo2(snapshot.val())
-        problemas.map((p,index)=>{
-          p.index = index
-        })
-        console.log(problemas);
+        const problemas = snapshot.val();
+        let nuevosD = [];
+        Object.keys(problemas).forEach(c => {
+          const clavesP = this._publicos.crearArreglo2(problemas[c]);
+          nuevosD = nuevosD.concat(clavesP);
+        });
         
-        this.dataSource.data = problemas
+        nuevosD.forEach((p, index) => {
+          p.index = index;
+          const {sucursal} = this.sucursales_arr.find(s=>s.id === p.sucursal)
+          p.sucursalShow = sucursal
+        });
+        
+        this.dataSource.data = nuevosD
         this.newPagination()
       }
     })

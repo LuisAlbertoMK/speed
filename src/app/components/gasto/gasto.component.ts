@@ -96,7 +96,8 @@ export class GastoComponent implements OnInit {
           const rcp = recepciones
             .filter(recep => {
               const status = recep.status;
-              return (status !== 'entregado' && status !== 'cancelado' && status !== 'espera');
+              // return (status !== 'entregado' && status !== 'cancelado' && status !== 'espera');
+              return status;
             })
             .map(recep => {
               return {

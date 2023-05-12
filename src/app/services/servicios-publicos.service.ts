@@ -1532,6 +1532,16 @@ export class ServiciosPublicosService {
         resultado.setDate(resultado.getDate() + dias);
         return resultado;
       }
+      sumarRestarMesesFecha(fecha, meses) {
+        const nuevaFecha = new Date(fecha);
+        nuevaFecha.setMonth(nuevaFecha.getMonth() + meses);
+        return nuevaFecha;
+      }
+      sumarRestarAniosFecha(fecha, anios) {
+        const nuevaFecha = new Date(fecha);
+        nuevaFecha.setFullYear(nuevaFecha.getFullYear() + anios);
+        return nuevaFecha;
+      }
       esDomingo(fecha) {
         return fecha.getDay() === 0;
       }
@@ -1541,6 +1551,25 @@ export class ServiciosPublicosService {
         const anio = fecha.getFullYear().toString();
         return (simbolo) ? `${dia}/${mes}/${anio}` : `${dia}${mes}${anio}`;
       }
+      getFirstAndLastDayOfCurrentMonth(fecha) {
+        const date = new Date(fecha);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const lastDay = new Date(year, month, 0).getDate()
+        
+        const inicio = new Date(year, month -1, 1)
+        const final = new Date(year, month -1 , lastDay)
+        return { inicio, final };
+      }
+      obtenerPrimerUltimoDiaAnio(anio) {
+        // Creamos una nueva fecha del 1 de enero del año especificado
+        const primerDiaAnio = new Date(anio, 0, 1);
+        // Obtenemos el último día del año restando 1 milisegundo al primer día del siguiente año
+        const ultimoDiaAnio = new Date(anio + 1, 0, 1, -1);
+      
+        return { primerDia: primerDiaAnio, ultimoDia: ultimoDiaAnio };
+      }
+
       
       
  }
