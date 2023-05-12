@@ -48,11 +48,11 @@ export class DetallesCotizacionComponent implements OnInit {
     this.espere()
   }
   rol(){
-    this.ROL =localStorage.getItem('tipoUsuario')
-    this.SUCURSAL =localStorage.getItem('sucursal')
-    if (this.ROL ==='') {
-      this.router.navigateByUrl('/login')
-    }
+    // this.ROL =localStorage.getItem('tipoUsuario')
+    // this.SUCURSAL =localStorage.getItem('sucursal')
+    // if (this.ROL ==='') {
+    //   this.router.navigateByUrl('/login')
+    // }
     }
   asignacionParametros(){
     this.idRecepcion = this.rutaActiva.snapshot.params['idRecepcion']

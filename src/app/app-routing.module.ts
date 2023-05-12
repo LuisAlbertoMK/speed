@@ -35,6 +35,7 @@ import { AuthPruebaComponent } from './components/auth-prueba/auth-prueba.compon
 import { Loginv1Component } from './components/loginv1/loginv1.component';
 import { ReporteGastosComponent } from './pages/reporte-gastos/reporte-gastos.component';
 import { EntregaOrdenComponent } from './pages/entrega-orden/entrega-orden.component';
+import { ListaProblemasComponent } from './pages/lista-problemas/lista-problemas.component';
 
 const routes: Routes = [];
 
@@ -58,7 +59,6 @@ const APP_ROUTES: Routes = [
   { path: 'usuarios', component: UsuariosComponent,  canActivate:[AuthGuard] },
   { path: 'Gerente', component: GerenteComponent,  canActivate:[AuthGuard] },
   { path: 'tecnico-ayudante', component: TecnicoayudanteComponent,  canActivate:[AuthGuard] },
-  // { path: 'newCotizacion/:cotizacion/:pagina', component: NewcotizacionComponent ,  canActivate:[AuthGuard]},
   { path: 'recepcion/:recepcion/:pagina', component: RecepcionComponent ,  canActivate:[AuthGuard]},
   { path: 'FirmaEntrega/:idRecepcion', component: FirmaComponent ,  canActivate:[AuthGuard]},
   { path: 'FirmaConsentimiento/:idRecepcion', component: FirmaConsentimientoComponent ,  canActivate:[AuthGuard] },
@@ -73,11 +73,11 @@ const APP_ROUTES: Routes = [
   { path: 'ServiciosConfirmar/:ID/:tipo/:extra', component: ServiciosConfirmarComponent,canActivate:[AuthGuard] },
   { path: 'modificaRecepcion/:rutaAnterior/:idRecepcion', component: ModificaRecepcionComponent,canActivate:[AuthGuard] },
   { path: 'automaticos', component: AutomaticosComponent },
-  // { path: 'login', component: LoginComponent},
   { path: 'loginv1', component: Loginv1Component},
   { path: 'reporteGastos', component: ReporteGastosComponent},
   { path: 'pruebaAuth', component: AuthPruebaComponent},
   { path: 'entregaRecepcion/:idRecepcion', component: EntregaOrdenComponent},
+  { path: 'registraProblemas', component: ListaProblemasComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, {useHash:false});

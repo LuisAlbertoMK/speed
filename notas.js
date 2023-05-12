@@ -68,10 +68,11 @@ let problemas_10052023 =
 let problemas_11052023 = 
 [
     {problema:'Registrar el sobrante del dia de hoy para mañana', status:'PENDIENTE'},   
+    {problema:'verificar los datos ', status:'PENDIENTE'},   
 ]
 
 // git add .
-// git commit -m "problemas_11052023-1"
+// git commit -m "problemas_11052023-2"
 // git push -u origin main
 
 

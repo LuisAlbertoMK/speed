@@ -133,6 +133,7 @@ import { DataFacturacionClienteComponent } from './components/data-facturacion-c
 import { PaquetesComponent } from './components/paquetes/paquetes.component';
 import { ClientesListComponent } from './components/clientes-list/clientes-list.component';
 import { ListaTecnicosComponent } from './components/lista-tecnicos/lista-tecnicos.component';
+import { ListaProblemasComponent } from './pages/lista-problemas/lista-problemas.component';
 
 // import { getDutchPaginatorIntl } from "../app/models/tras";
 
@@ -206,7 +207,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DataFacturacionClienteComponent,
     PaquetesComponent,
     ClientesListComponent,
-    ListaTecnicosComponent
+    ListaTecnicosComponent,
+    ListaProblemasComponent
   ],
   imports: [
     FullCalendarModule,
