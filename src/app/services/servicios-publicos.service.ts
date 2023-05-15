@@ -1573,7 +1573,17 @@ export class ServiciosPublicosService {
         const horas = diferenciaEnMilisegundos / milisegundosPorHora;
         return horas;
       }
-      
+      ordenarData(data, campo, ascendente) {
+        return data.sort((a, b) => {
+          if (a[campo] < b[campo]) {
+            return ascendente ? -1 : 1;
+          }
+          if (a[campo] > b[campo]) {
+            return ascendente ? 1 : -1;
+          }
+          return 0;
+        });
+      }
       
       
  }

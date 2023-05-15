@@ -14,6 +14,9 @@ table {
   .pointer{
     cursor: pointer;
   }
+  a{
+    text-decoration:none;
+  }
 
   tr.anima:hover{
     background-color: lavender;

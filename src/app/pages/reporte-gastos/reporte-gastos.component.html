@@ -1,4 +1,16 @@
 <!-- <button class="btn btn-sm btn-primary" (click)="unirResultados()">unirResultados</button> -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active">Reporte de gastos / Administración</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="row">
@@ -34,7 +46,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start">
             <div class="input-group mb-3 ">
               <mat-date-range-picker #picker></mat-date-range-picker>
               <mat-date-range-input (click)="picker.open()" class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
@@ -47,86 +59,140 @@
                 </button>
               </div>
             </div>
-          </div>
-          <!-- <div class="col-lg-4 col-md-4 col-sm-12 col-12"> -->
             <ng-container *ngIf="SUCURSAL === 'Todas'">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-                <button class="btn btn-sm btn-success" [matMenuTriggerFor]="menuFiltroSucursalesAdministracion">Filtro sucursal
-                    {{sucursalFiltroShowReporte}}
-                </button>
-                <mat-menu #menuFiltroSucursalesAdministracion="matMenu">
-                  <button mat-menu-item  value="Todas" (click)="sucursalFiltroReporte = 'Todas'; sucursalFiltroShowReporte ='Todas'; realizarOperaciones()">Todas</button>
-                  <button mat-menu-item *ngFor="let s of sucursales_arr" [value]="s.id" (click)="sucursalFiltroReporte = s.id; sucursalFiltroShowReporte = s.sucursal;  realizarOperaciones()">{{s.sucursal}}</button>
-                </mat-menu>
+              <div class="dropdown">
+                <a class="dropdown-toggle btn btn-sm btn-success" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  Filtro sucursal
+                  {{sucursalFiltroShowReporte}}
+                </a>
+                <ul class="dropdown-menu " aria-labelledby="dropdownMenuLink">
+                  <li ><a class="dropdown-item" (click)="sucursalFiltroReporte = 'Todas'; sucursalFiltroShowReporte ='Todas'; realizarOperaciones()">
+                    Todas
+                  </a></li>
+                  <li *ngFor="let s of sucursales_arr" (click)="sucursalFiltroReporte = s.id; sucursalFiltroShowReporte = s.sucursal;  realizarOperaciones()">
+                    <a class="dropdown-item">
+                      {{s.sucursal}}
+                    </a>
+                  </li>
+                </ul>
               </div>
             </ng-container>
+          </div>
+          <!-- <div class="col-lg-4 col-md-4 col-sm-12 col-12"> -->
+            
           <!-- </div> -->
 
         </div>
         <div class="mat-elevation-z8 table-responsive">
           <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> # </th>
-              <td mat-cell *matCellDef="let row" class="text-center">
+              <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('reporte','index'); fechas_reporte = !fechas_reporte" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"> # 
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'index'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
+              <td mat-cell *matCellDef="let row" class="text-center" >
                 {{row.index + 1 }}
             </td>
             </ng-container>
             <ng-container matColumnDef="sucursalShow">
-              <th mat-header-cell *matHeaderCellDef class="text-start">&nbsp; Sucursal &nbsp;</th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"   class="text-start">
+              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','sucursalShow'); fechas_reporte = !fechas_reporte">
+                &nbsp; Sucursal &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'sucursalShow'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
+              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"   class="text-start pointer" (click)="ordenamiento('reporte','sucursalShow'); fechas_reporte = !fechas_reporte">
                 {{row.sucursalShow | capitalizarUno}}
               </td>
             </ng-container>
             <ng-container matColumnDef="no_os">
-              <th mat-header-cell *matHeaderCellDef class="text-start">&nbsp; # O.S &nbsp;</th>
+              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','no_os'); fechas_reporte = !fechas_reporte">&nbsp; # O.S &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'no_os'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-uppercase text-start">
                 {{row.no_os }}
               </td>
             </ng-container>
             <ng-container matColumnDef="metodoShow">
-              <th mat-header-cell *matHeaderCellDef class="text-center">&nbsp; Metodo &nbsp;</th>
+              <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('reporte','metodoShow'); fechas_reporte = !fechas_reporte">&nbsp; Metodo &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'metodoShow'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-center"> 
                 {{row.metodoShow | capitalizarUno}}
               </td>
             </ng-container>
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef class="text-start">&nbsp; Status &nbsp;</th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
-                <ng-container *ngIf="row.status; else elseAprobado">
-                  <strong class="text-success">Aprobado</strong>
+              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','status'); fechas_reporte = !fechas_reporte">
+                &nbsp; Status &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'status'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
                 </ng-container>
-                <ng-template #elseAprobado>
+              </th>
+              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
+                <ng-container *ngIf="row.status; then aprobadoTemplate else noAprobadoTemplate"></ng-container>
+
+                <ng-template #aprobadoTemplate>
+                  <strong class="text-success">Aprobado</strong>
+                </ng-template>
+
+                <ng-template #noAprobadoTemplate>
                   <strong class="text-danger">No Aprobado</strong>
                 </ng-template>
+
                 
               </td>
             </ng-container>
             <ng-container matColumnDef="concepto">
-              <th mat-header-cell *matHeaderCellDef class="text-start">&nbsp; Concepto &nbsp;</th>
+              <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('reporte','concepto'); fechas_reporte = !fechas_reporte">&nbsp; Concepto &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'concepto'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
                 {{row.concepto  | capitalizarUno}}
               </td>
             </ng-container>
             <ng-container matColumnDef="referencia">
-              <th mat-header-cell *matHeaderCellDef class="text-start">&nbsp; Referencia &nbsp;</th>
+              <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('reporte','referencia'); fechas_reporte = !fechas_reporte">&nbsp; Referencia &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'referencia'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
                   {{row.referencia}}
               </td>
             </ng-container>
             <ng-container matColumnDef="monto">
-              <th mat-header-cell *matHeaderCellDef class="text-end">&nbsp; Monto &nbsp; </th>
+              <th mat-header-cell *matHeaderCellDef class="text-end  pointer" (click)="ordenamiento('reporte','monto'); fechas_reporte = !fechas_reporte">&nbsp; Monto &nbsp; 
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'monto'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
               <td mat-cell *matCellDef="let row" class="text-end" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-end"> 
                   {{row.monto | monedas}} &nbsp; &nbsp;
               </td>
             </ng-container>
             <ng-container matColumnDef="tipo">
-              <th mat-header-cell *matHeaderCellDef class="text-start"> &nbsp; Tipo &nbsp;  </th>
+              <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('reporte','tipo'); fechas_reporte = !fechas_reporte"> &nbsp; Tipo &nbsp; 
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'tipo'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
                   {{row.tipo  | capitalizarUno}}
               </td>
             </ng-container>
             <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef class="text-start">&nbsp; Fecha &nbsp;</th>
+              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','fechaCompara'); fechas_reporte = !fechas_reporte">&nbsp; Fecha &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'fechaCompara'">
+                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                </ng-container>
+              </th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
                   {{row.fecha_registro}}
               </td>
@@ -225,15 +291,18 @@
           </div>
           <ng-container *ngIf="SUCURSAL === 'Todas'">
             <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-              <button class="btn btn-sm btn-success" [matMenuTriggerFor]="menuFiltroSucursalesAdministracion">Filtro sucursal
-                
-                  {{sucursalFiltroShow}}
-                
-              </button>
-              <mat-menu #menuFiltroSucursalesAdministracion="matMenu">
-                <button mat-menu-item  value="Todas" (click)="sucursalFiltro = 'Todas'; sucursalFiltroShow ='Todas'; operacionesAdmin()">Todas</button>
-                <button mat-menu-item *ngFor="let s of sucursales_arr" [value]="s.id" (click)="sucursalFiltro = s.id; sucursalFiltroShow = s.sucursal;  operacionesAdmin()">{{s.sucursal}}</button>
-              </mat-menu>
+   
+
+              <div class="dropdown">
+                <a class="btn btn-sm btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLinkAdmin" data-bs-toggle="dropdown" aria-expanded="false">
+                  Filtro sucursal {{sucursalFiltroShow}}
+                </a>
+              
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLinkAdmin">
+                  <li><a class="dropdown-item"  (click)="sucursalFiltro = 'Todas'; sucursalFiltroShow ='Todas'; operacionesAdmin()">Todas</a></li>
+                  <li><a class="dropdown-item" *ngFor="let s of sucursales_arr" (click)="sucursalFiltro = s.id; sucursalFiltroShow = s.sucursal;  operacionesAdmin()">{{s.sucursal}}</a></li>
+                </ul>
+              </div>
             </div>
           </ng-container>
           
@@ -257,37 +326,61 @@
             <div class="mat-elevation-z8 table-responsive">
               <table #Administracion="matSort" mat-table [dataSource]="dataSourceAdministracion" matSort multiTemplateDataRows>
                 <ng-container matColumnDef="id">
-                  <th mat-header-cell *matHeaderCellDef class="text-center"> # </th>
+                  <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('admin','index'); fechas_admin = !fechas_admin"> # 
+                    <ng-container *ngIf="ordenamientoCampo_admin === 'index'">
+                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                    </ng-container>
+                  </th>
                   <td mat-cell *matCellDef="let row" class="text-center">
                     {{row.index + 1 }}
                 </td>
                 </ng-container>
                 <ng-container matColumnDef="sucursalShow">
-                  <th mat-header-cell *matHeaderCellDef class="text-start"> Sucursal </th>
+                  <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('admin','sucursalShow'); fechas_admin = !fechas_admin"> Sucursal 
+                    <ng-container *ngIf="ordenamientoCampo_admin === 'sucursalShow'">
+                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                    </ng-container>
+                  </th>
                   <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start" >
                     {{row.sucursalShow |  capitalizarUno}}
                 </td>
                 </ng-container>
                 <ng-container matColumnDef="no_os">
-                  <th mat-header-cell *matHeaderCellDef class="bg-black text-white text-center" class="text-start"> # O.S </th>
+                  <th mat-header-cell *matHeaderCellDef class="bg-black text-white text-center" class="text-start  pointer" (click)="ordenamiento('admin','no_os'); fechas_admin = !fechas_admin"> # O.S 
+                    <ng-container *ngIf="ordenamientoCampo_admin === 'no_os'">
+                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                    </ng-container>
+                  </th>
                   <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-uppercase text-start"> 
                     {{row.no_os }}
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="status">
-                  <th mat-header-cell *matHeaderCellDef class="text-center" > status </th>
+                  <th mat-header-cell *matHeaderCellDef class="text-center  pointer" (click)="ordenamiento('admin','status'); fechas_admin = !fechas_admin" > status 
+                    <ng-container *ngIf="ordenamientoCampo_admin === 'status'">
+                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                    </ng-container>
+                  </th>
                   <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-uppercase text-center"> 
                     {{row.status}}
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="fecha_recibido">
-                  <th mat-header-cell *matHeaderCellDef class="text-start"> Fecha recibido </th>
+                  <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('admin','fecha_recibido_compara'); fechas_admin = !fechas_admin"> Fecha recibido 
+                    <ng-container *ngIf="ordenamientoCampo_admin === 'fecha_recibido_compara'">
+                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                    </ng-container>
+                  </th>
                   <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" > 
                     {{row.fecha_recibido  | capitalizarUno}}
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="fecha_entregado">
-                  <th mat-header-cell *matHeaderCellDef class="text-start"> Fecha entregado </th>
+                  <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('admin','fecha_entregado_compara'); fechas_admin = !fechas_admin"> Fecha entregado 
+                    <ng-container *ngIf="ordenamientoCampo_admin === 'fecha_entregado_compara'">
+                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                    </ng-container>
+                  </th>
                   <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" > 
                       {{row.fecha_entregado}}
                   </td>

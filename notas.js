@@ -75,9 +75,13 @@ let problemas_12052023 =
 [
     {problema:'Agregar ticket promedio, tiempo de estancia, y otros ocupados en servicios', status:'PENDIENTE'},
 ]
+let problemas_15052023 = 
+[
+    {problema:'Verificar si es dia cero o domingo en reporte diario', status:'PENDIENTE'},
+]
 
 // git add .
-// git commit -m "problemas_12052023-1"
+// git commit -m "problemas_15052023"
 // git push -u origin main
 
 
