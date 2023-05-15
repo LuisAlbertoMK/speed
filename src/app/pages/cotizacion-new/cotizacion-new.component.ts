@@ -686,22 +686,28 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   // primer hay que saber que tipo de usuario es en cada modulo para sus permisos, filtros, etc ademas de la SUCURSAL
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
-    // Obtenemos una lista de las sucursales 
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
-        this.sucursales = this._publicos.crearArreglo2(snapshot.val())
-        // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
-        this.accion()
-      } 
-    }, {
-      onlyOnce: true
-    })
+    if (localStorage.getItem('dataSecurity')) {
+      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+      this.ROL = this._security.servicioDecrypt(variableX['rol'])
+      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+      // Obtenemos una lista de las sucursales 
+      const starCountRef = ref(db, `sucursales`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
+          this.sucursales = this._publicos.crearArreglo2(snapshot.val())
+          // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
+          this.accion()
+        } 
+      }, {
+        onlyOnce: true
+      })
 
+    }else{
+      this._publicos.swalToastError('No se puede cargar la informacion')
+    }
+    
+    
   }
   accion(){
     //verificamos que tipo de cotizacion es cliente, cotizacion, vehiculo, nueva
