@@ -50,8 +50,8 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   ROL:string; SUCURSAL:string
   sucursales=[]
   paquete: string = 'paquete'
-   refaccion: string = 'refaccion'
-   mo: string = 'mo'
+  refaccion: string = 'refaccion'
+  mo: string = 'mo'
 
    // tabla
    dataSource = new MatTableDataSource(); //cotizaciones
@@ -169,12 +169,10 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
           cotizacion.formaPago = cotizacion.formaPago || '1';
           cotizacion.index = index
           const formaPago = this.formasPago.find(f => f.id === cotizacion.formaPago);
-          
           if (formaPago) cotizacion.pagoName = formaPago.pago
-
-          
           cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
           cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
+          
         });
         
         this.cotizacionesList = this.SUCURSAL === 'Todas' 

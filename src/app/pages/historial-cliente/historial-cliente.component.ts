@@ -75,7 +75,40 @@ export class HistorialClienteComponent implements OnInit {
     {id:'6',pago:'18 meses',interes:17.70,numero:18},
     {id:'7',pago:'24 meses',interes:24.,numero:24}
   ]
+  camposDesgloce = [
+    {valor:'mo', show:'mo'},
+    // {valor:'refacciones_a', show:'refacciones a'},
+    {valor:'refacciones_v', show:'refacciones'},
+    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
+    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
+    {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'descuento', show:'descuento'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+    {valor:'meses', show:'meses'},
+  ]
+  estatusServicioUnico = [
+    {valor: 'aprobado'   , show: 'Aprobar'},
+    {valor: 'Noaprobado'  , show: 'No Aprobado'},
+    {valor: 'terminar'   , show: 'Terminado'},
+    {valor: 'eliminado'  , show: 'Eliminar'},
+    {valor: 'cancelado'  , show: 'Cancelado'}
+  ]
+  statusOS = [
+    {valor: 'espera'   , show: 'Espera'},
+    {valor: 'recibido'   , show: 'Recibido'},
+    {valor: 'autorizado'  , show: 'Autorizado'},
+    {valor: 'terminado'   , show: 'Terminado'},
+    {valor: 'entregado'  , show: 'Entregado'},
+    {valor: 'cancelado'  , show: 'Cancelado'}
+  ]
   tiemoReal: true
+
+  paquete: string = 'paquete'
+  refaccion: string = 'refaccion'
+  mo: string = 'mo'
 
    // tabla
    dataSource = new MatTableDataSource(); //elementos
@@ -85,8 +118,26 @@ export class HistorialClienteComponent implements OnInit {
    @ViewChild('VehiculosPaginator') paginator: MatPaginator //elementos
    @ViewChild('Vehiculos') sort: MatSort //elementos
 
+   // tabla
+   dataSourceCotizaciones = new MatTableDataSource(); //elementos
+   cotizaciones =  ['index','no_cotizacion','searchName','searchPlacas']; //cotizaciones
+   columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'opciones', 'expand']; //elementos
+   expandedElementCotizaciones: any | null; //elementos
+   @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
+   @ViewChild('Cotizaciones') sortCotizaciones: MatSort //elementos
 
+   // tabla
+   dataSourceRecepciones = new MatTableDataSource(); //elementos
+   recepciones = ['id','no_os','searchName','searchPlacas','fechaRecibido','fechaEntregado'];//recepciones
+   columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'opciones', 'expand']; //elementos
+   expandedElementRecepciones: any | null; //elementos
+   @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
+   @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
 
+  ordenamiento_Asc_vehiculos: boolean = true
+  campoSelect_vehiculos = 'placas'
+  ordenamiento_Asc_cotizaciones: boolean = true
+  campoSelect_cotizaciones = 'no_cotizacion'
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private rutaActiva: ActivatedRoute) { }
 
 
@@ -120,32 +171,118 @@ export class HistorialClienteComponent implements OnInit {
         const infoCliente = snapshot.val()
         const vehiculos = (infoCliente.vehiculos) ? this._publicos.crearArreglo2(infoCliente.vehiculos) : []
         // console.log(vehiculos);
-        // vehiculos.forEach((v,index)=>{ v.index = index})
-        console.log(vehiculos);
+        
+        // console.log(vehiculos);
         
         const camposCliente = [...this._publicos.camposCliente()]
         const recuperda = this._publicos.nuevaRecuperacionData(infoCliente,camposCliente)
         // console.log(recuperda);
         this.cliente.cliente = recuperda
         // this.cliente.vehiculos = vehiculos
+        // vehiculos.forEach((v,index)=>{ v.index = index})
         this.dataSource.data = vehiculos
-        this.ordenamiento('placas')
+        this.ordenamiento('vehiculos','placas')
       } 
     }, {
       onlyOnce: !this.tiemoReal
     })
+    const starCountRefCotizaciones = ref(db, `cotizacionesRealizadas`)
+    onValue(starCountRefCotizaciones, (snapshot) => {
+      if (snapshot.exists()) {
+        const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
+        const filtro = cotizaciones.filter(c=>c.cliente.id === idCliente)
+        filtro.map(cotizacion=>{
+          cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
+          cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
+          const {reporte, ocupados} = this._publicos.realizarOperaciones_2(cotizacion)
+          cotizacion.reporte = reporte
+          cotizacion.elementos = ocupados
+        })
+        console.log(filtro);
+        this.dataSourceCotizaciones.data = filtro
+        this.ordenamiento('cotizaciones','no_cotizacion')
+      }else{
+
+      }
+    }, {
+        onlyOnce: true
+    })
+    const starCountRefRecepciones = ref(db, `recepciones`)
+    onValue(starCountRefRecepciones, (snapshot) => {
+      if (snapshot.exists()) {
+        const recepciones = this._publicos.crearArreglo2(snapshot.val())
+        const filtro = recepciones.filter(c=>c.cliente.id === idCliente)
+        
+        
+        filtro.map(recepcion=>{
+          recepcion.searchName = `${recepcion.cliente.nombre} ${recepcion.cliente.apellidos}`;
+          recepcion.searchPlacas = `${recepcion.vehiculo.placas}`;
+        })
+        this.dataSourceRecepciones.data = filtro
+        this.ordenamiento('recepciones','id')
+      } else {
+        
+      }
+    }, {
+        onlyOnce: true
+    })
   }
 
   //realziar paginacion de los resultados 
-  newPagination(){
+  newPagination(tabla){
     setTimeout(() => {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort
-    }, 500)
+      let dataSource;
+      let paginator;
+      let sort;
+  
+      if (tabla === 'vehiculos') {
+        dataSource = this.dataSource;
+        paginator = this.paginator;
+        sort = this.sort;
+      } else if (tabla === 'cotizaciones') {
+        dataSource = this.dataSourceCotizaciones;
+        paginator = this.paginatorCotizaciones;
+        sort = this.sortCotizaciones;
+      } else if (tabla === 'recepciones') {
+        dataSource = this.dataSourceRecepciones;
+        paginator = this.paginatorRecepciones;
+        sort = this.sortRecepciones;
+      }
+  
+      if (dataSource && paginator && sort) {
+        dataSource.paginator = paginator;
+        dataSource.sort = sort;
+      }
+    }, 500);
   }
-  ordenamiento(campo){
-    const nueva = [...this.dataSource.data];
-    this.dataSource.data = this._publicos.ordenarData(nueva, campo, true);
-    this.newPagination();
+  ordenamiento(tabla,campo){
+    let dataSource;
+    let campoSelect;
+    let odena_asc 
+    
+      if (tabla === 'vehiculos') {
+        dataSource = this.dataSource;
+        campoSelect = this.campoSelect_vehiculos;
+        // this.campoSelect_vehiculos = campo
+        odena_asc = this.ordenamiento_Asc_vehiculos
+      } else if (tabla === 'cotizaciones') {
+        dataSource = this.dataSourceCotizaciones;
+        campoSelect = this.campoSelect_cotizaciones;
+        odena_asc = this.ordenamiento_Asc_cotizaciones
+        // this.campoSelect_cotizaciones = campo
+      } else if (tabla === 'recepciones') {
+        dataSource = this.dataSourceRecepciones;
+        // campoSelect = this.campoSelect_vehiculos;
+      }
+      if (dataSource) {
+        const nueva = [...dataSource.data];
+        campoSelect = campo;
+        const ordenados = this._publicos.ordenarData(nueva, campo, odena_asc);
+        ordenados.forEach((v, index) => {
+          v.index = index;
+        });
+        dataSource.data = ordenados;
+        this.newPagination(tabla);
+      }
   }
 }
