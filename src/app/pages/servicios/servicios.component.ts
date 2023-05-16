@@ -199,6 +199,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     private _publicos: ServiciosPublicosService, 
     private _email:EmailsService, 
     private _security:EncriptadoService,
+    private _export_excel: ExporterService
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
@@ -280,7 +281,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           });
           recep.totalGastos = totalGastos
           recep.totalPagos = totalPagos
-          
+          const {reporte, ocupados} = this._publicos.realizarOperaciones_2(recep)
+          recep.reporte = reporte
+          recep.servicios = ocupados
           recep.fecha_recibido_compara = this._publicos.construyeFechaString(recep.fecha_recibido)
           if (recep.fecha_entregado) {
             recep.fecha_entrega_compara = this._publicos.construyeFechaString(recep.fecha_entregado)
@@ -622,6 +625,12 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     
     
   }
-
+  generaReporteExcel(){
+    if(this.dataSource.data.length){
+      this._export_excel.exportExcelServicios(this.dataSource.data)
+    }else{
+      this._publicos.swalToastError('no hay ningun dato para generar excel!!')
+    }
+  }
   
 }

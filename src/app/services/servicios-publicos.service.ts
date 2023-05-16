@@ -1275,8 +1275,7 @@ export class ServiciosPublicosService {
         reporteGeneral.sobrescrito = reporteGeneral.sobrescrito_mo + reporteGeneral.sobrescrito_paquetes + reporteGeneral.sobrescrito_refaccion
         
 
-        if (reporteGeneral.total >0 ) reporteGeneral.ub = (reporteGeneral.total - refaccionesv)*100/reporteGeneral.total 
-
+       
         const suma = reporteGeneral.mo + reporteGeneral.refacciones_v + reporteGeneral.sobrescrito
         reporteGeneral.subtotal = suma;
     
@@ -1295,6 +1294,10 @@ export class ServiciosPublicosService {
           const operacion = reporteGeneral.total * (1 + (enCaso_meses['interes'] / 100))
           reporteGeneral.meses = operacion;
         }
+        if (reporteGeneral.total >0 ) {
+            reporteGeneral.ub = (reporteGeneral.total - refaccionesv)*100/reporteGeneral.total
+        } 
+
         return { reporte: reporteGeneral, ocupados}
     }
     
@@ -1587,6 +1590,19 @@ export class ServiciosPublicosService {
       camposCliente(){
         return ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
       }
+      camposServicios(){
+         return [
+            {valor:'1',nombre:'servicio'},
+            {valor:'2',nombre:'garantia'},
+            {valor:'3',nombre:'retorno'},
+            {valor:'4',nombre:'venta'},
+            {valor:'5',nombre:'preventivo'},
+            {valor:'6',nombre:'correctivo'},
+            {valor:'7',nombre:'rescate vial'}
+          ]
+      }
+
+      
       
       
       

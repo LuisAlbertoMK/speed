@@ -81,13 +81,12 @@ export class ReporteGastosComponent implements OnInit {
   @ViewChild('Administracion') sortAdministracion: MatSort //elementos
 
 
-
   reporte = {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
   reporteAdministracion = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0}
 
   camposReporte = [
     {valor:'depositos', show:'Depositos'},
-    {valor:'pagos', show:'Pagos'},
+    // {valor:'pagos', show:'Pagos'},
     {valor:'operacion', show:'Gastos de operación'},
     {valor:'gastos', show:'Gastos de ordenes'},
     {valor:'sobrante', show:'Sobrante'},

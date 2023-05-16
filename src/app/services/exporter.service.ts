@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import * as FileSaver from 'file-saver'
+import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { ServiciosPublicosService } from './servicios-publicos.service';
-import { map } from 'rxjs/operators';
+
+
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+const db = getDatabase()
+const dbRef = ref(getDatabase());
+
+
 const EXCEL_TYPE = `application/vnd.opencmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8;`
 const EXCEL_EXT ='.xlsx'
 @Injectable({
@@ -256,129 +262,126 @@ export class ExporterService {
     // this.realizarInfo(elementos)
     return desgloce
   }
-  async exportExcelServicios(data:any){
-    const servicios = data
-    const cotizacionPush =[]
-    const cotizacionPushIndivuduales =[]
-    const formasPAgo=[
-      {id:1,pago:'contado'},
-      {id:2,pago:'3 meses',interes:4.49,numero:'3'},
-      {id:3,pago:'6 meses',interes:6.99,numero:'6'},
-      {id:4,pago:'9 meses',interes:9.90,numero:'9'},
-      {id:5,pago:'12 meses',interes:11.95,numero:'12'},
-      {id:6,pago:'18 meses',interes:17.70,numero:'18'},
-      {id:7,pago:'24 meses',interes:24.,numero:'24'}
-    ]
-    const servicioss=[
-      {valor:"1",nombre:'servicio'},
-      {valor:"2",nombre:'garantia'},
-      {valor:"3",nombre:'retorno'},
-      {valor:"4",nombre:'venta'},
-      {valor:"5",nombre:'preventivo'},
-      {valor:"6",nombre:'correctivo'},
-      {valor:"7",nombre:'rescate vial'}
-    ]
-    let ordenados = ['no_os','marca','modelo','anio','subtotal','formaPago','empresa','fecha_recibido','servicio',
-    'refacciones1','total','UB','diasSucursal','refacciones2','totalMO','horas','IVA','placas','status','sucursal' ]
-    
-    const camposPrimarios =  ['diasSucursal','fecha_entregado','hora_entregado','fecha_recibido','hora_recibido','formaPago','no_os','servicio','status']
-    const camposDesgloce =  ['IVA','UB','refacciones1','refacciones2','sobrescrito','subtotal','total','totalMO']
-    const camposCliente =  ['correo','correo_sec','fullname','no_cliente','telefono_fijo','telefono_movil','tipo','empresa']
-    const camposVehiculo =  ['anio','categoria','cilindros','color','engomado','marca','modelo','placas','transmision']
-    const camposSucursal =  ['direccion','serie','sucursal','telefono']
-    const camposServicios =  ['nombre','tipo']
+  async exportExcelServicios(data_get:any){
+    const starCountRef = ref(db, `empresas`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val()
+        const empre = Object.keys(data).flatMap(sucursal => {
+          const empresas = this._publicos.crearArreglo2(data[sucursal]);
+          return empresas.map(emp => ({
+            empresa: emp['empresa'],
+            id: emp['id'],
+            sucursal: sucursal
+          }));
+        });
+        this.genrex(data_get,empre)
+      }else{
+        this.genrex(data_get,[])
+      }
+    }, {
+        onlyOnce: true
+      })
+     
+  }
+  genrex(data, empresas){    
 
-    const todosCampos = camposPrimarios.concat(camposDesgloce).concat(camposCliente).concat(camposVehiculo).concat(camposSucursal)
-    .concat(camposServicios)
-    // console.log(servicios);
-    
-    let recepciones = []
-    for (let index = 0; index < servicios.length; index++) {
-      const element = servicios[index];
-      let toda = {}
-      let nuevaPrimarios = {}
-      let nuevaDesgloce:any = {}
-      let nuevaCliente:any = {}
-      let nuevaVehiculo:any = {}
-      let nuevaSucursal:any = {}
-      let nuevaServicios:any = {}
-      await this._publicos.recuperaDataArreglo(camposPrimarios,element).then((Necesaria)=>{
-        nuevaPrimarios = {...Necesaria}
-      })
-      await this._publicos.recuperaDataArreglo(camposDesgloce,element.desgloce).then((Necesaria)=>{
-        nuevaDesgloce = {...Necesaria}
-        const campos = Object.keys(nuevaDesgloce)
-        for (let index = 0; index < campos.length; index++) {
-          const element = campos[index];
-          if (element !== 'UB') {
-            nuevaDesgloce[element] = this._publicos.redondeado(nuevaDesgloce[element])
+    const servicios_arr = [...this._publicos.camposServicios()];
+    let otros = []
+    let suma_total = 0, subtotal =0, iva = 0, mo=0, refacciones=0,descuento=0,sobrescrito=0
+      const nueva = data.map(os => {
+        const { cliente,servicios, reporte, sucursal, vehiculo, servicio, no_os, fecha_recibido, hora_recibido, fecha_entregado, hora_entregado, status } = os;
+        const { nombre } = servicios_arr.find(s => s.valor === String(servicio));
+        const empreShow = (cliente.tipo === 'flotilla') ? empresas.find(e=>e.id === cliente.empresa) : ''
+        servicios.forEach(element => {
+          if (element.aprobado) {
+            const tempData = {
+              no_os,
+              nombre: element.nombre,
+              tipo: element.tipo,
+              cantidad: element.cantidad,
+              costo: element.costo || 0,
+              precio: element.precio,
+              // subtotal: element.subtotal || 0,
+              total: element.total
+            };
+            otros.push(tempData);
           }
-        }
-      })
-      await this._publicos.recuperaDataArreglo(camposCliente,element.infoCliente).then((Necesaria)=>{
-        nuevaCliente = {...Necesaria}
-      })
-      await  this._publicos.recuperaDataArreglo(camposVehiculo,element.infoVehiculo).then((Necesaria)=>{
-        nuevaVehiculo = {...Necesaria}
-      })
-      await  this._publicos.recuperaDataArreglo(camposSucursal,element.infoSucursal).then((Necesaria)=>{
-        nuevaSucursal = {...Necesaria}
-      })
-      await  this._publicos.recuperaDataArreglo(camposServicios,element.servicios).then((Necesaria)=>{
-        nuevaServicios = {...Necesaria}
-      })
-      toda = {...nuevaPrimarios,...nuevaDesgloce,...nuevaCliente,...nuevaVehiculo,...nuevaSucursal,...nuevaServicios}
-      const temp = Object.keys(toda)
-      // recepciones.push(toda)
-      let arr = []
-      ordenados.forEach(function(item, i) {
-        if (toda[item]) {
-          if (item === 'formaPago') {
-            for (let fp = 0; fp < formasPAgo.length; fp++) {
-              const fmps = formasPAgo[fp];
-              // console.log(toda[item]);
-              if (Number(toda[item])  === Number(fmps.id)) {
-                // console.log(item, fmps.pago); 
-                toda[item] = fmps.pago            
-              }
-            }
-          }
-          if (item === 'empresa') {
-            if (!toda[item]) {
-              toda[item] = 'particular'
-            }
-          }
-          if (item === 'servicio') {
-            // console.log();
-            // console.log(toda[item]);
-            for (let fp = 0; fp < servicioss.length; fp++) {
-              const fmps = servicioss[fp];
-              
-              if (toda[item]  === fmps.valor) {
-                // console.log(item, fmps.pago); 
-                toda[item] = fmps.nombre            
-              }
-            }
-          }
-         
-        }else{
-          toda[item] = ''
-        }
-        
+        });
+        suma_total += reporte.total
+        subtotal += reporte.subtotal
+        iva += reporte.iva
+        mo +=  reporte.mo
+        refacciones +=  reporte.refacciones_v
+        descuento +=  reporte.descuento
+        const sss= reporte.sobrescrito || 0
+        sobrescrito +=  sss
+        return {
+          no_cotizacion: no_os,
+          no_cliente: cliente.no_cliente,
+          cliente: `${cliente.nombre} ${cliente.apellidos}`,
+          tipo_cliente: cliente.tipo,
+          sucursal: sucursal.sucursal,
+          correo: cliente.correo,
+          numero: cliente.telefono_movil,
+          empresa: empreShow.empresa,
+          'servicio realizado': nombre,
+          'fecha recibido': fecha_recibido,
+          'hora recibido': hora_recibido,
+          'fecha entregado': fecha_entregado || '',
+          'hora entregado': hora_entregado || '',
+          status: status,
+          marca: vehiculo.marca,
+          modelo: vehiculo.modelo,
+          placas: vehiculo.placas,
+          cilindros: vehiculo.cilindros,
+          transmision: vehiculo.transmision,
+          anio: vehiculo.anio,
+          categoria: vehiculo.categoria,
+          color: vehiculo.color,
+          engomado: vehiculo.engomado,
+          no_motor: vehiculo.no_motor || '',
+          mo: reporte.mo,
+          refacciones: reporte.refacciones_v,
+          descuento: reporte.descuento,
+          sobrescrito: reporte.sobrescrito,
+          subtotal: reporte.subtotal,
+          iva: reporte.iva || 0,
+          total: reporte.total
+        };
+      });
+      // iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
+      //     subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
+    // const suma_total = sum([registro['total'] for registro in data])
 
-      }); 
-      
-      // console.log(toda);
-      recepciones.push(toda)
-    }
-    // console.log(recepciones);
-    // const filtros = recepciones.filter(o=>o)
-    const worksheetCotizaciones : XLSX.WorkSheet = XLSX.utils.json_to_sheet(recepciones)
-    const worksheetindividuales : XLSX.WorkSheet = XLSX.utils.json_to_sheet(cotizacionPushIndivuduales)
+    const fila_subtotal  = {'no_cotizacion': '', 'no_cliente': '', 'cliente': '', 'tipo_cliente': '',
+                 'sucursal': '', 'correo': '', 'numero': '', 'servicio realizado': '',
+                 'fecha recibido': '', 'hora recibido': '', 'fecha entregado': '', 'hora entregado': '',
+                 'status': '', 'marca': '', 'modelo': '', 'placas': '', 'cilindros': '', 'transmision': '',
+                 'anio': '', 'categoria': '', 'color': '', 'engomado': '', 'no_motor': 'Totales',
+                 'mo': mo, 'refacciones': refacciones, 'descuento': descuento, 'sobrescrito': sobrescrito, 'subtotal': subtotal,
+                 'iva': iva, 'total': suma_total}
+  nueva.push({})
+  nueva.push(fila_subtotal)
+  const worksheetCotizaciones : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva)
+
+  let total_ind = 0
+  otros.forEach(e=>{
+    total_ind += e.total
+  })
+  const fila_indi = { no_os:'', nombre: '', tipo: '', cantidad: '', costo: '', precio: 'Total', total: total_ind }
+  otros.push({})
+  otros.push(fila_indi)
+  const worksheetindividuales : XLSX.WorkSheet = XLSX.utils.json_to_sheet(otros)
+    const columnWidthsCotizaciones = [{ wch: 20 }, { wch: 20 }, { wch: 25 }, { wch: 15 }, { wch: 15 }, { wch: 30 }, { wch: 15 }];
+    worksheetCotizaciones['!cols'] = columnWidthsCotizaciones;
+
+    const columnWidthsCIndividuales = [{ wch: 20 }, { wch: 60 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }];
+    worksheetindividuales['!cols'] = columnWidthsCIndividuales;
+
     const workbook: XLSX.WorkBook = {
-      // 'individuales':worksheetindividuales
-      Sheets: {'Servicios':worksheetCotizaciones},
-      SheetNames:['Servicios']
+      Sheets: {'Servicios':worksheetCotizaciones,'individuales':worksheetindividuales},
+      SheetNames:['Servicios','individuales']
     }
     
     const excelBuffer:any= XLSX.write(workbook,{bookType:'xlsx',type:'array'})
