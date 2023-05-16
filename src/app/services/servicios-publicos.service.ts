@@ -1584,6 +1584,9 @@ export class ServiciosPublicosService {
           return 0;
         });
       }
+      camposCliente(){
+        return ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
+      }
       
       
       
