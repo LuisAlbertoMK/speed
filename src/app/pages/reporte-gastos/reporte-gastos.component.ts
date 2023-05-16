@@ -212,6 +212,7 @@ export class ReporteGastosComponent implements OnInit {
           go.tipo = 'operacion'
           // go.fechaCompara = this._publicos.construyeFechaString(go.fecha)
           go.fechaCompara = this._publicos.construyeFechaString(go.fecha_registro)
+          go.fecha_registro_compara = this._publicos.construyeFechaString(go.fecha_registro)
           gastosOperacion.push(go)
         })        
         const filtro = (this.SUCURSAL === 'Todas') ? gastosOperacion : gastosOperacion.filter(g=>g.sucursal === this.SUCURSAL)

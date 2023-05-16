@@ -84,3 +84,9 @@ table {
     border-radius: 10px;
     width: 100%;
   }
+  .custom-menu-item {
+    height: 25px; /* Cambia la altura según tus necesidades */
+    display: flex;
+    align-items: center;
+  }
+  
