@@ -225,6 +225,8 @@ export class GastoComponent implements OnInit {
       if(gastoData.tipo === 'orden') {
         infoSave['tipo'] = 'orden'
         infoSave['gasto_tipo'] = gastoData.gasto_tipo
+        infoSave['facturaRemision'] = gastoData.facturaRemision
+
         updates[`recepciones/${gastoData.no_os}/HistorialGastos/${this._publicos.generaClave()}`] = infoSave;
       }else{
         updates[`HistorialGastosOperacion/${this._publicos.generaClave()}`] = infoSave;

@@ -47,7 +47,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   ROL:string; SUCURSAL:string
   
   infoCotizacion = {
-    cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen_get: 25,
+    cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
     fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio: '1', descripcion: ''
   }
 
@@ -148,462 +148,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   modeloVehiculo:string = null
 
   elementosPrueba = [
-    {
-        "cilindros": "4",
-        "elementos": [
-            {
-                "IDreferencia": "-NE2JJZu_LtUYJXSBola",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 120,
-                "tipo": "mo",
-                "index": 0,
-                "total": 120,
-                "id": "-NE2JJZu_LtUYJXSBola",
-                "nombre": "CAMBIO DE ACEITE Y FILTRO"
-            },
-            {
-                "IDreferencia": "-NE32XkfMPHMcMXOiOio",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 1,
-                "total": 300,
-                "id": "-NE32XkfMPHMcMXOiOio",
-                "nombre": "REEMPLAZAR FILTRO DE AIRE"
-            },
-            {
-                "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 2,
-                "total": 300,
-                "id": "-NE2OUuZ2lh5DhXHHeBL",
-                "nombre": "REV. Y CORREGIR NIVELES"
-            },
-            {
-                "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 3,
-                "total": 300,
-                "id": "-NE78vEAujLp8QfcIAtl",
-                "nombre": "LAVAR INYECTORES"
-            },
-            {
-                "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 4,
-                "total": 300,
-                "id": "-NFGEgUK6OVe2fEDvCgS",
-                "nombre": "LAVAR CPO DE ACELERACION"
-            },
-            {
-                "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 5,
-                "total": 300,
-                "id": "-NFUnhpeX47MLHgB4zr6",
-                "nombre": "SCANEO POR COMPUTADORA"
-            },
-            {
-                "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 6,
-                "total": 300,
-                "id": "-NFyxBy74ehhZxnHrZ8Q",
-                "nombre": "REV. 25 PUNTOS DE SEGURIDAD"
-            },
-            {
-                "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 7,
-                "total": 300,
-                "id": "-NIXsW7Y5RzRrbI_F9dB",
-                "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES"
-            },
-            {
-                "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 8,
-                "total": 300,
-                "id": "-NFzjXL2niDv6QlUz8hi",
-                "nombre": "ROTACION DE LLANTAS"
-            },
-            {
-                "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 9,
-                "total": 300,
-                "id": "-NIXsMnQWQWQsj2ChYfI",
-                "nombre": "REGIMEN DE CARGA DE BATERIA"
-            },
-            {
-                "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 10,
-                "total": 300,
-                "id": "-NIXsduKTIhhpSrAJKS-",
-                "nombre": "LAVAR MOTOR"
-            },
-            {
-                "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 11,
-                "total": 300,
-                "id": "-NIXsiafAdRrmZsuD-fs",
-                "nombre": "LAVAR CARROCERIA"
-            },
-            {
-                "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 12,
-                "total": 300,
-                "id": "-NE3nrow7Ol7iyGtRzO3",
-                "nombre": "REEMPLAZAR BUJIAS"
-            }
-        ],
-        "id": "-NE2pvE6CS_1mdeHFL5W",
-        "marca": "Ford",
-        "modelo": "Fiesta",
-        "nombre": "SERVICIO MAYOR",
-        "status": true,
-        "index": 0,
-        "reporte": {
-            "mo": 3720,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "ub": 100,
-            "total": 3720
-        },
-        "precio": 3720,
-        "total": 3720,
-        "tipo": "paquete",
-        "aprobado": true,
-        "cantidad": 1,
-        "costo": 0
-    },
-    {
-        "cilindros": "6",
-        "elementos": [
-            {
-                "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-                "cantidad": 1,
-                "catalogo": true,
-                "costo": 300,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 0,
-                "total": 300,
-                "id": "-NE2OUuZ2lh5DhXHHeBL",
-                "nombre": "REV. Y CORREGIR NIVELES"
-            },
-            {
-                "IDreferencia": "-NHgI_n9nJAmuOg4EwcL",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 111.5,
-                "tipo": "refaccion",
-                "index": 1,
-                "total": 139.375,
-                "id": "-NHgI_n9nJAmuOg4EwcL",
-                "nombre": "bujias"
-            },
-            {
-                "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 300,
-                "tipo": "mo",
-                "index": 2,
-                "total": 300,
-                "id": "-NE3nrow7Ol7iyGtRzO3",
-                "nombre": "REEMPLAZAR BUJIAS"
-            },
-            {
-                "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 450,
-                "tipo": "mo",
-                "index": 3,
-                "total": 450,
-                "id": "-NE78vEAujLp8QfcIAtl",
-                "nombre": "LAVAR INYECTORES"
-            }
-        ],
-        "marca": "GMC",
-        "modelo": "Canyon",
-        "nombre": "paquete z",
-        "precio": 1189.375,
-        "status": true,
-        "id": "-NE430_ohL7xCijFnR3i",
-        "index": 1,
-        "reporte": {
-            "mo": 750,
-            "refacciones": 111.5,
-            "refacciones_v": 139.375,
-            "sobrescrito_mo": 300,
-            "sobrescrito_refaccion": 0,
-            "ub": 88.2816605359958,
-            "total": 1189.375
-        },
-        "total": 1189.375,
-        "tipo": "paquete",
-        "aprobado": true,
-        "cantidad": 1,
-        "costo": 0
-    },
-    {
-        "cilindros": "6",
-        "elementos": [
-            {
-                "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 700,
-                "tipo": "mo",
-                "index": 0,
-                "total": 700,
-                "id": "-NE3nrow7Ol7iyGtRzO3",
-                "nombre": "REEMPLAZAR BUJIAS"
-            },
-            {
-                "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 500,
-                "tipo": "mo",
-                "index": 1,
-                "total": 500,
-                "id": "-NFzjXL2niDv6QlUz8hi",
-                "nombre": "ROTACION DE LLANTAS"
-            },
-            {
-                "IDreferencia": "-NGbPadXFum0ZEpqn70p",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 500,
-                "tipo": "refaccion",
-                "index": 2,
-                "total": 625,
-                "id": "-NGbPadXFum0ZEpqn70p",
-                "nombre": "aceite de motor"
-            }
-        ],
-        "marca": "BMW",
-        "modelo": "iX M60",
-        "nombre": "paquete bmw",
-        "precio": 1825,
-        "status": false,
-        "id": "-NEH_O1qK7I5z8sWdOQz",
-        "index": 2,
-        "reporte": {
-            "mo": 1200,
-            "refacciones": 500,
-            "refacciones_v": 625,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "ub": 65.75342465753425,
-            "total": 1825
-        },
-        "total": 1825,
-        "tipo": "paquete",
-        "aprobado": true,
-        "cantidad": 1,
-        "costo": 0
-    },
-    {
-        "cilindros": "4",
-        "elementos": [
-            {
-                "IDreferencia": "-NG3I_ejiuh3KiL9EdAp",
-                "cantidad": 1,
-                "catalogo": false,
-                "nombre": "refaccion1",
-                "precio": 350,
-                "tipo": "refaccion",
-                "index": 0,
-                "total": 437.5
-            }
-        ],
-        "factibilidad": 0,
-        "id": "-NIEsB5V5ql3rxg_xyoV",
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "SERVICIO MAYOR",
-        "precio": 437.5,
-        "status": false,
-        "subtotal": 0,
-        "total": 437.5,
-        "index": 3,
-        "reporte": {
-            "mo": 0,
-            "refacciones": 350,
-            "refacciones_v": 437.5,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "ub": 0,
-            "total": 437.5
-        },
-        "tipo": "paquete",
-        "aprobado": true,
-        "cantidad": 1,
-        "costo": 0
-    },
-    {
-        "cilindros": "4",
-        "elementos": [
-            {
-                "IDreferencia": "-NIJ4g98MXI7Zs3d3xe6",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 600,
-                "tipo": "mo",
-                "index": 0,
-                "total": 600,
-                "id": "-NIJ4g98MXI7Zs3d3xe6",
-                "nombre": "mano jose luis"
-            },
-            {
-                "IDreferencia": "-NGbPl434B_Pzb_G6vGp",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 780,
-                "tipo": "refaccion",
-                "index": 1,
-                "total": 975,
-                "id": "-NGbPl434B_Pzb_G6vGp",
-                "nombre": "filtro de aceite"
-            },
-            {
-                "IDreferencia": "-NIJ5Gl1R47GQ6g5h6nJ",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 357,
-                "tipo": "refaccion",
-                "index": 2,
-                "total": 446.25,
-                "id": "-NIJ5Gl1R47GQ6g5h6nJ",
-                "nombre": "materiales diversos"
-            },
-            {
-                "IDreferencia": "-NIJ59oXarA3-kLIDfEp",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 6,
-                "tipo": "mo",
-                "index": 3,
-                "total": 6,
-                "id": "-NIJ59oXarA3-kLIDfEp",
-                "nombre": "mano jose luis 1"
-            }
-        ],
-        "marca": "Bentley",
-        "modelo": "Continental ",
-        "nombre": "paquete jose luis",
-        "precio": 2027.25,
-        "status": false,
-        "id": "-NIJ4C_eDdJgnc-hAlTX",
-        "index": 4,
-        "reporte": {
-            "mo": 606,
-            "refacciones": 1137,
-            "refacciones_v": 1421.25,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "ub": 29.892711801701807,
-            "total": 2027.25
-        },
-        "total": 2027.25,
-        "tipo": "paquete",
-        "aprobado": true,
-        "cantidad": 1,
-        "costo": 0
-    },
-    {
-        "cilindros": "4",
-        "elementos": [
-            {
-                "IDreferencia": "-NIDngpO-v_a3bJoKnD1",
-                "cantidad": 1,
-                "catalogo": true,
-                "precio": 500,
-                "tipo": "refaccion",
-                "index": 0,
-                "total": 625,
-                "id": "-NIDngpO-v_a3bJoKnD1",
-                "nombre": "filtro de gasolina"
-            }
-        ],
-        "marca": "Volkswagen",
-        "modelo": "Vento",
-        "nombre": "paquete desde cotizacion JL",
-        "precio": 625,
-        "status": false,
-        "id": "-NIJ9UAKOX0gN2RGd2Yo",
-        "index": 5,
-        "reporte": {
-            "mo": 0,
-            "refacciones": 500,
-            "refacciones_v": 625,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "ub": 0,
-            "total": 625
-        },
-        "total": 625,
-        "tipo": "paquete",
-        "aprobado": true,
-        "cantidad": 1,
-        "costo": 0
-    },
-    {
-        "id": "-NOpPAY26qQoY9X8nZ1o",
-        "nombre": "ACEITE 15W40",
-        "cantidad": 1,
-        "precio": 700,
-        "status": true,
-        "tipo": "refaccion",
-        "costo": 0,
-        "aprobado": true,
-        "total": 875,
-        "index": 6
-    }
+  
+  
 ]
   constructor(
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
@@ -673,7 +219,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   crearFormPlus(){
     this.formPlus = this._formBuilder.group({
       servicio:[1,[Validators.required]],
-      margen_get:[this.infoCotizacion.margen_get,[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(1)]],
+      margen:[this.infoCotizacion.margen,[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(1)]],
       formaPago:['1',[Validators.required]],
       promocion:['',[]],
       descuento:['',[Validators.pattern("^[0-9]+$"),Validators.min(0)]],
@@ -958,7 +504,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   //ya que tenemos los elementos nuevos con caracteristicas nuevas los reemplzamos por los que se tenia anteriormente
   // realizamos la paginacion y asigancaion de resultados
   realizaOperaciones(){
-    // const  { elementos, margen_get, iva, formaPago, descuento } = data
+    // const  { elementos, margen, iva, formaPago, descuento } = data
     // console.log(this.infoCotizacion.elementos);
     
     if (this.formPlus) {
@@ -969,6 +515,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     // console.log(this.infoCotizacion);
     
     this.infoCotizacion.iva = this.checksBox.controls['iva'].value
+    console.log(this.infoCotizacion.elementos);
+    
     const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoCotizacion)
     this.infoCotizacion.elementos = ocupados
     this.infoCotizacion.reporte = reporte
@@ -993,7 +541,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   //realizamos las valiudaciones para informar al cliente que campos son obligatorios y opcionales en caso de que no se contenga la informacion
   //necesaria para generar el pdf, subirlo y registrar cotizacion
   validaciones(){
-    const obligatorios = ['sucursal','servicio', 'margen_get','formaPago']
+    const obligatorios = ['sucursal','servicio', 'margen','formaPago']
     const opcionales = ['promocion','descuento','descripcion','nota','iva']
     let camposObligatorios = [], camposOpcionales =[]
 
@@ -1115,7 +663,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                   //limpiamos el intervalo ya que tenemos la ruta y realizamos depuracion de informacion
                   clearInterval(intervalo)
                   const updates = {};
-                  const campos = ['cliente','elementos','fecha','formaPago','hora','iva','margen_get','no_cotizacion',
+                  const campos = ['cliente','elementos','fecha','formaPago','hora','iva','margen','no_cotizacion',
                                   'nota','reporte','servicio','sucursal','vehiculo','vencimiento'
                 ]
                 //asigamos solo los campos que queremos recuperaer
@@ -1135,7 +683,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                     this._publicos.swalToast('Cotizacion realizada!!')
                     //limpiamos la informacion para nueva cotizacion
                     this.infoCotizacion = {
-                      cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen_get: 25,
+                      cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
                       fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio:'1', descripcion:null
                     }
                     //redireccionamos a cotizaciones disponibles
@@ -1174,7 +722,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     if(campo ==='descuento'){
       this.infoCotizacion.descuento = valor
     }else if(campo ==='margen'){
-      this.infoCotizacion.margen_get = valor
+      this.infoCotizacion.margen = valor
     }
     this.realizaOperaciones()
   }

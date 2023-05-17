@@ -77,10 +77,11 @@
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
       <div class="mb-1 row">
-        <label for="margen_get" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Margen</label>
+        <label for="margen" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Margen</label>
         <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <input type="number" min="25" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" formControlName="margen_get" [value]="infoCotizacion.margen_get" [class.is-invalid]="validaCampo('margen_get')" id="margen_get">
-          <small *ngIf="validaCampo('margen_get')" class="text-danger">Seleccionar margen {{infoCotizacion.margen_get}}</small>
+          <input type="number" min="25" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" formControlName="margen" [value]="infoCotizacion.margen" [class.is-invalid]="validaCampo('margen')" id="margen"
+          #margen (change)="accionesExtra('margen', margen.value)" (keyup)="accionesExtra('margen', margen.value)">
+          <small *ngIf="validaCampo('margen')" class="text-danger">Seleccionar margen {{infoCotizacion.margen}}</small>
         </div>
       </div>
     </div>
@@ -230,12 +231,12 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Costo</th>
-                  <th scope="col">Precio</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">&nbsp;</th>
+                  <th class="text-sa">Nombre</th>
+                  <th class="text-sa">Cantidad</th>
+                  <th class="text-end">Costo</th>
+                  <th class="text-end">Precio</th>
+                  <th class="text-end">Total</th>
+                  <th >&nbsp;</th>
                 </tr>
               </thead>
               <tbody>

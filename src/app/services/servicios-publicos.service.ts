@@ -1227,7 +1227,7 @@ export class ServiciosPublicosService {
           const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
           if (e.costo > 0) {
             if (e.tipo === 'refaccion') {
-              if(e.aprobado) reporteGeneral.sobrescrito_refaccion += operacion;
+              if(e.aprobado) reporteGeneral.sobrescrito_refaccion += (operacion * margenOcupado);
               e.total = operacion * margenOcupado
             } else if (e.tipo === "MO" || e.tipo ==='mo') {
                 if(e.aprobado) reporteGeneral.sobrescrito_mo += operacion;
@@ -1244,6 +1244,7 @@ export class ServiciosPublicosService {
                 }
             }
           }else{
+            e.costo = 0
             if (e.tipo === 'refaccion') {
               if(e.aprobado) reporteGeneral.refacciones_a += operacion;
               e.total = operacion * margenOcupado
@@ -1319,6 +1320,7 @@ export class ServiciosPublicosService {
         
               e_interno.total = operacion_interno * (e_interno.tipo === 'refaccion' ? margen : 1);
           } else {
+            e_interno.costo = 0
             e_interno.tipo === 'refaccion'
               ? (reporte_interno.refacciones += operacion_interno)
               : (reporte_interno.mo += operacion_interno);

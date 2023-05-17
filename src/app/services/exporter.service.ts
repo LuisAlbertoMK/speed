@@ -390,6 +390,190 @@ export class ExporterService {
     
     this.saveAsExcel(excelBuffer,'ReporteServicios')
   }
+  generaReporteGastosExcel(data:any[], reporte_get){
+    const registros = [...data]
+    const camposReporte = [
+      {valor:'depositos', show:'Depositos'},
+      // {valor:'pagos', show:'Pagos'},
+      {valor:'operacion', show:'Gastos de operación'},
+      {valor:'gastos', show:'Gastos de ordenes'},
+      {valor:'sobrante', show:'Sobrante'},
+    ]
+    let totalFacturas = 0, totalNotas = 0, facturas = [], notas = []
+    const reporteFacturas = {subtotal: 0, iva: 0, total: 0}
+    const reporteNotas = {subtotal: 0, iva: 0, total: 0}
+    function obtenerPorcentajes(cantidad, porcentaje){
+      const iva = cantidad * (porcentaje / 100);
+      let subtotal = cantidad - iva 
+      let total = subtotal + iva
+      return {subtotal, iva, total}
+    }
+    const nueva = registros.map(r=>{
+      const estado = (r.status) ? 'Aprobado' : 'No aprobado';
+      if(r.tipo === 'orden'){
+        r.facturaRemision = (r.facturaRemision) ? r.facturaRemision : r.facturaRemision = 'nota';
+        if(r.facturaRemision === 'factura') {
+         const {subtotal,iva,total} = obtenerPorcentajes(r.monto,16)
+          reporteFacturas.subtotal += subtotal
+          reporteFacturas.iva += iva
+          reporteFacturas.total += total
+        } else {
+          totalNotas += r.monto
+          const {subtotal,iva,total} = obtenerPorcentajes(r.monto,16)
+          reporteNotas.subtotal += subtotal
+          reporteNotas.iva += iva
+          reporteNotas.total += total
+        }
+        (r.facturaRemision === 'factura') ? facturas.push(r) : notas.push(r)
+      }
+
+      return {
+        'no O.S': r.no_os || '',
+        'Sucursal': r.sucursalShow,
+        'Concepto': r.concepto,
+        'Fecha registro': r.fecha_registro,
+        'metodo pago': r.metodoShow,
+        'Referencia': r.referencia || '',
+        'Status': estado,
+        'Tipo': r.tipo,
+      }
+    })
+   
+    
+    // console.log(registros);
+    const lieneaBlanca = {
+      'no O.S': '', 'Sucursal': '', 'Concepto': '', 'Fecha registro': '', 'metodo pago': '', 'Referencia': '', 'Status': '', 'Tipo': ''
+    };
+    
+    const lieneaBlancaFactura = {
+      'concepto':        '',
+      'referencia':      '',
+      'sucursal':        '',
+      'no O.S':           '',
+      'tipo':            '',
+      'fecha registro':  '',
+      'hora registro':   '',
+      'tipo Gasto':      '',
+      'metodo':          '',
+      'monto':           '',
+      'status':          '',
+      'subtotal':        '',
+      'iva':             '',
+      'total':           '',
+    };
+    const lieneaBlancaNotas = {
+      'concepto':        '',
+      'referencia':      '',
+      'sucursal':        '',
+      'no O.S':           '',
+      'tipo':            '',
+      'fecha registro':  '',
+      'hora registro':   '',
+      'tipo Gasto':      '',
+      'metodo':          '',
+      'monto':           '',
+      'status':          '',
+      'descripcion':     '',
+      'subtotal':        '',
+      'iva':             '',
+      'total':           '',
+    };
+    
+    //seprara facturas de remision
+    
+
+    const ordenadas = this._publicos.ordenarData(nueva,'Tipo',true)
+
+    ordenadas.push({ ...lieneaBlanca });
+    ordenadas.push({ ...lieneaBlanca });
+    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total depositos', 'Tipo': reporte_get.depositos });
+    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total operacion', 'Tipo': reporte_get.operacion });
+    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total gastos', 'Tipo': reporte_get.gastos });
+    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total sobrante', 'Tipo': reporte_get.sobrante });
+
+
+    const worksheetCotizaciones : XLSX.WorkSheet = XLSX.utils.json_to_sheet(ordenadas)
+
+
+    const nueva_facturas = facturas.map(r=>{
+      const estado = (r.status) ? 'Aprobado' : 'No aprobado';
+      const {subtotal, iva, total} = obtenerPorcentajes(r.monto,16)
+      return {
+        'concepto':         r.concepto || '',
+        'referencia':       r.referencia || '',
+        'sucursal':         r.sucursalShowm,
+        'no O.S':           r.no_os || '',
+        'tipo':             r.facturaRemision,
+        'fecha registro':   r.fecha_registro,
+        'hora registro':    r.hora_registro,
+        'tipo Gasto':       r.tipoNuevo,
+        'metodo':           r.metodoShow,
+        'monto':            r.monto,
+        'status':           estado,
+        'subtotal':         `${subtotal}`,
+        'iva':              `${iva}`,
+        'total':            `${total}`,
+      }
+    })
+    nueva_facturas.push({ ...lieneaBlancaFactura });
+    nueva_facturas.push({ ...lieneaBlancaFactura });
+
+    const {subtotal,iva,total} = obtenerPorcentajes(reporteFacturas.total,16)
+    nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'Subtotal','metodo': `${subtotal}` });
+    nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'I.V.A','metodo': `${iva}` });
+    nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'Total','metodo': `${total}` });
+
+    const worksheetFacturas : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva_facturas)
+    const columnWidthsFActuras = [{ wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 10 }];
+    worksheetFacturas['!cols'] = columnWidthsFActuras;
+
+    const nueva_Notas = notas.map(r=>{
+      const estado = (r.status) ? 'Aprobado' : 'No aprobado';
+      const {subtotal, iva, total} = obtenerPorcentajes(r.monto,0)
+      return {
+        'concepto':         r.concepto || '',
+        'referencia':       r.referencia || '',
+        'sucursal':         r.sucursalShow,
+        'no O.S':           r.no_os || '',
+        'tipo':             r.facturaRemision,
+        'fecha registro':   r.fecha_registro,
+        'hora registro':    r.hora_registro,
+        'tipo Gasto':       r.tipoNuevo,
+        'metodo':           r.metodoShow,
+        'monto':            r.monto,
+        'status':           estado,
+        'descripcion':      '',
+        'subtotal':         `${subtotal}`,
+        'iva':              `${iva}`,
+        'total':            `${total}`,
+      }
+    })
+    nueva_Notas.push({ ...lieneaBlancaNotas });
+    nueva_Notas.push({ ...lieneaBlancaNotas });
+
+    const aqui = obtenerPorcentajes(reporteNotas.total,16)
+    nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'Subtotal','metodo': `${aqui.subtotal}` });
+    nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'I.V.A','metodo': `${aqui.iva}` });
+    nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'Total','metodo': `${aqui.total}` });
+
+    const worksheetNotas : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva_Notas)
+    const columnWidthsNotas = [{ wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 10 }];
+    worksheetNotas['!cols'] = columnWidthsNotas;
+
+    const columnWidthsCotizaciones = [{ wch: 15 }, { wch: 15 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 20 }, { wch: 15 },{ wch: 15 }];
+    worksheetCotizaciones['!cols'] = columnWidthsCotizaciones;
+    const workbook: XLSX.WorkBook = {
+      Sheets: {'Servicios':worksheetCotizaciones, 'Facturas':worksheetFacturas,'Notas':worksheetNotas},
+      SheetNames:['Servicios','Facturas','Notas']
+    }
+    
+    const excelBuffer:any= XLSX.write(workbook,{bookType:'xlsx',type:'array'})
+    //llamar al metodo y su nombre
+    // console.log(data);
+    
+    this.saveAsExcel(excelBuffer,'Reporte de gastos')
+    
+  }
   private saveAsExcel(buffer:any,fileName:string): void{
     const data: Blob = new Blob([buffer],{type: EXCEL_TYPE})
     // FileSaver.saveAs(data, fileName+'_export_'+new Date().getTime()+ EXCEL_EXT)

@@ -278,6 +278,15 @@ export class PdfService {
       }
        
     }
+    function transformName(value: string, ...args: unknown[]): unknown {
+      const cadena = String(value).toLowerCase()
+      let arr =[...cadena]
+      arr[0] = arr[0].toUpperCase()
+      return arr.join('');
+    }
+    function transformUppercase(value: string, ...args: unknown[]): unknown {
+      return value.toUpperCase();
+    }
     
     function buildTableBody(data, columns, showHeaders, headers) {
       var body = [];
@@ -291,6 +300,7 @@ export class PdfService {
           if(row['costo'] > 0){
             row['flotilla2'] = transform(row['total'])
             row['normal'] = transform(row['total'] * 1.30)
+            row['nombre'] = transformName(row['nombre'])
             columns.forEach(function(column) {
               dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
               i++;
@@ -298,6 +308,7 @@ export class PdfService {
           }else{
             row['flotilla2'] = transform(row['total'])
             row['normal'] = transform(row['total'] * 1.30)
+            row['nombre'] = transformName(row['nombre'])
             columns.forEach(function(column) {
               dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
           i++;
@@ -451,9 +462,9 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Cliente', style:'title' },
-              {width: '35%', text: `${data.cliente.nombre} ${data.cliente.apellidos}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data.cliente.nombre)} ${transformUppercase(data.cliente.apellidos)}`,  style:'info'},
               {width: '15%', text: 'COT#', style:'title' },
-              {width: '35%', text: `${data.no_cotizacion}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data.no_cotizacion)}`,  style:'info'},
             ]
           },
           {
@@ -469,7 +480,7 @@ export class PdfService {
               {width: '15%', text: 'Tel.', style:'title' },
               {width: '35%', text: `${data['cliente'].telefono_movil}`, style:'info' },
               {width: '15%', text: 'Tipo', style:'title' },
-              {width: '35%', text: `${data['cliente'].tipo}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data['cliente'].tipo)}`,  style:'info'},
             ]
           },
           {
@@ -483,7 +494,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Marca', style:'title' },
-              {width: '35%', text: `${data['vehiculo'].marca}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data['vehiculo'].marca)}`,  style:'info'},
               {width: '15%', text: 'Modelo', style:'title' },
               {width: '35%', text: `${data['vehiculo'].modelo}`, style:'info' },
             ]
@@ -491,7 +502,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Placas', style:'title' },
-              {width: '35%', text: `${data['vehiculo'].placas}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data['vehiculo'].placas)}`,  style:'info'},
               {width: '10%', text: 'Color', style:'title' },
               {width: '12.5%', text: `${data['vehiculo'].color}`,  style:'info'},
               {width: '12.5%', text: 'Año', style:'title' },
@@ -609,8 +620,8 @@ export class PdfService {
                     ],
                     [
                       { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
-                      { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
+                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
@@ -619,8 +630,8 @@ export class PdfService {
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
-                      { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
+                      { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
@@ -647,13 +658,13 @@ export class PdfService {
                     ],
                     [
                       { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
-                      { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
+                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
-                      { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
+                      { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },

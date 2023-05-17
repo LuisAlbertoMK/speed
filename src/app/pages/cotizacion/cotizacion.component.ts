@@ -151,6 +151,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     }, {
       onlyOnce: true
     })
+    
     if(localStorage.getItem('busquedaCotizaciones')){
         this.busqueda = localStorage.getItem('busquedaCotizaciones')
     }
