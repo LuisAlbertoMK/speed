@@ -1601,6 +1601,11 @@ export class ServiciosPublicosService {
             {valor:'7',nombre:'rescate vial'}
           ]
       }
+      camposGuardar(){ 
+       return [
+        'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados'
+      ]
+    }
 
       
       

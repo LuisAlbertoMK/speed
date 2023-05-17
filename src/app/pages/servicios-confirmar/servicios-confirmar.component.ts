@@ -235,9 +235,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   idPaqueteEditar: number
   idPaqueteEditarBoolean: boolean = false
 
-  camposGuardar = [
-    'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os'
-  ]
+  camposGuardar = []
 
   datCliente:any
   cliente:string = null
@@ -262,6 +260,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     
   ngOnInit(): void {
     this.listaSucursales()
+    this.camposGuardar = [...this._publicos.camposGuardar()]
   }
   ngAfterViewInit() {
     this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
@@ -1159,6 +1158,7 @@ cargaDataVehiculo(data:any,quien:string){
                       this.files = []
                       this.archivos = []
                       this.nombre = null
+                      this.numeroDias = null
                       this.infoConfirmar=
                       {
                         cliente:{}, vehiculo:{},sucursal:{}, reporte:{},no_os:null,dataFacturacion:{},observaciones:null,
@@ -1168,10 +1168,6 @@ cargaDataVehiculo(data:any,quien:string){
                       }
                       this.router.navigateByUrl('/servicios')
                     })
-
-                    
-
-                    
                   }
                 },100)
               })

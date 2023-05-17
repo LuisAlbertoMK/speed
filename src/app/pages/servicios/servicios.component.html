@@ -114,7 +114,7 @@
     </div>
   </div>
 </div>
-<button class="btn btn-sm btn-success" (click)="generaReporteExcel()"><i class="fa fa-file-excel"></i> Genera excel</button>
+<button class="btn btn-sm btn-success m-1" (click)="generaReporteExcel()"><i class="fa fa-file-excel"></i> Genera excel</button>
 <div class="mat-elevation-z8 table-responsive">
   <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
@@ -429,6 +429,15 @@
                             </div>
                           </div>
                         </div>
+                    </mat-tab>
+                    <mat-tab label="Detalles">
+                      <div class="row m-1">
+                        <ng-container *ngFor="let per of row.personalizados">
+                          <div class="col-lg-3 col-md-3 col-sm-4 col-12">
+                            <img [src]="per.data64" class="img-thumbnail" [alt]="per.nombre" style="max-width: 150px; max-height: 150px;">
+                          </div>
+                        </ng-container>
+                      </div>
                     </mat-tab>
                   </mat-tab-group>
                 </div>
