@@ -150,7 +150,11 @@
                [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
                <div class="row m-1">
                 <div class="col-lg 12 col-md-12 col-sm-12 col-12 alert alert-danger">
-                  Detalles del problema: <Strong>{{row.detalles | capitalizarUno}}</Strong>
+                  <p>Modulo: <strong>{{row.moduloShow}}</strong></p>
+                  <p>Ruta: <strong>{{row.ruta}}</strong></p>
+                  <p>
+                    Detalles del problema: <Strong>{{row.detalles | capitalizarUno}}</Strong>
+                  </p>
                 </div>
               </div>
           </div>

@@ -82,7 +82,7 @@ export class ReporteGastosComponent implements OnInit {
 
 
   reporte = {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
-  reporteAdministracion = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0}
+  reporteAdministracion = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0,libre_neto_sin_iva:0, libre_neto_con_iva:0}
 
   camposReporte = [
     {valor:'depositos', show:'Depositos'},
@@ -98,8 +98,10 @@ export class ReporteGastosComponent implements OnInit {
     {valor:'iva', show:'I.V.A'},
     {valor:'total', show:'total'},
     {valor:'libreSinIVA', show:'libre sin Iva'},
-    {valor:'libreIva', show:'Libre iva'},
-    {valor:'libre_neto', show:'Libre neto'},
+    {valor:'libreIva', show:'Libre con iva'},
+    // {valor:'libre_neto', show:'Libre neto con iva'},
+    {valor:'libre_neto_sin_iva', show:'Libre neto sin iva'},
+    {valor:'libre_neto_con_iva', show:'Libre neto con iva'},
   ]
   tiempoReal: true
   realizaGasto:string = null
@@ -373,7 +375,7 @@ export class ReporteGastosComponent implements OnInit {
   }
   operacionesAdmin(){
 
-    const reporteEND = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0}
+    const reporteEND = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0,libre_neto_sin_iva:0,libre_neto_con_iva:0}
     const filtrarEntregados = this.listaos_arr.filter(r=>r.status === 'entregado')
     
     const filtrosSucursal = (this.sucursalFiltro === 'Todas') ? filtrarEntregados :  filtrarEntregados.filter(os=>os.sucursal.id === this.sucursalFiltro )
@@ -409,7 +411,15 @@ export class ReporteGastosComponent implements OnInit {
     reporteEND.libreSinIVA = reporteEND.subtotal - reporteEND.gastosmoRefacciones
     reporteEND.libreIva = reporteEND.total - (reporteEND.gastosmoRefacciones)
     reporteEND.libre_neto = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+
+
+    reporteEND.libre_neto_sin_iva = reporteEND.subtotal - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+    reporteEND.libre_neto_con_iva = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+
+
+    // reporteEND.libre_neto_iva = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
     //libre neto = total - (histo_g_o / historial_ordenes_gastos)
+
 
     this.reporteAdministracion = reporteEND
   }

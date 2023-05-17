@@ -298,20 +298,28 @@
           </ng-container>
           
           <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12"> -->
               <div class="card border-success mb-3">
                 <div class="card-header text-center">Reporte de administrración</div>
                 <div class="card-body text-success ">
                   <h5 class="card-title"></h5>
-                  <div class="row">
-                    <ng-container *ngFor="let campo of camposReporteAdministracion">
-                      <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start">{{campo.show}}</div>
-                      <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor]  | monedas}}</strong></div>
-                    </ng-container>
+                  <div class="row ">
+                    <ng-container *ngFor="let campo of camposReporteAdministracion; let i = index">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start fs-5">{{campo.show}}</div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end fs-5"><strong>{{reporteAdministracion[campo.valor]  | monedas}}</strong></div>
+                      </div>
+                    </div>
+                  </ng-container>
+                    <!-- <ng-container *ngFor="let campo of camposReporteAdministracion; let i = index">
+                      <div class="col-lg-4 col-md-6 col-sm-6 col-6 text-start">{{campo.show}}</div>
+                      <div class="col-lg-4 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor]  | monedas}}</strong></div>
+                    </ng-container> -->
                   </div>
                 </div>
               </div>
-            </div>
+            <!-- </div> -->
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="mat-elevation-z8 table-responsive">

@@ -43,8 +43,8 @@
       Busqueda {{busquedaStatus | capitalizarUno}}
     </button>
     <mat-menu #menuStatusOS="matMenu">
-      <button mat-menu-item (click)="busquedaStatus = 'todos'" >todos</button>
-      <button mat-menu-item (click)="busquedaStatus = item.valor" *ngFor="let item of statusOS">{{item.show}}</button>
+      <button mat-menu-item (click)="busquedaStatus = 'todos'; nuevasBusquedas()" >todos</button>
+      <button mat-menu-item (click)="busquedaStatus = item.valor; nuevasBusquedas()" *ngFor="let item of statusOS">{{item.show}}</button>
     </mat-menu>
     <ng-container *ngIf="SUCURSAL === 'Todas'">
       
@@ -52,8 +52,8 @@
           Busqueda {{busquedaSucursalStringShow | capitalizarUno}}
         </button>
         <mat-menu #menuSucursales="matMenu">
-          <button mat-menu-item (click)="busquedaSucursalString = 'Todas'; busquedaSucursalStringShow = 'Todas'" >Todas</button>
-          <button mat-menu-item (click)="busquedaSucursalString = item.id; busquedaSucursalStringShow = item.sucursal" *ngFor="let item of sucursales_arr">{{item.sucursal}}</button>
+          <button mat-menu-item (click)="busquedaSucursalString = 'Todas'; busquedaSucursalStringShow = 'Todas'; nuevasBusquedas()" >Todas</button>
+          <button mat-menu-item (click)="busquedaSucursalString = item.id; busquedaSucursalStringShow = item.sucursal; nuevasBusquedas()" *ngFor="let item of sucursales_arr">{{item.sucursal}}</button>
         </mat-menu>
       
     </ng-container>
@@ -100,7 +100,7 @@
   
 <!-- <p>Selected range: {{fechas_filtro.value | json}}</p> -->
 <div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
     <div class="card border-success mb-3">
       <div class="card-header text-center"></div>
       <div class="card-body text-success ">
@@ -109,7 +109,6 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-12">{{campo['show']}}</div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporteEstancias[campo.valor] | monedas:' '}}</strong></div>
           </ng-container>
-          
         </div>
       </div>
     </div>
@@ -235,12 +234,20 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
                   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
                     <mat-tab label="Elementos">
+                      <div class="row m-1">
                       <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
                         <div class="card border-success mb-3">
                           <div class="card-header text-center">Desgloce
                             <strong [ngClass]="{'text-danger': row.reporte['ub'] < 55,'text-success': row.reporte['ub'] >= 55}">
                               U.B: {{row.reporte['ub'] | monedas:'%'}}
+                              <br>
+                              
                             </strong>
+                            Cantidad: 
+                            <strong [ngClass]="{'text-danger': row.reporte['ub'] < 55,'text-success': row.reporte['ub'] >= 55}">
+                              {{(row.reporte['ub'] * row.reporte['total'] ) / 100 | monedas }}
+                            </strong>
+                            
                           </div>
                           <div class="card-body text-success ">
                             <h5 class="card-title"></h5>
@@ -256,50 +263,58 @@
                           </div>
                         </div>
                       </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <h2>Total de gastos de orden: {{row.totalGastos | monedas}}</h2>
+                        <h2>Total de pagos de orden: {{row.totalPagos | monedas}}</h2>
+                      </div>
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="text-center" scope="col">#</th>
+                                <th class="text-start" scope="col">Nombre</th>
+                                <th class="text-center" scope="col">Cantidad</th>
+                                <th class="text-end" scope="col">Precio sobrescrito</th>
+                                <th class="text-end" scope="col">Precio normal</th>
+                                <th class="text-end" scope="col">Total</th>
+                                <th class="text-end" scope="col">&nbsp;</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of row.servicios; let i = index">
+                                <th class="text-center" scope="row">{{i +  1 }}</th>
+                                <td class="text-start" 
+                                [ngClass]="{'tipo-paquete': item.tipo === paquete,'tipo-mo': item.tipo === mo || item.tipo === 'MO','tipo-refaccion': item.tipo === refaccion}">
+                                  {{item.nombre | capitalizarUno}}
+                                </td>
+                                <td class="text-center">{{item.cantidad}} </td>
+                                <td class="text-end"> {{item.costo | monedas}} </td>
+                                <td class="text-end"> {{item.precio | monedas}}</td>
+                                <td class="text-end"> {{item.total | monedas}}</td>
+                                <td class="text-end">
+                                  {{item.showStatus}}
+                                <strong class="m-1" [ngClass]="{'text-success': item.aprobado, 'text-danger': !item.aprobado}">
+                                  <i class="fa" [ngClass]="{'fa-check-double': item.aprobado,'fa-times': !item.aprobado }"></i>                          
+                                </strong>
+                                  <!-- <button mat-button > -->
+                                    <i class="fa fa-tasks pointer m-1" [matMenuTriggerFor]="menu" *ngIf="row.status !== 'entregado' && row.status !== 'cancelado'"></i>
+                                  <!-- </button> -->
+                                  <mat-menu #menu="matMenu">
+                                    <button mat-menu-item *ngFor="let itemMenu of estatusServicioUnico"
+                                    (click)="accionServicio(row,item,itemMenu.valor)" >{{itemMenu.show}}</button>
+                                  </mat-menu>
+                                  <!-- {{item.showStatus}} || {{item.status}} -->
+        
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>  
+                      </div>
+                    </div>
                     
-                      <div class="table-responsive">
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th class="text-center" scope="col">#</th>
-                              <th class="text-start" scope="col">Nombre</th>
-                              <th class="text-center" scope="col">Cantidad</th>
-                              <th class="text-end" scope="col">Costo</th>
-                              <th class="text-end" scope="col">Precio</th>
-                              <th class="text-end" scope="col">Total</th>
-                              <th class="text-end" scope="col">&nbsp;</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let item of row.servicios; let i = index">
-                              <th class="text-center" scope="row">{{i +  1 }}</th>
-                              <td class="text-start" 
-                              [ngClass]="{'tipo-paquete': item.tipo === paquete,'tipo-mo': item.tipo === mo || item.tipo === 'MO','tipo-refaccion': item.tipo === refaccion}">
-                                {{item.nombre | capitalizarUno}}
-                              </td>
-                              <td class="text-center">{{item.cantidad}} </td>
-                              <td class="text-end"> {{item.costo}} </td>
-                              <td class="text-end"> {{item.precio | monedas}}</td>
-                              <td class="text-end"> {{item.total | monedas}}</td>
-                              <td class="text-end">
-                                {{item.showStatus}}
-                              <strong class="m-1" [ngClass]="{'text-success': item.aprobado, 'text-danger': !item.aprobado}">
-                                <i class="fa" [ngClass]="{'fa-check-double': item.aprobado,'fa-times': !item.aprobado }"></i>                          
-                              </strong>
-                                <!-- <button mat-button > -->
-                                  <i class="fa fa-tasks pointer m-1" [matMenuTriggerFor]="menu" *ngIf="row.status !== 'entregado' && row.status !== 'cancelado'"></i>
-                                <!-- </button> -->
-                                <mat-menu #menu="matMenu">
-                                  <button mat-menu-item *ngFor="let itemMenu of estatusServicioUnico"
-                                  (click)="accionServicio(row,item,itemMenu.valor)" >{{itemMenu.show}}</button>
-                                </mat-menu>
-                                <!-- {{item.showStatus}} || {{item.status}} -->
-      
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>  
+                      
                       
                     </mat-tab>
                     <mat-tab label="Cliente">

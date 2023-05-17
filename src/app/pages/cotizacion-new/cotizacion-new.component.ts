@@ -613,7 +613,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.rol()
     this.crearFormPlus()
     // this.verificaCmabiis()
-    this.infoCotizacion.elementos = this.elementosPrueba
+    // this.infoCotizacion.elementos = this.elementosPrueba
     this.realizaOperaciones()
   }
   ngAfterViewInit(): void {

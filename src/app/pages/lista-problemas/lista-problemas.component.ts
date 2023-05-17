@@ -292,6 +292,13 @@ export class ListaProblemasComponent implements OnInit {
             p.sucursalShow  = 'desarrollador'
             p.sucursal = 'desarrollador'
           }
+          if(p.modulo){
+            const { show, ruta } = this.listaModulos.find(m=>m.valor === p.modulo)
+            p.moduloShow = show
+            p.ruta = ruta
+          }else{
+            
+          }
           p.fecha_compara = this._publicos.construyeFechaString(p.fecha_registro, p.hora_registro)
         });
         
