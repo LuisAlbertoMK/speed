@@ -264,6 +264,11 @@ export class ReporteGastosComponent implements OnInit {
             const {sucursal} = this.sucursales_arr.find(s=>s.id === histo.sucursal)
             histo.sucursalShow = sucursal
             histo.no_os = os.no_os
+            histo.vehiculo = os.vehiculo
+            histo.reporte = os.reporte
+            histo.descricion_reporte = {
+              
+            }
             aquiDocumentos.push(histo)
           });
           if(os.status === 'entregado'){
@@ -275,12 +280,14 @@ export class ReporteGastosComponent implements OnInit {
           const {sucursal} = this.sucursales_arr.find(s=>s.id === os.sucursal.id)
           os.sucursalShow = sucursal
         })
+        
+        
         const filtro = (this.SUCURSAL === 'Todas') ? aquiDocumentos : aquiDocumentos.filter(os=>os.sucursal === this.SUCURSAL)
         // console.log(filtro);
         this.listaos_arr = (this.SUCURSAL === 'Todas') ? recepciones : recepciones.filter(os=>os.sucursal.id === this.SUCURSAL)
         // console.log(this.listaos_arr);
         
-        this.operacionesAdmin()
+        // this.operacionesAdmin()
         
         this.pagosGastosOP_arr = filtro
         // console.log('pagosGastosOP_arr',filtro.length);
@@ -296,7 +303,7 @@ export class ReporteGastosComponent implements OnInit {
     })
   }
   unirResultados(){
-    // const informa = this.gastosOperacion_arr.concat( this.gastosDiarios_arr ).concat( this.pagosGastosOP_arr )
+    // const informa = this.gastosOperacion_arr.concat( this.gastosDiarios_arr ).concat( this.pagosGastosOP_arr )    
     const informa = [...this.gastosOperacion_arr, ...this.gastosDiarios_arr, ...this.pagosGastosOP_arr];
     informa.forEach(con => {
       con.no_os = con.no_os || '';
@@ -364,7 +371,6 @@ export class ReporteGastosComponent implements OnInit {
               }
             } 
       }
-      
       this.dataSource.data = this._publicos.ordenarData(nuevos,'fechaCompara',true)
       this.newPagination('reporte')
   }

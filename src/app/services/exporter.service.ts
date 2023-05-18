@@ -399,7 +399,7 @@ export class ExporterService {
       {valor:'gastos', show:'Gastos de ordenes'},
       {valor:'sobrante', show:'Sobrante'},
     ]
-    let totalFacturas = 0, totalNotas = 0, facturas = [], notas = []
+    let facturas = [], notas = []
     const reporteFacturas = {subtotal: 0, iva: 0, total: 0}
     const reporteNotas = {subtotal: 0, iva: 0, total: 0}
     function obtenerPorcentajes(cantidad, porcentaje){
@@ -418,7 +418,6 @@ export class ExporterService {
           reporteFacturas.iva += iva
           reporteFacturas.total += total
         } else {
-          totalNotas += r.monto
           const {subtotal,iva,total} = obtenerPorcentajes(r.monto,16)
           reporteNotas.subtotal += subtotal
           reporteNotas.iva += iva
@@ -426,23 +425,46 @@ export class ExporterService {
         }
         (r.facturaRemision === 'factura') ? facturas.push(r) : notas.push(r)
       }
+      const descripcion = (r.reporte)? `Total de orden de servicio ${r.reporte.total}` : ''
+      const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
+      const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
+      const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
+
+      // ${r.vehiculo.marca} ${r.vehiculo.modelo} ${r.vehiculo.placas} 
 
       return {
         'no O.S': r.no_os || '',
         'Sucursal': r.sucursalShow,
         'Concepto': r.concepto,
-        'Fecha registro': r.fecha_registro,
-        'metodo pago': r.metodoShow,
         'Referencia': r.referencia || '',
+        'Fecha registro': r.fecha_registro,
+        'descripcion servicio': descripcion,
+        'Marca': marca,
+        'Modelo': modelo,
+        'Placas': placas,
+        'metodo pago': r.metodoShow,
+        'Monto': r.monto || 0,
         'Status': estado,
-        'Tipo': r.tipo,
+        'Tipo': r.tipo
       }
     })
    
     
     // console.log(registros);
     const lieneaBlanca = {
-      'no O.S': '', 'Sucursal': '', 'Concepto': '', 'Fecha registro': '', 'metodo pago': '', 'Referencia': '', 'Status': '', 'Tipo': ''
+      'no O.S': '', 
+      'Sucursal': '', 
+      'Concepto': '', 
+      'Referencia': '',
+      'descripcion servicio':'',
+      'Marca': '',
+      'Modelo': '',
+      'Placas':'',
+      'Fecha registro': '', 
+      'metodo pago': '', 
+      'Monto': '',
+      'Status': '', 
+      'Tipo': '',
     };
     
     const lieneaBlancaFactura = {
@@ -456,6 +478,10 @@ export class ExporterService {
       'tipo Gasto':      '',
       'metodo':          '',
       'monto':           '',
+      'descripcion servicio':      '',
+      'Marca':           '',
+      'Modelo':          '',
+      'Placas':          '',
       'status':          '',
       'subtotal':        '',
       'iva':             '',
@@ -472,6 +498,10 @@ export class ExporterService {
       'tipo Gasto':      '',
       'metodo':          '',
       'monto':           '',
+      'descripcion servicio':      '',
+      'Marca':           '',
+      'Modelo':          '',
+      'Placas':          '',
       'status':          '',
       'descripcion':     '',
       'subtotal':        '',
@@ -498,6 +528,10 @@ export class ExporterService {
     const nueva_facturas = facturas.map(r=>{
       const estado = (r.status) ? 'Aprobado' : 'No aprobado';
       const {subtotal, iva, total} = obtenerPorcentajes(r.monto,16)
+      const descripcion = (r.reporte)? `Total de orden de servicio ${r.reporte.total}` : ''
+      const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
+      const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
+      const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
       return {
         'concepto':         r.concepto || '',
         'referencia':       r.referencia || '',
@@ -509,6 +543,10 @@ export class ExporterService {
         'tipo Gasto':       r.tipoNuevo,
         'metodo':           r.metodoShow,
         'monto':            r.monto,
+        'descripcion servicio': descripcion,
+        'Marca': marca,
+        'Modelo': modelo,
+        'Placas': placas,
         'status':           estado,
         'subtotal':         `${subtotal}`,
         'iva':              `${iva}`,
@@ -524,12 +562,20 @@ export class ExporterService {
     nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'Total','metodo': `${total}` });
 
     const worksheetFacturas : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva_facturas)
-    const columnWidthsFActuras = [{ wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 10 }];
+    const columnWidthsFActuras = [
+      { wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, 
+      { wch: 10 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },
+      { wch: 30 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },
+    ];
     worksheetFacturas['!cols'] = columnWidthsFActuras;
 
     const nueva_Notas = notas.map(r=>{
       const estado = (r.status) ? 'Aprobado' : 'No aprobado';
       const {subtotal, iva, total} = obtenerPorcentajes(r.monto,0)
+      const descripcion = (r.reporte)? `Total de orden de servicio ${r.reporte.total}` : ''
+      const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
+      const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
+      const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
       return {
         'concepto':         r.concepto || '',
         'referencia':       r.referencia || '',
@@ -541,6 +587,10 @@ export class ExporterService {
         'tipo Gasto':       r.tipoNuevo,
         'metodo':           r.metodoShow,
         'monto':            r.monto,
+        'descripcion servicio': descripcion,
+        'Marca': marca,
+        'Modelo': modelo,
+        'Placas': placas,
         'status':           estado,
         'descripcion':      '',
         'subtotal':         `${subtotal}`,
@@ -557,10 +607,19 @@ export class ExporterService {
     nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'Total','metodo': `${aqui.total}` });
 
     const worksheetNotas : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva_Notas)
-    const columnWidthsNotas = [{ wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 10 }];
+    const columnWidthsNotas = [
+      { wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, 
+      { wch: 10 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },
+      { wch: 30 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },  
+    ];
     worksheetNotas['!cols'] = columnWidthsNotas;
 
-    const columnWidthsCotizaciones = [{ wch: 15 }, { wch: 15 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 20 }, { wch: 15 },{ wch: 15 }];
+    const columnWidthsCotizaciones = [
+      { wch: 15 }, { wch: 15 }, { wch: 30 }, { wch: 15 }, 
+      { wch: 30 }, { wch: 10 }, { wch: 10 },{ wch: 10 },
+      { wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 20 },
+      { wch: 20 }
+    ];
     worksheetCotizaciones['!cols'] = columnWidthsCotizaciones;
     const workbook: XLSX.WorkBook = {
       Sheets: {'Servicios':worksheetCotizaciones, 'Facturas':worksheetFacturas,'Notas':worksheetNotas},
