@@ -429,19 +429,24 @@ export class ExporterService {
       const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
       const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
       const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
-
+      
+      let facturaRemision = ''
+      if(r.tipo === 'orden'){
+        facturaRemision = (r.facturaRemision) ?  r.facturaRemision : r.facturaRemision = 'nota';
+      }
       // ${r.vehiculo.marca} ${r.vehiculo.modelo} ${r.vehiculo.placas} 
 
       return {
         'no O.S': r.no_os || '',
         'Sucursal': r.sucursalShow,
-        'Concepto': r.concepto,
-        'Referencia': r.referencia || '',
-        'Fecha registro': r.fecha_registro,
         'descripcion servicio': descripcion,
+        'Fecha registro': r.fecha_registro,
+        'Referencia': r.referencia || '',
+        'Concepto': r.concepto,
         'Marca': marca,
         'Modelo': modelo,
         'Placas': placas,
+        'nota / factura': facturaRemision,
         'metodo pago': r.metodoShow,
         'Monto': r.monto || 0,
         'Status': estado,
@@ -454,12 +459,13 @@ export class ExporterService {
     const lieneaBlanca = {
       'no O.S': '', 
       'Sucursal': '', 
-      'Concepto': '', 
-      'Referencia': '',
       'descripcion servicio':'',
+      'Referencia': '',
+      'Concepto': '', 
       'Marca': '',
       'Modelo': '',
       'Placas':'',
+      'nota / factura':'',
       'Fecha registro': '', 
       'metodo pago': '', 
       'Monto': '',
@@ -513,16 +519,17 @@ export class ExporterService {
     
 
     const ordenadas = this._publicos.ordenarData(nueva,'Tipo',true)
-
+    const {subtotal,iva,total} = obtenerPorcentajes(reporteFacturas.total,16)
+    const aqui = obtenerPorcentajes(reporteNotas.total,16)
     ordenadas.push({ ...lieneaBlanca });
     ordenadas.push({ ...lieneaBlanca });
-    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total depositos', 'Tipo': reporte_get.depositos });
-    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total operacion', 'Tipo': reporte_get.operacion });
-    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total gastos', 'Tipo': reporte_get.gastos });
-    ordenadas.push({ ...lieneaBlanca, 'Status': 'Total sobrante', 'Tipo': reporte_get.sobrante });
+    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total depositos', 'Concepto': reporte_get.depositos, 'Modelo': 'Subtotal facturas', 'Placas': `${subtotal}`, 'metodo pago': 'Subtotal notas', 'Monto': `${aqui.subtotal}` });
+    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total operacion', 'Concepto': reporte_get.operacion, 'Modelo': 'I.V.A facturas', 'Placas': `${iva}`, 'metodo pago': 'I.V.A notas', 'Monto': `${aqui.iva}`});
+    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total gastos', 'Concepto': reporte_get.gastos, 'Modelo': 'Total facturas', 'Placas': `${total}`,'metodo pago': 'Total notas', 'Monto': `${aqui.total}` });
+    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total sobrante', 'Concepto': reporte_get.sobrante });
 
 
-    const worksheetCotizaciones : XLSX.WorkSheet = XLSX.utils.json_to_sheet(ordenadas)
+    
 
 
     const nueva_facturas = facturas.map(r=>{
@@ -555,8 +562,6 @@ export class ExporterService {
     })
     nueva_facturas.push({ ...lieneaBlancaFactura });
     nueva_facturas.push({ ...lieneaBlancaFactura });
-
-    const {subtotal,iva,total} = obtenerPorcentajes(reporteFacturas.total,16)
     nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'Subtotal','metodo': `${subtotal}` });
     nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'I.V.A','metodo': `${iva}` });
     nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'Total','metodo': `${total}` });
@@ -601,23 +606,27 @@ export class ExporterService {
     nueva_Notas.push({ ...lieneaBlancaNotas });
     nueva_Notas.push({ ...lieneaBlancaNotas });
 
-    const aqui = obtenerPorcentajes(reporteNotas.total,16)
+    
     nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'Subtotal','metodo': `${aqui.subtotal}` });
     nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'I.V.A','metodo': `${aqui.iva}` });
     nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'Total','metodo': `${aqui.total}` });
 
+
+    const worksheetCotizaciones : XLSX.WorkSheet = XLSX.utils.json_to_sheet(ordenadas)
     const worksheetNotas : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva_Notas)
     const columnWidthsNotas = [
       { wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, 
       { wch: 10 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },
-      { wch: 30 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },  
+      { wch: 30 }, { wch: 15 },{ wch: 10 },{ wch: 15 }, { wch: 15 },  
+      { wch: 10 }, { wch: 15 },{ wch: 15 },{ wch: 15 }, { wch: 15 },  
     ];
     worksheetNotas['!cols'] = columnWidthsNotas;
 
     const columnWidthsCotizaciones = [
       { wch: 15 }, { wch: 15 }, { wch: 30 }, { wch: 15 }, 
-      { wch: 30 }, { wch: 10 }, { wch: 10 },{ wch: 10 },
-      { wch: 10 }, { wch: 10 }, { wch: 10 },{ wch: 20 },
+      { wch: 30 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
+      { wch: 20 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
+      { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
       { wch: 20 }
     ];
     worksheetCotizaciones['!cols'] = columnWidthsCotizaciones;

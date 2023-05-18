@@ -1281,8 +1281,6 @@ export class ServiciosPublicosService {
 
         reporteGeneral.sobrescrito = reporteGeneral.sobrescrito_mo + reporteGeneral.sobrescrito_paquetes + reporteGeneral.sobrescrito_refaccion
         
-
-       
         const suma = reporteGeneral.mo + reporteGeneral.refacciones_v + reporteGeneral.sobrescrito
         reporteGeneral.subtotal = suma;
     
@@ -1304,10 +1302,6 @@ export class ServiciosPublicosService {
         if (reporteGeneral.total >0 ) {
             reporteGeneral.ub = (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
         } 
-
-        ///siempre obtener el costo de c
-        console.log(cstoCOmpra);
-        
         return { reporte: reporteGeneral, ocupados}
     }
     

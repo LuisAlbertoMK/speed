@@ -267,7 +267,7 @@ export class ReporteGastosComponent implements OnInit {
             histo.vehiculo = os.vehiculo
             histo.reporte = os.reporte
             histo.descricion_reporte = {
-              
+
             }
             aquiDocumentos.push(histo)
           });
@@ -279,6 +279,7 @@ export class ReporteGastosComponent implements OnInit {
           }
           const {sucursal} = this.sucursales_arr.find(s=>s.id === os.sucursal.id)
           os.sucursalShow = sucursal
+          os.reporte = this._publicos.realizarOperaciones_2(os).reporte
         })
         
         

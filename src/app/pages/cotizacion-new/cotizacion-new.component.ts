@@ -94,7 +94,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
    // tabla
    dataSource = new MatTableDataSource(); //elementos
-   elementos = ['nombre','cantidad','sobrescrito','precio']; //elementos
+   elementos = ['nombre','cantidad','sobrescrito','precio','total']; //elementos
    columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
    expandedElement: any | null; //elementos
    @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
