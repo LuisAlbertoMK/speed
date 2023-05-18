@@ -1315,7 +1315,7 @@ export class ServiciosPublicosService {
         
           if (e_interno.costo > 0) {
             e_interno.tipo === 'refaccion'
-              ? (reporte_interno.sobrescrito_refaccion += operacion_interno)
+              ? (reporte_interno.sobrescrito_refaccion += operacion_interno * margen)
               : (reporte_interno.sobrescrito_mo += operacion_interno);
         
               e_interno.total = operacion_interno * (e_interno.tipo === 'refaccion' ? margen : 1);
