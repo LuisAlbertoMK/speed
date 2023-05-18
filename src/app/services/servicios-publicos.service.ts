@@ -1220,8 +1220,10 @@ export class ServiciosPublicosService {
           iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
           subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
         }
+        let cstoCOmpra = 0
         ocupados.map((e,index)=>{
         
+        if(e.tipo === 'refacccion') cstoCOmpra+= e.precio
           e.index = index
           const pre = e.costo >0 ? e.costo : e.precio;
           const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
@@ -1266,6 +1268,7 @@ export class ServiciosPublicosService {
               // console.log('costo normal',info);
             }
           }
+
         })
         let refaccionesv = 0
         if(reporteGeneral.refacciones_a > 0){
@@ -1296,8 +1299,10 @@ export class ServiciosPublicosService {
           reporteGeneral.meses = operacion;
         }
         if (reporteGeneral.total >0 ) {
-            reporteGeneral.ub = (reporteGeneral.subtotal - refaccionesv)*100/reporteGeneral.total
+            reporteGeneral.ub = (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.total
         } 
+
+        ///siempre obtener el costo de c
 
         return { reporte: reporteGeneral, ocupados}
     }
