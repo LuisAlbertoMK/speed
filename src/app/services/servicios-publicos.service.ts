@@ -1223,7 +1223,7 @@ export class ServiciosPublicosService {
         let cstoCOmpra = 0
         ocupados.map((e,index)=>{
         
-        if(e.tipo === 'refacccion') cstoCOmpra+= e.precio
+        if(e.tipo === 'refaccion') cstoCOmpra+= e.precio
           e.index = index
           const pre = e.costo >0 ? e.costo : e.precio;
           const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
