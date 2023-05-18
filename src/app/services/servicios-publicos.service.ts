@@ -1223,7 +1223,9 @@ export class ServiciosPublicosService {
         let cstoCOmpra = 0
         ocupados.map((e,index)=>{
         
-        if(e.tipo === 'refaccion') cstoCOmpra+= e.precio
+        if(e.tipo === 'refaccion') {
+            (e.costo > 0) ? cstoCOmpra+= e.costo : cstoCOmpra+= e.precio 
+        }
           e.index = index
           const pre = e.costo >0 ? e.costo : e.precio;
           const operacion =  e.tipo === "refaccion" ? e.cantidad * pre : e.cantidad * pre;
@@ -1254,7 +1256,8 @@ export class ServiciosPublicosService {
               if(e.aprobado) reporteGeneral.mo += operacion;
               e.total = operacion
             }else {
-                const {elementos, reporte} = this.reportePaquete(e.elementos,margenOcupado)
+                const {elementos, reporte,cstCo} = this.reportePaquete(e.elementos,margenOcupado)
+                cstoCOmpra+= cstCo
                 e.elementos = elementos
                 e.reporte = reporte;
                 e.precio = reporte.total;
@@ -1299,11 +1302,12 @@ export class ServiciosPublicosService {
           reporteGeneral.meses = operacion;
         }
         if (reporteGeneral.total >0 ) {
-            reporteGeneral.ub = (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.total
+            reporteGeneral.ub = (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
         } 
 
         ///siempre obtener el costo de c
-
+        console.log(cstoCOmpra);
+        
         return { reporte: reporteGeneral, ocupados}
     }
     
@@ -1311,10 +1315,12 @@ export class ServiciosPublicosService {
         if (!elementos) elementos = [];
 
         const reporte_interno = {mo: 0,refacciones: 0,refacciones_v: 0,sobrescrito_mo: 0,sobrescrito_refaccion: 0,ub: 0,total: 0};
-        
+        let cstCo =0
         elementos.forEach((e_interno, index) => {
           e_interno.index = index;
-        
+        if(e_interno.tipo === 'refaccion'){
+            (e_interno.costo > 0) ? cstCo += e_interno.costo:  cstCo += e_interno.precio 
+        }
           const pre_interno = e_interno.costo > 0 ? e_interno.costo : e_interno.precio;
           const operacion_interno = e_interno.cantidad * pre_interno;
         
@@ -1341,7 +1347,7 @@ export class ServiciosPublicosService {
           reporte_interno.sobrescrito_refaccion;
         reporte_interno.ub = 100 - (reporte_interno.refacciones_v * 100) / reporte_interno.total;
         
-        return { reporte: { ...reporte_interno }, elementos };
+        return { reporte: { ...reporte_interno }, elementos ,cstCo};
         // return null
         
     }
