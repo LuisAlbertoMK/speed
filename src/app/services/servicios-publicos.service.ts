@@ -1296,7 +1296,7 @@ export class ServiciosPublicosService {
           reporteGeneral.meses = operacion;
         }
         if (reporteGeneral.total >0 ) {
-            reporteGeneral.ub = (reporteGeneral.total - refaccionesv)*100/reporteGeneral.total
+            reporteGeneral.ub = (reporteGeneral.subtotal - refaccionesv)*100/reporteGeneral.total
         } 
 
         return { reporte: reporteGeneral, ocupados}
