@@ -11,926 +11,182 @@
     </div>
   </div>
 
-  <div class="con-flot">
-    <input type="checkbox" id="btn-mas">
-    <div class="redes">
-      <a  class="mat-elevation-z8" [routerLink]="['/inicio']" ><i class="fad fa-arrow-alt-left"></i></a>
-      <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-up"></i></a>
-      <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-down"></i></a>
-    </div>
-    <div class="btn-mas">
-      <label for="btn-mas" class="btn-ma"><strong><i class="fad fa-plus-circle"></i></strong></label>
-    </div>
-  </div>
-
-
-
-  <div class="row col-lg-12 col-md-12 col-sm-12 ">
-    <div class="card">
-      <div class="card-body">
-        <mat-tab-group mat-align-tabs="center">
-          <mat-tab label="Paquetes">
-            <div *ngIf="ROL!=='Técnico/Ayudante' && ROL !=='Auxiliar'">
-              <div class="col-lg-12 col-md-12 col-sm-12 text-end">
-                <button type="button" class="btn btn-success btn-sm mt-1 mb-1 col-lg-4 col-md-4 col-sm-4" data-bs-toggle="modal"
-                (click)="verificaInformacionPaquete('',0)"
-                  data-bs-target="#paqueteAgrega">
-                  Nuevo Paquete
-                </button>
-              </div>
-            </div>
-            <mat-form-field appearance="standard" class="col-lg-6 col-md-6 col-sm-12">
-              <mat-label>Busqueda</mat-label>
-              <input matInput (keyup)="applyFilter($event,'paquetes')" placeholder="Ex. SpeedPro" #input class="col-12">
-            </mat-form-field>
-            <div class="mat-elevation-z8 table-responsive">
-              <table mat-table [dataSource]="dataSourcePaquetes" multiTemplateDataRows   #tabPaquetes="matSort" matSort>
-            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsPaquetes">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> {{column}} </th>
-              <ng-container *ngIf="column === 'flotilla' || column === 'normal'">
-                <td mat-cell *matCellDef="let element; " class="text-end"> <strong>{{element[column] | monedas}}</strong> </td>
-              </ng-container>
-              <ng-container >
-                <td mat-cell *matCellDef="let element"> {{element[column] }} </td>
-              </ng-container>
-            </ng-container>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab label="Paquetes">
+      <div class="table-responsive mat-elevation-z8">
+        <table #paquetes="matSort" matSort mat-table [dataSource]="dataSourcePaquetes" multiTemplateDataRows>
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+              [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> index </th>
+            <td mat-cell *matCellDef="let element" class="text-center"> {{element.index + 1}}</td>
+          </ng-container>
+          <ng-container matColumnDef="modelo">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+              [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> modelo </th>
+            <td mat-cell *matCellDef="let element" class="text-start"> {{element.modelo }}</td>
+          </ng-container>
+          <ng-container matColumnDef="marca">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+              [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> marca </th>
+            <td mat-cell *matCellDef="let element" class="text-start"> {{element.marca + 1}}</td>
+          </ng-container>
+          <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+              [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> precio </th>
+            <td mat-cell *matCellDef="let element" class="text-start"> {{element.precio | monedas }}</td>
+          </ng-container>
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize text-end"
+              [ngStyle]="{'min-width':(miniColumnas)*1.3+'px'}"> nombre </th>
+            <td mat-cell *matCellDef="let element" class="td-2"> 
+              <strong
+                [ngClass]="{'tipo-mo':element.tipo === 'MO','tipo-refaccion':element.tipo === 'refaccion','tipo-paquete':element.tipo === 'paquete'}">
+                {{element.nombre | capitalizarUno}}</strong>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"
+              [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}"> cantidad </th>
+            <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-center">
+              <input type="number" min="1" max="20" [value]="element.cantidad"> 
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="sobrescrito">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="td-2">
+              precio sobrescrito </th>
+            <td mat-cell *matCellDef="let element; let indicePadre = dataIndex;" class="text-end td-2">
+              <input type="number" min="0" max="10000" [value]="element.costo">
+            </td>
+          </ng-container>
           
-            <ng-container matColumnDef="expand">
-              <th mat-header-cell *matHeaderCellDef  aria-label="row actions" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">&nbsp;</th>
-              <td mat-cell *matCellDef="let element; let index=dataIndex">
-                <!-- <i class="fa fa-edit btn btn-sm text-primary" data-bs-toggle="modal" data-bs-target="#InformacionPaquete"(click)="DataActualizaPaquete(element)"></i> -->
-                <i class="fa fa-edit btn btn-sm text-primary"  data-bs-toggle="modal" data-bs-target="#paqueteAgrega"
-                 (click)="verificaInformacionPaquete(element,index)"></i>
-                <i *ngIf="element.status" class="fa fa-ban btn btn-sm text-danger" (click)="changeStatusPaquete(element,false)"></i>
-                <i *ngIf="!element.status" class="fa fa-check btn btn-sm text-success" (click)="changeStatusPaquete(element,true)"></i>
-                <!-- <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+          <ng-container matColumnDef="normal">
+            <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
+              [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" >
+              <span class="pointer" style="width: 100%;">normal &nbsp;
+              </span> 
+
+               </th>
+            <td mat-cell *matCellDef="let element" class="text-end"> 
+              <ng-container *ngIf="element.costo > 0; else elseTemplate">
+                {{element.costo * 1.30 | monedas}}
+              </ng-container>
+              <ng-template #elseTemplate>
+                {{element.precio * 1.30 | monedas}}
+              </ng-template>
+              
+          </ng-container>
+          <ng-container matColumnDef="flotilla">
+            <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
+              [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" 
+              > 
+              <!-- (click)="ordenamiento = !ordenamiento; ordenarElementos('flotilla')" -->
+              <span class="pointer" style="width: 100%;">flotilla &nbsp;
+                <!-- <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                  <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                </ng-container>
+                <ng-template #elseOrdenamiento>
+                  <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                </ng-template> -->
+              </span>
+            
+            </th>
+            <td mat-cell *matCellDef="let element" class="text-end">
+            {{element.precio | monedas}}                
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="opciones">
+            <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-center"
+            [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> opciones </th>
+            <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-center">
+              <!-- <i class="fa fa-edit btn btn-sm btn-success fa-xs m-1" (click)="agregarelementopaquete(!elementoAgregar, element.index)"></i> --> 
+              <!-- <ng-container>
+                <i class="fa fa-trash btn btn-sm btn-danger fa-xs m-1" (click)="eliminaElemento(element['index'])"></i>
+                
+              </ng-container> -->
+              <!-- <i class="fa fa-plus btn btn-sm btn-primary" aria-hidden="true" (click)="dataElement( element)"></i> -->
+              
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="expand">
+            <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="element.tipo === 'paquete'">
+                <button mat-icon-button aria-label="expand row"
+                  (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
                   <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
                   <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-                </button> -->
-              </td>
-            </ng-container>
-
-            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-            <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsPaquetesExpand.length +1">
-                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                  
-                 
-              </div>
-              </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="columnsPaquetesExpand"></tr>
-            <tr mat-row *matRowDef="let element; columns: columnsPaquetesExpand;" 
-                class="example-element-row " [ngClass]="{'false':!element.status }"
-                [class.example-expanded-row]="expandedElement === element"
-                >
-                <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-          </table>
-          <mat-paginator #paginatorPaquetes [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users" ></mat-paginator>
-            </div>
-            <!-- <div class="mat-elevation-z8 table-responsive">
-              <table #tabPaquetes="matSort" mat-table [dataSource]="dataSourcePaquetes" matSort >
-                <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumnsSuperSU">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> {{column}} </th>
-                    <td mat-cell *matCellDef="let element" class="text-capitalize"> {{element[column]}} </td>
-                </ng-container>
-                <ng-container >
-                  <tr mat-header-row *matHeaderRowDef="displayedColumnsSuperSUExtended"></tr>
-                  <tr mat-row [matMenuTriggerFor]="menu" [ngClass]="{'false': row.precio<1}" class="anima"
-                  [class.demo-row-is-clicked]="clickedRows.has(row)" (click)="evento($event)" *matRowDef="let row; columns: displayedColumnsSuperSUExtended;">
-                    <ng-container >
-                      <mat-menu #menu="matMenu" [xPosition]="posicion">
-                        <button mat-menu-item class="item-titulo"><strong class="text-capitalize"> {{row.nombre}}</strong></button>
-                        <mat-divider></mat-divider>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf="ROL!=='Técnico/Ayudante'" data-bs-toggle="modal" data-bs-target="#paqueteEditar"(click)="DataActualizaPaquete(row)">
-                          Actualizar
-                        </button>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf="ROL!=='Técnico/Ayudante'" data-bs-toggle="modal" data-bs-target="#paqueteAgrega" (click)="verificaInformacionPaquete(row.id)">
-                          Agregar
-                        </button>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf="ROL!=='Técnico/Ayudante' && !row.status" (click)="changeStatus('paquetes',row,true)">
-                          Habilitar
-                        </button>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf="ROL!=='Técnico/Ayudante' && row.status" (click)="changeStatus('paquetes',row,false)">
-                          Deshabilitar
-                        </button>
-                        <button mat-menu-item class="item-menu" data-bs-toggle="modal" data-bs-target="#detallesPaquete" (click)="verificaInformacionPaquete(row.id)">
-                          Detalles
-                        </button>
-                      </mat-menu>
-                    </ng-container>
-                  </tr>
-                </ng-container>
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="5">Ningun resultado con criterío "{{input.value}}"</td>
-                </tr>
-              </table>
-              <mat-paginator #paginatorPaquetes [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users" >
-              </mat-paginator>
-            </div> -->
-          </mat-tab>
-          <mat-tab label="Manos de obra">
-            <div class="col-lg-12 col-md-12 col-sm-12 text-end">
-              <button class="btn btn-success btn-sm mt-1 mb-1 col-lg-4 col-md-4 col-sm-4" data-bs-toggle="modal" data-bs-target="#manoObra" (click)="DataActualizaManoObra('')">
-                Agregar mano de obra
-              </button>
-            </div>
-            <mat-form-field appearance="standard" class="col-lg-6 col-md-6 col-sm-12">
-              <mat-label>Busqueda</mat-label>
-              <input matInput (keyup)="applyFilter($event,'MO')" placeholder="Ex. SpeedPro" #input class="col-12">
-            </mat-form-field>
-            <div class="mat-elevation-z8 table-responsive">
-              <table #tabMO="matSort" mat-table [dataSource]="dataSourceMO" matSort >
-                <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsMO">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{column}} </th>
-                    <ng-container *ngIf="column === 'precio'">
-                      <td mat-cell *matCellDef="let element" class="text-capitalize"> {{element[column] | monedas}} </td>
-                    </ng-container>
-                    <ng-container *ngIf="column !== 'precio'">
-                      <td mat-cell *matCellDef="let element" class="text-capitalize"> {{element[column]}} </td>
-                    </ng-container>
-                </ng-container>
-                <ng-container >
-                  <tr mat-header-row *matHeaderRowDef="columnsMOExtended"></tr>
-                  <tr mat-row [matMenuTriggerFor]="menu" [ngClass]="{'false': !row.status}" class="anima"
-                  [class.demo-row-is-clicked]="clickedRows.has(row)"  *matRowDef="let row; columns: columnsMOExtended;">
-                    <ng-container >
-                      <mat-menu #menu="matMenu"  yPosition="below" >
-                        <button mat-menu-item class="item-titulo"><strong class="text-capitalize"> {{row.nombre}}</strong></button>
-                        <mat-divider></mat-divider>
-                        <button mat-menu-item class="text-capitalize item-menu"  data-bs-toggle="modal" data-bs-target="#manoObra" (click)="DataActualizaManoObra(row)">
-                          Actualizar
-                        </button>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf=" !row.status" (click)="changeStatus('manos_obra',row,true)">
-                          Habilitar
-                        </button>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf=" row.status" (click)="changeStatus('manos_obra',row,false)">
-                          Deshabilitar
-                        </button>
-                      </mat-menu>
-                    </ng-container>
-                  </tr>
-                </ng-container>
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="5">Ningun resultado con criterío "{{input.value}}"</td>
-                </tr>
-              </table>
-              <mat-paginator #paginatorMO [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users" >
-              </mat-paginator>
-            </div>
-          </mat-tab>
-          <mat-tab label="Refacciones">
-            <div class="col-lg-12 col-md-12 col-sm-12 text-end">
-              <button class="btn btn-success btn-sm mt-1 mb-1 col-lg-4 col-md-4 col-sm-4" data-bs-toggle="modal" data-bs-target="#refaccionEditar" (click)="DataActualizaRefaccion('')">
-                Agregar refacción
-              </button>
-            </div>
-            <mat-form-field appearance="standard" class="col-lg-6 col-md-6 col-sm-12">
-              <mat-label>Busqueda</mat-label>
-              <input matInput (keyup)="applyFilter($event,'refacciones')" placeholder="Ex. SpeedPro" #input class="col-12">
-            </mat-form-field>
-            <div class="mat-elevation-z8 table-responsive">
-              
-              <table #tabRefacciones="matSort" mat-table [dataSource]="dataSourceRefacciones" matSort >
-                <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsRefaccion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> {{column}} </th>
-                    <td mat-cell *matCellDef="let element" class="text-capitalize"> {{element[column]}} </td>
-                </ng-container>
-                <ng-container >
-                  <tr mat-header-row *matHeaderRowDef="columnsRefaccionExtended"></tr>
-                  <tr mat-row [matMenuTriggerFor]="menu" [ngClass]="{'false': !row.status}" class="anima"
-                  [class.demo-row-is-clicked]="clickedRows.has(row)"  *matRowDef="let row; columns: columnsRefaccionExtended;">
-                    <ng-container >
-                      <mat-menu #menu="matMenu"  yPosition="below" >
-                        <button mat-menu-item class="item-titulo"><strong class="text-capitalize"> {{row.nombre}}</strong></button>
-                        <mat-divider></mat-divider>
-                        <button mat-menu-item class="text-capitalize item-menu"  data-bs-toggle="modal" data-bs-target="#refaccionEditar" (click)="DataActualizaRefaccion(row)">
-                          Actualizar
-                        </button>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf=" !row.status" (click)="changeStatus('refacciones',row,true)">
-                          Habilitar
-                        </button>
-                        <button mat-menu-item class="text-capitalize item-menu" *ngIf=" row.status" (click)="changeStatus('refacciones',row,false)">
-                          Deshabilitar
-                        </button>
-                      </mat-menu>
-                    </ng-container>
-                  </tr>
-                </ng-container>
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="5">Ningun resultado con criterío "{{input.value}}"</td>
-                </tr>
-              </table>
-              <mat-paginator #paginatorRefacciones [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users" >
-              </mat-paginator>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-        <ng-container class="card-text">
-        </ng-container>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="manoObra" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title text-primary" id="staticBackdropLabel" *ngIf="dataMOUpdate===''">Nueva Mano de Obra</h2>
-          <h2 class="modal-title text-primary" id="staticBackdropLabel" *ngIf="dataMOUpdate!==''">Actualizar Mano de Obra</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="limpiaFormulario('mano')" ></button>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="ActualizaManoObra()" [formGroup]="formaManoObra" class="mt-2">
-            <div class="row">
-              <div class="col-lg-6 col-md-12 col-sm-12">
-                <div class="mb-1">
-                  <label for="nombre" class="form-label">Nombre</label>
-                  <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
-                    [class.is-invalid]="validarManoObra('nombre')">
-                    <input type="hidden" formControlName="id">
-                  <small *ngIf="validarManoObra('nombre')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-12 col-sm-12">
-                <div class="mb-1">
-                  <label for="precio" class="form-label">Costo por Hora</label>
-                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
-                    [class.is-invalid]="validarManoObra('precio')">
-                  <small *ngIf="validarManoObra('precio')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="marca" class="form-label">Marca</label>
-                  <!-- (ngModelChange)="submarcas()" -->
-                  <select class="form-select form-select-sm" formControlName="marca" (ngModelChange)="submarcas('MO')"
-                      [class.is-invalid]="validarManoObra('nombre')" >
-                      <option [defaultSelected]="" value="">Seleccione ...</option>
-                      <option value="{{marca.id}}" *ngFor="let marca of marcas;let i = index">{{marca.id}}</option>
-                    </select>
-                  <small *ngIf="validarManoObra('marca')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="modelo" class="form-label">Modelo</label>
-                  <!-- (ngModelChange)="aniosModelo()" -->
-                  <select class="form-select form-select-sm" formControlName="modelo" 
-                        [class.is-invalid]="validarManoObra('modelo')">
-                    <option [defaultSelected]="" value="">Seleccione ...</option>
-                    <option [defaultSelected]="modelo.modelo" [value]="modelo.modelo" *ngFor="let modelo of arrayModelos" >{{modelo.modelo}}</option>
-                  </select>
-                  <small *ngIf="validarManoObra('modelo')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="mb-1">
-                  <label for="descripcion" class="form-label">Descripción</label>
-                  <textarea class="form-control" placeholder="Escribir comentario sobre mano de obra"
-                    id="floatingTextarea2" formControlName="descripcion"
-                    [class.is-invalid]="validarManoObra('descripcion')" style="height: 100px"></textarea>
-                  <small *ngIf="validarManoObra('descripcion')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="d-grid gap-2 col-6 mx-auto mt-2">
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="d-grid gap-2 col-6 mx-auto mt-2">
-                  <button type="button" click="limpiarGuardarManoObra()" class="btn btn-danger"
-                    data-bs-dismiss="modal" (click)="limpiaFormulario('mano')">Salir</button>
-                </div>
-              </div>
-            </div>
-  
-  
-          </form>
-        </div>
-  
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="refaccionEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title text-primary" id="staticBackdropLabel" *ngIf="dataRefaccion.length===0">Nueva refacción</h2>
-          <h2 class="modal-title text-primary" id="staticBackdropLabel" *ngIf="dataRefaccion.length!==0">Actualizar información de refacción</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="limpiaFormulario('refaccion')"></button>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="DataActualizarRefaccion()" [formGroup]="formaRefaccion" class="mt-2">
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="nombre" class="form-label">Nombre</label>
-                  <input type="text" class="form-control form-control-sm text-lowercase" id="nombre" formControlName="nombre"
-                    [class.is-invalid]="validarRefaccion('nombre')">
-                    <input type="hidden" formControlName="id">
-                  <small *ngIf="validarRefaccion('nombre')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="marca" class="form-label">Marca</label>
-                  <!-- (ngModelChange)="submarcas()" -->
-                  <select class="form-select form-select-sm" formControlName="marca" (ngModelChange)="submarcas('refaccion')"
-                      [class.is-invalid]="validarRefaccion('nombre')" >
-                      <option [defaultSelected]="" value="">Seleccione ...</option>
-                      <option value="{{marca.id}}" *ngFor="let marca of marcas;let i = index">{{marca.id}}</option>
-                    </select>
-                  <small *ngIf="validarRefaccion('marca')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="modelo" class="form-label">Modelo</label>
-                  <!-- (ngModelChange)="aniosModelo()" -->
-                  <select class="form-select form-select-sm" formControlName="modelo" 
-                        [class.is-invalid]="validarRefaccion('modelo')">
-                    <option [defaultSelected]="" value="">Seleccione ...</option>
-                    <option [defaultSelected]="modelo.modelo" [value]="modelo.modelo" *ngFor="let modelo of arrayModelos" >{{modelo.modelo}}</option>
-                  </select>
-                  <small *ngIf="validarRefaccion('modelo')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="stock" class="form-label">Stock</label>
-                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="stock" formControlName="stock"
-                    [class.is-invalid]="validarRefaccion('stock')" maxlength="6">
-                  <small *ngIf="validarRefaccion('stock')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="precio" class="form-label">Precio</label>
-                  <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
-                    [class.is-invalid]="validarRefaccion('precio')" maxlength="6">
-                  <small *ngIf="validarRefaccion('precio')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="mb-1">
-                  <label for="descripcion" class="form-label">Descripción</label>
-                  <textarea class="form-control" placeholder="Escribir comentario sobre mano de obra"
-                    id="floatingTextarea2" formControlName="descripcion"
-                    [class.is-invalid]="validarRefaccion('descripcion')" style="height: 100px"></textarea>
-                  <small *ngIf="validarRefaccion('descripcion')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="d-grid gap-2 col-6 mx-auto mt-2">
-                  <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="d-grid gap-2 col-6 mx-auto mt-2">
-                  <button type="button" click="limipar()" class="btn btn-danger" data-bs-dismiss="modal"  (click)="limpiaFormulario('refaccion')">Salir</button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="paqueteAgrega" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
-      <div class="modal-content">
-        <div class="modal-header ml-3 text-primary">
-          <h2 class="modal-title " >
-            Detalles de paquete Agregar <strong class="text-primary">{{formaPaquete.controls['nombre'].value}}</strong>
-          </h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body m-2">
-          <form (ngSubmit)="actualizaPaqauete()" [formGroup]="formaPaquete" class="mt-2">
-            <div class="row">
-              <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                <div class="mb-1">
-                  <label for="nombre" class="form-label">Nombre de paquete</label>
-                  <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
-                    [class.is-invalid]="validarPaquete('nombre')" maxlength="20">
-                    <input type="hidden" formControlName="id">
-                  <small *ngIf="validarPaquete('nombre')" class="text-danger">
-                    campo requerido
-                  </small>
-                </div>
-              </div>
-              <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-                <div class="mb-1 ">
-                  <label for="cilindros" class="form-label">Cilindros</label>
-                  <select class=" form-select form-select-sm " formControlName="cilindros"
-                    [class.is-invalid]="validarPaquete('cilindros')">
-                    <option [defaultSelected]="" value="">Seleccione ...</option>
-                    <option value="4">4</option>
-                    <option value="6">6</option>
-                    <option value="6">8</option>
-                    <option value="10">10</option>
-                  </select>
-                </div>
-                <small *ngIf="validarPaquete('cilindros')" class="text-danger">Seleccionar cilindros</small>
-              </div>
-              <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-                <div class="mb-1 ">
-                  <label for="marca" class="form-label">Marca</label>
-                  <select class=" form-select  form-select-sm " formControlName="marca" (ngModelChange)="modelos_autos()"
-                    [class.is-invalid]="validarPaquete('marca')">
-                    <option [defaultSelected]="" value="">Seleccione ...</option>
-                    <option value="{{marca.id}}" *ngFor="let marca of marcas">{{marca.id}}</option>
-                  </select>
-                </div>
-                <small *ngIf="validarPaquete('marca')" class="text-danger">Seleccionar marca</small>
-              </div>
-              <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-                <div class="mb-1 ">
-                  <label for="modelo" class="form-label">Modelo</label>
-                  <select class=" form-select form-select-sm " formControlName="modelo"
-                    [class.is-invalid]="validarPaquete('modelo')">
-                    <option [defaultSelected]="" value="">Seleccione ...</option>
-                    <option value="{{modelo.modelo}}" *ngFor="let modelo of arrayModelosPaquete">{{modelo.modelo}}</option>
-                  </select>
-                </div>
-                <small *ngIf="validarPaquete('modelo')" class="text-danger">Seleccionar modelo</small>
-              </div> 
-  
-            </div>
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                <!-- [disabled]="(formaPaquete.invalid)  ? 'disabled': null" -->
-                <button type="submit" [disabled]="(formaPaquete.invalid)  ? 'disabled': null" 
-                class="btn btn-sm btn-primary col-lg-3 col-md-3 col-sm-6 col-12 m-1">Guardar</button>
-              </div>
-            </div>
-  
-          </form>
-          <ng-container class="card-text">
-            <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-                <mat-slide-toggle [(ngModel)]="guardaCatalogo">Guardar en catalogo (enCatalogo: {{ enCatalogo }})</mat-slide-toggle>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end">
-                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="tipo">
-                  <mat-radio-button class="example-radio-button m-1 text-uppercase" *ngFor="let season of tipos" [value]="season" (click)="obtenerSubtotal()">
-                    {{season}}
-                  </mat-radio-button>
-                </mat-radio-group>
-              </div>
-            </div>
-            <form (ngSubmit)="AgregarActualizarDataPaquete()" [formGroup]="formaElementoP" class="mt-2">
-              <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
-                  <div class="mb-1 ">
-                    <label for="IDreferencia" class="form-label">Seleccione Refacción</label>
-                      <input type="hidden" formControlName="IDreferencia">
-                      <input type="hidden" formControlName="nombre">
-                      <input type="hidden" formControlName="index">
-                      <input type="search" class="form-control form-control-sm" [formControl]="myControlAll"
-                      (ngModelChange)="resetMycontrol()" [matAutocomplete]="auto" clean>
-                      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                        <mat-option class="tooltipM tooltipe text-capitalize" *ngFor="let option of filteredOptions | async" [value]="option" 
-                        (click)="dataOption(option)" 
-                        [matTooltip]="option.tipo" matTooltipPosition="right">
-                          {{option.nombre}}
-                        </mat-option>
-                      </mat-autocomplete>
-                  </div>
-
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-4 col-6">
-                  <div class="mb-1">
-                    <label for="cantidad" class="form-label">
-                      <ng-container *ngIf="tipo === 'MO'">Horas</ng-container>
-                      <ng-container *ngIf="tipo !== 'MO'">Cantidad</ng-container>
-                    </label>
-                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="cantidad" formControlName="cantidad"
-                      [class.is-invalid]="validarFormularioPaqueteAgregar('cantidad')" maxlength="20"
-                      (ngModelChange)="obtenerSubtotal()" min="1" >
-                    <small *ngIf="validarFormularioPaqueteAgregar('cantidad')" class="text-danger">
-                      campo requerido
-                    </small>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-4 col-6">
-                  <div class="mb-1">
-                    <label for="cantidad" class="form-label">
-                      <ng-container >Costo</ng-container>
-                    </label>
-                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
-                      [class.is-invalid]="validarFormularioPaqueteAgregar('precio')" maxlength="20"
-                      (ngModelChange)="obtenerSubtotal()" min="1" >
-                    <small *ngIf="validarFormularioPaqueteAgregar('precio')" class="text-danger">
-                      campo requerido
-                    </small>
-                  </div>
-                </div>
-                
-                <div class="col-lg-2 col-md-2 col-sm-4 col-6">
-                  <div class="mb-1">
-                    <label for="cantidad" class="form-label">
-                      <ng-container >Normal</ng-container>
-                    </label>
-                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="total" formControlName="total" [attr.disabled]="true">
-                    <small *ngIf="validarFormularioPaqueteAgregar('total')" class="text-danger">
-                      campo requerido
-                    </small>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-4 col-6">
-                  <div class="mb-1">
-                    <label for="cantidad" class="form-label">
-                      <ng-container >Flotilla</ng-container>
-                    </label>
-                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="subtotal" formControlName="subtotal" [attr.disabled]="true">
-                    <small *ngIf="validarFormularioPaqueteAgregar('subtotal')" class="text-danger">
-                      campo requerido
-                    </small>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                  <div class="mb-1">
-                    <label for="marca" class="form-label">Marca</label>
-                    <!-- (ngModelChange)="submarcas()" -->
-                    <select class="form-select form-select-sm" formControlName="marca" (ngModelChange)="submarcas('paquete')"
-                        [class.is-invalid]="validarFormularioPaqueteAgregar('nombre')" >
-                        <option [defaultSelected]="" value="">Seleccione ...</option>
-                        <option value="{{marca.id}}" *ngFor="let marca of marcas;let i = index">{{marca.id}}</option>
-                      </select>
-                    <small *ngIf="validarFormularioPaqueteAgregar('marca')" class="text-danger">
-                      campo requerido
-                    </small>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                  <div class="mb-1">
-                    <label for="modelo" class="form-label">Modelo</label>
-                    <!-- (ngModelChange)="aniosModelo()" -->
-                    <select class="form-select form-select-sm" formControlName="modelo" 
-                          [class.is-invalid]="validarFormularioPaqueteAgregar('modelo')">
-                      <option [defaultSelected]="" value="">Seleccione ...</option>
-                      <option [defaultSelected]="modelo.modelo" [value]="modelo.modelo" *ngFor="let modelo of arrayModelos" >{{modelo.modelo}}</option>
-                    </select>
-                    <small *ngIf="validarFormularioPaqueteAgregar('modelo')" class="text-danger">
-                      campo requerido
-                    </small>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="mb-1">
-                    <label for="descripcion" class="form-label">Descripción</label>
-                    <textarea class="form-control" placeholder="Escribir comentario sobre mano de obra"
-                      id="floatingTextarea2" formControlName="descripcion"
-                      [class.is-invalid]="validarManoObra('descripcion')" style="height: 100px"></textarea>
-                    <small *ngIf="validarManoObra('descripcion')" class="text-danger">
-                      campo requerido
-                    </small>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                  <button type="submit" [disabled]="(formaElementoP.invalid || formaPaquete.controls['id'].value === ('' || null))  ? 'disabled': null" 
-                  class="btn btn-primary btn-sm col-lg-3 col-md-3 col-sm-6 col-12">Colocar en paquete</button>
-                </div>
-              </div>
-            </form>
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
-               
-                <div class="row">
-                  <div class="col-lg-4 col-sm-4 col-sm-4 col-6 text-end ">
-                    <h2> <strong *ngIf="factibilidadPaquete>=55" class="text-success"> U.B: {{factibilidadPaquete }} % </strong></h2>
-                    <h2> <strong *ngIf="factibilidadPaquete<55" class="text-danger">U.B: {{factibilidadPaquete }} % </strong></h2>
-                  </div>
-                  <div class="col-lg-4 col-sm-4 col-sm-4 col-6 text-end "><h3> Normal: <strong> {{totalPaquete | monedas}} </strong></h3></div>
-                  <div class="col-lg-4 col-sm-4 col-sm-4 col-6 text-end "><h3> Flotilla: <strong> {{subtotalPaquete | monedas}} </strong></h3></div>
-                </div>
-                <div class="col-lg-12 col-sm-12 col-sm-12 col-12 text-center ">
-                  <h2><strong class="text-uppercase"> elementos de paquete</strong> </h2>
-                </div>
-              </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col" class="text-capitalize">#</th>
-                      <th scope="col" class="text-capitalize">Nombre</th>
-                      <th scope="col" class="text-capitalize">Cantidad</th>
-                      <th scope="col" class="text-capitalize">precioOriginal</th>
-                      <th scope="col" class="text-capitalize">Costo</th>
-                      <th scope="col" class="text-capitalize">Normal</th>
-                      <th scope="col" class="text-capitalize">Flotilla</th>
-                      <th scope="col" class="text-capitalize">opciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of elementosPaqueteBuild; let i = index" class="anima">
-                      <th scope="row">{{ i + 1}}</th>
-                      <td>{{item.nombre}} 
-                        <strong *ngIf="item.tipo === 'MO'" class="text-uppercase tipo-mo">{{item.tipo}}</strong>
-                        <strong *ngIf="item.tipo === 'refaccion'" class="text-uppercase tipo-refaccion">{{item.tipo}}</strong>
-                      </td>
-                      <td>{{item.cantidad}}</td>
-                      <td class="text-end">{{item.precioOriginal | monedas}}</td>
-                      <td class="text-end">{{item.precio | monedas}}</td>
-                      <td class="text-end">{{item.normal | monedas}}</td>
-                      <td class="text-end">{{item.flotilla | monedas}}</td>
-                      <td>
-                        <i class="fa fa-edit text-success btn btn-sm" (click)="cargaDataElemento(item,i)"></i>
-                        <i class="fa fa-trash text-danger btn btn-sm" (click)="eliminaElementoPaquete(i,false)"></i>
-                      </td>
-                    </tr>
-                    <tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            </ng-container>          
-        </div>
-  
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="detallesPaquete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
-      <div class="modal-content">
-        <div class="modal-header ml-3">
-          <h2 class="modal-title" >
-            Detalles de paquete <strong class="text-primary">{{datPaquete.nombre}}</strong>, Costo total: <strong class="text-primary">{{datPaquete.precio | monedas}}</strong>
-          </h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body m-3">
-          <!-- {{datPaquete | json}} -->
-          <ng-container class="card-text">
-            <div class="row">
-              <div class="col">
-                <ul class="list-group list-group-horizontal-sm row">
-                  <li class="col-lg-4 col-md-4 col-sm-6 col-12 list-group-item">Nombre: <strong>{{datPaquete.nombre}}</strong></li>
-                  <li class="col-lg-4 col-md-4 col-sm-6 col-12 list-group-item">Marca: <strong>{{datPaquete.marca}}</strong></li>
-                  <li class="col-lg-4 col-md-4 col-sm-6 col-12 list-group-item">Cilindros: <strong>{{datPaquete.cilindros}}</strong></li>
-                  <li class="col-lg-4 col-md-4 col-sm-6 col-12 list-group-item">Modelo: <strong>{{datPaquete.modelo}}</strong></li>
-                  <li class="col-lg-4 col-md-4 col-sm-6 col-12 list-group-item">Status: <strong>
-                    <label [ngSwitch]="datPaquete.status">
-                      <label *ngSwitchCase="true" class="text-success">Habilitado</label>
-                      <label *ngSwitchDefault class="text-danger">Inhabilitado</label>
-                    </label>
-                  </strong></li>
-                  <li class="col-lg-4 col-md-4 col-sm-6 col-12 list-group-item">Costo Final: <strong>{{datPaquete.precio | monedas}}</strong></li>
-                </ul>
-              </div>
-            </div><br>
-            <div class="mat-elevation-z8 table-responsive">
-              <table class="table table-borderless table-sm"
-              *ngIf="misComplementos.length!==0">
-              <thead>
-                <tr>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*.3+'px'}">#</th>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Tipo</th>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Nombre</th>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Modelo</th>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Marca</th>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Subtotal</th>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Total</th>
-                  <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*4+'px'}">Descripción</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let conjunto of misComplementos; let i = index" class="anima">
-                  <td scope="row">{{i +1}}</td>
-                  <td class="text-capitalize">{{conjunto.tipo }}</td>
-                  <td>{{conjunto.nombre}}</td>
-                  <td>{{conjunto.modelo}}</td>
-                  <td>{{conjunto.marca }}</td>
-                  <td>Cantidad: {{conjunto.cantidad }}, costo: {{conjunto.costoU }}<br>
-                    Subtotal: {{conjunto.cantidad }} * {{conjunto.costoU }}
-                  </td>
-                  <td class="text-center">{{conjunto.costo | monedas }}</td>
-                  <td class="texto-justificado"> {{conjunto.descripcion }}</td>
-                </tr>
-              </tbody>
-            </table>
-            </div>
-            <div class="col-12 text-center alert alert-info" *ngIf="misComplementos.length===0">
-              <h2 class="fw-bolder">No hay datos para mostrar</h2>
-              <i class="fas fa-exclamation fa-3x"></i>
-            </div>
+                </button>
+              </ng-container>
+            </td>
           </ng-container>
-        </div>
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
-            <div class="d-grid gap-2 col-lg-4 mx-auto mt-2 text-center">
-              <button type="button" data-bs-dismiss="modal" class="btn btn-danger">Salir</button>
-            </div>
-          </div>
-        </div>
+  
+          <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element;let indexPadre = dataIndex"
+              [attr.colspan]="columnsToDisplayWithExpand.length">
+              <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="row" style="width: 100%;">
+                  <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                    <button type="button" 
+                      class="btn btn-sm btn-success m-1">
+                      <i class="fa fa-edit fa-xs m-1"></i> Agregar elemento
+                    </button>
+                    
+                  </div> -->
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <!-- <th colspan="8" class="col text-center fs-5">U.B {{element.reporte_interno['ub'] | monedas:'%'}}</th> -->
+                          </tr>
+                          <tr>
+                            <th scope="col" class="text-capitalize">#</th>
+                            <th scope="col" class="text-capitalize">nombre</th>
+                            <th scope="col" class="text-capitalize">cantidad</th>
+                            <!-- <th scope="col" class="text-capitalize">costo</th> -->
+                            <th scope="col" class="text-capitalize">precio</th>
+                            <th scope="col" class="text-capitalize">total</th>
+                            <!-- <th scope="col" class="text-capitalize">eliminar</th> -->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of element.elementos; let indexHijo = index" class="anima">
+                            <th scope="row" class="text-center">{{indexHijo +1}}</th>
+                            <td>
+                                
+                                <strong
+                                [ngClass]="{'tipo-mo':item.tipo === 'mo','tipo-refaccion':item.tipo === 'refaccion','tipo-paquete':item.tipo === 'paquete'}">
+                                {{item.nombre | capitalizarUno}}</strong>
+                            </td>
+                            <td class="text-center"> {{item.cantidad }} </td>
+                            <!-- <td> {{item.costo | monedas}} </td> -->
+                            <td class="text-end"> {{item.precio | monedas}} </td>
+                            <td class="text-end">
+                             {{item.total | monedas}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+  
+                <!-- <pre>{{element.elementos | json}}</pre> -->
+              </div>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" class=""></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row "
+            [class.example-expanded-row]="expandedElement === element" >
+            <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
+          </tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+        <mat-paginator #paquetesPaginator role="group" [pageSizeOptions]="[10,20, 50, 100]"></mat-paginator>
       </div>
-    </div>
-  </div>
-  <div class="modal fade" id="InformacionPaquete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
-    <div class="modal-content">
-      <div class="modal-header ml-3 text-primary">
-        <h2 class="modal-title " >
-          Detalles de paquete <strong class="text-primary">{{formaPaquete.controls['nombre'].value}}</strong>
-        </h2>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body m-2">
-        <form (ngSubmit)="actualizaPaqauete()" [formGroup]="formaPaquete">
-          <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-              <div class="mb-1">
-                <label for="nombre" class="form-label">Nombre de paquete</label>
-                <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
-                  [class.is-invalid]="validarPaquete('nombre')" maxlength="20">
-                  <input type="text" formControlName="id" >
-                <small *ngIf="validarPaquete('nombre')" class="text-danger">
-                  campo requerido
-                </small>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="cilindros" class="form-label">Cilindros</label>
-                <select class=" form-select form-select-sm " formControlName="cilindros"
-                  [class.is-invalid]="validarPaquete('cilindros')">
-                  <option [defaultSelected]="" value="">Seleccione ...</option>
-                  <option value="4">4</option>
-                  <option value="6">6</option>
-                  <option value="6">8</option>
-                  <option value="10">10</option>
-                </select>
-              </div>
-              <small *ngIf="validarPaquete('cilindros')" class="text-danger">Seleccionar cilindros</small>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="marca" class="form-label">Marca</label>
-                <select class=" form-select  form-select-sm " formControlName="marca" (ngModelChange)="modelos_autos()"
-                  [class.is-invalid]="validarPaquete('marca')">
-                  <option [defaultSelected]="" value="">Seleccione ...</option>
-                  <option value="{{marca.id}}" *ngFor="let marca of marcas">{{marca.id}}</option>
-                </select>
-              </div>
-              <small *ngIf="validarPaquete('marca')" class="text-danger">Seleccionar marca</small>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="modelo" class="form-label">Modelo</label>
-                <select class=" form-select form-select-sm " formControlName="modelo"
-                  [class.is-invalid]="validarPaquete('modelo')">
-                  <option [defaultSelected]="" value="">Seleccione ...</option>
-                  <option value="{{modelo.modelo}}" *ngFor="let modelo of arrayModelos">{{modelo.modelo}}</option>
-                </select>
-              </div>
-              <small *ngIf="validarPaquete('modelo')" class="text-danger">Seleccionar modelo</small>
-            </div> 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-              <!-- [disabled]="(formaPaquete.invalid)  ? 'disabled': null" -->
-              <button type="submit" class="btn btn-sm btn-primary col-lg-6 col-md-6 col-sm-12 mb-1 "
-             >Guardar</button>
-            </div>
-      
-          </div>
-          
-      
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="actualizaElemento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
-    <div class="modal-content">
-      <div class="modal-header ml-3 text-success">
-        <h2 class="modal-title " >
-          Actulizar informacion de elemento <strong class="text-danger">{{formEditElement.controls['nombre'].value}}</strong>
-          <strong *ngIf="formEditElement.controls['tipo'].value === 'MO'" class="tipo-mo"> ( {{formEditElement.controls['tipo'].value}} )</strong>
-          <strong *ngIf="formEditElement.controls['tipo'].value !== 'MO'" class="tipo-refaccion"> ( {{formEditElement.controls['tipo'].value}} )</strong>
-        </h2>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body m-2">
-        <form (ngSubmit)="actualizaElemento()" [formGroup]="formEditElement">
-          <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-              <div class="mb-1">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
-                  [class.is-invalid]="validarelemento('nombre')" [attr.disabled]="true">
-                  <input type="hidden" formControlName="padre" >
-                  <input type="hidden" formControlName="hijo" >
-                  <input type="hidden" formControlName="tipo" >
-                  <input type="hidden" formControlName="index" >
-                <small *ngIf="validarelemento('nombre')" class="text-danger">
-                  campo requerido
-                </small>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="cantidad" class="form-label">Cantidad</label>
-                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="cantidad" formControlName="cantidad"
-                (keyup)="actualizaTotalElemento()" (change)="actualizaTotalElemento()"
-                  [class.is-invalid]="validarelemento('cantidad')">
-              </div>
-              <small *ngIf="validarelemento('cantidad')" class="text-danger">campo requerido</small>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 precio">
-                <label for="precio" class="form-label">precio</label>
-                <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" id="precio" formControlName="precio"
-                (keyup)="actualizaTotalElemento()" (change)="actualizaTotalElemento()"
-                  [class.is-invalid]="validarelemento('precio')">
-              </div>
-              <small *ngIf="validarelemento('precio')" class="text-danger">campo requerido</small>
-            </div>
-            
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="total" class="form-label">Normal</label>
-                <input type="text" class="form-control form-control-sm" id="total" formControlName="total"
-                  [class.is-invalid]="validarelemento('total')" [attr.disabled]="true">
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="subtotal" class="form-label">Flotilla</label>
-                <input type="text" class="form-control form-control-sm" id="subtotal" formControlName="subtotal"
-                  [class.is-invalid]="validarelemento('subtotal')" [attr.disabled]="true">
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="marca" class="form-label">marca</label>
-                <input type="text" class="form-control form-control-sm" id="marca" formControlName="marca"
-                  [class.is-invalid]="validarelemento('marca')">
-              </div>
-              <small *ngIf="validarelemento('marca')" class="text-danger">campo requerido</small>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-3 col-6">
-              <div class="mb-1 ">
-                <label for="modelo" class="form-label">modelo</label>
-                <input type="text" class="form-control form-control-sm" id="modelo" formControlName="modelo"
-                  [class.is-invalid]="validarelemento('modelo')">
-              </div>
-              <small *ngIf="validarelemento('modelo')" class="text-danger">campo requerido</small>
-            </div>
-
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-              <!-- [disabled]="(formaPaquete.invalid || formEditElement.controls['subtotal'].value === 0 || formEditElement.controls['total'].value === 0)  ? 'disabled': null" -->
-              <button type="submit" class="btn btn-sm btn-primary col-lg-6 col-md-6 col-sm-12 mb-1 "
-              data-bs-dismiss="modal"
-              [disabled]="(formEditElement.controls['subtotal'].value === 0 || formEditElement.controls['total'].value === 0)  ? 'disabled': null"
-             >Guardar</button>
-            </div>
-      
-          </div>
-          
-      
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+    </mat-tab>
+    <mat-tab label="Second">Content 2</mat-tab>
+    <mat-tab label="Third">Content 3</mat-tab>
+  </mat-tab-group>

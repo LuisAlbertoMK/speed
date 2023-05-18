@@ -151,7 +151,21 @@ export class ClienteComponent implements OnInit {
       sucursal:[sucursal,[Validators.required]],
       empresa:['',[]]
     })
-
+    let isFlotilla: boolean = false;
+    this.form_cliente.get('tipo').valueChanges.subscribe((tipo: string) => {
+      if (tipo === 'flotilla') {
+        // Habilitar el campo "empresa" si el tipo es flotilla
+        this.form_cliente.get('empresa').enable();
+        isFlotilla = true;
+        this.empresa_valida = (!tipo) ? false : true
+      } else {
+        // Deshabilitar el campo "empresa" si el tipo es particular
+        this.form_cliente.get('empresa').disable();
+        this.form_cliente.get('empresa').setValue('');
+        this.empresa_valida = true
+        isFlotilla = false;
+      }
+    });
   }
   crearFormEmpresa(){
     this.formaEmpresa = this.fb.group({
@@ -194,18 +208,18 @@ export class ClienteComponent implements OnInit {
     if (!data['empresa']) this.empresa_valida = false
   }
   empresa(){
-    const tipo = this.form_cliente.controls['tipo'].value
-    const empresa = this.form_cliente.controls['empresa'].value
-    // let sucursal = this.form_cliente.controls['sucursal'].value
+    // const tipo = this.form_cliente.controls['tipo'].value
+    // const empresa = this.form_cliente.controls['empresa'].value
+    // // let sucursal = this.form_cliente.controls['sucursal'].value
     
-    if (tipo === 'flotilla') {
-      this.form_cliente.controls['empresa'].enable()
-      if (!empresa) this.empresa_valida =  false
-    }else{
-      this.form_cliente.controls['empresa'].disable()
-      this.form_cliente.controls['empresa'].setValue('')
-      this.empresa_valida = true
-    } 
+    // if (tipo === 'flotilla') {
+    //   this.form_cliente.controls['empresa'].enable()
+    //   if (!empresa) this.empresa_valida =  false
+    // }else{
+    //   this.form_cliente.controls['empresa'].disable()
+    //   this.form_cliente.controls['empresa'].setValue('')
+    //   this.empresa_valida = true
+    // } 
     // (sucursal) ? this.sucursalForm = true : this.sucursalForm = false
     // console.log(this.empresa_valida);
   }

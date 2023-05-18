@@ -138,6 +138,8 @@ export class HistorialClienteComponent implements OnInit {
   campoSelect_vehiculos = 'placas'
   ordenamiento_Asc_cotizaciones: boolean = true
   campoSelect_cotizaciones = 'no_cotizacion'
+
+  reporteHistorial = {reporteCotizaciones:0,reporteRecepciones:0}
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private rutaActiva: ActivatedRoute) { }
 
 
@@ -182,7 +184,7 @@ export class HistorialClienteComponent implements OnInit {
         // vehiculos.forEach((v,index)=>{ v.index = index})
         this.dataSource.data = vehiculos
         this.ordenamiento('vehiculos','placas')
-      } 
+      }
     }, {
       onlyOnce: !this.tiemoReal
     })
@@ -191,14 +193,18 @@ export class HistorialClienteComponent implements OnInit {
       if (snapshot.exists()) {
         const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
         const filtro = cotizaciones.filter(c=>c.cliente.id === idCliente)
+        const reporteCotizaciones = {total_cotizado:0}
         filtro.map(cotizacion=>{
           cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
           cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
+          cotizacion.margen = (cotizacion.margen) ? cotizacion.margen : 25
           const {reporte, ocupados} = this._publicos.realizarOperaciones_2(cotizacion)
           cotizacion.reporte = reporte
           cotizacion.elementos = ocupados
+          //operaciones de las cotizaciones
+          reporteCotizaciones.total_cotizado += cotizacion.reporte.total
         })
-        console.log(filtro);
+        this.reporteHistorial.reporteCotizaciones = reporteCotizaciones.total_cotizado
         this.dataSourceCotizaciones.data = filtro
         this.ordenamiento('cotizaciones','no_cotizacion')
       }else{
@@ -212,12 +218,13 @@ export class HistorialClienteComponent implements OnInit {
       if (snapshot.exists()) {
         const recepciones = this._publicos.crearArreglo2(snapshot.val())
         const filtro = recepciones.filter(c=>c.cliente.id === idCliente)
-        
-        
+        const reporteRecepciones = {total_recepciones:0}
         filtro.map(recepcion=>{
           recepcion.searchName = `${recepcion.cliente.nombre} ${recepcion.cliente.apellidos}`;
           recepcion.searchPlacas = `${recepcion.vehiculo.placas}`;
+          reporteRecepciones.total_recepciones += recepcion.reporte.total
         })
+        this.reporteHistorial.reporteRecepciones = reporteRecepciones.total_recepciones
         this.dataSourceRecepciones.data = filtro
         this.ordenamiento('recepciones','id')
       } else {

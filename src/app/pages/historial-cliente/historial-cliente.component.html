@@ -125,6 +125,7 @@
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mb-1 mt-1">
     <h2>Cotizaciones realizadas</h2>
+    <h2>Total cotizado: {{reporteHistorial.reporteCotizaciones | monedas}}</h2>
     <div class="mat-elevation-z8 table-responsive">
       <table #Cotizaciones="matSort" mat-table [dataSource]="dataSourceCotizaciones" matSort multiTemplateDataRows>
     
@@ -309,6 +310,7 @@
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mb-1 mt-1">
     <h2>Recepciones realizadas</h2>
+    <h2>Total de las recepciones: {{reporteHistorial.reporteRecepciones | monedas}}</h2>
     <div class="mat-elevation-z8 table-responsive">
       <table #Recepciones="matSort" mat-table [dataSource]="dataSourceRecepciones" matSort multiTemplateDataRows>
     
