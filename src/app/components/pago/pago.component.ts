@@ -103,7 +103,8 @@ export class PagoComponent implements OnInit {
           const rcp = recepciones
             .filter(recep => {
               const status = recep.status;
-              return (status !== 'cancelado' && status !== 'espera');
+              // return (status !== 'cancelado' && status !== 'espera');
+              return (status !== 'cancelado');
             })
             .map(recep => {
               return {

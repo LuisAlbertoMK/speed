@@ -119,7 +119,11 @@
                       
                     <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
                       <div class="card border-success mb-3">
-                        <div class="card-header text-center">Flotilla</div>
+                        <div class="card-header text-center">
+                          Flotilla  <strong class="text-success" [ngClass]="{'text-danger': row.reporte['ub'] <55}">
+                            U.B estimada {{ row.reporte['ub']  | monedas:' % ' }}
+                          </strong>
+                          </div>
                         <div class="card-body text-success ">
                           <h5 class="card-title"></h5>
                           <div class="row">

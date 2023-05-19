@@ -169,11 +169,11 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
         cotizaciones.forEach((cotizacion, index)=> {
           cotizacion.formaPago = cotizacion.formaPago || '1';
           cotizacion.index = index
-          const formaPago = this.formasPago.find(f => f.id === cotizacion.formaPago);
+          const formaPago = this.formasPago.find(f => f.id === String(cotizacion.formaPago));
           if (formaPago) cotizacion.pagoName = formaPago.pago
           cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
           cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
-          
+          cotizacion.reporte = this._publicos.realizarOperaciones_2(cotizacion).reporte
         });
         
         this.cotizacionesList = this.SUCURSAL === 'Todas' 

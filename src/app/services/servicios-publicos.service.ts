@@ -21,37 +21,37 @@ const dbRef = ref(getDatabase());
 export class ServiciosPublicosService {
     formasPAgo = [
         {
-            id: 1,
+            id: '1',
             pago: 'contado',
             interes: 0,
             numero: 0
         }, {
-            id: 2,
+            id: '2',
             pago: '3 meses',
             interes: 4.49,
             numero: 3
         }, {
-            id: 3,
+            id: '3',
             pago: '6 meses',
             interes: 6.99,
             numero: 6
         }, {
-            id: 4,
+            id: '4',
             pago: '9 meses',
             interes: 9.90,
             numero: 9
         }, {
-            id: 5,
+            id: '5',
             pago: '12 meses',
             interes: 11.95,
             numero: 12
         }, {
-            id: 6,
+            id: '6',
             pago: '18 meses',
             interes: 17.70,
             numero: 18
         }, {
-            id: 7,
+            id: '7',
             pago: '24 meses',
             interes: 24.,
             numero: 24
@@ -1299,9 +1299,9 @@ export class ServiciosPublicosService {
     
         if (iva) reporteGeneral.iva = suma * .16 ;
         
-        const enCaso_meses = this.formasPAgo.find(f=>Number(f['id']) === Number(formaPago))
+        const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
         // console.log(enCaso_meses);
-        if (Number(enCaso_meses['id']) === 1) {
+        if (enCaso_meses.id === '1') {
           reporteGeneral.descuento = Number(descuento)
           if(!reporteGeneral.descuento) reporteGeneral.descuento = 0
           reporteGeneral.total -= reporteGeneral.descuento
