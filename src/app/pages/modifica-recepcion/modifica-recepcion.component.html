@@ -286,7 +286,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body m-2">
-      <app-mo-refacciones (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
+      <app-mo-refacciones [registro]="true" (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
     </div>
   </div>
 </div>

@@ -1207,6 +1207,17 @@ export class ServiciosPublicosService {
           })
           return answer
     }
+    CapitalizarUno(value: string, ...args: unknown[]): unknown {
+        if(value){
+          const cadena = String(value).toLowerCase()
+          let arr =[...cadena]
+          arr[0] = arr[0].toUpperCase()
+          return arr.join('');
+        }else{
+          return ''
+        }
+        
+      }
     realizarOperaciones_2(data:any){
         
         const  { elementos, margen_get, iva, formaPago, descuento, servicios, margen } = data

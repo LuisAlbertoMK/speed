@@ -27,6 +27,7 @@ export class MoRefaccionesComponent implements OnInit  {
 
   @Output() dataElemento : EventEmitter<any>
 
+  @Input() registro: boolean
   
   constructor(private _publicos: ServiciosPublicosService, private fb: FormBuilder) { 
     this.dataElemento = new EventEmitter()
@@ -170,48 +171,30 @@ export class MoRefaccionesComponent implements OnInit  {
 
     const updates = {};
     //realizar pregunta de si desea guardar el elemento
-    this._publicos.mensaje_pregunta('Guardar elemento').then(({respuesta})=>{
+    const costoMuestra = (nuevaInfo['costo']>0) ?  nuevaInfo['costo'] : nuevaInfo['precio']
+    const costoMuestraCostos = (nuevaInfo['costo']>0) ?  'precio sobrescrito' : 'precio'
+    this._publicos.mensaje_pregunta(`Guardar elemento con ${costoMuestraCostos} ${costoMuestra }`).then(({respuesta})=>{
       if (respuesta) {
         //verificar si es nuevo o si esta en c atalogo
         nuevaInfo['aprobado'] = true
-        
+        nuevaInfo['status'] = true
+        nuevaInfo['nombre'] = this._publicos.CapitalizarUno(nuevaInfo['nombre'] )
         if (nuevaInfo['id']) {
-
-          const cantidad = nuevaInfo['cantidad']
-          
-          const mul = (nuevaInfo['costo']>0) ? nuevaInfo['costo'] : nuevaInfo['precio']
-
-          nuevaInfo['total'] = mul * cantidad
-
           this.dataElemento.emit(  nuevaInfo )
-
           this._publicos.mensajeSwal('Se agrego elemento')
-
           this.limpiarControl()
         }else{
           //agregar nueva clave
           nuevaInfo['id'] = this._publicos.generaClave()
-         ///verificar donde se guardara (ya que se manejan dos distintas direcciones para mo / refacciones
-          // if (nuevaInfo['tipo'] === 'refaccion') {
-          //   let PC:number = nuevaInfo['precio']
-          //   if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
-          //   nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC) * 1.25)
-          //   updates[`refacciones/${nuevaInfo['id']}`] = nuevaInfo;
-          // }else{
-          //   let PC:number = nuevaInfo['precio']
-          //   if (nuevaInfo['costo']> 0) PC =  nuevaInfo['costo']
-          //   nuevaInfo['flotilla'] = Number((nuevaInfo['cantidad'] * PC))
-          //   updates[`manos_obra/${nuevaInfo['id']}`] = nuevaInfo;
-          // }
-
-          
+         //verificar donde se guardara (ya que se manejan dos distintas direcciones para mo / refacciones
+          const path = nuevaInfo['tipo'] === 'refaccion' ? 'refacciones' : 'manos_obra';
+          updates[`${path}/${nuevaInfo['id']}`] = nuevaInfo;
           // console.log(updates);
-          // update(ref(db), updates).then(()=>{
+          update(ref(db), updates).then(()=>{
             this._publicos.mensajeSwal('Se agrego elemento')
             this.dataElemento.emit( nuevaInfo )
             this.limpiarControl()
-          // this.dataElemento.emit( {data: nuevaInfo})
-          // })
+          })
         }
       }
     })

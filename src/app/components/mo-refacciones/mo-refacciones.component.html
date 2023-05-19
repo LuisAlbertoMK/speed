@@ -1,11 +1,12 @@
 <div class="card">
     <div class="card-body">
         <div class="row mb-3">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 text-end" >
+            
+            <ng-container *ngIf="registro">
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 text-end" >
                 <h4>Buscar elemento en catalogo</h4>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
-                
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
                 <input type="text" class="form-control form-control-sm" (ngModelChange)="verificaElemento()"
                      placeholder="Nombre de Refaccón / MO"
                      aria-label="Nombre"
@@ -13,13 +14,16 @@
                      [matAutocomplete]="auto"
                      >
               <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)">
-                  {{option['nombre']}}
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)"
+                [ngClass]="{'tipo-refaccion': option['tipo'] === 'refaccion','tipo-mo': option['tipo'] === 'mo'}"
+                >
+                    {{option['nombre'] | capitalizarUno}}
                 </mat-option>
               </mat-autocomplete>
             </div>
+            </ng-container>
         </div>
-        <hr>
+        
           <form [formGroup]="formElemento" (ngSubmit)="colocarElemento()">
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -33,9 +37,6 @@
                     <ng-template #elseExiste>
                         <input type="text" class="form-control form-control-sm"  id="nombre" formControlName="nombre">
                     </ng-template>
-                    
-                    
-                    <!-- <small for="elementos">elementos disponibles <strong>{{elementosConjunto.length}}</strong></small> -->
                   </div>
                 </div>
               </div>

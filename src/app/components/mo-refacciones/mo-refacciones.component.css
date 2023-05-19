@@ -1,0 +1,19 @@
+.tipo-paquete {
+    color: #5ca04a !important;
+  }
+  
+  .tipo-refaccion {
+    color: #FF8623 !important;
+  }
+  
+  .tipo-mo {
+    color: #3574FA;
+  }
+  ::ng-deep .cdk-overlay-container {
+    z-index: 1055 !important;
+  }
+
+  ::ng-deep .mat-tooltip {
+    font-size: 1em;
+    min-width: 200px;
+  }

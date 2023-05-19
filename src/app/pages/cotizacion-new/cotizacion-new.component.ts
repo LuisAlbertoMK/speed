@@ -65,6 +65,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     {valor:'total', show:'total'},
     {valor:'meses', show:'meses'},
   ]
+
+  
   camposCliente=[
     {valor: 'no_cliente', show:'# Cliente'},
     {valor: 'nombre', show:'Nombre'},
