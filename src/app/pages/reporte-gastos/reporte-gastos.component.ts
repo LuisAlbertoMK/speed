@@ -266,9 +266,7 @@ export class ReporteGastosComponent implements OnInit {
             histo.no_os = os.no_os
             histo.vehiculo = os.vehiculo
             histo.reporte = os.reporte
-            histo.descricion_reporte = {
-
-            }
+            histo.statusOrden = os.status
             aquiDocumentos.push(histo)
           });
           if(os.status === 'entregado'){

@@ -65,6 +65,8 @@
         [routerLink]="'/cotizacionNueva/'+row.id+'/cliente/null'" ></i>  
         <i class="fa fa-car-garage text-danger m-1 pointer" #tooltip="matTooltip" matTooltip="Realizar recepcion"
         [routerLink]="'/ServiciosConfirmar/'+row.id+'/cliente/null'"></i>  
+        <i class="fa fa-book text-danger m-1 pointer" #tooltip="matTooltip" matTooltip="Historial cliente"
+        [routerLink]="'/historial-cliente/clientes/'+row.id"></i>  
       </td>
     </ng-container>
     <ng-container matColumnDef="expand">

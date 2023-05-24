@@ -1,0 +1,164 @@
+import { Component, OnInit, Input, Output,EventEmitter} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import { CustomValidators } from 'src/app/validators/password.validator';
+import { AuthService } from '../../services/auth.service';
+const db = getDatabase()
+const dbRef = ref(getDatabase());
+@Component({
+  selector: 'app-registro-usuario',
+  templateUrl: './registro-usuario.component.html',
+  styleUrls: ['./registro-usuario.component.css']
+})
+export class RegistroUsuarioComponent implements OnInit {
+  
+  @Input() usuario:any={}
+
+  ROL:string; SUCURSAL:string;
+  sucursales = []
+  formUsuario: FormGroup
+  faltantes: null
+
+  roles :string[] =['SuperSU','Administrador','Almacén','Ventas','Contabilidad','Gerente','Auxiliar','tecnico']
+  // rolesGerente:string[]=['tecnico']
+  rolesMostrarnew = []
+
+  constructor(private fb: FormBuilder, private _security:EncriptadoService, private _publicos: ServiciosPublicosService,private _auth: AuthService) { }
+
+  ngOnInit(): void {
+    this.rol()
+    this.CrearFormulario()
+  }
+  rol(){
+    if (localStorage.getItem('dataSecurity')) {
+      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+      this.ROL = this._security.servicioDecrypt(variableX['rol'])
+
+      if (this.ROL === 'SuperSU') {
+        this.rolesMostrarnew = this.roles
+      }else if(this.ROL === 'Gerente') {
+        this.rolesMostrarnew = ['tecnico']
+        // this.formUsuario.controls['rol'].setValue('tecnico')
+      }
+
+      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+      // Obtenemos una lista de las sucursales 
+      const starCountRef = ref(db, `sucursales`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
+          this.sucursales = this._publicos.crearArreglo2(snapshot.val())
+          // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
+        } 
+      }, {
+        onlyOnce: true
+      })
+
+    }else{
+      this._publicos.swalToastError('No se puede cargar la informacion')
+    }
+  }
+  CrearFormulario(){
+    const sucursal = (this.SUCURSAL === 'Todas')? '' : this.SUCURSAL
+    
+    
+    this.formUsuario = this.fb.group({
+        id:['',[Validators.required]],
+        usuario:['',[Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+        correo:['',[Validators.required,Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+        confirmCorreo:['', Validators.compose([Validators.required])],
+        password:['',[Validators.required,
+          CustomValidators.patternValidator(/\d/, { hasNumber: true }),
+          CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
+          CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
+          CustomValidators.patternValidator( /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,{hasSpecialCharacters: true})]],
+        confirmPassword: ['', Validators.compose([Validators.required])],
+        sucursal:[sucursal,[Validators.required]],
+        rol:['',[Validators.required]]
+      },
+      {
+        // check whether our password and confirm password match
+        validator: [CustomValidators.passwordMatchValidator,CustomValidators.correoMatchValidator]
+      })
+
+      if(this.ROL === 'Gerente') {
+        this.formUsuario.controls['rol'].setValue('tecnico')
+      }
+      if (this.usuario.id) {
+          this.formUsuario.reset({
+            id: this.usuario.id,
+            usuario: this.usuario.usuario,
+            correo: this.usuario.correo,
+            confirmCorreo: this.usuario.correo,
+            password: this.usuario.password,
+            confirmPassword: this.usuario.password,
+            sucursal: this.usuario.sucursal,
+            rol: this.usuario.rol,
+          })
+      }
+  }
+  validarCampo(campo: string){
+    return this.formUsuario.get(campo).invalid && this.formUsuario.get(campo).touched
+  }
+  validaciones(){
+    const campos = ['usuario','correo','password','sucursal','rol']
+    let answer = {valida: true, faltantes:[], faltantesString:null}
+    const valores =  this.formUsuario.value
+    campos.forEach(element => {
+      if(!valores[element]){
+        answer.faltantes.push(element)
+        answer.valida = false
+      } 
+    });
+    answer.faltantesString = answer.faltantes.join(', ')
+    return answer
+  }
+  guardarCliente(){
+    const {valida,faltantesString } = this.validaciones()
+    if (valida) {
+      this._publicos.mensaje_pregunta('Seguro de registrar usuario').then(({respuesta})=>{
+        if (respuesta) {
+          const recupera = ['usuario','correo','password','sucursal','rol']
+          const recuperada = this._publicos.nuevaRecuperacionData(this.formUsuario.value, recupera)
+          const otra = { email:    recuperada.correo,password: recuperada.password,nombre:   recuperada.usuario }
+          const updates = { [`usuarios/${this._publicos.generaClave()}`]: recuperada };
+          if (this.usuario.id) {
+            // update(ref(db), updates)
+            //       .then(a=>{
+            //         this._publicos.swalToast('Se actualizo usuario')
+            //         const sucursal = (this.SUCURSAL === 'Todas')? '' : this.SUCURSAL
+            //         this.formUsuario.reset({sucursal})
+            //       })
+            //       .catch(err=>{
+            //         this._publicos.swalToastError('Error al registrar usuario')
+            //       })
+            //buscar la manera  de actualizar la informacion
+          }else{
+            this._auth.nuevoUsuario(otra).subscribe((token)=>{
+              if (token) {
+                update(ref(db), updates)
+                  .then(a=>{
+                    this._publicos.swalToast('Se registro usuario')
+                    const sucursal = (this.SUCURSAL === 'Todas')? '' : this.SUCURSAL
+                    this.formUsuario.reset({sucursal})
+                  })
+                  .catch(err=>{
+                    this._publicos.swalToastError('Error al registrar usuario')
+                  })
+              }else{
+                this._publicos.swalToastError('Error al generar token')
+              }
+            })
+          }
+          
+        }
+      })
+    }else{
+      this._publicos.swalToastError('LLenar datos de formulario')
+    }
+    this.faltantes = faltantesString
+  }
+
+}

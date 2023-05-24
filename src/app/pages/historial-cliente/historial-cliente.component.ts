@@ -140,6 +140,7 @@ export class HistorialClienteComponent implements OnInit {
   campoSelect_cotizaciones = 'no_cotizacion'
 
   reporteHistorial = {reporteCotizaciones:0,reporteRecepciones:0}
+  rutaAnterior:null
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private rutaActiva: ActivatedRoute) { }
 
 
@@ -167,6 +168,7 @@ export class HistorialClienteComponent implements OnInit {
   }
   acciones(){
     const idCliente = this.rutaActiva.snapshot.params['idCliente']
+    this.rutaAnterior = this.rutaActiva.snapshot.params['rutaAnterior']
     const starCountRef = ref(db, `clientes/${idCliente}`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {

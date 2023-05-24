@@ -73,6 +73,27 @@ getUserMedia({
   }
 })
 
+if (valida) {
+  this._publicos.mensaje_pregunta('Seguro de registrar usuario').then(({respuesta})=>{
+    if (respuesta) {
+      const recupera = ['usuario','correo','password','sucursal','rol']
+      const recuperada = this._publicos.nuevaRecuperacionData(this.formUsuario.value, recupera)
+      console.log(recuperada);
+      const updates = {
+        [`usuarios/${this._publicos.generaClave()}`]: recuperada
+      };
+      update(ref(db), updates)
+      .then(a=>{this._publicos.swalToast('Se registro usuario')})
+      .catch(err=>{
+        this._publicos.swalToastError('Error al registrar usuario')
+      })
+    }
+  })
+}else{
+  this._publicos.swalToastError('LLenar datos de formulario')
+}
+
+
 //para remover validaciones
     this.form_cliente.controls['nombre'].clearValidators()
     //agregar validaciones

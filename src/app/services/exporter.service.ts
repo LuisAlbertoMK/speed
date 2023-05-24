@@ -429,6 +429,8 @@ export class ExporterService {
       const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
       const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
       const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
+
+      const nuevaD = (r.statusOrden === 'entregado') ? descripcion : ''
       
       let facturaRemision = ''
       if(r.tipo === 'orden'){
@@ -439,7 +441,7 @@ export class ExporterService {
       return {
         'no O.S': r.no_os || '',
         'Sucursal': r.sucursalShow,
-        'descripcion servicio': descripcion,
+        'descripcion servicio': nuevaD,
         'Fecha registro': r.fecha_registro,
         'Referencia': r.referencia || '',
         'Concepto': r.concepto,
@@ -450,11 +452,10 @@ export class ExporterService {
         'metodo pago': r.metodoShow,
         'Monto': r.monto || 0,
         'Status': estado,
+        'Status orden': r.statusOrden,
         'Tipo': r.tipo
       }
     })
-   
-    
     // console.log(registros);
     const lieneaBlanca = {
       'no O.S': '', 
@@ -469,7 +470,8 @@ export class ExporterService {
       'Fecha registro': '', 
       'metodo pago': '', 
       'Monto': '',
-      'Status': '', 
+      'Status': '',
+      'Status orden':'',
       'Tipo': '',
     };
     
@@ -479,6 +481,7 @@ export class ExporterService {
       'sucursal':        '',
       'no O.S':           '',
       'tipo':            '',
+      'Status orden': '',
       'fecha registro':  '',
       'hora registro':   '',
       'tipo Gasto':      '',
@@ -499,6 +502,7 @@ export class ExporterService {
       'sucursal':        '',
       'no O.S':           '',
       'tipo':            '',
+      'Status orden': '',
       'fecha registro':  '',
       'hora registro':   '',
       'tipo Gasto':      '',
@@ -545,6 +549,7 @@ export class ExporterService {
         'sucursal':         r.sucursalShowm,
         'no O.S':           r.no_os || '',
         'tipo':             r.facturaRemision,
+        'Status orden': r.statusOrden,
         'fecha registro':   r.fecha_registro,
         'hora registro':    r.hora_registro,
         'tipo Gasto':       r.tipoNuevo,
@@ -587,6 +592,7 @@ export class ExporterService {
         'sucursal':         r.sucursalShow,
         'no O.S':           r.no_os || '',
         'tipo':             r.facturaRemision,
+        'Status orden': r.statusOrden,
         'fecha registro':   r.fecha_registro,
         'hora registro':    r.hora_registro,
         'tipo Gasto':       r.tipoNuevo,
