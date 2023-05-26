@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import { SucursalesService } from 'src/app/services/sucursales.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -155,32 +156,25 @@ export class ListaProblemasComponent implements OnInit {
   ordenarproblema: boolean = true
   id_registro_fix:string = null
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, 
-    private _security:EncriptadoService,) { }
+    private _security:EncriptadoService,private _sucursales:  SucursalesService) { }
 
   ngOnInit(): void {
     this.rol()
     this.crearFormulario()
-    this.consultaErrores()
-    // this.realizarCOn()
   }
   rol(){
     if (localStorage.getItem('dataSecurity')) {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      // this.acciones()
-      const starCountRef = ref(db, `sucursales`)
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-          }
-        }, {
-          onlyOnce: !this.tiempoReal
-        })
-      // this.acciones()
+
+      this._sucursales.consultaSucursales_new().then((sucursales) => {
+        this.sucursales_arr = sucursales
+        this.consultaErrores()
+      }).catch((error) => {
+        // Manejar el error si ocurre
+      });
     }
-    // console.log(this.problemas);
-    
   }
 
   realizarCOn(){

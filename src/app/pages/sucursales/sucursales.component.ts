@@ -86,7 +86,7 @@ export class SucursalesComponent implements OnInit {
   desactivaGuardar:boolean = false
   constructor(private route: ActivatedRoute,private fb: FormBuilder, 
     private _sucursal: SucursalesService, private _uploadImagen: UploadFileService,
-    private router:Router, private _security:EncriptadoService) {}
+    private router:Router, private _security:EncriptadoService, private _sucursales: SucursalesService) {}
 
   ngOnInit(): void {
     this.rol()
@@ -107,13 +107,11 @@ export class SucursalesComponent implements OnInit {
     }
   }
   listaSucursales(){
-    const starCountRef = ref(db, 'sucursales')
-        onValue(starCountRef, (snapshot) => {
-          this.listaArrarySucursales = this.crearArreglo2( snapshot.val())
-        }, 
-        {
-          onlyOnce: true
-        })
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+      this.listaArrarySucursales = sucursales
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   getInformacionSucursal(id:string){
     //priemro obtener informacion de sucursal

@@ -71,22 +71,7 @@ export class ServiciosPublicosService {
         }
     }
     convierteFecha(fecha : string) {
-        // fecha = '11/5/2022'
-        // let fechCorrecta = ''
-        // if (fecha !== '' && fecha !== undefined) {
-        //     const newC = fecha.split('/')
-        //     newC[0] = String(Number(parseInt(newC[0])))
-        //     newC[1] = String(Number(parseInt(newC[1])))
-        //     if (Number(newC[0]) < 10) {
-        //         newC[0] = '0' + newC[0]
-        //     }
-        //     if (Number(newC[1]) < 10) {
-        //         newC[1] = '0' + newC[1]
-        //     }
-        //     fechCorrecta = `${newC[0]}/${newC[1]}/${newC[2]}`
-        // }
-        // return fechCorrecta
-        if (!fecha) return '';
+     if (!fecha) return '';
   
       const [dia, mes, anio] = fecha.split('/');
       
@@ -94,115 +79,6 @@ export class ServiciosPublicosService {
       const mesFormateado = mes.padStart(2, '0');
       
       return `${diaFormateado}/${mesFormateado}/${anio}`;
-    
-    }
-    ordenamiento(arreglo : any[], campo : string, ordena : boolean) {
-        const campoSpli = campo.split('_')
-            // console.log(campoSpli);
-            let esFecha = 0,
-                esHora = 0
-            for (let indf = 0; indf < campoSpli.length; indf++) {
-                const element = campoSpli[indf];
-                if (element.toLocaleLowerCase() === 'fecha') {
-                    esFecha++
-                }
-                if (element.toLocaleLowerCase() === 'hora') {
-                    esHora++
-                }
-            }
-            let nuevoArreglo = arreglo
-            if (campo === 'status') {
-                let arreglo = [];
-                const statusArray: any = ['recibido', 'autorizado', 'terminado', 'entregado', 'cancelado']
-                for (let ind = 0; ind < statusArray.length; ind++) {
-                    const sta = statusArray[ind];
-                    for (let index = 0; index < nuevoArreglo.length; index++) {
-                        const element = nuevoArreglo[index];
-                        if (sta === element.status) {
-                            arreglo.push(element)
-                        }
-                    }
-                }
-                nuevoArreglo = arreglo
-            } else if (esFecha > 0) {
-                for (let index = 0; index < arreglo.length; index++) {
-                    const element = arreglo[index];
-                    if (element[campo] === undefined || element[campo] === '') {
-                        // console.log(`index ${index}: ${element[campo]}`);
-                        element[campo] = '00/00/00'
-                    }
-                }
-                arreglo.sort(function (a, b) {
-                    if ((a[campo] !== null && a[campo] !== undefined && a[campo] !== '') && (b[campo] !== null && b[campo] !== undefined && b[campo] !== '')) {
-                        const fechaSplit = a[campo].split('/')
-                        const fechaSplit2 = b[campo].split('/')
-                        const fecha = new Date(Number(fechaSplit[2]),Number(fechaSplit[0]),Number(fechaSplit[1]));
-                        const fecha2 = new Date(
-                            Number(fechaSplit2[2]),
-                            Number(fechaSplit2[0]),
-                            Number(fechaSplit2[1])
-                        );
-                        if (fecha > fecha2) {
-                            return 1;
-                        }
-                        if (fecha < fecha2) {
-                            return -1;
-                        }
-                    }
-                    return 0;
-                })
-                for (let index = 0; index < arreglo.length; index++) {
-                    const element = arreglo[index];
-                    if (element[campo] === '00/00/00') {
-                        element[campo] = ''
-                    }
-                }
-                nuevoArreglo = arreglo
-            } else if (esHora > 0) {
-                for (let index = 0; index < arreglo.length; index++) {
-                    const element = arreglo[index];
-                    if (element[campo] === undefined || element[campo] === '') {
-                        // console.log(`index ${index}: ${element[campo]}`);
-                        element[campo] = '00:00:00'
-                    }
-                }
-                arreglo.sort(function (a, b) {
-                    if ((a[campo] !== null && a[campo] !== undefined && a[campo] !== '') && (b[campo] !== null && b[campo] !== undefined && b[campo] !== '')) {
-                        const fechaSplit = a[campo].split(':')
-                        const fechaSplit2 = b[campo].split(':')
-                        const fecha = new Date(0,0,0,Number(fechaSplit[0]),Number(fechaSplit[1]),Number(fechaSplit[2]));
-                        const fecha2 = new Date(0,0,0,Number(fechaSplit2[0]),Number(fechaSplit2[1]),Number(fechaSplit2[2]));
-                        if (fecha > fecha2) {
-                            return 1;
-                        }
-                        if (fecha < fecha2) {
-                            return -1;
-                        }
-                    }
-                    return 0;
-                })
-                for (let index = 0; index < arreglo.length; index++) {
-                    const element = arreglo[index];
-                    if (element[campo] === '00:00:00') {
-                        element[campo] = ''
-                    }
-                }
-                nuevoArreglo = arreglo
-            } else {
-                nuevoArreglo.sort(function (a, b) {
-                    if (a[campo] > b[campo]) {
-                        return 1;
-                    }
-                    if (a[campo] < b[campo]) {
-                        return -1;
-                    }
-                    return 0;
-                })
-            }
-            if (!ordena) {
-                nuevoArreglo = nuevoArreglo.reverse()
-            }
-            return nuevoArreglo
     }
     restaFechasTaller = function (f1) {
             const dateHoy: Date = new Date()
@@ -221,123 +97,48 @@ export class ServiciosPublicosService {
             return dias;
     }
     getFechaHora(fechaa? : Date) {
+                  
+        let fechas = new Date(),fechaNumeros = '', fechaNumerosAyer, fechaManianaNumeros 
+        if (fechaa) fechas = new Date(fechaa)
+        const date: Date = fechas;
+        let ayer = fechas
+        let fecha: string, hora: string, fechaM: string 
+        const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ];
+        const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+        fecha = date.getDate() + "/" + (
+            date.getMonth() + 1
+        ) + "/" + date.getFullYear()
+        fechaNumeros = `${date.getDate()}${ (date.getMonth() + 1)}${date.getFullYear()}`
+
+        let fehaHoy = new Date()
+        if (fechaa) fehaHoy = new Date(fechaa)
         
-            // const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
-            // const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-            
-            // const date = new Date(inputDate);
-            // const fecha = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-            // const fechaNumeros = `${date.getDate()}${date.getMonth() + 1}${date.getFullYear()}`;
-            // const fechaPDF = `${dias[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
-            // const vencimiento = new Date(date.setDate(date.getDate() + 20)).toLocaleDateString();
-            // const Mes = months[date.getMonth()];
-          
-            // const ayer = new Date(date.setDate(date.getDate() - 1));
-            // ayer.setHours(0, 0, 0, 0);
-            // const fechaNumerosAyer = `${ayer.getDate()}${ayer.getMonth() + 1}${ayer.getFullYear()}`;
-          
-            // const fechaManiana = new Date(date.setDate(date.getDate() + 2));
-            // fechaManiana.setHours(0, 0, 0, 0);
-            // const fechaM = `${fechaManiana.getDate()}/${fechaManiana.getMonth() + 1}/${fechaManiana.getFullYear()}`;
-            // const fechaManianaNumeros = `${fechaManiana.getDate()}${fechaManiana.getMonth() + 1}${fechaManiana.getFullYear()}`;
-            
-            // return { 
-            //   fecha,fechaPDF,vencimiento,Mes,fechaM,
-            //   diaReturn: dias[fechaManiana.getDay()],
-            //   fechaNumeros,
-            //   ayer,
-            //   fechaNumerosAyer,
-            //   fehaHoy: inputDate,
-            //   fechaManianaNumeros,
-            //   fechaManiana
-            // };
-          
-          
-            let fechas = new Date();
-            let fechaNumeros = '',
-                fechaNumerosAyer,
-                fechaManianaNumeros
-            if (fechaa) 
-                fechas = new Date(fechaa)
-            const date: Date = fechas;
-            let ayer = fechas
-                let fecha: string,
-                    hora: string,
-                    fechaM: string
-                const months = [
-                    "enero",
-                    "febrero",
-                    "marzo",
-                    "abril",
-                    "mayo",
-                    "junio",
-                    "julio",
-                    "agosto",
-                    "septiembre",
-                    "octubre",
-                    "noviembre",
-                    "diciembre"
-                ];
-                const dias = [
-                    'Domingo',
-                    'Lunes',
-                    'Martes',
-                    'Miércoles',
-                    'Jueves',
-                    'Viernes',
-                    'Sábado'
-                ];
-                fecha = date.getDate() + "/" + (
-                    date.getMonth() + 1
-                ) + "/" + date.getFullYear()
-                fechaNumeros = `${date.getDate()}${ (date.getMonth() + 1)}${date.getFullYear()}`
+        let fechaManiana = new Date()
+        fehaHoy.setHours(0, 0, 0, 0)
 
-                let fehaHoy = new Date()
+        fechaManiana.setDate(date.getDate() + 1)
+        fechaManiana.setHours(0, 0, 0, 0)
+        fechaM = fechaManiana.getDate() + "/" + (
+            fechaManiana.getMonth() + 1
+        ) + "/" + fechaManiana.getFullYear()
 
-                if (fechaa) {
-                    fehaHoy = new Date(fechaa)
-                }
-                let fechaManiana = new Date()
-                fehaHoy.setHours(0, 0, 0, 0)
+        hora = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+        const numeroDia = new Date(date).getDay();
+        const numeroManiana = new Date(fechaManiana).getDay();
+        const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+        const n = new Date(date)
+        n.setDate(date.getDate() + 20);
+        const vencimiento = n.toLocaleDateString()
+        const Mes = months[date.getMonth()]
+        ayer.setDate(date.getDate() - 1)
+        ayer.setHours(0, 0, 0, 0)
+        fechaNumerosAyer = `${ayer.getDate()}${ (ayer.getMonth() + 1)}${ayer.getFullYear()}`
+        fechaManianaNumeros = `${fechaManiana.getDate()}${ (
+            fechaManiana.getMonth() + 1
+        )}${fechaManiana.getFullYear()}`
 
-                fechaManiana.setDate(date.getDate() + 1)
-                fechaManiana.setHours(0, 0, 0, 0)
-                fechaM = fechaManiana.getDate() + "/" + (
-                    fechaManiana.getMonth() + 1
-                ) + "/" + fechaManiana.getFullYear()
-
-                hora = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
-                const numeroDia = new Date(date).getDay();
-                const numeroManiana = new Date(fechaManiana).getDay();
-                const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
-                const n = new Date(date)
-                n.setDate(date.getDate() + 20);
-                const vencimiento = n.toLocaleDateString()
-                const Mes = months[date.getMonth()]
-                ayer.setDate(date.getDate() - 1)
-                ayer.setHours(0, 0, 0, 0)
-                fechaNumerosAyer = `${ayer.getDate()}${ (ayer.getMonth() + 1)}${ayer.getFullYear()}`
-                fechaManianaNumeros = `${fechaManiana.getDate()}${ (
-                    fechaManiana.getMonth() + 1
-                )}${fechaManiana.getFullYear()}`
-                // console.log(`${dias[numeroDia]}`);
-                const diaReturn = dias[numeroManiana]
-                return {
-                    fecha,
-                    hora,
-                    fechaPDF,
-                    vencimiento,
-                    Mes,
-                    fechaM,
-                    diaReturn,
-                    numeroManiana,
-                    fechaNumeros,
-                    ayer,
-                    fechaNumerosAyer,
-                    fehaHoy,
-                    fechaManianaNumeros,
-                    fechaManiana
-                }
+        const diaReturn = dias[numeroManiana]
+        return {fecha,hora,fechaPDF,vencimiento,Mes,fechaM,diaReturn,numeroManiana,fechaNumeros,ayer,fechaNumerosAyer,fehaHoy,fechaManianaNumeros,fechaManiana}
     }
     fechaDiasPlus(fecha : Date, diasSum? : number, tipo? : string) {
                 let diasPlus = new Date(fecha)
@@ -355,109 +156,6 @@ export class ServiciosPublicosService {
                 }
                 return diasPlus
     }
-    getMesFecha(
-                fecha : Date,
-                operacion : string,
-                tipo : string,
-                numero : number,
-                hora? : string,
-                ayer?:boolean
-            ) {
-                if (hora) {} else {
-                    fecha.setHours(0, 0, 0, 0)
-                }
-                let FechaActual = new Date(fecha),
-                    FechaActual2 = new Date(fecha)
-
-                let diasMes = 0,
-                    fecha1: Date,
-                    fecha2: Date
-
-                if (operacion === 'suma') {
-                    if (tipo === 'dia') {
-                        FechaActual.setDate(fecha.getDate())
-                        fecha1 = FechaActual
-
-                        FechaActual2.setDate(fecha.getDate() + numero)
-                        fecha2 = FechaActual2
-                    } else if (tipo === 'mes') {
-
-                        FechaActual2.setMonth(fecha.getMonth() + numero)
-
-                        diasMes = new Date(FechaActual2.getFullYear(), FechaActual2.getMonth() + 1, 0).getDate()
-                        fecha1 = new Date(
-                            FechaActual.getFullYear(),
-                            FechaActual.getMonth() - numero,
-                            1
-                        )
-                        fecha2 = new Date(
-                            FechaActual.getFullYear(),
-                            FechaActual.getMonth() - numero,
-                            diasMes
-                        )
-
-                    } else if (tipo === 'anio') {
-                        FechaActual.setFullYear(fecha.getFullYear() + numero)
-                        fecha1 = new Date(FechaActual.getFullYear(), 0, 1)
-                        fecha2 = new Date(FechaActual.getFullYear(), 11, 31)
-                    }
-                } else {
-                    // console.log('aqui');
-
-                    if (tipo === 'dia') {
-                        FechaActual.setDate(fecha.getDate() - numero)
-                        FechaActual.setHours(0, 0, 0, 0)
-                        fecha1 = FechaActual
-
-                        // FechaActual2.setDate(fecha.getDate())
-                        if (ayer) {
-                            FechaActual2.setDate(fecha.getDate() - numero)
-                        }else{
-                            FechaActual2.setDate(fecha.getDate())
-                        }
-
-                        FechaActual2.setHours(23, 59, 59, 0)
-                        fecha2 = FechaActual2
-
-                    } else if (tipo === 'mes') {
-
-                        FechaActual2.setMonth(fecha.getMonth() - numero)
-
-                        diasMes = new Date(FechaActual2.getFullYear(), FechaActual2.getMonth() + 1, 0).getDate()
-                        fecha1 = new Date(
-                            FechaActual.getFullYear(),
-                            FechaActual.getMonth() - numero,
-                            1, 0, 0, 0, 0
-                        )
-                        fecha2 = new Date(
-                            FechaActual.getFullYear(),
-                            FechaActual.getMonth() - numero,
-                            diasMes, 23, 59, 59, 999
-                        )
-
-                    } else if (tipo === 'anio') {
-
-                        FechaActual.setFullYear(fecha.getFullYear() - numero)
-                        fecha1 = new Date(FechaActual.getFullYear(), 0, 1, 0, 0, 0, 0)
-                        fecha2 = new Date(FechaActual.getFullYear(), 11, 31, 23, 59, 59, 999)
-                    }
-                }
-
-                // diasMes =new Date(MesActual.getFullYear(), MesActual.getMonth(), 0).getDate()
-                // fecha1 = new Date(MesActual.getFullYear(), MesActual.getMonth(), 1) fecha2 =
-                // new Date(MesActual.getFullYear(), MesActual.getMonth(), diasMes)
-
-                return {diasMes, fecha1, fecha2}
-    }
-    // convierte_fechaString_personalizada(fecha : Date) {
-    //             const f1 = new Date(fecha);
-    //             const hora = new Date(fecha);
-    //             let string_fecha = '', stringHora='',stringNumeros='', fechaString= new Date(fecha)
-    //             string_fecha = `${f1.getDate()}/${f1.getMonth() + 1}/${f1.getFullYear()}`
-    //             stringHora =`${hora.getHours()}:${hora.getMinutes()}:${hora.getSeconds()}`
-    //             stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`
-    //             return {string_fecha,stringHora,fechaString,stringNumeros,hora}
-    // }
     convierte_fechaString_personalizada(fecha: Date) {
         const f1 = new Date(fecha);
         const hora = new Date(fecha);
@@ -466,17 +164,6 @@ export class ServiciosPublicosService {
         const stringNumeros = `${f1.getDate()}${f1.getMonth()+ 1}${f1.getFullYear()}`;
         return {string_fecha, stringHora, fechaString: new Date(fecha), stringNumeros, hora};
       }
-      
-    // obtenerFechaCompleta(fecha : any) {
-    //             const fec = fecha.split('/')
-    //             const nueva = `${fec[1]}/${fec[0]}/${fec[2]}`
-    //             const date: Date = new Date(nueva);
-    //             const months = [ "Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre" ];
-    //             const dias = [ 'Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-    //             const numeroDia = new Date(date).getDay();
-    //             const fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
-    //             return fechaPDF
-    // }
     obtenerFechaCompleta(fecha: string): string {
         const [day, month, year] = fecha.split('/');
         const date = new Date(+year, +month - 1, +day);
@@ -489,22 +176,20 @@ export class ServiciosPublicosService {
       }
       
     construyeFechaString(fecha : string, hora? : string) {
-                const splitFecha = fecha.split('/')
-                let horaNew = '00:00:00'
-                if (hora) 
-                    horaNew = hora
-                const splitHora = horaNew.split(':')
-                const fechaNew = new Date(
-                    Number(splitFecha[2]),
-                    Number(splitFecha[1]) - 1,
-                    Number(splitFecha[0]),
-                    Number(splitHora[0]),
-                    Number(splitHora[1]),
-                    Number(splitHora[1]),
-                    0
-                )
-
-                return fechaNew
+        const splitFecha = fecha.split('/')
+        let horaNew = '00:00:00'
+        if (hora) horaNew = hora
+        const splitHora = horaNew.split(':')
+        const fechaNew = new Date(
+            Number(splitFecha[2]),
+            Number(splitFecha[1]) - 1,
+            Number(splitFecha[0]),
+            Number(splitHora[0]),
+            Number(splitHora[1]),
+            Number(splitHora[1]),
+            0
+        )
+     return fechaNew
     }
     fechaNueva(fecha) {
         const date: Date = new Date(fecha);
@@ -514,197 +199,176 @@ export class ServiciosPublicosService {
         return `${days[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
     }
     
-   
-    
     convierteALetrasCantidad(num) {
-                    let unidad,
-                        decena,
-                        centenas,
-                        cientos
-                    function Unidades(num) {
+        let unidad,
+            decena,
+            centenas,
+            cientos
+        function Unidades(num) {
+            switch (num) {
+                case 1:
+                    return 'UN';
+                case 2:
+                    return 'DOS';
+                case 3:
+                    return 'TRES';
+                case 4:
+                    return 'CUATRO';
+                case 5:
+                    return 'CINCO';
+                case 6:
+                    return 'SEIS';
+                case 7:
+                    return 'SIETE';
+                case 8:
+                    return 'OCHO';
+                case 9:
+                    return 'NUEVE';
+        }
 
-                        switch (num) {
-                            case 1:
-                                return 'UN';
-                            case 2:
-                                return 'DOS';
-                            case 3:
-                                return 'TRES';
-                            case 4:
-                                return 'CUATRO';
-                            case 5:
-                                return 'CINCO';
-                            case 6:
-                                return 'SEIS';
-                            case 7:
-                                return 'SIETE';
-                            case 8:
-                                return 'OCHO';
-                            case 9:
-                                return 'NUEVE';
-                        }
-
-                        return '';
-                    } //Unidades()
-                    function Decenas(num) {
-
-                        decena = Math.floor(num / 10);
-                        unidad = num - (decena * 10);
-
-                        switch (decena) {
-                            case 1:
-                                switch (unidad) {
-                                    case 0:
-                                        return 'DIEZ'
-                                    case 1:
-                                        return 'ONCE'
-                                    case 2:
-                                        return 'DOCE'
-                                    case 3:
-                                        return 'TRECE'
-                                    case 4:
-                                        return 'CATORCE'
-                                    case 5:
-                                        return 'QUINCE'
-                                    default:
-                                        return 'DIECI' + Unidades(unidad);
-                                }
-                            case 2:
-                                switch (unidad) {
-                                    case 0:
-                                        return 'VEINTE';
-                                    default:
-                                        return 'VEINTI ' + Unidades(unidad);
-                                }
-                            case 3:
-                                return DecenasY('TREINTA', unidad);
-                            case 4:
-                                return DecenasY('CUARENTA', unidad);
-                            case 5:
-                                return DecenasY('CINCUENTA', unidad);
-                            case 6:
-                                return DecenasY('SESENTA', unidad);
-                            case 7:
-                                return DecenasY('SETENTA', unidad);
-                            case 8:
-                                return DecenasY('OCHENTA', unidad);
-                            case 9:
-                                return DecenasY('NOVENTA', unidad);
-                            case 0:
-                                return Unidades(unidad);
-                        }
-                    } //Unidades()
-                    function DecenasY(strSin, numUnidades) {
-                        if (numUnidades > 0) 
-                            return strSin + ' Y ' + Unidades(numUnidades)
-
-                        return strSin;
-                    } //DecenasY()
-                    function Centenas(num) {
-                        centenas = Math.floor(num / 100);
-                        let decenas = num - (centenas * 100);
-
-                        switch (centenas) {
-                            case 1:
-                                if (decenas > 0) 
-                                    return 'CIENTO ' + Decenas(decenas);
-                                return 'CIEN';
-                            case 2:
-                                return 'DOSCIENTOS ' + Decenas(decenas);
-                            case 3:
-                                return 'TRESCIENTOS ' + Decenas(decenas);
-                            case 4:
-                                return 'CUATROCIENTOS ' + Decenas(decenas);
-                            case 5:
-                                return 'QUINIENTOS ' + Decenas(decenas);
-                            case 6:
-                                return 'SEISCIENTOS ' + Decenas(decenas);
-                            case 7:
-                                return 'SETECIENTOS ' + Decenas(decenas);
-                            case 8:
-                                return 'OCHOCIENTOS ' + Decenas(decenas);
-                            case 9:
-                                return 'NOVECIENTOS ' + Decenas(decenas);
-                        }
-
-                        return Decenas(decenas);
-                    } //Centenas()
-                    function Seccion(num, divisor, strSingular, strPlural) {
-                        cientos = Math.floor(num / divisor)
-                        let resto = num - (cientos * divisor)
-
-                        let letras = '';
-
-                        if (cientos > 0) 
-                            if (cientos > 1) 
-                                letras = Centenas(cientos) + ' ' + strPlural;
-                            else 
-                                letras = strSingular;
-                    
-                        if (resto > 0) 
-                            letras += ' ';
-                        
-                        return letras;
-                    } //Seccion()
-                    function Miles(num) {
-                        let divisor = 1000;
-                        let cientos = Math.floor(num / divisor)
-                        let resto = num - (cientos * divisor)
-
-                        let strMiles = Seccion(num, divisor, 'UN MIL', 'MIL');
-                        let strCentenas = Centenas(resto);
-
-                        if (strMiles == '') 
-                            return strCentenas;
-                        
-                        return strMiles + ' ' + strCentenas;
-                    } //Miles()
-                    function Millones(num) {
-                        let divisor = 1000000;
-                        let cientos = Math.floor(num / divisor)
-                        let resto = num - (cientos * divisor)
-
-                        let strMillones = Seccion(num, divisor, 'UN MILLON DE', 'MILLONES DE')
-                        let strMiles = Miles(resto);
-
-                        if (strMillones == '') 
-                            return strMiles;
-                        
-                        return strMillones + ' ' + strMiles;
-                    } //Millones()
-                    function NumeroALetras(num) {
-                        var data = {
-                            numero: num,
-                            enteros: Math.floor(num),
-                            centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
-                            letrasCentavos: '',
-                            letrasMonedaPlural: 'PESOS M.N', //“PESOS”, 'Dólares', 'Bolívares', 'etcs'
-                            letrasMonedaSingular: 'PESO M.N', //“PESO”, 'Dólar', 'Bolivar', 'etc'
-
-                            letrasMonedaCentavoPlural: 'CENTAVOS',
-                            letrasMonedaCentavoSingular: 'CENTAVO'
-                        };
-
-                        if (data.centavos > 0) {
-                            data.letrasCentavos = 'CON ' + (
-                                function () {
-                                    if (data.centavos == 1) 
-                                        return Millones(data.centavos) + ' ' + data.letrasMonedaCentavoSingular;
-                                    else 
-                                        return Millones(data.centavos) + ' ' + data.letrasMonedaCentavoPlural;
-                                    }
-                                )();
-                        };
-
-                        if (data.enteros == 0) 
-                            return 'CERO ' + data.letrasMonedaPlural + ' ' + data.letrasCentavos;
-                        if (data.enteros == 1) 
-                            return Millones(data.enteros) + ' ' + data.letrasMonedaSingular + ' ' + data.letrasCentavos;
+        return '';
+        } //Unidades()
+        function Decenas(num) {
+            decena = Math.floor(num / 10);
+            unidad = num - (decena * 10);
+            switch (decena) {
+                case 1:
+                    switch (unidad) {
+                        case 0:
+                            return 'DIEZ'
+                        case 1:
+                            return 'ONCE'
+                        case 2:
+                            return 'DOCE'
+                        case 3:
+                            return 'TRECE'
+                        case 4:
+                            return 'CATORCE'
+                        case 5:
+                            return 'QUINCE'
+                        default:
+                            return 'DIECI' + Unidades(unidad);
+                    }
+                case 2:
+                    switch (unidad) {
+                        case 0:
+                            return 'VEINTE';
+                        default:
+                            return 'VEINTI ' + Unidades(unidad);
+                    }
+                case 3:
+                    return DecenasY('TREINTA', unidad);
+                case 4:
+                    return DecenasY('CUARENTA', unidad);
+                case 5:
+                    return DecenasY('CINCUENTA', unidad);
+                case 6:
+                    return DecenasY('SESENTA', unidad);
+                case 7:
+                    return DecenasY('SETENTA', unidad);
+                case 8:
+                    return DecenasY('OCHENTA', unidad);
+                case 9:
+                    return DecenasY('NOVENTA', unidad);
+                case 0:
+                    return Unidades(unidad);
+            }
+        } //Unidades()
+        function DecenasY(strSin, numUnidades) {
+            if (numUnidades > 0) 
+                return strSin + ' Y ' + Unidades(numUnidades)
+            return strSin;
+        } //DecenasY()
+        function Centenas(num) {
+            centenas = Math.floor(num / 100);
+            let decenas = num - (centenas * 100);
+            switch (centenas) {
+                case 1:
+                    if (decenas > 0) 
+                        return 'CIENTO ' + Decenas(decenas);
+                    return 'CIEN';
+                case 2:
+                    return 'DOSCIENTOS ' + Decenas(decenas);
+                case 3:
+                    return 'TRESCIENTOS ' + Decenas(decenas);
+                case 4:
+                    return 'CUATROCIENTOS ' + Decenas(decenas);
+                case 5:
+                    return 'QUINIENTOS ' + Decenas(decenas);
+                case 6:
+                    return 'SEISCIENTOS ' + Decenas(decenas);
+                case 7:
+                    return 'SETECIENTOS ' + Decenas(decenas);
+                case 8:
+                    return 'OCHOCIENTOS ' + Decenas(decenas);
+                case 9:
+                    return 'NOVECIENTOS ' + Decenas(decenas);
+            }
+            return Decenas(decenas);
+        } //Centenas()
+        function Seccion(num, divisor, strSingular, strPlural) {
+            cientos = Math.floor(num / divisor)
+            let resto = num - (cientos * divisor)
+            let letras = '';
+            if (cientos > 0) 
+                if (cientos > 1) 
+                    letras = Centenas(cientos) + ' ' + strPlural;
+                else 
+                    letras = strSingular;
+            if (resto > 0) 
+                letras += ' ';
+            return letras;
+        } //Seccion()
+        function Miles(num) {
+            let divisor = 1000;
+            let cientos = Math.floor(num / divisor)
+            let resto = num - (cientos * divisor)
+            let strMiles = Seccion(num, divisor, 'UN MIL', 'MIL');
+            let strCentenas = Centenas(resto);
+            if (strMiles == '') 
+                return strCentenas;
+            return strMiles + ' ' + strCentenas;
+        } //Miles()
+        function Millones(num) {
+            let divisor = 1000000;
+            let cientos = Math.floor(num / divisor)
+            let resto = num - (cientos * divisor)
+            let strMillones = Seccion(num, divisor, 'UN MILLON DE', 'MILLONES DE')
+            let strMiles = Miles(resto);
+            if (strMillones == '') 
+                return strMiles;
+            return strMillones + ' ' + strMiles;
+        } //Millones()
+        function NumeroALetras(num) {
+            let data = {
+                numero: num,
+                enteros: Math.floor(num),
+                centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
+                letrasCentavos: '',
+                letrasMonedaPlural: 'PESOS M.N', //“PESOS”, 'Dólares', 'Bolívares', 'etcs'
+                letrasMonedaSingular: 'PESO M.N', //“PESO”, 'Dólar', 'Bolivar', 'etc'
+                letrasMonedaCentavoPlural: 'CENTAVOS',
+                letrasMonedaCentavoSingular: 'CENTAVO'
+            };
+            if (data.centavos > 0) {
+                data.letrasCentavos = 'CON ' + (
+                    function () {
+                        if (data.centavos == 1) 
+                            return Millones(data.centavos) + ' ' + data.letrasMonedaCentavoSingular;
                         else 
-                            return Millones(data.enteros) + ' ' + data.letrasMonedaPlural + ' ' + data.letrasCentavos;
+                            return Millones(data.centavos) + ' ' + data.letrasMonedaCentavoPlural;
                         }
-                    //NumeroALetras()
-                    return NumeroALetras(num)
+                    )();
+            };
+            if (data.enteros == 0) 
+                return 'CERO ' + data.letrasMonedaPlural + ' ' + data.letrasCentavos;
+            if (data.enteros == 1) 
+                return Millones(data.enteros) + ' ' + data.letrasMonedaSingular + ' ' + data.letrasCentavos;
+            else 
+                return Millones(data.enteros) + ' ' + data.letrasMonedaPlural + ' ' + data.letrasCentavos;
+            }
+        //NumeroALetras()
+        return NumeroALetras(num)
     }
     
     redondeado(value : number, simbolo? : string) {
@@ -871,32 +535,6 @@ export class ServiciosPublicosService {
         info.normal = suma * (1 + (margen / 100))
         return info
     }
-    isObject(valor) {
-        return valor instanceof Object;
-    }
-    async recuperaDataArreglo(campos : any[], data : any) {
-                                    let Necesaria = {}
-                                    const camposRecuperar = campos
-                                    const camposInfo = Object.keys(data)
-                                    for (let index = 0; index < camposRecuperar.length; index++) {
-                                        const recupera = camposRecuperar[index];
-                                        for (let indexcliente = 0; indexcliente < camposInfo.length; indexcliente++) {
-                                            const cli = camposInfo[indexcliente];
-                                            if (recupera === cli) {
-                                                Necesaria[recupera] = data[recupera]
-                                            }
-                                            // (cli === recupera)? Necesaria[recupera] = data[recupera]: ''
-                                        }
-                                    }
-                                    return Necesaria
-    }
-    recuperaData(campos : any[], data : any) {
-                                    let Necesaria = {}
-                                    campos.forEach(element => {
-                                        Necesaria[element] = data[element]
-                                    });
-                                    return Necesaria
-    }
     nuevaRecuperacionData(data: any, camposRecuperar: any[]) {
         const necessary: any = {};
         camposRecuperar.forEach((recupera) => {
@@ -922,34 +560,32 @@ export class ServiciosPublicosService {
         return arreglo;
     }
     mensajeCorrecto(mensaje : string) {
-                                    const Toast = Swal.mixin({
-                                        toast: true,
-                                        position: 'center',
-                                        showConfirmButton: false,
-                                        timer: 1500,
-                                        timerProgressBar: true,
-                                        didOpen: (toast) => {
-                                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                        }
-                                    })
-
-                                    Toast.fire({icon: 'success', title: mensaje})
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        Toast.fire({icon: 'success', title: mensaje})
     }
     mensajeIncorrecto(mensaje : string) {
-                                    const Toast = Swal.mixin({
-                                        toast: true,
-                                        position: 'center',
-                                        showConfirmButton: false,
-                                        timer: 1500,
-                                        timerProgressBar: true,
-                                        didOpen: (toast) => {
-                                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                        }
-                                    })
-
-                                    Toast.fire({icon: 'error', title: mensaje});
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'center',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        Toast.fire({icon: 'error', title: mensaje});
     }
     async mensaje_pregunta(mensaje) {
         let mensajeAnswer = { respuesta: false }
@@ -974,70 +610,17 @@ export class ServiciosPublicosService {
     }
    
     SwalTipoSobrescrito(costo : number) {
-                                            Swal.fire({
-                                                title: 'Costo de paquete sobrescrito',
-                                                icon: 'info',
-                                                html: `en <strong>${costo}</strong>`,
-                                                showCloseButton: true,
-                                                showCancelButton: true,
-                                                focusConfirm: false,
-                                                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
-                                                confirmButtonAriaLabel: 'Thumbs up, great!'
-                                            })
-    }
-    mensajeElemento(info : any) {
-        Swal.fire(
-        {title: '<h2 class="fw-bold text-uppercase">Información confidencial</h2>', html: `
-      <h2 >${status}</h2>
-      <table class="table">
-        <tbody>
-        <tr>
-            <th class="text-start" scope="row">Nombre</th>
-            <td class="text-start">${info.nombre}</td>
-          </tr>
-          <tr>
-            <th class="text-start" scope="row">Cantidad</th>
-            <td class="text-start">${info.cantidad}</td>
-          </tr>
-          <tr>
-            <th class="text-start" scope="row">Costo</th>
-            <td class="text-start">${info.costo}</td>
-          </tr>
-          <tr>
-            <th class="text-start" scope="row">Precio</th>
-            <td class="text-start">${info.precio}</td>
-          </tr>
-          <tr>
-            <th class="text-start" scope="row">Flotilla</th>
-            <td class="text-start">${info.flotilla}</td>
-          </tr>
-          
-        </tbody>
-      </table>
-      `})
-    }
-    restaFechas = function (f1 : any, f2 : any) {
-        var aFecha1 = f1.split('/');
-        var aFecha2 = f2.split('/');
-        var fFecha1 = Date.UTC(aFecha1[2], aFecha1[1] - 1, aFecha1[0]);
-        var fFecha2 = Date.UTC(aFecha2[2], aFecha2[1] - 1, aFecha2[0]);
-        var dif = fFecha2 - fFecha1;
-        var dias = Math.floor(dif / (1000 * 60 * 60 * 24));
-        return dias;
-    }
-
-    obtenerFechaJava(fecha) {
-        const fecha_string = this.convierteFecha(fecha)
-        const split_string = fecha_string.split('/')
-        const fecha_return = new Date(
-            Number(split_string[2]),
-            Number(split_string[1]) - 1,
-            Number(split_string[0])
-        )
-        return fecha_return
-    }
-                                        
-                                            
+        Swal.fire({
+            title: 'Costo de paquete sobrescrito',
+            icon: 'info',
+            html: `en <strong>${costo}</strong>`,
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: '<i class="fa fa-thumbs-up"></i> Great!',
+            confirmButtonAriaLabel: 'Thumbs up, great!'
+        })
+    }                                        
     mensaje(mensaje : string, tipo : number) {
         switch (tipo) {
             case 1:
@@ -1050,7 +633,6 @@ export class ServiciosPublicosService {
                 break;
         }
     }
-
     mensajeSwal(mensaje : string) {
         Swal.fire({
             position: 'center', icon: 'success', title: mensaje, showConfirmButton: true,
@@ -1063,80 +645,6 @@ export class ServiciosPublicosService {
             // timer: 1500
         })
     }
-
-                                            generaCamposReporte(data : any[], busqueda : string) {
-                                                let tiempoEstancia = 0,
-                                                    horas_estancia = 0,
-                                                    ticket = 0,
-                                                    horas_totales = 0
-                                                let arreglo = []
-
-                                                if (busqueda.toLowerCase() !== 'cancelado') {
-                                                    arreglo = data.filter(o => o['status'] !== 'cancelado')
-                                                } else {
-                                                    arreglo = data.filter(o => o['status'] === 'cancelado')
-                                                }
-
-                                                let reporte = {
-                                                    horas_estancia: 0,
-                                                    ticket: 0,
-                                                    tiempoEstancia: 0,
-                                                    horas_totales: 0
-                                                }
-                                                arreglo.map(d => {
-                                                    // console.log(d['id']);
-                                                    ticket = ticket + d['desgloce'].total
-                                                    if (d['diasSucursal']) {
-                                                        tiempoEstancia += d['diasSucursal']
-                                                    }
-                                                    // para obtener la fecha en formato string y comparar RECIBIDO
-                                                    const aqui = d['fecha_recibido'].split('/')
-                                                        const aqui_time = d['hora_recibido'].split(':')
-                                                            const fec_Recibido = new Date(
-                                                                    aqui[2],
-                                                                    aqui[1] - 1,
-                                                                    aqui[0],
-                                                                    aqui_time[0],
-                                                                    aqui_time[1],
-                                                                    aqui_time[2]
-                                                                )
-
-                                                                // para obtener la fecha en formato string y comparar Entregado
-                                                                let aqui_entregado,
-                                                                    aqui_time_entregado,
-                                                                    fec_entregado
-                                                                if (d['fecha_entregado']) {
-                                                                    aqui_entregado = d['fecha_entregado'].split('/')
-                                                                    aqui_time_entregado = d['hora_entregado'].split(':')
-                                                                    fec_entregado = new Date(
-                                                                        aqui_entregado[2],
-                                                                        aqui_entregado[1] - 1,
-                                                                        aqui_entregado[0],
-                                                                        aqui_time_entregado[0],
-                                                                        aqui_time_entregado[1],
-                                                                        aqui_time_entregado[2]
-                                                                    )
-                                                                } else {
-                                                                    fec_entregado = new Date()
-                                                                }
-
-                                                                if ((fec_Recibido instanceof Date) && (fec_entregado instanceof Date)) {
-                                                                    let diferencia = (fec_entregado.getTime() - fec_Recibido.getTime()) / 1000
-                                                                    diferencia /= (60 * 60)
-                                                                    horas_estancia += Math.abs(Math.round(diferencia))
-                                                                    horas_totales += horas_estancia
-                                                                }
-                                                            })
-                                                            if (arreglo.length) {
-                                                                reporte.horas_estancia = tiempoEstancia
-                                                                reporte.tiempoEstancia = tiempoEstancia / 24
-                                                                reporte.horas_totales = tiempoEstancia
-                                                                reporte.ticket = ticket / arreglo.length
-                                                            }
-
-                                                            return reporte
-                                                        }
-
     generaClave() {
         return push(child(ref(db), 'posts')).key
     }
@@ -1422,67 +930,20 @@ export class ServiciosPublicosService {
         }
         return correos;
     }
-    // async generaNombreCotizacion(infoSucursal:string,rol:string){
-    //     let mes = ''; let sucursal= '', nuevoRol:string ='',secuencia=''; let ceros = '', cuantas:number = 0
-    //     let no_cotizacion:string = ''
-    //     // const timeReques = await this._publicos.getFechaHora()
-      
-    //     const date: Date = new Date()
-      
-    //     const anio = String(date.getFullYear())
-    //     let muestra = anio.slice(anio.length-2,anio.length)
-      
-    //     if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
-    //     await get(child(dbRef, `cotizacionesRealizadas`)).then((snapshot) => {
-    //       if (snapshot.exists()) {
-    //         let nuev:any[] = this.crearArreglo2(snapshot.val())
-    //         cuantas = nuev.length
-    //       }
-    //     }).catch((error) => {
-    //       // console.error(error);
-    //     });
-    //     const inicio = String(cuantas).length
-    //     const final = 5
-    //     for (let index = inicio; index < final ; index++) {
-    //       ceros = `${ceros}0`
-    //     }
-    //     secuencia = `${ceros}${cuantas + 1}`
-    //     const nombreSucursal:string = infoSucursal      
-    //     sucursal = nombreSucursal.slice(0,2).toUpperCase() 
-    //     const rolString:string = rol      
-    //     nuevoRol = rolString.slice(0,2).toUpperCase() 
-    
-    //     no_cotizacion = `${sucursal}${mes}${muestra}${nuevoRol}${secuencia}`
-        
-    //     return no_cotizacion
-    //   }
       async generaNombreCotizacion(infoSucursal:string,rol:string){
         const date: Date = new Date()
         const year = date.getFullYear().toString().slice(-2)
         const month = (date.getMonth() + 1).toString().padStart(2, '0')
         const nombreSucursal:string = infoSucursal.slice(0,2).toUpperCase()
         const nuevoRol:string = rol.slice(0,2).toUpperCase()
-      
         const cotizacionesSnapshot = await get(child(dbRef, `cotizacionesRealizadas`))
         const cotizacionesArray = cotizacionesSnapshot.exists() ? this.crearArreglo2(cotizacionesSnapshot.val()) : []
         const secuencia = (cotizacionesArray.length + 1).toString().padStart(5, '0')
-        
         return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
       }
-      
-
-    //   obtenerNombresElementos(elementos:any[]){
-    //     const answer = {cadena: '', arr:[]}
-    //         elementos.forEach(e=>{
-    //             answer.arr.push(e['nombre'])
-    //         })
-    //     return answer.arr.join(', ')
-    //   }
-
     obtenerNombresElementos(elementos) {
         return elementos.map(({nombre}) => String(nombre).toLowerCase()).join(', ');
       }
-      
       mensajeOK(mensaje: string, time){
         Swal.fire({
             position: 'center',
@@ -1502,37 +963,24 @@ export class ServiciosPublicosService {
           })
       }
       calcularDias(fechaInicio: string, fechaFin: string): number {
-
         const date1 = new Date(fechaInicio.split('/').reverse().join('-'));
         const date2 = new Date(fechaFin.split('/').reverse().join('-'));
-        
-        // Calculamos la diferencia en días entre las dos fechas
         const diffTime = date2.getTime() - date1.getTime()
         const diasTranscurridos = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
         return diasTranscurridos;
       }
       calcularDiasEntrega(fechaInicio: Date, fechaFin: Date): number {
-
         const date1 = new Date(fechaInicio);
         const date2 = new Date(fechaFin);
-        
-        // Calculamos la diferencia en días entre las dos fechas
         const diffTime = date2.getTime() - date1.getTime()
         const diasTranscurridos = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
         return diasTranscurridos;
       }
       reseteaHoras(fecha:Date){
-        // const startOfDay = fecha => {
-            const copy = new Date(fecha);
-            copy.setHours(0, 0, 0, 0);
-            return copy;
-        //   };
-
-        // return startOfDay
+        const copy = new Date(fecha);
+        copy.setHours(0, 0, 0, 0);
+        return copy;
       }
-
       construyeDesgloceEmail(desgloce:any){
         let arreglo = []
         const claves = Object.keys(desgloce)
@@ -1625,6 +1073,29 @@ export class ServiciosPublicosService {
       ]
     }
 
+      
+    actualizarArregloExistente(arregloExistente, nuevaInformacion, camposRecupera) {
+        if (arregloExistente.length === 0) {
+          return nuevaInformacion;
+        } else if (arregloExistente.length === nuevaInformacion.length) {
+          return arregloExistente.map((elemento, index) => {
+            const nuevoElemento = nuevaInformacion[index];
+           
+      
+            camposRecupera.forEach(campo => {
+              if (nuevoElemento[campo] !== elemento[campo]) {
+                elemento[campo] = nuevoElemento[campo];
+              }
+            });
+      
+            return elemento;
+          });
+        } else if (nuevaInformacion.length > arregloExistente.length) {
+          return [...arregloExistente, ...nuevaInformacion.slice(arregloExistente.length)];
+        } else {
+          return arregloExistente.slice(0, nuevaInformacion.length);
+        }
+      }
       
       
       

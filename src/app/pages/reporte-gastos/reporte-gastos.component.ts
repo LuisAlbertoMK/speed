@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ExporterService } from 'src/app/services/exporter.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -151,7 +152,7 @@ export class ReporteGastosComponent implements OnInit {
 
  
 
-  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private _export: ExporterService) { }
+  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private _export: ExporterService, private _sucursales: SucursalesService) { }
 
   ngOnInit(): void {
     this.rol()
@@ -163,17 +164,15 @@ export class ReporteGastosComponent implements OnInit {
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
       this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
-      const starCountRef = ref(db, `sucursales`)
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-            this.gastosDiarios()
-            this.gastosOperacion()
-            this.ordenesServicios()
-          }
-        }, {
-          onlyOnce: !this.tiempoReal
-        })
+
+      this._sucursales.consultaSucursales_new().then((sucursales) => {
+        this.sucursales_arr = sucursales
+        this.gastosDiarios()
+        this.gastosOperacion()
+        this.ordenesServicios()
+      }).catch((error) => {
+        // Manejar el error si ocurre
+      });
     }
   }
 

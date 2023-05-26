@@ -13,6 +13,8 @@
             </ng-template>
           </div>
         </div>
+        {{vehiculo}}
+        <pre>{{vehiculoDat | json}}</pre>
         <!-- <p>{{cliente}}</p> -->
         <form (ngSubmit)="guardarLlenadoManual()" [formGroup]="form_vehiculo" class="mt-2">
             <div class="row">

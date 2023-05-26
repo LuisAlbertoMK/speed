@@ -199,7 +199,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     private _publicos: ServiciosPublicosService, 
     private _email:EmailsService, 
     private _security:EncriptadoService,
-    private _export_excel: ExporterService
+    private _export_excel: ExporterService,
+    private _sucursales: SucursalesService
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
@@ -215,15 +216,12 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     }
 
   consultaSucursales(){
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-        this.rol()
-      }
-    }, {
-        onlyOnce: true
-    })
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+      this.sucursales_arr = sucursales
+      this.rol()
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   rol(){
     if (localStorage.getItem('dataSecurity')) {

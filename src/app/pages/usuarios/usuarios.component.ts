@@ -14,6 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -44,7 +45,7 @@ export class UsuariosComponent implements OnInit {
 
   constructor(
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
-    private router: Router) { }
+    private router: Router, private _sucursales: SucursalesService) { }
 
   ngOnInit(): void {
     this.rol()
@@ -54,18 +55,14 @@ export class UsuariosComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      // Obtenemos una lista de las sucursales 
-      const starCountRef = ref(db, `sucursales`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
-          this.sucursales = this._publicos.crearArreglo2(snapshot.val())
-          // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
-          this.accion()
-        } 
-      }, {
-        onlyOnce: true
-      })
+
+      this._sucursales.consultaSucursales_new().then((sucursales) => {
+        this.sucursales = sucursales
+        // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
+        this.accion()
+      }).catch((error) => {
+        // Manejar el error si ocurre
+      });
     }
   }
   accion(){

@@ -279,16 +279,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
     
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        // let vehiculos= this._publicos.crearArreglo2(snapshot.val())
-        this.listaSucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-        this.rol()
-      }
-    }, {
-        onlyOnce: true
-    })
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+      this.listaSucursales_arr = sucursales
+      this.rol()
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   
   async rol(){

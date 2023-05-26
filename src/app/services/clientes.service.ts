@@ -27,61 +27,65 @@ export class ClientesService {
     private _vehiculos: VehiculosService,
     private _mail: EmailsService) { }
   url:string= 'https://speed-pro-app-default-rtdb.firebaseio.com'
-  consultaClientes(){
-  return this.http.get(`${this.url}/clientes.json`)
-    .pipe(
-      map(this.crearArreglo2)
-    )
-  }
-  listadoDirectoriosCliente(id:string){
-    return this.http.get(`${this.url}/directorios/${id}/directorios.json`)
-    .pipe(
-      map(this.crearArreglo2)
-    )
-  }
 
-  async listaClientes(){
-    let answer = {contenido:false, data:[]}
-    // const sucursales = await this._sucursales.consultaSucursales().then(o=>{return o['data']})
-    // const vehiculos = await this._vehiculos.lista_vehiculos().then(o=>{ return o['data']})
-    // console.log(su);
-    await get(child(dbRef, `clientes`)).then(async (snapshot) => {
-      if (snapshot.exists()) {
-        const clientes = this._publicos.crearArreglo2(snapshot.val())
-        clientes.map(c=>{
-          // const infoSucursal = sucursales.find(o=>o['id'] === c['sucursal'])
-          // const vehiculos_cliente = vehiculos.filter(o=>o['cliente'] === c['id'])
-          // c['infoSucursal'] = infoSucursal
-          // c['vehiculos'] = vehiculos_cliente
-          c['fullname'] = `${c['nombre']} ${c['apellidos']}` 
-          return c
-        })
-        answer.data = clientes
-        answer.contenido =  true
-      }
-    }).catch((error) => {
-      console.error(error);
+  consulta_clientes_new(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, 'clientes');
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const clientes = this._publicos.crearArreglo2(snapshot.val());
+          clientes.map(c=>{
+            c.fullname = `${c.nombre} ${c.apellidos}`
+          })
+          resolve(clientes);
+        } else {
+          resolve([]);
+        }
+      }, {
+        onlyOnce: false
+      });
     });
-    
-    //  await this._sucursales.consultaSucursales().then(async ({contenido,data})=>{
-    //   if (contenido) {
-    //     const sucursales = data
-        
-    //   }
-    //  })
-    //  console.log(sucursales);
-     
-    
-    return answer
   }
+  // consultaClientes(){
+  // return this.http.get(`${this.url}/clientes.json`)
+  //   .pipe(
+  //     map(this.crearArreglo2)
+  //   )
+  // }
+  // listadoDirectoriosCliente(id:string){
+  //   return this.http.get(`${this.url}/directorios/${id}/directorios.json`)
+  //   .pipe(
+  //     map(this.crearArreglo2)
+  //   )
+  // }
+  // async listaClientes(){
+  //   let answer = {contenido:false, data:[]}
+  //   // const sucursales = await this._sucursales.consultaSucursales().then(o=>{return o['data']})
+  //   // const vehiculos = await this._vehiculos.lista_vehiculos().then(o=>{ return o['data']})
+  //   // console.log(su);
+  //   await get(child(dbRef, `clientes`)).then(async (snapshot) => {
+  //     if (snapshot.exists()) {
+  //       const clientes = this._publicos.crearArreglo2(snapshot.val())
+  //       clientes.map(c=>{
+  //         // const infoSucursal = sucursales.find(o=>o['id'] === c['sucursal'])
+  //         // const vehiculos_cliente = vehiculos.filter(o=>o['cliente'] === c['id'])
+  //         // c['infoSucursal'] = infoSucursal
+  //         // c['vehiculos'] = vehiculos_cliente
+  //         c['fullname'] = `${c['nombre']} ${c['apellidos']}` 
+  //         return c
+  //       })
+  //       answer.data = clientes
+  //       answer.contenido =  true
+  //     }
+  //   }).catch((error) => {
+  //     console.error(error);
+  //   });
+  //   return answer
+  // }
   async getEmpresas(){
     let answer = {contenido: false, data: []}
     await get(child(dbRef, `empresas`)).then((snapshot) => {
       if (snapshot.exists()) {
-        console.log();
-        
-        // const arreglo = this._publicos.crearArreglo2(snapshot.val())
-        
         answer.contenido = true
         answer.data = snapshot.val()
       }
@@ -138,41 +142,41 @@ export class ClientesService {
     return answer
   }
   
-  async countClientes(){
-    let clientes = 0
-    await get(child(dbRef, `clientes`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        let contador  = this.crearArreglo2(snapshot.val())
-        clientes = contador.length
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    return clientes
-  }
-  async ListaClientes(){
-    let answer = {existe:false,clientes:[]}
-    await get(child(dbRef, `clientes`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        const clie = this.crearArreglo2(snapshot.val())
+  // async countClientes(){
+  //   let clientes = 0
+  //   await get(child(dbRef, `clientes`)).then((snapshot) => {
+  //     if (snapshot.exists()) {
+  //       let contador  = this.crearArreglo2(snapshot.val())
+  //       clientes = contador.length
+  //     } else {
+  //       console.log("No data available");
+  //     }
+  //   }).catch((error) => {
+  //     console.error(error);
+  //   });
+  //   return clientes
+  // }
+  // async ListaClientes(){
+  //   let answer = {existe:false,clientes:[]}
+  //   await get(child(dbRef, `clientes`)).then((snapshot) => {
+  //     if (snapshot.exists()) {
+  //       const clie = this.crearArreglo2(snapshot.val())
         
-        for (let index = 0; index < clie.length; index++) {
-          const element = clie[index];
-          clie[index].fullname = `${element.nombre} ${element.apellidos}`
-          clie[index].id = `${element.id}`
-        }
-        answer['clientes'] = clie
-        answer.existe = true
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    return answer
-  }
+  //       for (let index = 0; index < clie.length; index++) {
+  //         const element = clie[index];
+  //         clie[index].fullname = `${element.nombre} ${element.apellidos}`
+  //         clie[index].id = `${element.id}`
+  //       }
+  //       answer['clientes'] = clie
+  //       answer.existe = true
+  //     } else {
+  //       console.log("No data available");
+  //     }
+  //   }).catch((error) => {
+  //     console.error(error);
+  //   });
+  //   return answer
+  // }
   async telefonoValido(telefono:string){
     let bad:boolean = true
     for (let index = 0; index < this.telefonosInvalidos.length; index++) {

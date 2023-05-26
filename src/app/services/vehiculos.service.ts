@@ -5,7 +5,7 @@ import { environment } from "../../environments/environment";
 import { Vehiculo } from '../models/vehiculos.model';
 
 const urlServer = environment.firebaseConfig.databaseURL
-import { child, get, getDatabase, onValue, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database";
 import { ServiciosPublicosService } from './servicios-publicos.service';
 
 const db = getDatabase()
@@ -196,9 +196,9 @@ export class VehiculosService {
     return partes
   }
 
-  async registra_Vehiculo(cliente:string,dataVehiculo:any){
+  registra_Vehiculo(cliente:string,dataVehiculo:any){
     const answer = { registro: false, contador:null}
-    await set(ref(db, `clientes/${cliente}/vehiculos/${dataVehiculo['id']}`), dataVehiculo )
+    set(ref(db, `clientes/${cliente}/vehiculos/${dataVehiculo['id']}`), dataVehiculo )
     .then(async () => {
       // Data saved successfully!
       answer.registro = true
@@ -209,8 +209,36 @@ export class VehiculosService {
     .catch((error) => {
       // The write failed...
     });
+    const updates = {}
+    if(dataVehiculo.id) updates[`clientes/${cliente}/vehiculos/${dataVehiculo.id}`] = dataVehiculo ;
+    else updates[`clientes/${cliente}/vehiculos/${this._publicos.generaClave()}`] = dataVehiculo ;
+    update(ref(db), updates);
     return answer
   }
+  nuevoregistro_v(cliente:string,dataVehiculo:any){
+    const updates = {}
+    if(dataVehiculo.id) updates[`clientes/${dataVehiculo.cliente}/vehiculos/${dataVehiculo.id}`] = dataVehiculo ;
+    else updates[`clientes/${dataVehiculo.cliente}/vehiculos/${this._publicos.generaClave()}`] = dataVehiculo ;
+    update(ref(db), updates)
+    .then(()=>{return true})
+    .catch(()=>{return false})
+  }
+  async registra_vehiculo_new(dataVehiculo) {
+    try {
+      const updates = {};
+      if (dataVehiculo.id) {
+        updates[`clientes/${dataVehiculo.cliente}/vehiculos/${dataVehiculo.id}`] = dataVehiculo;
+      } else {
+        updates[`clientes/${dataVehiculo.cliente}/vehiculos/${this._publicos.generaClave()}`] = dataVehiculo;
+      }
+      
+      await update(ref(db), updates);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  
   async getConteoPlacas(){
     const answer = {placas:0,data:[]}
     await get(child(dbRef, `placas`)).then((snapshot) => {

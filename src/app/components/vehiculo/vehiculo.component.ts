@@ -7,6 +7,7 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 import { child, getDatabase, onValue, push, ref, update } from "firebase/database";
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -16,6 +17,9 @@ const dbRef = ref(getDatabase());
   styleUrls: ['./vehiculo.component.css']
 })
 export class VehiculoComponent implements OnInit {
+
+  miniColumnas:number = 100
+  ROL:string; SUCURSAL:string
 
   @Input() cliente:string
   @Input() vehiculo:string
@@ -40,11 +44,12 @@ export class VehiculoComponent implements OnInit {
   listaPlacas =[]
 
   constructor(private fb: FormBuilder, private _vehiculos: VehiculosService, private _clientes : ClientesService,
-    private _publicos: ServiciosPublicosService) {
+    private _publicos: ServiciosPublicosService, private _security:EncriptadoService,) {
       this.dataVehiculo = new EventEmitter()
     }
 
   ngOnInit(): void {
+    this.rol()
     this.crearFormularioLlenadoManual()
     this.consultaMarcas()
     this.listaColores()
@@ -52,6 +57,14 @@ export class VehiculoComponent implements OnInit {
     this.automaticos()
     this.cargaDataVehiculo()
     
+  }
+  rol(){
+    if (localStorage.getItem('dataSecurity')) {
+      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+      this.ROL = this._security.servicioDecrypt(variableX['rol'])
+      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+      this.listaClientes()
+    }
   }
   cargaDataVehiculo(){
     if (this.vehiculo) {
@@ -100,27 +113,19 @@ export class VehiculoComponent implements OnInit {
     })
   }
   listaClientes(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this._clientes.ListaClientes().then(({existe,clientes})=>{
-          if (existe) {
-            this.listaPlacas = []
-            clientes.map(async(cli)=>{
-              if (!cli['vehiculos']) cli['vehiculos'] = []
-              cli['vehiculos'] = await  this._publicos.crearArreglo2(cli['vehiculos'])
-              cli['vehiculos'].map(v=>{
-                this.listaPlacas.push(v['placas'])
-              })
-            })
-            this.clientes = clientes
-          }
+    this._clientes.consulta_clientes_new().then((clientes) => {
+      // this.clientes = clientes
+      this.listaPlacas = []
+      clientes.map(cli=>{
+        cli.vehiculos = (cli.vehiculos) ? this._publicos.crearArreglo2(cli.vehiculos) : []
+        cli.vehiculos.map(v=>{
+          this.listaPlacas.push(v['placas'])
         })
-      } else {
-        console.log("No data available");
-      }
-    })
-    
+      })
+      this.clientes = (this.SUCURSAL === 'Todas') ? clientes : clientes.filter(c=>c.sucursal === this.SUCURSAL)
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   
 
@@ -132,10 +137,8 @@ export class VehiculoComponent implements OnInit {
     )
   }
   crearFormularioLlenadoManual(){
-    let cliente = this.cliente 
-    if (!cliente) cliente = ''
-    let vehiculo = ''
-    if(this.vehiculo) vehiculo = this.vehiculo
+    const cliente = (this.cliente ) ? this.cliente  : '' 
+    const vehiculo = (this.vehiculo ) ? this.vehiculo  : '' 
     
     this.form_vehiculo = this.fb.group({
       id:[vehiculo,[]],
@@ -156,51 +159,47 @@ export class VehiculoComponent implements OnInit {
     // this.form_vehiculo.controls['engomado'].disable()
   }
   guardarLlenadoManual(){
+    
     const getVehiculo = this.form_vehiculo.value
-    let saveInfo = {
-      cliente: getVehiculo['cliente'],
-      placas: getVehiculo['placas'],
-      marca: getVehiculo['marca'],
-      modelo: getVehiculo['modelo'],
-      categoria: getVehiculo['categoria'],
-      anio: getVehiculo['anio'],
-      cilindros: getVehiculo['cilindros'],
-      color: getVehiculo['color'],
-      engomado: getVehiculo['engomado'],
-    }
-    if(getVehiculo['transmision']) saveInfo['transmision'] = getVehiculo['transmision']
-    if(getVehiculo['marcaMotor']) saveInfo['marcaMotor'] = getVehiculo['marcaMotor']
-    if(getVehiculo['vinChasis']) saveInfo['vinChasis'] = getVehiculo['vinChasis']
-    if(getVehiculo['no_motor']) saveInfo['no_motor'] = getVehiculo['no_motor']
-    if(getVehiculo['id']) saveInfo['id'] = getVehiculo['id']
-    // console.log(saveInfo);
+    if(this.vehiculoDat)  getVehiculo.placas = this.vehiculoDat['placas']
+    const camposRecupera = [
+      'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','transmision','marcaMotor','vinChasis','no_motor','id',
+    ]
+    const saveInfo:any = this._publicos.nuevaRecuperacionData(getVehiculo, camposRecupera)
     
     if (!saveInfo['id']) {
-       saveInfo['id']  = push(child(ref(db), 'posts')).key
-       this._vehiculos.registra_Vehiculo(saveInfo['cliente'],saveInfo).then(({registro,contador})=>{
-          if (registro) {
-            this._vehiculos.registraPlacas(contador,saveInfo['placas']).then(({registro})=>{
-              if (registro) {
-                this.resetFormVehiculo()
-                this.myControl.setValue('')
-                this._publicos.mensajeCorrecto('Se registro vehiculo correctamente')
-                this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
-              }
-            })
-          }else{
-            this._publicos.mensajeIncorrecto('Se registro vehiculo correctamente')
-          }
-       })
-    }else{
-      saveInfo['placas'] = this.vehiculoDat['placas']
-      // console.log('actualiza informacion: ', `clientes/${saveInfo['cliente']}/${saveInfo['id']}`);
-      const updates = {};
-      updates[`clientes/${saveInfo['cliente']}/vehiculos/${saveInfo['id']}`] = saveInfo;
-      update(ref(db), updates).then(()=>{
-        this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
-        }).catch(ans=>{
+      this._vehiculos.registra_vehiculo_new(saveInfo).then((registro)=>{
+        if(registro){
+          this.resetFormVehiculo()
+          this.myControl.setValue('')
+          this._publicos.mensajeCorrecto('Se registro vehiculo correctamente')
+          this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
+        }else{
           this.dataVehiculo.emit( {registro: false})
-        })
+          this._publicos.mensajeIncorrecto('Ocurrio un error en el registro de vehiculo')
+        }
+      })
+    }else{
+      this._vehiculos.registra_vehiculo_new(saveInfo).then((registro)=>{
+        if(registro){
+          this.resetFormVehiculo()
+          this.myControl.setValue('')
+          this._publicos.mensajeCorrecto('Se actualizo la informacion de vehiculo correctamente')
+          this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
+        }else{
+          this.dataVehiculo.emit( {registro: false})
+          this._publicos.mensajeIncorrecto('Ocurrio un error en el registro de vehiculo')
+        }
+      })
+      
+      // // console.log('actualiza informacion: ', `clientes/${saveInfo['cliente']}/${saveInfo['id']}`);
+      // const updates = {};
+      // updates[`clientes/${saveInfo['cliente']}/vehiculos/${saveInfo['id']}`] = saveInfo;
+      // update(ref(db), updates).then(()=>{
+      //   this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
+      //   }).catch(ans=>{
+      //     this.dataVehiculo.emit( {registro: false})
+      //   })
     }
     
   }

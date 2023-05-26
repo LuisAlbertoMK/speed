@@ -14,6 +14,23 @@ const dbRef = ref(getDatabase());
 export class SucursalesService {
 
   constructor(private http: HttpClient, private _publicos: ServiciosPublicosService) { }
+
+  consultaSucursales_new(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, 'sucursales');
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const sucursales = this._publicos.crearArreglo2(snapshot.val());
+          resolve(sucursales);
+        } else {
+          resolve([]);
+        }
+      }, {
+        onlyOnce: true
+      });
+    });
+  }
+  
   async inforSucursal(sucursal:string){
     let sucursales = [], info =[]
     await get(child(dbRef, `sucursales`)).then((snapshot) => {

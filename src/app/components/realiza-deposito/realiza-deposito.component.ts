@@ -41,8 +41,8 @@ export class RealizaDepositoComponent implements OnInit {
     usuario:string
     rol:string
   ngOnInit(): void {
-    this.listaOrdenes()
     this.listaSucursales()
+    this.listaOrdenes()
     this.infoDATA()
     this.crearFormPago()
   }
@@ -66,11 +66,12 @@ export class RealizaDepositoComponent implements OnInit {
     })
   }
   listaSucursales(){
-    this._sucursales.consultaSucursales().then(({contenido,data})=>{
-      if (contenido) {
-        this.Sucursales = data
-      }
-    })
+
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+        this.Sucursales = sucursales
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   infoDATA(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))

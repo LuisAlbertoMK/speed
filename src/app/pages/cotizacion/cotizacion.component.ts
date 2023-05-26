@@ -140,18 +140,14 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
-        this.sucursales = this._publicos.crearArreglo2(snapshot.val())
-        // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
-        this.accion()
-      } 
-    }, {
-      onlyOnce: true
-    })
-    
+
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+      this.sucursales = sucursales
+      // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
+      this.accion()
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
     if(localStorage.getItem('busquedaCotizaciones')){
         this.busqueda = localStorage.getItem('busquedaCotizaciones')
     }

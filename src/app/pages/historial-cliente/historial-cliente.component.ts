@@ -153,16 +153,6 @@ export class HistorialClienteComponent implements OnInit {
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       // Obtenemos una lista de las sucursales 
-      const starCountRef = ref(db, `sucursales`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
-          this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-          // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
-        } 
-      }, {
-        onlyOnce: !this.tiemoReal
-      })
     }
     this.acciones()
   }

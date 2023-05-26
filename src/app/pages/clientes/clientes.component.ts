@@ -10,6 +10,8 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import Swal from 'sweetalert2';
+import { SucursalesService } from 'src/app/services/sucursales.service';
+import { ClientesService } from 'src/app/services/clientes.service';
 
 
 const db = getDatabase()
@@ -30,7 +32,7 @@ export interface User {nombre: string}
 export class ClientesComponent implements AfterViewInit, OnInit {
   miniColumnas:number = 100
   
-  displayedColumnsClientes: string[] = ['no_cliente', 'fullname','tipo', 'correo','opciones']; //clientes
+  displayedColumnsClientes: string[] = ['no_cliente','sucursalShow', 'fullname','tipo', 'correo','opciones']; //clientes
   columnsToDisplayWithExpand = [...this.displayedColumnsClientes, 'expand'];
   dataSourceClientes = new MatTableDataSource(); //clientes
   expandedElement: any | null; //clientes
@@ -50,38 +52,52 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   SUCURSAL:string
 
   clientes_arr=[]
-  constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService){}
+  sucursales_arr=[]
+  constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
+    private _clientes: ClientesService){}
 
   ngOnInit() {
     this.rol()
-    this.ListadoClientes()
+    
   }
   ngAfterViewInit(): void {  }
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+      this.sucursales_arr = sucursales
+      this.ListadoClientes()
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
 
   ListadoClientes(){
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {  
-        const clientes = this._publicos.crearArreglo2(snapshot.val())
-        clientes.map(c=>{
+      this._clientes.consulta_clientes_new().then((clientes) => {
+        const clientes_new = clientes
+        clientes_new.map(c=>{
           c['fullname'] = `${c.nombre} ${c.apellidos}`
           const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
           c.vehiculos = vehiculos
+          c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal).sucursal
         })
-        this.clientes_arr = clientes
-        // console.log(clientes);
-        
-        
+        const info = (this.SUCURSAL !=='Todas') ? clientes_new.filter(c=>c.sucursal === this.SUCURSAL) : clientes_new
+        const camposRecu = [...this._publicos.camposCliente(),'vehiculos']
+        if (!this.clientes_arr.length) {
+          this.clientes_arr = info;
+        } else {
+          this.clientes_arr = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+        }
+        this.dataSourceClientes.data = this.clientes_arr
         this.newPagination('clientes')
-      }else{
-        this.dataSourceClientes.data = []
-        this.newPagination('clientes')
-      } 
+      }).catch((error) => {
+        // Manejar el error si ocurre
+        console.log(error);      
+      });
     })
   }
   
@@ -150,7 +166,6 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   newPagination(data:string){
     setTimeout(() => {
     if (data==='clientes') {
-      this.dataSourceClientes.data = this.clientes_arr
       this.dataSourceClientes.paginator = this.paginatorClientes;
       this.dataSourceClientes.sort = this.sortClientes
     }

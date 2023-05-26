@@ -159,7 +159,7 @@ export class ExporterService {
   async realizarOperaciones(data:any[]){
     // console.log(data);
     
-    const desgloce = { UB:'0',mo:0,refacciones_1:0,refacciones_2:0,subtotal:0,iva:0,sobrescrito_mo:0,sobrescrito_refaccion:0,total:0 }
+    const desgloce = { UB:0,mo:0,refacciones_1:0,refacciones_2:0,subtotal:0,iva:0,sobrescrito_mo:0,sobrescrito_refaccion:0,total:0 }
     const elementos:any[] = data['elementos']
     if(!elementos.length) return desgloce
     //necesito el margen / descuento / iva / formaPago
@@ -244,7 +244,7 @@ export class ExporterService {
       desgloce.iva = desgloce.subtotal * .16
       desgloce.total = desgloce.subtotal + desgloce.iva
     }
-    desgloce.UB = this._publicos.redondeado(((desgloce.total - desgloce.refacciones_1)*100)/desgloce.total)
+    desgloce.UB = ((desgloce.total - desgloce.refacciones_1)*100)/desgloce.total
     // console.log(desgloce);
     // console.log(this.formaPago);
     this.formasPAgo.map(f=>{

@@ -69,16 +69,13 @@ export class PagoComponent implements OnInit {
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       // this.acciones()
-      const starCountRef = ref(db, `sucursales`)
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-            this.listaOrdenes()
-          }
-        }, {
-          onlyOnce: !this.tiempoReal
-        })
-      // this.acciones()
+
+      this._sucursales.consultaSucursales_new().then((sucursales) => {
+        this.sucursales_arr = sucursales
+        this.listaOrdenes()
+      }).catch((error) => {
+        // Manejar el error si ocurre
+      });
     }
   }
   listaOrdenes(){
@@ -86,19 +83,7 @@ export class PagoComponent implements OnInit {
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
 
-        const recepciones = this._publicos.crearArreglo2(snapshot.val())
-        // const recep_1 = recepciones.filter(r=>r['status'] !== 'cancelado')
-        // const recep_2 = recep_1.filter(r=>r['status'] !== 'entregado')
-        // const ordenados = this._publicos.ordernarPorCampo(recep_2,'no_os')
-        // ordenados.forEach((recep)=>{
-        //   const tempData = {
-        //     id: recep['id'], no_os: recep['no_os'], sucursal: recep['sucursal']
-        //   }
-        //   recepciones_arra.push(tempData)
-        // })
-        // this.ordenes = recepciones_arra
-     
-        
+        const recepciones = this._publicos.crearArreglo2(snapshot.val())        
         function filtrarOrdenes(recepciones, sucursal) {
           const rcp = recepciones
             .filter(recep => {

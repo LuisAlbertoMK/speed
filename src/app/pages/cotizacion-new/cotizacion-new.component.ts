@@ -156,7 +156,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   constructor(
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
     private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
-    private router: Router) { }
+    private router: Router, private _sucursales: SucursalesService) { }
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -239,23 +239,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       // Obtenemos una lista de las sucursales 
-      const starCountRef = ref(db, `sucursales`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
-          this.sucursales = this._publicos.crearArreglo2(snapshot.val())
-          // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
-          this.accion()
-        } 
-      }, {
-        onlyOnce: true
-      })
-
+      this._sucursales.consultaSucursales_new().then((sucursales) => {
+        this.sucursales = sucursales
+        this.accion()
+      }).catch((error) => {
+        // Manejar el error si ocurre
+      });
     }else{
       this._publicos.swalToastError('No se puede cargar la informacion')
-    }
-    
-    
+    } 
   }
   accion(){
     //verificamos que tipo de cotizacion es cliente, cotizacion, vehiculo, nueva
@@ -618,7 +610,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     filtroNotID.forEach(p=>{
       const campos = ['elementos','nombre','tipo']
       const recuperada = {
-        ...this._publicos.recuperaData(campos,p),
+        ...this._publicos.nuevaRecuperacionData(p,campos),
         cilindros: this.infoCotizacion.vehiculo['cilindros'],
         marca: this.infoCotizacion.vehiculo['marca'],
         modelo: this.infoCotizacion.vehiculo['modelo'],
@@ -667,7 +659,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                                   'nota','reporte','servicio','sucursal','vehiculo','vencimiento'
                 ]
                 //asigamos solo los campos que queremos recuperaer
-                  const infoSave = this._publicos.recuperaData(campos,this.infoCotizacion)
+                  const infoSave = this._publicos.nuevaRecuperacionData(this.infoCotizacion,campos)
     
                   updates['cotizacionesRealizadas/' + this._publicos.generaClave()] = infoSave;
                   //hacemos la llamada al registro de la cotizacion

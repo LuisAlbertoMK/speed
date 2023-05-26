@@ -51,7 +51,7 @@ export class ClienteComponent implements OnInit {
   ROL:string
   SUCURSAL:string
   
-
+  clientes = []
   constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
     private _clientes: ClientesService,private _mail: EmailsService,private _security:EncriptadoService) {
       this.heroeSlec = new EventEmitter()
@@ -63,7 +63,7 @@ export class ClienteComponent implements OnInit {
     this.crearFormEmpresa()
     this.listaSucursales()
     this.listadoEmpresas()
-    this.listaClientes()
+    
 
     this.perteneceA()
     
@@ -72,6 +72,15 @@ export class ClienteComponent implements OnInit {
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
+    this._clientes.consulta_clientes_new().then((clientes) => {
+      this.clientes = clientes
+      this.contadroClientes = clientes.length +1 
+      this.arreglo_correos = clientes.map(c=>{
+          return c.correo
+      })
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   perteneceA(){
     if (this.id) {
@@ -97,22 +106,7 @@ export class ClienteComponent implements OnInit {
     })
 
   }
-  listaClientes(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.arreglo_correos =[]
-        this._clientes.ListaClientes().then(({existe,clientes})=>{
-          if (existe) {
-            this.contadroClientes = clientes.length + 1
-            clientes.map(c=>{
-              this.arreglo_correos.push(c['correo'])
-            })
-          }
-      })
-      }
-    })
-  }
+ 
   coloca(val:string){
     if(val) this.form_cliente.controls['correo'].setValue('patito@gmail.com')
     else  this.form_cliente.controls['correo'].setValue(val)
@@ -400,11 +394,11 @@ export class ClienteComponent implements OnInit {
   }
   //sucursales
   listaSucursales(){
-    this._sucursales.consultaSucursales().then(({contenido,data})=>{
-      if (contenido) {
-        this.Sucursales = data
-      }
-    })
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+      this.Sucursales = sucursales
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   //empresas
   listadoEmpresas(){

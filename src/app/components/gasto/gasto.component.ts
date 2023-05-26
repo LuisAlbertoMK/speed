@@ -69,16 +69,13 @@ export class GastoComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      const starCountRef = ref(db, `sucursales`)
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            this.sucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-            this.listaOrdenes()
-          }
-        }, {
-          onlyOnce: !this.tiempoReal
-        })
-      // this.acciones()
+
+      this._sucursales.consultaSucursales_new().then((sucursales) => {
+        this.sucursales_arr = sucursales
+        this.listaOrdenes()
+      }).catch((error) => {
+        // Manejar el error si ocurre
+      });
     }
   }
   listaOrdenes(){
