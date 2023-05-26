@@ -194,6 +194,7 @@ export class Loginv1Component implements OnInit {
                 // html: 'I will close in <b></b> milliseconds.',
                 timer: 2000,
                 timerProgressBar: true,
+                allowOutsideClick: false,
                 didOpen: () => {
                   Swal.showLoading()
                   const b = Swal.getHtmlContainer().querySelector('b')

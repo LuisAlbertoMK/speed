@@ -53,6 +53,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
   clientes_arr=[]
   sucursales_arr=[]
+
+  cargandoInformacion:boolean = true
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
     private _clientes: ClientesService){}
 
@@ -75,24 +77,22 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
 
   ListadoClientes(){
+    this.cargandoInformacion = true
     const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, (snapshot) => {
+    onValue(starCountRef, () => {
       this._clientes.consulta_clientes_new().then((clientes) => {
         const clientes_new = clientes
         clientes_new.map(c=>{
-          c['fullname'] = `${c.nombre} ${c.apellidos}`
-          const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
-          c.vehiculos = vehiculos
           c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal).sucursal
         })
         const info = (this.SUCURSAL !=='Todas') ? clientes_new.filter(c=>c.sucursal === this.SUCURSAL) : clientes_new
-        const camposRecu = [...this._publicos.camposCliente(),'vehiculos']
+        const camposRecu = [...this._publicos.camposCliente(),'vehiculos','fullname']
         if (!this.clientes_arr.length) {
           this.clientes_arr = info;
         } else {
           this.clientes_arr = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
         }
-        this.dataSourceClientes.data = this.clientes_arr
+        
         this.newPagination('clientes')
       }).catch((error) => {
         // Manejar el error si ocurre
@@ -166,10 +166,12 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   newPagination(data:string){
     setTimeout(() => {
     if (data==='clientes') {
+      this.cargandoInformacion = false
+      this.dataSourceClientes.data = this.clientes_arr
       this.dataSourceClientes.paginator = this.paginatorClientes;
       this.dataSourceClientes.sort = this.sortClientes
     }
-    }, 300)
+    }, 100)
   }
 
 }

@@ -54,15 +54,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   camposDesgloce = [
     {valor:'mo', show:'mo'},
     // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'refacciones_v', show:'refacciones'},
     {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    {valor:'refacciones_v', show:'refacciones'},
     {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
     {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    {valor:'sobrescrito', show:'sobrescrito'},
+    // {valor:'sobrescrito', show:'sobrescrito'},
     {valor:'descuento', show:'descuento'},
     {valor:'subtotal', show:'subtotal'},
     {valor:'iva', show:'iva'},
-    {valor:'total', show:'total'},
+    {valor:'total', show:'Total venta'},
     {valor:'meses', show:'meses'},
   ]
 
@@ -378,35 +378,53 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     //   this._publicos.mensajeCorrecto('actualizacion de cliente correcto')
     // }
   }
-  cargaDataVehiculo(data:any,quien:string){
-    // console.log(data);
-    this.cliente = null
-    this.vehiculoData = null
-    if (quien === 'cliente') {
+  // cargaDataVehiculo(data:any,quien:string){
+  //   // console.log(data);
+  //   this.cliente = null
+  //   this.vehiculoData = null
+  //   if (quien === 'cliente') {
       
-      // console.log('id de cliente');
-      if (data['id']) {
-        setTimeout(() => {
-          this.cliente = data['id']
-        } , 300);
-      }
-    }
-    if (quien === 'vehiculo') {
+  //     // console.log('id de cliente');
+  //     if (data['id']) {
+  //       setTimeout(() => {
+  //         this.cliente = data['id']
+  //       } , 300);
+  //     }
+  //   }
+  //   if (quien === 'vehiculo') {
       
-      // console.log('id de vehiculo');
-      if (data['id']) {
-        setTimeout(() => {
+  //     // console.log('id de vehiculo');
+  //     if (data['id']) {
+  //       setTimeout(() => {
          
-          // Swal.fire('','','info')
-          this._publicos.mensajeOK('Se cargo la información',2000)
-          // Swal.isLoading()
-          this.vehiculoData = data
-          // Swal.close()
-        } , 300);
-      }
-    }
+  //         // Swal.fire('','','info')
+  //         this._publicos.mensajeOK('Se cargo la información',2000)
+  //         // Swal.isLoading()
+  //         this.vehiculoData = data
+  //         // Swal.close()
+  //       } , 300);
+  //     }
+  //   }
     
+  // }
+  cargaDataVehiculo(data: any, quien: string) {
+    this.cliente = null;
+    this.vehiculoData = null;
+  
+    if (quien === 'cliente' && data['id']) {
+      setTimeout(() => {
+        this.cliente = data['id'];
+      }, 300);
+    }
+  
+    if (quien === 'vehiculo' && data['id']) {
+      setTimeout(() => {
+        this._publicos.mensajeOK('Se cargó la información', 2000);
+        this.vehiculoData = data;
+      }, 300);
+    }
   }
+  
   vehiculoInfo(info:any){
     if (info['registro']) {
       this._publicos.mensajeCorrecto('Accion correcra')
@@ -692,29 +710,20 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         }
       })
     })
-        
-    
-
-    // filename
-    // pathPDF
-    // subject
-    // tipo
-    // emailAnexa
-    // filtro_conceptos
-    // const infoSucursal = this.infoCotizacion.sucursal
-    // const filtro_conceptos = this._publicos.obtenerNombresElementos(this.infoCotizacion.elementos)
-    // const tempData = {
-    //   filename: this._publicos.generaNombreCotizacion(infoSucursal['sucursal'], this.ROL),
-    //   correos,
-    //   filtro_conceptos
-    // }
-    // this._email.EmailCotizacion(tempData)
   }
   accionesExtra(campo:string, valor){
-    if(campo ==='descuento'){
-      this.infoCotizacion.descuento = valor
-    }else if(campo ==='margen'){
-      this.infoCotizacion.margen = valor
+   
+    const acciones = {
+      descuento: (valor) => {
+        this.infoCotizacion.descuento = valor;
+      },
+      margen: (valor) => {
+        this.infoCotizacion.margen = (Number(valor) < 25 || Number(valor) > 100) ? 25 : Number(valor);
+        this.formPlus.controls['margen'].setValue(this.infoCotizacion.margen);
+      }
+    };
+    if (campo in acciones) {
+      acciones[campo](valor);
     }
     this.realizaOperaciones()
   }

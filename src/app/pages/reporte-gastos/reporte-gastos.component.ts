@@ -437,6 +437,8 @@ export class ReporteGastosComponent implements OnInit {
 
   generaReporteExcelReporteGastos(){
     if(this.dataSource.data){
+      console.log(this.dataSource.data);
+      
       this._export.generaReporteGastosExcel(this.dataSource.data, this.reporte)
       
     }else{

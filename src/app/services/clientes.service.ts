@@ -36,13 +36,13 @@ export class ClientesService {
           const clientes = this._publicos.crearArreglo2(snapshot.val());
           clientes.map(c=>{
             c.fullname = `${c.nombre} ${c.apellidos}`
+            const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
+            c.vehiculos = vehiculos
           })
           resolve(clientes);
         } else {
           resolve([]);
         }
-      }, {
-        onlyOnce: false
       });
     });
   }

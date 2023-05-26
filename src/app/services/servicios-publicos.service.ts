@@ -728,10 +728,10 @@ export class ServiciosPublicosService {
       }
     realizarOperaciones_2(data:any){
         
-        const  { elementos, margen_get, iva, formaPago, descuento, servicios, margen } = data
+        const  { elementos,  iva, formaPago, descuento, servicios, margen } = data
 
         const ocupados = (servicios) ?  servicios: elementos
-        const margen1_0 = (margen) ?   margen : margen_get
+        const margen1_0 = (margen) ?   margen : 25
         
         const margenOcupado = 1 + (margen1_0 / 100)
         
@@ -1056,6 +1056,9 @@ export class ServiciosPublicosService {
       camposCliente(){
         return ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
       }
+      camposCotizacion(){
+        return ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName']
+      }
       camposServicios(){
          return [
             {valor:'1',nombre:'servicio'},
@@ -1080,14 +1083,11 @@ export class ServiciosPublicosService {
         } else if (arregloExistente.length === nuevaInformacion.length) {
           return arregloExistente.map((elemento, index) => {
             const nuevoElemento = nuevaInformacion[index];
-           
-      
             camposRecupera.forEach(campo => {
               if (nuevoElemento[campo] !== elemento[campo]) {
                 elemento[campo] = nuevoElemento[campo];
               }
             });
-      
             return elemento;
           });
         } else if (nuevaInformacion.length > arregloExistente.length) {

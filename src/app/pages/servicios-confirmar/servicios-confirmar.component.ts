@@ -1124,7 +1124,13 @@ cargaDataVehiculo(data:any,quien:string){
             pdfDocGenerator.open()
             // console.log(this.infoConfirmar.personalizados);
           } else if (result.isDenied) {
-            
+            Swal.fire({
+              title: 'Espere por favor...',
+              showConfirmButton: false,
+              icon:'info',
+              allowOutsideClick: false
+            })
+            Swal.isLoading()
             // console.log(this.infoConfirmar.personalizados);            
             // si presiono guardar y enviar obtenemos el blob del pdf para poder subirlo a firebasecloud
             pdfDocGenerator.getBlob(async (blob) => {
@@ -1145,12 +1151,13 @@ cargaDataVehiculo(data:any,quien:string){
                     this.infoConfirmar.hora_recibido = this._publicos.getFechaHora().hora
                     this.infoConfirmar.notifico = true
                     this.infoConfirmar.servicio = 1
-                    
                     updates[`recepciones/${this._publicos.generaClave()}`] = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
-                    console.log(updates);
                     this._mail.EmailRecepcion(dataMail)
 
                     update(ref(db), updates).then(()=>{
+                      pdfDocGenerator.download(`Recepcion_${this.infoConfirmar.no_os}`)
+                      Swal.close()
+
                       this.files = []
                       this.archivos = []
                       this.nombre = null

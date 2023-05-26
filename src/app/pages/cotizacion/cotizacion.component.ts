@@ -48,7 +48,7 @@ registerLocaleData(localeES, 'es');
 export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   miniColumnas:number = 100
   ROL:string; SUCURSAL:string
-  sucursales=[]
+  sucursales_arr=[]
   paquete: string = 'paquete'
   refaccion: string = 'refaccion'
   mo: string = 'mo'
@@ -116,12 +116,14 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   busqueda: string = null
 
   indexPosicionamiento:number = null
+  cargandoInformacion:boolean = true
   constructor(
     private fb: FormBuilder, private _publicos: ServiciosPublicosService,
     private _formBuilder: FormBuilder, private _security:EncriptadoService,
     private router: Router, private _cotizaciones: CotizacionService,
     private _email:EmailsService, private rutaActiva: ActivatedRoute,  private _exportExcel: ExporterService,
     private _sucursales: SucursalesService,private _clientes:ClientesService,
+    private _cotizacion: CotizacionService
   ) {
     // this.itemsCollection = this.afs.collection<Item>('partesAuto');
     // this.items = this.itemsCollection.valueChanges()
@@ -142,7 +144,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
 
     this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.sucursales = sucursales
+      this.sucursales_arr = sucursales
       // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
       this.accion()
     }).catch((error) => {
@@ -158,29 +160,47 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   accion(){
     // console.log(this.sucursales);
     //obtener las Realizadas
+    this.cargandoInformacion = true
     const starCountRef = ref(db, `cotizacionesRealizadas`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
-        cotizaciones.forEach((cotizacion, index)=> {
-          cotizacion.formaPago = cotizacion.formaPago || '1';
-          cotizacion.index = index
-          const formaPago = this.formasPago.find(f => f.id === String(cotizacion.formaPago));
-          if (formaPago) cotizacion.pagoName = formaPago.pago
-          cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
-          cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
-          cotizacion.reporte = this._publicos.realizarOperaciones_2(cotizacion).reporte
-        });
-        
-        this.cotizacionesList = this.SUCURSAL === 'Todas' 
-          ? cotizaciones 
-          : cotizaciones.filter(cotizacion => cotizacion.sucursal.id === this.SUCURSAL);
+    onValue(starCountRef, () => {
+      this._cotizacion.consulta_cotizaciones_new().then((cotizaciones) => {
+        const info = (this.SUCURSAL !=='Todas') ? cotizaciones.filter(c=>c.sucursal.id === this.SUCURSAL) : cotizaciones
+        // const camposRecu = [...this._publicos.camposCotizacion()]
+        if (!this.cotizacionesList.length) {
+          this.cotizacionesList = info;
+        } else {
+          this.cotizacionesList = this._publicos.actualizarArregloExistente(this.cotizacionesList, info,this._publicos.camposCotizacion());
+        }        
         
         this.newPagination()
-      }
-    }, {
-      onlyOnce: true
+      }).catch((error) => {
+        // Manejar el error si ocurre
+        console.log(error);      
+      });
     })
+    // const starCountRef = ref(db, `cotizacionesRealizadas`)
+    // onValue(starCountRef, (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
+    //     cotizaciones.forEach((cotizacion, index)=> {
+    //       cotizacion.formaPago = cotizacion.formaPago || '1';
+    //       cotizacion.index = index
+    //       const formaPago = this.formasPago.find(f => f.id === String(cotizacion.formaPago));
+    //       if (formaPago) cotizacion.pagoName = formaPago.pago
+    //       cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
+    //       cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
+    //       cotizacion.reporte = this._publicos.realizarOperaciones_2(cotizacion).reporte
+    //     });
+        
+    //     this.cotizacionesList = this.SUCURSAL === 'Todas' 
+    //       ? cotizaciones 
+    //       : cotizaciones.filter(cotizacion => cotizacion.sucursal.id === this.SUCURSAL);
+        
+    //     this.newPagination()
+    //   }
+    // }, {
+    //   onlyOnce: true
+    // })
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -194,15 +214,18 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   //paginacion de las cotizaciones
   newPagination(){
     setTimeout(() => {
+      
+      // if (this.busqueda) {
+      //   this.dataSource.filter = this.busqueda
+      //     if (this.dataSource.paginator) {
+      //       this.dataSource.paginator.firstPage();
+      //     }
+      // }
+      this.cargandoInformacion = false
       this.dataSource.data = this.cotizacionesList
-      if (this.busqueda) {
-        this.dataSource.filter = this.busqueda
-          if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-          }
-      }
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
+      
     }, 500)
   }
 
