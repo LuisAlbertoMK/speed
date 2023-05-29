@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { SucursalesService } from '../../services/sucursales.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DateAdapter } from '@angular/material/core';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -29,9 +30,18 @@ export class GastoComponent implements OnInit {
   selected: Date | null;
   informacionFaltante:string
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, 
-    private _security:EncriptadoService, private _sucursales: SucursalesService) {
+    private _security:EncriptadoService, private _sucursales: SucursalesService, private dateAdapter: DateAdapter<Date>) {
       this.showGastoHide = new EventEmitter()
+      this.dateAdapter.getFirstDayOfWeek = () => 0;
     }
+    dateClass = (date: Date): string => {
+      const day = new Date(date).getDay()
+      // const day = fecha.getDay()
+      if (day === 0) { // Si el día es domingo
+        return 'disable-day'; // Aplica una clase CSS para desactivarlo
+      }
+      return '';
+    };
   metodospago = [
     {metodo:1, show:'Efectivo'},
     {metodo:2, show:'Cheque'},
@@ -60,6 +70,7 @@ export class GastoComponent implements OnInit {
   muestraLista:boolean = false
   fechaIIII:Date = new Date(2000,0,1) 
   tiempoReal:boolean = true
+  
   ngOnInit(): void {
     this.rol()
     this.crearFormGasto()
@@ -166,31 +177,14 @@ export class GastoComponent implements OnInit {
     }
   }
   myFilter = (d: Date | null): boolean => {
-    // console.log(d);
     const fecha = new Date(d)
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
-    if (fecha < yesterday) {
-      return null
-    }else{
-      const day = fecha.getDay()
-      return day !== 0;
-    }
-    // Prevent Saturday and Sunday from being selected.
+    const day = fecha.getDay()
+    return day !== 0;
   };
   validaInformacion(){
     const answer = {valido: true, faltante:''}
     const camposNecesariosOperacion = ['tipo','monto','metodo','concepto','fecha','sucursal','referencia']
     const camposNecesariosOrden = ['tipo','no_os','monto','metodo','concepto','fecha','sucursal','referencia','gasto_tipo','facturaRemision']
-    let fecha = null
-    if(this.SUCURSAL === 'Todas'){
-      if (this.selected) {
-        if(this.selected['_d']) fecha = this._publicos.getFechaHora(this.selected['_d']).fecha
-      }
-    }else{
-      fecha = this._publicos.getFechaHora().fecha
-    }
-    this.formGasto.controls['fecha'].setValue(fecha)
     const gastoData = this.formGasto.value
     let faltantes = []
     const revisar = (gastoData.tipo === 'gasto') ? camposNecesariosOperacion : camposNecesariosOrden
@@ -242,96 +236,10 @@ export class GastoComponent implements OnInit {
           })
         }
       })
-      // if(this.muestraLista) {
-      //   updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
-      // }else{
-      //   updates[`HistorialGastosOperacion/${newPostKey}`] = dataSaveFinal;
-      // }
     }else{
       this.informacionFaltante = faltante
       this._publicos.swalToastError('LLenar datos de formulario')
     }
-     // this.validaInformacion().then(({valido,dataSave,faltante})=>{
-    //   this.informacionFaltante = ''
-    //   if (!valido) {
-    //     this.informacionFaltante = faltante
-    //     return Object.values( this.formGasto.controls ).forEach( control => {
-    //       if ( control instanceof FormGroup ) {
-    //         Object.values( control.controls ).forEach( control => control.markAsTouched() );
-    //       } else {
-    //         control.markAsTouched();
-    //       }
-    //     });
-    //   }else{
-    //     // console.log(dataSave);
-    //     Swal.fire({
-    //       title: 'Guardar Gasto?',
-    //       showDenyButton: false,
-    //       showCancelButton: true,
-    //       confirmButtonText: 'Confirmar',
-    //       denyButtonText: `Don't save`,
-    //       cancelButtonText:'Cancelar'
-    //     }).then((result) => {
-    //       /* Read more about isConfirmed, isDenied below */
-    //       if (result.isConfirmed) {
-
-    //         const updates = {}
-    //         const newPostKey = push(child(ref(db), 'posts')).key
-    //         const campos = ['concepto','hora_registro','fecha_registro','hora_registro','referencia','metodo','monto','status','tipo','sucursal'];
-    //         let camposR = [...campos];
-            
-    //         if(this.muestraLista) {
-    //           camposR.push('gasto_tipo','no_os'); campos.push('gasto_tipo')
-    //         }else{
-    //           if (this.dataRecepcion) {
-    //             dataSave['tipo'] = 'orden'
-    //           }else{
-    //             dataSave['tipo'] = 'operacion'
-    //           }
-    //         }
-    //         // const {fecha, hora} = this._publicos.getFechaHora(this.selected)
-    //         let fecha = null
-    //         if(this.SUCURSAL === 'Todas'){
-    //           if (this.selected) {
-    //             if(this.selected['_d']) fecha = this._publicos.getFechaHora(this.selected['_d']).fecha
-    //           }
-    //         }else{
-    //           fecha = this._publicos.getFechaHora().fecha
-    //         }
-    //         this.formGasto.controls['fecha'].setValue(fecha)
-
-    //         dataSave['fecha_registro'] = fecha
-    //         dataSave['hora_registro'] = this._publicos.getFechaHora().hora
-            
-    //         // dataSave['hora'] = fecha1.hora
-    //         console.log(dataSave);
-            
-    //         // console.log(dataSaveFinal);
-            
-    //         // if(this.muestraLista) {
-    //         //   updates[`recepciones/${dataPrimary['no_os']}/HistorialGastos/${newPostKey}`] = dataSaveFinal;
-    //         // }else{
-    //         //   updates[`HistorialGastosOperacion/${newPostKey}`] = dataSaveFinal;
-    //         // }
-    //         // // console.log(updates);
-            
-    //         // update(ref(db), updates).then(()=>{
-    //         //   const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
-    //         //   this.formGasto.reset({
-    //         //     tipo: '',  no_os: '',monto:0, metodo:'', gasto_tipo: null,concepto:null,
-    //         //     sucursal: sucursal, referencia: '',fecha:null, facturaRemision:null
-    //         //   })
-
-    //         //   this._publicos.mensaje('registro gasto correto',1)
-    //         // }).catch(error =>{
-
-    //         // })
-    //       } else if (result.isDenied) {
-    //         // Swal.fire('Changes are not saved', '', 'info')
-    //       }
-    //     })
-    //   }
-    // })
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
       const date = new Date(event.value)

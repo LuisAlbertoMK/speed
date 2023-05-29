@@ -40,6 +40,11 @@ export class RealizaDepositoComponent implements OnInit {
     ordenes = []
     usuario:string
     rol:string
+    myFilter = (d: Date | null): boolean => {
+      const fecha = new Date(d)
+      const day = fecha.getDay()
+      return day !== 0;
+    };
   ngOnInit(): void {
     this.listaSucursales()
     this.listaOrdenes()

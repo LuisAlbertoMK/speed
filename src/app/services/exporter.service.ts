@@ -45,6 +45,8 @@ export class ExporterService {
   
   async exportToExcelCotizaciones(data:any, excelFileName: string){
     const cotizaciones = data
+    console.log(cotizaciones);
+    
     
     const cotizacionPush =[]
     const cotizacionPushIndivuduales =[]
@@ -495,6 +497,9 @@ export class ExporterService {
       'subtotal':        '',
       'iva':             '',
       'total':           '',
+      'total orden':     '',
+      'gastos':          '',
+      'advertencia': ''
     };
     const lieneaBlancaNotas = {
       'concepto':        '',
@@ -517,6 +522,9 @@ export class ExporterService {
       'subtotal':        '',
       'iva':             '',
       'total':           '',
+      'total orden':     '',
+      'gastos':          '',
+      'advertencia':     ''
     };
     
     //seprara facturas de remision
@@ -563,6 +571,9 @@ export class ExporterService {
         'subtotal':         `${subtotal}`,
         'iva':              `${iva}`,
         'total':            `${total}`,
+        'total orden':       r.totalOrden,
+        'gastos':           r.totalGastosOrden || '',
+        'advertencia':      r.advertencia || ''
       }
     })
     nueva_facturas.push({ ...lieneaBlancaFactura });
@@ -607,6 +618,9 @@ export class ExporterService {
         'subtotal':         `${subtotal}`,
         'iva':              `${iva}`,
         'total':            `${total}`,
+        'total orden':       r.totalOrden,
+        'gastos':           r.totalGastosOrden || 0,
+        'advertencia':      r.advertencia || ''
       }
     })
     nueva_Notas.push({ ...lieneaBlancaNotas });

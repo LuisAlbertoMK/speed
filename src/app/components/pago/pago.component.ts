@@ -59,6 +59,12 @@ export class PagoComponent implements OnInit {
     sucursal:string
     ordenes = []
     tiempoReal:boolean = true
+
+    myFilter = (d: Date | null): boolean => {
+      const fecha = new Date(d)
+      const day = fecha.getDay()
+      return day !== 0;
+    };
   ngOnInit(): void {
     this.rol()
     this.crearFormPago()    
@@ -132,16 +138,6 @@ export class PagoComponent implements OnInit {
   validaInformacion(){
     const answer = {valido: true, faltante:''}
     const camposNecesarios = ['no_os','monto','metodo','concepto','fecha','sucursal']
-
-    let fecha = null
-    if(this.SUCURSAL === 'Todas'){
-      if (this.selected) {
-        if(this.selected['_d']) fecha = this._publicos.getFechaHora(this.selected['_d']).fecha
-      }
-    }else{
-      fecha = this._publicos.getFechaHora().fecha
-    }
-    this.formPago.controls['fecha'].setValue(fecha)
     const info = this.formPago.value
     let faltantes = []
     camposNecesarios.forEach(campo=>{

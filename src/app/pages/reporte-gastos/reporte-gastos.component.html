@@ -54,7 +54,7 @@
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-6 col-12">
                     <div class="input-group mb-3 ">
-                      <input (click)="pickerBarrido.open()"  class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)">
+                      <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter"  class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)">
                       <mat-datepicker #pickerBarrido></mat-datepicker>
                       <div class="input-group-append">
                         <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
@@ -89,7 +89,7 @@
           <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start">
             <div class="input-group mb-3 ">
               <mat-date-range-picker #picker></mat-date-range-picker>
-              <mat-date-range-input (click)="picker.open()" class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
+              <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
                 <input matStartDate class="mr-2" formControlName="start" readonly (dateChange)="cambiosFechas('report')" placeholder="Inicio">
                 <input matEndDate formControlName="end" readonly (dateChange)="cambiosFechas('report')" placeholder="Final">
               </mat-date-range-input>
@@ -108,7 +108,7 @@
               </mat-menu>
 
             </ng-container>
-            <button class="btn btn-sm btn-success m-1" (click)="generaReporteExcelReporteGastos()">Generra excel</button>
+            <button class="btn btn-sm btn-success m-1" (click)="generaReporteExcelReporteGastos()">Genera excel</button>
           </div>
           <!-- <div class="col-lg-4 col-md-4 col-sm-12 col-12"> -->
             

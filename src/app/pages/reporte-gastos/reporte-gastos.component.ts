@@ -150,8 +150,14 @@ export class ReporteGastosComponent implements OnInit {
   fechaBarrido: Date = null
   events: string[] = [];
 
- 
 
+  nuevo_gastosDiarios = []
+ 
+  myFilter = (d: Date | null): boolean => {
+      const fecha = new Date(d)
+      const day = fecha.getDay()
+      return day !== 0;
+  };
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private _export: ExporterService, private _sucursales: SucursalesService) { }
 
   ngOnInit(): void {
@@ -170,6 +176,7 @@ export class ReporteGastosComponent implements OnInit {
         this.gastosDiarios()
         this.gastosOperacion()
         this.ordenesServicios()
+        this.funcionesNueva()
       }).catch((error) => {
         // Manejar el error si ocurre
       });
@@ -253,9 +260,15 @@ export class ReporteGastosComponent implements OnInit {
           os.historial_pagos.map(element => {
             element.tipoNuevo = 'pago'
           });
+          let totalGastosOrden = 0
           os.hitorial_gastos.map(element => {
             element.tipoNuevo = 'gasto'
+            totalGastosOrden += element.monto
           });
+          const mitad = os.reporte.total / 2
+          os.totalGastosOrden = totalGastosOrden
+          os.advertencia = ( totalGastosOrden > mitad) ? 'Cuidado' : 'Se ve bien!'
+
           const nuevosHistoriales = os.hitorial_gastos.concat(os.historial_pagos)
           nuevosHistoriales.forEach(histo => {
             histo.fechaCompara = this._publicos.construyeFechaString(histo.fecha_registro)
@@ -266,6 +279,9 @@ export class ReporteGastosComponent implements OnInit {
             histo.vehiculo = os.vehiculo
             histo.reporte = os.reporte
             histo.statusOrden = os.status
+            histo.advertencia =  os.advertencia
+            histo.totalOrden =  os.reporte.total
+            histo.totalGastosOrden = os.totalGastosOrden
             aquiDocumentos.push(histo)
           });
           if(os.status === 'entregado'){
@@ -277,8 +293,7 @@ export class ReporteGastosComponent implements OnInit {
           const {sucursal} = this.sucursales_arr.find(s=>s.id === os.sucursal.id)
           os.sucursalShow = sucursal
           os.reporte = this._publicos.realizarOperaciones_2(os).reporte
-        })
-        
+        })         
         
         const filtro = (this.SUCURSAL === 'Todas') ? aquiDocumentos : aquiDocumentos.filter(os=>os.sucursal === this.SUCURSAL)
         // console.log(filtro);
@@ -437,8 +452,7 @@ export class ReporteGastosComponent implements OnInit {
 
   generaReporteExcelReporteGastos(){
     if(this.dataSource.data){
-      console.log(this.dataSource.data);
-      
+      // console.log(this.dataSource.data);
       this._export.generaReporteGastosExcel(this.dataSource.data, this.reporte)
       
     }else{
@@ -463,72 +477,104 @@ export class ReporteGastosComponent implements OnInit {
     dataSource.data = this._publicos.ordenarData(nueva, campo, fechas);
     this.newPagination(tabla);
   }
-
+funcionesNueva(){
+    const starCountRef = ref(db, `gastosDiarios/${this.sucursalBarrido}`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const nuevos = snapshot.val()
+        const ids = Object.keys(snapshot.val())
+        let resultados = []
+        ids.forEach(id => {
+          const internos = this._publicos.crearArreglo2(nuevos[id])
+          internos.forEach(t=>{
+            t.fechaCompara = this._publicos.construyeFechaString(t.fecha_registro)
+            resultados.push(t)
+          })
+        });        
+        this.nuevo_gastosDiarios = resultados
+      }
+    })
+  
+  
+}
   ///extras
   RealizaBarridoDia(){
-    // console.log(this.fechaBarrido, this.sucursalBarrido);
-    
-    if (this.fechaBarrido && this.sucursalBarrido) {
-
-      // const filtro = this.listaConjunta_arr.filter(s=>s.sucursal === this.sucursalBarrido )
-      // const filtro2 = filtro.filter(a => a.fechaCompara >= this.fechaBarrido && a.fechaCompara <= this.fechaBarrido)
-      // console.log(filtro);
-      // console.log(filtro2);
-      const filtro = this.listaConjunta_arr.filter(s => s.sucursal === this.sucursalBarrido);
-      const filtro2 = filtro.filter(a => {
-        const fechaInicio = new Date(this.fechaBarrido); // Fecha inicial del rango
-        const fechaFin = new Date(this.fechaBarrido); // Fecha final del rango
-        fechaFin.setDate(fechaFin.getDate() + 1); // Incrementar la fecha final en un día
-        
-        const fechaCompara = new Date(a.fechaCompara); // Fecha a comparar
+    if(this.fechaBarrido && this.sucursalBarrido){
+      const fechaInicio = this._publicos.sumarRestarDiasFecha(this.fechaBarrido,0)
+      const fechaActual = this._publicos.reseteaHoras(new Date())
+      const diffTiempo = fechaActual.getTime() - fechaInicio.getTime();
+      const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
       
-        return fechaCompara >= fechaInicio && fechaCompara < fechaFin;
-      });
-      const reporte =  {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
-       filtro2.map((f,index)=>{
-        f.index = index
-        f.referencia = (f.referencia) ? f.referencia : ''
-        if (f.tipo === 'deposito' || f.tipo === 'sobrante') reporte.depositos += f.monto 
-        if (f.tipo === 'operacion') reporte.operacion += f.monto;
-        if(f.tipo !== 'sobrante'){
-          (f.tipoNuevo === 'gasto') ? reporte.gastos += f.monto : reporte.pagos += f.monto
+      for (let i = 0; i <= diffDias; i++) {
+        const fechaImprimir = new Date(fechaInicio.getTime() + i * 24 * 60 * 60 * 1000);
+        const dia = this._publicos.sumarRestarDiasFecha(fechaImprimir,0)
+        
+
+        if(this._publicos.esDomingo(dia)){
+
+        }else{
+          const filtro2 = this.pagosGastosOP_arr.filter(a => {
+            return (a.fechaCompara >= dia && a.fechaCompara <= dia) && a.sucursal === this.sucursalBarrido;
+          });
+          const filtro_op = this.gastosOperacion_arr.filter(a => {
+            return (a.fechaCompara >= dia && a.fechaCompara <= dia) && a.sucursal === this.sucursalBarrido;
+          });
+          const unico_dia = filtro2.filter(a => {
+            return a.fechaCompara >= dia && a.fechaCompara <= dia
+          });
+          const filtro_resultados = this.nuevo_gastosDiarios.filter(a => {
+            return a.fechaCompara >= dia && a.fechaCompara <= dia
+          });
+  
+          let sobrante = 0
+        const reporte =  {operacion:0, gastos:0, depositos:0,sobrante:0}
+        unico_dia.forEach(f=>{
+          if (f.tipoNuevo === 'gasto' && f.tipo ==='orden') reporte.gastos += f.monto 
+        })
+        filtro_resultados.forEach(f=>{
+          if (f.tipo === 'deposito') reporte.depositos += f.monto 
+          if (f.tipo === 'sobrante') reporte.sobrante += f.monto 
+        })
+        filtro_op.forEach(f=>{
+          reporte.operacion += f.monto 
+        })
+
+        if (reporte.sobrante > 0) {
+          sobrante = (reporte.depositos +  reporte.sobrante ) - (reporte.gastos + reporte.operacion)
+        }else{
+          sobrante = reporte.depositos  - (reporte.gastos + reporte.operacion + Math.abs(reporte.sobrante))
         }
         
-      })
-      reporte.sobrante = (reporte.depositos) -  (reporte.gastos + reporte.operacion)
-      const fechaSobrante = this._publicos.sumarRestarDiasFecha(this.fechaBarrido,1)
-      const tempData = {
-              concepto: 'Sobrante del dia anterior',
-              fecha_registro: this._publicos.formatearFecha(fechaSobrante, true),
-              hora: '00:00:00',
-              metodo: '1',
-              monto: reporte.sobrante,
-              sucursal: this.sucursalBarrido,
-              tipo: 'sobrante',
-              status:true
-            }
-      if(!this._publicos.esDomingo(fechaSobrante)){
-                // if(this.sucursalBarrido !== 'Todas'){
-                  const ruta =`gastosDiarios/${this.sucursalBarrido}/${this._publicos.formatearFecha(this.fechaBarrido,false)}/sobrante`
+        const fechaSobrante = this._publicos.sumarRestarDiasFecha(dia,1)
+        const tempData = {
+                concepto: 'Sobrante del dia anterior',
+                fecha_registro: this._publicos.formatearFecha(fechaSobrante, true),
+                hora: '00:00:00',
+                metodo: '1',
+                monto: sobrante,
+                sucursal: this.sucursalBarrido,
+                tipo: 'sobrante',
+                status:true
+              }
+              if(!this._publicos.esDomingo(fechaSobrante)){
+               
+                  const ruta =`gastosDiarios/${this.sucursalBarrido}/${this._publicos.formatearFecha(fechaSobrante,false)}/sobrante`
                   const updates = { [ruta] : tempData};
-                  update(ref(db), updates);
-                // }
+                  // updates[ruta] = tempData;
+                  update(ref(db), updates)
               }else{
                 //le sumamos dos dias en caso de que sea sabado y el sobrante se quiera registrar el domingo
-                const nueva = this._publicos.sumarRestarDiasFecha(this.HOY,2)
-                tempData.fecha_registro = this._publicos.formatearFecha(nueva, true)
-                
-                // if(this.sucursalBarrido !== 'Todas'){
+                const nueva = this._publicos.sumarRestarDiasFecha(fechaSobrante,1)
+                tempData.fecha_registro = this._publicos.formatearFecha(nueva, true)  
                   const ruta =`gastosDiarios/${this.sucursalBarrido}/${this._publicos.formatearFecha(nueva,false)}/sobrante`
                   const updates = { [ruta] : tempData};
-                  update(ref(db), updates);
-                // }
+                  update(ref(db), updates)
               }
-      
-    }else{
-        // console.log('alguno de los dos campos ncesarios erroneo');
+        }
+        
+        
+      }
     }
-    
   }
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     // this.events.push(`${type}: ${event.value}`);
@@ -537,7 +583,7 @@ export class ReporteGastosComponent implements OnInit {
     if (fecha) {
       if(fecha['_d'] ){
         this.fechaBarrido = fecha['_d']
-        this.RealizaBarridoDia()
+        this.funcionesNueva()
       }else{
         this.fechaBarrido = null
       }

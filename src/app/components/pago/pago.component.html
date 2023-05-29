@@ -75,7 +75,18 @@
             </div>
           </div>
         </div>
-        <ng-container *ngIf="SUCURSAL === 'Todas'">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-center" *ngIf="SUCURSAL === 'Todas'">
+          <div class="input-group mb-3 ">
+            <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter"  class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)">
+            <mat-datepicker #pickerBarrido class="mat-datepicker-overlay"></mat-datepicker>
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
+                <i class="fa fa-calendar-alt"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- <ng-container *ngIf="SUCURSAL === 'Todas'">
           <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
             <div class="mb-1 row text-start">
               <label [ngClass]="{'text-danger': validaCampo('fecha'),'text-success': !validaCampo('fecha')}"
@@ -89,7 +100,7 @@
               </div> 
             </div>
           </div>
-        </ng-container>
+        </ng-container> -->
         
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
           <button type="submit" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
