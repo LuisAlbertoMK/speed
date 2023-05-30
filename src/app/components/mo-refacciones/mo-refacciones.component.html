@@ -1,5 +1,13 @@
 <div class="card">
     <div class="card-body">
+      <div class="row">
+        <div class="col">Calcular</div>
+        <div class="col">
+          <input type="number" min="25" value="25" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"   >
+          <input type="number" min="1"  value="1"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"        >
+            calculo sin margen: <strong>{{calculo | monedas}}</strong> - calculo del margen: <strong>{{ calculoMargen | monedas}}</strong>
+        </div>
+      </div>
         <div class="row mb-3">
             
             <ng-container *ngIf="registro">

@@ -371,42 +371,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
           this.realizaOperaciones()
         }
       })
-    // if (info['registro']) {
-    //   // this.showFormCliente = !info['oculta']
-    //   this._publicos.mensajeCorrecto('registro de cliente correcto')
-    // }else if(info['actualizacion']){
-    //   this._publicos.mensajeCorrecto('actualizacion de cliente correcto')
-    // }
   }
-  // cargaDataVehiculo(data:any,quien:string){
-  //   // console.log(data);
-  //   this.cliente = null
-  //   this.vehiculoData = null
-  //   if (quien === 'cliente') {
-      
-  //     // console.log('id de cliente');
-  //     if (data['id']) {
-  //       setTimeout(() => {
-  //         this.cliente = data['id']
-  //       } , 300);
-  //     }
-  //   }
-  //   if (quien === 'vehiculo') {
-      
-  //     // console.log('id de vehiculo');
-  //     if (data['id']) {
-  //       setTimeout(() => {
-         
-  //         // Swal.fire('','','info')
-  //         this._publicos.mensajeOK('Se cargo la información',2000)
-  //         // Swal.isLoading()
-  //         this.vehiculoData = data
-  //         // Swal.close()
-  //       } , 300);
-  //     }
-  //   }
-    
-  // }
   cargaDataVehiculo(data: any, quien: string) {
     this.cliente = null;
     this.vehiculoData = null;

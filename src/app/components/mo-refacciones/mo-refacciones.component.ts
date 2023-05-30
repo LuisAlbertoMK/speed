@@ -29,6 +29,8 @@ export class MoRefaccionesComponent implements OnInit  {
 
   @Input() registro: boolean
   
+  calculo: number =  0
+  calculoMargen: number = 0
   constructor(private _publicos: ServiciosPublicosService, private fb: FormBuilder) { 
     this.dataElemento = new EventEmitter()
   }
@@ -39,6 +41,19 @@ export class MoRefaccionesComponent implements OnInit  {
     this.automaticos()
     this.crearFormElemento()
     
+  }
+
+  verifica_info(cual:string, cantidad){
+    // const donde = (cual ==='porcentaje') 
+    let por = 0, can = 0
+    if(cual === 'porcentaje'){
+      por = Number(cantidad)
+    }else{
+      can = Number(cantidad)
+    }
+    // Porcentaje = (Cantidad * PorcentajeDeseado) / 100
+    this.calculo = ( can * por) / 100
+    this.calculoMargen = can * (por / 100) 
   }
   crearFormElemento(){
     this.formElemento = this.fb.group({
@@ -65,7 +80,6 @@ export class MoRefaccionesComponent implements OnInit  {
         })
         this.lista_arr_mo = arreglo
       }
-      
     })
   }
   listadoRefacciones(){

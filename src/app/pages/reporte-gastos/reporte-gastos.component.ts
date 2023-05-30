@@ -68,7 +68,7 @@ export class ReporteGastosComponent implements OnInit {
 
   // tabla
   dataSource = new MatTableDataSource(); //elementos
-  elementos = ['id','sucursalShow','no_os','metodoShow','status','concepto','referencia','monto','tipo','fecha']; //elementos
+  elementos = ['id','sucursalShow','no_os','metodoShow','status','monto','tipo','fecha']; //elementos
   // elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'expand']; //elementos
   expandedElement: any | null; //elementos
@@ -173,10 +173,10 @@ export class ReporteGastosComponent implements OnInit {
 
       this._sucursales.consultaSucursales_new().then((sucursales) => {
         this.sucursales_arr = sucursales
+        this.funcionesNueva()
         this.gastosDiarios()
         this.gastosOperacion()
         this.ordenesServicios()
-        this.funcionesNueva()
       }).catch((error) => {
         // Manejar el error si ocurre
       });
@@ -333,56 +333,88 @@ export class ReporteGastosComponent implements OnInit {
         return a
       })
       .filter(a => a.fechaCompara >= this.fechas_get.inicio && a.fechaCompara <= this.fechas_get.final)
-      const reporte =  {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
+      const reporte_general =  {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
 
       const nuevos = (this.sucursalFiltroReporte === 'Todas') ? resultados : resultados.filter(r=>r.sucursal === this.sucursalFiltroReporte)
       nuevos.map((f,index)=>{
         f.index = index
         f.referencia = (f.referencia) ? f.referencia : ''
-        if (f.tipo === 'deposito' || f.tipo === 'sobrante') reporte.depositos += f.monto 
-        if (f.tipo === 'operacion') reporte.operacion += f.monto;
+        if (f.tipo === 'deposito' || f.tipo === 'sobrante') reporte_general.depositos += f.monto 
+        if (f.tipo === 'operacion') reporte_general.operacion += f.monto;
         if(f.tipo !== 'sobrante'){
-          (f.tipoNuevo === 'gasto') ? reporte.gastos += f.monto : reporte.pagos += f.monto
+          (f.tipoNuevo === 'gasto') ? reporte_general.gastos += f.monto : reporte_general.pagos += f.monto
         }
         
       })
-      reporte.sobrante = (reporte.depositos) -  (reporte.gastos + reporte.operacion)
-      this.reporte = reporte
+    
+      
+      reporte_general.sobrante = (reporte_general.depositos) -  (reporte_general.gastos + reporte_general.operacion)
+      this.reporte = reporte_general
 
       const _f1 = this.fechas_get.inicio
       const _f2 = this.fechas_get.final
-      
       if ((_f1.getTime() === _f2.getTime()) && (this.HOY.getTime() === _f1.getTime())) {
-            const fechaSobrante = this._publicos.sumarRestarDiasFecha(_f1,1)
-            const tempData = {
-              concepto: 'Sobrante del dia anterior',
-              fecha_registro: this._publicos.formatearFecha(fechaSobrante, true),
-              hora: '00:00:00',
-              metodo: '1',
-              monto: reporte.sobrante,
-              sucursal: this.sucursalFiltroReporte,
-              tipo: 'sobrante',
-              status:true
-            }
-            if(this.sucursalFiltroReporte !== 'Todas'){
-              if(!this._publicos.esDomingo(fechaSobrante)){
-                // if(this.sucursalFiltroReporte !== 'Todas'){
-                  const ruta =`gastosDiarios/${this.sucursalFiltroReporte}/${this._publicos.formatearFecha(_f1,false)}/sobrante`
-                  const updates = { [ruta] : tempData};
-                  update(ref(db), updates);
-                // }
-              }else{
-                //le sumamos dos dias en caso de que sea sabado y el sobrante se quiera registrar el domingo
-                const nueva = this._publicos.sumarRestarDiasFecha(this.HOY,2)
-                tempData.fecha_registro = this._publicos.formatearFecha(nueva, true)
-                
-                // if(this.sucursalFiltroReporte !== 'Todas'){
-                  const ruta =`gastosDiarios/${this.sucursalFiltroReporte}/${this._publicos.formatearFecha(nueva,false)}/sobrante`
-                  const updates = { [ruta] : tempData};
-                  update(ref(db), updates);
-                // }
-              }
-            } 
+        const filtro2 = this.pagosGastosOP_arr.filter(a => {
+          return (a.fechaCompara >= _f1 && a.fechaCompara <= _f1) && a.sucursal === this.sucursalFiltroReporte;
+        });
+        const filtro_op = this.gastosOperacion_arr.filter(a => {
+          return (a.fechaCompara >= _f1 && a.fechaCompara <= _f1) && a.sucursal === this.sucursalFiltroReporte;
+        });
+        const unico_dia = filtro2.filter(a => {
+          return a.fechaCompara >= _f1 && a.fechaCompara <= _f1
+        });
+        const filtro_resultados = this.nuevo_gastosDiarios.filter(a => {
+          return a.fechaCompara >= _f1 && a.fechaCompara <= _f1
+        });
+
+        let sobrante = 0
+      const reporte =  {operacion:0, gastos:0, depositos:0,sobrante:0}
+      unico_dia.forEach(f=>{
+        if (f.tipoNuevo === 'gasto' && f.tipo ==='orden') reporte.gastos += f.monto 
+      })
+      filtro_resultados.forEach(f=>{
+        if (f.tipo === 'deposito') reporte.depositos += f.monto 
+        if (f.tipo === 'sobrante') reporte.sobrante += f.monto 
+      })
+      filtro_op.forEach(f=>{
+        reporte.operacion += f.monto 
+      })
+
+      if (reporte.sobrante > 0) {
+        sobrante = (reporte.depositos +  reporte.sobrante ) - (reporte.gastos + reporte.operacion)
+      }else{
+        sobrante = reporte.depositos  - (reporte.gastos + reporte.operacion + Math.abs(reporte.sobrante))
+      }
+
+      const fechaSobrante = this._publicos.sumarRestarDiasFecha(_f1,1)
+      
+      if(this.sucursalFiltroReporte !== 'Todas'){
+        const tempData = {
+          concepto: 'Sobrante del dia anterior',
+          fecha_registro: this._publicos.formatearFecha(fechaSobrante, true),
+          hora: '00:00:00',
+          metodo: '1',
+          monto: sobrante,
+          sucursal: this.sucursalFiltroReporte,
+          tipo: 'sobrante',
+          status:true
+        }
+        if(!this._publicos.esDomingo(fechaSobrante)){
+         
+            const ruta =`gastosDiarios/${this.sucursalFiltroReporte}/${this._publicos.formatearFecha(fechaSobrante,false)}/sobrante`
+            const updates = { [ruta] : tempData};
+            // updates[ruta] = tempData;
+            update(ref(db), updates)
+        }else{
+          //le sumamos dos dias en caso de que sea sabado y el sobrante se quiera registrar el domingo
+          const nueva = this._publicos.sumarRestarDiasFecha(fechaSobrante,1)
+          tempData.fecha_registro = this._publicos.formatearFecha(nueva, true)  
+            const ruta =`gastosDiarios/${this.sucursalFiltroReporte}/${this._publicos.formatearFecha(nueva,false)}/sobrante`
+            const updates = { [ruta] : tempData};
+            update(ref(db), updates)
+        }
+      }
+      
       }
       this.dataSource.data = this._publicos.ordenarData(nuevos,'fechaCompara',true)
       this.newPagination('reporte')
@@ -492,6 +524,9 @@ funcionesNueva(){
           })
         });        
         this.nuevo_gastosDiarios = resultados
+        setTimeout(() => {
+          this.unirResultados()
+        }, 500);
       }
     })
   
