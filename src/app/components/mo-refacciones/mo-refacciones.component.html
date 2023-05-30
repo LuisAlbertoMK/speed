@@ -1,21 +1,12 @@
 <div class="card">
     <div class="card-body">
-      <div class="row">
-        <div class="col">Calcular</div>
-        <div class="col">
-          <input type="number" min="25" value="25" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"   >
-          <input type="number" min="1"  value="1"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"        >
-            calculo sin margen: <strong>{{calculo | monedas}}</strong> - calculo del margen: <strong>{{ calculoMargen | monedas}}</strong>
-        </div>
-      </div>
         <div class="row mb-3">
-            
             <ng-container *ngIf="registro">
               <div class="col-12 col-sm-6 col-md-6 col-lg-6 text-end" >
                 <h4>Buscar elemento en catalogo</h4>
             </div>
               <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
-                <input type="text" class="form-control form-control-sm" (ngModelChange)="verificaElemento()"
+                <input type="text" class="form-control form-control-sm text-capitalize" (ngModelChange)="verificaElemento()"
                      placeholder="Nombre de Refaccón / MO"
                      aria-label="Nombre"
                      [formControl]="myControl"
@@ -39,19 +30,14 @@
                   <label for="nombre"
                     class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">nombre</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
-                    <ng-container *ngIf="existe; else elseExiste">
-                        <input type="text" class="form-control form-control-sm" readonly  id="nombre" formControlName="nombre">
-                    </ng-container>
-                    <ng-template #elseExiste>
-                        <input type="text" class="form-control form-control-sm"  id="nombre" formControlName="nombre">
-                    </ng-template>
+                    <input type="text" class="form-control form-control-sm"  id="nombre" formControlName="nombre">
                   </div>
                 </div>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                 <div class="mb-1 row">
                   <label for="cantidad"
-                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">cantidad</label>
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">Cantidad</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8">
                     <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="1" id="cantidad"
                       formControlName="cantidad">
@@ -61,7 +47,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                 <div class="mb-1 row">
                   <label for="precio"
-                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalizee">costo</label>
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalizee">Costo</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8">
                     <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="1" id="precio"
                       formControlName="precio">
@@ -71,7 +57,7 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                 <div class="mb-1 row">
                   <label for="costo"
-                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">precio sobrescrito</label>
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">Costo sobrescrito</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8">
                     <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="0" id="costo"
                       formControlName="costo">
@@ -142,6 +128,9 @@
                   </div>
                 </div>
               </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-4 m-2">
+                Costo de venta: <strong>{{totalMuestra | monedas}}</strong>
+              </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                 <button type="submit" [disabled]="formElemento.invalid ?'disabled':null"
                   class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Colocar</button>
@@ -150,6 +139,36 @@
               </div>
             </div>
           </form>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <h4>Calcular costo a colocar</h4>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">Margen</label>
+                    <div class="col-sm-8">
+                      <input type="number" min="16" [value]="por" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"   >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">precio / costo</label>
+                    <div class="col-sm-8">
+                      <input type="number" min="1"  [value]="cantidad"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"        >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-5">
+              calculo sin margen: <strong>{{calculo | monedas}}</strong> - calculo del margen: <strong>{{ calculoMargen | monedas}}</strong>
+            </div>
+          </div>
+          
     </div>
   </div>
 <!-- {{listado | json}} -->

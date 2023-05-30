@@ -35,6 +35,7 @@ export class Loginv1Component implements OnInit {
   showPassword = false
   
   intentos = 0
+  miniColumnas:number = 100
 
   constructor(private fb: FormBuilder,private _publicos:ServiciosPublicosService, private _security:EncriptadoService,private _auth:AuthService) { }
 

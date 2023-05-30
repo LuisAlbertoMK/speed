@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { getDatabase, onValue, ref, set } from "firebase/database"
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 import Swal from 'sweetalert2';
 const db = getDatabase()
 @Component({
@@ -16,15 +18,13 @@ export class SidebarComponent implements OnInit {
   TIPO_USUARIO:string=''
   nombreSucursalMuestra:string =''
   mostrarAdministracion:boolean = false
-  constructor(private _security:EncriptadoService) { }
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _sucursales: SucursalesService) { }
 
   ngOnInit(): void {
     this.rol()
-    this.NombreSucursal()
+    // this.NombreSucursal()
   }
-  ocultarBarra(barraSH:boolean){
-  this.ocultar=!barraSH
-  }
+ 
   
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -35,30 +35,27 @@ export class SidebarComponent implements OnInit {
     // this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
     if (this.ROL==='SuperSU') {
       this.mostrarAdministracion = true
-    }
-  }
-  NombreSucursal(){
-    if (this.SUCURSAL!=='Todas') {
-      const starCountRef = ref(db, 'sucursales')
-      onValue(starCountRef, (snapshot) => {
-        const data = snapshot.val()
-        let temp = this.crearArreglo2(data)
-        temp.forEach(sucursal => {
-          if (sucursal.id === this.SUCURSAL) {
-            this.nombreSucursalMuestra = sucursal.sucursal
-          }
-        });
+    }else{
+      this._sucursales.consultaSucursales_new().then((sucursales)=>{
+        this.nombreSucursalMuestra = sucursales.find(s=>s.id === this.SUCURSAL).sucursal
       })
     }
   }
-  private crearArreglo2(arrayObj:object){
-    const arrayGet:any[]=[]
-    if (arrayObj===null) { return [] }
-    Object.keys(arrayObj).forEach(key=>{
-      const arraypush: any = arrayObj[key]
-      arraypush.id=key
-      arrayGet.push(arraypush)
-    })
-    return arrayGet
+  NombreSucursal(){
+
+
+    // if (this.SUCURSAL!=='Todas') {
+    //   const starCountRef = ref(db, 'sucursales')
+    //   onValue(starCountRef, (snapshot) => {
+    //     const data = snapshot.val()
+    //     let temp = this._publicos.crearArreglo2(data)
+    //     temp.forEach(sucursal => {
+    //       if (sucursal.id === this.SUCURSAL) {
+    //         this.nombreSucursalMuestra = sucursal.sucursal
+    //       }
+    //     });
+    //   })
+    // }
   }
+  
 }

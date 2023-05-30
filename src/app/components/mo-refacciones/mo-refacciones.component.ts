@@ -31,6 +31,10 @@ export class MoRefaccionesComponent implements OnInit  {
   
   calculo: number =  0
   calculoMargen: number = 0
+
+  por=25
+  cantidad=1
+  totalMuestra:number
   constructor(private _publicos: ServiciosPublicosService, private fb: FormBuilder) { 
     this.dataElemento = new EventEmitter()
   }
@@ -44,32 +48,62 @@ export class MoRefaccionesComponent implements OnInit  {
   }
 
   verifica_info(cual:string, cantidad){
-    // const donde = (cual ==='porcentaje') 
-    let por = 0, can = 0
-    if(cual === 'porcentaje'){
-      por = Number(cantidad)
-    }else{
-      can = Number(cantidad)
+    if (cual === 'porcentaje') {
+      const porcentaje = Number(cantidad);
+      const margen = porcentaje / 100;
+      this.calculo = this.cantidad / (1 + margen);
+      this.calculoMargen = this.calculo * margen;
+    } else {
+      this.cantidad = Number(cantidad);
+      const margen = this.por / 100;
+      this.calculo = this.cantidad / (1 + margen);
+      this.calculoMargen = this.calculo * margen;
     }
-    // Porcentaje = (Cantidad * PorcentajeDeseado) / 100
-    this.calculo = ( can * por) / 100
-    this.calculoMargen = can * (por / 100) 
+    
   }
   crearFormElemento(){
     this.formElemento = this.fb.group({
       // paquete:['',[]],
       id:['',[]],
       nombre:['',[Validators.required,Validators.minLength(3), Validators.maxLength(50)]],
-      cantidad:['1',[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(1)]],
-      precio:['0',[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(1)]],
-      costo:['0',[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(0)]],
+      cantidad:[1,[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(1)]],
+      precio:[0,[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(1)]],
+      costo:[0,[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(0)]],
       marca:['',[]],
       status:['',[]],
       tipo:['refaccion',[Validators.required]],
       descripcion:['',[]]
     })
-  }
+    
 
+    this.formElemento.get('id').valueChanges.subscribe((id: string) => {
+      if (id) {
+        this.formElemento.get('nombre').disable();
+        this.formElemento.get('tipo').disable();
+      }else{
+        this.formElemento.get('nombre').enable();
+        this.formElemento.get('tipo').enable();
+      }
+      
+    })
+    this.formElemento.valueChanges.subscribe(() => {
+      this.calcularTotal();
+    });
+
+    
+  }
+  calcularTotal(){
+    const cantidad = this.formElemento.get('cantidad').value;
+    const precio = this.formElemento.get('precio').value;
+    const costo = this.formElemento.get('costo').value;
+    const tipo = this.formElemento.get('tipo').value;
+    const ocupado =  (costo>0) ? costo : precio
+    if (ocupado > 0 && cantidad >=1) {
+      const margen = (tipo === 'refaccion') ? 1 + (this.por / 100) : 1
+      this.totalMuestra = (cantidad * ocupado) * margen
+    }
+    
+  }
   listadoMO(){
     const starCountRef = ref(db, `manos_obra`)
     onValue(starCountRef, (snapshot) => {

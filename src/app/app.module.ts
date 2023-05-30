@@ -17,7 +17,7 @@ import { ClientesComponent } from './pages/clientes/clientes.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
 import { HomeComponent } from './pages/home/home.component';
 import { SucursalesComponent } from './pages/sucursales/sucursales.component';
-import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
+
 import { CotizacionComponent } from './pages/cotizacion/cotizacion.component';
 //material ui
 import { MatSliderModule } from '@angular/material/slider';
@@ -27,11 +27,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CommonModule, registerLocaleData } from "@angular/common";
 import { ServiciosComponent } from './pages/servicios/servicios.component';
-import { AdministracionComponent } from './pages/administracion/administracion.component';
-import { CatalogoEditComponent } from './pages/catalogo-edit/catalogo-edit.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { EstadosComponent } from './pages/estados/estados.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { OrdenamientoPipe } from './pipes/ordenamiento.pipe'
@@ -78,11 +75,8 @@ registerLocaleData(localeES)
 import * as $ from 'jquery';
 //traducir
 import {TranslateModule} from '@ngx-translate/core';
-import { LoginComponent } from './components/login/login.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
-import { GerenteComponent } from './pages/gerente/gerente.component';
-import { CifrarComponent } from './pages/cifrar/cifrar.component';
-import { TecnicoayudanteComponent } from './pages/tecnicoayudante/tecnicoayudante.component';
+
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { OrdenesCotizacionesComponent } from './pages/ordenes-cotizaciones/ordenes-cotizaciones.component';
@@ -97,17 +91,10 @@ import listPlugin  from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { NewcotizacionComponent } from './pages/newcotizacion/newcotizacion.component';
-import { FirmaComponent } from './pages/firma/firma.component';
 import { MonedasPipe } from './pipes/monedas.pipe';
 import { NumerosLetrasPipe } from './pipes/numeros-letras.pipe';
 import { CapitalizarUnoPipe } from './pipes/capitalizar-uno.pipe';
-import { FirmaConsentimientoComponent } from './pages/firma-consentimiento/firma-consentimiento.component';
 import { ModificarCotizacionComponent } from './pages/modificar-cotizacion/modificar-cotizacion.component';
-import { DetallesCotizacionComponent } from './pages/detalles-cotizacion/detalles-cotizacion.component';
-import { DetallesComponent } from './pages/detalles/detalles.component';
-
-
-
 import { RecordartoriosComponent } from './pages/recordartorios/recordartorios.component';
 import { NavbarHomeComponent } from './components/navbar-home/navbar-home.component';
 import { AutomaticosComponent } from './pages/automaticos/automaticos.component';
@@ -115,7 +102,7 @@ import { RecepcionComponent } from './pages/recepcion/recepcion.component';
 import { HistorialVehiculoComponent } from './pages/historial-vehiculo/historial-vehiculo.component';
 import { HistorialClienteComponent } from './pages/historial-cliente/historial-cliente.component';
 import { CotizacionNewComponent } from './pages/cotizacion-new/cotizacion-new.component';
-import { EditClienteComponent } from './pages/edit-cliente/edit-cliente.component';
+
 import { ServiciosConfirmarComponent } from './pages/servicios-confirmar/servicios-confirmar.component';
 import { ModificaRecepcionComponent } from './pages/modifica-recepcion/modifica-recepcion.component';
 import { AuthPruebaComponent } from './components/auth-prueba/auth-prueba.component';
@@ -128,7 +115,7 @@ import { PagoComponent } from './components/pago/pago.component';
 import { MoRefaccionesComponent } from './components/mo-refacciones/mo-refacciones.component';
 import { ReporteGastosComponent } from './pages/reporte-gastos/reporte-gastos.component';
 import { RealizaDepositoComponent } from './components/realiza-deposito/realiza-deposito.component';
-import { EntregaOrdenComponent } from './pages/entrega-orden/entrega-orden.component';
+
 import { DataFacturacionClienteComponent } from './components/data-facturacion-cliente/data-facturacion-cliente.component';
 import { PaquetesComponent } from './components/paquetes/paquetes.component';
 import { ClientesListComponent } from './components/clientes-list/clientes-list.component';
@@ -158,33 +145,21 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ConfiguracionComponent,
     HomeComponent,
     SucursalesComponent,
-    VehiculosComponent,
     ServiciosComponent,
-    AdministracionComponent,
-    CatalogoEditComponent,
-    EstadosComponent,
     OrdenamientoPipe,
     SidebarComponent,
     BreadcrumsComponent,
-    LoginComponent,
     UsuariosComponent,
-    GerenteComponent,
-    CifrarComponent,
-    TecnicoayudanteComponent,
     FooterComponent,
     HeaderComponent,
     OrdenesCotizacionesComponent,
     NavbarComponent,
     CalendarComponent,
     NewcotizacionComponent,
-    FirmaComponent,
     MonedasPipe,
     NumerosLetrasPipe,
     CapitalizarUnoPipe,
-    FirmaConsentimientoComponent,
     ModificarCotizacionComponent,
-    DetallesCotizacionComponent,
-    DetallesComponent,
     RecordartoriosComponent,
     NavbarHomeComponent,
     AutomaticosComponent,
@@ -192,7 +167,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     HistorialVehiculoComponent,
     HistorialClienteComponent,
     CotizacionNewComponent,
-    EditClienteComponent,
     ServiciosConfirmarComponent,
     ModificaRecepcionComponent,
     AuthPruebaComponent,
@@ -205,7 +179,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MoRefaccionesComponent,
     ReporteGastosComponent,
     RealizaDepositoComponent,
-    EntregaOrdenComponent,
     DataFacturacionClienteComponent,
     PaquetesComponent,
     ClientesListComponent,
