@@ -11,6 +11,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosService } from '../../services/servicios.service';
 import { CotizacionService } from '../../services/cotizacion.service';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 const db = getDatabase();
 const dbRef = ref(getDatabase());
 @Component({
@@ -26,57 +28,74 @@ const dbRef = ref(getDatabase());
   ],
 })
 export class HistorialVehiculoComponent implements OnInit {
-  ROL:string='';SUCURSAL:string =''; idVehiculo:string =''; dataVehiculo:any=[]; sinDataVehiculo:boolean= false; dataCliente:any=[]; dataSucursal:any=[];
-  clickedRows = new Set<any>();
-  dataSource = new MatTableDataSource();
+  ROL:string='';SUCURSAL:string ='';
+  reporte_Cotizaciones={subtotal:0, iva:0, total:0}
+  reporte_Recepciones={subtotal:0, iva:0, total:0}
+  campos_reportes = ['subtotal','iva','total']
   
-  dataSourceCotizaciones = new MatTableDataSource(); 
-  @ViewChild('paginatorCotizacion') paginatorCotizaciones: MatPaginator;@ViewChild('tabCotizacion') sortCotizaciones: MatSort; 
-  dataSourceRecepciones = new MatTableDataSource(); 
-  @ViewChild('paginatorRecepciones') paginatorRecepciones: MatPaginator;@ViewChild('tabRecepciones') sortRecepciones: MatSort; 
-  
-  columsCotizaciones:  string[] = ['no_cotizacion','placas','servicio','fecha']
-  columsCotizacionesExtended:  string[] = [...this.columsCotizaciones,'expand'];
+  paquete: string = 'paquete'
+  refaccion: string = 'refaccion'
+  mo: string = 'mo'
 
-  columsRecepciones:  string[] = ['no_os','placas','servicio','fecha']
-  columsRecepcionesExtended:  string[] = [...this.columsRecepciones,'expand'];
-  // columsHistorialCotizacion:  string[] = ['servicio','total','fecha', 'hora']; 
-  // columsHistorialCotizacionExtended:  string[] = [...this.columsHistorialCotizacion,'expand'];
-  expandedElement: any | null; listaSucursales:any=[]; vehiculo:any=[]; cliente:any=[]; sucursales:any =[]
-  miniColumnas:number = 100; ambosDatos:any=[]; complementosShow:any=[]; paqueteData:string ='';
-  totalCotizado:number = 0; subtotalCotizado:number = 0; dataPaquete:any=[]
+  camposCliente=[
+    {valor: 'no_cliente', show:'# Cliente'},
+    {valor: 'nombre', show:'Nombre'},
+    {valor: 'apellidos', show:'Apellidos'},
+    {valor: 'correo', show:'Correo'},
+    {valor: 'correo_sec', show:'Correo adicional'},
+    {valor: 'telefono_fijo', show:'Tel. Fijo'},
+    {valor: 'telefono_movil', show:'Tel. cel.'},
+    {valor: 'tipo', show:'Tipo'},
+    {valor: 'empresa', show:'Empresa'},
+    // {valor: 'sucursal', show:'Sucursal'}
+  ]
+  camposVehiculo=[
+    {valor: 'placas', show:'Placas'},
+    {valor: 'marca', show:'marca'},
+    {valor: 'modelo', show:'modelo'},
+    {valor: 'anio', show:'añio'},
+    {valor: 'categoria', show:'categoria'},
+    {valor: 'cilindros', show:'cilindros'},
+    {valor: 'engomado', show:'engomado'},
+    {valor: 'color', show:'color'},
+    {valor: 'transmision', show:'transmision'},
+    {valor: 'no_motor', show:'No. Motor'},
+    {valor: 'vinChasis', show:'vinChasis'},
+    {valor: 'marcaMotor', show:'marcaMotor'}
+  ]
+  camposDesgloce = [
+    {valor:'mo', show:'mo'},
+    // {valor:'refacciones_a', show:'refacciones a'},
+    {valor:'refacciones_v', show:'refacciones'},
+    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
+    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
+    {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'descuento', show:'descuento'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+    {valor:'meses', show:'meses'},
+  ]
 
-  elementospaquete:any=[];infoPaquete:any=[]; 
 
-  campos_vehiculo = [
-    {muestra: 'placas', campo:'placas'},{muestra: 'marca', campo:'marca'},{muestra: 'modelo', campo:'modelo'},
-    {muestra: 'color', campo:'color'},{muestra: 'año', campo:'anio'},{muestra: 'transmision', campo:'transmision'},
-    {muestra: 'engomado', campo:'engomado'},{muestra: 'No. motor', campo:'no_motor'},{muestra: 'vinChasis', campo:'vinChasis'}
-  ]
-  campos_cliente = [
-    {muestra: 'nombre', campo:'fullname'},{muestra: 'correo', campo:'correo'},{muestra: 'correo adicional', campo:'correo_sec'},
-    {muestra: 'tel. movil', campo:'telefono_movil'},{muestra: 'tek. fijo', campo:'telefono_fijo'},{muestra: 'tipo', campo:'tipo'},
-    {muestra: 'empresa', campo:'empresa'},{muestra: 'Sucursal', campo:'nameSucursal'}
-  ]
-  campos_desgloce = [
-    {nombre:'IVA',valor:'IVA'}, {nombre:'U.B',valor:'UB'}, {nombre:'Refacciones adquisicion',valor:'refacciones1'},
-    {nombre:'Refacciones venta',valor:'refacciones2'},{nombre:'total MO',valor:'totalMO'},{nombre:'Costo sobrescrito',valor:'sobrescrito'},
-    {nombre:'subtotal',valor:'subtotal'}, {nombre:'total',valor:'total'}
-  ]
-  info_Degloce = {IVA:0,UB:0,refacciones1:0,refacciones2:0,sobrescrito:0,subtotal:0,total:0,totalMO:0}
-  info_Degloce_recepciones = {IVA:0,UB:0,refacciones1:0,refacciones2:0,sobrescrito:0,subtotal:0,total:0,totalMO:0}
+  // tabla
+  dataSourceCotizaciones = new MatTableDataSource(); //elementos
+  cotizaciones =  ['index','no_cotizacion','fullname','searchPlacas']; //cotizaciones
+  columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'opciones', 'expand']; //elementos
+  expandedElementCotizaciones: any | null; //elementos
+  @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
+  @ViewChild('Cotizaciones') sortCotizaciones: MatSort //elementos
 
-  servicios=[
-    {valor:1,nombre:'servicio'},
-    {valor:2,nombre:'garantia'},
-    {valor:3,nombre:'retorno'},
-    {valor:4,nombre:'venta'},
-    {valor:5,nombre:'preventivo'},
-    {valor:6,nombre:'correctivo'},
-    {valor:7,nombre:'rescate vial'}
-  ]
+  // tabla
+  dataSourceRecepciones = new MatTableDataSource(); //elementos
+  recepciones = ['id','no_os','fullname','searchPlacas','fechaRecibido','fechaEntregado'];//recepciones
+  columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'opciones', 'expand']; //elementos
+  expandedElementRecepciones: any | null; //elementos
+  @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
+  @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
   constructor(private rutaActiva: ActivatedRoute,private _security:EncriptadoService,private _servicios: ServiciosService,
-              private _cotizaciones: CotizacionService
+              private _cotizaciones: CotizacionesService, private _publicos: ServiciosPublicosService
     ) { }
 
   ngOnInit(): void {
@@ -84,16 +103,47 @@ export class HistorialVehiculoComponent implements OnInit {
   }
 
   rol(){
-    // this.ROL =localStorage.getItem('tipoUsuario')
-    // this.SUCURSAL =localStorage.getItem('sucursal')
     
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+    this.acciones()
+  }
+  acciones(){
+    const idVehiculo = this.rutaActiva.snapshot.params['idvehiculo']
+    console.log(idVehiculo);
+    
+    this._cotizaciones.consulta_cotizaciones_new().then((cotizaciones)=>{
+      const mis_cotizaciones = cotizaciones.filter(c=>c.vehiculo.id === idVehiculo)
+      this.reporte_Cotizaciones = this._publicos.reporte_cotizaciones_recepciones(mis_cotizaciones)
+      mis_cotizaciones.map((c,index)=>{ c.index = index})
+      this.dataSourceCotizaciones.data = mis_cotizaciones
+      this.newPagination('cotizaciones')
+    })
+    this._cotizaciones.consulta_recepciones_new().then((recepciones)=>{
+      const mis_recepciones = recepciones.filter(c=>c.vehiculo.id === idVehiculo)
+      this.reporte_Recepciones = this._publicos.reporte_cotizaciones_recepciones(mis_recepciones)
+    })
+  }
 
-    this.idVehiculo = this.rutaActiva.snapshot.params['idvehiculo']
-    if (this.idVehiculo!=='') {
-    }
+  newPagination(tabla){
+    setTimeout(() => {
+      let dataSource;
+      let paginator;
+      let sort;
+  
+      if (tabla === 'cotizaciones') {
+        dataSource = this.dataSourceCotizaciones;
+        paginator = this.paginatorCotizaciones;
+        sort = this.sortCotizaciones;
+      } else if (tabla === 'recepciones') {
+        dataSource = this.dataSourceRecepciones;
+        paginator = this.paginatorRecepciones;
+        sort = this.sortRecepciones;
+      }
+  
+      if (dataSource && paginator && sort) {
+        dataSource.paginator = paginator;
+        dataSource.sort = sort;
+      }
+    }, 500);
   }
 
 }

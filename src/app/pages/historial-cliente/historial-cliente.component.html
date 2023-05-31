@@ -84,6 +84,8 @@
         <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef > &nbsp; </th>
           <td mat-cell *matCellDef="let row">
+            <!-- historial-vehiculo/:idvehiculo:/:cliente -->
+            <i class="fa fa-book" [routerLink]="'/historial-vehiculo/'+row.id+'/'+idCliente" ></i>
           </td>
         </ng-container>
        

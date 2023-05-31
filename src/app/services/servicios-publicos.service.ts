@@ -1097,6 +1097,18 @@ export class ServiciosPublicosService {
         }
       }
       
+      reporte_cotizaciones_recepciones(arregloCotizaciones){
+        const reporte = {total:0, subtotal:0,iva:0}
+        arregloCotizaciones.forEach(c => {
+            c.margen = (!c.margen)  ? 25 : c.margen
+            c.formaPago = (!c.formaPago)  ? '1' : c.formaPago
+            c.reporte = (!c.reporte)  ? this.realizarOperaciones_2(c).reporte : c.reporte
+            reporte.subtotal += c.reporte.subtotal
+            reporte.iva += c.reporte.iva
+            reporte.total += c.reporte.total
+        });
+        return reporte
+      }
       
       
       

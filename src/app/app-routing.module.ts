@@ -45,7 +45,7 @@ const APP_ROUTES: Routes = [
   { path: 'usuarios', component: UsuariosComponent,  canActivate:[AuthGuard] },
   { path: 'recepcion/:recepcion/:pagina', component: RecepcionComponent ,  canActivate:[AuthGuard]},
   { path: 'recordatorios', component: RecordartoriosComponent ,  canActivate:[AuthGuard]},
-  { path: 'historial-vehiculo/:idvehiculo', component: HistorialVehiculoComponent ,  canActivate:[AuthGuard]},
+  { path: 'historial-vehiculo/:idvehiculo/:idcliente', component: HistorialVehiculoComponent ,  canActivate:[AuthGuard]},
   { path: 'historial-cliente/:rutaAnterior/:idCliente', component: HistorialClienteComponent ,  canActivate:[AuthGuard]},
   { path: 'cotizacionNueva/:ID/:tipo/:extra', component: CotizacionNewComponent ,  canActivate:[AuthGuard]},
   { path: 'home', component: HomeComponent },
