@@ -80,9 +80,11 @@ export class MoRefaccionesComponent implements OnInit  {
       if (id) {
         this.formElemento.get('nombre').disable();
         this.formElemento.get('tipo').disable();
+        this.formElemento.get('precio').disable();
       }else{
         this.formElemento.get('nombre').enable();
         this.formElemento.get('tipo').enable();
+        this.formElemento.get('precio').enable();
       }
       
     })
@@ -158,42 +160,37 @@ export class MoRefaccionesComponent implements OnInit  {
   elementoSelecccionado(option){
     // console.log(option);
     this.existe = true
+    const claves = Object.keys(option)
+    const recuperada = this._publicos.nuevaRecuperacionData(option, claves)
+    if (option.id) {
+      this.formElemento.reset({
+        id: recuperada.id,
+        nombre: recuperada.nombre,
+        cantidad: 1,
+        precio: recuperada.precio,
+        costo: 0,
+        marca: recuperada.marca,
+        status: recuperada.status,
+        tipo: recuperada.tipo,
+        descripcion: recuperada.descripcion,
+      })
+      
+    }else{
+    }
     
-    const nuevaInfo = {}, claves = Object.keys(option)
-    claves.forEach((c)=>{
-      if (option[c]) {
-        nuevaInfo[c] = option[c]
-      }else{
-        // nuevaInfo[c] = ' '
-      }
-    })
-    // console.log(nuevaInfo);
-    this.cargaInfo(nuevaInfo);
-    (nuevaInfo['tipo'] === 'refaccion') ? this.marca = true : this.marca = false
+    // this.cargaInfo(recuperada);
+    // console.log(recuperada);
+    
+    // (recuperada['tipo'] === 'refaccion') ? this.marca = true : this.marca = false
     
   }
 
   //cargar la informacion en formulario
-  cargaInfo(nuevaInfo:any){
-    this.formElemento.reset({
-        id: nuevaInfo['id'],
-        nombre: nuevaInfo['nombre'],
-        cantidad: 1,
-        precio: nuevaInfo['precio'],
-        costo: 0,
-        marca: nuevaInfo['marca'],
-        status: nuevaInfo['status'],
-        tipo: nuevaInfo['tipo'],
-        descripcion: nuevaInfo['descripcion'],
-    })
-  }
+
   //verificar si es un objeto o solo un string
   verificaElemento(){
-    // console.log(this.myControl.value);
     const value = this.myControl.value
-    if (value['id']) {
-      
-    }else{
+    if (!value['id']){
       this.existe = false
       this.limpiarForm()
     }
@@ -201,18 +198,9 @@ export class MoRefaccionesComponent implements OnInit  {
   //guardar elemento
   colocarElemento(){
     const info = this.formElemento.value
-    const nuevaInfo = {}, claves = Object.keys(info)
-    //limpiar la informacion evitar informacion nulla
-    claves.forEach((c)=>{
-      if (info[c]  ) {
-        nuevaInfo[c] = info[c]
-      }
-    })
+    const claves = Object.keys(info)
+    const nuevaInfo = this._publicos.nuevaRecuperacionData(info, claves)
     if(!nuevaInfo['costo']) nuevaInfo['costo'] =  0
-    // if(!nuevaInfo['precio']) nuevaInfo['precio'] =  0
-
-    
-    
     
 
     // console.log(nuevaInfo);
@@ -228,8 +216,16 @@ export class MoRefaccionesComponent implements OnInit  {
         nuevaInfo['status'] = true
         nuevaInfo['nombre'] = this._publicos.CapitalizarUno(nuevaInfo['nombre'] )
         if (nuevaInfo['id']) {
-          this.dataElemento.emit(  nuevaInfo )
-          this._publicos.mensajeSwal('Se agrego elemento')
+          const controls_arr = ['nombre','precio','tipo']
+          controls_arr.forEach(c=>{
+            const control = this.formElemento.get(c);
+            if (control.disabled) {
+              nuevaInfo[c] = this.formElemento.get(c).value
+            }
+          })
+          this.dataElemento.emit( nuevaInfo )
+          // this._publicos.mensajeSwal('Se agrego elemento')
+          this._publicos.swalToastCenter('Se agrego elemento')
           this.limpiarControl()
         }else{
           //agregar nueva clave
@@ -239,7 +235,8 @@ export class MoRefaccionesComponent implements OnInit  {
           updates[`${path}/${nuevaInfo['id']}`] = nuevaInfo;
           // console.log(updates);
           update(ref(db), updates).then(()=>{
-            this._publicos.mensajeSwal('Se agrego elemento')
+            // this._publicos.mensajeSwal('Se agrego elemento')
+            this._publicos.swalToastCenter('Se agrego elemento')
             this.dataElemento.emit( nuevaInfo )
             this.limpiarControl()
           })

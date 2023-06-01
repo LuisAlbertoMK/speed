@@ -40,6 +40,10 @@ export class CotizacionesService {
       get(child(dbRef, `recepciones`)).then((snapshot) => {
         if (snapshot.exists()) {
           const recepciones = this._publicos.crearArreglo2(snapshot.val());
+          recepciones.map(c=>{
+            c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}` 
+            c.searchPlacas = `${c.vehiculo.placas}` 
+          })
           resolve(recepciones);
         } else {
           resolve([]);

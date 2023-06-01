@@ -247,7 +247,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   clienteId:string = null
   observaciones:string = null
   //TODO: aqui la informacion que es nueva
-
+  enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:''}
 
   constructor(
     private router: Router, private rutaActiva: ActivatedRoute, private _formBuilder: FormBuilder, private _clientes:ClientesService,
@@ -256,11 +256,13 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     private _servicios: ServiciosService, private _catalogos:CatalogosService, private _uploadFiles: UploadFileService,
     private _usuarios: UsuariosService,  private _security:EncriptadoService,
     private _cotizaciones: CotizacionService, private _pdfRecepcion: PdfRecepcionService,
-    private _pdf: UploadPDFService, private _empresas: EmpresasService) { }
+    private _pdf: UploadPDFService, private _empresas: EmpresasService, private _cotizacion: CotizacionService) { }
     
   ngOnInit(): void {
     this.listaSucursales()
     this.camposGuardar = [...this._publicos.camposGuardar()]
+    this.infoConfirmar.checkList = this.checkList
+    this.infoConfirmar.detalles = this.detalles_rayar
   }
   ngAfterViewInit() {
     this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
@@ -286,106 +288,79 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       // Manejar el error si ocurre
     });
   }
-  
+  regresar(){
+    this.router.navigate([`/${this.enrutamiento.anterior}`], { 
+      queryParams: 
+      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+    });
+  }
   async rol(){
-    Swal.fire({
-      title:'Cargando',
-      html:'Espere porfavor...',
-      showConfirmButton:false,
-      allowOutsideClick:false
-    })
-    Swal.isLoading()
-    const ID = this.rutaActiva.snapshot.params['ID']
-    const tipo = this.rutaActiva.snapshot.params['tipo']
-    const extra = this.rutaActiva.snapshot.params['extra']
-    // console.log(ID);
-    // console.log(tipo);
-    this.infoConfirmar.checkList = this.checkList
-    this.infoConfirmar.detalles = this.detalles_rayar
-    if(tipo === 'cotizacion'){
-      
-      const starCountRef = ref(db, `cotizacionesRealizadas/${ID}`)
-      onValue(starCountRef, async (snapshot) => {
-        if (snapshot.exists()) {
-          
-          const {cliente, vehiculo, servicio ,elementos, sucursal, iva, formaPago, margen_get} = snapshot.val()
-          // const infoCotizacion = snapshot.val()
-          let vehiculos = []
-          await get(child(dbRef, `clientes/${cliente.id}/vehiculos`)).then((snapVehiculos) => {
-            if (snapVehiculos.exists()) {
-              vehiculos = this._publicos.crearArreglo2(snapVehiculos.val())
-            }
+    
+    this.rutaActiva.queryParams.subscribe(params => {
+      const anterior = params['anterior'];
+      const tipo = params['tipo'];
+      const cliente = params['cliente'];
+      const vehiculo = params['vehiculo'];
+      const id_rcepcion = params['recepcion']
+      const id_cotizacion = params['cotizacion']
+
+      this.enrutamiento.vehiculo = vehiculo
+      this.enrutamiento.cliente = cliente
+      this.enrutamiento.anterior = anterior
+      this.enrutamiento.tipo = tipo
+      if (tipo === 'nueva') {
+        this._clientes.consulta_cliente_new(cliente).then((cliente_get:any)=>{
+          this.infoConfirmar.cliente = cliente_get
+          this.infoConfirmar.vehiculos = cliente_get.vehiculos
+          this.infoConfirmar.sucursal = this.listaSucursales_arr.find(s=>s.id === cliente_get.sucursal)
+          if (vehiculo) {
+            this.extra = vehiculo
+            this.infoConfirmar.vehiculo = cliente_get.vehiculos.find(v=>v.id === vehiculo)
+          }
+          // this.infoConfirmar.servicios = [
+          //   {
+          //       "id": "-NM_TK5u-YtvZKTFrlYc",
+          //       "cantidad": 1,
+          //       "costo": 0,
+          //       "marca": "",
+          //       "status": true,
+          //       "descripcion": "",
+          //       "aprobado": true,
+          //       "nombre": "vieleta",
+          //       "precio": 800,
+          //       "tipo": "refaccion",
+          //       "index": 0,
+          //       "total": 1000
+          //   }]
+        this.realizaOperaciones()
+        })
+      }else if(tipo === 'cotizacion'){
+        console.log('informacion de la cotizacion');
+        this._cotizacion.consulta_cotizacion_new(id_cotizacion).then((cotizacion:any)=>{
+          console.log(cotizacion);
+          // this.infoConfirmar.cliente = cotizacion.cliente
+          // this.infoConfirmar.sucursal = cotizacion.sucursal
+          // this.infoConfirmar.vehiculo = cotizacion.vehiculo
+          cotizacion.servicios = cotizacion.elementos
+          const camposOcupadosCotizacion = ['cliente','vehiculo','sucursal','formaPago','iva','margen','nota','servicio','servicios']
+          camposOcupadosCotizacion.forEach(c=>{
+            this.infoConfirmar[c]= cotizacion[c]
           })
-          const infoSU =  this.listaSucursales_arr.find(s=>s.id === cliente.sucursal)
-          cliente.showSucursal = infoSU.sucursal
-
-          this.infoConfirmar.cliente = cliente
-          this.infoConfirmar.vehiculo = vehiculo
-          this.infoConfirmar.vehiculos = vehiculos
-          this.infoConfirmar.servicios = elementos
-          this.infoConfirmar.formaPago = formaPago
-          this.infoConfirmar.margen = margen_get
-          this.infoConfirmar.sucursal = sucursal
-          
-          if(cliente.dataFacturacion){
-            this.infoConfirmar.dataFacturacion = cliente.dataFacturacion.unica
-          }else{
-            this.infoConfirmar.dataFacturacion = null
-          }
-          
-          this.infoConfirmar.servicio = servicio
-          this.infoConfirmar.iva = iva
-          this.extra = vehiculo.id
-          this.infoConfirmar.reporte = this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte
-          // this.infoConfirmar.servicios = 
-          // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).ocupados);
-          // console.log(this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte);
-          this.infoConfirmar.cliente = cliente
-          this.infoConfirmar.vehiculos = cliente.vehiculos
+          this.enrutamiento.cliente = cotizacion.cliente.id
+          this.extra = cotizacion.vehiculo.id
+          this.consultaVehiculosCliente()
           this.realizaOperaciones()
-          Swal.close()
-          
-        }
-      }, {
-          onlyOnce: true
         })
+      }
+    });
+    
+  }
+  consultaVehiculosCliente(){
+    if (this.infoConfirmar.cliente['id']) {
+      this._clientes.consulta_cliente_new(this.enrutamiento.cliente).then((cliente:any)=>{
+        this.infoConfirmar.vehiculos = cliente.vehiculos
+      })
     }
-    if(tipo === 'cliente' || tipo === 'vehiculo'){
-      const starCountRef = ref(db, `clientes/${ID}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          // let vehiculos= this._publicos.crearArreglo2(snapshot.val())
-          const cliente = snapshot.val();
-          const vehiculos = (cliente.vehiculos) ? this._publicos.crearArreglo2(cliente.vehiculos) : []
-          if(cliente.dataFacturacion){
-            this.infoConfirmar.dataFacturacion = cliente.dataFacturacion.unica
-          }else{
-            this.infoConfirmar.dataFacturacion = null
-          }
-          const infoSU =  this.listaSucursales_arr.find(s=>s.id === cliente.sucursal)
-          cliente.showSucursal = infoSU.sucursal
-
-          if (extra) {
-            this.extra = extra
-            this.infoConfirmar.vehiculo = vehiculos.find(v=>v.id === extra)
-          }
-          // console.log(cliente);
-          
-          this.infoConfirmar.sucursal = infoSU
-          this.infoConfirmar.cliente = cliente
-          this.infoConfirmar.vehiculos = vehiculos
-          Swal.close()
-        }
-      }, {
-          onlyOnce: true
-        })
-    }
-    if(tipo === 'new') Swal.close()
-
-    // if(tipo === 'vehiculo'){
-
-    //   Swal.close()
-    // }
   }
 
   cambiaAprobado(index, aprobado){
@@ -427,8 +402,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.servicios.push(tempDate)
     this.realizaOperaciones()
   }
-  elementoInfo( event){
-    this.infoConfirmar.servicios.push(event)
+  elementoInfo( event ){
+    this.infoConfirmar.servicios.push( event)
     this.realizaOperaciones()
   }
   editar(donde:string ,data,cantidad){
@@ -467,7 +442,7 @@ realizaOperaciones(){
     const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoConfirmar)
     this.dataSource.data = ocupados
     this.infoConfirmar.servicios = ocupados
-    this.infoConfirmar.reporte = reporte
+    this.infoConfirmar.reporte = reporte    
     this.newPagination()
   }, 100);
 }
@@ -998,35 +973,7 @@ vehiculoInfonew(idVehiculo:string){
   this.extra = idVehiculo
   this.infoConfirmar.vehiculo = this.infoConfirmar.vehiculos.find(v=>v.id === idVehiculo)
 }
-cargaDataVehiculo(data:any,quien:string){
-  // console.log(data);
-  this.cliente = null
-  this.vehiculoData = null
-  if (quien === 'cliente') {
-    
-    // console.log('id de cliente');
-    if (data['id']) {
-      setTimeout(() => {
-        this.cliente = data['id']
-      } , 300);
-    }
-  }
-  if (quien === 'vehiculo') {
-    
-    // console.log('id de vehiculo');
-    if (data['id']) {
-      setTimeout(() => {
-       
-        // Swal.fire('','','info')
-        this._publicos.mensajeOK('Se cargo la información',2000)
-        // Swal.isLoading()
-        this.vehiculoData = data
-        // Swal.close()
-      } , 300);
-    }
-  }
-  
-}
+
   
   //realizar acciones con la informacion de la recepcion
   realizaValidaciones(){
@@ -1080,7 +1027,11 @@ cargaDataVehiculo(data:any,quien:string){
     })
 
     this.infoConfirmar.personalizados = arregloPer
-    this.infoConfirmar.observaciones = this.observaciones
+    this.infoConfirmar.observaciones = this.observaciones || ''
+    this.infoConfirmar.fecha_recibido = this._publicos.getFechaHora().fecha
+    this.infoConfirmar.hora_recibido = this._publicos.getFechaHora().hora
+    
+    
     this._pdfRecepcion.obtenerImege(this.infoConfirmar).then((pdfReturn:any) => {
       const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
       // pdfDocGenerator.open();
@@ -1108,6 +1059,7 @@ cargaDataVehiculo(data:any,quien:string){
         }
         this.infoConfirmar.no_os = no_os
         // console.log(dataMail);
+        // console.log(this.infoConfirmar);
         Swal.fire({
           title: 'Opciones de recepcion',
           html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
@@ -1147,8 +1099,7 @@ cargaDataVehiculo(data:any,quien:string){
     // fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null
                     this.infoConfirmar.status = 'recibido'
                     this.infoConfirmar.diasSucursal = 0
-                    this.infoConfirmar.fecha_recibido = this._publicos.getFechaHora().fecha
-                    this.infoConfirmar.hora_recibido = this._publicos.getFechaHora().hora
+                    
                     this.infoConfirmar.notifico = true
                     this.infoConfirmar.servicio = 1
                     updates[`recepciones/${this._publicos.generaClave()}`] = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)

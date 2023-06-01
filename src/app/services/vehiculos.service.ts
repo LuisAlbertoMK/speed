@@ -17,6 +17,23 @@ const dbRef = ref(getDatabase());
 export class VehiculosService {
 
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService) { }
+
+  consulta_vehiculo_new(cliente,vehiculo): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `clientes/${cliente}/vehiculos/${vehiculo}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const vehiculo = snapshot.val()
+          resolve(vehiculo);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+
+
+
   async existenPlacas(placas:string){
     let listaPlacas = [], existen:boolean = false
     await get(child(dbRef, `vehiculos`)).then((snapshot) => {
@@ -226,14 +243,11 @@ export class VehiculosService {
   async registra_vehiculo_new(dataVehiculo) {
     try {
       const updates = {};
-      if (dataVehiculo.id) {
-        updates[`clientes/${dataVehiculo.cliente}/vehiculos/${dataVehiculo.id}`] = dataVehiculo;
-      } else {
-        updates[`clientes/${dataVehiculo.cliente}/vehiculos/${this._publicos.generaClave()}`] = dataVehiculo;
-      }
-      
+      const id = (dataVehiculo.id) ? dataVehiculo.id : this._publicos.generaClave()
+        updates[`clientes/${dataVehiculo.cliente}/vehiculos/${id}`] = dataVehiculo;
+            
       await update(ref(db), updates);
-      return true;
+      return id;
     } catch (error) {
       return false;
     }

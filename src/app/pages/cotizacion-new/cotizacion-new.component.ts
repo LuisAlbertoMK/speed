@@ -149,14 +149,13 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   modeloVehiculo:string = null
 
-  elementosPrueba = [
-  
-  
-]
+  elementosPrueba = []
+
+enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
   constructor(
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
     private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
-    private router: Router, private _sucursales: SucursalesService) { }
+    private router: Router, private _sucursales: SucursalesService, private _clientes: ClientesService, private _cotizacion: CotizacionService) { }
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -169,16 +168,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   verificarInfoVehiculos(){
     if (this.infoCotizacion.cliente['id']) {
-      const starCountRef = ref(db, `clientes/${this.infoCotizacion.cliente['id']}/vehiculos`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          let vehiculos= this._publicos.crearArreglo2(snapshot.val())
-          this.infoCotizacion.vehiculos = vehiculos
-        }else{
-          this.infoCotizacion.vehiculos = []
-        }
-      },{
-          onlyOnce: true
+      this._clientes.consulta_cliente_new(this.infoCotizacion.cliente['id']).then((cliente:any)=>{
+        this.infoCotizacion.vehiculos = cliente.vehiculos
+        this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
       })
     } 
   }
@@ -241,87 +233,71 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       // Obtenemos una lista de las sucursales 
       this._sucursales.consultaSucursales_new().then((sucursales) => {
         this.sucursales = sucursales
-        this.accion()
       }).catch((error) => {
         // Manejar el error si ocurre
+      });
+
+      
+      this.rutaActiva.queryParams.subscribe(params => {
+        // anterior:'clientes', cliente, tipo: 'new', extra: null 
+        const tipo = params['tipo'];
+        const cliente = params['cliente'];
+        const anterior = params['anterior'];
+        const vehiculo = params['vehiculo'];
+        const cotizacion = params['cotizacion'];
+        // if(cliente && tipo){
+          this.enrutamiento.cliente = cliente
+          this.enrutamiento.tipo = tipo
+          this.enrutamiento.vehiculo = vehiculo
+          this.enrutamiento.cotizacion = cotizacion
+          this.accion(cliente, tipo, vehiculo, cotizacion)
+        // }
+        this.enrutamiento.anterior = anterior
       });
     }else{
       this._publicos.swalToastError('No se puede cargar la informacion')
     } 
   }
-  accion(){
-    //verificamos que tipo de cotizacion es cliente, cotizacion, vehiculo, nueva
-    // con los parametros ID obtenemos el id de lo antes mencionado y con tipo cual sera la busqueda
-    const ID = this.rutaActiva.snapshot.params['ID']
-    const tipo = this.rutaActiva.snapshot.params['tipo']
-    const extra = this.rutaActiva.snapshot.params['extra']
-    // console.log(ID);
-    // console.log(tipo);
-    this.tipo = tipo
-    // console.log(this.sucursales);
-    
-    //si el tipo es cliente y tiene su id buscamos la informacion especifica del cliente
-    if (tipo ==='cliente' || tipo === 'vehiculo') {
-      const starCountRef = ref(db, `clientes/${ID}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          const cliente = snapshot.val()
-          if (cliente['vehiculos']) cliente['vehiculos'] = this._publicos.crearArreglo2(cliente['vehiculos'])
-          
-          // asiganar toda la informacion para la cotizacion cliente, sucursal, vehiculos, etc
-          cliente['fullname'] = `${cliente.nombre} ${cliente.apellidos}`
+  regresar(){
+    this.router.navigate([`/${this.enrutamiento.anterior}`], { 
+      queryParams: {}
+    });
+  }
+  
+  accion(cliente, tipo, vehiculo?,cotizacion?){
+    if (tipo === 'cliente' && cliente) {
+      // if(cliente){
+        this._clientes.consulta_cliente_new(cliente).then((cliente:any)=>{
           this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
           this.infoCotizacion.cliente = cliente
           this.infoCotizacion.vehiculos = cliente.vehiculos
-          this.infoCotizacion.descripcion = ''
-          this.infoCotizacion.nota = ''
-            
-          if (extra) {
-            const ve= cliente.vehiculos.find(v=>v['id'] === extra)
-            if(ve){
-              this.infoCotizacion.vehiculo = ve
-              this.extra = extra
-              this.modeloVehiculo = ve['modelo']
-            }
+          if(vehiculo){
+            this.extra = vehiculo
+            const vehiculo_info= cliente.vehiculos.find(v=>v['id'] === vehiculo)
+            this.infoCotizacion.vehiculo = vehiculo_info
           }
-
-
           this.realizaOperaciones()
-        }
+        })
+      // }
+    }else if(tipo ==='cotizacion' && cotizacion){
+      this._cotizacion.consulta_cotizacion_new(cotizacion).then((cotizacion:any)=>{
+        this.infoCotizacion.cliente = cotizacion.cliente
+        this.infoCotizacion.vehiculo = cotizacion.vehiculo
+        this._clientes.consulta_cliente_new(cotizacion.cliente.id).then((cliente:any)=>{
+          this.infoCotizacion.vehiculos = cliente.vehiculos
+        })
+        this.extra = cotizacion.vehiculo.id
+        const camposRecupera = ['elementos','iva','formaPago','nota','descripcion','servicio','descuento','sucursal']
+        camposRecupera.forEach(c=>{
+          this.infoCotizacion[c] = cotizacion[c]
+        })
+        this.realizaOperaciones()
       })
-    } else if(tipo ==='cotizacion' ) {
-      const starCountRef = ref(db, `cotizacionesRealizadas/${ID}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          // let arreglo= this.crearArreglo2(snapshot.val())
-          const info = snapshot.val()
-          this.infoCotizacion.cliente = info.cliente
-          this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === info.cliente['sucursal'])
-          this.infoCotizacion.vehiculo = info.vehiculo
-          this.infoCotizacion.elementos = info.elementos
-          this.infoCotizacion.iva = info.iva
-          this.infoCotizacion.formaPago = info.formaPago
-          this.infoCotizacion.nota = info.nota
-          this.infoCotizacion.descripcion = info.descripcion
-          this.infoCotizacion.servicio = info.servicio
-          const startCliente = ref(db, `clientes/${info.cliente.id}/vehiculos`)
-          onValue(startCliente, (snapshotCliente) => {
-            if (snapshotCliente.exists()) {
-                this.infoCotizacion.vehiculos = this._publicos.crearArreglo2(snapshotCliente.val())
-              }
-            })
-          this.modeloVehiculo = info.vehiculo['modelo']
-          this.extra = info.vehiculo.id
-          this.realizaOperaciones()
-        } 
-      }, {
-        onlyOnce: true
-      })
-    }else if(tipo ==='new' ) {
-      //mostramos una lista de clientes y sus respectivos vehiculos
-      // console.log('es nueva ');
+    }else if(tipo ==='new'){
+      
       
     }
+   
     
   }
   // REEMPLAZAR REFRIGERANTE Y PURGAR SISTEMA DE ENFRIAMIENTO
@@ -391,21 +367,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   
   vehiculoInfo(info:any){
-    if (info['registro']) {
-      this._publicos.mensajeCorrecto('Accion correcra')
-      
-      this.extra =  info.vehiculo.id
-      this.infoCotizacion.vehiculos = []
-      const starCountRef = ref(db, `clientes/${this.infoCotizacion.cliente['id']}/vehiculos`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          let vehiculos= this._publicos.crearArreglo2(snapshot.val())
-          this.infoCotizacion.vehiculos = vehiculos
-          const filtrov = vehiculos.find(v=>v.id === this.extra)
-          this.infoCotizacion.vehiculo = filtrov
-          this.modeloVehiculo = filtrov['modelo']
-        }
-      })
+    if (info) {
+      this.extra =  info
+      this.verificarInfoVehiculos()
     }else{
       this._publicos.mensajeIncorrecto('Accion no realizada')
     }
@@ -498,6 +462,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.dataSource.data = ocupados
     // console.log(ocupados);
     // console.log(this.infoCotizacion.elementos);
+
+    // localStorage.setItem('infocotizacion',JSON.stringify(this.infoCotizacion))
     
     this.newPagination()
   }

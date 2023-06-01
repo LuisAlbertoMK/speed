@@ -121,7 +121,7 @@ export class HistorialClienteComponent implements OnInit {
    // tabla
    dataSourceCotizaciones = new MatTableDataSource(); //elementos
    cotizaciones =  ['index','no_cotizacion','searchName','searchPlacas']; //cotizaciones
-   columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'opciones', 'expand']; //elementos
+   columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'expand']; //elementos
    expandedElementCotizaciones: any | null; //elementos
    @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
    @ViewChild('Cotizaciones') sortCotizaciones: MatSort //elementos
@@ -129,7 +129,7 @@ export class HistorialClienteComponent implements OnInit {
    // tabla
    dataSourceRecepciones = new MatTableDataSource(); //elementos
    recepciones = ['id','no_os','searchName','searchPlacas','fechaRecibido','fechaEntregado'];//recepciones
-   columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'opciones', 'expand']; //elementos
+   columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'expand']; //elementos
    expandedElementRecepciones: any | null; //elementos
    @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
    @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
@@ -142,11 +142,26 @@ export class HistorialClienteComponent implements OnInit {
   reporteHistorial = {reporteCotizaciones:0,reporteRecepciones:0}
   rutaAnterior:null
   idCliente:string
-  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private rutaActiva: ActivatedRoute) { }
+  rutaActual: string
+  enrutamiento = {cliente:'', anterior:''}
+  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private rutaActiva: ActivatedRoute,
+    private router: Router) { }
 
 
   async ngOnInit() {
     this.rol()
+  }
+  irPagina(vehiculo){
+    this.router.navigate(['/historial-vehiculo'], { 
+      queryParams: 
+      { vehiculo, cliente: this.idCliente, anterior:'historial-cliente' } 
+    });
+  }
+  regresar(){
+    this.router.navigate([`/${this.enrutamiento.anterior}`], { 
+      queryParams: 
+      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+    });
   }
   rol(){
     if (localStorage.getItem('dataSecurity')) {
@@ -155,10 +170,24 @@ export class HistorialClienteComponent implements OnInit {
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       // Obtenemos una lista de las sucursales 
     }
-    this.acciones()
+
+    this.rutaActual = this.router.url;
+    // console.log('Ruta anterior:', rutaActual);
+    this.rutaActiva.queryParams.subscribe(params => {
+      const cliente = params['cliente'];
+      const anterior = params['anterior'];
+
+      if(cliente){
+        this.enrutamiento.cliente = cliente
+        this.acciones(cliente)
+      }
+      this.enrutamiento.anterior = anterior
+    });
+    
   }
-  acciones(){
-    const idCliente = this.rutaActiva.snapshot.params['idCliente']
+  acciones(cliente){
+    // const idCliente = this.rutaActiva.snapshot.params['idCliente']
+    const idCliente = cliente
     this.idCliente = idCliente
     this.rutaAnterior = this.rutaActiva.snapshot.params['rutaAnterior']
     const starCountRef = ref(db, `clientes/${idCliente}`)

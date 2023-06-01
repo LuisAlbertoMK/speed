@@ -128,3 +128,13 @@
 
   
   
+::ng-deep .cdk-overlay-container .mat-menu-item {
+  /* background-color: red; */
+  height: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* mat-focus-indicator mat-menu-item ng-tns-c188-9 */

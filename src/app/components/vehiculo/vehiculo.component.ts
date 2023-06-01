@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output,SimpleChanges,OnChanges  } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
@@ -16,7 +16,7 @@ const dbRef = ref(getDatabase());
   templateUrl: './vehiculo.component.html',
   styleUrls: ['./vehiculo.component.css']
 })
-export class VehiculoComponent implements OnInit {
+export class VehiculoComponent implements OnInit, OnChanges  {
 
   miniColumnas:number = 100
   ROL:string; SUCURSAL:string
@@ -43,6 +43,7 @@ export class VehiculoComponent implements OnInit {
   clientes = []
   listaPlacas =[]
 
+  
   constructor(private fb: FormBuilder, private _vehiculos: VehiculosService, private _clientes : ClientesService,
     private _publicos: ServiciosPublicosService, private _security:EncriptadoService,) {
       this.dataVehiculo = new EventEmitter()
@@ -55,8 +56,20 @@ export class VehiculoComponent implements OnInit {
     this.listaColores()
     this.listaClientes()
     this.automaticos()
-    this.cargaDataVehiculo()
+    // this.cargaDataVehiculo()
     
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['cliente']) {
+      const nuevoValor = changes['cliente'].currentValue;
+      const valorAnterior = changes['cliente'].previousValue;
+      
+    }
+    if (changes['vehiculo']) {
+      const nuevoValor = changes['vehiculo'].currentValue;
+      const valorAnterior = changes['vehiculo'].previousValue;
+      this.cargaDataVehiculo()
+    }
   }
   rol(){
     if (localStorage.getItem('dataSecurity')) {
@@ -67,36 +80,73 @@ export class VehiculoComponent implements OnInit {
     }
   }
   cargaDataVehiculo(){
-    if (this.vehiculo) {
-      // console.log(this.vehiculo);
-      // console.log(this.vehiculoDat['placas']);
-      
-      this.form_vehiculo.reset({
-        id: this.vehiculoDat['id'],
-        cliente: this.vehiculoDat['cliente'],
-        placas: this.vehiculoDat['placas'],
-        vinChasis: this.vehiculoDat['vinChasis'],
-        cilindros: this.vehiculoDat['cilindros'],
-        no_motor: this.vehiculoDat['no_motor'],
-        color: this.vehiculoDat['color'],
-        engomado: this.vehiculoDat['engomado'],
-        marcaMotor: this.vehiculoDat['marcaMotor'],
-        transmision: this.vehiculoDat['transmision'],
-      })
-      setTimeout(() => {
-        this.form_vehiculo.controls['placas'].disable()
-        
-        this.form_vehiculo.controls['marca'].setValue(this.vehiculoDat['marca'])
-        setTimeout(() => {
-          this.form_vehiculo.controls['modelo'].setValue(this.vehiculoDat['modelo'])
+
+      const cliente = (this.cliente)? this.cliente : null
+      const vehiculo = (this.vehiculo)? this.vehiculo : null
+      // console.log(vehiculo);
+      // console.log(cliente);
+      if (vehiculo) {
+        this._vehiculos.consulta_vehiculo_new(cliente, vehiculo).then((vehiculo:any)=>{
+          // console.log(vehiculo);
+          const carga = [ 'id', 'cliente', 'placas', 'vinChasis',  'cilindros', 'no_motor', 'color', 'engomado', 'marcaMotor', 'transmision'
+          ]
+          this.form_vehiculo.controls['placas'].disable()
+          // this.form_vehiculo.get('marca').valueChanges.subscribe((marca: string) => {
+          //   console.log(marca);
+          //   const modelos = this.marcas.find(option=>option.id === vehiculo.marca)
+          //   this.arrayModelos = modelos
+          // })
+          carga.forEach(c=>{
+            this.form_vehiculo.controls[c].setValue(vehiculo[c])
+          })
           setTimeout(() => {
-            this.form_vehiculo.controls['anio'].setValue(this.vehiculoDat['anio'])
-          }, 200);
-        }, 200);
-      }, 500);
+            this.form_vehiculo.controls['marca'].setValue(vehiculo['marca'])
+            setTimeout(() => {
+              this.form_vehiculo.controls['modelo'].setValue(vehiculo['modelo'])
+              setTimeout(() => {
+                this.form_vehiculo.controls['anio'].setValue(vehiculo['anio'])
+              }, 300);
+            }, 300);
+          }, 500); 
+        })
+      }else{
+        this.form_vehiculo.reset({
+          cliente,
+          id: vehiculo
+        })
+      }
+      
+    
+    // if (this.vehiculo) {
+    //   // console.log(this.vehiculo);
+    //   // console.log(this.vehiculoDat['placas']);
+      
+    //   this.form_vehiculo.reset({
+    //     id: this.vehiculoDat['id'],
+    //     cliente: this.vehiculoDat['cliente'],
+    //     placas: this.vehiculoDat['placas'],
+    //     vinChasis: this.vehiculoDat['vinChasis'],
+    //     cilindros: this.vehiculoDat['cilindros'],
+    //     no_motor: this.vehiculoDat['no_motor'],
+    //     color: this.vehiculoDat['color'],
+    //     engomado: this.vehiculoDat['engomado'],
+    //     marcaMotor: this.vehiculoDat['marcaMotor'],
+    //     transmision: this.vehiculoDat['transmision'],
+    //   })
+    //   setTimeout(() => {
+    //     this.form_vehiculo.controls['placas'].disable()
+        
+    //     this.form_vehiculo.controls['marca'].setValue(this.vehiculoDat['marca'])
+    //     setTimeout(() => {
+    //       this.form_vehiculo.controls['modelo'].setValue(this.vehiculoDat['modelo'])
+    //       setTimeout(() => {
+    //         this.form_vehiculo.controls['anio'].setValue(this.vehiculoDat['anio'])
+    //       }, 200);
+    //     }, 200);
+    //   }, 500);
       
       
-    }
+    // }
   }
   consultaMarcas(){
     this._vehiculos.get_marcas().then(({contenido,data})=>{
@@ -166,42 +216,26 @@ export class VehiculoComponent implements OnInit {
       'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','transmision','marcaMotor','vinChasis','no_motor','id',
     ]
     const saveInfo:any = this._publicos.nuevaRecuperacionData(getVehiculo, camposRecupera)
-    
-    if (!saveInfo['id']) {
-      this._vehiculos.registra_vehiculo_new(saveInfo).then((registro)=>{
-        if(registro){
-          this.resetFormVehiculo()
-          this.myControl.setValue('')
-          this._publicos.mensajeCorrecto('Se registro vehiculo correctamente')
-          this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
-        }else{
-          this.dataVehiculo.emit( {registro: false})
-          this._publicos.mensajeIncorrecto('Ocurrio un error en el registro de vehiculo')
-        }
-      })
-    }else{
-      this._vehiculos.registra_vehiculo_new(saveInfo).then((registro)=>{
-        if(registro){
-          this.resetFormVehiculo()
-          this.myControl.setValue('')
-          this._publicos.mensajeCorrecto('Se actualizo la informacion de vehiculo correctamente')
-          this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
-        }else{
-          this.dataVehiculo.emit( {registro: false})
-          this._publicos.mensajeIncorrecto('Ocurrio un error en el registro de vehiculo')
-        }
-      })
-      
-      // // console.log('actualiza informacion: ', `clientes/${saveInfo['cliente']}/${saveInfo['id']}`);
-      // const updates = {};
-      // updates[`clientes/${saveInfo['cliente']}/vehiculos/${saveInfo['id']}`] = saveInfo;
-      // update(ref(db), updates).then(()=>{
-      //   this.dataVehiculo.emit( {registro: true, vehiculo: saveInfo})
-      //   }).catch(ans=>{
-      //     this.dataVehiculo.emit( {registro: false})
-      //   })
-    }
-    
+
+    const controls_arr = ['placas','categoria']
+          controls_arr.forEach(c=>{
+            const control = this.form_vehiculo.get(c);
+            if (control.disabled) {
+              saveInfo[c] = this.form_vehiculo.get(c).value
+            }
+          })
+    this._vehiculos.registra_vehiculo_new(saveInfo).then((id)=>{
+      if(id){
+        this.resetFormVehiculo()
+
+        this.myControl.setValue('')
+        this._publicos.mensajeCorrecto('Se registro vehiculo correctamente')
+        this.dataVehiculo.emit( id )
+      }else{
+        this.dataVehiculo.emit( false )
+        this._publicos.mensajeIncorrecto('Ocurrio un error en el registro de vehiculo')
+      }
+    })
   }
   vericainfo(){
     const cliente = this.myControl.value
@@ -259,23 +293,10 @@ export class VehiculoComponent implements OnInit {
     }
   }
   resetFormVehiculo(){
-    let cliente = ''
-    if(this.cliente) cliente = this.cliente
+    const cliente = (this.cliente)? this.cliente : null
+    const id = (this.vehiculo)? this.vehiculo : null
     this.form_vehiculo.reset({
-      id: '',
-      cliente: cliente,
-      placas: '',
-      vinChasis: '',
-      marca: '',
-      modelo: '',
-      categoria: '',
-      anio: '',
-      cilindros: '',
-      no_motor: '',
-      color: '',
-      engomado: '',
-      marcaMotor: '',
-      transmision: '',
+      cliente, id
     })
   }
 

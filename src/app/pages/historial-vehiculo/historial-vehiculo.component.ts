@@ -29,6 +29,7 @@ const dbRef = ref(getDatabase());
 })
 export class HistorialVehiculoComponent implements OnInit {
   ROL:string='';SUCURSAL:string ='';
+  miniColumnas:number = 100
   reporte_Cotizaciones={subtotal:0, iva:0, total:0}
   reporte_Recepciones={subtotal:0, iva:0, total:0}
   campos_reportes = ['subtotal','iva','total']
@@ -36,6 +37,8 @@ export class HistorialVehiculoComponent implements OnInit {
   paquete: string = 'paquete'
   refaccion: string = 'refaccion'
   mo: string = 'mo'
+
+  rutaAnterior: string
 
   camposCliente=[
     {valor: 'no_cliente', show:'# Cliente'},
@@ -94,22 +97,46 @@ export class HistorialVehiculoComponent implements OnInit {
   expandedElementRecepciones: any | null; //elementos
   @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
   @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
+
+  anterior:string
+  enrutamiento = {vehiculo:'', cliente:'', anterior:''}
   constructor(private rutaActiva: ActivatedRoute,private _security:EncriptadoService,private _servicios: ServiciosService,
-              private _cotizaciones: CotizacionesService, private _publicos: ServiciosPublicosService
+              private _cotizaciones: CotizacionesService, private _publicos: ServiciosPublicosService, private router: Router
     ) { }
 
   ngOnInit(): void {
     this.rol()
+   
   }
 
   rol(){
+    this.rutaActiva.queryParams.subscribe(params => {
+      const vehiculo = params['vehiculo'];
+      const cliente = params['cliente'];
+      const anterior = params['anterior'];
+      if(vehiculo && cliente){
+        this.acciones(vehiculo, cliente)
+        this.enrutamiento.vehiculo = vehiculo
+        this.enrutamiento.cliente = cliente
+      }
+      this.enrutamiento.anterior = anterior
+      // console.log(`${anterior}/clientes/${cliente}`);
+
+      // ...
+    });
     
-    this.acciones()
+    // this.router.navigate([-1]);
+    // console.log(this.router.navigate([-1]));
+    
   }
-  acciones(){
-    const idVehiculo = this.rutaActiva.snapshot.params['idvehiculo']
-    console.log(idVehiculo);
-    
+  regresar(){
+    this.router.navigate([`/${this.enrutamiento.anterior}`], { 
+      queryParams: 
+      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+    });
+  }
+  acciones(vehiculo, cliente){
+    const idVehiculo = vehiculo
     this._cotizaciones.consulta_cotizaciones_new().then((cotizaciones)=>{
       const mis_cotizaciones = cotizaciones.filter(c=>c.vehiculo.id === idVehiculo)
       this.reporte_Cotizaciones = this._publicos.reporte_cotizaciones_recepciones(mis_cotizaciones)
@@ -120,6 +147,9 @@ export class HistorialVehiculoComponent implements OnInit {
     this._cotizaciones.consulta_recepciones_new().then((recepciones)=>{
       const mis_recepciones = recepciones.filter(c=>c.vehiculo.id === idVehiculo)
       this.reporte_Recepciones = this._publicos.reporte_cotizaciones_recepciones(mis_recepciones)
+      mis_recepciones.map((c,index)=>{ c.index = index})
+      this.dataSourceRecepciones.data = mis_recepciones
+      this.newPagination('recepciones')
     })
   }
 

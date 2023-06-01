@@ -28,26 +28,46 @@ export class CotizacionService {
   constructor(private http: HttpClient,private _publicos: ServiciosPublicosService, private _clientes: ClientesService,
               private _vehiculos: VehiculosService, private _sucursales:SucursalesService) { }
 
-              consulta_cotizaciones_new(): Promise<any[]> {
-                return new Promise((resolve, reject) => {
-                  const starCountRef = ref(db, 'cotizacionesRealizadas');
-                  onValue(starCountRef, (snapshot) => {
-                    if (snapshot.exists()) {
-                      const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
-                      cotizaciones.forEach((cotizacion, index)=> {
-                        cotizacion.formaPago = cotizacion.formaPago || '1';
-                        cotizacion.index = index
-                        cotizacion.margen = (cotizacion.margen) ? cotizacion.margen : 25
-                        cotizacion.pagoName = this.formasPago.find(f => f.id === String(cotizacion.formaPago)).pago;
-                        cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
-                        cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
-                        cotizacion.reporte = this._publicos.realizarOperaciones_2(cotizacion).reporte
-                      });
-                      resolve(cotizaciones);
-                    } else {
-                      resolve([]);
-                    }
-                  });
-                });
-              }
+  consulta_cotizaciones_new(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, 'cotizacionesRealizadas');
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
+          cotizaciones.forEach((cotizacion, index)=> {
+            cotizacion.formaPago = cotizacion.formaPago || '1';
+            cotizacion.index = index
+            cotizacion.margen = (cotizacion.margen) ? cotizacion.margen : 25
+            cotizacion.pagoName = this.formasPago.find(f => f.id === String(cotizacion.formaPago)).pago;
+            cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
+            cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
+            cotizacion.reporte = this._publicos.realizarOperaciones_2(cotizacion).reporte
+          });
+          resolve(cotizaciones);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+  consulta_cotizacion_new(cotizacion): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db,`cotizacionesRealizadas/${cotizacion}` );
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const cotizacion = snapshot.val()
+            cotizacion.cliente.fullname = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`
+            cotizacion.formaPago = cotizacion.formaPago || '1';
+            cotizacion.margen = (cotizacion.margen) ? cotizacion.margen : 25
+            cotizacion.pagoName = this.formasPago.find(f => f.id === String(cotizacion.formaPago)).pago;
+            cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
+            cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
+            // cotizacion.reporte = this._publicos.realizarOperaciones_2(cotizacion).reporte
+          resolve(cotizacion);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
 }

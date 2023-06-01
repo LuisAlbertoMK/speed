@@ -1,3 +1,28 @@
+// Enviar
+this.router.navigate([`/${this.enrutamiento.anterior}`], { 
+      queryParams: 
+      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+    });
+
+//recuperar
+enrutamiento = {vehiculo:'', cliente:'', anterior:''}
+    this.rutaActiva.queryParams.subscribe(params => {
+      const vehiculo = params['vehiculo'];
+      const cliente = params['cliente'];
+      const anterior = params['anterior'];
+      console.log(vehiculo);
+      console.log(cliente);
+      if(vehiculo && cliente){
+        this.acciones(vehiculo, cliente)
+        this.enrutamiento.vehiculo = vehiculo
+        this.enrutamiento.cliente = cliente
+      }
+      this.enrutamiento.anterior = anterior
+      // console.log(`${anterior}/clientes/${cliente}`);
+
+      // ...
+    });
+
 onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
 
 //ancho minimo de columnas

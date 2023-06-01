@@ -4,7 +4,7 @@
       <div class="col">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
-          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/cotizacion']">cotizacion</a></li>
+          <li class="breadcrumb-item"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li>
           <li class="breadcrumb-item active">Nueva cotizacion</li>
         </ol>
       </div>
@@ -45,9 +45,12 @@
         <select class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
           <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
         </select>
-        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cargaDataVehiculo(infoCotizacion.cliente,'vehiculo')" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
+        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" 
+        (click)="vehiculoData = infoCotizacion.cliente['id']"
+        #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
           <i class="fa fa-car"></i>
         </button>
+        <!-- (click)="cargaDataVehiculo(infoCotizacion.cliente,'vehiculo')"  -->
       </div>
     </ng-container>
     <h1>Informacion de vehiculo</h1>
@@ -446,33 +449,15 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body m-2">
-        <!-- <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-        </div> -->
-        <ng-container *ngIf="cliente; else elseVehiculo">
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <app-vehiculo [cliente]="cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
-            </div>
-          </div>
+        <!-- Vehiculo: <strong>{{vehiculoData}}</strong>
+        Cliente <strong>{{infoCotizacion.cliente['id']}}</strong> -->
+        <ng-container *ngIf="vehiculoData; else elseTemplate">
+          <app-vehiculo [cliente]="vehiculoData" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
         </ng-container>
-        <ng-template #elseVehiculo>
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <ng-container *ngIf="vehiculoData; else elseIDvehiculo">
-                <!-- tiene cliente -->
-                <!-- <app-vehiculo [vehiculo]="vehiculoData['id']" [vehiculoDat]="vehiculoData" [cliente]="vehiculoData['id']" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo> -->
-                <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" [cliente]="vehiculoData['id']"></app-vehiculo>
-              </ng-container>
-              <ng-template #elseIDvehiculo>
-                no tiene cliente
-                registra  vehiculo desde 0
-              </ng-template>
-            </div>
-          </div>
+        <ng-template #elseTemplate>
+          <app-vehiculo (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
         </ng-template>
+        
       </div>
     </div>
   </div>

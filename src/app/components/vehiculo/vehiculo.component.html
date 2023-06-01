@@ -13,9 +13,8 @@
             </ng-template>
           </div>
         </div>
-        {{vehiculo}}
-        <pre>{{vehiculoDat | json}}</pre>
-        <!-- <p>{{cliente}}</p> -->
+        <!-- <pre>{{form_vehiculo.value | json}}</pre>
+        {{vehiculo}} -->
         <form (ngSubmit)="guardarLlenadoManual()" [formGroup]="form_vehiculo" class="mt-2">
             <div class="row">
                 <ng-container *ngIf="!cliente; else elseCliente">
@@ -40,7 +39,6 @@
                             </mat-autocomplete>                      
                           </ng-container>
                         </div>
-                        
                       </div>
                 </ng-container>
                 <ng-template #elseCliente>

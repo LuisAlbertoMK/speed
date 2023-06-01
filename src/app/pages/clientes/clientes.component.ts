@@ -12,6 +12,7 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 import Swal from 'sweetalert2';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { Router } from '@angular/router';
 
 
 const db = getDatabase()
@@ -55,8 +56,10 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   sucursales_arr=[]
 
   cargandoInformacion:boolean = true
+
+  tipos_cliente= ['todos','flotilla','particular']
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
-    private _clientes: ClientesService){}
+    private _clientes: ClientesService, private router: Router){}
 
   ngOnInit() {
     this.rol()
@@ -75,6 +78,20 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       // Manejar el error si ocurre
     });
   }
+  irPagina(pagina, cliente, vehiculo?, cotizacion?){
+    // /:ID/:tipo/:extra
+    let params = {}
+    if (pagina === 'historial-cliente') {
+      params = { anterior:'clientes', cliente  } 
+    } else if (pagina === 'cotizacionNueva') {
+      params = { anterior:'clientes', cliente, tipo: 'cliente', vehiculo, cotizacion  } 
+    } else if (pagina === 'ServiciosConfirmar') {
+      params = { anterior:'clientes', cliente, tipo: 'nueva', vehiculo } 
+    }
+    this.router.navigate([`/${pagina}`], { 
+      queryParams: params
+    });
+  }
 
   ListadoClientes(){
     this.cargandoInformacion = true
@@ -87,12 +104,14 @@ export class ClientesComponent implements AfterViewInit, OnInit {
         })
         const info = (this.SUCURSAL !=='Todas') ? clientes_new.filter(c=>c.sucursal === this.SUCURSAL) : clientes_new
         const camposRecu = [...this._publicos.camposCliente(),'vehiculos','fullname']
+        let aqui = []
         if (!this.clientes_arr.length) {
-          this.clientes_arr = info;
+          aqui = info;
         } else {
-          this.clientes_arr = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+          aqui = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
         }
-        
+        this.clientes_arr = aqui
+        this.dataSourceClientes.data = aqui
         this.newPagination('clientes')
       }).catch((error) => {
         // Manejar el error si ocurre
@@ -119,41 +138,13 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     }
   }
   vehiculoInfo(info:any){
-    if (info['registro']) {
+    if (info) {
       this._publicos.mensajeCorrecto('Accion correcra')
     }else{
       this._publicos.mensajeIncorrecto('Accion no realizada')
     }
   }
-  cargaDataVehiculo(data:any,quien:string){
-    // console.log(data);
-    this.cliente = null
-    this.vehiculo = null
-    if (quien === 'cliente') {
-      
-      // console.log('id de cliente');
-      if (data['id']) {
-        setTimeout(() => {
-          this.cliente = data['id']
-        } , 300);
-      }
-    }
-    if (quien === 'vehiculo') {
-      
-      // console.log('id de vehiculo');
-      if (data['id']) {
-        setTimeout(() => {
-         
-          // Swal.fire('','','info')
-          this._publicos.mensajeOK('Se cargo la información',2000)
-          // Swal.isLoading()
-          this.vehiculo = data
-          // Swal.close()
-        } , 300);
-      }
-    }
-    
-  }
+ 
  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -163,11 +154,14 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       this.dataSourceClientes.paginator.firstPage();
     }
   }
+  filtra_tipo_cliente(tipo:string){
+    this.dataSourceClientes.data = (tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === tipo)
+    this.newPagination('clientes')
+  }
   newPagination(data:string){
+    this.cargandoInformacion = false
     setTimeout(() => {
     if (data==='clientes') {
-      this.cargandoInformacion = false
-      this.dataSourceClientes.data = this.clientes_arr
       this.dataSourceClientes.paginator = this.paginatorClientes;
       this.dataSourceClientes.sort = this.sortClientes
     }

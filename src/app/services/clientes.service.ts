@@ -46,6 +46,22 @@ export class ClientesService {
       });
     });
   }
+  consulta_cliente_new(cliente): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `clientes/${cliente}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const clientes = snapshot.val()
+          clientes.fullname = `${clientes.nombre} ${clientes.apellidos}`
+          const vehiculos = (clientes['vehiculos']) ? this._publicos.crearArreglo2(clientes['vehiculos']) : []
+          clientes.vehiculos = vehiculos
+          resolve(clientes);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
   // consultaClientes(){
   // return this.http.get(`${this.url}/clientes.json`)
   //   .pipe(

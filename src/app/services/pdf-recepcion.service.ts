@@ -100,7 +100,8 @@ export class PdfRecepcionService {
   }
   async pdf(data:any, bibliotecaVirtual:any){
     const colorTextoPDF: string = '#1215F4';
-    const dat = data
+    // const dat = data
+    
     if (!data.cliente['empresa']) {
       data.cliente['empresa'] =''
       data.cliente['empresaShow'] =''
@@ -111,7 +112,7 @@ export class PdfRecepcionService {
     }
 
     function Combustble(){
-      let {status} = dat['checkList'].find(c=>c['valor'] === 'nivel_gasolina')
+      let {status} = data['checkList'].find(c=>c['valor'] === 'nivel_gasolina')
       let fullpath = ''
       switch (status) {
         case 'vacio':
@@ -146,33 +147,25 @@ export class PdfRecepcionService {
     }
 
     function construirCheck (){
-      let data = []
-      if (dat['checkList']) data = dat['checkList']
-      let body = [];
-      // console.log(data);
-      let i = 0, mul = 0
-      let multiplos = [4,8,12,16,20,24,28,32,36]
-      let aqui = []
-      data.forEach((e)=>{
-        i++
-        
-        aqui.push({ text: `${transform(e['show'])}: ${e['status'].toUpperCase()}`,alignment: 'left', style:'info3' })
-        // console.log(aqui);
-        
-        if (i == multiplos[mul]) {
-          mul++
+      let body = [], aqui = []
+      data['checkList'].forEach((e, index)=>{
+        const color = (e.status.toLowerCase() === 'si' ) ? '#aadaa9' : '#f590b2'
+        const item = {
+          text: `${e.show}: ${e.status.toUpperCase()}`,
+          alignment: 'left',
+          style: 'info3',
+          fillColor: color
+        };
+        if ((index + 1) % 4 === 0 && (index + 1) !== 0) {
+          aqui.push(Object(item));
           body.push(aqui)
-          aqui = []          
+          aqui =[]
+        }else{
+          aqui.push(Object(item));
         }
-      })
-      
+      }) 
       return body
-
-
     }
-    // console.log();
-    const da = construirCheck()
-
     function transform(value: string, ...args: unknown[]): unknown {
       const cadena = String(value).toLowerCase()
       let arr =[...cadena]
@@ -347,7 +340,7 @@ export class PdfRecepcionService {
               valing: 'center'
             },
             { 
-              text: `${dat['sucursal'].direccion}`,bold: true, alignment: 'center', style:'otro'
+              text: `${data['sucursal'].direccion}`,bold: true, alignment: 'center', style:'otro'
             },
             { 
               // text: 'fecha: 21/03/2023',bold: true, alignment: 'center', style:'info'
@@ -361,11 +354,11 @@ export class PdfRecepcionService {
                 body: [
                   [ 
                     {text: 'Fecha:',bold: true, alignment: 'left', style:'info'},
-                    {text: `${dat['fecha']}`,bold: true, alignment: 'left', style:'info'},
+                    {text: `${data['fecha_recibido']}`,bold: true, alignment: 'left', style:'info'},
                   ],
                   [ 
                     {text: 'No. Orden:',bold: true, alignment: 'left', style:'info'},
-                    {text: `${dat['no_os']}`,bold: true, alignment: 'left', style:'info'},
+                    {text: `${data['no_os']}`,bold: true, alignment: 'left', style:'info'},
                   ],
                 ]
               }
@@ -418,7 +411,7 @@ export class PdfRecepcionService {
         
                 body: [
                   [ {text: `Observaciones`,bold: true, alignment: 'left', style:'info2'} ],
-                  [ {text: `${dat['observaciones']}`,bold: true, alignment: 'left', style:'info2'} ]
+                  [ {text: `${data['observaciones']}`,bold: true, alignment: 'left', style:'info2'} ]
                 ]
               }
             }
@@ -450,15 +443,15 @@ export class PdfRecepcionService {
                 body: [
                   [ 
                     { text: `Nombre:`,alignment: 'left', style:'info' },
-                    { text: `${dat.cliente.nombre} ${dat.cliente.apellidos}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data.cliente.nombre} ${data.cliente.apellidos}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Tel:`,alignment: 'left', style:'info' },
-                    { text: `${dat['cliente'].telefono_movil}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data['cliente'].telefono_movil}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Email:`,alignment: 'left', style:'info' },
-                    { text: `${dat['cliente'].correo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data['cliente'].correo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ]
                 ]
               }
@@ -474,21 +467,21 @@ export class PdfRecepcionService {
                 body: [
                   [ 
                     { text: `Placas:`,alignment: 'left', style:'info' },
-                    { text: `${dat['vehiculo'].placas.toUpperCase()}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
+                    { text: `${data['vehiculo'].placas.toUpperCase()}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `KMs:`,alignment: 'left', style:'info' },
                     { text: `123434234`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Marca:`,alignment: 'left', style:'info' },
-                    { text: `${dat['vehiculo'].marca}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
+                    { text: `${data['vehiculo'].marca}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `Modelo:`,alignment: 'left', style:'info' },
-                    { text: `${dat['vehiculo'].modelo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data['vehiculo'].modelo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Empresa:`,alignment: 'left', style:'info' },
-                    { text: `${dat['cliente']['empresaShow']}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
+                    { text: `${data['cliente']['empresaShow']}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `Año:`,alignment: 'left', style:'info' },
-                    { text: `${dat['vehiculo'].anio}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data['vehiculo'].anio}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                 ]
               }
@@ -508,17 +501,10 @@ export class PdfRecepcionService {
         headerRows: 1,
         widths: [ '25%','25%','25%','25%'],
 
-        body: [
+        body: 
           // [{ text: `${da[0][1].text}`,fillColor: '#8AD3AD', color:'#1C5121',alignment: 'left', style:'info' },da[0][1],da[0][2],da[0][3]],
-          [da[0][0],da[0][1],da[0][2],da[0][3]],
-          [da[1][0],da[1][1],da[1][2],da[1][3]],
-          [da[2][0],da[2][1],da[2][2],da[2][3]],
-          [da[3][0],da[3][1],da[3][2],da[3][3]],
-          [da[4][0],da[4][1],da[4][2],da[4][3]],
-          [da[5][0],da[5][1],da[5][2],da[5][3]],
-          [da[6][0],da[6][1],da[6][2],da[6][3]],
-          [da[7][0],da[7][1],da[7][2],da[7][3]],
-        ]
+          construirCheck()
+        
       }
     },
     { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },
@@ -534,7 +520,7 @@ export class PdfRecepcionService {
           [ { text: `Servicios solicitados`,alignment: 'left', style:'info2' }, { text: `Autorización`,alignment: 'center', style:'info2' }],
           [ 
             table(
-              dat.servicios,
+              data.servicios,
               ['tipo', 'nombre','total'],
               ['15%', '65%', '20%'],
               true,
@@ -630,7 +616,7 @@ export class PdfRecepcionService {
       return rb
     }
 
-    let donde = dat['conjuntos']
+    let donde = data['conjuntos']
 
     documentDefinition.images = await Object({...bibliotecaVirtual})
     let i_ =0
