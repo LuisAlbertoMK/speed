@@ -337,10 +337,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       }else if(tipo === 'cotizacion'){
         console.log('informacion de la cotizacion');
         this._cotizacion.consulta_cotizacion_new(id_cotizacion).then((cotizacion:any)=>{
-          console.log(cotizacion);
-          // this.infoConfirmar.cliente = cotizacion.cliente
-          // this.infoConfirmar.sucursal = cotizacion.sucursal
-          // this.infoConfirmar.vehiculo = cotizacion.vehiculo
           cotizacion.servicios = cotizacion.elementos
           const camposOcupadosCotizacion = ['cliente','vehiculo','sucursal','formaPago','iva','margen','nota','servicio','servicios']
           camposOcupadosCotizacion.forEach(c=>{
@@ -1067,7 +1063,8 @@ vehiculoInfonew(idVehiculo:string){
           showCancelButton: false,
           confirmButtonText: 'Previsualizar PDF cotizacion',
           denyButtonText: `Guardar y enviar correo`,
-          cancelButtonText:`cancelar`
+          cancelButtonText:`cancelar`,
+          allowOutsideClick: false
   
         }).then((result) => {
           // si se confirma previsualizacion genera pdf en nueva ventana del navegador
