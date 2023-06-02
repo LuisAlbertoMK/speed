@@ -1,246 +1,155 @@
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <ol class="breadcrumb float-sm-right">
-             <li class="breadcrumb-item"><a [routerLink]="['/inicio']">Inicio</a></li>
-             <li class="breadcrumb-item active">Citas</li>
-            </ol>
+<h2>Registro de Citas</h2>
+
+<form [formGroup]="citaForm" (ngSubmit)="guardarCita()">
+  <div class="row text-start">
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="mb-1 row">
+          <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
+                [class.is-invalid]="validarCampo('sucursal')">
+                <option [value]="item.id" *ngFor="let item of sucursales_arr">{{item.sucursal}}</option>
+              </select>
+            <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
           </div>
+        </div>
+      </div>
+    </ng-container>
+    
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="cliente" class="col-sm-3 col-md-4 col-lg-2 col-form-label">Cliente</label>
+        <div class="col-sm-9 col-md-8 col-lg-10 ">
+              <form class="example-form">
+                  <input type="text"
+                         placeholder="Nombre cliente"
+                         aria-label="Number"
+                         class="form-control form-control-sm"
+                         [formControl]="myControl"
+                         (ngModelChange)="clienteSeleccionado(null)"
+                         [matAutocomplete]="auto">
+                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clienteSeleccionado(option)" >
+                      {{option['fullname']}} - {{option['correo']}}
+                    </mat-option>
+                  </mat-autocomplete>
+              </form>
+              <!-- <ng-container *ngIf="correo">
+                <p> correo de cliente: </p>
+                <p><span class="text-success">{{correo}}</span></p>
+              </ng-container> -->
+          <small *ngIf="validarCampo('cliente')" class="text-danger">campo requerido</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="vehiculo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+          <!-- <input type="date" id="vehiculo" formControlName="vehiculo" class="form-control" required> -->
+          <select class=" form-select  form-select-sm" formControlName="vehiculo" required 
+            [class.is-invalid]="validarCampo('vehiculo')">
+            <option value="" >selecciona</option>
+            <option [value]="item.id" *ngFor="let item of arr_vehiculos">{{item.placas | uppercase}}</option>
+          </select>
+          <small *ngIf="validarCampo('vehiculo')" class="text-danger">campo requerido</small>
         </div>
       </div>
     </div>
     
-     <div class="row">
-       <div class="card">
-         <div class="card-body">
-           <div class="card-text">
-             <div class="row">
-              <ng-container >
-                <div class="col-lg-4 col-md-5 col-sm-12">
-                  <div class="col-lg-12 col-md-12 col-sm-12 m-2 text-end">
-                    <a class="btn btn-primary btn-sm" (click)="intercambioFormularios(!Busqueda,!Registro)">
-                      <ng-container *ngIf="Busqueda && !Registro">Registra cita</ng-container>
-                      <ng-container *ngIf="!Busqueda && Registro">Busqueda de citas</ng-container>
-                    </a>
-                  </div>
-                  <div class="card card-body animate__animated animate__bounceInLeft" *ngIf="Busqueda && !Registro">
-                    <h3>Busquedas citas mensuales</h3>
- 
-                    <form  class="" [formGroup]="formaCitasMes">
-                      <ng-container *ngIf="ROL==='SuperSU' || ROL==='Administrador'">
-                      <div class="mb-3 row">
-                        <label for="sucursal" class="col-sm-4 col-md-4 col-lg-4 col-4 col-form-label">Sucursal</label>
-                        <div class="col-sm-8 col-md-8 col-lg-8 col-8">
-                            <select class=" form-select form-control-sm " formControlName="sucursal"
-                              [class.is-invalid]="validarCampoCitasMes('sucursal')" (ngModelChange)="BusquedasCitas('sucursal')">
-                              <option [defaultSelected]="" value="">Seleccione...</option>
-                              <option value="{{sucursal.id}}" *ngFor="let sucursal of listaSucursales">
-                                {{sucursal.sucursal}}</option>
-                            </select>
-                        </div>
-                        <small *ngIf="validarCampoCitasMes('sucursal')" class="text-danger">
-                          Seleccionar sucursal
-                        </small>
-                      </div>
-                    </ng-container>
-                      <div class="mb-3 row">
-                        <label for="mes" class="col-sm-4 col-md-4 col-lg-4 col-4 col-form-label">Mes</label>
-                        <div class="col-sm-8 col-md-8 col-lg-8 col-8">
- 
-                          <select class=" form-select form-control-sm " formControlName="mes"
-                            [class.is-invalid]="validarCampoCitasMes('mes')" (ngModelChange)="BusquedasCitas('mes')">
-                            <option [defaultSelected]="" value="">Seleccione</option>
-                            <option value="{{i + 1 }}" *ngFor="let mes of meses; let i = index">{{mes}}</option>
-                          </select>
-                        </div>
-                        <small *ngIf="validarCampoCitasMes('mes')" class="text-danger">
-                          Seleccionar mes
-                        </small>
-                      </div>
-                      <!-- <div class="row text-center">
-                        <div class="col d-grid gap-2">
-                          <button type="submit" class="btn btn-success">Buscar</button>
-                        </div>
-                      </div> -->
-                    </form>
-                    <div class="roe">
-                      <div class="col text-center">
-                        <h3><label >Citas del mes <strong>{{listaArrayCitas.length}}</strong></label></h3>
-                      </div>
-                    </div>
-                    <!-- <pre>{{ guardarCitaArray | json}}</pre> -->
-                  </div>
-                  <div class="card card-body animate__animated animate__bounceInLeft" *ngIf="!Busqueda && Registro">
-                    <div class="row">
-
-                    </div>
-                    <div class="row">
-                      <h3>Registrar nueva cita</h3>
-                      <form (ngSubmit)="guaradCita()" class="" [formGroup]="formaCita">
-
-                        <div class="mb-3 row">
-                          <label for="cliente" class="col-sm-12 col-md-12 col-lg-12 col-form-label">Cliente</label>
-                          <div class="col-sm-12 col-md-12 col-lg-12">
-                            <select class=" form-select form-select-sm" formControlName="cliente"
-                              (ngModelChange)="vehiculosCliente()" [class.is-invalid]="validarCampo('cliente')">
-                              <option [defaultSelected]="" value="">Seleccione... </option>
-                              <option value="{{cliente.id}}" *ngFor="let cliente of tiempooReal"> {{cliente.nombre}} {{cliente.apellidos}}
-                              </option>
-                            </select>
-                          </div>
-                          <small *ngIf="validarCampo('cliente')" class="text-danger">
-                            Seleccionar cliente
-                          </small>
-                        </div>
-                        <div class="mb-3 row">
-                          <label for="vehiculo" class="col-sm-12 col-md-12 col-lg-12 col-form-label">Vehículo</label>
-                          <div class="col-sm-12 col-md-12 col-lg-12">
-                            <select class=" form-select form-select-sm" formControlName="vehiculo"
-                              [class.is-invalid]="validarCampo('vehiculo')" (ngModelChange)="infoVehiculo()">
-                              <option [defaultSelected]="" value="">Seleccione...</option>
-                              <option value="{{vehiculo.id}}" *ngFor="let vehiculo of vehiculos">{{vehiculo.placas}}
-                              </option>
-                            </select>
-                          </div>
-                          <small *ngIf="validarCampo('vehiculo')" class="text-danger">
-                            Campo
-                          </small>
-                        </div>
-                        
-
-                        <div class="row">
-                          <div class="col-lg-12 col-md-12 col-sm-12 mt-2  ">
-                            <mat-form-field appearance="fill" class="col-lg-12 col-md-12 col-sm-12">
-                              <mat-label>Fecha</mat-label>
-                              <input matInput [matDatepicker]="dp3" id="fecha" formControlName="fecha"
-                                (ngModelChange)="getHorariosDiaDisponibles()">
-                              <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-                              <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-                              <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-                            </mat-form-field>
-                          </div>
-                          <div class="col-lg-12 col-md-12 col-sm-12">
-                            <!-- <ng-container *ngIf="carga">
-                              <div class="col-lg-12 col-md-12 col-sm-12 alert alert-info">
-                                Esperando información
-                                <i class="fad fa-spinner fa-spin"></i>
-                              </div>
-                            </ng-container> -->
-                            <ng-container>
-                              <!-- <mat-form-field appearance="fill" class="col-lg-12 col-md-12 col-sm-12">
-                                <mat-label>Favorite car</mat-label>
-                                <select disableRipple class="form-select form-select-lg mb-3" formControlName="hora" >
-                                  <option value="" selected>selecciona horario</option>
-                                  <option *ngFor="let horario of horariosMuestra" [value]="horario.hora">
-                                    {{horario.hora}}
-                                  </option>
-                                </select>
-                              </mat-form-field> -->
-                              <mat-form-field appearance="fill" class="col-lg-12 col-md-12 col-sm-12">
-                                <mat-label>Seleccione hora</mat-label>
-                                <mat-select disableRipple formControlName="hora">
-                                  <mat-option value="{{horario.hora}}"
-                                    *ngFor="let horario of horariosMuestra;let i = index">
-                                    {{horario.hora}}
-                                  </mat-option>
-                                </mat-select>
-                              </mat-form-field>
-                            </ng-container>
-
-
-                          </div>
-                        </div>
-                        <div class="row text-center ">
-                          <div class="col-lg-12 col-md-12 col-sm-12 d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Agregar</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                  <ng-container *ngIf="horariosOcupados.length!==0 && !carga">
-                    Horarios ocupados en fecha <strong>{{ fechaCompleta }}</strong> <br>
-                    <strong> {{ horariosOcupados.join(" , ")}}</strong>
-                  </ng-container>
-                </div>
-                <!-- <div class="col-lg-8 col-md-7 col-sm-12" >
-                  <div class="row">
-                    <div class="col"><pre>{{horarios | json }}</pre>
-                      </div>
-                    <div class="col"><pre>{{ocupados | json }}</pre></div>
-                  </div>
-                </div> -->
-                
-                <div class="col-lg-8 col-md-7 col-sm-12" >
-                  <ng-container class="scrollspy-example" tabindex="0" data-bs-spy="scroll" data-bs-offset="0">
-                    <full-calendar [options]="calendarOptions" #calendar></full-calendar>
-                  </ng-container>
-                </div>
-              </ng-container>
-             </div>
-             <!-- <ng-container >
-                    <div class="card">
-                        <div class="card-header">
-                          <h4 class="card-title">Draggable Events</h4>
-                        </div>
-                        <div class="card-body">
-                          <div id="external-events">
-                            <div class="external-event bg-success">Lunch</div>
-                            <div class="external-event bg-warning">Go home</div>
-                            <div class="external-event bg-info">Do homework</div>
-                            <div class="external-event bg-primary">Work on UI design</div>
-                            <div class="external-event bg-danger">Sleep tight</div>
-                            <div class="checkbox">
-                              <label for="drop-remove">
-                                <input type="checkbox" id="drop-remove">
-                                remove after drop
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                </ng-container> -->
-
-             <!-- <ng-container >
-                    <div class="card">
-                        <div class="card-header">
-                          <h3 class="card-title">Create Event</h3>
-                        </div>
-                        <div class="card-body">
-                          <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                            <ul class="fc-color-picker" id="color-chooser">
-                              <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
-                              <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
-                              <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
-                              <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
-                              <li><a class="text-secondary" href="#"><i class="fas fa-square"></i></a></li>
-                            </ul>
-                          </div>
-                          <div class="input-group">
-                            <input id="new-event" type="text" class="form-control" placeholder="Nueva cita">
-        
-                          </div>
-                          <div class="text-end">
-                              <button id="add-new-event" type="button" class="btn btn-primary m-1">Agregar cita</button>
-                          </div>
-                         
-                        </div>
-                      </div>
-                </ng-container> -->
-
-           </div>
-         </div>
-       </div>
-     </div>
-     <div class="con-flot">
-      <input type="checkbox" id="btn-mas">
-      <div class="redes">
-        <a  class="mat-elevation-z8" [routerLink]="['/inicio']" ><i class="fad fa-arrow-alt-left"></i></a>
-        <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-up"></i></a>
-        <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-down"></i></a>
-      </div>
-      <div class="btn-mas">
-        <label for="btn-mas" class="btn-ma"><strong><i class="fad fa-plus-circle"></i></strong></label>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="horario" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+          <input type="date" id="horario" formControlName="horario" class="form-control" required>
+          <small *ngIf="validarCampo('horario')" class="text-danger">campo requerido</small>
+        </div>
       </div>
     </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="dia" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+          <input type="date" id="dia" formControlName="dia" class="form-control form-control-sm" required>
+          <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+      <button type="submit" class="btn btn-primary btn-sm">Genera cita</button>
+    </div>
+  </div>
+  <ng-container *ngIf="faltente">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+          Falta información <strong class="text-danger">{{faltente}}</strong>
+      </div>
+    </div>
+  </ng-container>
+  
+</form>
+
+{{infoCita | json}}
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+    <h1 class="text-danger">Verifica la informacion de la cita y confirma</h1>
+  </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+    <ul class="list-group">
+      <div class="row">
+        <ng-container *ngFor="let campo of camposInfoCita">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-12 list-group-item">{{campo.show | capitalizarUno}}</div>
+          <div class="col-lg-8 col-md-8 col-sm-12 col-12 list-group-item">{{infoCita[campo.valor] | uppercase}}</div>
+        </ng-container>
+      </div>
+    </ul>
+  </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+    <button (click)="ConfirmaCita()" class="btn btn-sm btn-danger text-uppercase">Confirmar cita</button>
+  </div>
+</div>
+
+<h2>Calendario de Citas</h2> 
+
+<div class="calendar mt-2">
+  <div class="header">
+    <h2>Ver las citas registradas del mes {{mesMuestra | capitalizarUno}} {{numeroAnio}}</h2>
+    <h2>
+      <!-- <button [disabled]="isClicked" class="btn btn-sm btn-success">aqui</button> -->
+      <i class="fas fa-chevron-double-left m-1 pointer btn btn-light" (click)="aumentaAnio('-')"></i>
+      <i class="fas fa-chevron-left m-1 pointer btn btn-light" (click)="aumentaNumeroMes('-')"></i>
+      <i class="fas fa-chevron-right m-1 pointer btn btn-light" (click)="aumentaNumeroMes('+')"></i>
+      <i class="fas fa-chevron-double-right m-1 pointer btn btn-light"  (click)="aumentaAnio('+')"></i>
+    </h2>
+  </div>
+  <div class="weekdays">
+    <div class="weekday">Lun</div>
+    <div class="weekday">Mar</div>
+    <div class="weekday">Mié</div>
+    <div class="weekday">Jue</div>
+    <div class="weekday">Vie</div>
+    <div class="weekday">Sáb</div>
+    <div class="weekday">Dom</div>
+  </div>
+  <div class="days" id="miDiv"  [class.disabled]="isClicked">
+      <div class="day"  [ngClass]="day.clase" *ngFor="let day of dias_mes_arr"
+      (click)="obetnerCitasDelDia(day)">
+        <div class="row">
+          <div class="col">
+              {{day.index}}
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="mb-5 mt-5">
+  <div class="col">
+
+  </div>
+</div>

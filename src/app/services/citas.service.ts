@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
-
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+const db = getDatabase()
+const dbRef = ref(getDatabase());
 
 import { environment } from "../../environments/environment"
 const urlServer = environment.firebaseConfig.databaseURL
@@ -11,6 +13,20 @@ const urlServer = environment.firebaseConfig.databaseURL
 export class CitasService {
 
   constructor(private http: HttpClient) { }
+
+  consulta_citas_new(sucursal, fecha): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `citas/${sucursal}/${fecha}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const citas = snapshot.val()
+          resolve(citas);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
   citasDia(sucursal:string, fecha:string){
     return this.http.get(`${urlServer}/citas/${sucursal}/${fecha}.json`)
     .pipe(  

@@ -649,7 +649,7 @@ export class ServiciosPublicosService {
         return push(child(ref(db), 'posts')).key
     }
     realizaValidaciones(campos:any[], data:any){
-      const answer = {faltantes: [], faltante_s:'', ok:true}
+      const answer = {faltantes: [], faltante_s:null, ok:true}
       campos.forEach((campo)=>{
         if (!data[campo]) answer.faltantes.push(campo)
       })
@@ -1110,6 +1110,23 @@ export class ServiciosPublicosService {
         return reporte
       }
       
-      
+      obtenerPrimerUltimoDiaMes(mes, anio) {
+        const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ];
+        const fecha = new Date(anio, mes - 1, 1); // Crear una fecha con el primer día del mes
+        const primerDia = new Date(fecha.getFullYear(), fecha.getMonth(), 1); // Obtener el primer día del mes
+        const ultimoDia = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0); // Obtener el último día del mes
+        const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+        const dias2 = ["dom","lun","mar","mié","jue","vie","sáb"]
+        const DiaPrimero = primerDia.getDay();
+        const DiaFinal = ultimoDia.getDay();
+        const Mes = months[primerDia.getMonth()]
+        return {
+          primerDia,
+          ultimoDia,
+          Mes,
+          diaIniciail: dias2[DiaPrimero],
+          diaFinal: dias2[DiaFinal],
+        };
+      }
       
  }

@@ -290,8 +290,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   regresar(){
     this.router.navigate([`/${this.enrutamiento.anterior}`], { 
-      queryParams: 
-      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+      queryParams: { }
     });
   }
   async rol(){
@@ -335,7 +334,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.realizaOperaciones()
         })
       }else if(tipo === 'cotizacion'){
-        console.log('informacion de la cotizacion');
         this._cotizacion.consulta_cotizacion_new(id_cotizacion).then((cotizacion:any)=>{
           cotizacion.servicios = cotizacion.elementos
           const camposOcupadosCotizacion = ['cliente','vehiculo','sucursal','formaPago','iva','margen','nota','servicio','servicios']
