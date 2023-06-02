@@ -123,6 +123,7 @@ import { ListaTecnicosComponent } from './components/lista-tecnicos/lista-tecnic
 import { ListaProblemasComponent } from './pages/lista-problemas/lista-problemas.component';
 import { UppercasePipe } from './pipes/uppercase.pipe';
 import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
+import { RegistraCitaComponent } from './components/registra-cita/registra-cita.component';
 
 // import { getDutchPaginatorIntl } from "../app/models/tras";
 
@@ -185,7 +186,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ListaTecnicosComponent,
     ListaProblemasComponent,
     UppercasePipe,
-    RegistroUsuarioComponent
+    RegistroUsuarioComponent,
+    RegistraCitaComponent
   ],
   imports: [
     FullCalendarModule,

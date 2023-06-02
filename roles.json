@@ -23,6 +23,8 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:''}
       // ...
     });
 
+    const control = this.citaForm.get('dia').disabled;
+
 onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
 
 //ancho minimo de columnas

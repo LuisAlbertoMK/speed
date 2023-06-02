@@ -587,7 +587,7 @@ export class ServiciosPublicosService {
         })
         Toast.fire({icon: 'error', title: mensaje});
     }
-    async mensaje_pregunta(mensaje) {
+    async mensaje_pregunta(mensaje, allowOutsideClick?) {
         let mensajeAnswer = { respuesta: false }
         await Swal
             .fire({
@@ -596,7 +596,8 @@ export class ServiciosPublicosService {
                 showCancelButton: true,
                 confirmButtonText: 'Confirmar',
                 denyButtonText: `Don't save`,
-                cancelButtonText: `Cancelar`
+                cancelButtonText: `Cancelar`,
+                allowOutsideClick
             })
             .then((result) => {
                 /* Read more about isConfirmed, isDenied below */
@@ -633,15 +634,19 @@ export class ServiciosPublicosService {
                 break;
         }
     }
-    mensajeSwal(mensaje : string) {
+    mensajeSwal(mensaje : string,allowOutsideClick?, html?:string) {
         Swal.fire({
             position: 'center', icon: 'success', title: mensaje, showConfirmButton: true,
+            allowOutsideClick,
+            html
             // timer: 1500
         })
     }
-    mensajeSwalError(mensaje : string) {
+    mensajeSwalError(mensaje : string,allowOutsideClick?, html?:string) {
         Swal.fire({
             position: 'center', icon: 'error', title: mensaje, showConfirmButton: true,
+            allowOutsideClick,
+            html
             // timer: 1500
         })
     }
@@ -692,6 +697,18 @@ export class ServiciosPublicosService {
         })                                             
             Toast.fire({
             icon: 'error',
+            title: mensaje
+            })
+    }
+    swalToastError_center(mensaje:string, tipo){
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 3000,
+        })                                             
+            Toast.fire({
+            icon: tipo,
             title: mensaje
             })
     }
@@ -1042,6 +1059,15 @@ export class ServiciosPublicosService {
         const horas = diferenciaEnMilisegundos / milisegundosPorHora;
         return horas;
       }
+      convertirFecha(fechaString) {
+        const partes = fechaString.split('/');
+        const dia = parseInt(partes[0], 10);
+        const mes = parseInt(partes[1], 10) - 1; // Restar 1 al mes, ya que en el objeto Date los meses van de 0 a 11
+        const anio = parseInt(partes[2], 10);
+      
+        const fecha = new Date(anio, mes, dia);
+        return fecha;
+      }
       ordenarData(data, campo, ascendente) {
         return data.sort((a, b) => {
           if (a[campo] < b[campo]) {
@@ -1127,6 +1153,10 @@ export class ServiciosPublicosService {
           diaIniciail: dias2[DiaPrimero],
           diaFinal: dias2[DiaFinal],
         };
+      }
+
+      obtenerDiferencias(array1, array2) {
+        return array1.filter(elemento => !array2.includes(elemento))
       }
       
  }

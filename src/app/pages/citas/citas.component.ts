@@ -65,6 +65,7 @@ export class CitasComponent implements OnInit {
     {valor: 'placas', show:'placas'},
     {valor: 'dia', show:'dia cita'},
     {valor: 'horario', show:'Hora cita'},]
+  nuevaCita: boolean = false
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,) { }
   
@@ -257,10 +258,12 @@ export class CitasComponent implements OnInit {
     }
   }
   ConfirmaCita(){
-    const recuperada = this._publicos.nuevaRecuperacionData(this.infoCita,this.citasCampos)
-    if (recuperada.cliente) {
+    const data = this.citaForm.value
+    const recuperada = this._publicos.nuevaRecuperacionData(data,this.citasCampos)
+    const necesarios = [ ...this.citasCampos]
+    const { faltante_s, ok} = this._publicos.realizaValidaciones(necesarios,recuperada)
+    if (ok) {
       console.log('registra la cita ahora si');
-      
     }
   }
 }

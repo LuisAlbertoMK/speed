@@ -1,118 +1,10 @@
-<h2>Registro de Citas</h2>
-
-<form [formGroup]="citaForm" (ngSubmit)="guardarCita()">
-  <div class="row text-start">
-    <ng-container *ngIf="SUCURSAL === 'Todas'">
-      <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="mb-1 row">
-          <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal</label>
-          <div class="col-sm-9 col-md-8 col-lg-9 ">
-            <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
-                [class.is-invalid]="validarCampo('sucursal')">
-                <option [value]="item.id" *ngFor="let item of sucursales_arr">{{item.sucursal}}</option>
-              </select>
-            <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-    
-    <div class="col-lg-6 col-md-6 col-sm-12">
-      <div class="mb-1 row">
-        <label for="cliente" class="col-sm-3 col-md-4 col-lg-2 col-form-label">Cliente</label>
-        <div class="col-sm-9 col-md-8 col-lg-10 ">
-              <form class="example-form">
-                  <input type="text"
-                         placeholder="Nombre cliente"
-                         aria-label="Number"
-                         class="form-control form-control-sm"
-                         [formControl]="myControl"
-                         (ngModelChange)="clienteSeleccionado(null)"
-                         [matAutocomplete]="auto">
-                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clienteSeleccionado(option)" >
-                      {{option['fullname']}} - {{option['correo']}}
-                    </mat-option>
-                  </mat-autocomplete>
-              </form>
-              <!-- <ng-container *ngIf="correo">
-                <p> correo de cliente: </p>
-                <p><span class="text-success">{{correo}}</span></p>
-              </ng-container> -->
-          <small *ngIf="validarCampo('cliente')" class="text-danger">campo requerido</small>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-      <div class="mb-1 row">
-        <label for="vehiculo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
-        <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <!-- <input type="date" id="vehiculo" formControlName="vehiculo" class="form-control" required> -->
-          <select class=" form-select  form-select-sm" formControlName="vehiculo" required 
-            [class.is-invalid]="validarCampo('vehiculo')">
-            <option value="" >selecciona</option>
-            <option [value]="item.id" *ngFor="let item of arr_vehiculos">{{item.placas | uppercase}}</option>
-          </select>
-          <small *ngIf="validarCampo('vehiculo')" class="text-danger">campo requerido</small>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-lg-6 col-md-6 col-sm-12">
-      <div class="mb-1 row">
-        <label for="horario" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
-        <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <input type="date" id="horario" formControlName="horario" class="form-control" required>
-          <small *ngIf="validarCampo('horario')" class="text-danger">campo requerido</small>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-      <div class="mb-1 row">
-        <label for="dia" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
-        <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <input type="date" id="dia" formControlName="dia" class="form-control form-control-sm" required>
-          <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-      <button type="submit" class="btn btn-primary btn-sm">Genera cita</button>
-    </div>
-  </div>
-  <ng-container *ngIf="faltente">
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-          Falta información <strong class="text-danger">{{faltente}}</strong>
-      </div>
-    </div>
-  </ng-container>
-  
-</form>
-
-{{infoCita | json}}
 <div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-    <h1 class="text-danger">Verifica la informacion de la cita y confirma</h1>
-  </div>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-    <ul class="list-group">
-      <div class="row">
-        <ng-container *ngFor="let campo of camposInfoCita">
-          <div class="col-lg-4 col-md-4 col-sm-12 col-12 list-group-item">{{campo.show | capitalizarUno}}</div>
-          <div class="col-lg-8 col-md-8 col-sm-12 col-12 list-group-item">{{infoCita[campo.valor] | uppercase}}</div>
-        </ng-container>
-      </div>
-    </ul>
-  </div>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-    <button (click)="ConfirmaCita()" class="btn btn-sm btn-danger text-uppercase">Confirmar cita</button>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end text-uppercase fs-5 text-body">
+      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = true">
+          <i class="fas fa-calendar-edit"></i> Agendar cita
+      </button>
   </div>
 </div>
-
 <h2>Calendario de Citas</h2> 
 
 <div class="calendar mt-2">
@@ -147,6 +39,26 @@
   </div>
 </div>
 
+
+
+
+<div class="modal fade" id="modalCita" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <ng-container *ngIf="nuevaCita; else elseTemplate">
+          <app-registra-cita [RegistraCita]="nuevaCita"></app-registra-cita>
+        </ng-container>
+        <ng-template #elseTemplate>
+        </ng-template>
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="mb-5 mt-5">
   <div class="col">
