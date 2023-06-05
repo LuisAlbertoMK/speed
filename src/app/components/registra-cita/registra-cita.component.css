@@ -2,4 +2,6 @@
     font-size: 24px;
     font-weight: bold;
   }
-  
+  ::ng-deep .cdk-overlay-container {
+    z-index: 1055 !important;
+  }

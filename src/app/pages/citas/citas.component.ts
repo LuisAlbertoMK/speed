@@ -21,7 +21,7 @@ import 'animate.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
 import bootstrapPlugin from '@fullcalendar/bootstrap';
-import { child, get, getDatabase, onValue, ref, set, push } from 'firebase/database';
+import { child, get, getDatabase, onValue, ref, set, push, update } from 'firebase/database';
 import { EmailsService } from 'src/app/services/emails.service';
 import { url } from 'inspector';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
@@ -66,6 +66,11 @@ export class CitasComponent implements OnInit {
     {valor: 'dia', show:'dia cita'},
     {valor: 'horario', show:'Hora cita'},]
   nuevaCita: boolean = false
+  lista_citas_dia = []
+  lista_citas_proximas = []
+  formateada = ''
+  id_cita = null
+  info_cita = null
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,) { }
   
@@ -75,6 +80,7 @@ export class CitasComponent implements OnInit {
     this.rol()
     this.creaFormCitas()
     this.automaticos()
+    this.citasProximas()
   }
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -232,9 +238,72 @@ export class CitasComponent implements OnInit {
     // this.isClicked = true
     const fecha = new Date(this.numeroAnio, this.numeroMes - 1, index)
     const formateada = this._publicos.formatearFecha(fecha, false)
-    this._citas.consulta_citas_new('',formateada).then((citas)=>{
-      console.log(citas);
+    this.formateada = this._publicos.formatearFecha(fecha, true)
+    if (this.SUCURSAL !== 'Todas') {
+      this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
+        console.log(citas);
+        citas.forEach(c=>{
+          c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
+          c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
+          c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
+        })
+        this.lista_citas_dia = citas
+      })
+    }
+  }
+  citasProximas(){
+    const starCountRef = ref(db, `Citas`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+
+      }
+      const fecha = new Date()
+      const formateada = this._publicos.formatearFecha(fecha, false)
+      // this.formateada = this._publicos.formatearFecha(fecha, true)
+      if (this.SUCURSAL !== 'Todas') {
+        this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
+          // console.log(citas);
+          citas.forEach(c=>{
+            c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
+            c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
+            c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
+          })
+          // this.lista_citas_dia = citas
+          // console.log('citas proximas');
+          this.lista_citas_proximas = citas
+        })
+      }
     })
+  }
+  eliminaCita(data){
+    if (data.id) {
+      this._publicos.mensaje_pregunta(`Desea cancelar la cita`).then(({respuesta})=>{
+        if (respuesta) {
+          const fecha = this._publicos.convertirFecha(data.dia)
+          const formateada = this._publicos.formatearFecha(fecha, false)
+          const updates = {[`Citas/${data.sucursal}/${formateada}/${data.id}`] : null}
+          // console.log(updates);
+          update(ref(db), updates).then(()=>{
+            this._publicos.mensajeSwalError('Cita cancelada')
+          })
+        }
+      })
+    }
+  }
+  reagendarCita(data){
+    // if (data.id) {
+    //   this._publicos.mensaje_pregunta(`Desea cancelar la cita`).then(({respuesta})=>{
+    //     if (respuesta) {
+    //       const fecha = this._publicos.convertirFecha(data.dia)
+    //       const formateada = this._publicos.formatearFecha(fecha, false)
+    //       const updates = {[`Citas/${data.sucursal}/${formateada}/${data.id}`] : null}
+    //       // console.log(updates);
+    //       update(ref(db), updates).then(()=>{
+    //         this._publicos.mensajeSwalError('Cita cancelada')
+    //       })
+    //     }
+    //   })
+    // }
   }
   validarCampo(campo: string){
     return this.citaForm.get(campo).invalid && this.citaForm.get(campo).touched

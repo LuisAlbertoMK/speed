@@ -17,11 +17,12 @@ export class CitasService {
 
   consulta_citas_new(sucursal, fecha): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      const starCountRef = ref(db, `citas/${sucursal}/${fecha}`);
+      const starCountRef = ref(db, `Citas/${sucursal}/${fecha}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          const citas = snapshot.val()
-          resolve(citas);
+          // const citas = snapshot.val()
+          const citas = this._publicos.crearArreglo2(snapshot.val())
+          resolve(this._publicos.ordenarData(citas,'horario',true));
         } else {
           resolve([]);
         }

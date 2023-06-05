@@ -1,60 +1,119 @@
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end text-uppercase fs-5 text-body">
-      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = true">
+      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = true; info_cita= null; id_cita = null">
           <i class="fas fa-calendar-edit"></i> Agendar cita
       </button>
   </div>
 </div>
-<h2>Calendario de Citas</h2> 
-
-<div class="calendar mt-2">
-  <div class="header">
-    <h2>Ver las citas registradas del mes {{mesMuestra | capitalizarUno}} {{numeroAnio}}</h2>
-    <h2>
-      <!-- <button [disabled]="isClicked" class="btn btn-sm btn-success">aqui</button> -->
-      <i class="fas fa-chevron-double-left m-1 pointer btn btn-light" (click)="aumentaAnio('-')"></i>
-      <i class="fas fa-chevron-left m-1 pointer btn btn-light" (click)="aumentaNumeroMes('-')"></i>
-      <i class="fas fa-chevron-right m-1 pointer btn btn-light" (click)="aumentaNumeroMes('+')"></i>
-      <i class="fas fa-chevron-double-right m-1 pointer btn btn-light"  (click)="aumentaAnio('+')"></i>
-    </h2>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+    <h2>Calendario de Citas</h2> 
+    <div class="calendar mt-2">
+      <div class="header">
+        <h2>Ver las citas registradas del mes {{mesMuestra | capitalizarUno}} {{numeroAnio}}</h2>
+        <h2>
+          <!-- <button [disabled]="isClicked" class="btn btn-sm btn-success">aqui</button> -->
+          <i class="fas fa-chevron-double-left m-1 pointer btn btn-light" (click)="aumentaAnio('-')"></i>
+          <i class="fas fa-chevron-left m-1 pointer btn btn-light" (click)="aumentaNumeroMes('-')"></i>
+          <i class="fas fa-chevron-right m-1 pointer btn btn-light" (click)="aumentaNumeroMes('+')"></i>
+          <i class="fas fa-chevron-double-right m-1 pointer btn btn-light"  (click)="aumentaAnio('+')"></i>
+        </h2>
+      </div>
+      <div class="weekdays">
+        <div class="weekday">Lun</div>
+        <div class="weekday">Mar</div>
+        <div class="weekday">Mié</div>
+        <div class="weekday">Jue</div>
+        <div class="weekday">Vie</div>
+        <div class="weekday">Sáb</div>
+        <div class="weekday">Dom</div>
+      </div>
+      <div class="days" id="miDiv"  [class.disabled]="isClicked">
+          <div class="day"  [ngClass]="day.clase" *ngFor="let day of dias_mes_arr"
+          (click)="obetnerCitasDelDia(day)" data-bs-toggle="modal" data-bs-target="#modalCitasDia">
+            <div class="row">
+              <div class="col">
+                  {{day.index}}
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
   </div>
-  <div class="weekdays">
-    <div class="weekday">Lun</div>
-    <div class="weekday">Mar</div>
-    <div class="weekday">Mié</div>
-    <div class="weekday">Jue</div>
-    <div class="weekday">Vie</div>
-    <div class="weekday">Sáb</div>
-    <div class="weekday">Dom</div>
-  </div>
-  <div class="days" id="miDiv"  [class.disabled]="isClicked">
-      <div class="day"  [ngClass]="day.clase" *ngFor="let day of dias_mes_arr"
-      (click)="obetnerCitasDelDia(day)">
-        <div class="row">
-          <div class="col">
-              {{day.index}}
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center m-2">
+      <h2>Citas proximas</h2>
+    </div>
+    <div class="row">
+      <ng-container *ngFor="let cita of lista_citas_proximas">
+        <div class="card col-lg-4 col-md-4 col-sm-6 col-12">
+          <div class="card-body">
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+              <button class="btn btn-sm btn-danger mr-1">
+                <i class="fa fa-ban"></i> Cacelar
+              </button>
+              <button class="btn btn-sm btn-danger">
+                <i class="fa fa-calendar-exclamation"></i> Reagendar
+              </button>
+            </div> -->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"
+                data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = false; info_cita= cita; id_cita = cita.id"></i>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Cliente: <strong> {{cita.fullname}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Correo: <strong> {{cita.correo}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Vehiculo: <strong> {{cita.placas}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Dia: <strong> {{cita.dia}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Horario: <strong> {{cita.horario}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Sucursal: <strong> {{cita.sucursalShow}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Asistio: <strong> {{cita.asistenciaShow}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Recordatorio: <strong> {{cita.recordatorioShow}} </strong></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">Confirmada: <strong> {{cita.confirmadaShow}} </strong></div>
           </div>
         </div>
-      </div>
+      </ng-container>
+    </div>
   </div>
 </div>
-
-
-
-
 <div class="modal fade" id="modalCita" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
     <div class="modal-content">
       <div class="modal-body m-2">
-        <ng-container *ngIf="nuevaCita; else elseTemplate">
-          <app-registra-cita [RegistraCita]="nuevaCita"></app-registra-cita>
-        </ng-container>
-        <ng-template #elseTemplate>
-        </ng-template>
-        
-        
+        <app-registra-cita [id_cita]="id_cita" [info_cita]="info_cita" [nuevaCita]="nuevaCita"></app-registra-cita>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalCitasDia" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h1>Citas del dia {{ formateada }}</h1>
+          </div>
+          <ng-container *ngFor="let cita of lista_citas_dia">
+            <div class="card col-lg-4 col-md-4 col-sm-6 col-12">
+              <div class="card-body">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Cliente: <strong> {{cita.fullname}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Correo: <strong> {{cita.correo}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Vehiculo: <strong> {{cita.placas}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Dia: <strong> {{cita.dia}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Horario: <strong> {{cita.horario}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Sucursal: <strong> {{cita.sucursalShow}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Asistio: <strong> {{cita.asistenciaShow}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Recordatorio: <strong> {{cita.recordatorioShow}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Confirmada: <strong> {{cita.confirmadaShow}} </strong></div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
