@@ -260,6 +260,8 @@ export class CitasComponent implements OnInit {
       const fecha = new Date()
       const formateada = this._publicos.formatearFecha(fecha, false)
       // this.formateada = this._publicos.formatearFecha(fecha, true)
+
+
       if (this.SUCURSAL !== 'Todas') {
         this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
           // console.log(citas);
@@ -272,7 +274,34 @@ export class CitasComponent implements OnInit {
           // console.log('citas proximas');
           this.lista_citas_proximas = citas
         })
+      }else{
+        this._citas.consulta_cita_existestentes_new().then((citas)=>{
+          // console.log(citas);
+          const sucursales = this.sucursales_arr.map(r=>{ return r.id })
+          let proximas = []
+          // console.log(sucursales);
+          sucursales.forEach(s => {
+            // console.log(s);
+            if(citas[s]){
+              const fechas_hoy = this._publicos.crearArreglo2(citas[s][formateada])
+              
+              fechas_hoy.forEach(c=>{
+                c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
+                c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
+                c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
+              })
+              // console.log(fechas_hoy);
+              proximas = [...proximas, ...fechas_hoy]
+            }
+            
+            
+          });
+  
+          this.lista_citas_proximas = proximas
+          
+        })
       }
+      
     })
   }
   eliminaCita(data){

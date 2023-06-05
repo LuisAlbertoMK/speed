@@ -42,6 +42,19 @@ export class CitasService {
       });
     });
   }
+  consulta_cita_existestentes_new(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `Citas`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const citas = snapshot.val()
+          resolve(citas);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
   consulta_horarios_sucursal_new(sucursal): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `horarios/${sucursal}`);

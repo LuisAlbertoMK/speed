@@ -137,8 +137,10 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
         this.horariosDisponibles = horarios
       })
     }else{
+      
       this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
         this.horariosDisponibles = horarios
+        console.log(horarios);
       })
     }
     
@@ -297,8 +299,12 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
                 const h = this.horariosDisponibles['sabado']
                 this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
               }else{
-                const h = this.horariosDisponibles['lunesViernes']
-                this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
+                this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
+                  this.horariosDisponibles = horarios
+                  const h = this.horariosDisponibles['lunesViernes']
+                  this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
+                })
+                
               }
           })
         }
