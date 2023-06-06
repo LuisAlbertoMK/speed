@@ -26,6 +26,8 @@ import { Observable } from 'rxjs';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 import esLocale from '@fullcalendar/core/locales/es';
+import { CitaComponent } from '../cita/cita.component';
+
 @Component({
   selector: 'app-citas',
   templateUrl: './citas.component.html',
@@ -121,7 +123,7 @@ export class CitasComponent implements OnInit {
   currentEvents: EventApi[] = [];
   
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
-    private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService) { }
+    private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService, public dialog: MatDialog) { }
   
      
   
@@ -172,26 +174,18 @@ export class CitasComponent implements OnInit {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
-    // console.log(clickInfo.event);
-    // const {dia, mes,anio}  = this._publicos.conveirtefecha_2(clickInfo.event.start);
-    // console.log(dia);
-    // console.log(mes);
-    // console.log(anio);
-    // console.log(clickInfo.event.id);
     const id = clickInfo.event.id
-    // console.log(clickInfo);
     if (id) {
       const info_ = this.citas_mes_all.find(c=>c.id === id)
-      console.log(info_);
-      this.info_cita = info_
-    }else{
-      this.info_cita = null
+      const dialogRef: MatDialogRef<CitaComponent> = this.dialog.open(CitaComponent, {
+        width: 'vh(100%)',
+        data: info_ // Puedes pasar datos del evento al cuadro de diálogo
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // Lógica a realizar después de cerrar el cuadro de diálogo
+        // console.log('Cuadro de diálogo cerrado');
+      });
     }
-    
-    
-    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-    //   clickInfo.event.remove();
-    // }
   }
 
   handleEvents(events: EventApi[]) {
@@ -254,7 +248,6 @@ export class CitasComponent implements OnInit {
   displayFn(user: any): string {
     return user && user.fullname ? user.fullname : '';
   }
-
   creaFormCitas(){
     const sucursal = (this.SUCURSAL === 'Todas') ? '':  this.SUCURSAL
     this.citaForm = this.formBuilder.group({
@@ -354,11 +347,12 @@ export class CitasComponent implements OnInit {
     const {dia, mes,anio}  = this._publicos.conveirtefecha_2(new Date());
     const starCountRef = ref(db, `Citas/${anio}/${mes}`)
     onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
+      // if (snapshot.exists()) {
         this.obtenerCitasMes(this.sucursalCalendario)
-      }
+      // }
     })
   }
+  
   async obtenerCitasMes(sucursal){
 
     console.time('Execution Time');
@@ -380,18 +374,27 @@ export class CitasComponent implements OnInit {
           const citas_new = this._publicos.crearArreglo2(citas[c]);
           citas_new.forEach(cit => {
             
-            const mi_fecha_1 = this._publicos.convertirFecha(cit.dia);
+            const mi_fecha_1:Date = this._publicos.convertirFecha(cit.dia);
             const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1);
+            cit.asistenciaShow = cit.asistencia ? 'SI' : 'NO';
+            cit.recordatorioShow = cit.recordatorio ? 'SI' : 'NO';
+            cit.confirmadaShow = cit.confirmada ? 'SI' : 'NO';
             (cit.title)? null : cit.title = `${cit.placas.toUpperCase()} ${cit.dia} ${cit.horario}`;
             (cit.ruta)? null : cit.ruta = `Citas/${anio}/${mes}/${c}/${cit.id}`
             cit.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)} ${cit.horario}`;
+            
+            cit.fecha_compara = this._publicos.resetearHoras_horas(mi_fecha_1, `${cit.horario}:00`);
             citasFinales.push(cit);
           });
         }
       });
     }
+    // console.log(citasFinales);
+    
     this.citas_mes_all = citasFinales;
     const fechas_proximas = citasFinales.filter(c => c.fecha_compara >= fechaLimite && c.fecha_compara <= fechaLimite2);
+    // console.log(fechas_proximas);
+    
     this.lista_citas_proximas = this._publicos.ordenarData(fechas_proximas, 'horario', true);
     this.calendarOptions.events = citasFinales;
     console.timeEnd('Execution Time');
@@ -423,41 +426,8 @@ export class CitasComponent implements OnInit {
       })
     }
   }
-  obetnerCitasDelDia(day){
-    const { nu , index } = day
-    if (nu === 'dom' || !index) return
-    // this.isClicked = true
-    const fecha = new Date(this.numeroAnio, this.numeroMes - 1, index)
-    const formateada = this._publicos.formatearFecha(fecha, false)
-    this.formateada = this._publicos.formatearFecha(fecha, true)
-    if (this.SUCURSAL !== 'Todas') {
-      this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
-        console.log(citas);
-        citas.forEach(c=>{
-          c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
-          c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
-          c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
-          // c.id: doc.id,
-          // c.title = `${c.placas} ${c.fullname} ${c.dia} ${c.horario}`
-          c.title = `${c.placas.toUpperCase()} ${c.dia} ${c.horario}`
-          const fecha_con = this._publicos.convertirFecha(c.dia)
-          const fecha_formato = this._publicos.formatearFecha(fecha_con, true)
-          c.start = '2023-06-06'
-        })
-        console.log(citas);
-        // 2023-06-06
-        this.calendarOptions.events = citas
-        this.lista_citas_dia = citas
-      })
-    }
-  }
+ 
   
-  activarClick(){
-    console.log('aqui');
-  }
-  desactivarClick(){
-
-  }
   eliminaCita(data){
     if (data.id) {
       this._publicos.mensaje_pregunta(`Desea cancelar la cita`).then(({respuesta})=>{

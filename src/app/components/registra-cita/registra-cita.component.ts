@@ -78,6 +78,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
       if(id_cita && id_cita !== ''){
         mensaje = 'Tienes 5 minutos para ediatr informacion de la cita'
         // console.log(this.info_cita);
+        
+        
         this._clientes.consulta_cliente_new(this.info_cita.cliente).then((cliente:any)=>{
           this.infoCita.correo = cliente.correo
           this.infoCita.fullname = cliente.fullname

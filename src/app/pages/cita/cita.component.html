@@ -1,0 +1,64 @@
+<!-- <p>Detalles del evento:</p>
+<p>{{ data.title }}</p>  -->
+
+
+<ng-container *ngIf="editar; else elseTemplate">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+        <!-- <button class="btn btn-sm btn-danger m-1" (click)="eliminar()">
+            <i class="fa fa-ban"></i> Cancelar
+        </button> -->
+        <button class="btn btn-sm btn-danger m-1" (click)="editar = false">
+            <i class="fa fa-calendar-exclamation"></i> Cancelar cita
+        </button>
+        <!-- <i class="fa fa-ban btn btn-danger btn-sm text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above">Cancelar</i>
+        <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"></i> -->
+      </div>
+    editar la informacion de la cita
+    <app-registra-cita [id_cita]="data.id" [info_cita]="data" [nuevaCita]="false"></app-registra-cita>
+</ng-container>
+<ng-template #elseTemplate>
+    <ng-container *ngIf="data; else elseTemplate">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              <h1>Cita {{ data.title }}</h1>
+            </div>
+            <ng-container>
+              <!-- <div class="card col-lg-12 col-md-12 col-sm-6 col-12">
+                <div class="card-body"> -->
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                    <button class="btn btn-sm btn-danger m-1" (click)="eliminar()">
+                        <i class="fa fa-ban"></i> Cancelar
+                    </button>
+                    <!-- <button class="btn btn-sm btn-danger m-1" (click)="editar = true">
+                        <i class="fa fa-calendar-exclamation"></i> Reagendar
+                    </button> -->
+                    <!-- <i class="fa fa-ban btn btn-danger btn-sm text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above">Cancelar</i>
+                    <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"></i> -->
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Cliente: <strong> {{data.fullname}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Correo: <strong> {{data.correo}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Placas: <strong> {{data.placas}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Dia: <strong> {{data.dia}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Horario: <strong> {{data.horario}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Sucursal: <strong> {{data.sucursalShow}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Asistio: <strong> {{data.asistenciaShow}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Recordatorio: <strong> {{data.recordatorioShow}} </strong></div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12">Confirmada: <strong> {{data.confirmadaShow}} </strong></div>
+                <!-- </div>
+              </div> -->
+            </ng-container>
+        </div>
+    </ng-container>
+    <ng-template #elseTemplate>
+        <div class="alert alert-info col-lg-12 col-md-12 col-sm-12 col-12">
+            <p>Se elimino cita</p>
+        </div>
+    </ng-template>
+</ng-template>
+
+<!-- <ng-container *ngIf="editar">
+    
+</ng-container> -->
+
+

@@ -129,6 +129,7 @@ import { RegistraCitaComponent } from './components/registra-cita/registra-cita.
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import { CitaComponent } from './pages/cita/cita.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -189,7 +190,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ListaProblemasComponent,
     UppercasePipe,
     RegistroUsuarioComponent,
-    RegistraCitaComponent
+    RegistraCitaComponent,
+    CitaComponent
   ],
   imports: [
     BrowserModule,
