@@ -1012,6 +1012,17 @@ export class ServiciosPublicosService {
         fecha.setHours(0, 0, 0, 0);
         return fecha;
       }
+      resetearHoras_horas(fecha: Date, hora){
+        const [horas, minutos, segundos] = hora.split(':');
+          fecha.setHours(parseInt(horas, 10));
+          fecha.setMinutes(parseInt(minutos, 10));
+          fecha.setSeconds(parseInt(segundos, 10));
+        return fecha;
+      }
+      getHoraActual(fecha){
+        const horaActual = new Date(fecha)
+        return `${ horaActual.getHours()}:${ horaActual.getMinutes()}:${horaActual.getSeconds()}`
+      }
 
       sumarRestarDiasFecha(fecha, dias) {
         const resultado = new Date(fecha);
@@ -1031,11 +1042,12 @@ export class ServiciosPublicosService {
       esDomingo(fecha) {
         return fecha.getDay() === 0;
       }
-      formatearFecha(fecha,simbolo:boolean) {
+      formatearFecha(fecha,simbolo:boolean,symbol?) {
         const dia = fecha.getDate().toString().padStart(2, '0');
         const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
         const anio = fecha.getFullYear().toString();
-        return (simbolo) ? `${dia}/${mes}/${anio}` : `${dia}${mes}${anio}`;
+        if(!symbol) symbol= '/'
+        return (simbolo) ? `${dia}${symbol}${mes}${symbol}${anio}` : `${dia}${mes}${anio}`;
       }
       getFirstAndLastDayOfCurrentMonth(fecha) {
         const date = new Date(fecha);
@@ -1067,6 +1079,11 @@ export class ServiciosPublicosService {
       
         const fecha = new Date(anio, mes, dia);
         return fecha;
+      }
+      conveirtefecha_2(Date: Date){
+        const fecha_completa = `${Date.getDate()}/${Date.getMonth() + 1}/${Date.getFullYear()}`
+        const dia = Date.getDate(), mes = Date.getMonth() + 1, anio = Date.getFullYear()
+        return {fecha_completa, dia, mes, anio}
       }
       ordenarData(data, campo, ascendente) {
         return data.sort((a, b) => {

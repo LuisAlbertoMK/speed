@@ -280,20 +280,19 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
     this.citaForm.get('dia').valueChanges.subscribe((dia: string) => {
       if (dia) {
         const info_form = this.citaForm.value
+        const fecha_gem = this._publicos.convertirFecha(dia)
+        const {mes,anio}  = this._publicos.conveirtefecha_2(fecha_gem);
+        const fechaLimite = this._publicos.resetearHoras_horas(fecha_gem,'08:30:00')
+        const fechaLimite2 = this._publicos.resetearHoras_horas(fecha_gem,'18:30:00')
 
         if (info_form.sucursal) {
-          const bu = new Date(this._publicos.convertirFecha(dia))
+          const bu = fecha_gem
             .toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
-            
-            const fecha_con = this._publicos.convertirFecha(dia)
-            const fecha_formato = this._publicos.formatearFecha(fecha_con, false)
-          this._citas.consulta_cita_existe_new(info_form.sucursal, fecha_formato).then((citas)=>{
-            // const horarios_ocupados = citas.map(c=>{
-            //   return if(!c.confirmada) c.horario
-            // })
-            const horarios_ocupados = citas
-            .filter(cita => !cita.confirmada)
-            .map(cita => cita.horario);
+
+          this._citas.consulta_cita_existe_new( anio, mes,info_form.sucursal).then((citas)=>{
+            const fechas_proximas = citas.filter(c => c.fecha_compara >= fechaLimite && c.fecha_compara <= fechaLimite2);
+            const horarios_ocupados = fechas_proximas .filter(cita => !cita.confirmada)
+                                                      .map(cita => cita.horario);
             this.horarios_show = []
               if (bu === 'sáb') {
                 const h = this.horariosDisponibles['sabado']
@@ -304,7 +303,6 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
                   const h = this.horariosDisponibles['lunesViernes']
                   this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
                 })
-                
               }
           })
         }
@@ -338,27 +336,40 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
   ConfirmaCita(){
     let nuevos = ['sucursal','sucursalShow','cliente','fullname','vehiculo','placas','dia','horario','correo']
     if(this.id_cita){ nuevos = [...nuevos,'id'] }
-    const recuperada = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
-    const { faltante_s, ok} = this._publicos.realizaValidaciones(nuevos,recuperada)
+    const validaciones_data = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
+    const { faltante_s, ok} = this._publicos.realizaValidaciones(nuevos,validaciones_data)
     this.faltente = faltante_s
     if (ok) {
       this._publicos.mensaje_pregunta('Registra cita').then(({respuesta})=>{
         if (respuesta) {
+          // `Citas/anio/mes/sucursal/cita`
           
-          // if(this.id_cita){ nuevos = [...cam,'id'] }
+          const mi_fecha= this._publicos.convertirFecha(validaciones_data.dia);
+          const {dia, mes,anio}  = this._publicos.conveirtefecha_2(mi_fecha);
+          const fechaSave = `Citas/${anio}/${mes}/${validaciones_data.sucursal}/cita`
+          // console.log(fechaSave);
+
+          //TODO verificar apartir de este punto
           const recuperada = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
             recuperada.confirmada = false
-            const envia_f =this._publicos.convertirFecha(recuperada.dia)
-            const fecha_formato = this._publicos.formatearFecha(envia_f, false)
-            const clave = this._publicos.generaClave()
             recuperada.asistencia = false
             recuperada.recordatorio = false
+            const envia_f =this._publicos.convertirFecha(recuperada.dia)
+            const fecha_formato = this._publicos.formatearFecha(envia_f, false)
+            
             //comprobar si ya tiene una cita
-            this._citas.consulta_cita_existe_new(recuperada.sucursal, fecha_formato).then((citas)=>{
-              const existeCita = citas.find(c=>c.vehiculo === recuperada.vehiculo)
+            this._citas.consulta_cita_existe_new_2(anio,mes,validaciones_data.sucursal,dia,validaciones_data.vehiculo).then((citas)=>{
+              let existeCita = false;
+                for (const c of citas) {
+                  if (c.vehiculo === recuperada.vehiculo && c.dia === recuperada.dia) {
+                    existeCita = true;
+                    break;
+                  }
+                }
               if (existeCita) {
-                if (this.id_cita) {
-                  let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${recuperada.id}`]: recuperada}
+                if (this.id_cita) {                  
+                  let updates = {[`Citas/${anio}/${mes}/${validaciones_data.sucursal}/${recuperada.id}`]: recuperada}
+                  // let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${recuperada.id}`]: recuperada}
                   this._publicos.mensaje_pregunta('Cambiar fecha y hora de cita').then(({respuesta})=>{
                     if(respuesta){
                       update(ref(db), updates).then(()=>{
@@ -377,9 +388,12 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
                 }
                 
               }else{
-                let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${clave}`]: recuperada}
+                const clave = this._publicos.generaClave()
+                let updates = {[`Citas/${anio}/${mes}/${recuperada.sucursal}/${clave}`]: recuperada}
+                // let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${clave}`]: recuperada}
                 if(recuperada.id){
-                  updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${recuperada.id}`]: recuperada}
+                  updates = {[`Citas/${anio}/${mes}/${recuperada.sucursal}/${recuperada.id}`]: recuperada}
+                  // updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${recuperada.id}`]: recuperada}
                 }
                   update(ref(db), updates).then(()=>{
                     this.confirmar = false
@@ -388,7 +402,6 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
                   })            
               }
             })
-          
           
         }
       })

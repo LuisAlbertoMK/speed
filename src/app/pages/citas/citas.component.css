@@ -61,18 +61,48 @@
   cursor: pointer;
 }
 
-#miDiv.disabled {
+/* #miDiv.disabled {
   pointer-events: none;
-  opacity: 0.5; /* Opcional: para aplicar un estilo visual que indique que el div está desactivado */
+  opacity: 0.5; 
 }
 
 .elemento {
   background-color: #ccc;
   padding: 10px;
   cursor: pointer;
-}
+} */
 
-.elemento:hover {
+/* .elemento:hover {
   background-color: #f00;
   color: #fff;
+} */
+
+
+/* Cambiar el color del fondo del calendario */
+.fc {
+  background-color: #ffffff;
+}
+
+/* Cambiar el color del texto del título del evento */
+.fc-event-title {
+  color: #e71b1b;
+}
+
+/* Cambiar el color de fondo de los días del calendario */
+.fc-day {
+  background-color: #2015f4;
+}
+
+/* Cambiar el color del texto de los días del calendario */
+.fc-day-number {
+  color: #1ab66b;
+}
+
+/* Cambiar el color de fondo del encabezado del calendario */
+.fc-toolbar {
+  background-color: #720404;
+}
+.p-infocita{
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

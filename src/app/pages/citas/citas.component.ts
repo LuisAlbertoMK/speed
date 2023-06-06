@@ -1,17 +1,16 @@
+
 import { Component, OnInit, ViewChild, forwardRef, Inject } from '@angular/core';
 
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
-import { AutomaticosService } from 'src/app/services/automaticos.service';
 import { CitasService } from 'src/app/services/citas.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
-import { VehiculosService } from 'src/app/services/vehiculos.service';
 import Swal from 'sweetalert2';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import 'moment/locale/es';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi, Calendar, FullCalendarComponent } from '@fullcalendar/angular';
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 // import esLocale from '@fullcalendar/core/locales/es';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
@@ -20,17 +19,13 @@ import 'animate.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
-import bootstrapPlugin from '@fullcalendar/bootstrap';
 import { child, get, getDatabase, onValue, ref, set, push, update } from 'firebase/database';
-import { EmailsService } from 'src/app/services/emails.service';
-import { url } from 'inspector';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { Observable } from 'rxjs';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-
-import dayGridPlugin from '@fullcalendar/daygrid';
+import esLocale from '@fullcalendar/core/locales/es';
 @Component({
   selector: 'app-citas',
   templateUrl: './citas.component.html',
@@ -68,22 +63,65 @@ export class CitasComponent implements OnInit {
     {valor: 'dia', show:'dia cita'},
     {valor: 'horario', show:'Hora cita'},]
   nuevaCita: boolean = false
-  lista_citas_dia = []
+  TODAY_STR = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
+  lista_citas_dia = [
+    
+  ]
   lista_citas_proximas = []
+  citas_mes_all = []
+  filtro_citas_mes_all = []
   formateada = ''
   id_cita = null
   info_cita = null
   mostrarVentana: boolean = false;
-  calendarPlugins = [dayGridPlugin]; // Importa los plugins que quieras utilizar
-  calendarEvents = [
-    // Configura los eventos del calendario
-    { title: 'Evento 1', date: '2023-05-01' },
-    { title: 'Evento 2', date: '2023-05-05' },
-    // ...
-  ];
+  
+  sucursalCalendario = 'Todas'
+  // calendario
+  calendarVisible = true;
+  calendarOptions: CalendarOptions = {
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      // right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'dayGridMonth,timeGridDay,listWeek'
+    },
+    
+    views: {
+      listWeek: {
+        buttonText: 'Lista Semanal'
+      },
+    },
+    buttonText: {
+      today: 'Hoy',
+      month: 'Mes',
+      // week: 'Semana',
+      day: 'Dia',
+    },
+    
+    // locale: esLocale,
+    // locales: [esLocale],
+    locale:'es',
+    initialView: 'dayGridMonth',
+    initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
+    weekends: true,
+    editable: true,
+    selectable: true,
+    selectMirror: true,
+    dayMaxEvents: true,
+    select: this.handleDateSelect.bind(this),
+    eventClick: this.handleEventClick.bind(this),
+    eventsSet: this.handleEvents.bind(this)
+    /* you can update a remote database when these fire:
+    eventAdd:
+    eventChange:
+    eventRemove:
+    */
+  };
+  
+  currentEvents: EventApi[] = [];
   
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
-    private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,) { }
+    private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService) { }
   
      
   
@@ -91,7 +129,73 @@ export class CitasComponent implements OnInit {
     this.rol()
     this.creaFormCitas()
     this.automaticos()
-    this.citasProximas()
+    
+    
+  }
+  handleDateClick(arg) {
+    alert('date click! ' + arg.dateStr)
+  }
+  handleCalendarToggle() {
+    this.calendarVisible = !this.calendarVisible;
+  }
+
+  handleWeekendsToggle() {
+    const { calendarOptions } = this;
+    calendarOptions.weekends = !calendarOptions.weekends;
+  }
+
+  handleDateSelect(selectInfo: DateSelectArg) {
+    
+    const fechaInicial_dia = this._publicos.resetearHoras_horas(new Date(selectInfo['start']), '08:30:00')
+    const fechafinal_dia = this._publicos.resetearHoras_horas(new Date(selectInfo['start']), '18:30:00')
+
+    const citasDiaSelect =this.citas_mes_all.filter(c=>
+      c.fecha_compara >= fechaInicial_dia && c.fecha_compara <= fechafinal_dia
+    )
+    this.filtro_citas_mes_all = this._publicos.ordenarData(citasDiaSelect,'horario',true)  
+    
+
+    // const title = prompt('Please enter a new title for your event');
+    // const calendarApi = selectInfo.view.calendar;
+
+    // calendarApi.unselect(); // clear date selection
+
+    // if (title) {
+    //   calendarApi.addEvent({
+    //     id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay
+    //   });
+    // }
+  }
+
+  handleEventClick(clickInfo: EventClickArg) {
+    // console.log(clickInfo.event);
+    // const {dia, mes,anio}  = this._publicos.conveirtefecha_2(clickInfo.event.start);
+    // console.log(dia);
+    // console.log(mes);
+    // console.log(anio);
+    // console.log(clickInfo.event.id);
+    const id = clickInfo.event.id
+    // console.log(clickInfo);
+    if (id) {
+      const info_ = this.citas_mes_all.find(c=>c.id === id)
+      console.log(info_);
+      this.info_cita = info_
+    }else{
+      this.info_cita = null
+    }
+    
+    
+    // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+    //   clickInfo.event.remove();
+    // }
+  }
+
+  handleEvents(events: EventApi[]) {
+    this.currentEvents = events;
   }
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -101,6 +205,9 @@ export class CitasComponent implements OnInit {
     this._sucursales.consultaSucursales_new().then((sucursales) => {
       this.sucursales_arr = sucursales
       this.ListadoClientes(this.SUCURSAL)
+      this.sucursalCalendario = this.SUCURSAL
+      // this.obtenerCitasMes(this.sucursalCalendario)
+      this.vigilaCitas()
     }).catch((error) => {
       // Manejar el error si ocurre
     });
@@ -243,6 +350,79 @@ export class CitasComponent implements OnInit {
     })
     
   }
+  vigilaCitas(){
+    const {dia, mes,anio}  = this._publicos.conveirtefecha_2(new Date());
+    const starCountRef = ref(db, `Citas/${anio}/${mes}`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.obtenerCitasMes(this.sucursalCalendario)
+      }
+    })
+  }
+  async obtenerCitasMes(sucursal){
+
+    console.time('Execution Time');
+        
+    
+    const {inicio, final} = this._publicos.getFirstAndLastDayOfCurrentMonth(new Date())
+    const {dia, mes,anio}  = this._publicos.conveirtefecha_2(inicio);
+    const fechaLimite = this._publicos.resetearHoras_horas(this._publicos.sumarRestarDiasFecha(new Date(),0),'08:30:00')
+    const fechaLimite2 = this._publicos.resetearHoras_horas(this._publicos.sumarRestarDiasFecha(new Date(),0),'18:30:00')
+
+    function formatoDosDigitos(numero) { return numero.toString().padStart(2, '0'); }
+
+    let citasFinales = await this._citas.consulta_citas_mes_new(anio, mes,sucursal);
+    if (sucursal === 'Todas') {
+     const citas = await this._citas.consulta_citas_mes_todas_new(`Citas/${anio}/${mes}`);
+      const claves_sucursales = this.sucursales_arr.map(s => s.id);
+      claves_sucursales.forEach(c => {
+        if (citas[c]) {
+          const citas_new = this._publicos.crearArreglo2(citas[c]);
+          citas_new.forEach(cit => {
+            
+            const mi_fecha_1 = this._publicos.convertirFecha(cit.dia);
+            const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1);
+            (cit.title)? null : cit.title = `${cit.placas.toUpperCase()} ${cit.dia} ${cit.horario}`;
+            (cit.ruta)? null : cit.ruta = `Citas/${anio}/${mes}/${c}/${cit.id}`
+            cit.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)} ${cit.horario}`;
+            citasFinales.push(cit);
+          });
+        }
+      });
+    }
+    this.citas_mes_all = citasFinales;
+    const fechas_proximas = citasFinales.filter(c => c.fecha_compara >= fechaLimite && c.fecha_compara <= fechaLimite2);
+    this.lista_citas_proximas = this._publicos.ordenarData(fechas_proximas, 'horario', true);
+    this.calendarOptions.events = citasFinales;
+    console.timeEnd('Execution Time');
+
+  }
+  
+  obetnerCitasDelDia_2(formateada){
+    
+    if (this.SUCURSAL !== 'Todas') {
+      this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
+        console.log(citas);
+        citas.forEach(c=>{
+          c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
+          c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
+          c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
+          // c.id: doc.id,
+          // c.title = `${c.placas} ${c.fullname} ${c.dia} ${c.horario}`
+          c.title = `${c.placas.toUpperCase()} ${c.dia} ${c.horario}`
+          const mi_fecha_1 = this._publicos.convertirFecha(c.dia)
+          console.log(this._publicos.formatearFecha(mi_fecha_1,true,'-'));
+          const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1)
+          c.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)}`
+        })
+        function formatoDosDigitos(numero) {
+          return numero < 10 ? `0${numero}` : numero;
+        }
+        this.calendarOptions.events = citas
+        this.lista_citas_dia = citas
+      })
+    }
+  }
   obetnerCitasDelDia(day){
     const { nu , index } = day
     if (nu === 'dom' || !index) return
@@ -257,63 +437,21 @@ export class CitasComponent implements OnInit {
           c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
           c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
           c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
+          // c.id: doc.id,
+          // c.title = `${c.placas} ${c.fullname} ${c.dia} ${c.horario}`
+          c.title = `${c.placas.toUpperCase()} ${c.dia} ${c.horario}`
+          const fecha_con = this._publicos.convertirFecha(c.dia)
+          const fecha_formato = this._publicos.formatearFecha(fecha_con, true)
+          c.start = '2023-06-06'
         })
+        console.log(citas);
+        // 2023-06-06
+        this.calendarOptions.events = citas
         this.lista_citas_dia = citas
       })
     }
   }
-  citasProximas(){
-    const starCountRef = ref(db, `Citas`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-
-      }
-      const fecha = new Date()
-      const formateada = this._publicos.formatearFecha(fecha, false)
-      // this.formateada = this._publicos.formatearFecha(fecha, true)
-
-      if (this.SUCURSAL !== 'Todas') {
-        this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
-          // console.log(citas);
-          citas.forEach(c=>{
-            c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
-            c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
-            c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
-          })
-          // this.lista_citas_dia = citas
-          // console.log('citas proximas');
-          this.lista_citas_proximas = citas
-        })
-      }else{
-        this._citas.consulta_cita_existestentes_new().then((citas)=>{
-          // console.log(citas);
-          const sucursales = this.sucursales_arr.map(r=>{ return r.id })
-          let proximas = []
-          // console.log(sucursales);
-          sucursales.forEach(s => {
-            // console.log(s);
-            if(citas[s]){
-              const fechas_hoy = this._publicos.crearArreglo2(citas[s][formateada])
-              
-              fechas_hoy.forEach(c=>{
-                c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
-                c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
-                c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
-              })
-              // console.log(fechas_hoy);
-              proximas = [...proximas, ...fechas_hoy]
-            }
-            
-            
-          });
   
-          this.lista_citas_proximas = proximas
-          
-        })
-      }
-      
-    })
-  }
   activarClick(){
     console.log('aqui');
   }
@@ -324,9 +462,7 @@ export class CitasComponent implements OnInit {
     if (data.id) {
       this._publicos.mensaje_pregunta(`Desea cancelar la cita`).then(({respuesta})=>{
         if (respuesta) {
-          const fecha = this._publicos.convertirFecha(data.dia)
-          const formateada = this._publicos.formatearFecha(fecha, false)
-          const updates = {[`Citas/${data.sucursal}/${formateada}/${data.id}`] : null}
+          const updates = {[`${data.ruta}`] : null}
           // console.log(updates);
           update(ref(db), updates).then(()=>{
             this._publicos.mensajeSwalError('Cita cancelada')

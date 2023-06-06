@@ -1,5 +1,3 @@
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-
 
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -85,7 +83,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { CalendarComponent } from './pages/calendar/calendar.component'; // a plugin!
 
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin  from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -128,12 +125,17 @@ import { RegistraCitaComponent } from './components/registra-cita/registra-cita.
 // import { getDutchPaginatorIntl } from "../app/models/tras";
 
 
+
+
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
   listPlugin,
   timeGridPlugin,
-  bootstrap5Plugin
+  bootstrap5Plugin,
+  
 ]);
 @NgModule({
   declarations: [
@@ -190,10 +192,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegistraCitaComponent
   ],
   imports: [
-    FullCalendarModule, // Importa el módulo de FullCalendar
-    // dayGridPlugin, // Importa el plugin de visualización de día
     BrowserModule,
     AppRoutingModule,
+    FullCalendarModule, // Importa el módulo de FullCalendar
     FontAwesomeModule,
     CommonModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

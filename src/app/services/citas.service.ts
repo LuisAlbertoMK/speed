@@ -15,6 +15,47 @@ export class CitasService {
 
   constructor(private http: HttpClient, private _publicos: ServiciosPublicosService) { }
 
+  consulta_citas_mes_new(anio, mes, sucursal): Promise<any[]> {
+    function formatoDosDigitos(numero) { return numero.toString().padStart(2, '0'); }
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `Citas/${anio}/${mes}/${sucursal}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // const citas = snapshot.val()
+          const citas = this._publicos.crearArreglo2(snapshot.val())
+          citas.forEach(c=>{
+            c.asistenciaShow = c.asistencia ? 'SI' : 'NO';
+            c.recordatorioShow = c.recordatorio ? 'SI' : 'NO';
+            c.confirmadaShow = c.confirmada ? 'SI' : 'NO';
+            c.title = `${c.placas.toUpperCase()} ${c.dia} ${c.horario}`;
+            c.ruta = `Citas/${anio}/${mes}/${sucursal}/${c.id}`
+            const mi_fecha_1 = this._publicos.convertirFecha(c.dia);
+            c.fecha_compara = this._publicos.resetearHoras_horas(mi_fecha_1, `${c.horario}:00`);
+            const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1);
+            c.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)} ${c.horario}`;
+            return c;
+          })
+          resolve(citas);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+  consulta_citas_mes_todas_new(ruta): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, ruta);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // const citas = snapshot.val()
+          // const citas = this._publicos.crearArreglo2(snapshot.val())
+          resolve(snapshot.val());
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
   consulta_citas_new(sucursal, fecha): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `Citas/${sucursal}/${fecha}`);
@@ -29,9 +70,36 @@ export class CitasService {
       });
     });
   }
-  consulta_cita_existe_new(sucursal, fecha): Promise<any[]> {
+  
+  consulta_cita_existe_new( anio, mes, sucursal): Promise<any[]> {
+    function formatoDosDigitos(numero) { return numero.toString().padStart(2, '0'); }
     return new Promise((resolve, reject) => {
-      const starCountRef = ref(db, `Citas/${sucursal}/${fecha}`);
+      const starCountRef = ref(db, `Citas/${anio}/${mes}/${sucursal}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const citas = this._publicos.crearArreglo2(snapshot.val())
+          // const citas = snapshot.val()
+          citas.forEach(c => {
+            c.asistenciaShow = c.asistencia ? 'SI' : 'NO';
+            c.recordatorioShow = c.recordatorio ? 'SI' : 'NO';
+            c.confirmadaShow = c.confirmada ? 'SI' : 'NO';
+            c.title = `${c.placas.toUpperCase()} ${c.dia} ${c.horario}`;
+      
+            const mi_fecha_1 = this._publicos.convertirFecha(c.dia);
+            c.fecha_compara = this._publicos.resetearHoras_horas(mi_fecha_1, `${c.horario}:00`);
+            const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1);
+            c.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)} ${c.horario}`;
+          });
+          resolve(citas);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+  consulta_cita_existe_new_2(anio,mes,sucursal,dia,vehiculo): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `Citas/${anio}/${mes}/${sucursal}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
           const citas = this._publicos.crearArreglo2(snapshot.val())
