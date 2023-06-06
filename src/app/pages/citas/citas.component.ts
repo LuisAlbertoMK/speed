@@ -29,6 +29,8 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { Observable } from 'rxjs';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
+
+import dayGridPlugin from '@fullcalendar/daygrid';
 @Component({
   selector: 'app-citas',
   templateUrl: './citas.component.html',
@@ -71,6 +73,15 @@ export class CitasComponent implements OnInit {
   formateada = ''
   id_cita = null
   info_cita = null
+  mostrarVentana: boolean = false;
+  calendarPlugins = [dayGridPlugin]; // Importa los plugins que quieras utilizar
+  calendarEvents = [
+    // Configura los eventos del calendario
+    { title: 'Evento 1', date: '2023-05-01' },
+    { title: 'Evento 2', date: '2023-05-05' },
+    // ...
+  ];
+  
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,) { }
   
@@ -261,7 +272,6 @@ export class CitasComponent implements OnInit {
       const formateada = this._publicos.formatearFecha(fecha, false)
       // this.formateada = this._publicos.formatearFecha(fecha, true)
 
-
       if (this.SUCURSAL !== 'Todas') {
         this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
           // console.log(citas);
@@ -303,6 +313,12 @@ export class CitasComponent implements OnInit {
       }
       
     })
+  }
+  activarClick(){
+    console.log('aqui');
+  }
+  desactivarClick(){
+
   }
   eliminaCita(data){
     if (data.id) {

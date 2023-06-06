@@ -5,6 +5,9 @@
       </button>
   </div>
 </div>
+<!-- <full-calendar [plugins]="calendarPlugins" [events]="calendarEvents"></full-calendar> -->
+
+
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12">
     <h2>Calendario de Citas</h2> 
@@ -32,7 +35,8 @@
           <div class="day"  [ngClass]="day.clase" *ngFor="let day of dias_mes_arr"
           (click)="obetnerCitasDelDia(day)" data-bs-toggle="modal" data-bs-target="#modalCitasDia">
             <div class="row">
-              <div class="col">
+              <!-- (mouseover)="activarClick()" (mouseleave)="desactivarClick()" -->
+              <div class="col" >
                   {{day.index}}
               </div>
             </div>

@@ -190,7 +190,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegistraCitaComponent
   ],
   imports: [
-    FullCalendarModule,
+    FullCalendarModule, // Importa el módulo de FullCalendar
+    // dayGridPlugin, // Importa el plugin de visualización de día
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,

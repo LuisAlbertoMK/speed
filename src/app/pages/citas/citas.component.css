@@ -27,20 +27,22 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
+  
 }
 
 .day {
-  text-align: center;
+  text-align: left;
   padding: 5px;
   background-color: #f2f2f2;
   cursor: pointer;
+  height: 100px;
 }
 .noValido{
-  background-color: #7f7f7f;
-  color: #434343;
+  background-color: rgba(208, 208, 219, 0.749);
+  color: white;
 }
 .Valido{
-  background-color: #50db71;
+  background-color: #ffffff;
   color: #050905;
 }
 .nulo{
@@ -49,7 +51,8 @@
 }
 
 .day:hover {
-  background-color: #e0e0e0;
+  background-color: rgb(85, 85, 129);
+  color: white;
 }
 
 
@@ -61,4 +64,15 @@
 #miDiv.disabled {
   pointer-events: none;
   opacity: 0.5; /* Opcional: para aplicar un estilo visual que indique que el div está desactivado */
+}
+
+.elemento {
+  background-color: #ccc;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.elemento:hover {
+  background-color: #f00;
+  color: #fff;
 }

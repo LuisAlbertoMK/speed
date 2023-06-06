@@ -33,7 +33,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
   // horarios_ocupados = []
   horarios_show = []
   citaForm: FormGroup;
-  infoCita = {id:'',sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'', placas: '', dia:'', horario:'', correo:''}
+  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'', placas: '', dia:'', horario:'', correo:''}
   camposInfoCita = [ 
     {valor: 'sucursalShow', show:'Sucursal'},
     {valor: 'fullname', show:'Cliente'},
@@ -336,18 +336,16 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
     }
   }
   ConfirmaCita(){
-    const data = this.citaForm.value
-    let nuevos = [...this.citasCampos]
-    if(this.id_cita){ nuevos = [...this.citasCampos,'id'] }
-    const recuperada = this._publicos.nuevaRecuperacionData(data,nuevos)
-    const necesarios = [ ...this.citasCampos]
-    const { faltante_s, ok} = this._publicos.realizaValidaciones(necesarios,recuperada)
-    this.vigilaDia()
+    let nuevos = ['sucursal','sucursalShow','cliente','fullname','vehiculo','placas','dia','horario','correo']
+    if(this.id_cita){ nuevos = [...nuevos,'id'] }
+    const recuperada = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
+    const { faltante_s, ok} = this._publicos.realizaValidaciones(nuevos,recuperada)
+    this.faltente = faltante_s
     if (ok) {
       this._publicos.mensaje_pregunta('Registra cita').then(({respuesta})=>{
         if (respuesta) {
-          const cam = ['sucursal','sucursalShow','cliente','fullname','vehiculo','placas','dia','horario','correo']
-          if(this.id_cita){ nuevos = [...cam,'id'] }
+          
+          // if(this.id_cita){ nuevos = [...cam,'id'] }
           const recuperada = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
             recuperada.confirmada = false
             const envia_f =this._publicos.convertirFecha(recuperada.dia)
@@ -359,20 +357,25 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
             this._citas.consulta_cita_existe_new(recuperada.sucursal, fecha_formato).then((citas)=>{
               const existeCita = citas.find(c=>c.vehiculo === recuperada.vehiculo)
               if (existeCita) {
-                let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${recuperada.id}`]: recuperada}
-                console.log(updates);
-                this._publicos.mensaje_pregunta('Cambiar fecha y hora de cita').then(({respuesta})=>{
-                  if(respuesta){
-                    update(ref(db), updates).then(()=>{
+                if (this.id_cita) {
+                  let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${recuperada.id}`]: recuperada}
+                  this._publicos.mensaje_pregunta('Cambiar fecha y hora de cita').then(({respuesta})=>{
+                    if(respuesta){
+                      update(ref(db), updates).then(()=>{
+                        this.confirmar = false
+                        this._publicos.mensajeSwal('Registro de cita correcto')
+                        this.cancelaCita()
+                      }) 
+                    }else{
+                      this._publicos.mensajeSwalError('se cancelaron los cambios')
                       this.confirmar = false
-                      this._publicos.mensajeSwal('Registro de cita correcto')
-                      this.cancelaCita()
-                    }) 
-                  }else{
-                    this._publicos.mensajeSwalError('se cancelaron los cambios')
-                    this.confirmar = false
-                  }
-                })
+                    }
+                  })
+                }else{
+                  this.confirmar = false
+                  this._publicos.mensajeSwalError(`El vehiculo con placas ${this.infoCita.placas} ya cuenta con cita registrada`, false, 'verifica la información')
+                }
+                
               }else{
                 let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${clave}`]: recuperada}
                 if(recuperada.id){
