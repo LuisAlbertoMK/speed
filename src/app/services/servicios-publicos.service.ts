@@ -1118,6 +1118,7 @@ export class ServiciosPublicosService {
         'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados'
       ]
     }
+    
 
       
     actualizarArregloExistente(arregloExistente, nuevaInformacion, camposRecupera) {

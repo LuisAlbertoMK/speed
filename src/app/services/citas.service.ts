@@ -15,6 +15,16 @@ export class CitasService {
 
   constructor(private http: HttpClient, private _publicos: ServiciosPublicosService) { }
 
+  camposInfoCita = [ 
+    {valor: 'sucursalShow', show:'Sucursal'},
+    {valor: 'fullname', show:'Cliente'},
+    {valor: 'correo', show:'Correo'},
+    {valor: 'placas', show:'placas'},
+    {valor: 'servicioShow', show:'Servicio'},
+    {valor: 'dia', show:'dia cita'},
+    {valor: 'horario', show:'Hora cita'}]
+
+    
   consulta_citas_mes_new(anio, mes, sucursal): Promise<any[]> {
     function formatoDosDigitos(numero) { return numero.toString().padStart(2, '0'); }
     return new Promise((resolve, reject) => {
@@ -42,14 +52,38 @@ export class CitasService {
       });
     });
   }
-  consulta_citas_mes_todas_new(ruta): Promise<any[]> {
+  consulta_citas_mes_todas_new(anio, mes): Promise<any[]> {
+    function formatoDosDigitos(numero) { return numero.toString().padStart(2, '0'); }
     return new Promise((resolve, reject) => {
-      const starCountRef = ref(db, ruta);
+      const starCountRef = ref(db, `Citas/${anio}/${mes}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          // const citas = snapshot.val()
-          // const citas = this._publicos.crearArreglo2(snapshot.val())
-          resolve(snapshot.val());
+          let citasFinales = []
+          const id_sucursales = [
+            '-N2gkVg1RtSLxK3rTMYc', '-N2gkzuYrS4XDFgYciId', '-N2glF34lV3Gj0bQyEWK','-N2glQ18dLQuzwOv3Qe3','-N2glf8hot49dUJYj5WP','-NN8uAwBU_9ZWQTP3FP_'
+          ]
+          const citas = snapshot.val()
+          id_sucursales.forEach(c => {
+            
+            if (citas[c]) {
+              const citas_new = this._publicos.crearArreglo2(citas[c]);
+              citas_new.forEach(cit => {
+                
+                const mi_fecha_1:Date = this._publicos.convertirFecha(cit.dia);
+                const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1);
+                cit.asistenciaShow = cit.asistencia ? 'SI' : 'NO';
+                cit.recordatorioShow = cit.recordatorio ? 'SI' : 'NO';
+                cit.confirmadaShow = cit.confirmada ? 'SI' : 'NO';
+                (cit.title)? null : cit.title = `${cit.placas.toUpperCase()} ${cit.dia} ${cit.horario}`;
+                (cit.ruta)? null : cit.ruta = `Citas/${anio}/${mes}/${c}/${cit.id}`
+                cit.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)} ${cit.horario}`;
+                
+                cit.fecha_compara = this._publicos.resetearHoras_horas(mi_fecha_1, `${cit.horario}:00`);
+                citasFinales.push(cit);
+              });
+            }
+          });
+          resolve(citasFinales);
         } else {
           resolve([]);
         }

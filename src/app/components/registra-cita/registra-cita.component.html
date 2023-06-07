@@ -107,6 +107,19 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="mb-1 row">
+                                <label for="servicio" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Servicio </label>
+                                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                    <select class=" form-select  form-select-sm" formControlName="servicio" required 
+                                    [class.is-invalid]="validarCampo('servicio')">
+                                    <option value="" >selecciona</option>
+                                    <option [value]="item.valor" *ngFor="let item of camposServicios">{{item.nombre | uppercase}}</option>
+                                    </select>
+                                    <small *ngIf="validarCampo('servicio')" class="text-danger">campo requerido</small>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="mb-1 row">
                                 <label for="dia" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Dia</label>
                                 <div class="col-sm-9 col-md-8 col-lg-9 ">
                                     <div class="input-group mb-3">

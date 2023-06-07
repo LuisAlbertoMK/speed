@@ -27,6 +27,7 @@ const db = getDatabase()
 const dbRef = ref(getDatabase());
 import esLocale from '@fullcalendar/core/locales/es';
 import { CitaComponent } from '../cita/cita.component';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-citas',
@@ -37,45 +38,20 @@ export class CitasComponent implements OnInit {
   ROL:String
   SUCURSAL:string
   citaForm: FormGroup;
-  dias_mes_arr = []
-  dias2 = ["dom","lun","mar","mié","jue","vie","sáb"]
   
-  personalizados_dias = ["lun","mar","mié","jue","vie","sáb","dom"]
 
-  mesMuestra:string
-  numeroMes =  new Date().getMonth() + 1
-  numeroAnio =  new Date().getFullYear()
-  fechaSelect: number 
-  isClicked: boolean = false;
-  clientes_arr=[]
   sucursales_arr=[]
-  arr_vehiculos=[]
 
-  myControl = new FormControl('');
-  filteredOptions: Observable<string[]>;
-  faltente:string
-  correo:string
   citasCampos = [ 'sucursal','cliente','vehiculo','dia','horario']
-  infoCita = {sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'', placas: '', dia:'', horario:'', correo:''}
-  camposInfoCita = [ 
-    {valor: 'sucursalShow', show:'Sucursal'},
-    {valor: 'fullname', show:'Cliente'},
-    {valor: 'correo', show:'Correo'},
-    {valor: 'placas', show:'placas'},
-    {valor: 'dia', show:'dia cita'},
-    {valor: 'horario', show:'Hora cita'},]
+  infoCita = {sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'', placas: '',servicio:'',servicioShow:'', dia:'', horario:'', correo:''}
+  camposInfoCita = [...this._citas.camposInfoCita]
   nuevaCita: boolean = false
-  TODAY_STR = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
-  lista_citas_dia = [
-    
-  ]
+  lista_citas_dia = []
   lista_citas_proximas = []
   citas_mes_all = []
   filtro_citas_mes_all = []
-  formateada = ''
   id_cita = null
   info_cita = null
-  mostrarVentana: boolean = false;
   
   sucursalCalendario = 'Todas'
   // calendario
@@ -121,18 +97,29 @@ export class CitasComponent implements OnInit {
   };
   
   currentEvents: EventApi[] = [];
-  
+  range = new FormGroup({
+    start: new FormControl(null),
+    end: new FormControl(null),
+  });
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService, public dialog: MatDialog) { }
   
-     
-  
   ngOnInit(): void {
     this.rol()
-    this.creaFormCitas()
-    this.automaticos()
-    
-    
+  }
+  //obtener informacion basica para consulta de informacion de cualquier indele y permisos de usuario
+  rol(){
+    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+    this.ROL = this._security.servicioDecrypt(variableX['rol'])
+    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+
+    this._sucursales.consultaSucursales_new().then((sucursales) => {
+      this.sucursales_arr = sucursales
+      this.sucursalCalendario = this.SUCURSAL
+      this.vigilaCitas()
+    }).catch((error) => {
+      // Manejar el error si ocurre
+    });
   }
   handleDateClick(arg) {
     alert('date click! ' + arg.dateStr)
@@ -145,7 +132,7 @@ export class CitasComponent implements OnInit {
     const { calendarOptions } = this;
     calendarOptions.weekends = !calendarOptions.weekends;
   }
-
+//cuando selecciona un dia del calendario
   handleDateSelect(selectInfo: DateSelectArg) {
     
     const fechaInicial_dia = this._publicos.resetearHoras_horas(new Date(selectInfo['start']), '08:30:00')
@@ -154,25 +141,9 @@ export class CitasComponent implements OnInit {
     const citasDiaSelect =this.citas_mes_all.filter(c=>
       c.fecha_compara >= fechaInicial_dia && c.fecha_compara <= fechafinal_dia
     )
-    this.filtro_citas_mes_all = this._publicos.ordenarData(citasDiaSelect,'horario',true)  
-    
-
-    // const title = prompt('Please enter a new title for your event');
-    // const calendarApi = selectInfo.view.calendar;
-
-    // calendarApi.unselect(); // clear date selection
-
-    // if (title) {
-    //   calendarApi.addEvent({
-    //     id: createEventId(),
-    //     title,
-    //     start: selectInfo.startStr,
-    //     end: selectInfo.endStr,
-    //     allDay: selectInfo.allDay
-    //   });
-    // }
+    this.filtro_citas_mes_all = this._publicos.ordenarData(citasDiaSelect,'horario',true)
   }
-
+//cuando selecciona un evento de calendario
   handleEventClick(clickInfo: EventClickArg) {
     const id = clickInfo.event.id
     if (id) {
@@ -187,247 +158,19 @@ export class CitasComponent implements OnInit {
       });
     }
   }
-
+//ecento cambio de informacion en los eventos asiganados al calendario
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
   }
-  rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.sucursales_arr = sucursales
-      this.ListadoClientes(this.SUCURSAL)
-      this.sucursalCalendario = this.SUCURSAL
-      // this.obtenerCitasMes(this.sucursalCalendario)
-      this.vigilaCitas()
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
-  }
-  ListadoClientes(sucursal){
-    // this.cargandoInformacion = true
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, () => {
-      this._clientes.consulta_clientes_new().then((clientes) => {
-        const clientes_new = clientes
-        clientes_new.map(c=>{
-          c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal).sucursal
-        })
-        const info = (sucursal !=='Todas') ? clientes_new.filter(c=>c.sucursal === sucursal) : []
-        const camposRecu = [...this._publicos.camposCliente(),'vehiculos','fullname']
-        let aqui = []
-        if (!this.clientes_arr.length) {
-          aqui = info;
-        } else {
-          aqui = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
-        }
-        this.clientes_arr = this._publicos.ordenarData(aqui,'fullname',true)
-        this.myControl.setValue(null)
-        this.citaForm.controls['cliente'].setValue(null)
-        this.citaForm.controls['vehiculo'].setValue(null)
-        // this.dataSourceClientes.data = aqui
-        // this.newPagination('clientes')
-      }).catch((error) => {
-        // Manejar el error si ocurre
-        console.log(error);      
-      });
-    })
-  }
-  automaticos(){
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
-  }
-  private _filter(value: string): string[] {
-    const filterValue:string = String(value).toLowerCase();
-    return this.clientes_arr.filter(option => String(option.fullname).toLowerCase().includes(filterValue));
-  }
-  displayFn(user: any): string {
-    return user && user.fullname ? user.fullname : '';
-  }
-  creaFormCitas(){
-    const sucursal = (this.SUCURSAL === 'Todas') ? '':  this.SUCURSAL
-    this.citaForm = this.formBuilder.group({
-      dia: ['', Validators.required],
-      cliente: ['', Validators.required],
-      sucursal: [sucursal, Validators.required],
-      horario: ['', Validators.required],
-      vehiculo: ['', Validators.required]
-    });
-    this.obtenerPrimerUltimoDiaMes(this.numeroAnio, this.numeroMes)
-  }
-  clienteSeleccionado(cliente){
-    // console.log(cliente);
-    this.citaForm.controls['cliente'].setValue(null)
-    this.citaForm.controls['vehiculo'].setValue(null)
-    // this.correo = null
-    this.infoCita.correo = ''
-    if (cliente) {
-      this.citaForm.controls['cliente'].setValue(cliente.id)
-      this.arr_vehiculos = cliente.vehiculos
-    }
-    // this.arr_vehiculos = cl
-    
-  }
-  aumentaAnio(accion:string){
-    if(accion === '+'){
-      this.numeroAnio ++
-    }else{
-      this.numeroAnio --
-    }
-    this.obtenerPrimerUltimoDiaMes(this.numeroAnio,this.numeroMes)
-  }
-  aumentaNumeroMes(accion){
-    if(accion === '+'){
-      if (this.numeroMes === 12 ) {
-        this.numeroAnio ++
-        this.numeroMes = 1
-      }else{
-        this.numeroMes ++
-      }
-    }else{
-      if (this.numeroMes === 1 ) {
-        this.numeroAnio --
-        this.numeroMes = 12
-      }else{
-        this.numeroMes --
-      }
-    }
-    this.obtenerPrimerUltimoDiaMes(this.numeroAnio,this.numeroMes)
-  }
-
-  obtenerPrimerUltimoDiaMes(anio:number,numeroMes: number){
-    this.dias_mes_arr =[]
-    const {primerDia , ultimoDia, Mes}= this._publicos.obtenerPrimerUltimoDiaMes(numeroMes,anio)
-    let nuevos = []
-    this.mesMuestra = Mes
-    for (let index =primerDia.getDate(); index <= ultimoDia.getDate(); index++) {
-      const bu = new Date(anio,numeroMes -1, index)
-        .toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
-      let nu 
-      this.dias2.forEach(d=>{ if (d.toLowerCase() === bu.toLowerCase()) nu = d  })
-      nuevos.push({index, nu})
-    }
-   
-    const info = this._publicos.obtenerPrimerUltimoDiaMes(numeroMes,anio)
-
-    const bu2 = this._publicos.sumarRestarDiasFecha(info.primerDia,0)
-      .toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
-
-      let indesx =this.personalizados_dias.indexOf(bu2)
-      
-      if (bu2 === 'sáb') {
-        indesx= 5
-      } else if(bu2 === 'dom') { 
-        indesx= 6
-      }
-    
-    for (let index = 0; index <   indesx; index++) {
-      this.dias_mes_arr.push({index:null,nu:null})
-    }
-    for (let index =0; index < nuevos.length; index++) {
-      this.dias_mes_arr.push(Object(nuevos[index]))
-    }
-
-    this.dias_mes_arr.map(d=>{
-      if (d.nu === 'dom') {
-        d.clase = 'noValido'
-      }else if(d.nu !== 'dom' && d.nu){
-        d.clase = 'Valido'
-      }else if(!d.nu){
-        d.clase = 'nulo'
-      }
-    })
-    
-  }
+  //verificar si cambia la informacion de las citas
   vigilaCitas(){
-    const {dia, mes,anio}  = this._publicos.conveirtefecha_2(new Date());
+    const {mes,anio}  = this._publicos.conveirtefecha_2(new Date());
     const starCountRef = ref(db, `Citas/${anio}/${mes}`)
     onValue(starCountRef, (snapshot) => {
-      // if (snapshot.exists()) {
-        this.obtenerCitasMes(this.sucursalCalendario)
-      // }
+      this.addEvent()
     })
   }
-  
-  async obtenerCitasMes(sucursal){
-
-    console.time('Execution Time');
-        
-    
-    const {inicio, final} = this._publicos.getFirstAndLastDayOfCurrentMonth(new Date())
-    const {dia, mes,anio}  = this._publicos.conveirtefecha_2(inicio);
-    const fechaLimite = this._publicos.resetearHoras_horas(this._publicos.sumarRestarDiasFecha(new Date(),0),'08:30:00')
-    const fechaLimite2 = this._publicos.resetearHoras_horas(this._publicos.sumarRestarDiasFecha(new Date(),0),'18:30:00')
-
-    function formatoDosDigitos(numero) { return numero.toString().padStart(2, '0'); }
-
-    let citasFinales = await this._citas.consulta_citas_mes_new(anio, mes,sucursal);
-    if (sucursal === 'Todas') {
-     const citas = await this._citas.consulta_citas_mes_todas_new(`Citas/${anio}/${mes}`);
-      const claves_sucursales = this.sucursales_arr.map(s => s.id);
-      claves_sucursales.forEach(c => {
-        if (citas[c]) {
-          const citas_new = this._publicos.crearArreglo2(citas[c]);
-          citas_new.forEach(cit => {
-            
-            const mi_fecha_1:Date = this._publicos.convertirFecha(cit.dia);
-            const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1);
-            cit.asistenciaShow = cit.asistencia ? 'SI' : 'NO';
-            cit.recordatorioShow = cit.recordatorio ? 'SI' : 'NO';
-            cit.confirmadaShow = cit.confirmada ? 'SI' : 'NO';
-            (cit.title)? null : cit.title = `${cit.placas.toUpperCase()} ${cit.dia} ${cit.horario}`;
-            (cit.ruta)? null : cit.ruta = `Citas/${anio}/${mes}/${c}/${cit.id}`
-            cit.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)} ${cit.horario}`;
-            
-            cit.fecha_compara = this._publicos.resetearHoras_horas(mi_fecha_1, `${cit.horario}:00`);
-            citasFinales.push(cit);
-          });
-        }
-      });
-    }
-    // console.log(citasFinales);
-    
-    this.citas_mes_all = citasFinales;
-    const fechas_proximas = citasFinales.filter(c => c.fecha_compara >= fechaLimite && c.fecha_compara <= fechaLimite2);
-    // console.log(fechas_proximas);
-    
-    this.lista_citas_proximas = this._publicos.ordenarData(fechas_proximas, 'horario', true);
-    this.calendarOptions.events = citasFinales;
-    console.timeEnd('Execution Time');
-
-  }
-  
-  obetnerCitasDelDia_2(formateada){
-    
-    if (this.SUCURSAL !== 'Todas') {
-      this._citas.consulta_citas_new(this.SUCURSAL,formateada).then((citas)=>{
-        console.log(citas);
-        citas.forEach(c=>{
-          c.asistenciaShow = (c.asistencia) ? 'SI' : 'NO'
-          c.recordatorioShow = (c.recordatorio) ? 'SI' : 'NO'
-          c.confirmadaShow = (c.confirmada) ? 'SI' : 'NO'
-          // c.id: doc.id,
-          // c.title = `${c.placas} ${c.fullname} ${c.dia} ${c.horario}`
-          c.title = `${c.placas.toUpperCase()} ${c.dia} ${c.horario}`
-          const mi_fecha_1 = this._publicos.convertirFecha(c.dia)
-          console.log(this._publicos.formatearFecha(mi_fecha_1,true,'-'));
-          const mi_fecha = this._publicos.conveirtefecha_2(mi_fecha_1)
-          c.start = `${mi_fecha.anio}-${formatoDosDigitos(mi_fecha.mes)}-${formatoDosDigitos(mi_fecha.dia)}`
-        })
-        function formatoDosDigitos(numero) {
-          return numero < 10 ? `0${numero}` : numero;
-        }
-        this.calendarOptions.events = citas
-        this.lista_citas_dia = citas
-      })
-    }
-  }
- 
-  
+  //elimina la cita recibiendo la informacion de la cita
   eliminaCita(data){
     if (data.id) {
       this._publicos.mensaje_pregunta(`Desea cancelar la cita`).then(({respuesta})=>{
@@ -441,6 +184,7 @@ export class CitasComponent implements OnInit {
       })
     }
   }
+  //reagdendar cita recibiendo la informacion de la cita
   reagendarCita(data){
     // if (data.id) {
     //   this._publicos.mensaje_pregunta(`Desea cancelar la cita`).then(({respuesta})=>{
@@ -456,37 +200,127 @@ export class CitasComponent implements OnInit {
     //   })
     // }
   }
-  validarCampo(campo: string){
-    return this.citaForm.get(campo).invalid && this.citaForm.get(campo).touched
-  }
 
-  guardarCita() {
-    const data = this.citaForm.value
-    const necesarios = [ ...this.citasCampos]
-    const { faltante_s, ok} = this._publicos.realizaValidaciones(necesarios,data)
-    this.faltente = faltante_s
-    if(ok){
-      this.infoCita.cliente = data.cliente
-      this.infoCita.vehiculo = data.vehiculo
-      this.infoCita.sucursal = data.sucursal
-      this.infoCita.dia = data.dia
-      this.infoCita.correo = this.clientes_arr.find(c=>c.id === data.cliente).correo
-      this.infoCita.horario = data.horario
-      this.infoCita.sucursalShow = this.sucursales_arr.find(s=>s.id === data.sucursal).sucursal
-      this.infoCita.placas = this.arr_vehiculos.find(v=>v.id === data.vehiculo).placas
-      this.infoCita.fullname = this.clientes_arr.find(c=>c.id === data.cliente).fullname
+  //evento de cuando cambia la fecha de busqueda en caso de no existe dia busca en todo el mes actual
+  async addEvent() {
+    const {start, end} = this.range.value;
+    if (start && end) {
+
+      const {_i: startValue} = start;
+      const {_i: endValue} = end;
+
+      const {year: year_start,month: moth_start  } = startValue
+      const {year: year_end, month: moth_end } = endValue
+
+      const fechaLimite = this._publicos.resetearHoras_horas(start['_d'],'08:30:00')
+      const fechaLimite2 = this._publicos.resetearHoras_horas(end['_d'],'18:30:00')
+
+      let citasFinales = []
+      //si los años son iguales 
+      if(year_start === year_end){
+        //si los meses son iguales
+        if (moth_start === moth_end) {
+          //obtener la lista de las citas dependiendo del usuario
+          citasFinales = (this.sucursalCalendario === 'Todas') ? 
+            await this._citas.consulta_citas_mes_todas_new(year_start,moth_start +1) : 
+            await this._citas.consulta_citas_mes_new(year_start, moth_start +1 , this.sucursalCalendario);          
+        }else{
+          //si la sucursal seleccionada es 'Todas' superUsuario y si los meses son diferentes
+          if (this.sucursalCalendario === 'Todas') {
+            for (let index = (moth_start + 1); index <= (moth_end + 1); index++) {
+              //obtener la lista de las citas dependiendo del usuario
+              const citas = await this._citas.consulta_citas_mes_todas_new(year_start,index);
+              citas.forEach(cit => {
+                citasFinales.push(cit)
+              });
+            }
+          }else{
+            //si la sucursal seleccionada es !'Todas' !superUsuario y si los meses son diferentes
+            for (let index = (moth_start + 1); index <= (moth_end + 1); index++) {
+              const citas_mes = await this._citas.consulta_citas_mes_new(year_start, index , this.sucursalCalendario)
+              citas_mes.forEach(cit => {
+                citasFinales.push(cit)
+              });
+            }
+          }
+        }
+      }else{
+        //si los años son diferentes
+        if (this.sucursalCalendario === 'Todas') {
+          //if la sucursal seleccionada es 'Todas'
+          //en el siguiente ciclo for buscamos por año  inicial y año final
+          for (let index_anio = year_start; index_anio <= year_end; index_anio++) {
+            //asiganamos donde inicia la busqueda del mes y si es dirente del año inicial cambiamos al mes 1 en caso contrario elegimos el mes de la fecha seleccionada
+            const dondeInicia = (year_start !== index_anio)? 1 : (moth_start + 1)
+            //asiganamos donde finaliza la busqueda del mes y si es igual al año final cambiamos al mes final de la fecha seleccionada
+            const dondeFinaliza = (year_end === index_anio)? (moth_end + 1) : 12
+            //realiza el ciclo de los meses con las variables 'dondeInicia' - 'dondeFinaliza'
+            for (let mes = dondeInicia; mes <= dondeFinaliza; mes++) {
+              //obtener la lista de las citas dependiendo del usuario
+              const citas = await this._citas.consulta_citas_mes_todas_new(index_anio,mes);
+              //recorremos cada uno de los registro devueltos y asignar cada uno a citasFinales
+              citas.forEach(cit => {
+                citasFinales.push(cit)
+              });
+            }
+          }
+        }else{
+           //if la sucursal seleccionada es !'Todas'
+          for (let index_anio = year_start; index_anio <= year_end; index_anio++) {
+            //asiganamos donde inicia la busqueda del mes y si es dirente del año inicial cambiamos al mes 1 en caso contrario elegimos el mes de la fecha seleccionada
+            const dondeInicia = (year_start !== index_anio)? 1 : (moth_start + 1)
+            //asiganamos donde finaliza la busqueda del mes y si es igual al año final cambiamos al mes final de la fecha seleccionada
+            const dondeFinaliza = (year_end === index_anio)? (moth_end + 1) : 12
+            //realiza el ciclo de los meses con las variables 'dondeInicia' - 'dondeFinaliza'
+            for (let mes = dondeInicia; mes <= dondeFinaliza; mes++) {
+              //obtener la lista de las citas dependiendo del usuario
+              const citas_mes = await this._citas.consulta_citas_mes_new(index_anio, mes , this.sucursalCalendario)
+              //recorremos cada uno de los registro devueltos y asignar cada uno a citasFinales
+              citas_mes.forEach(cit => {
+                citasFinales.push(cit)
+              });
+            }
+          }
+        }
+      }
+      // hacemos un filtrado de las fecha y hora con el horario de sucursales 
+      const fechas_proximas = citasFinales.filter(c => c.fecha_compara >= fechaLimite && c.fecha_compara <= fechaLimite2);
+      // vaciamos los eventos del calendario en caso de que se quedara algun registro
+      this.calendarOptions.events = [];
+      ///asignamos los resultados de 'citasFinales' a citas del mes en caso de seleccionar un evento o dia del mes 
+      this.citas_mes_all = citasFinales;
+      //asignamos las citas de hoy 
+      this.lista_citas_proximas = this._publicos.ordenarData(fechas_proximas, 'horario', true);
+      //asignamos todos los resultados de 'citasFinales' a los eventos del calendario
+      this.calendarOptions.events = citasFinales;
+
+    }else{
+        //aqui  obtenemos todas las citas pertenecientes al mes actual sin importar el dia de la cita mediante el envio de la fecha del sistema
+        const {inicio} = this._publicos.getFirstAndLastDayOfCurrentMonth(new Date())
+        //obetnemos el numero del mes para la conculta de citas en base a la fecha 
+        const {mes,anio}  = this._publicos.conveirtefecha_2(inicio);
+        //asigamos los limites en fechas y establecemos los limites en base a los horarios generales de sucursales
+        const fechaLimite = this._publicos.resetearHoras_horas(new Date(),'08:30:00')
+        const fechaLimite2 = this._publicos.resetearHoras_horas(new Date(),'18:30:00')
+    
+        //obtener la lista de las citas dependiendo del usuario
+        const citasFinales = (this.sucursalCalendario === 'Todas') ? 
+        await this._citas.consulta_citas_mes_todas_new(anio,mes) : 
+        await this._citas.consulta_citas_mes_new(anio, mes,this.sucursalCalendario);
+
+        this.citas_mes_all = citasFinales;
+        // hacemos un filtrado de las fecha y hora con el horario de sucursales 
+        const fechas_proximas = citasFinales.filter(c => c.fecha_compara >= fechaLimite && c.fecha_compara <= fechaLimite2);
+        //asignamos las citas de hoy 
+        this.lista_citas_proximas = this._publicos.ordenarData(fechas_proximas, 'horario', true);
+        //asignamos todos los resultados de 'citasFinales' a los eventos del calendario
+        this.calendarOptions.events = citasFinales;
+        
     }
+
+    
   }
-  ConfirmaCita(){
-    const data = this.citaForm.value
-    const recuperada = this._publicos.nuevaRecuperacionData(data,this.citasCampos)
-    const necesarios = [ ...this.citasCampos]
-    const { faltante_s, ok} = this._publicos.realizaValidaciones(necesarios,recuperada)
-    if (ok) {
-      console.log('registra la cita ahora si');
-    }
-  }
+  
 }
 
-/// funciones
 

@@ -5,8 +5,17 @@
       </button>
   </div>
 </div>
-<!-- <full-calendar [plugins]="calendarPlugins" [events]="calendarEvents"></full-calendar> -->
-
+  <div class="input-group mb-3 col-lg-5 col-md-5 col-sm-6 col-12">
+    <span class="input-group-text pointer text-primary" id="basic-addon1" (click)="picker.open()">
+      <i class="fa fa-calendar"></i>
+    </span>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-date-range-input  class="form-control" [formGroup]="range" [rangePicker]="picker" >
+      <!-- (focus)="picker.open()" -->
+      <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext" (dateChange)="addEvent()">
+      <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext" (dateChange)="addEvent()">
+    </mat-date-range-input>
+  </div>
 
 <ng-container *ngIf="SUCURSAL === 'Todas'">
   <div class="row m-1">
@@ -14,22 +23,19 @@
       <label for="">Filtrar por sucursal</label>
     </div>
     <div class="col-6">
-      <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm" (ngModelChange)="obtenerCitasMes(sucursalCalendario)">
+      <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm" (ngModelChange)="addEvent()">
         <option value="Todas" >Todas</option>
         <option [value]="s.id" *ngFor="let s of sucursales_arr">{{s.sucursal}}</option>
       </select>
     </div>
   </div>
-  
 </ng-container>
-
 
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 center" >
       <full-calendar [options]="calendarOptions"></full-calendar>
   </div>
 </div>
-{{lista_citas_proximas}}
 <div class="row">
   <div class="col-lg-6 col-md-6 col-sm-12 col-12">
     <h1>Citas de hoy</h1>
@@ -47,7 +53,7 @@
             <p class="p-infocita"> Cliente: <strong> {{cita.fullname | capitalizarUno}} </strong></p>
             <p class="p-infocita"> Correo: <strong> {{cita.correo}} </strong></p>
             <p class="p-infocita"> Fecha: <strong> {{cita.dia}} {{cita.horario}} </strong></p>
-            <p class="p-infocita"> Servicio: <strong> X </strong></p>
+            <p class="p-infocita"> Servicio: <strong> {{cita.servicioShow | uppercase}} </strong></p>
             <p class="p-infocita"> Sucursal: <strong> {{cita.sucursalShow}} </strong></p>
           </div>
           <span class="badge bg-primary rounded-pill" [ngClass]="{'bg-danger': !cita.confirmada}">{{cita.confirmadaShow}} Confirmada </span>
@@ -71,7 +77,7 @@
             <p class="p-infocita"> Cliente: <strong> {{cita.fullname | capitalizarUno}} </strong></p>
             <p class="p-infocita"> Correo: <strong> {{cita.correo}} </strong></p>
             <p class="p-infocita"> Fecha: <strong> {{cita.dia}} {{cita.horario}} </strong></p>
-            <p class="p-infocita"> Servicio: <strong> X </strong></p>
+            <p class="p-infocita"> Servicio: <strong> {{cita.servicioShow | uppercase}} </strong></p>
             <p class="p-infocita"> Sucursal: <strong> {{cita.sucursalShow}} </strong></p>
           </div>
           <span class="badge bg-primary rounded-pill" [ngClass]="{'bg-danger': !cita.confirmada}">{{cita.confirmadaShow}} Confirmada </span>
@@ -81,8 +87,6 @@
   </div>
 </div>
 <!-- <full-calendar ></full-calendar> -->
-
-
 <div class="modal fade" id="modalCita" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div
@@ -107,7 +111,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            <h1>Citas del dia {{ formateada }}</h1>
+            <h1>Citas del dia</h1>
           </div>
           <ng-container *ngIf="info_cita">
             <div class="card col-lg-4 col-md-4 col-sm-6 col-12">

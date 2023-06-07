@@ -33,16 +33,10 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
   // horarios_ocupados = []
   horarios_show = []
   citaForm: FormGroup;
-  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'', placas: '', dia:'', horario:'', correo:''}
-  camposInfoCita = [ 
-    {valor: 'sucursalShow', show:'Sucursal'},
-    {valor: 'fullname', show:'Cliente'},
-    {valor: 'correo', show:'Correo'},
-    {valor: 'placas', show:'placas'},
-    {valor: 'dia', show:'dia cita'},
-    {valor: 'horario', show:'Hora cita'},]
+  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'', correo:''}
+  camposInfoCita = [...this._citas.camposInfoCita]
   faltente:string
-  citasCampos = [ 'sucursal','cliente','vehiculo','dia','horario']
+  citasCampos = [ 'sucursal','cliente','vehiculo','servicio','dia','horario']
   confirmar:boolean = false
   
   startProceso:boolean = false
@@ -52,10 +46,11 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
   tiempoLimite: number = 300;
   tiempoRestante: number = this.tiempoLimite;
   temporizador
+
+  camposServicios = [...this._publicos.camposServicios()]
   constructor(private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,
     private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _citas: CitasService) { }
   ngOnInit(): void {
-    
     this.rol()
     this.creaFormCitas()
     this.automaticos()
@@ -86,6 +81,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
           this.infoCita.cliente = this.info_cita.cliente
           this.infoCita.sucursal = this.info_cita.sucursal
           this.infoCita.vehiculo = this.info_cita.vehiculo
+          this.infoCita.servicio = this.info_cita.servicio
+          this.infoCita.servicioShow = this.camposServicios.find(s=>s.valor === this.info_cita.servicio).nombre
           this.infoCita.sucursalShow = this.sucursales_arr.find(s=>s.id === this.info_cita.sucursal).sucursal
           this.arr_vehiculos = cliente.vehiculos
           this.infoCita.id = id_cita
@@ -95,6 +92,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
             cliente: this.info_cita.cliente,
             sucursal: this.info_cita.sucursal,
             vehiculo: this.info_cita.vehiculo,
+            servicio: this.info_cita.servicio,
             dia: '' ,
             horario: '',
           })
@@ -274,7 +272,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
       cliente: ['', Validators.required],
       sucursal: [sucursal, Validators.required],
       horario: ['', Validators.required],
-      vehiculo: ['', Validators.required]
+      vehiculo: ['', Validators.required],
+      servicio: ['', Validators.required]
     });
     this.vigilaDia()
   }
@@ -286,8 +285,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
         const {mes,anio}  = this._publicos.conveirtefecha_2(fecha_gem);
         const fechaLimite = this._publicos.resetearHoras_horas(fecha_gem,'08:30:00')
         const fechaLimite2 = this._publicos.resetearHoras_horas(fecha_gem,'18:30:00')
-
-        if (info_form.sucursal) {
+        if (info_form.sucursal && info_form.sucursal !== '') {
           const bu = fecha_gem
             .toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
 
@@ -297,8 +295,21 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
                                                       .map(cita => cita.horario);
             this.horarios_show = []
               if (bu === 'sáb') {
-                const h = this.horariosDisponibles['sabado']
-                this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
+                
+                if (info_form.sucursal !== '-N2glF34lV3Gj0bQyEWK' ) {
+                  
+                  console.log(info_form.sucursal);
+        
+                  this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
+                    console.log(horarios);
+                    console.log(horarios_ocupados);
+                    
+                    this.horarios_show = this._publicos.obtenerDiferencias(horarios['sabado'], horarios_ocupados)
+                  })
+                }else{
+                  let h = this.horariosDisponibles['sabado']
+                  this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
+                }
               }else{
                 this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
                   this.horariosDisponibles = horarios
@@ -325,6 +336,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
       this.infoCita.cliente = data.cliente
       this.infoCita.vehiculo = data.vehiculo
       this.infoCita.sucursal = data.sucursal
+      this.infoCita.servicio = data.servicio
+      this.infoCita.servicioShow = this.camposServicios.find(s=>s.valor === this.infoCita.servicio).nombre
       this.infoCita.dia = data.dia
       // this.infoCita.correo = this.clientes_arr.find(c=>c.id === data.cliente).correo
       this.infoCita.horario = data.horario
@@ -336,7 +349,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges {
     }
   }
   ConfirmaCita(){
-    let nuevos = ['sucursal','sucursalShow','cliente','fullname','vehiculo','placas','dia','horario','correo']
+    let nuevos = ['sucursal','sucursalShow','cliente','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','correo']
     if(this.id_cita){ nuevos = [...nuevos,'id'] }
     const validaciones_data = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
     const { faltante_s, ok} = this._publicos.realizaValidaciones(nuevos,validaciones_data)
