@@ -1,5 +1,6 @@
+import { map, startWith } from 'rxjs/operators';
 import { Component, OnInit, Input, Output,EventEmitter} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SucursalesService } from '../../services/sucursales.service';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { ClientesService } from 'src/app/services/clientes.service';
@@ -8,6 +9,8 @@ import { child, get, getDatabase, onValue, push, ref, set, update } from "fireba
 import Swal from 'sweetalert2';
 import { EmailsService } from 'src/app/services/emails.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { Observable } from 'rxjs';
+import { EmpresasService } from '../../services/empresas.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -52,8 +55,15 @@ export class ClienteComponent implements OnInit {
   SUCURSAL:string
   
   clientes = []
+  registraEmpresaShow: boolean = false
+
+  myControl_empresa = new FormControl('');
+  // options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions_empresa: Observable<string[]>;
+
+  
   constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
-    private _clientes: ClientesService,private _mail: EmailsService,private _security:EncriptadoService) {
+    private _clientes: ClientesService,private _mail: EmailsService,private _security:EncriptadoService, private _empresas: EmpresasService) {
       this.heroeSlec = new EventEmitter()
     }
 
@@ -62,16 +72,24 @@ export class ClienteComponent implements OnInit {
     this.crearFormularioClientes()
     this.crearFormEmpresa()
     this.listaSucursales()
-    this.listadoEmpresas()
+    // this.listadoEmpresas()
     
 
     this.perteneceA()
+    this.automaticos_empresa()
     
+  }
+  automaticos_empresa(){
+    this.filteredOptions_empresa = this.myControl_empresa.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
   }
   roles(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
+    if(this.SUCURSAL !== 'Todas') this.listadoEmpresas(this.SUCURSAL)
     this._clientes.consulta_clientes_new().then((clientes) => {
       this.clientes = clientes
       this.contadroClientes = clientes.length +1 
@@ -92,12 +110,15 @@ export class ClienteComponent implements OnInit {
     }
   }
   informacionGet(){
+    console.log(this.data);
+    
     this.form_cliente.reset({
       nombre: this.data['nombre'],
       apellidos: this.data['apellidos'],
       tipo: this.data['tipo'],
       no_cliente: this.data['no_cliente'],
       sucursal: this.data['sucursal'],
+      empresa: this.data['empresa'],
       telefono_movil: this.data['telefono_movil'],
       id: this.data['id'],
       correo_sec: this.data['correo_sec'],
@@ -148,10 +169,16 @@ export class ClienteComponent implements OnInit {
     let isFlotilla: boolean = false;
     this.form_cliente.get('tipo').valueChanges.subscribe((tipo: string) => {
       if (tipo === 'flotilla') {
+        const data = this.formaEmpresa.value
         // Habilitar el campo "empresa" si el tipo es flotilla
         this.form_cliente.get('empresa').enable();
         isFlotilla = true;
         this.empresa_valida = (!tipo) ? false : true
+        if (this.data) {
+          if (this.data.empresa) {
+            this.empresaSelect = this.data.empresa
+          }
+        }
       } else {
         // Deshabilitar el campo "empresa" si el tipo es particular
         this.form_cliente.get('empresa').disable();
@@ -160,36 +187,44 @@ export class ClienteComponent implements OnInit {
         isFlotilla = false;
       }
     });
+    this.form_cliente.get('sucursal').valueChanges.subscribe((sucursal: string) => {
+      if (sucursal) {
+        this.listadoEmpresas(sucursal)
+      }
+    })
   }
   crearFormEmpresa(){
     this.formaEmpresa = this.fb.group({
+      id:['',[]],
       empresa:['',[Validators.required, Validators.minLength(4)]]
     })
   }
   
   registraEmpresa(){
-    let IDSucursal = '';
-    (this.sucursal ==='Todas')? IDSucursal = this.form_cliente.controls['sucursal'].value: IDSucursal = this.sucursal
-    if (IDSucursal) {
-      const nombre = this.formaEmpresa.controls['empresa'].value
-      if (nombre) {
-        const newPostKey = push(child(ref(db), 'posts')).key
-        const tempData = {
-          id: newPostKey,
-          empresa: nombre
-        }
-        this._clientes.registraEmpresa(IDSucursal,tempData).then(({registro})=>{
-          if (registro) {
-            this.listadoEmpresas()
-              this.empresaSelect = newPostKey
-              this.form_cliente.controls['empresa'].setValue(newPostKey)
-              this.formaEmpresa.reset()
-              this.muestraFormEmpresa = false
-          }
-        })
+    const data = this.formaEmpresa.value
+    const filterValue = String(data.empresa).trim().toLowerCase()
+    const encontrado = this.empresasSucursal.filter(option => String(option.empresa).toLowerCase().includes(filterValue));
+    // console.log(encontrado);
+
+    if (filterValue.length > 0) {
+      if (encontrado.length > 0) {
+        this._publicos.mensajeSwalError('Ya existe una empresa registrada con el nombre',false, filterValue)
+        this.formaEmpresa.reset()
+        this.myControl_empresa.setValue(filterValue)
+      }else{
+        const IDSucursal =  this.form_cliente.controls['sucursal'].value        
+        const clave = this._publicos.generaClave()
+        // `empresas/${ID}/${data['id']}`
+        const updates = {[`empresas/${IDSucursal}/${clave}/empresa`]: filterValue}        
+        update(ref(db), updates).then(()=>{{
+          // this.listadoEmpresas()
+          this.empresaSelect = clave
+          this.form_cliente.controls['tipo'].setValue('flotilla')
+          this.form_cliente.controls['empresa'].setValue(clave)
+          this.formaEmpresa.reset()
+          this.registraEmpresaShow = false
+        }})
       }
-    }else{
-      this._publicos.mensajeIncorrecto('seleccionar sucursal para poder registrar empresa')
     }
   }
   validarEmpresa(campo: string){
@@ -201,22 +236,7 @@ export class ClienteComponent implements OnInit {
     if (data['tipo'] === 'particular') return
     if (!data['empresa']) this.empresa_valida = false
   }
-  empresa(){
-    // const tipo = this.form_cliente.controls['tipo'].value
-    // const empresa = this.form_cliente.controls['empresa'].value
-    // // let sucursal = this.form_cliente.controls['sucursal'].value
-    
-    // if (tipo === 'flotilla') {
-    //   this.form_cliente.controls['empresa'].enable()
-    //   if (!empresa) this.empresa_valida =  false
-    // }else{
-    //   this.form_cliente.controls['empresa'].disable()
-    //   this.form_cliente.controls['empresa'].setValue('')
-    //   this.empresa_valida = true
-    // } 
-    // (sucursal) ? this.sucursalForm = true : this.sucursalForm = false
-    // console.log(this.empresa_valida);
-  }
+  
   async mensajeEmpresa(valor:boolean){
     this.muestraFormEmpresa = valor
     this.formaEmpresa.reset()
@@ -224,38 +244,6 @@ export class ClienteComponent implements OnInit {
   validarCampo(campo: string){
     return this.form_cliente.get(campo).invalid && this.form_cliente.get(campo).touched
   }
-  // async actualizaNoCliente(){
-  //   const nombre = String(this.form_cliente.controls['nombre'].value).trim()
-  //   const apellidos = String(this.form_cliente.controls['apellidos'].value).trim()
-
-  //   let sucu = this.sucursal;
-  //   (this.sucursal === 'Todas')? sucu = this.form_cliente.controls['sucursal'].value : sucu = this.sucursal
-  //   const id = String(this.form_cliente.controls['id'].value).trim()
-  //   if (!id) {
-  //     if ((nombre.length >=2) && (apellidos.length >=2 ) && (sucu)) {
-  //       const date: Date = new Date()
-  //       if (sucu!=='Todas' && sucu) {
-  //         this._sucursales.inforSucursalUnica(sucu).then((data)=>{
-  //           const numeroCliente:number = this.contadroClientes//(this.clientes.length) + 1
-  //           const nombreS:string = data['sucursal']
-  //           let mes = ''; let secuencia=''; let ceros = ''
-  //           const anio = String(date.getFullYear())
-  //           if((date.getMonth() +1)<10) { mes = `0${(date.getMonth() +1)}` }else{ mes=`${(date.getMonth() +1)}` }
-  //           for (let index = String(numeroCliente).length; index < 4 ; index++) {
-  //             ceros = `${ceros}0`
-  //           }
-  //           secuencia = `${ceros}${numeroCliente}`
-  //           let nombreCotizacion = `${ nombre.slice(0,2)}${apellidos.slice(0,2)}${ String(nombreS).slice(0,2)}${mes}${anio.slice(anio.length-2,anio.length)}${secuencia}`
-  //           this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion.toUpperCase())
-  //         })
-  //         .catch((error)=>{this._publicos.mensajeIncorrecto('error: ' + error)})
-  //       }
-  //     }else{
-  //       this.form_cliente.controls['no_cliente'].setValue('')
-  //     }
-  //   }
-
-  // }
   async actualizaNoCliente() {
     const nombre = this.form_cliente.controls['nombre'].value?.trim();
     const apellidos = this.form_cliente.controls['apellidos'].value?.trim();
@@ -336,12 +324,12 @@ export class ClienteComponent implements OnInit {
             }
             const {sucursal} = this.Sucursales.find(s=>s.id === cliente.sucursal)
             cliente.showSucursal = sucursal
-            this.heroeSlec.emit(cliente)
+            this.heroeSlec.emit( {cliente, status: true})
           }
         })
       })
       .catch(()=>{
-        this.heroeSlec.emit(false)
+        this.heroeSlec.emit( Object({cliente: null,status: false}) )
       })
       
     }else{
@@ -354,7 +342,7 @@ export class ClienteComponent implements OnInit {
       updates['/clientes/' + saveInfo['id']] = saveInfo;
     
       update(ref(db), updates)
-      .then(async ()=>{
+      .then( ()=>{
         
         // if (this.correo_utilizado === 'personal') {
            const {correo} =  this.Sucursales.find(s=>s['id'] === saveInfo['sucursal'] )
@@ -369,11 +357,10 @@ export class ClienteComponent implements OnInit {
             }else{
               infocorreo['correos'] = [correo]
             }
-            await this._mail.EmailBienvenida(infocorreo)
-        // }
-        this.heroeSlec.emit( saveInfo )
+            this._mail.EmailBienvenida(infocorreo)
+            this.heroeSlec.emit( Object({cliente: saveInfo, status: true}) )
         }).catch(()=>{
-          this.heroeSlec.emit( false)
+          this.heroeSlec.emit( Object({cliente: null,status: false}) )
         })
       // this._clientes.registraCliente(saveInfo)
     }
@@ -390,7 +377,6 @@ export class ClienteComponent implements OnInit {
       telefono_movil:'',  empresa: '',
       correo_sec:''
     })
-    // this.heroeSlec.emit( {oculta: true, cancelo:true})
   }
   //sucursales
   listaSucursales(){
@@ -401,49 +387,79 @@ export class ClienteComponent implements OnInit {
     });
   }
   //empresas
-  listadoEmpresas(){
-
-    const starCountRef = ref(db, `empresas`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this._clientes.getEmpresas().then(({contenido, data})=>{
-          if (contenido) {
-            let empre = []
-            const sucursales = Object.keys(data)
-            sucursales.forEach(element => {
-              const empresas = this._publicos.crearArreglo2(data[element])
-              empresas.map(emp=>{
-                const temp = {
-                  empresa: emp['empresa'],
-                  id: emp['id'],
-                  sucursal: element
-                }
-                empre.push(temp)
-              })
-            });
-            this.empresaSelect = this.form_cliente.controls['empresa'].value
-            if (this.sucursal ==='Todas') {
-              this.empresasSucursal = this._publicos.ordernarPorCampo(empre,'empresa')
-            }else{
-              const nuevos = empre.filter(em=>em['sucursal'] === this.sucursal)
-              this.empresasSucursal = this._publicos.ordernarPorCampo(nuevos,'empresa')
-            }
-            setTimeout(() => {
-              const existeEmpresa = empre.find(o=>o['id'] === this.empresaSelect)
-              if (existeEmpresa) {
-                this.form_cliente.controls['empresa'].setValue(this.empresaSelect) 
-              }else{
-                this.form_cliente.controls['empresa'].setValue('')
-                this.empresaValida()
-              }
-            }, 200);
-          }
-        })
-      } 
+  listadoEmpresas(sucursal){
+    const starCountRef = ref(db, `empresas/${sucursal}`)
+    onValue(starCountRef, async (snapshot) => {
+      const empresas = await this._empresas.consulta_sucursales_new(sucursal)
+      this.empresasSucursal = empresas
     })
+    
+    // const starCountRef = ref(db, `empresas`)
+    // onValue(starCountRef, (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     this._clientes.getEmpresas().then(({contenido, data})=>{
+    //       if (contenido) {
+    //         let empre = []
+    //         const sucursales = Object.keys(data)
+    //         sucursales.forEach(element => {
+    //           const empresas = this._publicos.crearArreglo2(data[element])
+    //           empresas.map(emp=>{
+    //             const temp = {
+    //               empresa: emp['empresa'],
+    //               id: emp['id'],
+    //               sucursal: element
+    //             }
+    //             empre.push(temp)
+    //           })
+    //         });
+    //         this.empresaSelect = this.form_cliente.controls['empresa'].value
+    //         if (this.sucursal ==='Todas') {
+    //           this.empresasSucursal = this._publicos.ordernarPorCampo(empre,'empresa')
+    //         }else{
+    //           const nuevos = empre.filter(em=>em['sucursal'] === this.sucursal)
+    //           this.empresasSucursal = this._publicos.ordernarPorCampo(nuevos,'empresa')
+    //         }
+            
+            
+    //         setTimeout(() => {
+    //           const existeEmpresa = empre.find(o=>o['id'] === this.empresaSelect)
+    //           if (existeEmpresa) {
+    //             this.form_cliente.controls['empresa'].setValue(this.empresaSelect) 
+    //           }else{
+    //             this.form_cliente.controls['empresa'].setValue('')
+    //             this.empresaValida()
+    //           }
+    //         }, 200);
+    //       }
+    //     })
+    //   } 
+    // })
     
   }
   limpiarFormEmpresa(){
     this.formaEmpresa.reset()
+  }
+  empresaSeleccionda(data){
+    this.formaEmpresa.controls['empresa'].setValue( data.empresa )
+    this.formaEmpresa.controls['id'].setValue( data.id )
+  }
+  private _filter(value: string): string[] {
+    let data = []
+    if (value['empresa']) {
+      
+    }else{
+      const filterValue = value.toLowerCase();
+      data = this.empresasSucursal.filter(option => String(option.empresa).toLowerCase().includes(filterValue));
+    }
+    return data
+  }
+  verificaInfoEmpresa(){
+    const valor = this.myControl_empresa.value
+    if (typeof valor === 'string') {
+      this.formaEmpresa.controls['empresa'].setValue(valor)
+    }
+  }
+  displayFn(user: any): any {
+    return user && user.empresa ? user.empresa : '';
   }
 }

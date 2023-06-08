@@ -131,10 +131,11 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     }
   }
   clientesInfo(info:any){
-    if (info['registro']) {
+    const {cliente, status} = info
+    if (status) {
       this._publicos.mensajeCorrecto('registro de cliente correcto')
-    }else if(info['actualizacion']){
-      this._publicos.mensajeCorrecto('actualizacion de cliente correcto')
+    }else{
+      this._publicos.mensajeSwalError('Ocurrio un error')
     }
   }
   vehiculoInfo(info:any){

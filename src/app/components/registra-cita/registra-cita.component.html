@@ -1,209 +1,198 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
-    <button type="button" (click)="cancelaCita()" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
-  </div>
-  <button (click)="nuevaCita =!nuevaCita">Accion: {{nuevaCita}}</button>
 
-
-  <ng-container *ngIf="nuevaCita; else elseCitaStart">
-    <button type="button" (click)="iniciarTemporizador()">Iniciar</button>
-  </ng-container>
-  <ng-template #elseCitaStart>
-    <button type="button" (click)="cancelaCita()" >Cancelar</button>
-  </ng-template>
-  
-  
-  <!-- <button (click)="iniciarTemporizador()">iniciarTemporizador</button>
-  <button (click)="reiniciarTemporizador()">reiniciarTemporizador</button>
-  <button (click)="detenerTemporizador()">detenerTemporizador</button> -->
-  <!-- <div id="temporizador">00:00
-    <span id="minutos">00</span>:<span id="segundos">00</span>
-  </div> -->
-  
-
-<!-- <p>nuevaCita: {{nuevaCita| json}}</p>
-<p>confirmar: {{confirmar| json}}</p>
-<p>startProceso: {{startProceso| json}}</p>
-<p>citaForm.value: {{citaForm.value| json}}</p> -->
 
 
 <div class="card">
     <div class="card-body">
         <div class="card-text">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end text-uppercase fs-5 text-body">
-                    <h2> Tiempo restante 
-                        <div id="temporizador">00:00</div> 
-                    </h2>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
+                    <button type="button" (click)="inicioDetenerCita(false)" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                 </div>
-            </div>
-            
-            <ng-container *ngIf="!confirmar; else elseConfirmar" >
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase fs-5 text-body ">
-                        <ng-container *ngIf="info_cita; else elseID">
-                            <h2> Reagendar cita </h2>
-                            <p>Fecha anterior de cita {{info_cita['dia']}} {{info_cita['horario']}}</p>
-                        </ng-container>
-                        <ng-template #elseID>
-                            <h2> Registro de Citas </h2>
-                            <span>Nota: Seleccionar un horario no indica que estara ocupado quizas otro usuario ocupo el horario </span>
-                        </ng-template>
-                        
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        <form [formGroup]="citaForm" (ngSubmit)="guardarCita()">
-                            <div class="row text-start">
-                            <ng-container *ngIf="SUCURSAL === 'Todas'">
-                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="mb-1 row">
-                                    <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal</label>
-                                    <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                    <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
-                                        [class.is-invalid]="validarCampo('sucursal')">
-                                        <option value="" >Selecciona</option>
-                                        <option [value]="item.id" *ngFor="let item of sucursales_arr">{{item.sucursal}}</option>
-                                        </select>
-                                    <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
-                                    </div>
-                                </div>
-                                </div>
-                            </ng-container>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="mb-1 row">
-                                <label for="cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Cliente</label>
-                                <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                    <ng-container *ngIf="info_cita; else elseTemplate">
-                                        {{info_cita['fullname']}}
-                                    </ng-container>
-                                    <ng-template #elseTemplate>
-                                        <form class="example-form">
-                                            <input type="text"
-                                                placeholder="Nombre cliente"
-                                                aria-label="Number"
-                                                class="form-control form-control-sm"
-                                                [formControl]="myControl"
-                                                (ngModelChange)="clienteSeleccionado(null)"
-                                                [matAutocomplete]="auto">
-                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clienteSeleccionado(option)" >
-                                                {{option['fullname']}} - {{option['correo']}}
-                                            </mat-option>
-                                            </mat-autocomplete>
-                                        </form>
-                                    </ng-template>
-                                    
-                                        
-                                    <small *ngIf="validarCampo('cliente')" class="text-danger">campo requerido</small>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="mb-1 row">
-                                <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
-                                <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                    <input type="text" id="correo" readonly class="form-control form-control-sm" [value]="infoCita.correo">
-                                </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="mb-1 row">
-                                <label for="vehiculo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Placas </label>
-                                <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                    <select class=" form-select  form-select-sm" formControlName="vehiculo" required 
-                                    [class.is-invalid]="validarCampo('vehiculo')">
-                                    <option value="" >selecciona</option>
-                                    <option [value]="item.id" *ngFor="let item of arr_vehiculos">{{item.placas | uppercase}}</option>
-                                    </select>
-                                    <small *ngIf="validarCampo('vehiculo')" class="text-danger">campo requerido</small>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="mb-1 row">
-                                <label for="servicio" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Servicio </label>
-                                <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                    <select class=" form-select  form-select-sm" formControlName="servicio" required 
-                                    [class.is-invalid]="validarCampo('servicio')">
-                                    <option value="" >selecciona</option>
-                                    <option [value]="item.valor" *ngFor="let item of camposServicios">{{item.nombre | uppercase}}</option>
-                                    </select>
-                                    <small *ngIf="validarCampo('servicio')" class="text-danger">campo requerido</small>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="mb-1 row">
-                                <label for="dia" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Dia</label>
-                                <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                    <div class="input-group mb-3">
-                                        <input class="form-control form-control-sm" (click)="picker.open()" 
-                                         [matDatepickerFilter]="myFilter" [formControl]="dateControl" [matDatepicker]="picker" (dateChange)="addEvent($event)" >
-                                        <mat-datepicker #picker ></mat-datepicker>
-                                      </div>
-                                    <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small>
-                                </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                <div class="mb-1 row">
-                                <label for="horario" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Hora</label>
-                                <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                    <select class=" form-select  form-select-sm" formControlName="horario" required 
-                                    [class.is-invalid]="validarCampo('horario')">
-                                        <option value="" >selecciona</option>
-                                        <option [value]="hora" *ngFor="let hora of horarios_show">{{hora }}</option>
-                                    </select>
-                                    <small *ngIf="validarCampo('horario')" class="text-danger">campo requerido</small>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center   text-body">
+                    <h2 class="text-capitalize fs-5"> Tiempo restante: &nbsp; <span id="temporizador">00:00</span> </h2>
+                    <ng-container *ngIf="!startProceso; else elseTemplate">
+                        <button class="btn btn-sm btn-primary text-uppercase" (click)="inicioDetenerCita(true)">
+                            <i class="far fa-play-circle"></i> Comenzar
+                        </button>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <!-- <button class="btn btn-sm btn-danger text-uppercase" (click)="inicioDetenerCita(false)">
+                            <i class="far fa-stop-circle"></i> Iniciar otra cita
+                        </button> -->
+                        <ng-container *ngIf="!confirmar; else elseConfirmar" >
                             <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase fs-5 text-body ">
+                                    <ng-container *ngIf="info_cita; else elseID">
+                                        <h2> Reagendar cita </h2>
+                                        <p>Fecha anterior de cita {{info_cita['dia']}} {{info_cita['horario']}}</p>
+                                    </ng-container>
+                                    <ng-template #elseID>
+                                        <h2> Registro de Citas </h2>
+                                    </ng-template>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <form [formGroup]="citaForm" (ngSubmit)="guardarCita()">
+                                        <div class="row text-start">
+                                        <ng-container *ngIf="SUCURSAL === 'Todas'">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                                <label for="sucursal" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal</label>
+                                                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
+                                                    [class.is-invalid]="validarCampo('sucursal')">
+                                                    <option value="" >Selecciona</option>
+                                                    <option [value]="item.id" *ngFor="let item of sucursales_arr">{{item.sucursal}}</option>
+                                                    </select>
+                                                <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </ng-container>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="cliente" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Cliente</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <ng-container *ngIf="info_cita; else elseTemplate">
+                                                    {{info_cita['fullname']}}
+                                                </ng-container>
+                                                <ng-template #elseTemplate>
+                                                    <form class="example-form">
+                                                        <input type="text"
+                                                            placeholder="Nombre cliente"
+                                                            aria-label="Number"
+                                                            class="form-control form-control-sm"
+                                                            [formControl]="myControl"
+                                                            (ngModelChange)="clienteSeleccionado(null)"
+                                                            [matAutocomplete]="auto">
+                                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clienteSeleccionado(option)" >
+                                                            {{option['fullname']}} - {{option['correo']}}
+                                                        </mat-option>
+                                                        </mat-autocomplete>
+                                                    </form>
+                                                </ng-template>
+                                                
+                                                    
+                                                <small *ngIf="validarCampo('cliente')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="correo" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <input type="text" id="correo" readonly class="form-control form-control-sm" [value]="infoCita.correo">
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="vehiculo" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Placas </label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="vehiculo" required 
+                                                [class.is-invalid]="validarCampo('vehiculo')">
+                                                <option value="" >selecciona</option>
+                                                <option [value]="item.id" *ngFor="let item of arr_vehiculos">{{item.placas | uppercase}}</option>
+                                                </select>
+                                                <small *ngIf="validarCampo('vehiculo')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="servicio" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Servicio </label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="servicio" required 
+                                                [class.is-invalid]="validarCampo('servicio')">
+                                                <option value="" >selecciona</option>
+                                                <option [value]="item.valor" *ngFor="let item of camposServicios">{{item.nombre | uppercase}}</option>
+                                                </select>
+                                                <small *ngIf="validarCampo('servicio')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="dia" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Dia</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <div class="input-group mb-3">
+                                                    <input class="form-control form-control-sm" (click)="picker.open()" 
+                                                     [matDatepickerFilter]="myFilter" [formControl]="dateControl" [matDatepicker]="picker" (dateChange)="addEvent($event)" >
+                                                    <mat-datepicker #picker ></mat-datepicker>
+                                                  </div>
+                                                <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="horario" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Hora</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="horario" required 
+                                                [class.is-invalid]="validarCampo('horario')">
+                                                    <option value="" >selecciona</option>
+                                                    <option [value]="hora" *ngFor="let hora of horarios_show">{{hora }}</option>
+                                                </select>
+                                                <small *ngIf="validarCampo('horario')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                            <button type="submit" class="btn btn-primary btn-sm text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+                                                <i class="fas fa-file-alt"></i> Genera cita
+                                            </button>
+                                            
+                                            <button type="button" class="btn btn-sm btn-danger text-uppercase" (click)="iniciarOtraCita()">
+                                                <i class="far fa-stop-circle"></i> Reiniciar
+                                            </button>
+                                            <button type="button" (click)="inicioDetenerCita(false)" class="btn btn-sm btn-danger text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-dismiss="modal" aria-label="Close">
+                                                <i class="fa fa-ban"></i> salir
+                                            </button>
+                                        </div>
+                                        </div>
+                                        <ng-container *ngIf="faltente">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mt-2 mb-2">
+                                                Falta información <strong class="text-danger">{{faltente}}</strong>
+                                            </div>
+                                        </div>
+                                        </ng-container>
+                                    </form>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #elseConfirmar>
+                            <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <ul class="list-group">
+                                <div class="row">
+                                    <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase fs-5 text-body">Confirma información</li>
+                                    <ng-container *ngFor="let campo of camposInfoCita">
+                                    <li class="col-lg-4 col-md-4 col-sm-12 col-12 list-group-item text-end">{{campo.show | capitalizarUno}}</li>
+                                    <li class="col-lg-8 col-md-8 col-sm-12 col-12 list-group-item text-start">{{infoCita[campo.valor] | uppercase}}</li>
+                                    </ng-container>
+                                </div>
+                                </ul>
+                            </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                                <button type="submit" class="btn btn-primary btn-sm text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
-                                    <i class="fas fa-file-alt"></i> Genera cita
+                                <button (click)="ConfirmaCita()" class="btn btn-sm btn-danger text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+                                    <i class="fa fa-save"></i> Confirmar 
                                 </button>
-                                <button type="button" (click)="cancelaCita()" class="btn btn-sm btn-danger text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-dismiss="modal" aria-label="Close">
+                                <button (click)="confirmar = false" 
+                                class="btn-close" 
+                                class="btn btn-sm btn-primary text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
                                     <i class="fa fa-ban"></i> Cancelar
                                 </button>
                             </div>
                             </div>
-                            <ng-container *ngIf="faltente">
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mt-2 mb-2">
-                                    Falta información <strong class="text-danger">{{faltente}}</strong>
-                                </div>
-                            </div>
-                            </ng-container>
-                        </form>
-                    </div>
+                        </ng-template>
+                    </ng-template>
+                    
                 </div>
-            </ng-container>
-            <ng-template #elseConfirmar>
-                <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                    <ul class="list-group">
-                    <div class="row">
-                        <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase fs-5 text-body">Confirma información</li>
-                        <ng-container *ngFor="let campo of camposInfoCita">
-                        <li class="col-lg-4 col-md-4 col-sm-12 col-12 list-group-item text-end">{{campo.show | capitalizarUno}}</li>
-                        <li class="col-lg-8 col-md-8 col-sm-12 col-12 list-group-item text-start">{{infoCita[campo.valor] | uppercase}}</li>
-                        </ng-container>
-                    </div>
-                    </ul>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                    <button (click)="ConfirmaCita()" class="btn btn-sm btn-danger text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
-                        <i class="fa fa-save"></i> Confirmar 
-                    </button>
-                    <button (click)="confirmar = false" 
-                    class="btn-close" 
-                    class="btn btn-sm btn-primary text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
-                        <i class="fa fa-ban"></i> Cancelar
-                    </button>
-                </div>
-                </div>
-            </ng-template>
+            </div>
+            
         </div>
     </div>
   </div>

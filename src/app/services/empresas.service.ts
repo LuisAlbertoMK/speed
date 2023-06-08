@@ -13,6 +13,26 @@ export class EmpresasService {
 
   constructor(private _publicos: ServiciosPublicosService) { }
 
+
+  consulta_sucursales_new(sucursal): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `empresas/${sucursal}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const empresas = this._publicos.crearArreglo2(snapshot.val())
+          const empre = empresas.map(emp => ({
+            empresa: String(emp['empresa']).toLowerCase(),
+            id: emp['id'],
+            sucursal: sucursal
+          }));
+          
+          resolve(this._publicos.ordenarData(empre,'empresa',true));
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
   async listaempresas(){
     let answer = {contenido:false, data:[]}
     await get(child(dbRef, `empresas`)).then(async (snapshot) => {

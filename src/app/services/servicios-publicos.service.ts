@@ -587,7 +587,7 @@ export class ServiciosPublicosService {
         })
         Toast.fire({icon: 'error', title: mensaje});
     }
-    async mensaje_pregunta(mensaje, allowOutsideClick?) {
+    async mensaje_pregunta(mensaje, allowOutsideClick?, html?:string) {
         let mensajeAnswer = { respuesta: false }
         await Swal
             .fire({
@@ -597,7 +597,8 @@ export class ServiciosPublicosService {
                 confirmButtonText: 'Confirmar',
                 denyButtonText: `Don't save`,
                 cancelButtonText: `Cancelar`,
-                allowOutsideClick
+                allowOutsideClick,
+                html
             })
             .then((result) => {
                 /* Read more about isConfirmed, isDenied below */

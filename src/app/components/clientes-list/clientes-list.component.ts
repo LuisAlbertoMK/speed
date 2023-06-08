@@ -7,6 +7,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ClientesService } from 'src/app/services/clientes.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -26,7 +27,7 @@ export class ClientesListComponent implements OnInit {
 
   ROL:string; SUCURSAL:string
   listaSucursales_arr= []
-  constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService) {
+  constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService, private _clientes: ClientesService) {
     this.dataCliente = new EventEmitter()
   }
 
@@ -56,27 +57,20 @@ export class ClientesListComponent implements OnInit {
   listarClientes(){
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const clientes= this._publicos.crearArreglo2(snapshot.val())
-        clientes.map(cliente=>{
-          if (cliente['vehiculos']) cliente['vehiculos'] = this._publicos.crearArreglo2(cliente['vehiculos'])
-          if (!cliente.correo) cliente.correo = ''
-          const {sucursal} = this.listaSucursales_arr.find(s=>s.id === cliente.sucursal)
-          cliente.showSucursal = sucursal
-          if (cliente.dataFacturacion){
-            cliente.dataFacturacion = cliente.dataFacturacion['unica']
-          }
+      this._clientes.consulta_clientes_new().then((clientes)=>{
+        clientes.map(c=>{
+          c.showSucursal  = this.listaSucursales_arr.find(s=>s.id === c.sucursal).sucursal
         })
         this.listaClientes_arr = (this.SUCURSAL === 'Todas') ? clientes : clientes.filter(c=>c.sucursal === this.SUCURSAL)
-      }
+      })
     })
   }
 
   clienteSeleccionado(data){
     if (data.id) {
-      this.dataCliente.emit( data )
+      this.dataCliente.emit( Object({cliente: data, status: true}) )
     }else{
-      this.dataCliente.emit( {error:true} )
+      this.dataCliente.emit( Object({status: false}))
     }
   }
   clientesInfo(infoCliente){
@@ -104,7 +98,8 @@ export class ClientesListComponent implements OnInit {
       let resultados = []
       resultados = this.listaClientes_arr.filter(option => option['nombre'].toLowerCase().includes(filterValue));
       if (!resultados.length) {
-        resultados = this.listaClientes_arr.filter(option => option['correo'].toLowerCase().includes(filterValue));
+        let filtrados = this.listaClientes_arr.filter(c=>c.correo)
+        resultados = filtrados.filter(option => option['correo'].toLowerCase().includes(filterValue));
       }
       data = resultados
       

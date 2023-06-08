@@ -302,10 +302,9 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
   }
   // REEMPLAZAR REFRIGERANTE Y PURGAR SISTEMA DE ENFRIAMIENTO
   //aqui la informacion del clienyte
-  infoCliente(cliente){
-    if (cliente.error) {
-      this._publicos.mensajeNOT('Intenta nuevamente',3000)
-    }else{
+  infoCliente(info:any){
+    const {cliente, status } = info
+    if (status) {
       this.infoCotizacion.vehiculo = null
       this.extra = null
       this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
@@ -314,6 +313,8 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
         this.infoCotizacion.vehiculos = cliente.vehiculos
       }
       this.realizaOperaciones()
+    }else{
+      this._publicos.mensajeNOT('Intenta nuevamente',3000)
     }
   }
   //cargar la informacion del cliente para poder editar
@@ -327,26 +328,22 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
     }
   }
   //recibir la nueva data y consukta extra de info cliente
-  clientesInfo(info:any){
-    // console.log(info);
-    const starCountRef = ref(db, `clientes/${info.cliente.id}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          const cliente = snapshot.val()
-          if (cliente['vehiculos']) cliente['vehiculos'] = this._publicos.crearArreglo2(cliente['vehiculos'])
-          
-          // asiganar toda la informacion para la cotizacion cliente, sucursal, vehiculos, etc
-          cliente['fullname'] = `${cliente.nombre} ${cliente.apellidos}`
-          this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
-          this.infoCotizacion.cliente = cliente
-          this.infoCotizacion.vehiculos = cliente.vehiculos
-          //si existe vehiculo seleccinado conservar
-          if (this.extra) {
-            this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
-          }
-          this.realizaOperaciones()
-        }
-      })
+  async clientesInfo(info:any){
+    const {cliente, status} = info
+    if (status) {
+      const infonew:any= await this._clientes.consulta_cliente_new(cliente.id)
+        this.infoCotizacion.cliente = infonew
+        this.infoCotizacion.vehiculos = infonew.vehiculos
+        this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === infonew.sucursal)
+      // }
+      if (this.extra) {
+        this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
+      }
+      this.realizaOperaciones()
+      this._publicos.swalToast('Se registro cliente')
+    }else{
+      this._publicos.mensajeNOT('Intenta nuevamente',3000)
+    }
   }
   cargaDataVehiculo(data: any, quien: string) {
     this.cliente = null;

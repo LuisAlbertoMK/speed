@@ -36,7 +36,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'', correo:''}
   camposInfoCita = [...this._citas.camposInfoCita]
   faltente:string
-  citasCampos = [ 'sucursal','cliente','vehiculo','servicio','dia','horario']
+  citasCampos = [ 'sucursal','cliente','correo','vehiculo','servicio','dia','horario']
   confirmar:boolean = false
   
   startProceso:boolean = false
@@ -67,64 +67,48 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     
     if (changes['nuevaCita']) {  nuevaCita = changes['nuevaCita'].currentValue }
     if (changes['id_cita']) {  id_cita = changes['id_cita'].currentValue }
-    console.log(nuevaCita);
 
-    if (changes['nuevaCita'].currentValue === changes['nuevaCita'].previousValue) {
-      console.log(changes['nuevaCita'].currentValue);
-      console.log(changes['nuevaCita'].previousValue);
-      
-    }
     // console.log(id_cita);
    
-    if (nuevaCita) {
-      mensaje = 'Tienes 5 minutos para registrar tu cita'
-      // this.comeinzaCita(mensaje)
-      this._publicos.mensajeSwal(mensaje)
-      this.iniciarTemporizador()
-    }else{
-      if(id_cita && id_cita !== ''){
-        mensaje = 'Tienes 5 minutos para ediatr informacion de la cita'
-        // console.log(this.info_cita);
+    // if (nuevaCita) {
+    //   mensaje = 'Tienes 5 minutos para registrar tu cita'
+    //   // this.comeinzaCita(mensaje)
+    //   this._publicos.mensajeSwal(mensaje)
+    //   this.iniciarTemporizador()
+    // }else{
+    //   if(id_cita && id_cita !== ''){
+    //     mensaje = 'Tienes 5 minutos para ediatr informacion de la cita'
+    //     // console.log(this.info_cita);
         
         
-        this._clientes.consulta_cliente_new(this.info_cita.cliente).then((cliente:any)=>{
-          this.infoCita.correo = cliente.correo
-          this.infoCita.fullname = cliente.fullname
-          this.infoCita.cliente = this.info_cita.cliente
-          this.infoCita.sucursal = this.info_cita.sucursal
-          this.infoCita.vehiculo = this.info_cita.vehiculo
-          this.infoCita.servicio = this.info_cita.servicio
-          this.infoCita.servicioShow = this.camposServicios.find(s=>s.valor === this.info_cita.servicio).nombre
-          this.infoCita.sucursalShow = this.sucursales_arr.find(s=>s.id === this.info_cita.sucursal).sucursal
-          this.arr_vehiculos = cliente.vehiculos
-          this.infoCita.id = id_cita
-          this.infoCita.placas = cliente.vehiculos.find(v=>v.id === this.info_cita.vehiculo).placas
-          this.citaForm.reset({
-            id: id_cita,
-            cliente: this.info_cita.cliente,
-            sucursal: this.info_cita.sucursal,
-            vehiculo: this.info_cita.vehiculo,
-            servicio: this.info_cita.servicio,
-            dia: '' ,
-            horario: '',
-          })
-          // this.comeinzaCita(mensaje)
-          this._publicos.mensajeSwal(mensaje)
-          this.iniciarTemporizador()
-        })
+    //     this._clientes.consulta_cliente_new(this.info_cita.cliente).then((cliente:any)=>{
+    //       this.infoCita.correo = cliente.correo
+    //       this.infoCita.fullname = cliente.fullname
+    //       this.infoCita.cliente = this.info_cita.cliente
+    //       this.infoCita.sucursal = this.info_cita.sucursal
+    //       this.infoCita.vehiculo = this.info_cita.vehiculo
+    //       this.infoCita.servicio = this.info_cita.servicio
+    //       this.infoCita.servicioShow = this.camposServicios.find(s=>s.valor === this.info_cita.servicio).nombre
+    //       this.infoCita.sucursalShow = this.sucursales_arr.find(s=>s.id === this.info_cita.sucursal).sucursal
+    //       this.arr_vehiculos = cliente.vehiculos
+    //       this.infoCita.id = id_cita
+    //       this.infoCita.placas = cliente.vehiculos.find(v=>v.id === this.info_cita.vehiculo).placas
+    //       this.citaForm.reset({
+    //         id: id_cita,
+    //         cliente: this.info_cita.cliente,
+    //         sucursal: this.info_cita.sucursal,
+    //         vehiculo: this.info_cita.vehiculo,
+    //         servicio: this.info_cita.servicio,
+    //         dia: '' ,
+    //         horario: '',
+    //       })
+    //       // this.comeinzaCita(mensaje)
+    //       this._publicos.mensajeSwal(mensaje)
+    //       this.iniciarTemporizador()
+    //     })
         
-      }
-    }
-  }
-  comeinzaCita(mensaje){
-    this._publicos.mensaje_pregunta(mensaje).then(({respuesta})=>{
-      if (respuesta) {
-        this.startProceso = true
-        setTimeout(()=>{
-          this.iniciarTemporizador()
-        },1000)
-      }
-    })
+    //   }
+    // }
   }
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -171,17 +155,30 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     // })
   }
   cancelaCita(){
-    this.nuevaCita = null
-    this.reiniciarTemporizador()
     this.detenerTemporizador()
     this.confirmar = false
-    this.startProceso = false
     const sucursal = (this.SUCURSAL === 'Todas') ? '':  this.SUCURSAL
+    this.nuevaCita = true
     this.myControl.setValue(null)
     this.citaForm.reset({sucursal})
     this.info_cita = null
+    this.arr_vehiculos = []
   }
- 
+  inicioDetenerCita(start_stop: boolean){
+    this.startProceso = start_stop
+    this.reiniciarTemporizador();
+    if (start_stop) {
+      this.iniciarTemporizador()
+    }else{
+      this.cancelaCita()
+    }
+  }
+  iniciarOtraCita(){
+    this.cancelaCita()
+    this.reiniciarTemporizador()
+    this.startProceso = true
+    this.iniciarTemporizador()
+  }
  
   iniciarTemporizador() {
     this.temporizador = setInterval(()=>{
@@ -190,7 +187,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   }
   detenerTemporizador() {
     const elementoTemporizador = document.getElementById('temporizador')
-    elementoTemporizador.textContent = `00:00`;
+    elementoTemporizador.textContent = `05:00`;
     clearInterval(this.temporizador);
   }
   reiniciarTemporizador() {
@@ -210,33 +207,28 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       return numero < 10 ? `0${numero}` : numero;
     }
     if (this.tiempoRestante < 0){
-      this.detenerTemporizador();
-      this._publicos.mensajeSwalError('expiro el tiempo re registro de cita')
+      this.inicioDetenerCita(false)
+      this._publicos.mensajeSwalError('expiro el tiempo')
     }
   }
   ListadoClientes(sucursal){
     // this.cargandoInformacion = true
+    // console.log(this.sucursales_arr);
+    
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, () => {
       this._clientes.consulta_clientes_new().then((clientes) => {
-        const clientes_new = clientes
-        clientes_new.map(c=>{
-          c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal).sucursal
+        clientes.map(c=>{
+          c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal)?.sucursal
         })
-        const info = (sucursal !=='Todas') ? clientes_new.filter(c=>c.sucursal === sucursal) : []
-        const camposRecu = [...this._publicos.camposCliente(),'vehiculos','fullname']
-        let aqui = []
-        if (!this.clientes_arr.length) {
-          aqui = info;
-        } else {
-          aqui = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
-        }
+        const info = (sucursal !=='Todas') ? clientes.filter(c=>c.sucursal === sucursal) : []
+
+        const camposRecu= [...this._clientes.camposCliente,,'vehiculos','fullname']
+        const aqui = (!this.clientes_arr.length) ? info : this._publicos.actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+
         this.clientes_arr = this._publicos.ordenarData(aqui,'fullname',true)
-        this.myControl.setValue(null)
-        this.citaForm.controls['cliente'].setValue(null)
-        this.citaForm.controls['vehiculo'].setValue(null)
-        // this.dataSourceClientes.data = aqui
-        // this.newPagination('clientes')
+
+        this.clienteSeleccionado(null)
       }).catch((error) => {
         // Manejar el error si ocurre
         console.log(error);      
@@ -261,18 +253,33 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     return user && user.fullname ? user.fullname : '';
   }
   clienteSeleccionado(cliente){
-    // console.log(cliente);
-    this.citaForm.controls['cliente'].setValue(null)
-    this.citaForm.controls['vehiculo'].setValue(null)
-    // this.correo = null
-    this.infoCita.correo = ''
-    if (cliente) {
-      this.citaForm.controls['cliente'].setValue(cliente.id)
-      this.arr_vehiculos = cliente.vehiculos
-      this.infoCita.correo = cliente.correo
-    }
-    // this.arr_vehiculos = cl
+    // this.citaForm.controls['cliente'].setValue(null)
+    // this.infoCita.correo = null
     
+    
+    const valorCliente = (cliente) ? cliente.id : null
+    const valor_correo = (cliente) ? cliente.correo : null
+    const valor_fullname = (cliente) ? cliente.fullname : null
+    const valor_sucursalShow = (cliente) ? cliente.sucursalShow : null
+    const valor_vehiculo = (cliente) ? cliente.vehiculos : []
+    this.citaForm.controls['cliente'].setValue(valorCliente)
+    this.citaForm.controls['correo'].setValue(valor_correo)
+    this.infoCita.correo= valor_correo
+    this.citaForm.controls['vehiculo'].setValue(null)
+    this.arr_vehiculos = valor_vehiculo
+    this.infoCita.fullname = valor_fullname
+    this.infoCita.sucursalShow = valor_sucursalShow
+    // if (cliente) {
+    //   console.log(cliente);
+      
+    //   this.citaForm.controls['cliente'].setValue(cliente.id)
+    //   const valor_correo = (cliente.correo) ? cliente.correo : null
+    //   this.citaForm.controls['correo'].setValue(valor_correo)
+    //   this.infoCita.sucursalShow = cliente.sucursalShow
+    //   this.infoCita.fullname = cliente.fullname
+    //   // this.infoCita.correo = valor_correo
+    //   // this.arr_vehiculos = cliente.vehiculos
+    // }
   }
  
   creaFormCitas(){
@@ -283,22 +290,33 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       id:[''],
       dia: ['', Validators.required],
       cliente: ['', Validators.required],
+      correo: ['', Validators.required],
       sucursal: [sucursal, Validators.required],
       horario: ['', Validators.required],
       vehiculo: ['', Validators.required],
       servicio: ['', Validators.required]
     });
 
-    if (this.SUCURSAL === 'Todas') this.dateControl.disable(); 
+    if (this.SUCURSAL === 'Todas'){
+      this.dateControl.disable();
+      this.myControl.setValue(null)
+      this.myControl.disable()
+      this.clienteSeleccionado(null)
+    }  
     this.vigilaDia()
   }
   vigilaDia(){
     this.citaForm.get('sucursal').valueChanges.subscribe((sucursal: string) => {
       if (sucursal) {
-        this.dateControl.enable(); 
+        this.dateControl.enable();
+        this.myControl.enable()
+        this.myControl.setValue(null)
       }else{
         this.dateControl.setValue(null); 
-        this.dateControl.disable(); 
+        this.dateControl.disable();
+        this.myControl.setValue(null)
+        this.myControl.disable()
+        this.clienteSeleccionado(null)
       }
     })
     this.citaForm.get('dia').valueChanges.subscribe((dia: string) => {
@@ -334,10 +352,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
               }
           })
         }
-        
-        
       }
-      
     })
   }
   validarCampo(campo: string){
@@ -359,15 +374,15 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.infoCita.dia = data.dia
       // this.infoCita.correo = this.clientes_arr.find(c=>c.id === data.cliente).correo
       this.infoCita.horario = data.horario
-      this.infoCita.sucursalShow = this.sucursales_arr.find(s=>s.id === data.sucursal).sucursal
+      this.infoCita.sucursalShow = data.sucursalShow
       this.infoCita.placas = this.arr_vehiculos.find(v=>v.id === data.vehiculo).placas
-      this.infoCita.fullname = this.clientes_arr.find(c=>c.id === data.cliente).fullname
+      this.infoCita.fullname = data.fullname
       this.confirmar = true
       
     }
   }
   ConfirmaCita(){
-    let nuevos = ['sucursal','sucursalShow','cliente','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','correo']
+    let nuevos = ['sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario']
     if(this.id_cita){ nuevos = [...nuevos,'id'] }
     const validaciones_data = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
     const { faltante_s, ok} = this._publicos.realizaValidaciones(nuevos,validaciones_data)

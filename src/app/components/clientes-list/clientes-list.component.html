@@ -8,10 +8,10 @@
         class="form-control"
         [formControl]="myControl"
         [matAutocomplete]="auto">
-        <button class="btn btn-group-sm btn-sm btn-outline-primary" type="button" id="button-addon1"  data-bs-toggle="modal" data-bs-target="#exampleModal"
+        <!-- <button class="btn btn-group-sm btn-sm btn-outline-primary" type="button" id="button-addon1"  data-bs-toggle="modal" data-bs-target="#exampleModal"
         #tooltip="matTooltip" matTooltip="Registra nuevo cliente">
             <i class="fa fa-user-plus"></i>
-        </button>
+        </button> -->
       </div>
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clienteSeleccionado(option)">
@@ -21,22 +21,3 @@
   </form>
 
   <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down "> <!-- modal-dialog-scrollable -->
-        
-      <div class="modal-content">
-        <!-- <div class="modal-header"> -->
-          <!-- <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1> -->
-          <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-        <!-- </div> -->
-        <div class="modal-body">
-            <!-- (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL" -->
-            <app-cliente  (heroeSlec)="clientesInfo( $event )" [sucursal]="sucursal" ></app-cliente>
-        </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
-      </div>
-    </div>
-  </div>

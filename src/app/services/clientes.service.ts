@@ -22,7 +22,7 @@ const dbRef = ref(getDatabase());
 })
 export class ClientesService {
   telefonosInvalidos:any[]=['5555555555','1111111111','0000000000','7777777777','1234567890','0123456789'];
-
+  camposCliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService, private _sucursales: SucursalesService,
     private _vehiculos: VehiculosService,
     private _mail: EmailsService) { }
@@ -46,7 +46,7 @@ export class ClientesService {
       });
     });
   }
-  consulta_cliente_new(cliente): Promise<any[]> {
+  consulta_cliente_new(cliente): Promise<object> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `clientes/${cliente}`);
       onValue(starCountRef, (snapshot) => {
@@ -57,7 +57,7 @@ export class ClientesService {
           clientes.vehiculos = vehiculos
           resolve(clientes);
         } else {
-          resolve([]);
+          resolve({});
         }
       });
     });
