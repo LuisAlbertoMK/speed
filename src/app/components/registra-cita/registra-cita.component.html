@@ -1,6 +1,17 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
-    <button type="button" (click)="cancelaCita();" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+    <button type="button" (click)="cancelaCita()" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
   </div>
+  <button (click)="nuevaCita =!nuevaCita">Accion: {{nuevaCita}}</button>
+
+
+  <ng-container *ngIf="nuevaCita; else elseCitaStart">
+    <button type="button" (click)="iniciarTemporizador()">Iniciar</button>
+  </ng-container>
+  <ng-template #elseCitaStart>
+    <button type="button" (click)="cancelaCita()" >Cancelar</button>
+  </ng-template>
+  
+  
   <!-- <button (click)="iniciarTemporizador()">iniciarTemporizador</button>
   <button (click)="reiniciarTemporizador()">reiniciarTemporizador</button>
   <button (click)="detenerTemporizador()">detenerTemporizador</button> -->
@@ -35,6 +46,7 @@
                         </ng-container>
                         <ng-template #elseID>
                             <h2> Registro de Citas </h2>
+                            <span>Nota: Seleccionar un horario no indica que estara ocupado quizas otro usuario ocupo el horario </span>
                         </ng-template>
                         
                     </div>
@@ -48,6 +60,7 @@
                                     <div class="col-sm-9 col-md-8 col-lg-9 ">
                                     <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
                                         [class.is-invalid]="validarCampo('sucursal')">
+                                        <option value="" >Selecciona</option>
                                         <option [value]="item.id" *ngFor="let item of sucursales_arr">{{item.sucursal}}</option>
                                         </select>
                                     <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
@@ -124,8 +137,8 @@
                                 <div class="col-sm-9 col-md-8 col-lg-9 ">
                                     <div class="input-group mb-3">
                                         <input class="form-control form-control-sm" (click)="picker.open()" 
-                                         [matDatepickerFilter]="myFilter" [matDatepicker]="picker" (dateChange)="addEvent($event)" >
-                                        <mat-datepicker #picker  ></mat-datepicker>
+                                         [matDatepickerFilter]="myFilter" [formControl]="dateControl" [matDatepicker]="picker" (dateChange)="addEvent($event)" >
+                                        <mat-datepicker #picker ></mat-datepicker>
                                       </div>
                                     <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small>
                                 </div>

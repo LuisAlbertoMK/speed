@@ -131,7 +131,7 @@ export class CitasService {
       });
     });
   }
-  consulta_cita_existe_new_2(anio,mes,sucursal,dia,vehiculo): Promise<any[]> {
+  consulta_cita_existe_new_2(anio,mes,sucursal): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `Citas/${anio}/${mes}/${sucursal}`);
       onValue(starCountRef, (snapshot) => {
