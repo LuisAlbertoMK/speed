@@ -17,7 +17,7 @@ export class EmailsService {
 
   constructor(private http: HttpClient) { }
   
-  template(cliente:any,vehiculo:any,dataEmail:any){
+  template(cliente?:any,vehiculo?:any,dataEmail?:any){
     let filename = dataEmail.filename
     let pathPDF = dataEmail.pathPDF
     const tipo = dataEmail.tipo
@@ -65,6 +65,15 @@ export class EmailsService {
           filename: `${filename}`,
           path: `${pathPDF}`
         }],
+      }
+    }
+    if (tipo === 'recordatorio_cita') {
+      
+      tempEmail ={
+        from: dataEmail.correos[0],
+        email: dataEmail.correos,  
+        subject: dataEmail.subject,
+        mensaje: `Estimado <strong style='text-transform: uppercase;'>${dataEmail.cliente}</strong>.<br> Le recordamos que tiene una cita agenda en taller el dia ${dataEmail.dia} a las ${dataEmail.horario}.`,
       }
     }
     if (tipo === 'bienvenida') {
@@ -118,8 +127,6 @@ export class EmailsService {
         <br>Gracias por confiar en nosotros. <br> <small>Cualquier duda o aclaración favor de ponerse en contacto con nosotros</small>`
       }
     }
-
-    
     return tempEmail
   }
   async EmailBienvenida(cliente:any){    
@@ -212,6 +219,20 @@ export class EmailsService {
     }
     
     const dataMail = await this.template(cliente,vehiculo,dataEmail)
+    console.log(dataMail);
+    // return this.http.post(url,dataMail).subscribe()
+  }
+  async recordatorioCita(data:any){
+    const dataEmail = {
+      subject: `Recordatorio de cita ${data.dia} ${data.horario}`,
+      tipo:'recordatorio_cita',
+      correos: data.correos,
+      vehiculo: data.placas,
+      cliente: data.fullname,
+      dia: data.dia,
+      horario: data.horario
+    }
+    const dataMail = await this.template(null,null,dataEmail)
     console.log(dataMail);
     // return this.http.post(url,dataMail).subscribe()
   }

@@ -157,6 +157,13 @@ export class CitasService {
       });
     });
   }
+  compararHorasEntreFechas(fechaInicio: Date, fechaFin: Date): number {
+    const diffMilisegundos = fechaFin.getTime() - fechaInicio.getTime();
+    const diffHoras = diffMilisegundos / (1000 * 60 * 60);
+    return Math.abs(diffHoras);
+  }
+  
+  ////aqui
   consulta_horarios_sucursal_new(sucursal): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `horarios/${sucursal}`);

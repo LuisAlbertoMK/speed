@@ -42,8 +42,6 @@ export class EliminarEmpresaComponent implements OnInit {
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
     if(this.SUCURSAL !== 'Todas') this.sucursal_elimina = this.SUCURSAL
     if(this.sucursal_elimina !== 'Todas') this.listadoEmpresas(this.sucursal_elimina)
-    console.log(this.sucursal_elimina);
-    
   }
   listadoEmpresas(sucursal){
     this.empresas_arr = []
@@ -84,8 +82,6 @@ export class EliminarEmpresaComponent implements OnInit {
   async listaClientes_afectados(){
     const elimina = this.myControl_elimina.value instanceof Object ?  this.myControl_elimina.value : null
     const reemplza = this.myControl_reemplaza.value instanceof Object ?  this.myControl_reemplaza.value : null
-    console.log(this.sucursal_elimina);
-    
     if (this.sucursal_elimina !== 'Todas' && this.sucursal_elimina) {
       if (elimina && reemplza) {
         const clientes = await this._clientes.consulta_clientes_new()

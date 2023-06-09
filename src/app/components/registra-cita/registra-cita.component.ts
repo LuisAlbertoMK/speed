@@ -9,6 +9,7 @@ import { child, get, getDatabase, onValue, ref, set, push, update } from 'fireba
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { MatDatepickerCancel, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CitasService } from 'src/app/services/citas.service';
+import { object } from '@angular/fire/database';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -27,6 +28,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   myControl = new FormControl('');
   filteredOptions: Observable<string[]>;
   clientes_arr=[]
+  todos_clientes = []
   sucursales_arr = []
   arr_vehiculos = []
   horariosDisponibles = []
@@ -120,7 +122,6 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.ListadoClientes(this.SUCURSAL)
       const sucursal = (this.SUCURSAL === 'Todas') ? false:  true
       if (sucursal) {
-        const fecha = this._publicos.formatearFecha(new Date(), false)
         this.horariosSucursal()
       }
     }).catch((error) => {
@@ -133,10 +134,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         this.horariosDisponibles = horarios
       })
     }else{
-      
       this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
         this.horariosDisponibles = horarios
-        console.log(horarios);
       })
     }
     
@@ -212,23 +211,20 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     }
   }
   ListadoClientes(sucursal){
-    // this.cargandoInformacion = true
-    // console.log(this.sucursales_arr);
-    
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, () => {
       this._clientes.consulta_clientes_new().then((clientes) => {
         clientes.map(c=>{
           c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal)?.sucursal
         })
-        const info = (sucursal !=='Todas') ? clientes.filter(c=>c.sucursal === sucursal) : []
+        const info = clientes.filter(c=>c.correo) 
 
-        const camposRecu= [...this._clientes.camposCliente,,'vehiculos','fullname']
-        const aqui = (!this.clientes_arr.length) ? info : this._publicos.actualizarArregloExistente(this.clientes_arr, info,camposRecu);
-
+        const camposRecu= [...this._clientes.camposCliente,,'vehiculos','fullname','sucursalShow']
+        const aqui = (!this.clientes_arr.length) ? clientes : this._publicos.actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+        // console.log(aqui);
         this.clientes_arr = this._publicos.ordenarData(aqui,'fullname',true)
 
-        this.clienteSeleccionado(null)
+        this.clienteSeleccionado()
       }).catch((error) => {
         // Manejar el error si ocurre
         console.log(error);      
@@ -245,41 +241,38 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   private _filter(value: string): string[] {
     let data = []
     const filterValue:string = String(value).toLowerCase();
-    data = this.clientes_arr.filter(option => String(option.fullname).toLowerCase().includes(filterValue))
-    if (!data.length ) data = this.clientes_arr.filter(option => String(option.correo).toLowerCase().includes(filterValue))
+       const sucursal = this.citaForm.get('sucursal').value
+       if (sucursal) {
+        const busqueda = this.clientes_arr.filter(c=>c.sucursal === sucursal)
+        data = busqueda.filter(option => String(option.fullname).toLowerCase().includes(filterValue))
+        if (!data.length ) data = this.clientes_arr.filter(option => String(option.correo).toLowerCase().includes(filterValue))
+      }
     return data
   }
   displayFn(user: any): string {
     return user && user.fullname ? user.fullname : '';
   }
-  clienteSeleccionado(cliente){
-    // this.citaForm.controls['cliente'].setValue(null)
-    // this.infoCita.correo = null
-    
-    
-    const valorCliente = (cliente) ? cliente.id : null
-    const valor_correo = (cliente) ? cliente.correo : null
-    const valor_fullname = (cliente) ? cliente.fullname : null
-    const valor_sucursalShow = (cliente) ? cliente.sucursalShow : null
-    const valor_vehiculo = (cliente) ? cliente.vehiculos : []
-    this.citaForm.controls['cliente'].setValue(valorCliente)
-    this.citaForm.controls['correo'].setValue(valor_correo)
-    this.infoCita.correo= valor_correo
-    this.citaForm.controls['vehiculo'].setValue(null)
-    this.arr_vehiculos = valor_vehiculo
-    this.infoCita.fullname = valor_fullname
-    this.infoCita.sucursalShow = valor_sucursalShow
-    // if (cliente) {
-    //   console.log(cliente);
+  clienteSeleccionado(){
+     const cliente = this.myControl.value
+    if (cliente instanceof Object) {
+      const campos = ['fullname','id','correo','sucursal','sucursalShow']
+      campos.forEach(c=>{
+        if (c === 'id') {
+          this.infoCita.cliente = cliente[c]
+        }else{
+          this.infoCita[c] = cliente[c]
+        }
+      })
+      // {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'', correo:''}
+      this.arr_vehiculos = cliente.vehiculos
+      this.citaForm.controls['cliente'].setValue(cliente.id)
+      this.citaForm.controls['correo'].setValue(cliente.correo)
+      this.citaForm.controls['vehiculo'].setValue(null)
+    }else{
       
-    //   this.citaForm.controls['cliente'].setValue(cliente.id)
-    //   const valor_correo = (cliente.correo) ? cliente.correo : null
-    //   this.citaForm.controls['correo'].setValue(valor_correo)
-    //   this.infoCita.sucursalShow = cliente.sucursalShow
-    //   this.infoCita.fullname = cliente.fullname
-    //   // this.infoCita.correo = valor_correo
-    //   // this.arr_vehiculos = cliente.vehiculos
-    // }
+      
+    }
+    
   }
  
   creaFormCitas(){
@@ -301,7 +294,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.dateControl.disable();
       this.myControl.setValue(null)
       this.myControl.disable()
-      this.clienteSeleccionado(null)
+      // this.clienteSeleccionado(null)
+      this.myControl.setValue(null)
     }  
     this.vigilaDia()
   }
@@ -311,12 +305,14 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         this.dateControl.enable();
         this.myControl.enable()
         this.myControl.setValue(null)
+        this.automaticos()
       }else{
         this.dateControl.setValue(null); 
         this.dateControl.disable();
         this.myControl.setValue(null)
         this.myControl.disable()
-        this.clienteSeleccionado(null)
+        // this.clienteSeleccionado(null)
+        this.myControl.setValue(null)
       }
     })
     this.citaForm.get('dia').valueChanges.subscribe((dia: string) => {
@@ -325,7 +321,6 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         
         const fecha_gem = this._publicos.convertirFecha(dia)
         const {mes,anio}  = this._publicos.conveirtefecha_2(new Date(fecha_gem));
-        console.log(mes,anio);
         
         const fechaLimite = this._publicos.resetearHoras_horas(new Date(fecha_gem),'08:30:00')
         const fechaLimite2 = this._publicos.resetearHoras_horas(new Date(fecha_gem),'18:30:00')
@@ -339,10 +334,42 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
             const fechas_proximas = citas.filter(c => c.fecha_compara >= fechaLimite && c.fecha_compara <= fechaLimite2);
             const horarios_ocupados = fechas_proximas .filter(cita => !cita.confirmada)
                                                       .map(cita => cita.horario);
+            const hora = `${new Date().getHours()}: ${new Date().getMinutes()}:00`
+            const resetea1 = this._publicos.resetearHoras_horas(new Date(fecha_gem),hora)
+            // console.log(this._publicos.obtenerDiferenciaHoras(resetea1, new Date() ));
+            
+            const horas_resta = 6
+            const horarioRecibido = this._publicos.restarHoras(resetea1, horas_resta)
+
+            //comparar si es el mismo dia 
+            const hoyDIa = this._publicos.resetearHoras(new Date())
+            const seleccionado = this._publicos.resetearHoras(new Date(fecha_gem))
+            // console.log(hoyDIa);
+            // console.log(seleccionado);
+
+                       
             this.horarios_show = []
+            if (hoyDIa.getTime() === seleccionado.getTime()) {
+              // console.log('es el mismo dia traer horarios antes de ', horarioRecibido);
+              const horarioInicial = `${horarioRecibido.getHours()}:${horarioRecibido.getMinutes()}`
               if (bu === 'sáb') {
-                  let h = this.horariosDisponibles['sabado']
-                  this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
+                let h = this.horariosDisponibles['sabado']
+                horarioRecibido.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                const horariosValidos = h.filter(horario => horario >= horarioInicial);
+                this.horarios_show = this._publicos.obtenerDiferencias(horariosValidos, horarios_ocupados)
+              }else{
+                this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
+                  this.horariosDisponibles = horarios
+                  const h = this.horariosDisponibles['lunesViernes']
+                  horarioRecibido.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                  const horariosValidos = h.filter(horario => horario >= horarioInicial);
+                  this.horarios_show = this._publicos.obtenerDiferencias(horariosValidos, horarios_ocupados)
+                })
+              }
+            }else{
+              if (bu === 'sáb') {
+                let h = this.horariosDisponibles['sabado']
+                this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
               }else{
                 this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
                   this.horariosDisponibles = horarios
@@ -350,6 +377,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
                   this.horarios_show = this._publicos.obtenerDiferencias(h, horarios_ocupados)
                 })
               }
+            }             
           })
         }
       }
@@ -372,13 +400,9 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.infoCita.servicio = data.servicio
       this.infoCita.servicioShow = this.camposServicios.find(s=>s.valor === this.infoCita.servicio).nombre
       this.infoCita.dia = data.dia
-      // this.infoCita.correo = this.clientes_arr.find(c=>c.id === data.cliente).correo
       this.infoCita.horario = data.horario
-      this.infoCita.sucursalShow = data.sucursalShow
       this.infoCita.placas = this.arr_vehiculos.find(v=>v.id === data.vehiculo).placas
-      this.infoCita.fullname = data.fullname
       this.confirmar = true
-      
     }
   }
   ConfirmaCita(){
@@ -480,7 +504,6 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       const day = fecha.getDay()
       return day !== 0;
     }
-    // Prevent Saturday and Sunday from being selected.
   };
   
   addEvent( event: MatDatepickerInputEvent<Date>) {

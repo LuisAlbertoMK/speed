@@ -1177,5 +1177,31 @@ export class ServiciosPublicosService {
       obtenerDiferencias(array1, array2) {
         return array1.filter(elemento => !array2.includes(elemento))
       }
+      obtenerDiferenciaHoras(fechaHora, fechaHora2) {
+        const fecha1 = new Date(fechaHora);
+        const fecha2 = new Date(fechaHora2);
+        
+        // Obtener la diferencia en milisegundos
+        const diferenciaMs = fecha2.getTime() - fecha1.getTime();
+        
+        // Calcular la diferencia en horas y minutos
+        const horas = Math.floor(diferenciaMs / 3600000);
+        const minutos = Math.floor((diferenciaMs % 3600000) / 60000);
+        
+        // Retornar la diferencia formateada
+        const saber = `${horas} horas y ${minutos} minutos`
+        return {horas, minutos, saber}
+      }
+      restarHoras(fecha, horas) {
+        // Clonar la fecha para no modificar la original
+        const fechaClonada = new Date(fecha);
+      
+        // Restar las horas
+        fechaClonada.setHours(fechaClonada.getHours() - horas);
+      
+        // Retornar la fecha actualizada
+        return fechaClonada;
+      }
+      
       
  }

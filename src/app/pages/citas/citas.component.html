@@ -1,35 +1,61 @@
-<div class="row">
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0"></h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li> -->
+          <li class="breadcrumb-item active pointer"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active">Citas </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end text-uppercase fs-5 text-body">
       <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = true; info_cita= null; id_cita = null">
           <i class="fas fa-calendar-edit"></i> Agendar cita
       </button>
   </div>
+</div> -->
+<div class="row mb-2">
+  <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+    <div class="input-group col-lg-12 col-md-12 col-sm-12 col-12">
+      <span class="input-group-text pointer text-primary" id="basic-addon1" (click)="picker.open()">
+        <i class="fa fa-calendar"></i>
+      </span>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-date-range-input  class="form-control" [formGroup]="range" [rangePicker]="picker" >
+        <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext ">
+        <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext ">
+      </mat-date-range-input>
+    </div>
+  </div>
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+        <div class="row m-1">
+          <div class=" input-group col-lg-4 col-md-4 col-sm-8 col-8">
+            <span class="input-group-text pointer text-danger" id="basic-addon1">
+              <i class="fa fa-filter"></i>
+            </span>
+            <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm"
+             (ngModelChange)="addEvent(range.controls['start'].value, range.controls['end'].value)">
+              <option value="Todas" >Todas</option>
+              <option [value]="s.id" *ngFor="let s of sucursales_arr">{{s.sucursal}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = true; info_cita= null; id_cita = null">
+        <i class="fas fa-calendar-edit"></i> Agendar cita
+      </button>
+    </div>
 </div>
-  <div class="input-group mb-3 col-lg-5 col-md-5 col-sm-6 col-12">
-    <span class="input-group-text pointer text-primary" id="basic-addon1" (click)="picker.open()">
-      <i class="fa fa-calendar"></i>
-    </span>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-    <mat-date-range-input  class="form-control" [formGroup]="range" [rangePicker]="picker" >
-      <!-- (focus)="picker.open()" -->
-      <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext" (dateChange)="addEvent()">
-      <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext" (dateChange)="addEvent()">
-    </mat-date-range-input>
-  </div>
-
-<ng-container *ngIf="SUCURSAL === 'Todas'">
-  <div class="row m-1">
-    <div class="col-auto">
-      <label for="">Filtrar por sucursal</label>
-    </div>
-    <div class="col-6">
-      <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm" (ngModelChange)="addEvent()">
-        <option value="Todas" >Todas</option>
-        <option [value]="s.id" *ngFor="let s of sucursales_arr">{{s.sucursal}}</option>
-      </select>
-    </div>
-  </div>
-</ng-container>
 
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 center" >
@@ -86,6 +112,43 @@
     </ng-container>
   </div>
 </div>
+
+<div class="card mt-2">
+  <div class="card-body">
+    <h1>Citas vencidas sin asistencia</h1>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Placas</th>
+            <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">Cliente</th>
+            <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">Correo</th>
+            <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">Fecha</th>
+            <th scope="col">Servicio</th>
+            <th scope="col">Sucursal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cita of citas_no_asistencia; let i  = index">
+            <th scope="row">{{i + 1}}</th>
+            <td>{{cita.placas | uppercase}}</td>
+            <td>{{cita.fullname | capitalizarUno}}</td>
+            <td>{{cita.correo}}</td>
+            <td>{{cita.dia}} {{cita.horario}}</td>
+            <td>{{cita.servicioShow | uppercase}}</td>
+            <td>{{cita.sucursalShow }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row mb-5 mt-5">
+  <div class="col">
+
+  </div>
+</div>
 <!-- <full-calendar ></full-calendar> -->
 <div class="modal fade" id="modalCita" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -137,8 +200,3 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
 </div>
 
 
-<div class="mb-5 mt-5">
-  <div class="col">
-
-  </div>
-</div>
