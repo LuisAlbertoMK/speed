@@ -27,6 +27,7 @@ import { CotizacionService } from '../../services/cotizacion.service';
 import { EmailsService } from '../../services/emails.service';
 import { UploadPDFService } from '../../services/upload-pdf.service';
 import { VehiculosService } from '../../services/vehiculos.service';
+import { object } from '@angular/fire/database';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 export interface User {nombre: string, apellidos:string}
@@ -48,7 +49,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   
   infoCotizacion = {
     cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
-    fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio: '1', descripcion: ''
+    fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio: '1', descripcion: '', pdf:null
   }
 
   camposDesgloce = [
@@ -286,6 +287,8 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
         this._clientes.consulta_cliente_new(cotizacion.cliente.id).then((cliente:any)=>{
           this.infoCotizacion.vehiculos = cliente.vehiculos
         })
+        this.infoCotizacion.sucursal = this.sucursales.find(s=>s.id === cotizacion.sucursal)
+
         this.extra = cotizacion.vehiculo.id
         const camposRecupera = ['elementos','iva','formaPago','nota','descripcion','servicio','descuento','sucursal']
         camposRecupera.forEach(c=>{
@@ -308,6 +311,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
       this.infoCotizacion.vehiculo = null
       this.extra = null
       this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
+      
       this.infoCotizacion.cliente = cliente
       if ( cliente.vehiculos) {
         this.infoCotizacion.vehiculos = cliente.vehiculos
@@ -335,9 +339,12 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
         this.infoCotizacion.cliente = infonew
         this.infoCotizacion.vehiculos = infonew.vehiculos
         this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === infonew.sucursal)
+        
       // }
-      if (this.extra) {
+      if (this.extra && cliente.vehiculos) {
         this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
+      }else{
+        this.infoCotizacion.vehiculo = null
       }
       this.realizaOperaciones()
       this._publicos.swalToast('Se registro cliente')
@@ -450,7 +457,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
     }else{
       this.infoCotizacion.formaPago = '1'
     }
-    // console.log(this.infoCotizacion);
+    // 
     
     this.infoCotizacion.iva = this.checksBox.controls['iva'].value
     const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoCotizacion)
@@ -498,7 +505,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
     opcionales.forEach(c=>{
       if(!this.infoCotizacion[c]) camposOpcionales.push(c)
     })
-    // console.log(this.infoCotizacion);
+    // 
     this.obligatorios = null
     this.opcionales = null
     this.obligatorios = camposObligatorios.join(', ')
@@ -515,10 +522,15 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
 
     //pra el el envio de correos ocupamos correo de sucursal y cliente
     const correos = this._publicos.dataCorreo(this.infoCotizacion.sucursal,this.infoCotizacion.cliente)
+    
 
     // construirPDF
     //asignamos la informacion de la sucursal para obtener el numero de cotizacion 
-    const infoSucursal = this.infoCotizacion.sucursal
+    let infoSucursal = this.infoCotizacion.sucursal
+    if (!infoSucursal['id']) {
+      infoSucursal = this.sucursales.find(s=>s.id === this.infoCotizacion.sucursal)
+    }
+    
     await this._publicos.generaNombreCotizacion(infoSucursal['sucursal'], this.ROL).then(ans=>{
       this.infoCotizacion.no_cotizacion = ans
     })
@@ -598,17 +610,21 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
               //cuando se tenga la respuesta  de subida del pdf la ruta al mismo verificamos que efectivamente exista esta ruta
               const intervalo = setInterval(() => {
                 if(answer['ruta']){
+                  this.infoCotizacion.pdf = answer['ruta']
                   //limpiamos el intervalo ya que tenemos la ruta y realizamos depuracion de informacion
                   clearInterval(intervalo)
                   const updates = {};
                   const campos = ['cliente','elementos','fecha','formaPago','hora','iva','margen','no_cotizacion',
-                                  'nota','reporte','servicio','sucursal','vehiculo','vencimiento'
+                                  'nota','reporte','servicio','sucursal','vehiculo','vencimiento','pdf'
                 ]
                 //asigamos solo los campos que queremos recuperaer
+                
                   const infoSave = this._publicos.nuevaRecuperacionData(this.infoCotizacion,campos)
     
                   updates['cotizacionesRealizadas/' + this._publicos.generaClave()] = infoSave;
-                  //hacemos la llamada al registro de la cotizacion
+                  // console.log(infoSave);
+                  
+                  // hacemos la llamada al registro de la cotizacion
                   update(ref(db), updates)
                   .then(() => {
                     // realizamos la descarga del pdf
@@ -622,7 +638,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
                     //limpiamos la informacion para nueva cotizacion
                     this.infoCotizacion = {
                       cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
-                      fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio:'1', descripcion:null
+                      fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio:'1', descripcion:null, pdf : null
                     }
                     //redireccionamos a cotizaciones disponibles
                     this.router.navigateByUrl('/cotizacion')

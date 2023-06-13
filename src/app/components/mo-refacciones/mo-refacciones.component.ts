@@ -207,7 +207,7 @@ export class MoRefaccionesComponent implements OnInit  {
 
     const updates = {};
     //realizar pregunta de si desea guardar el elemento
-    const costoMuestra = (nuevaInfo['costo']>0) ?  nuevaInfo['costo'] : nuevaInfo['precio']
+    const costoMuestra = (nuevaInfo['costo']>0) ?  nuevaInfo['costo'] : this.formElemento.get('precio').value
     const costoMuestraCostos = (nuevaInfo['costo']>0) ?  'precio sobrescrito' : 'precio'
     this._publicos.mensaje_pregunta(`Guardar elemento con ${costoMuestraCostos} ${costoMuestra }`).then(({respuesta})=>{
       if (respuesta) {

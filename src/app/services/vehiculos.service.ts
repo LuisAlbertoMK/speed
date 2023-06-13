@@ -18,6 +18,7 @@ export class VehiculosService {
 
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService) { }
 
+  camposVehiculo = ['id','marca','marcaMotor','modelo','no_motor','placas','status','transmision','vinChasis']
   consulta_vehiculo_new(cliente,vehiculo): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `clientes/${cliente}/vehiculos/${vehiculo}`);

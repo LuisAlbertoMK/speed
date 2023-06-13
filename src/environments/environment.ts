@@ -14,8 +14,8 @@ export const environment = {
   },
   usuarios: 'https://identitytoolkit.googleapis.com/v1',
   production: false,
-  // cloud: 'https://us-central1-speed-pro-app.cloudfunctions.net/sendMail',
-  // cloud_local: 'http://127.0.0.1:5001/speed-pro-app/us-central1/sendMail'
+  cloud: 'https://us-central1-speed-pro-app.cloudfunctions.net/sendMail',
+  cloud_local: 'http://127.0.0.1:5001/speed-pro-app/us-central1/sendMail'
 }
 const app = initializeApp(environment.firebaseConfig);
 /*
