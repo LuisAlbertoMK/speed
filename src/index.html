@@ -84,6 +84,25 @@
         return false;
       }
     }
+    function validarLetras(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+
+      // Permitir solo letras en mayúsculas y minúsculas
+      if (
+        (charCode >= 65 && charCode <= 90) ||  // Letras mayúsculas (A-Z)
+        (charCode >= 97 && charCode <= 122) || // Letras minúsculas (a-z)
+        charCode === 8 ||                      // Tecla de retroceso (backspace)
+        charCode === 9 ||                      // Tecla de tabulación (tab)
+        charCode === 13 ||                     // Tecla de retorno de carro (enter)
+        charCode === 32                        // Espacio
+      ) {
+        return true; // Permitir el ingreso del carácter
+      } else {
+        event.preventDefault(); // Restringir cualquier otro carácter
+        return false;
+      }
+    }
+
   </script>
 </body>
 

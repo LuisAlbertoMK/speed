@@ -56,14 +56,26 @@
       </button>
     </div>
 </div>
-
-<div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 center" >
-      <full-calendar [options]="calendarOptions"></full-calendar>
+<!-- <div id="calendarContainer">
+  <full-calendar [options]="calendarOptions"></full-calendar>
+</div> -->
+<!-- <div class="contenedor bg-blue">
+  <full-calendar [options]="calendarOptions" id="fullcalendar"></full-calendar>
+</div> -->
+<div class="container">
+  <div class="row g-0">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-10 col-xxl-10 center bg-black">
+      <div class="p-3 border bg-light"><full-calendar [options]="calendarOptions" id="fullcalendar" ></full-calendar></div>
+    </div>
   </div>
 </div>
+<!-- <div class="row g-0" >
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 col-xl-10 col-xxl-10 center" >
+      <full-calendar [options]="calendarOptions" id="fullcalendar" ></full-calendar>
+  </div>
+</div> -->
 <div class="row">
-  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
     <h1>Citas de hoy</h1>
     <ng-container >
       <ol class="list-group list-group-numbered">

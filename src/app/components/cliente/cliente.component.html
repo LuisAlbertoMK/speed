@@ -169,7 +169,7 @@
               <label for="nombre" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nombre</label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
-                  [class.is-invalid]="validarCampo('nombre')" (keyup)="actualizaNoCliente()"
+                  [class.is-invalid]="validarCampo('nombre')" (keyup)="actualizaNoCliente()" onkeypress="validarLetras(event)"
                   (change)="actualizaNoCliente()">
                 <small *ngIf="validarCampo('nombre')" class="text-danger">
                   campo requerido
@@ -182,7 +182,7 @@
               <label for="apellidos" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Apellidos</label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="apellidos" formControlName="apellidos"
-                  [class.is-invalid]="validarCampo('apellidos')" maxlength="30" (keyup)="actualizaNoCliente()"
+                  [class.is-invalid]="validarCampo('apellidos')" maxlength="30" (keyup)="actualizaNoCliente()" onkeypress="validarLetras(event)"
                   (change)="actualizaNoCliente()">
                 <small *ngIf="validarCampo('apellidos')" class="text-danger">
                   campo requerido
@@ -209,7 +209,7 @@
               <label for="telefono_movil" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tel. movil</label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="telefono_movil"
-                  formControlName="telefono_movil" (keyup)="verificarTelefono()"
+                  formControlName="telefono_movil" (keyup)="verificarTelefono()" onkeypress="soloNumeros(event)"
                   [class.is-invalid]="validarCampo('telefono_movil')" maxlength="10">
                 <small *ngIf="validarCampo('telefono_movil')" class="text-danger">campo requerido</small>
                 <ng-container *ngIf="telefonoExistente">
@@ -236,7 +236,7 @@
               <label for="telefono_fijo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tel. fijo</label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="telefono_fijo" formControlName="telefono_fijo"
-                  [class.is-invalid]="validarCampo('telefono_fijo')" maxlength="10">
+                  [class.is-invalid]="validarCampo('telefono_fijo')" maxlength="10" onkeypress="soloNumeros(event)">
                 <small *ngIf="validarCampo('telefono_fijo')" class="text-danger">
                   campo requerido
                 </small>
@@ -293,7 +293,7 @@
                     class="col-sm-3 col-md-4 col-lg-3 col-form-label">{{'nombre de empresa' | capitalizarUno}}</label>
                   <div class="col-sm-9 col-md-8 col-lg-9 ">
                     <input type="text" class="form-control form-control-sm" id="no_cliente" formControlName="empresa"
-                      [class.is-invalid]="validarEmpresa('empresa')">
+                      [class.is-invalid]="validarEmpresa('empresa')" >
                     <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small>
                   </div>
                 </div>
