@@ -250,7 +250,7 @@
 																		<mat-tab label="Mano obra">
 																			<mat-form-field appearance="standard" class="col-lg-12 col-md-12 col-sm-12 col-12">
 																				<mat-label class="text-capitalize">búsqueda</mat-label>
-																				<input matInput (keyup)="applyFilter($event,'MO')" placeholder="SpeedPro" #input>
+																				<input matInput (keyup)="applyFilter($event,'mo')" placeholder="SpeedPro" #input>
 																			</mat-form-field>
 																			<table #tabMO="matSort" mat-table [dataSource]="dataSourceMO" matSort>
 																				<ng-container matColumnDef="{{column}}" *ngFor="let column of columnasMO">
@@ -268,7 +268,7 @@
 																								*matRowDef="let row; columns: columnasMOExtended;">
 																								<mat-menu #menu="matMenu"  yPosition="below">
 																									<!-- <button class="item-menu" mat-menu-item (click)="getDetalles(row)">Detalles</button> -->
-																									<button class="item-menu" mat-menu-item (click)="addCotizacion(row.id,row,'MO')">Agregar a cotizacion</button>
+																									<button class="item-menu" mat-menu-item (click)="addCotizacion(row.id,row,'mo')">Agregar a cotizacion</button>
 																							</mat-menu>
 																						</tr>
 																				</ng-container>
@@ -388,7 +388,7 @@
                   <div class="card-body ">
                     <div class="row">
                       <div class="col-lg-9 col-md-9 col-sm-9 col-9">
-                        <ng-container *ngIf="agregado.tipo === 'MO'">
+                        <ng-container *ngIf="agregado.tipo === 'mo'">
                           <ng-container *ngIf="agregado.personalizado">
                             <strong class="fs-5 personalizado">{{agregado.nombre}}</strong>
                           </ng-container>
@@ -396,7 +396,7 @@
                             <strong class="text-success fs-5">{{agregado.nombre}}</strong>
                           </ng-container>
                         </ng-container>
-                        <ng-container *ngIf="agregado.tipo !== 'MO'">
+                        <ng-container *ngIf="agregado.tipo !== 'mo'">
                           <strong class="text-success fs-5">{{agregado.nombre}}</strong>
                         </ng-container>
                       </div>
@@ -414,7 +414,7 @@
                       </div>
                     </div>
                     <div class="collapse" [id]="agregado.idReferencia">
-                      <ng-container *ngIf="agregado.tipo  === 'MO'">
+                      <ng-container *ngIf="agregado.tipo  === 'mo'">
 
                         
                           Precio: <input type="number" [value]="agregado.precio" class="form-control" [id]="'idPaquete_'+agregado.idReferencia" aria-describedby="helpId" placeholder="">
@@ -680,7 +680,7 @@
               <label class="form-check-label" for="inlineRadio1">Refacción</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="MO"
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="mo"
                 (click)="tipoReparacion(false)">
               <label class="form-check-label" for="inlineRadio2">Agregar Mano de Obra</label>
             </div>

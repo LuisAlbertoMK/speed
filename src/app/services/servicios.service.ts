@@ -225,7 +225,7 @@ export class ServiciosService {
             dataCotizacion[index].precio = infoPaquete.flotilla
           }
           
-        }else if (element.tipo === 'MO') {
+        }else if (element.tipo === 'mo') {
           if (element.costo>0) {
             const operacion = cantidad * element.costo
             totalImportante = totalImportante + operacion

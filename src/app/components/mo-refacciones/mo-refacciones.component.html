@@ -2,35 +2,41 @@
     <div class="card-body">
         <div class="row mb-3">
             <ng-container *ngIf="registro">
-              <div class="col-12 col-sm-6 col-md-6 col-lg-6 text-end" >
-                <h4>Buscar elemento en catalogo</h4>
-            </div>
-              <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
-                <input type="text" class="form-control form-control-sm text-capitalize" (ngModelChange)="verificaElemento()"
-                     placeholder="Nombre de Refaccón / MO"
-                     aria-label="Nombre"
-                     [formControl]="myControl"
-                     [matAutocomplete]="auto"
-                     >
-              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)"
-                [ngClass]="{'tipo-refaccion': option['tipo'] === 'refaccion','tipo-mo': option['tipo'] === 'mo'}"
-                >
-                    {{option['nombre'] | capitalizarUno}}
-                </mat-option>
-              </mat-autocomplete>
-            </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center" >
+                <h3 class="text-primary">Buscar elemento en catalogo / Registro</h3>
+                <h4><span class="text-danger mb-1 mt-1">Nombre maximo 50 caracteres, si ocupa más utilizar descripción</span></h4>
+                <ng-container *ngIf="encontrado; else elseTemplate">
+                <span class="text-danger">Elemento encontrado con el mismo nombre</span>
+                </ng-container>
+                <ng-template #elseTemplate>
+                 <span class="text-success">Se puede registrar</span> 
+                </ng-template>
+              </div>
             </ng-container>
         </div>
-        
           <form [formGroup]="formElemento" (ngSubmit)="colocarElemento()">
             <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
                 <div class="row">
                   <label for="nombre"
                     class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">nombre</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
-                    <input type="text" class="form-control form-control-sm"  id="nombre" formControlName="nombre">
+                    <!-- <input type="text" class="form-control form-control-sm"  id="nombre" formControlName="nombre"> -->
+                    <input type="text" class="form-control form-control-sm text-capitalize"
+                     placeholder="Nombre de Refaccón / MO"
+                     aria-label="Nombre"
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     maxlength="50"
+                     >
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)"
+                      [ngClass]="{'tipo-refaccion': option['tipo'] === 'refaccion','tipo-mo': option['tipo'] === 'mo'}"
+                      >
+                          {{option['nombre'] | capitalizarUno}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    
                   </div>
                 </div>
               </div>
@@ -39,7 +45,7 @@
                   <label for="cantidad"
                     class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">Cantidad</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8">
-                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="1" id="cantidad"
+                    <input type="number" onkeypress="soloNumeros(event)" class="form-control form-control-sm" min="1" id="cantidad"
                       formControlName="cantidad">
                   </div>
                 </div>
@@ -49,7 +55,7 @@
                   <label for="precio"
                     class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalizee">Costo</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8">
-                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="1" id="precio"
+                    <input type="number" onkeypress="validarDecimal(event)" class="form-control form-control-sm" min="1" id="precio"
                       formControlName="precio">
                   </div>
                 </div>
@@ -59,7 +65,7 @@
                   <label for="costo"
                     class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">Costo sobrescrito</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8">
-                    <input type="number" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-sm" min="0" id="costo"
+                    <input type="number" onkeypress="validarDecimal(event)" class="form-control form-control-sm" min="0" id="costo"
                       formControlName="costo">
                   </div>
                 </div>
@@ -69,23 +75,10 @@
                   <label for="tipo"
                     class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">tipo</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
-                    <ng-container *ngIf="existe; else elseExisteTipo">
-                        <!-- <select [ngModel]="formElemento.controls['tipo'].value"  readonly class="form-select form-select-sm" formControlName="tipo">
-                            <option value="MO">Mano obra</option>
-                            <option value="refaccion">Refaccion</option>
-                        </select> -->
-                        <input type="text" class="form-control form-control-sm" readonly  id="nombre" formControlName="tipo">
-
-                    </ng-container>
-                    <ng-template #elseExisteTipo>
-                        <select [ngModel]="formElemento.controls['tipo'].value" class="form-select form-select-sm" formControlName="tipo">
-                            <option value="mo">Mano obra</option>
-                            <option value="refaccion">Refaccion</option>
-                        </select>
-                    </ng-template>
-                    
-                    <!-- <input type="text" class="form-control form-control-sm" id="tipo" formControlName="tipo"> -->
-                    
+                    <select  class="form-select form-select-sm" formControlName="tipo">
+                      <option value="mo">Mano obra</option>
+                      <option value="refaccion">Refaccion</option>
+                  </select>
                   </div>
                 </div>
 
@@ -125,6 +118,7 @@
                   <div class="col-12 col-sm-9 col-md-10 col-lg-10">
                     <textarea id="descripcion" cols="30" rows="3" formControlName="descripcion"
                       style="width: 100%;"></textarea>
+                      <span>Se requiere descripcion esta estara ayudara a identificar el elemento con más precisión</span>
                   </div>
                 </div>
               </div>
@@ -132,13 +126,19 @@
                 Costo de venta: <strong>{{totalMuestra | monedas}}</strong>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                <button type="submit" [disabled]="formElemento.invalid ?'disabled':null"
-                  class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Colocar</button>
+                <button type="submit" 
+                class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Colocar</button>
                 <button type="button" (click)="limpiarControl()" 
-                  class="btn btn-sm btn-danger m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Limpiar Inf.</button>
+                class="btn btn-sm btn-danger m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Limpiar Inf.</button>
               </div>
+              <ng-container *ngIf="faltantes_string">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                    Falta informacion: <strong class="text-danger">{{faltantes_string}}</strong>
+                </div>
+              </ng-container>
             </div>
           </form>
+          <!-- <pre>{{formElemento.value | json}}</pre> -->
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
@@ -150,7 +150,7 @@
                   <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-4 col-form-label">Margen</label>
                     <div class="col-sm-8">
-                      <input type="number" min="16" [value]="por" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"   >
+                      <input type="number" min="16" [value]="por" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="soloNumeros(event)"   >
                     </div>
                   </div>
                 </div>
@@ -158,7 +158,7 @@
                   <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-4 col-form-label">precio / costo</label>
                     <div class="col-sm-8">
-                      <input type="number" min="1"  [value]="cantidad"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"        >
+                      <input type="number" min="1"  [value]="cantidad"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="validarDecimal(event)"        >
                     </div>
                   </div>
                 </div>

@@ -54,7 +54,7 @@ export class CatalogosService {
       if (snapshot.exists()) {
         const data = this._publicos.crearArreglo2(snapshot.val())
         for (let index = 0; index < data.length; index++) {
-          data[index].tipo = 'MO'
+          data[index].tipo = 'mo'
         }
         MO = data
       }

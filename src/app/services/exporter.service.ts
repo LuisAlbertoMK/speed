@@ -187,7 +187,7 @@ export class ExporterService {
           ele['flotilla'] = data_paquete.flotilla * ele['cantidad']
         }
       }
-      if(ele['tipo'] === 'MO' ) {
+      if(ele['tipo'] === 'mo' ) {
         if(ele['costo']>0){
           sobrescrito_mo=sobrescrito_mo+ (ele['costo'] * ele['cantidad'])
         }else{
@@ -207,7 +207,7 @@ export class ExporterService {
           if(!elementos_paquete.length) return
         // aqui elementos paquete
         elementos_paquete.map(sub_ele=>{
-          if(sub_ele['tipo'] === 'MO' ) {
+          if(sub_ele['tipo'] === 'mo' ) {
             if(sub_ele['costo']>0){
               sobrescrito_mo=sobrescrito_mo+ (sub_ele['costo'] * sub_ele['cantidad'])
             }else{

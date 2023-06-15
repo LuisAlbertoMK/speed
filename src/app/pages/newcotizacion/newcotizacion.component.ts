@@ -130,7 +130,7 @@ export class NewcotizacionComponent implements OnInit {
           if (snapshot.exists()) {
             let all = this.crearArreglo2(snapshot.val()) 
             this.dataSourceMO = new MatTableDataSource(all)
-            this.newPagination('MO')
+            this.newPagination('mo')
           } else {
             console.log("No data available");
           }
@@ -236,14 +236,14 @@ export class NewcotizacionComponent implements OnInit {
               this.addCotizacion(comple.idReferencia,tempData,'paquete')
             })
           }else{
-            if (comple.tipo === 'MO') {
+            if (comple.tipo === 'mo') {
               this.getinfocompl(`manos_obra/${comple.idReferencia}`).then((val:any)=>{
                 if (comple.personalizado) {
                   const tempData = { ...val,personalizado: comple.personalizado, Horas: comple.Horas,costo: comple.costo, precio:comple.precio , subtotal:val.precio*1,idReferencia:comple.idReferencia}  
-                  this.addCotizacion(comple.idReferencia,tempData,'MO')
+                  this.addCotizacion(comple.idReferencia,tempData,'mo')
                 }else{
                   const tempData = { ...val, Horas: 1,costo: comple.costo, precio:comple.costo, subtotal:val.precio*1,idReferencia:comple.idReferencia}
-                  this.addCotizacion(comple.idReferencia,tempData,'MO')
+                  this.addCotizacion(comple.idReferencia,tempData,'mo')
                 }
               })
             }else{
@@ -544,7 +544,7 @@ export class NewcotizacionComponent implements OnInit {
     }    
     if (dataPaquete.descripcion) {temp.descripcion = 'Ninguna'}
     if (tipo ==='refaccion') {temp.precio = dataPaquete.precio}
-    if (tipo ==='MO') {
+    if (tipo ==='mo') {
       temp.precio = dataPaquete.precio
       temp.Horas = 1
       temp.costo = dataPaquete.precio * 1
@@ -623,7 +623,7 @@ export class NewcotizacionComponent implements OnInit {
           tipo: tempcoti.tipo,
         } 
       }else{
-        if (tempcoti.tipo === 'MO') {
+        if (tempcoti.tipo === 'mo') {
           if (tempcoti.Horas && tempcoti.costo) {
             guardaDataOnly ={
               idReferencia :tempcoti.idReferencia,
@@ -667,7 +667,7 @@ export class NewcotizacionComponent implements OnInit {
               this.getinfocompl(`manos_obra/${comple.IDreferencia}`).then((val:any)=>{
                 const tempdata = {...val}
                 tempdata.Horas = comple.cantidad
-                tempdata.tipo = 'MO'
+                tempdata.tipo = 'mo'
                 complementosAdd.push(tempdata)
                 this.tempDataPaquetes[index].elementos = complementosAdd
               })
@@ -1016,7 +1016,7 @@ export class NewcotizacionComponent implements OnInit {
         this.dataSourcePaquetes.paginator = this.paginatorPaquetes
         this.dataSourcePaquetes.sort = this.sortPaquetes;
       }
-      if (tabla==='MO') {
+      if (tabla==='mo') {
         this.dataSourceMO.paginator = this.paginatorMO
         this.dataSourceMO.sort = this.sortMO;
       }
@@ -1034,7 +1034,7 @@ export class NewcotizacionComponent implements OnInit {
         this.dataSourcePaquetes.paginator.firstPage()
       }
     }
-    if (tabla==='MO') {
+    if (tabla==='mo') {
       this.dataSourceMO.filter = filterValue.trim().toLowerCase();
       if (this.dataSourceMO.paginator) {
         this.dataSourceMO.paginator.firstPage()
@@ -1478,7 +1478,7 @@ export class NewcotizacionComponent implements OnInit {
           let i=0;
           elementosColumnas.forEach((column:any)=> {
             i++
-            if (column.tipo === 'MO') {
+            if (column.tipo === 'mo') {
               let costoTotal = column.Horas * column.precio
               data2.push( ` ${i}.- Nombre: ${column.nombre},Horas: ${column.Horas}, Precio: ${column.precio},Costo: ${costoTotal}, descripcion: ${column.descripcion}`)
             }else{

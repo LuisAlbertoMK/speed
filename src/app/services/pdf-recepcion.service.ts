@@ -1488,7 +1488,7 @@ function obtenerTotal(servicios,facturaRemision,marg){
       e['flotilla'] = operacion
       e['normal'] = operacion * norm_
       reporte.refacciones_ad += e['precio']
-    }else  if (e['tipo'] ==='MO') {
+    }else  if (e['tipo'] ==='mo') {
       let pre = e['precio']
       let operacion = (e['cantidad']* pre)
       if (e['costo']>0) {
@@ -1527,7 +1527,7 @@ function obtenerTotal(servicios,facturaRemision,marg){
             e_interno['flotilla'] = operacion
             e_interno['normal'] = operacion * norm_
             reporte.refacciones_ad += e_interno['precio']
-          }else  if (e_interno['tipo'] ==='MO') {
+          }else  if (e_interno['tipo'] ==='mo') {
             let pre = e_interno['precio']
             let operacion = (e_interno['cantidad']* pre)
             if (e_interno['costo']>0) {

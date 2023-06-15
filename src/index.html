@@ -38,6 +38,53 @@
   <script src="./assets/plugins/moment/moment.min.js"></script>
   <script src="./assets/plugins/jquery-ui/jquery-ui.min.js"></script>
   <script src="./assets/dist/js/adminlte.js"></script>
+  <script>
+    function validarDecimal(event) {
+        const charCode = event.which ? event.which : event.keyCode;
+        const input = event.target.value;
+        // Permitir solo números del 0 al 9, punto decimal y teclas de navegación
+        if (
+          (charCode >= 48 && charCode <= 57) ||  // Números del 0 al 9
+          charCode === 46 ||                     // Punto decimal
+          charCode === 8 ||                      // Tecla de retroceso (backspace)
+          charCode === 9 ||                      // Tecla de tabulación (tab)
+          charCode === 13 ||                     // Tecla de retorno de carro (enter)
+          charCode === 37 ||                     // Tecla de flecha izquierda
+          charCode === 39                        // Tecla de flecha derecha
+        ) {
+          // Verificar si ya hay un punto decimal en el input
+          const decimalIndex = input.indexOf('.');
+          if (charCode === 46 && decimalIndex !== -1) {
+            event.preventDefault(); // Evitar agregar un segundo punto decimal
+          } else if (charCode >= 48 && charCode <= 57 && decimalIndex !== -1) {
+            // Verificar si ya hay dos decimales ingresados
+            const decimalDigits = input.substring(decimalIndex + 1);
+            if (decimalDigits.length >= 2) {
+              event.preventDefault(); // Evitar ingresar más de dos decimales
+            }
+          }
+        } else {
+          event.preventDefault(); // Restringir cualquier otro carácter
+        }
+      }
+    function soloNumeros(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+      // Permitir solo números del 0 al 9 y teclas de navegación
+      if (
+        (charCode >= 48 && charCode <= 57) ||  // Números del 0 al 9
+        charCode === 8 ||                      // Tecla de retroceso (backspace)
+        charCode === 9 ||                      // Tecla de tabulación (tab)
+        charCode === 13 ||                     // Tecla de retorno de carro (enter)
+        charCode === 37 ||                     // Tecla de flecha izquierda
+        charCode === 39                        // Tecla de flecha derecha
+      ) {
+        return true; // Permitir el ingreso del carácter
+      } else {
+        event.preventDefault(); // Restringir cualquier otro carácter
+        return false;
+      }
+    }
+  </script>
 </body>
 
 </html>

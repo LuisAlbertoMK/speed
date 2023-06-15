@@ -41,7 +41,7 @@
                   [ngStyle]="{'min-width':(miniColumnas)*1.3+'px'}"> nombre </th>
                 <td mat-cell *matCellDef="let element" class="td-2"> 
                   <strong
-                    [ngClass]="{'tipo-mo':element.tipo === 'MO','tipo-refaccion':element.tipo === 'refaccion','tipo-paquete':element.tipo === 'paquete'}">
+                    [ngClass]="{'tipo-mo':element.tipo === 'mo','tipo-refaccion':element.tipo === 'refaccion','tipo-paquete':element.tipo === 'paquete'}">
                     {{element.nombre | capitalizarUno}}</strong>
                 </td>
               </ng-container>

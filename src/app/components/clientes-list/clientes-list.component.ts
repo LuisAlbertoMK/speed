@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { object } from '@angular/fire/database';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -27,6 +28,7 @@ export class ClientesListComponent implements OnInit {
 
   ROL:string; SUCURSAL:string
   listaSucursales_arr= []
+  empresas_alls= {}
   constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService, private _clientes: ClientesService) {
     this.dataCliente = new EventEmitter()
   }
@@ -42,7 +44,8 @@ export class ClientesListComponent implements OnInit {
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         this.listaSucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-        this.listarClientes()
+        this.listaEmpresas()
+        
       }
     }, {
         onlyOnce: true
@@ -54,13 +57,24 @@ export class ClientesListComponent implements OnInit {
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
   }
+  async listaEmpresas(){
+    const empresas = await this._clientes.consulta_empresas_new()
+    this.empresas_alls = empresas
+    this.listarClientes()
+  }
   listarClientes(){
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, (snapshot) => {
       this._clientes.consulta_clientes_new().then((clientes)=>{
         clientes.map(c=>{
           c.showSucursal  = this.listaSucursales_arr.find(s=>s.id === c.sucursal).sucursal
+          if(c.empresa) {
+            const {empresa: em} = this.empresas_alls[c.sucursal][c.empresa]
+            c.empresaShow  = em
+          }
         })
+        // console.log('aqui desde la lista de clientes');
+        
         this.listaClientes_arr = (this.SUCURSAL === 'Todas') ? clientes : clientes.filter(c=>c.sucursal === this.SUCURSAL)
       })
     })

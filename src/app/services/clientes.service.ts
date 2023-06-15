@@ -23,6 +23,7 @@ const dbRef = ref(getDatabase());
 export class ClientesService {
   telefonosInvalidos:any[]=['5555555555','1111111111','0000000000','7777777777','1234567890','0123456789'];
   camposCliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
+  camposSave= ['no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','empresaShow','sucursalShow']
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService, private _sucursales: SucursalesService,
     private _vehiculos: VehiculosService,
     private _mail: EmailsService) { }
@@ -56,6 +57,30 @@ export class ClientesService {
           const vehiculos = (clientes['vehiculos']) ? this._publicos.crearArreglo2(clientes['vehiculos']) : []
           clientes.vehiculos = vehiculos
           resolve(clientes);
+        } else {
+          resolve({});
+        }
+      });
+    });
+  }
+  consulta_empresas_new(): Promise<object> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `empresas`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+         resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      });
+    });
+  }
+  consulta_empresa_new(sucursal, id): Promise<object> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `empresas/${sucursal}/${id}/empresa`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+         resolve(snapshot.val());
         } else {
           resolve({});
         }

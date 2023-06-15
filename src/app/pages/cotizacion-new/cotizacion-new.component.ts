@@ -217,7 +217,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
       margen:[this.infoCotizacion.margen,[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(1)]],
       formaPago:['1',[Validators.required]],
       promocion:['',[]],
-      descuento:['',[Validators.pattern("^[0-9]+$"),Validators.min(0)]],
+      descuento:['',[Validators.min(0)]],
       descripcion:[this.infoCotizacion.descripcion,[]],
       nota:['',[]]
     })
@@ -333,6 +333,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
   }
   //recibir la nueva data y consukta extra de info cliente
   async clientesInfo(info:any){
+    
     const {cliente, status} = info
     if (status) {
       const infonew:any= await this._clientes.consulta_cliente_new(cliente.id)
@@ -580,10 +581,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
       const updates = { [clave]: recuperada };
       
       update(ref(db), updates);
-    })
-    
-    
-   
+    })   
     //hacemos el llamdo de la funcion para la creaciion del pdf    
     this._pdf.pdf(this.infoCotizacion,this.checksBox.controls['detalles'].value).then((ansPDF)=>{
       //cuando obtengamos la respuesta asignamos la misma a una variable para su uso de PDF

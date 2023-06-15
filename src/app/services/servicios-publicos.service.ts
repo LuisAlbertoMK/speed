@@ -503,7 +503,7 @@ export class ServiciosPublicosService {
         const info = { mo: 0,refacciones1: 0,refacciones2: 0,UB: 0,flotilla: 0,normal: 0,precio: 0}
         let mo = 0, refacciones1 = 0, refacciones2 = 0, suma = 0
         array.forEach(a => {
-            if (a['tipo'] === 'MO') {
+            if (a['tipo'] === 'mo') {
                 if (!a['costo']) a['costo'] = 0;
                 
                 (a['costo'] > 0)
@@ -538,9 +538,16 @@ export class ServiciosPublicosService {
     nuevaRecuperacionData(data: any, camposRecuperar: any[]) {
         const necessary: any = {};
         camposRecuperar.forEach((recupera) => {
-          if (data[recupera] !== undefined && data[recupera] !== null) {
-            necessary[recupera] = data[recupera];
-          }
+            if(typeof data[recupera] === 'string'){
+                const evalua = String(data[recupera]).trim()
+                if (evalua !== undefined && evalua !== null && evalua !== "") {
+                    necessary[recupera] = evalua;
+                }
+            }else{
+                if (data[recupera] !== undefined && data[recupera] !== null && data[recupera] !== "") {
+                    necessary[recupera] = data[recupera];
+                }
+            }
         });
         return necessary;
       }
@@ -657,7 +664,11 @@ export class ServiciosPublicosService {
     realizaValidaciones(campos:any[], data:any){
       const answer = {faltantes: [], faltante_s:null, ok:true}
       campos.forEach((campo)=>{
-        if (!data[campo]) answer.faltantes.push(campo)
+        if (campo === 'costo') {
+            // if (!data[campo] &&) answer.faltantes.push(campo)
+        }else{
+            if (!data[campo]) answer.faltantes.push(campo)
+        }
       })
       if (answer.faltantes.length) answer.ok = false 
       answer.faltante_s = answer.faltantes.join(', ')
@@ -770,7 +781,7 @@ export class ServiciosPublicosService {
             if (e.tipo === 'refaccion') {
               if(e.aprobado) reporteGeneral.sobrescrito_refaccion += (operacion * margenOcupado);
               e.total = operacion * margenOcupado
-            } else if (e.tipo === "MO" || e.tipo ==='mo') {
+            } else if (e.tipo ==='mo') {
                 if(e.aprobado) reporteGeneral.sobrescrito_mo += operacion;
               e.total = operacion
             }else {
@@ -789,7 +800,7 @@ export class ServiciosPublicosService {
             if (e.tipo === 'refaccion') {
               if(e.aprobado) reporteGeneral.refacciones_a += operacion;
               e.total = operacion * margenOcupado
-            } else if (e.tipo === 'MO' || e.tipo ==='mo') {
+            } else if (e.tipo ==='mo') {
               if(e.aprobado) reporteGeneral.mo += operacion;
               e.total = operacion
             }else {
@@ -798,7 +809,7 @@ export class ServiciosPublicosService {
                 e.elementos = elementos
                 e.reporte = reporte;
                 e.precio = reporte.total;
-                e.total = reporte.total
+                e.total = reporte.total * e.cantidad
                 if(e.aprobado) {
                     reporteGeneral.mo += reporte.mo * e.cantidad;
                     reporteGeneral.refacciones_a += reporte.refacciones * e.cantidad;
@@ -1203,5 +1214,31 @@ export class ServiciosPublicosService {
         return fechaClonada;
       }
       
+      validarDecimal(event) {
+        const charCode = event.which ? event.which : event.keyCode;
+        const inputValue = event.target.value;
+      
+        // Permitir números del 0 al 9, punto decimal y teclas de control
+        if (
+          (charCode >= 48 && charCode <= 57) ||  // Números del 0 al 9
+          charCode === 46 ||                     // Punto decimal
+          charCode === 8 ||                      // Tecla de retroceso (backspace)
+          charCode === 9 ||                      // Tecla de tabulación (tab)
+          charCode === 13 ||                     // Tecla Enter
+          charCode === 37 ||                     // Flecha izquierda
+          charCode === 39                        // Flecha derecha
+        ) {
+          // Verificar si ya hay un punto decimal en el valor
+          const decimalIndex = inputValue.indexOf('.');
+          if (charCode === 46 && decimalIndex !== -1) {
+            event.preventDefault(); // Evitar agregar otro punto decimal
+          }
+      
+          return true; // Permitir el ingreso del carácter
+        }
+      
+        event.preventDefault(); // Bloquear cualquier otro carácter
+        return false;
+      }
       
  }

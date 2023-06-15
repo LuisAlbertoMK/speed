@@ -110,8 +110,6 @@ export class ClienteComponent implements OnInit {
     }
   }
   informacionGet(){
-    console.log(this.data);
-    
     this.form_cliente.reset({
       nombre: this.data['nombre'],
       apellidos: this.data['apellidos'],
@@ -275,7 +273,7 @@ export class ClienteComponent implements OnInit {
     }
   }
   
-  guardarCliente(){
+  async guardarCliente(){
 
     const info_get = this.form_cliente.value;
       const saveInfo = {
@@ -312,6 +310,9 @@ export class ClienteComponent implements OnInit {
         if (saveInfo[campo]) updates[`clientes/${this.id}/${campo}`] = saveInfo[campo];
       })      
       saveInfo['id'] = this.id
+      if (saveInfo['empresa']) {
+        saveInfo['empresaShow']  = await this._clientes.consulta_empresa_new(saveInfo.sucursal,saveInfo['empresa'])
+      }
       update(ref(db), updates).then(()=>{
         
         get(child(dbRef, `clientes/${this.id}`)).then((snapshot) => {
@@ -338,9 +339,12 @@ export class ClienteComponent implements OnInit {
       if (!info_get['id']) {
         saveInfo['id'] = push(child(ref(db), 'posts')).key
       }
-
+      // console.log(saveInfo);
+      
+      if (saveInfo['empresa']) {
+        saveInfo['empresaShow']  = await this._clientes.consulta_empresa_new(saveInfo.sucursal,saveInfo['empresa'])
+      }
       updates['/clientes/' + saveInfo['id']] = saveInfo;
-    
       update(ref(db), updates)
       .then( ()=>{
         
@@ -362,7 +366,7 @@ export class ClienteComponent implements OnInit {
         }).catch(()=>{
           this.heroeSlec.emit( Object({cliente: null,status: false}) )
         })
-      // this._clientes.registraCliente(saveInfo)
+      this._clientes.registraCliente(saveInfo)
     }
   }
 

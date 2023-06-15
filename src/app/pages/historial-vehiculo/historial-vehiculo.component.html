@@ -127,7 +127,7 @@
                           <tbody>
                             <tr *ngFor="let item of row.elementos; let i = index">
                               <th class="text-center" scope="row">{{i +  1 }}</th>
-                              <td class="text-start" [ngClass]="{'tipo-mo': item.tipo === mo || item.tipo === 'MO','tipo-refaccion': item.tipo === refaccion,'tipo_paquete': item.tipo === paquete}">
+                              <td class="text-start" [ngClass]="{'tipo-mo': item.tipo === mo || item.tipo === 'mo','tipo-refaccion': item.tipo === refaccion,'tipo_paquete': item.tipo === paquete}">
                                 {{item.nombre | capitalizarUno}}
                               </td>
                               <td class="text-center">{{item.cantidad}} </td>
@@ -340,7 +340,7 @@
                             <tr *ngFor="let item of row.servicios; let i = index">
                               <th class="text-center" scope="row">{{i +  1 }}</th>
                               <td class="text-start" 
-                              [ngClass]="{'tipo-paquete': item.tipo === paquete,'tipo-mo': item.tipo === mo || item.tipo === 'MO','tipo-refaccion': item.tipo === refaccion}">
+                              [ngClass]="{'tipo-paquete': item.tipo === paquete,'tipo-mo': item.tipo === mo || item.tipo === 'mo','tipo-refaccion': item.tipo === refaccion}">
                                 {{item.nombre | capitalizarUno}}
                               </td>
                               <td class="text-center">{{item.cantidad}} </td>

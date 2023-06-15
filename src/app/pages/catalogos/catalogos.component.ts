@@ -304,7 +304,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       case 'paquetes':
         dataSource = this.dataSourcePaquetes;
         break;
-      case 'MO':
+      case 'mo':
         dataSource = this.dataSourceMO;
         break;
       case 'refacciones':

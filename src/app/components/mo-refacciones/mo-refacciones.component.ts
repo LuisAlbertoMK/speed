@@ -22,7 +22,7 @@ export class MoRefaccionesComponent implements OnInit  {
   myControl = new FormControl('');
   filteredOptions: Observable<string[]>;
   formElemento: FormGroup;
-  existe: boolean = false; marca: boolean = false
+  marca: boolean = false
   miniColumnas:number = 100
 
   @Output() dataElemento : EventEmitter<any>
@@ -34,7 +34,9 @@ export class MoRefaccionesComponent implements OnInit  {
 
   por=25
   cantidad=1
-  totalMuestra:number
+  totalMuestra:number = 0
+  faltantes_string: string = null
+  encontrado: boolean = false
   constructor(private _publicos: ServiciosPublicosService, private fb: FormBuilder) { 
     this.dataElemento = new EventEmitter()
   }
@@ -44,9 +46,43 @@ export class MoRefaccionesComponent implements OnInit  {
     this.listadoRefacciones()
     this.automaticos()
     this.crearFormElemento()
-    
+    this.comprobar()
   }
+  comprobar(){
+    
+    
+    
+    this.myControl.valueChanges.subscribe(cambio=>{
+      // console.log(cambio.);
+      const unidos = [...this.lista_arr_mo,...this.lista_arr_refacciones]
+      // console.log(unidos);
+      this.faltantes_string = null
+      const valor = this.myControl.value
+      if (typeof valor === 'string') {
+        // console.log('compara el strign recibido');
+        //primero saber si el nombre ya esta registrado
+        const encontrado = unidos.find(option => option.nombre.trim().toLowerCase() === valor.trim().toLowerCase());
+        this.encontrado = (encontrado) ? true: false
+        
+        if (encontrado) {
+          encontrado.descripcion = (encontrado.descripcion !== null && encontrado.descripcion !== '' ) ? encontrado.descripcion : 'ninguna'
+          const asignaValores = ['cantidad','descripcion','id','marca','nombre','precio','costo','tipo']
 
+          asignaValores.forEach(val => {
+            this.formElemento.get(val).setValue(encontrado[val]);
+            this.formElemento.controls[val].setValue(encontrado[val]);
+          });
+          
+          // this.formElemento.get('status').setValue(true);
+        } else {
+          this.limpiarForm()
+          this.formElemento.controls['id'].setValue(null);
+          this.formElemento.get('nombre').setValue(valor.toLowerCase());
+          this.formElemento.get('tipo').enable();
+        }
+      }
+    })
+  }
   verifica_info(cual:string, cantidad){
     if (cual === 'porcentaje') {
       const porcentaje = Number(cantidad);
@@ -78,13 +114,15 @@ export class MoRefaccionesComponent implements OnInit  {
 
     this.formElemento.get('id').valueChanges.subscribe((id: string) => {
       if (id) {
-        this.formElemento.get('nombre').disable();
+        // this.formElemento.get('nombre').disable();
         this.formElemento.get('tipo').disable();
         this.formElemento.get('precio').disable();
+        this.formElemento.get('descripcion').disable();
       }else{
-        this.formElemento.get('nombre').enable();
+        // this.formElemento.get('nombre').enable();
         this.formElemento.get('tipo').enable();
         this.formElemento.get('precio').enable();
+        this.formElemento.get('descripcion').enable();
       }
       
     })
@@ -100,10 +138,13 @@ export class MoRefaccionesComponent implements OnInit  {
     const costo = this.formElemento.get('costo').value;
     const tipo = this.formElemento.get('tipo').value;
     const ocupado =  (costo>0) ? costo : precio
+    let operacion = 0
     if (ocupado > 0 && cantidad >=1) {
       const margen = (tipo === 'refaccion') ? 1 + (this.por / 100) : 1
-      this.totalMuestra = (cantidad * ocupado) * margen
+      operacion = (cantidad * ocupado) * margen
+      // this.totalMuestra = (cantidad * ocupado) * margen
     }
+    this.totalMuestra = operacion
     
   }
   listadoMO(){
@@ -158,10 +199,9 @@ export class MoRefaccionesComponent implements OnInit  {
   }
   //para obtener la informacion del elemento
   elementoSelecccionado(option){
-    // console.log(option);
-    this.existe = true
     const claves = Object.keys(option)
     const recuperada = this._publicos.nuevaRecuperacionData(option, claves)
+    let descri = (recuperada.descripcion === undefined || recuperada.descripcion === null || recuperada.descripcion === "") ?  'ninguna' : recuperada.descripcion
     if (option.id) {
       this.formElemento.reset({
         id: recuperada.id,
@@ -172,94 +212,79 @@ export class MoRefaccionesComponent implements OnInit  {
         marca: recuperada.marca,
         status: recuperada.status,
         tipo: recuperada.tipo,
-        descripcion: recuperada.descripcion,
+        descripcion: descri,
       })
       
-    }else{
-    }
-    
-    // this.cargaInfo(recuperada);
-    // console.log(recuperada);
-    
-    // (recuperada['tipo'] === 'refaccion') ? this.marca = true : this.marca = false
-    
-  }
-
-  //cargar la informacion en formulario
-
-  //verificar si es un objeto o solo un string
-  verificaElemento(){
-    const value = this.myControl.value
-    if (!value['id']){
-      this.existe = false
-      this.limpiarForm()
     }
   }
-  //guardar elemento
+
   colocarElemento(){
-    const info = this.formElemento.value
-    const claves = Object.keys(info)
-    const nuevaInfo = this._publicos.nuevaRecuperacionData(info, claves)
-    if(!nuevaInfo['costo']) nuevaInfo['costo'] =  0
-    
-
-    // console.log(nuevaInfo);
-
-    const updates = {};
-    //realizar pregunta de si desea guardar el elemento
-    const costoMuestra = (nuevaInfo['costo']>0) ?  nuevaInfo['costo'] : this.formElemento.get('precio').value
-    const costoMuestraCostos = (nuevaInfo['costo']>0) ?  'precio sobrescrito' : 'precio'
-    this._publicos.mensaje_pregunta(`Guardar elemento con ${costoMuestraCostos} ${costoMuestra }`).then(({respuesta})=>{
-      if (respuesta) {
-        //verificar si es nuevo o si esta en c atalogo
-        nuevaInfo['aprobado'] = true
-        nuevaInfo['status'] = true
-        nuevaInfo['nombre'] = this._publicos.CapitalizarUno(nuevaInfo['nombre'] )
-        if (nuevaInfo['id']) {
-          const controls_arr = ['nombre','precio','tipo']
-          controls_arr.forEach(c=>{
-            const control = this.formElemento.get(c);
-            if (control.disabled) {
-              nuevaInfo[c] = this.formElemento.get(c).value
-            }
-          })
-          this.dataElemento.emit( nuevaInfo )
-          // this._publicos.mensajeSwal('Se agrego elemento')
-          this._publicos.swalToastCenter('Se agrego elemento')
-          this.limpiarControl()
-        }else{
-          //agregar nueva clave
-          nuevaInfo['id'] = this._publicos.generaClave()
-         //verificar donde se guardara (ya que se manejan dos distintas direcciones para mo / refacciones
-          const path = nuevaInfo['tipo'] === 'refaccion' ? 'refacciones' : 'manos_obra';
-          updates[`${path}/${nuevaInfo['id']}`] = nuevaInfo;
-          // console.log(updates);
-          update(ref(db), updates).then(()=>{
-            // this._publicos.mensajeSwal('Se agrego elemento')
-            this._publicos.swalToastCenter('Se agrego elemento')
-            this.dataElemento.emit( nuevaInfo )
-            this.limpiarControl()
-          })
-        }
-      }
+    const claves = ['tipo','nombre','cantidad','precio','costo','descripcion']
+    const claves2 = ['id',...claves]
+    const valores = {}
+    claves2.forEach(c=>{
+      valores[c] = this.formElemento.get(c).value
     })
+    const nuevaInfo = this._publicos.nuevaRecuperacionData(valores, claves2)
+    if(!nuevaInfo['costo']) nuevaInfo['costo'] =  0
+    const {ok,faltante_s} = this._publicos.realizaValidaciones(claves,nuevaInfo)
+    
+    this.faltantes_string = faltante_s
+    if (ok) {
+      nuevaInfo['aprobado'] = true
+      nuevaInfo['status'] = true
+      const tipoShow = (nuevaInfo.tipo === 'refaccion') ? 'Refacción' : 'Mano de obra'
+      this._publicos.mensaje_pregunta(`Guardar elemento con costo total de $ ${this.totalMuestra}`,true,`de tipo ${tipoShow}`).then(({respuesta})=>{
+          if (respuesta) {
+            if(!nuevaInfo.id){
+              //registrar en caso de que no tenga id
+              nuevaInfo['id'] = this._publicos.generaClave()
+              const path = nuevaInfo['tipo'] === 'refaccion' ? 'refacciones' : 'manos_obra';
+              const updates = {[`${path}/${nuevaInfo['id']}`]: nuevaInfo}
+              // console.log(updates);
+              update(ref(db), updates).then(()=>{
+                this._publicos.swalToastCenter('Se agrego elemento')
+                this.dataElemento.emit( nuevaInfo )
+                this.limpiarControl()
+              })
+              .catch(err=>{
+                this._publicos.swalToastError('error al registrar elemento')
+              })
+            } else{
+              //en caso de que tenga id solo agregar
+              this.dataElemento.emit( nuevaInfo )
+              this._publicos.swalToastCenter('Se agrego elemento')
+              this.limpiarControl()
+            }
+          }
+      })
+    }
   }
 
   limpiarForm(){
     this.formElemento.reset({
-      id: '',
-      nombre: '',
+      id: null,
+      nombre: null,
       cantidad: 1,
       precio: 0,
       costo: 0,
       marca: '',
       status: true,
       tipo: 'refaccion',
-      descripcion: '',
+      descripcion: null,
     })
+    
+    this.formElemento.controls['tipo'].enable();
+    this.formElemento.get('precio').enable();
+    this.formElemento.get('descripcion').enable();
   }
   limpiarControl(){
     this.myControl.setValue('')
+    this.limpiarForm()
+  }
+
+  decimales(event){
+    this._publicos.validarDecimal(event)
   }
     
 }

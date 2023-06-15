@@ -109,7 +109,7 @@
         <ng-container matColumnDef="cantidad">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
           <td mat-cell *matCellDef="let row"> 
-          <input type="number" min="1"  maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" [value]="row.cantidad" 
+          <input type="number" min="1"  maxlength="5" onkeypress="soloNumeros(event)" [value]="row.cantidad" 
           (change)="editar('cantidad',row, cantidadEle.value)" #cantidadEle class="smallInput">
           </td>
         </ng-container>
@@ -119,7 +119,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo sobrescrito </th>
           <td mat-cell *matCellDef="let row"> 
     
-            <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" 
+            <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" 
           (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
           <!-- {{row.sobrescrito | monedas}} -->
              </td>
@@ -180,12 +180,12 @@
                         {{item.nombre | capitalizarUno}}
                       </td>
                       <td class="text-center">
-                        <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="smallInput"
+                        <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="soloNumeros(event)" class="smallInput"
                                 (change)="editarSubelemento('cantidad',row,item, cantidadSub.value)" #cantidadSub>
                         <!-- {{item.cantidad}} -->
                       </td>
                       <td class="text-end">
-                        <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" class="smallInput"
+                        <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="validarDecimal(event)" class="smallInput"
                                 (change)="editarSubelemento('costo',row,item, cantidadCosto.value)" #cantidadCosto>
                               <!-- {{item.costo | monedas}} -->
                       </td>
@@ -385,7 +385,7 @@
           <div class="col-auto">
             <!-- onkeypress="valideKey(event);" -->
             <!-- (change)="revisarAvance()" -->
-            <input type="number" id="kilometraje" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+            <input type="number" id="kilometraje" onkeypress="soloNumeros(event)"
              [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
               class="form-control form-control-sm" min="0">
           </div>

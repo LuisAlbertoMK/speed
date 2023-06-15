@@ -23,8 +23,7 @@ export class PdfService {
   ]
   constructor(public _publicos:ServiciosPublicosService) { }
   async pdf(data:any,detalles:boolean){
-     
-    
+    const empresaShow = (data.cliente.empresaShow ) ? data.cliente.empresaShow : ''
     function table(data, columns, witdhsDef, showHeaders, headers, layoutDef) {
       return {
           table: {
@@ -299,6 +298,7 @@ export class PdfService {
           // console.log(row);
           if(row['costo'] > 0){
             row['flotilla2'] = transform(row['total'])
+            row['costoShow'] = transform(row['costo'])
             row['normal'] = transform(row['total'] * 1.30)
             row['nombre'] = transformName(row['nombre'])
             columns.forEach(function(column) {
@@ -307,6 +307,7 @@ export class PdfService {
               })
           }else{
             row['flotilla2'] = transform(row['total'])
+            row['costoShow'] = transform(row['precio'])
             row['normal'] = transform(row['total'] * 1.30)
             row['nombre'] = transformName(row['nombre'])
             columns.forEach(function(column) {
@@ -486,7 +487,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Empresa', style:'title' },
-              {width: '35%', text: `${data['cliente'].empresa}`, style:'info' },
+              {width: '35%', text: `${empresaShow}`, style:'info' },
               {width: '15%', text: 'Cilidros', style:'title' },
               {width: '35%', text: `${data['vehiculo'].cilindros}`,  style:'info'},
             ]
@@ -541,11 +542,13 @@ export class PdfService {
           },
           table(
             data['elementos'],
-            ['tipo', 'nombre','normal','flotilla2'],
-            ['15%', '45%', '20%','20%'],
+            ['tipo','nombre','cantidad','costoShow','normal','flotilla2'],
+            ['10%', '35%','10%', '15%','15%','15%'],
             true,
             [ {text:'Tipo', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'center'},
               {text:'Nombre', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'left'},
+              {text:'Cantidad', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'center'},
+              {text:'Precio Unitario', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'right'},
               {text:'Precio Normal', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'right'},
               {text:'Precio Flotilla', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'right'}],
             ''),
