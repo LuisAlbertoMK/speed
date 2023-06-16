@@ -1,0 +1,113 @@
+<form [formGroup]="registroForm" (ngSubmit)="registrarUsuario()">
+   
+        <div class="row text-start">
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end">
+              <div class="mb-1 row">
+                <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <select formControlName="sucursal" class="form-control form-control-sm">
+                        <option value="">Selecciona sucursal</option>
+                        <option [value]="sucursal.id" *ngFor="let sucursal of sucursales_arr">{{sucursal.sucursal}}</option>
+                      </select>
+                    <small *ngIf="validarCampo('sucursal')" class="text-danger">Seleccionar sucursal de cliente</small>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end">
+              <div class="mb-1 row">
+                <label for="no_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label"># cliente</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="text" formControlName="no_cliente" readonly class="form-control form-control-sm">
+                    <!-- <small *ngIf="validarCampo('no_cliente')" class="text-danger">Campo requerido</small> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end">
+                <div class="mb-1 row">
+                  <label for="nombre" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nombre</label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                      <input type="text" formControlName="nombre" maxlength="50" onkeypress="validarLetras(event)" class="form-control form-control-sm">
+                      <small *ngIf="validarCampo('nombre')" class="text-danger">Campo requerido</small>
+                  </div>
+                </div>
+              </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end">
+              <div class="mb-1 row">
+                <label for="apellidos" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Apellidos</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="text" formControlName="apellidos" maxlength="50" onkeypress="validarLetras(event)" class="form-control form-control-sm">
+                    <small *ngIf="validarCampo('apellidos')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end form-group">
+              <div class="mb-1 row">
+                <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="email" formControlName="correo" class="form-control form-control-sm">
+                    <small *ngIf="validarCampo('correo')" class="text-danger">Campo requerido</small>
+                    <small *ngIf="!correoValido" class="text-danger">El correo ya esta en uso</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end form-group">
+              <div class="mb-1 row">
+                <label for="confirmCorreo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Confirma correo</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="email" formControlName="confirmCorreo" class="form-control form-control-sm">
+                    <small *ngIf="validarCampo('confirmCorreo')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end form-group">
+              <div class="mb-1 row">
+                <label for="telefono" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Teléfono Móvil</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="email" formControlName="telefono" onkeypress="soloNumeros(event)" minlength="10" maxlength="10" class="form-control form-control-sm">
+                    <small *ngIf="validarCampo('telefono')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end form-group">
+              <div class="mb-1 row">
+                <label for="tipoCliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo de Cliente</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <select formControlName="tipoCliente" class="form-control form-control-sm">
+                        <option value="">Seleccione un tipo</option>
+                        <option value="particular">Particular</option>
+                        <option value="flotilla">Flotilla</option>
+                      </select>
+                    <small *ngIf="validarCampo('tipoCliente')" class="text-danger">Selecciona tipo de cliente</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end form-group">
+              <div class="mb-1 row">
+                <label for="password" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Contraseña</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="password" formControlName="password" class="form-control form-control-sm">
+                    <small *ngIf="validarCampo('password')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-end form-group">
+              <div class="mb-1 row">
+                <label for="confirmPassword" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Confirma Contraseña</label>
+                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="password" formControlName="confirmPassword" class="form-control form-control-sm">
+                    <small *ngIf="validarCampo('confirmPassword')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg12 col-md-12 col-sm-12 text-center">
+                <button type="submit" [disabled]="registroForm.invalid && !correoValido" class="btn btn-primary btn-sm">
+                    <i class="fa fa-save"></i> Registrar
+                </button>
+            </div>
+        </div>
+    
+    
+  </form>
+  
+  

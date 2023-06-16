@@ -70,6 +70,10 @@
   height: 60%;
 }
 
+.scroll-wrapper {
+  height: 500px; /* Altura máxima del área de desplazamiento */
+  overflow-y: auto; /* Habilita el desplazamiento vertical */
+}
 
 /* #miDiv.disabled {
   pointer-events: none;

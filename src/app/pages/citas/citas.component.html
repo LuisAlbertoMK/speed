@@ -56,25 +56,81 @@
       </button>
     </div>
 </div>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8">
+        <full-calendar [options]="calendarOptions"  ></full-calendar>
+      </div>
+      <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+          <mat-tab label="Citas hoy">
+            <div class="scroll-wrapper">
+              <ol class="list-group list-group-numbered text-start">
+                <li class="list-group-item" *ngFor="let cita of lista_citas_proximas">
+                  {{cita.horario}} {{cita.placas}} {{cita.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
+                  <!-- <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"
+                    data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = false; info_cita= cita; id_cita = cita.id"></i> -->
+                </li>
+              </ol>
+            </div>
+          </mat-tab>
+          <mat-tab label="Fecha especifica">
+            <div class="scroll-wrapper">
+              <ol class="list-group list-group-numbered text-start">
+                <li class="list-group-item" *ngFor="let cita of filtro_citas_mes_all">
+                  {{cita.horario}} {{cita.placas}} {{cita.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
+                  <!-- <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"
+                    data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = false; info_cita= cita; id_cita = cita.id"></i> -->
+                    <p>
+                      <span class="badge bg-primary rounded-pill" [ngClass]="{'bg-danger': !cita.confirmada}">{{cita.confirmadaShow}} Confirmada </span>
+                    </p>
+                </li>
+              </ol>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+ 
+</div>
 <!-- <div id="calendarContainer">
   <full-calendar [options]="calendarOptions"></full-calendar>
 </div> -->
 <!-- <div class="contenedor bg-blue">
   <full-calendar [options]="calendarOptions" id="fullcalendar"></full-calendar>
 </div> -->
-<div class="container">
-  <div class="row g-0">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-10 col-xxl-10 center bg-black">
-      <div class="p-3 border bg-light"><full-calendar [options]="calendarOptions" id="fullcalendar" ></full-calendar></div>
+<!-- <div class="card h-25">
+  <div class="card-body">
+    <div class="div" id="fullcalendar">
+
+      <full-calendar [options]="calendarOptions"  ></full-calendar>
     </div>
   </div>
-</div>
+</div> -->
+<!-- <div class="container">
+  <div class="row g-0">
+    <div class="col-lg-6 col-md-12 col-sm-12 col-12 col-xl-10 col-xxl-10 center bg-black">
+      <div class="border bg-light"><full-calendar [options]="calendarOptions" id="fullcalendar" ></full-calendar></div>
+    </div>
+  </div>
+</div> -->
 <!-- <div class="row g-0" >
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 col-xl-10 col-xxl-10 center" >
       <full-calendar [options]="calendarOptions" id="fullcalendar" ></full-calendar>
   </div>
 </div> -->
-<div class="row">
+<!-- <div class="row">
   <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
     <h1>Citas de hoy</h1>
     <ng-container >
@@ -123,9 +179,9 @@
       </ol>
     </ng-container>
   </div>
-</div>
+</div> -->
 
-<div class="card mt-2">
+<!-- <div class="card mt-2">
   <div class="card-body">
     <h1>Citas vencidas sin asistencia</h1>
     <div class="table-responsive">
@@ -155,7 +211,7 @@
       </table>
     </div>
   </div>
-</div>
+</div> -->
 <div class="row mb-5 mt-5">
   <div class="col">
 

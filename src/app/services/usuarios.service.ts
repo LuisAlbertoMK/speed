@@ -21,6 +21,24 @@ export class UsuariosService {
   constructor(private http: HttpClient, private _publicos: ServiciosPublicosService) { }
 
 
+  consulta_usuarios_correos(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, 'usuarios');
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const clientes = this._publicos.crearArreglo2(snapshot.val());
+          clientes.map(c=>{
+            c.fullname = `${c.nombre} ${c.apellidos}`
+            const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
+            c.vehiculos = vehiculos
+          })
+          resolve(clientes);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
 
   
   async listatecnicos(){

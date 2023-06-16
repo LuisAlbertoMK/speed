@@ -87,6 +87,17 @@ export class ClientesService {
       });
     });
   }
+  genera_no_cliente(sucursal,nombre, apellidos,nuevoContador): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const date = new Date();
+      let nombreCotizacion 
+        const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+        const anio = date.getFullYear().toString().slice(-2);
+        const secuencia = nuevoContador.toString().padStart(4, '0');
+        nombreCotizacion = `${String(nombre).trim().slice(0, 2)}${String(apellidos).trim().slice(0, 2)}${String(sucursal).trim().slice(0, 2)}${mes}${anio}${secuencia}`;
+        resolve(String(nombreCotizacion).toUpperCase()) 
+    });
+  }
   // consultaClientes(){
   // return this.http.get(`${this.url}/clientes.json`)
   //   .pipe(

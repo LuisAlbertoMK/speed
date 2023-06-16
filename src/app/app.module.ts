@@ -131,6 +131,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { CitaComponent } from './pages/cita/cita.component';
 import { EliminarEmpresaComponent } from './pages/eliminar-empresa/eliminar-empresa.component';
+import { RegistroClienteComponent } from './components/registro-cliente/registro-cliente.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -193,7 +194,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegistroUsuarioComponent,
     RegistraCitaComponent,
     CitaComponent,
-    EliminarEmpresaComponent
+    EliminarEmpresaComponent,
+    RegistroClienteComponent
   ],
   imports: [
     BrowserModule,

@@ -30,6 +30,7 @@ import { CitaComponent } from '../cita/cita.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { EmailsService } from 'src/app/services/emails.service';
 import { ActivatedRoute } from '@angular/router';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-citas',
@@ -104,11 +105,11 @@ export class CitasComponent implements OnInit {
     end: new FormControl(null),
   });
 
-
+  infoCitaUnica
 
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService, public dialog: MatDialog,
-    private _email: EmailsService, private rutaActiva: ActivatedRoute) { }
+    private _email: EmailsService, private rutaActiva: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }
   
   ngOnInit(): void {
     this.rol()
@@ -158,15 +159,21 @@ export class CitasComponent implements OnInit {
   handleEventClick(clickInfo: EventClickArg) {
     const id = clickInfo.event.id
     if (id) {
+
+      // (click)="infoCitaUnica = cita; openBottomSheet()"
       const info_ = this.citas_mes_all.find(c=>c.id === id)
-      const dialogRef: MatDialogRef<CitaComponent> = this.dialog.open(CitaComponent, {
-        width: 'vh(100%)',
-        data: info_ // Puedes pasar datos del evento al cuadro de diálogo
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        // Lógica a realizar después de cerrar el cuadro de diálogo
-        // console.log('Cuadro de diálogo cerrado');
-      });
+      this.infoCita = info_
+      // console.log(info_);
+      
+      this.openBottomSheet(false)
+      // const dialogRef: MatDialogRef<CitaComponent> = this.dialog.open(CitaComponent, {
+      //   width: 'vh(100%)',
+      //   data: info_ // Puedes pasar datos del evento al cuadro de diálogo
+      // });
+      // dialogRef.afterClosed().subscribe(result => {
+      //   // Lógica a realizar después de cerrar el cuadro de diálogo
+      //   // console.log('Cuadro de diálogo cerrado');
+      // });
     }
   }
 //ecento cambio de informacion en los eventos asiganados al calendario
@@ -378,7 +385,20 @@ vigilaCalendario(){
 
     
   }
-  
+  openBottomSheet(valor): void {
+    const bottomSheetRef = this._bottomSheet.open(CitaComponent,{
+      data: {info: this.infoCitaUnica, editar:valor} ,
+    });
+    // bottomSheetRef.afterDismissed().subscribe(() => {
+    //   console.log('Bottom sheet has been dismissed.');
+    // });
+    
+    // bottomSheetRef.dismiss();
+  }
+  openLink(event: MouseEvent): void {
+    // this._bottomSheetRef.dismiss();
+    // event.preventDefault();
+  }
 }
 
 
