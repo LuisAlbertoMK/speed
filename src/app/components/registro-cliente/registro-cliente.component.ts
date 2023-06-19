@@ -69,20 +69,20 @@ export class RegistroClienteComponent implements OnInit {
   }
   crea_formulario_cliente(){
     this.registroForm = this.formBuilder.group({
-      sucursal: ['-N2glF34lV3Gj0bQyEWK', Validators.required],
+      sucursal: ['', Validators.required],
       no_cliente: ['', Validators.required],
-      nombre: ['Juan', [Validators.required, Validators.maxLength(50),Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
-      apellidos: ['roro', [Validators.required, Validators.maxLength(50),Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
-      correo: ['mkkaos28@gmail.com', [Validators.required,Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
-      confirmCorreo:['mkkaos28@gmail.com', Validators.compose([Validators.required])],
-      telefono: ['7244869547', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('[0-9]*')]],
-      tipoCliente: ['particular', Validators.required],
-      password: ['MKkaos28/(1', [Validators.required,
+      nombre: ['', [Validators.required, Validators.maxLength(50),Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
+      apellidos: ['', [Validators.required, Validators.maxLength(50),Validators.minLength(3), Validators.pattern('[a-zA-Z ]*')]],
+      correo: ['', [Validators.required,Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
+      confirmCorreo:['', Validators.compose([Validators.required])],
+      telefono_movil: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('[0-9]*')]],
+      tipo: ['particular', Validators.required],
+      password: ['', [Validators.required,
         CustomValidators.patternValidator(/\d/, { hasNumber: true }),
         CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
         CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
         CustomValidators.patternValidator( /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,{hasSpecialCharacters: true})]],
-      confirmPassword: ['MKkaos28/(1', Validators.compose([Validators.required])],
+      confirmPassword: ['', Validators.compose([Validators.required])],
     },
     {
       validator: [CustomValidators.passwordMatchValidator,CustomValidators.correoMatchValidator]
@@ -105,9 +105,13 @@ export class RegistroClienteComponent implements OnInit {
     this.registroForm.get('correo').valueChanges.subscribe((correo: string) => {
         if (correo) {
           const existe_correo = this.correos_full.find(c=>c === String(correo).toLowerCase())
+          console.log(existe_correo);
+          
           if(existe_correo) {
             this.correoValido = false
             this.registroForm.get('correo').hasError('emailInUse')
+          }else{
+            this.correoValido = true
           }
         }
     })
@@ -138,7 +142,7 @@ export class RegistroClienteComponent implements OnInit {
     const registroData = this.registroForm.value;
     
     const recupera_usuario= ['correo','password','sucursal']
-    const recupera_cliente = ['nombre','apellidos','correo','password','sucursal','telefono','tipoCliente','no_cliente']
+    const recupera_cliente = ['nombre','apellidos','correo','password','sucursal','telefono_movil','tipo','no_cliente']
     this._publicos.mensaje_pregunta('Seguro de registrar usuario').then(({respuesta})=>{
       if (respuesta) {
         const recuperada_cliente = this._publicos.nuevaRecuperacionData(registroData,recupera_cliente)
@@ -148,34 +152,36 @@ export class RegistroClienteComponent implements OnInit {
 
         recuperada_usuarios['rol'] = 'cliente'
         recuperada_usuarios['status'] = true
+        recuperada_cliente['status'] = true
         recuperada_usuarios['usuario'] = `${recuperada_cliente.nombre}`
         
         
         const otra = { email:    recuperada_cliente.correo,password: recuperada_cliente.password,nombre:   recuperada_cliente.usuario }
+        const clave = this._publicos.generaClave()
         const updates = { 
-          [`clientes/${this._publicos.generaClave()}`]: recuperada_cliente,
-          [`usuarios/${this._publicos.generaClave()}`]: recuperada_usuarios
+          [`clientes/${clave}`]: recuperada_cliente,
+          [`usuarios/${clave}`]: recuperada_usuarios
          };
         //  console.log(updates);
          
-        // this._auth.nuevoUsuario(otra).subscribe((token)=>{
-        //   if (token) {
-        //     update(ref(db), updates)
-        //       .then(a=>{
-        //         this._publicos.swalToast('Se registro usuario')
-        //         this._auth.login(otra)
-        //         setTimeout(()=>{
-        //           window.location.href = '/inicio'
-        //         },200)
-        //         this.registroForm.reset()
-        //       })
-        //       .catch(err=>{
-        //         this._publicos.swalToastError('Error al registrar usuario')
-        //       })
-        //   }else{
-        //     this._publicos.swalToastError('Error al generar token')
-        //   }
-        // })
+        this._auth.nuevoUsuario(otra).subscribe((token)=>{
+          if (token) {
+            update(ref(db), updates)
+              .then(a=>{
+                this._publicos.swalToast('Se registro usuario')
+                // this._auth.login(otra)
+                setTimeout(()=>{
+                  window.location.href = '/loginv1'
+                },200)
+                this.registroForm.reset()
+              })
+              .catch(err=>{
+                this._publicos.swalToastError('Error al registrar usuario')
+              })
+          }else{
+            this._publicos.swalToastError('Error al generar token')
+          }
+        })
       }
     })
     // Realizar la lógica de registro de usuario

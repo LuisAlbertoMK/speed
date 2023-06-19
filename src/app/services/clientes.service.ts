@@ -23,6 +23,17 @@ const dbRef = ref(getDatabase());
 export class ClientesService {
   telefonosInvalidos:any[]=['5555555555','1111111111','0000000000','7777777777','1234567890','0123456789'];
   camposCliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
+  camposCliente_show=[
+    {valor: 'no_cliente', show:'# Cliente'},
+    {valor: 'nombre', show:'Nombre'},
+    {valor: 'apellidos', show:'Apellidos'},
+    {valor: 'correo', show:'Correo'},
+    {valor: 'correo_sec', show:'Correo adicional'},
+    {valor: 'telefono_fijo', show:'Tel. Fijo'},
+    {valor: 'telefono_movil', show:'Tel. cel.'},
+    {valor: 'tipo', show:'Tipo'},
+    {valor: 'empresa', show:'Empresa'},
+  ]
   camposSave= ['no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','empresaShow','sucursalShow']
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService, private _sucursales: SucursalesService,
     private _vehiculos: VehiculosService,

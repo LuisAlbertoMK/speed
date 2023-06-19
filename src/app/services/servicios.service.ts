@@ -21,6 +21,31 @@ export class ServiciosService {
   constructor(private http: HttpClient, private _publicos: ServiciosPublicosService, private _clientes: ClientesService, 
     private _vehiculos: VehiculosService, private _sucursales: SucursalesService) { }
 
+    campos_servicios_hard = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva','hitorial_gastos','historial_pagos',
+    'margen','sucursal','notificar','reporte','servicio','servicios','status','vehiculo','fecha_entregado','hora_entregado','tecnico','showNameTecnico']
+//TODO aqui las nuevas funciones
+
+consulta_recepciones_new(): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    get(child(dbRef, `recepciones`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const recepciones = this._publicos.crearArreglo2(snapshot.val());
+        recepciones.map(c=>{
+          c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}` 
+          c.searchPlacas = `${c.vehiculo.placas}` 
+        })
+        resolve(recepciones);
+      } else {
+        resolve([]);
+      }
+    })
+  });
+}
+//TODO aqui las nuevas funciones
+
+
+
+    ///
   async no_OS(infoSucursal: string,rol:string ){
     let no_OS = '', numero = 0, secuencia=''; let ceros = ''
     let mes = ''; let sucursal= '', nuevoRol:string ='', cuantas:number = 0

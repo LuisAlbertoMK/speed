@@ -25,6 +25,7 @@ export class CotizacionService {
     {id:'6',pago:'18 meses',interes:17.70,numero:18},
     {id:'7',pago:'24 meses',interes:24.,numero:24}
   ]
+   camposCotizaciones = ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName']
   constructor(private http: HttpClient,private _publicos: ServiciosPublicosService, private _clientes: ClientesService,
               private _vehiculos: VehiculosService, private _sucursales:SucursalesService) { }
 

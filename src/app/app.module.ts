@@ -132,6 +132,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { CitaComponent } from './pages/cita/cita.component';
 import { EliminarEmpresaComponent } from './pages/eliminar-empresa/eliminar-empresa.component';
 import { RegistroClienteComponent } from './components/registro-cliente/registro-cliente.component';
+import { MiperfilComponent } from './pages/miperfil/miperfil.component';
+import { CotizacionesClienteComponent } from './pages/cotizaciones-cliente/cotizaciones-cliente.component';
+import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-cliente.component';
+import { EstadisticasClienteComponent } from './pages/estadisticas-cliente/estadisticas-cliente.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -195,7 +199,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RegistraCitaComponent,
     CitaComponent,
     EliminarEmpresaComponent,
-    RegistroClienteComponent
+    RegistroClienteComponent,
+    MiperfilComponent,
+    CotizacionesClienteComponent,
+    ServiciosClienteComponent,
+    EstadisticasClienteComponent
   ],
   imports: [
     BrowserModule,

@@ -27,6 +27,13 @@ import { ReporteGastosComponent } from './pages/reporte-gastos/reporte-gastos.co
 import { ListaProblemasComponent } from './pages/lista-problemas/lista-problemas.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { EliminarEmpresaComponent } from './pages/eliminar-empresa/eliminar-empresa.component';
+import { RegistroClienteComponent } from './components/registro-cliente/registro-cliente.component';
+import { GuardClienteGuard } from './guards/guard-cliente.guard';
+import { MiperfilComponent } from './pages/miperfil/miperfil.component';
+import { GuardCliente2Guard } from './guards/guard-cliente2.guard';
+import { CotizacionesClienteComponent } from './pages/cotizaciones-cliente/cotizaciones-cliente.component';
+import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-cliente.component';
+import { EstadisticasClienteComponent } from './pages/estadisticas-cliente/estadisticas-cliente.component';
 
 const routes: Routes = [];
 
@@ -37,28 +44,34 @@ const routes: Routes = [];
 export class AppRoutingModule { }
 const APP_ROUTES: Routes = [
   { path: 'inicio', component: InicioComponent,  canActivate:[AuthGuard]},
-  { path: 'catalogos', component: CatalogosComponent,  canActivate:[AuthGuard] },
-  { path: 'citas', component: CitasComponent,  canActivate:[AuthGuard] },
-  { path: 'clientes', component: ClientesComponent,  canActivate:[AuthGuard] },
+  { path: 'catalogos', component: CatalogosComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
+  { path: 'citas', component: CitasComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
+  { path: 'clientes', component: ClientesComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
   { path: 'configuracion', component: ConfiguracionComponent ,  canActivate:[AuthGuard]},
-  { path: 'cotizacion', component: CotizacionComponent,  canActivate:[AuthGuard] },
+  { path: 'cotizacion', component: CotizacionComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
   { path: 'sucursales', component: SucursalesComponent,  canActivate:[AuthGuard] },
-  { path: 'servicios', component: ServiciosComponent,  canActivate:[AuthGuard] },
-  { path: 'usuarios', component: UsuariosComponent,  canActivate:[AuthGuard] },
-  { path: 'recepcion/:recepcion/:pagina', component: RecepcionComponent ,  canActivate:[AuthGuard]},
-  { path: 'recordatorios', component: RecordartoriosComponent ,  canActivate:[AuthGuard]},
-  { path: 'historial-vehiculo', component: HistorialVehiculoComponent ,  canActivate:[AuthGuard]},
-  { path: 'historial-cliente', component: HistorialClienteComponent ,  canActivate:[AuthGuard]},
-  { path: 'cotizacionNueva', component: CotizacionNewComponent ,  canActivate:[AuthGuard]},
-  { path: 'home', component: HomeComponent },
-  { path: 'ServiciosConfirmar', component: ServiciosConfirmarComponent,canActivate:[AuthGuard] },
-  { path: 'modificaRecepcion/:rutaAnterior/:idRecepcion', component: ModificaRecepcionComponent,canActivate:[AuthGuard] },
-  { path: 'automaticos', component: AutomaticosComponent },
+  { path: 'servicios', component: ServiciosComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
+  { path: 'usuarios', component: UsuariosComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
+  { path: 'recepcion/:recepcion/:pagina', component: RecepcionComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'recordatorios', component: RecordartoriosComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'historial-vehiculo', component: HistorialVehiculoComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'historial-cliente', component: HistorialClienteComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'cotizacionNueva', component: CotizacionNewComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'ServiciosConfirmar', component: ServiciosConfirmarComponent,canActivate:[AuthGuard,GuardClienteGuard] },
+  { path: 'modificaRecepcion/:rutaAnterior/:idRecepcion', component: ModificaRecepcionComponent,canActivate:[AuthGuard,GuardClienteGuard] },
+  { path: 'reporteGastos', component: ReporteGastosComponent, canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'registraProblemas', component: ListaProblemasComponent,canActivate:[AuthGuard]},
+  { path: 'eliminarEmpresa', component: EliminarEmpresaComponent,canActivate:[AuthGuard]},
+
+  { path: 'Registro', component: RegistroClienteComponent},
+
   { path: 'loginv1', component: Loginv1Component},
-  { path: 'reporteGastos', component: ReporteGastosComponent},
-  { path: 'pruebaAuth', component: AuthPruebaComponent},
-  { path: 'registraProblemas', component: ListaProblemasComponent},
-  { path: 'eliminarEmpresa', component: EliminarEmpresaComponent},
+  { path: 'automaticos', component: AutomaticosComponent, canActivate:[GuardClienteGuard,AuthGuard]},
+  { path: 'miPerfil', component: MiperfilComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'cotizacionesCliente', component: CotizacionesClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'serviciosCliente', component: ServiciosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'estadisticasCliente', component: EstadisticasClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'home', component: HomeComponent },
   { path: 'calendario', component: CalendarComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];

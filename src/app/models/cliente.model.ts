@@ -4,10 +4,12 @@ export interface Cliente {
     nombre: string
     apellidos: string
     correo: string
-    correo_sec: string
-    telefono_fijo: number
+    correo_sec?: string
+    password?: string
+    no_cliente?:string
+    telefono_fijo?: number
     telefono_movil: number
     tipo: number
     sucursal: number
-    envio_correo:boolean
+    envio_correo?:boolean
   }

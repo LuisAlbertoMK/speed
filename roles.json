@@ -55,7 +55,7 @@ const starCountRef = ref(db, `clientes`)
         onlyOnce: true
       })
 	
-
+35089441
 
 get(child(dbRef, `users/${userId}`)).then((snapshot) => {
   if (snapshot.exists()) {

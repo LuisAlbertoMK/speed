@@ -1,0 +1,65 @@
+.registration-form {
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  .registration-form h2 {
+    text-align: center;
+    color: #333;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: "Arial", sans-serif;
+  }
+  .form-group select {
+    width: 100%;
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: "Arial", sans-serif;
+  }
+  
+  button[type="submit"] {
+    width: 25%;
+    padding: 10px;
+    background-color: #0c7536;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-family: "Arial", sans-serif;
+    cursor: pointer;
+    text-align: center;
+  }
+  button[type="button"] {
+    width: 25%;
+    padding: 10px;
+    background-color: #e60000;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-family: "Arial", sans-serif;
+    cursor: pointer;
+    text-align: center;
+  }
+  button[type="submit"]:hover {
+    background-color: #217fba;
+  }
+  

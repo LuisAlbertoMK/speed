@@ -13,7 +13,7 @@ const dbRef = ref(getDatabase());
   providedIn: 'root'
 })
 export class CotizacionesService {
-
+  camposCotizaciones = ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName']
   constructor(
     private _publicos: ServiciosPublicosService,private _clientes: ClientesService,private _vehiculos: VehiculosService,
     private _sucursales: SucursalesService, private _servicios:ServiciosService

@@ -210,7 +210,7 @@ export class Loginv1Component implements OnInit {
                 /* Read more about handling dismissals below */
                 if (result.dismiss === Swal.DismissReason.timer) {
                   // console.log('I was closed by the timer')
-                  window.location.href = '/citas'
+                  window.location.href = '/inicio'
                 }
               })
              }else{
@@ -243,7 +243,7 @@ export class Loginv1Component implements OnInit {
           // console.log(element, `${this._security.servicioDecrypt(variableX[element])}`);
         }
         if (existe.sesion && existe.accessToken) {
-          window.location.href = '/citas'
+          window.location.href = '/inicio'
         }else{
           // window.location.href = '/loginv1'          
         }

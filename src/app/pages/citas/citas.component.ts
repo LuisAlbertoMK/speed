@@ -117,6 +117,8 @@ export class CitasComponent implements OnInit {
   //obtener informacion basica para consulta de informacion de cualquier indele y permisos de usuario
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+    
+    
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
 
