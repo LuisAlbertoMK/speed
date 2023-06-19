@@ -36,7 +36,7 @@ export class InicioComponent implements OnInit {
     {path:'serviciosCliente', show:'Mis servicios',icono:'car-garage'},
     {path:'sucursales', show:'Lista sucursales',icono:'landmark'},
     {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
-    {path:'citasCliente', show:'Mis citas',icono:'debug'}
+    // {path:'citasCliente', show:'Mis citas',icono:'debug'}
   ]
   Gerente_rol: boolean = false
   SuperSU_rol: boolean = false
