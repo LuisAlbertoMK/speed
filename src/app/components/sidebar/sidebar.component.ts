@@ -18,6 +18,36 @@ export class SidebarComponent implements OnInit {
   TIPO_USUARIO:string=''
   nombreSucursalMuestra:string =''
   mostrarAdministracion:boolean = false
+
+  Gerente_rol: boolean = false
+  SuperSU_rol: boolean = false
+  Cliente_rol: boolean = false
+
+
+  asigancion_roles_gerente = [
+    {path:'clientes', show:'Clientes',icono:'user'},
+    {path:'cotizacion', show:'Cotizaciones',icono:'folder'},
+    {path:'catalogos', show:'Catalogos',icono:'address-book'},
+    {path:'reporteGastos', show:'Reporte de gastos',icono:'book'},
+    {path:'sucursales', show:'Sucursales',icono:'landmark'},
+    {path:'servicios', show:'vehículos en piso',icono:'car-building'},
+    {path:'citas', show:'Citas',icono:'calendar-check'},
+    {path:'usuarios', show:'Usuarios y roles',icono:'user'},
+    {path:'recordatorios', show:'Recordatorios',icono:'alarm-exclamation'},
+    {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
+    {path:'eliminarEmpresa', show:'Elimina empresa',icono:'ban'},
+  ]
+  asigancion_roles_cliente = [
+    {path:'miPerfil', show:'Mi informacion',icono:'book'},
+    // {path:'vehiculos', show:'Mis vehiculos',icono:'cars'},
+    {path:'estadisticasCliente', show:'Mis estadisticas',icono:'chart-pie'},
+    {path:'cotizacionesCliente', show:'Mis cotizaciones',icono:'book-user'},
+    {path:'serviciosCliente', show:'Mis servicios',icono:'car-garage'},
+    {path:'sucursales', show:'Lista sucursales',icono:'landmark'},
+    {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
+    // {path:'citasCliente', show:'Mis citas',icono:'debug'}
+  ]
+
   constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _sucursales: SucursalesService) { }
 
   ngOnInit(): void {
@@ -39,6 +69,15 @@ export class SidebarComponent implements OnInit {
       this._sucursales.consultaSucursales_new().then((sucursales)=>{
         this.nombreSucursalMuestra = sucursales.find(s=>s.id === this.SUCURSAL).sucursal
       })
+    }
+
+    if (this.ROL==='SuperSU') {
+      // this.mostrarAdministracion = true
+      this.SuperSU_rol = true
+    }else if(this.ROL === 'Gerente'){
+      this.Gerente_rol = true
+    }else if(this.ROL === 'cliente'){
+      this.Cliente_rol = true
     }
   }
   NombreSucursal(){

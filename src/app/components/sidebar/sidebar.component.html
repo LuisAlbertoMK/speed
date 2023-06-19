@@ -33,8 +33,6 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
                <li class="nav-item">
                 <a  [routerLink]="['/inicio']" class="nav-link">
                   <i class="nav-icon fad fa-home-alt fa-1x"></i>
@@ -44,100 +42,25 @@
                   </p>
                 </a>
               </li>
-          <li class="nav-item">
-            <a  [routerLink]="['/clientes']" class="nav-link">
-  
-              <i class=" nav-icon fa fa-user fa-1x"></i>
-              <p>
-                Clientes y Vehículos
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a [routerLink]="['/catalogos']" class="nav-link">
-  
-              <i class=" nav-icon fa fa-address-book  fa-1x"></i>
-              <p>
-                Catalogos
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a [routerLink]="['/reporteGastos']" class="nav-link">
-  
-              <i class=" nav-icon fa fa-books  fa-1x"></i>
-              <p>
-                Reporte Gastos
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a [routerLink]="['/citas']" class="nav-link">
-  
-              <i class=" nav-icon fa fa-calendar-check fa-1x"></i>
-              <p>
-                Citas
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a  [routerLink]="['/cotizacion']" class="nav-link">
-  
-              <i class=" nav-icon fa fa-folder fa-1x"></i>
-              <p>
-                Cotizaciones
-                <!-- <span class="right badge badge-danger">New</span> -->
-              </p>
-            </a>
-          </li>
-  
-          <li class="nav-item">
-            <a [routerLink]="['/servicios']" class="nav-link">
-  
-              <i class=" nav-icon fad fa-taxi fa-1x"></i>
-              <p>
-                Servicios
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a [routerLink]="['/eliminarEmpresa']" class="nav-link">
-  
-              <i class=" nav-icon fad fa-ban fa-1x"></i>
-              <p>
-                Elimina empresa
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a  [routerLink]="['/usuarios']" class="nav-link">
-              <i class="nav-icon fad fa-users fa-1x"></i>
-              <p>
-                Usuarios
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a [routerLink]="['/sucursales']" class="nav-link">
-  
-              <i class=" nav-icon fad fa-landmark fa-1x"></i>
-              <p>
-                Sucursales
-                <!--span class="right badge badge-danger">New</span-->
-              </p>
-            </a>
-          </li>
+               <ng-container *ngIf="Gerente_rol || SuperSU_rol">
+                <li class="nav-item" *ngFor="let gerente of asigancion_roles_gerente">
+                  <a  [routerLink]="['/'+ gerente.path]" class="nav-link" >
+                    <i class=" nav-icon fa  fa-1x" [class]="'fa-'+gerente.icono"></i>
+                    <p> {{gerente.show | capitalizarUno}} </p>
+                  </a>
+                </li>
+                
+              </ng-container>
+              <ng-container *ngIf="Cliente_rol">
+                <li class="nav-item" *ngFor="let gerente of asigancion_roles_cliente">
+                  <a  [routerLink]="['/'+ gerente.path]" class="nav-link" >
+                    <i class=" nav-icon fa  fa-1x" [class]="'fa-'+gerente.icono"></i>
+                    <p> {{gerente.show | capitalizarUno}} </p>
+                  </a>
+                </li>
+              </ng-container>
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
   </aside>
   

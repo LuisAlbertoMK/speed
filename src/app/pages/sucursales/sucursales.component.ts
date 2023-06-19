@@ -14,6 +14,7 @@ import { FileItem } from 'src/app/models/FileItem.model';
 // import { child, getDatabase, onValue, push, ref, set } from "firebase/database"
 import { getDatabase, onValue, ref, set, push, get, child, limitToFirst } from 'firebase/database';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -84,7 +85,7 @@ export class SucursalesComponent implements OnInit {
   formaSucursal: FormGroup
   formaUploadFile: FormGroup
   desactivaGuardar:boolean = false
-  constructor(private route: ActivatedRoute,private fb: FormBuilder, 
+  constructor(private route: ActivatedRoute,private fb: FormBuilder,  private _publicos: ServiciosPublicosService,
     private _sucursal: SucursalesService, private _uploadImagen: UploadFileService,
     private router:Router, private _security:EncriptadoService, private _sucursales: SucursalesService) {}
 
@@ -107,11 +108,19 @@ export class SucursalesComponent implements OnInit {
     }
   }
   listaSucursales(){
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.listaArrarySucursales = sucursales
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
+    // this._sucursales.consultaSucursales_new().then((sucursales) => {
+    //   this.listaArrarySucursales = sucursales
+    // }).catch((error) => {
+    //   // Manejar el error si ocurre
+    // });
+    const starCountRef = ref(db, `sucursales`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.listaArrarySucursales = this._publicos.crearArreglo2(snapshot.val())
+      }
+    }, {
+        onlyOnce: true
+      })
   }
   getInformacionSucursal(id:string){
     //priemro obtener informacion de sucursal
