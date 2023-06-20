@@ -63,7 +63,43 @@
         <full-calendar [options]="calendarOptions"  ></full-calendar>
       </div>
       <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Citas de hoy
+              </mat-panel-title>
+              <!-- <mat-panel-description>
+                This is a summary of the content
+              </mat-panel-description> -->
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+            contenido 1
+            <div class="scroll-wrapper">
+              <ol class="list-group list-group-numbered text-start">
+                <li class="list-group-item" *ngFor="let cita of lista_citas_proximas">
+                  {{cita.horario}} {{cita.placas}} {{cita.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
+                </li>
+              </ol>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                               (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Self aware panel
+              </mat-panel-title>
+              <mat-panel-description>
+                Currently I am {{panelOpenState ? 'open' : 'closed'}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>I'm visible because I am open</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+        
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" class="m-sm-1">
           <mat-tab label="Citas hoy">
             <div class="scroll-wrapper">
               <ol class="list-group list-group-numbered text-start">
@@ -71,13 +107,13 @@
                   {{cita.horario}} {{cita.placas}} {{cita.fullname | slice:0:15}} ...
                   <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
                   <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
-                  <!-- <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"
-                    data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = false; info_cita= cita; id_cita = cita.id"></i> -->
                 </li>
               </ol>
             </div>
           </mat-tab>
-          <mat-tab label="Fecha especifica">
+          
+          <mat-tab [label]="fecha_muestra">
+            <h2>{{fecha_muestra}}</h2>
             <div class="scroll-wrapper">
               <ol class="list-group list-group-numbered text-start">
                 <li class="list-group-item" *ngFor="let cita of filtro_citas_mes_all">
@@ -89,6 +125,17 @@
                     <p>
                       <span class="badge bg-primary rounded-pill" [ngClass]="{'bg-danger': !cita.confirmada}">{{cita.confirmadaShow}} Confirmada </span>
                     </p>
+                </li>
+              </ol>
+            </div>
+          </mat-tab>
+          <mat-tab [label]="rango_select">
+            <div class="scroll-wrapper">
+              <ol class="list-group list-group-numbered text-start">
+                <li class="list-group-item" *ngFor="let cita of citas_mes_all">
+                  {{cita.horario}} {{cita.placas}} {{cita.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
                 </li>
               </ol>
             </div>

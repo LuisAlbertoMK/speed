@@ -42,6 +42,7 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 ///material
 
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table'
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator'
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -251,6 +252,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatSidenavModule,
     MatProgressBarModule,
     MatButtonToggleModule,
+    MatExpansionModule,
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage())
   ],

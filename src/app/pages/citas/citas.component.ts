@@ -107,6 +107,13 @@ export class CitasComponent implements OnInit {
 
   infoCitaUnica
 
+  fecha_muestra:string = '' || 'dia seleccionado'
+  rango_select: string = '' || 'rango seleccionado'
+
+
+  panelOpenState = false;
+
+  
   constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService, public dialog: MatDialog,
     private _email: EmailsService, private rutaActiva: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }
@@ -155,6 +162,9 @@ export class CitasComponent implements OnInit {
     const citasDiaSelect =this.citas_mes_all.filter(c=>
       c.fecha_compara >= fechaInicial_dia && c.fecha_compara <= fechafinal_dia
     )
+    const fecha_muestra = this._publicos.convierte_fechaString_personalizada(fechaInicial_dia).string_fecha
+    this.fecha_muestra = fecha_muestra
+    
     this.filtro_citas_mes_all = this._publicos.ordenarData(citasDiaSelect,'horario',true)
   }
 //cuando selecciona un evento de calendario
@@ -241,6 +251,9 @@ vigilaCalendario(){
       const fechaLimite = this._publicos.resetearHoras_horas(start['_d'],'08:30:00')
       const fechaLimite2 = this._publicos.resetearHoras_horas(end['_d'],'18:30:00')
 
+      const muestra1 = this._publicos.convierte_fechaString_personalizada(fechaLimite).string_fecha
+      const muestra2 = this._publicos.convierte_fechaString_personalizada(fechaLimite2).string_fecha
+      this.rango_select = `${muestra1} - ${muestra2}`
       let citasFinales = []
       //si los años son iguales 
       if(year_start === year_end){
@@ -333,7 +346,10 @@ vigilaCalendario(){
         const fechaLimite = this._publicos.resetearHoras_horas(new Date(),'08:30:00')
         const fechaLimite2 = this._publicos.resetearHoras_horas(new Date(),'18:30:00')
         const lim_asistencia = this._publicos.resetearHoras_horas(inicio,'08:30:00')
-        
+        ///muestra titulo de tabs
+        const muestra1 = this._publicos.convierte_fechaString_personalizada(fechaLimite).string_fecha
+        const muestra2 = this._publicos.convierte_fechaString_personalizada(fechaLimite2).string_fecha
+        this.rango_select = `${muestra1} - ${muestra2}`
         //obtener la lista de las citas dependiendo del usuario
         const citasFinales = (this.sucursalCalendario === 'Todas') ? 
         await this._citas.consulta_citas_mes_todas_new(anio,mes) : 
