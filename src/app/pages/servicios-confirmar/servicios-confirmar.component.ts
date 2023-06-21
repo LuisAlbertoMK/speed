@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { child, get, getDatabase, onValue, ref, update } from 'firebase/database';
 import SignaturePad from 'signature_pad';
-import { UploadFirmaService } from 'src/app/services/upload-firma.service';
 
 import { EmailsService } from 'src/app/services/emails.service';
 import Swal from 'sweetalert2';
@@ -15,25 +14,20 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-import { CatalogosService } from '../../services/catalogos.service';
 import { ClientesService } from '../../services/clientes.service';
 import { ServiciosService } from '../../services/servicios.service';
 import { SucursalesService } from '../../services/sucursales.service';
-import { VehiculosService } from '../../services/vehiculos.service';
 
 import html2canvas from 'html2canvas';
 import { FileItem } from 'src/app/models/FileItem.model';
 import { CotizacionService } from 'src/app/services/cotizacion.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { PdfRecepcionService } from '../../services/pdf-recepcion.service';
-import { UploadFileService } from '../../services/upload-file.service';
-import { UsuariosService } from '../../services/usuarios.service';
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts.js";
 
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { EmpresasService } from 'src/app/services/empresas.service';
 import { UploadPDFService } from '../../services/upload-pdf.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
@@ -116,29 +110,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     {id:'6',pago:'18 meses',interes:17.70,numero:18},
     {id:'7',pago:'24 meses',interes:24.,numero:24}
   ]
-  detalles_rayar=[
-    {valor:'capo', show:'capo',status:false},
-    {valor:'paragolpes_frontal', show:'paragolpes frontal',status:false},
-    {valor:'paragolpes_posterior', show:'paragolpes posterior',status:false},
-    {valor:'techo', show:'techo',status:false},
-    {valor:'espejo_derecho', show:'espejo derecho',status:false},
-    {valor:'espejo_izquierdo', show:'espejo izquierdo',status:false},
-    {valor:'faros_frontales', show:'faros frontales',status:false},
-    {valor:'faros_posteriores', show:'faros posteriores',status:false},
-    {valor:'parabrisas_posterior', show:'parabrisas posterior',status:false},
-    {valor:'paragolpes_frontal', show:'paragolpes frontal',status:false},
-    {valor:'paragolpes_posterior', show:'paragolpes posterior',status:false},
-    {valor:'puerta_lateral_derecha_1', show:'puerta lateral derecha 1',status:false},
-    {valor:'puerta_lateral_derecha_2', show:'puerta lateral derecha 2',status:false},
-    {valor:'puerta_lateral_izquierda_1', show:'puerta lateral izquierda 1',status:false},
-    {valor:'puerta_lateral_izquierda_2', show:'puerta lateral izquierda 2',status:false},
-    {valor:'puerta_posterior', show:'puerta posterior',status:false},
-    {valor:'tirador_lateral_derecha_1', show:'tirador lateral derecha 1',status:false},
-    {valor:'tirador_lateral_derecha_2', show:'tirador lateral derecha 2',status:false},
-    {valor:'tirador_lateral_izquierda_1', show:'tirador lateral izquierda 1',status:false},
-    {valor:'tirador_lateral_izquierda_2', show:'tirador lateral izquierda 2',status:false},
-    {valor:'tirador_posterior', show:'tirador posterior',status:false}
-  ]
+  detalles_rayar=[...this._servicios.detalles_rayar]
   paquete: string = 'paquete'
   refaccion: string = 'refaccion'
   mo: string = 'mo'
@@ -177,43 +149,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   sizeScreen = {w:0,h:0}
 
   ///check list
-  checkList = [
-    {valor:"antena",show:'antena', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"birlo_seguridad",show:'birlo seguridad', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"bocinas",show:'bocinas', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"botones_interiores",show:'botones interiores', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"boxina_claxon",show:'boxina claxon', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"calefaccion",show:'calefaccion', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"cenicero",show:'cenicero', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"cristales",show:'cristales', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"encendedor",show:'encendedor', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"espejo_retorvisor",show:'espejo retrovisor', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"espejos_laterales",show:'espejos laterales', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"estuche_herramientas",show:'estuche herramientas', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"extintor",show:'extintor', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"gato",show:'gato', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"golpes_y_carroceria",show:'golpes y carroceria', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"instrumentos_tablero",show:'instrumentos tablero', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"interiores",show:'interiores', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"limpiadores",show:'limpiadores', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"llanta_refaccion",show:'llanta refaccion', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"llave_cruz",show:'llave cruz', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"luces",show:'Luces', opciones: ["si","no","dañado"],status:'si'},
-    {valor:"maneral_gato",show:'maneral gato', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"manijas_interiores",show:'manijas interiores', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"molduras_completas",show:'molduras completas', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"radio",show:'radio', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"tapetes",show:'tapetes', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"tapon_combustible",show:'tapon combustible', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"tapones_llantas",show:'tapones llantas', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"tapones_motor",show:'tapones motor', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:'si'},
-    {valor:"tarjeta_de_circulacion",show:'tarjeta de circulacion', opciones: [ "si","no"],status:'si'},
-    {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],status:'si'},
-    {valor:"testigos_en_tablero",show:'testigos en tablero', opciones: [ "si","no"],status:'si'},
-    {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:'1/4'}
-    
-  ]
+  checkList = [...this._servicios.checkList]
   rangeFechaEntrega = new FormGroup({
     start: new FormControl(new Date),
     end: new FormControl(new Date),
@@ -250,13 +186,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:''}
 
   constructor(
-    private router: Router, private rutaActiva: ActivatedRoute, private _formBuilder: FormBuilder, private _clientes:ClientesService,
-    private _uploadfirma: UploadFirmaService,private _mail:EmailsService, private fb: FormBuilder, private _publicos:ServiciosPublicosService,
-    private _sucursales: SucursalesService, private _vehiculos: VehiculosService,
-    private _servicios: ServiciosService, private _catalogos:CatalogosService, private _uploadFiles: UploadFileService,
-    private _usuarios: UsuariosService,  private _security:EncriptadoService,
-    private _cotizaciones: CotizacionService, private _pdfRecepcion: PdfRecepcionService,
-    private _pdf: UploadPDFService, private _empresas: EmpresasService, private _cotizacion: CotizacionService) { }
+    private router: Router, private rutaActiva: ActivatedRoute, private _clientes:ClientesService,
+    private _mail:EmailsService, private _publicos:ServiciosPublicosService,private _sucursales: SucursalesService, 
+    private _servicios: ServiciosService, private _security:EncriptadoService,private _pdfRecepcion: PdfRecepcionService,
+    private _pdf: UploadPDFService, private _cotizacion: CotizacionService) { }
     
   ngOnInit(): void {
     this.listaSucursales()

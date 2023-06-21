@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
-import Swal from 'sweetalert2';
+
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { SucursalesService } from '../../services/sucursales.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';

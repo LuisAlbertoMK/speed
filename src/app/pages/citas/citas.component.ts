@@ -5,29 +5,26 @@ import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { CitasService } from 'src/app/services/citas.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
-import Swal from 'sweetalert2';
-import 'moment/locale/es';
+
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi, Calendar, FullCalendarComponent } from '@fullcalendar/angular';
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+
 // import esLocale from '@fullcalendar/core/locales/es';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {map, startWith} from 'rxjs/operators';
+
 //animaciones
-import 'animate.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
 import { child, get, getDatabase, onValue, ref, set, push, update } from 'firebase/database';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-import { Observable } from 'rxjs';
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-import esLocale from '@fullcalendar/core/locales/es';
+
 import { CitaComponent } from '../cita/cita.component';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { EmailsService } from 'src/app/services/emails.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -114,8 +111,8 @@ export class CitasComponent implements OnInit {
   panelOpenState = false;
 
   
-  constructor(private formBuilder: FormBuilder, private _publicos: ServiciosPublicosService, private _citas: CitasService,
-    private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService, public dialog: MatDialog,
+  constructor(private _publicos: ServiciosPublicosService, private _citas: CitasService,
+    private _security:EncriptadoService, private _sucursales: SucursalesService, public dialog: MatDialog,
     private _email: EmailsService, private rutaActiva: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }
   
   ngOnInit(): void {

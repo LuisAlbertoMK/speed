@@ -21,11 +21,11 @@ import { HistorialClienteComponent } from './pages/historial-cliente/historial-c
 import { CotizacionNewComponent } from './pages/cotizacion-new/cotizacion-new.component';
 import { ServiciosConfirmarComponent } from './pages/servicios-confirmar/servicios-confirmar.component';
 import { ModificaRecepcionComponent } from './pages/modifica-recepcion/modifica-recepcion.component';
-import { AuthPruebaComponent } from './components/auth-prueba/auth-prueba.component';
+
 import { Loginv1Component } from './components/loginv1/loginv1.component';
 import { ReporteGastosComponent } from './pages/reporte-gastos/reporte-gastos.component';
 import { ListaProblemasComponent } from './pages/lista-problemas/lista-problemas.component';
-import { CalendarComponent } from './pages/calendar/calendar.component';
+
 import { EliminarEmpresaComponent } from './pages/eliminar-empresa/eliminar-empresa.component';
 import { RegistroClienteComponent } from './components/registro-cliente/registro-cliente.component';
 import { GuardClienteGuard } from './guards/guard-cliente.guard';
@@ -62,13 +62,14 @@ const APP_ROUTES: Routes = [
   { path: 'modificaRecepcion/:rutaAnterior/:idRecepcion', component: ModificaRecepcionComponent,canActivate:[AuthGuard,GuardClienteGuard] },
   { path: 'reporteGastos', component: ReporteGastosComponent, canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'registraProblemas', component: ListaProblemasComponent,canActivate:[AuthGuard]},
-  { path: 'eliminarEmpresa', component: EliminarEmpresaComponent,canActivate:[AuthGuard]},
+  { path: 'eliminarEmpresa', component: EliminarEmpresaComponent,canActivate:[AuthGuard,GuardClienteGuard]},
+
+  { path: 'automaticos', component: AutomaticosComponent, canActivate:[GuardClienteGuard,AuthGuard]},
 
   { path: 'Registro', component: RegistroClienteComponent},
 
   { path: 'loginv1', component: Loginv1Component},
 
-  { path: 'automaticos', component: AutomaticosComponent, canActivate:[GuardClienteGuard,AuthGuard]},
   { path: 'miPerfil', component: MiperfilComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'cotizacionesCliente', component: CotizacionesClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'serviciosCliente', component: ServiciosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
@@ -76,7 +77,7 @@ const APP_ROUTES: Routes = [
   { path: 'comentarios', component: ComentariosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
 
   { path: 'home', component: HomeComponent },
-  { path: 'calendario', component: CalendarComponent},
+
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, {useHash:false});

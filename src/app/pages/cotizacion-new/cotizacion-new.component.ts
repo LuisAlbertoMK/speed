@@ -6,17 +6,17 @@ import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onCh
 
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts.js";
-import { map, startWith } from 'rxjs/operators';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 //paginacion
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+
 
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { CatalogosService } from 'src/app/services/catalogos.service';
+
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
@@ -26,8 +26,6 @@ import { ClientesService } from '../../services/clientes.service';
 import { CotizacionService } from '../../services/cotizacion.service';
 import { EmailsService } from '../../services/emails.service';
 import { UploadPDFService } from '../../services/upload-pdf.service';
-import { VehiculosService } from '../../services/vehiculos.service';
-import { object } from '@angular/fire/database';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 export interface User {nombre: string, apellidos:string}

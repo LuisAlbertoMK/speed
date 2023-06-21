@@ -6,7 +6,7 @@ import { ServiciosPublicosService } from '../../services/servicios-publicos.serv
 import { ClientesService } from 'src/app/services/clientes.service';
 
 import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database"
-import Swal from 'sweetalert2';
+
 import { EmailsService } from 'src/app/services/emails.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { Observable } from 'rxjs';

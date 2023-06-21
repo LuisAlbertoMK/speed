@@ -5,20 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { child, get, getDatabase, onValue, ref, set, push } from 'firebase/database';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
 
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-
-
-import * as XLSX from 'xlsx';
-import { ExporterService } from 'src/app/services/exporter.service';
-import { ServiciosService } from '../../services/servicios.service';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
-import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 @Component({

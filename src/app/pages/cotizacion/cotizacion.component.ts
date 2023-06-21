@@ -1,7 +1,6 @@
 import {AfterViewInit,Component,OnDestroy,OnInit,ViewChild,} from '@angular/core';
-import {FormBuilder,  FormControl,  FormGroup,  NgForm,  Validators} from '@angular/forms';
+
 import { ActivatedRoute, Router } from '@angular/router';
-import { ClientesService } from 'src/app/services/clientes.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,9 +9,6 @@ import { SucursalesService } from 'src/app/services/sucursales.service';
 import { getDatabase, onValue, ref, set, push, get, child, limitToFirst } from 'firebase/database';
 import { CotizacionService } from 'src/app/services/cotizacion.service';
 
-import { Observable } from 'rxjs';
-import { debounceTime, map, startWith } from 'rxjs/operators';
-import { query, orderBy, limit } from 'firebase/firestore';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 export interface User {
@@ -24,8 +20,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 import localeES from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
-import { EmailsService } from '../../services/emails.service';
-import { ExporterService } from 'src/app/services/exporter.service';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
@@ -154,15 +148,17 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
         this.indexPosicionamiento = Number(localStorage.getItem('indexSaveLocal'))
     }
   }
-  irPagina(pagina, cliente?, vehiculo?, cotizacion?){
+  irPagina(pagina, cliente?, vehiculo?, cotizacion?,tipo?){
     // /:ID/:tipo/:extra
     let params = {}
     if (pagina === 'historial-cliente') {
       params = { anterior:'clientes', cliente  } 
     } else if (pagina === 'cotizacionNueva') {
       params = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
-    }else if (pagina === 'ServiciosConfirmar') {
+    }else if (pagina === 'ServiciosConfirmar' && !tipo) {
       params = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
+    }else if (pagina === 'ServiciosConfirmar' && tipo) {
+      params = { anterior:'cotizacion', cliente, tipo: 'nueva', vehiculo, cotizacion  } 
     }
     this.router.navigate([`/${pagina}`], { 
       queryParams: params

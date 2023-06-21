@@ -2,17 +2,17 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 
 
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { child, get, getDatabase, onValue, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database";
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
-import Swal from 'sweetalert2';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 const db = getDatabase()
@@ -59,11 +59,10 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
   tipos_cliente= ['todos','flotilla','particular']
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
-    private _clientes: ClientesService, private router: Router){}
+    private _clientes: ClientesService, private router: Router, private _auth: AuthService){}
 
   ngOnInit() {
     this.rol()
-    
   }
   ngAfterViewInit(): void {  }
   rol(){
@@ -175,45 +174,34 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     }, 100)
   }
   registraUsuario(data){
-
     if (data.correo) {
-      const otra = { email:    data.correo,password: data.password,nombre:   data.nombre }
       const dataSave = {
         rol: 'cliente',
         status: true,
         correo: data.correo,
-        password: data.correo,
+        password: this._publicos.generarCadenaAleatoria() || `${data.nombre}Xd1*(`,
         sucursal: data.sucursal,
         usuario: data.nombre
       }
-      const updates = { 
-        [`usuarios/${data.id}`]: dataSave
-       };
-       console.log(updates);
-        //  this._auth.nuevoUsuario(otra).subscribe((token)=>{
-    //   if (token) {
-    //     update(ref(db), updates)
-    //       .then(a=>{
-    //         this._publicos.swalToast('Se registro usuario')
-    //         // this._auth.login(otra)
-    //         setTimeout(()=>{
-    //           window.location.href = '/loginv1'
-    //         },200)
-    //         this.registroForm.reset()
-    //       })
-    //       .catch(err=>{
-    //         this._publicos.swalToastError('Error al registrar usuario')
-    //       })
-    //   }else{
-    //     this._publicos.swalToastError('Error al generar token')
-    //   }
-    // })
+      const otra = { email: data.correo, password: dataSave.password, nombre: data.nombre }
+      const updates = { [`usuarios/${data.id}`]: dataSave, [`clientes/${data.id}/usuario`]:true };
+      //  console.log(updates);
+        this._auth.nuevoUsuario(otra).subscribe((token)=>{
+          if (token) {
+            update(ref(db), updates)
+              .then(a=>{
+                this._publicos.swalToast('Se registro usuario')
+              })
+              .catch(err=>{
+                this._publicos.swalToastError('Error al registrar usuario')
+              })
+          }else{
+            this._publicos.swalToastError('Error al generar token')
+          }
+        })
     }else{
       this._publicos.swalToastError('El cliente no tiene correo')
     }
-    
-     
-   
   }
 
 }

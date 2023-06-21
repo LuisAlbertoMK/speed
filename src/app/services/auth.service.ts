@@ -56,9 +56,7 @@ export class AuthService {
       returnSecureToken: true
     }
     return this.http.post(`${fire.usuarios}/accounts:signUp?key=${fire.firebaseConfig.apiKey}`,authData)
-    .pipe(map( resp=>{     
-      // console.log(resp);
-       
+    .pipe(map( resp=>{
       this.guardarToken(resp['idToken'])
       return resp
     }))

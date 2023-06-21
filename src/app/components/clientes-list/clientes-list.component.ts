@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ClientesService } from 'src/app/services/clientes.service';
-import { object } from '@angular/fire/database';
+
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());

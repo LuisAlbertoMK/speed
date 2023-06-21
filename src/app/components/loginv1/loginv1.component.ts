@@ -8,7 +8,7 @@ const db = getDatabase()
 const dbRef = ref(getDatabase());
 const auth = getAuth();
 
-import * as CryptoJS from 'crypto-js';  
+
 import Swal from 'sweetalert2';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';

@@ -12,11 +12,8 @@ import {map, startWith} from 'rxjs/operators';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 
-import Swal from 'sweetalert2';
-
-
 import { getDatabase, onValue, ref, set, get, child, push,update  } from 'firebase/database';
-import { Observable } from 'rxjs';
+
 import { EmailsService } from 'src/app/services/emails.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ServiciosService } from 'src/app/services/servicios.service';

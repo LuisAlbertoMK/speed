@@ -5,7 +5,7 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-import Swal from 'sweetalert2';
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 

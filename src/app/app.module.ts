@@ -82,7 +82,7 @@ import { OrdenesCotizacionesComponent } from './pages/ordenes-cotizaciones/orden
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 
-import { CalendarComponent } from './pages/calendar/calendar.component'; // a plugin!
+
 
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin  from '@fullcalendar/list';
@@ -166,7 +166,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     HeaderComponent,
     OrdenesCotizacionesComponent,
     NavbarComponent,
-    CalendarComponent,
     NewcotizacionComponent,
     MonedasPipe,
     NumerosLetrasPipe,

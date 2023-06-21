@@ -13,14 +13,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { EmailsService } from '../../services/emails.service';
 import {MatMenuTrigger} from '@angular/material/menu';
-import html2canvas from 'html2canvas';
-import * as XLSX from 'xlsx';
 
-import {NumerosLetrasPipe} from '../../pipes/numeros-letras.pipe'
+import * as XLSX from 'xlsx';
 
 import  pdfMake  from "pdfmake/build/pdfmake";
 import  pdfFonts  from "pdfmake/build/vfs_fonts.js";
-import { style } from '@angular/animations';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase();

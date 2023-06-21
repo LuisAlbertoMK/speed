@@ -1241,7 +1241,7 @@ export class ServiciosPublicosService {
         return false;
       }
       generarCadenaAleatoria(): string {
-        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%_&*()';
         let cadena = '';
         let tieneMayuscula = false;
         let tieneMinuscula = false;
@@ -1264,7 +1264,7 @@ export class ServiciosPublicosService {
         }
       
         if (!tieneMayuscula || !tieneMinuscula || !tieneNumero || !tieneSimbolo) {
-          //return generarCadenaAleatoria(); // Vuelve a generar la cadena si no cumple los requisitos
+          this.generarCadenaAleatoria(); // Vuelve a generar la cadena si no cumple los requisitos
         }
       
         return cadena;

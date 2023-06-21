@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { push } from 'firebase/database';
+
 
 @Pipe({
   name: 'monedas'

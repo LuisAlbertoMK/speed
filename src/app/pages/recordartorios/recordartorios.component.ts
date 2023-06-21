@@ -7,7 +7,6 @@ import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/pagina
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 
-import Swal from 'sweetalert2';
 const db = getDatabase()
 const dbRef = ref(db);
 @Component({

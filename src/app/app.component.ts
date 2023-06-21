@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
-import * as CryptoJS from 'crypto-js';  
-import Swal from 'sweetalert2';
+
+
 import { getDatabase, onValue, ref, set } from "firebase/database"
 import { EncriptadoService } from './services/encriptado.service';
 const db = getDatabase()
@@ -51,7 +51,6 @@ export class AppComponent implements AfterViewInit,OnInit {
     }else{
 
     }
-    
   }
   leerToken(){
     if (localStorage.getItem('dataSecurity')) {

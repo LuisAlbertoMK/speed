@@ -62,7 +62,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
 
   lista_marcas_arr = []
-  lista_cilindros_arr = ['4','6','8','10']
+  lista_cilindros_arr = ['4','5','6','8','10']
   lista_todos_arr = []
   lista_modelos_arr = []
   categoria:string = ''

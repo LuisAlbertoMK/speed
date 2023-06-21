@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { child, get, getDatabase, onValue, push, ref, set } from "firebase/database";
-import Swal from 'sweetalert2';
+
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+
 import {animate, state, style, transition, trigger} from '@angular/animations';
 //paginacion
 import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/paginator';
@@ -10,7 +10,6 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosService } from '../../services/servicios.service';
-import { CotizacionService } from '../../services/cotizacion.service';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 const db = getDatabase();

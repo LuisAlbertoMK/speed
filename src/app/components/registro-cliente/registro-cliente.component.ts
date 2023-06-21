@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { CustomValidators } from 'src/app/validators/password.validator';
-import Swal from 'sweetalert2';
+
 import { ClientesService } from '../../services/clientes.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { AuthService } from 'src/app/services/auth.service';
