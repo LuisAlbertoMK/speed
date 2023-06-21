@@ -174,10 +174,11 @@ export class CitasComponent implements OnInit {
 
       // (click)="infoCitaUnica = cita; openBottomSheet()"
       const info_ = this.citas_mes_all.find(c=>c.id === id)
-      this.infoCita = info_
+      // this.infoCita = info_
+      this.infoCitaUnica = info_
       // console.log(info_);
       
-      this.openBottomSheet(false)
+      setTimeout(()=>{ this.openBottomSheet(false) },100)
       // const dialogRef: MatDialogRef<CitaComponent> = this.dialog.open(CitaComponent, {
       //   width: 'vh(100%)',
       //   data: info_ // Puedes pasar datos del evento al cuadro de diálogo

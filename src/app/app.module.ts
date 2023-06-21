@@ -137,6 +137,7 @@ import { MiperfilComponent } from './pages/miperfil/miperfil.component';
 import { CotizacionesClienteComponent } from './pages/cotizaciones-cliente/cotizaciones-cliente.component';
 import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-cliente.component';
 import { EstadisticasClienteComponent } from './pages/estadisticas-cliente/estadisticas-cliente.component';
+import { ComentariosClienteComponent } from './pages/comentarios-cliente/comentarios-cliente.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -204,7 +205,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MiperfilComponent,
     CotizacionesClienteComponent,
     ServiciosClienteComponent,
-    EstadisticasClienteComponent
+    EstadisticasClienteComponent,
+    ComentariosClienteComponent
   ],
   imports: [
     BrowserModule,

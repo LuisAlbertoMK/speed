@@ -25,8 +25,6 @@ export class CitaComponent implements OnInit {
   }
 
   eliminar(){
-    console.log(this.data);
-    
     if (this.info) {
       this._publicos.mensaje_pregunta('Desea cancelar la cita').then(({respuesta})=>{
         if (respuesta) {

@@ -1109,7 +1109,7 @@ export class ServiciosPublicosService {
         });
       }
       camposCliente(){
-        return ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
+        return ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','usuario']
       }
       camposCotizacion(){
         return ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName']
@@ -1239,6 +1239,35 @@ export class ServiciosPublicosService {
       
         event.preventDefault(); // Bloquear cualquier otro carácter
         return false;
+      }
+      generarCadenaAleatoria(): string {
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+        let cadena = '';
+        let tieneMayuscula = false;
+        let tieneMinuscula = false;
+        let tieneNumero = false;
+        let tieneSimbolo = false;
+      
+        while (cadena.length < 10) {
+          const caracterAleatorio = caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+          cadena += caracterAleatorio;
+      
+          if (/[A-Z]/.test(caracterAleatorio)) {
+            tieneMayuscula = true;
+          } else if (/[a-z]/.test(caracterAleatorio)) {
+            tieneMinuscula = true;
+          } else if (/[0-9]/.test(caracterAleatorio)) {
+            tieneNumero = true;
+          } else {
+            tieneSimbolo = true;
+          }
+        }
+      
+        if (!tieneMayuscula || !tieneMinuscula || !tieneNumero || !tieneSimbolo) {
+          //return generarCadenaAleatoria(); // Vuelve a generar la cadena si no cumple los requisitos
+        }
+      
+        return cadena;
       }
       
  }

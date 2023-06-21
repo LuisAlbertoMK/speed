@@ -15,6 +15,8 @@ import { MatSort } from '@angular/material/sort';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
+
+
 @Component({
   selector: 'app-miperfil',
   templateUrl: './miperfil.component.html',
@@ -49,6 +51,8 @@ export class MiperfilComponent implements OnInit {
   @ViewChild('elements') sort: MatSort //elementos
 
 
+  editar:boolean = false
+
   ngOnInit(): void {
     this.rol()
   }
@@ -78,6 +82,7 @@ export class MiperfilComponent implements OnInit {
         }    
         this.dataSource.data = this.misVehiculos
         this.newPagination()
+        
     })
   }
 
@@ -93,5 +98,18 @@ export class MiperfilComponent implements OnInit {
     // }
     }, 500)
   }
-
+  clientesInfo(info:any){
+    const {cliente, status} = info
+    if(!info.CerrarModal){
+      if (status) {
+        this._publicos.mensajeCorrecto('registro de cliente correcto')
+        this.editar = false
+      }else{
+        this._publicos.mensajeSwalError('Ocurrio un error')
+      }
+    }else{
+      this.editar = false
+    }
+    
+  }
 }

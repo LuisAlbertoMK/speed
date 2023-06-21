@@ -1,17 +1,10 @@
-<!-- <p>Detalles del evento:</p>
-<p>{{ info.title }}</p>  -->
 
 
 <ng-container *ngIf="editar; else elseEditar">
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-        <!-- <button class="btn btn-sm btn-danger m-1" (click)="eliminar()">
-            <i class="fa fa-ban"></i> Cancelar
-        </button> -->
         <button class="btn btn-sm btn-danger m-1" (click)="editar = false">
             <i class="fa fa-calendar-exclamation"></i> Cancelar cita
         </button>
-        <!-- <i class="fa fa-ban btn btn-danger btn-sm text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above">Cancelar</i>
-        <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"></i> -->
       </div>
     editar la informacion de la cita
     <app-registra-cita [id_cita]="info.id" [info_cita]="info" [nuevaCita]="false"></app-registra-cita>
@@ -20,21 +13,13 @@
     <ng-container *ngIf="info; else elseTemplate">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-          <!-- <button type="button" class="btn-close" info-bs-dismiss="modal" aria-label="Close"></button> -->
           <h1>Cita {{ info.title }}</h1>
         </div>
         <ng-container>
-          <!-- <div class="card col-lg-12 col-md-12 col-sm-6 col-12">
-            <div class="card-body"> -->
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
                 <button class="btn btn-sm btn-danger m-1" (click)="eliminar()">
                     <i class="fa fa-ban"></i> Cancelar
                 </button>
-                <!-- <button class="btn btn-sm btn-danger m-1" (click)="editar = true">
-                    <i class="fa fa-calendar-exclamation"></i> Reagendar
-                </button> -->
-                <!-- <i class="fa fa-ban btn btn-danger btn-sm text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above">Cancelar</i>
-                <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"></i> -->
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">Cliente: <strong> {{info.fullname}} </strong></div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">Correo: <strong> {{info.correo}} </strong></div>
@@ -45,8 +30,6 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">Asistio: <strong> {{info.asistenciaShow}} </strong></div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">Recordatorio: <strong> {{info.recordatorioShow}} </strong></div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12">Confirmada: <strong> {{info.confirmadaShow}} </strong></div>
-            <!-- </div>
-          </div> -->
         </ng-container>
     </div>
     </ng-container>
@@ -61,8 +44,4 @@
 
   </div>
 </div>
-<!-- <ng-container *ngIf="editar">
-    
-</ng-container> -->
-
 

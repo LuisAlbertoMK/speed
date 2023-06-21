@@ -369,7 +369,9 @@ export class ClienteComponent implements OnInit {
       this._clientes.registraCliente(saveInfo)
     }
   }
-
+  emiteFalse(){
+    this.heroeSlec.emit( Object({CerrarModal: true}) )
+  }
   resetForm(){
     let sucu = this.sucursal
     if (this.sucursal === 'Todas') sucu = ''

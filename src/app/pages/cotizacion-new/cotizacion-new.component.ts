@@ -335,23 +335,28 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
   async clientesInfo(info:any){
     
     const {cliente, status} = info
-    if (status) {
-      const infonew:any= await this._clientes.consulta_cliente_new(cliente.id)
-        this.infoCotizacion.cliente = infonew
-        this.infoCotizacion.vehiculos = infonew.vehiculos
-        this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === infonew.sucursal)
-        
-      // }
-      if (this.extra && cliente.vehiculos) {
-        this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
+    if(!info.CerrarModal){
+      if (status) {
+        const infonew:any= await this._clientes.consulta_cliente_new(cliente.id)
+          this.infoCotizacion.cliente = infonew
+          this.infoCotizacion.vehiculos = infonew.vehiculos
+          this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === infonew.sucursal)
+          
+        // }
+        if (this.extra && cliente.vehiculos) {
+          this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
+        }else{
+          this.infoCotizacion.vehiculo = null
+        }
+        this.realizaOperaciones()
+        this._publicos.swalToast('Se registro cliente')
       }else{
-        this.infoCotizacion.vehiculo = null
+        this._publicos.mensajeNOT('Intenta nuevamente',3000)
       }
-      this.realizaOperaciones()
-      this._publicos.swalToast('Se registro cliente')
     }else{
-      this._publicos.mensajeNOT('Intenta nuevamente',3000)
+      
     }
+    
   }
   cargaDataVehiculo(data: any, quien: string) {
     this.cliente = null;

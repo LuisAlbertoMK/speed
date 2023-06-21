@@ -6,12 +6,8 @@
 /* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
 
 /* Tema oscuro */
-
+@import '~@angular/material/prebuilt-themes/purple-green.css';
 /* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
-
-
-/* Tema claro */
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 
 

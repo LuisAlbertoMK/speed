@@ -70,6 +70,14 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   //roles
   ROL:string = ''
   update:boolean = false
+  color:string = 'navbar-white'
+  changeColor:boolean = false
+  themes_colors = [
+    {valor:false,color:'navbar-white',mode:'dark-mode', show:'Modo oscuro',icono:'moon'},
+    {valor:true,color:'navbar-dark',mode:'dark-mode', show:'Modo claro',icono:'sun'},
+  ]
+  tema_selecciondo = {valor:false,color:'navbar-white', show:'Modo oscuro',icono:'moon'}
+  theme: string = 'dark';
   ngOnInit(): void {
     // this.listadoClientes()
     // this.listadoVehiculos()
@@ -90,6 +98,44 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   ngAfterViewInit() {
     
   }
+
+  //TODO aqui las nuevas funciones
+
+  cambiaColorNavbar(){    
+
+    // mat-dark-theme
+    // mat-app-background
+    const body = document.body;
+    const info = this.themes_colors.find(t=>t.valor === this.changeColor);
+
+    (this.changeColor) ? body.classList.add(info.mode) : body.classList.remove(info.mode) ;
+    if(this.changeColor){
+      body.classList.add('mat-dark-theme')
+      body.classList.remove('mat-app-background');
+    }else{
+      body.classList.add('mat-app-background')
+      body.classList.remove('mat-dark-theme');
+    }
+    // (this.changeColor) ? body.classList.add('mat-app-background') : body.classList.remove('mat-dark-theme')
+
+    this.tema_selecciondo = info
+
+    this.color = info.color
+    // this.toggleTheme()
+  }
+  toggleTheme() {
+    const linkElement = document.getElementById('material-theme') as HTMLLinkElement;
+    if (this.theme === 'dark') {
+      linkElement.href = 'stylesD.css';
+      this.theme = 'light';
+    } else {
+      linkElement.href = 'styles.css';
+      this.theme = 'dark';
+    }
+  }
+  //TODO aqui las nuevas funciones
+
+
   comprobarTimeExpira(){
     let now = new Date()
     const expira = Number(localStorage.getItem('expira'))

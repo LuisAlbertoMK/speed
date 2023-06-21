@@ -79,6 +79,8 @@
           <button mat-menu-item (click)="irPagina('cotizacionNueva',row.id)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row.id )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('historial-cliente',row.id)">  Historial cliente <i class="fa fa-book text-danger ml-1"></i></button>
+          <button mat-menu-item  
+          *ngIf="!row.usuario" (click)="registraUsuario(row)">  Registra usuario <i class="fa fa-user-plus text-danger ml-1"></i></button>
         </mat-menu>
       </td>
     </ng-container>

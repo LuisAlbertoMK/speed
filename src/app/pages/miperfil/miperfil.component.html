@@ -1,22 +1,28 @@
 
 <div class="content-header">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
             <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li> -->
-            <li class="breadcrumb-item active">Mi perfil</li>
-          </ol>
-        </div>
+          <li class="breadcrumb-item active">Mi perfil</li>
+        </ol>
       </div>
     </div>
   </div>
+</div>
 
   <div class="card">
     <div class="card-body">
-        <h2>Mi información</h2>
+      <ng-container *ngIf="!editar">
         <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end" >
+              <button class="btn btn-sm btn-primary" (click)="editar = !editar" data-bs-toggle="modal" data-bs-target="#modalNewUser">
+                <i class="fa fa-edit"></i> Editar información
+              </button>
+          </div>
+          <h2>Mi información</h2>
             <ng-container *ngFor="let item of camposCliente_show">
                 <ng-container *ngIf="info_cliente[item.valor]">
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12" >
@@ -25,6 +31,12 @@
                 </ng-container>
             </ng-container>
         </div>
+      </ng-container>
+        
+        <!-- <ng-container *ngIf="info_cliente['id'] && editar">
+          <app-cliente  [data]="info_cliente" [id]="info_cliente['id']" (heroeSlec)="clientesInfo( $event )"></app-cliente>
+        </ng-container> -->
+        
     </div>
 </div>
 
@@ -36,13 +48,8 @@
             <input  (keyup)="applyFilter($event)" placeholder="Busqueda cualquier criterio" #input class="form-control form-control-sm">
         </div>
     </div>
-    <!-- <mat-form-field class="row">
-        <mat-label>Busqueda</mat-label>
-        
-      </mat-form-field> -->
     <div class="mat-elevation-z8 table-responsive">
-        <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-      
+        <table #elements="matSort" mat-table [dataSource]="dataSource" class="mat-table mat-dark" matSort multiTemplateDataRows>
           <!-- ID Column -->
           <ng-container matColumnDef="index">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
@@ -116,9 +123,9 @@
           </ng-container>
         
       
-          <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" ></tr>
           <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-              class="example-element-row"
+              class="example-element-row "
               [class.example-expanded-row]="expandedElement === element"
               >
               <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
@@ -136,3 +143,25 @@
   </div>
 </div>
 
+
+<div class="modal fade" id="modalNewUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
+  <div class="modal-content">
+    <div class="modal-body">
+      <ng-container *ngIf="info_cliente['id'] && editar; else elseNewCliente">
+        <app-cliente [data]="info_cliente" [id]="info_cliente['id']" (heroeSlec)="clientesInfo( $event )"></app-cliente>
+      </ng-container>
+      <ng-template #elseNewCliente>
+        <button class="btn btn-sm btn-danger" (click)="editar = !editar">Cancelar</button>
+        <!-- <div class="row">
+          <div class="col text-center">
+            <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
+          </div>
+        </div> -->
+      </ng-template>
+    </div>
+  </div>
+</div>
+</div>

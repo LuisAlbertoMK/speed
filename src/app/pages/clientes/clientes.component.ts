@@ -110,7 +110,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
         } else {
           aqui = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
         }
-        this.clientes_arr = aqui
+        this.clientes_arr = aqui        
+        
         this.dataSourceClientes.data = aqui
         this.newPagination('clientes')
       }).catch((error) => {
@@ -132,11 +133,16 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
   clientesInfo(info:any){
     const {cliente, status} = info
-    if (status) {
-      this._publicos.mensajeCorrecto('registro de cliente correcto')
+    if(!info.CerrarModal){
+      if (status) {
+        this._publicos.mensajeCorrecto('registro de cliente correcto')
+      }else{
+        this._publicos.mensajeSwalError('Ocurrio un error')
+      }
     }else{
-      this._publicos.mensajeSwalError('Ocurrio un error')
+
     }
+    
   }
   vehiculoInfo(info:any){
     if (info) {
@@ -167,6 +173,47 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       this.dataSourceClientes.sort = this.sortClientes
     }
     }, 100)
+  }
+  registraUsuario(data){
+
+    if (data.correo) {
+      const otra = { email:    data.correo,password: data.password,nombre:   data.nombre }
+      const dataSave = {
+        rol: 'cliente',
+        status: true,
+        correo: data.correo,
+        password: data.correo,
+        sucursal: data.sucursal,
+        usuario: data.nombre
+      }
+      const updates = { 
+        [`usuarios/${data.id}`]: dataSave
+       };
+       console.log(updates);
+        //  this._auth.nuevoUsuario(otra).subscribe((token)=>{
+    //   if (token) {
+    //     update(ref(db), updates)
+    //       .then(a=>{
+    //         this._publicos.swalToast('Se registro usuario')
+    //         // this._auth.login(otra)
+    //         setTimeout(()=>{
+    //           window.location.href = '/loginv1'
+    //         },200)
+    //         this.registroForm.reset()
+    //       })
+    //       .catch(err=>{
+    //         this._publicos.swalToastError('Error al registrar usuario')
+    //       })
+    //   }else{
+    //     this._publicos.swalToastError('Error al generar token')
+    //   }
+    // })
+    }else{
+      this._publicos.swalToastError('El cliente no tiene correo')
+    }
+    
+     
+   
   }
 
 }

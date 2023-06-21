@@ -71,7 +71,7 @@
 }
 
 .scroll-wrapper {
-  height: 500px; /* Altura máxima del área de desplazamiento */
+  height: 400px; /* Altura máxima del área de desplazamiento */
   overflow-y: auto; /* Habilita el desplazamiento vertical */
 }
 

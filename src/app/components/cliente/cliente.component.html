@@ -52,7 +52,7 @@
         </ng-container>
   
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="emiteFalse()"></button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-5">
           <ng-container *ngIf="!form_cliente.controls['id'].value; else elseCliente">

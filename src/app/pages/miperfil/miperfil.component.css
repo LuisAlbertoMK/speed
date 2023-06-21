@@ -1,3 +1,6 @@
+
+
+
 a {
     text-decoration: none;
     cursor: pointer;
@@ -23,6 +26,7 @@ a {
     font-size: 1em;
     min-width: 200px;
   }
+
   
   .tipo-paquete {
     color: #5ca04a !important;
@@ -92,12 +96,7 @@ a {
   }
   /* limpiar */
   
-  ::ng-deep .mat-sort-header-container {
-    /* color: white; */
-    /* margin-left: 10%; */
-    /* background-color: blue !important; */
-    /* text-align:  right !important; */
-  }
+  
   
   input.smallInput {
     max-width: 60px;

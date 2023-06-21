@@ -34,6 +34,7 @@ import { GuardCliente2Guard } from './guards/guard-cliente2.guard';
 import { CotizacionesClienteComponent } from './pages/cotizaciones-cliente/cotizaciones-cliente.component';
 import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-cliente.component';
 import { EstadisticasClienteComponent } from './pages/estadisticas-cliente/estadisticas-cliente.component';
+import { ComentariosClienteComponent } from './pages/comentarios-cliente/comentarios-cliente.component';
 
 const routes: Routes = [];
 
@@ -66,11 +67,14 @@ const APP_ROUTES: Routes = [
   { path: 'Registro', component: RegistroClienteComponent},
 
   { path: 'loginv1', component: Loginv1Component},
+
   { path: 'automaticos', component: AutomaticosComponent, canActivate:[GuardClienteGuard,AuthGuard]},
   { path: 'miPerfil', component: MiperfilComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'cotizacionesCliente', component: CotizacionesClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'serviciosCliente', component: ServiciosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'estadisticasCliente', component: EstadisticasClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'comentarios', component: ComentariosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+
   { path: 'home', component: HomeComponent },
   { path: 'calendario', component: CalendarComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'home' }
