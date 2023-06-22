@@ -30,7 +30,9 @@ import { ServiciosService } from '../../services/servicios.service';
 })
 export class ServiciosClienteComponent implements OnInit {
 
-  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _clientes: ClientesService, private _sucursales: SucursalesService, private _vehiculos: VehiculosService, private _servicios: ServiciosService) { }
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, 
+    private _clientes: ClientesService, private _sucursales: SucursalesService, 
+    private _vehiculos: VehiculosService, private _servicios: ServiciosService) { }
 
   rol_cliente:string = 'cliente'
   paquete: string = 'paquete'

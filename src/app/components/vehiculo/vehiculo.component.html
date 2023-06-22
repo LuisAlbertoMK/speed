@@ -22,7 +22,7 @@
                         <div class="mb-1">
                           <label for="cliente" class="form-label">Cliente</label>
                           <ng-container *ngIf="!cliente">
-                            <input type="search" placeholder="cliente" aria-label="Cliente" 
+                            <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente"
                             (click)="automaticos()" (ngModelChange)="vericainfo()"
                               class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto">
                             <small *ngIf="validaCampo('cliente')" class="text-danger">
@@ -49,7 +49,7 @@
                   <label for="placas" class="form-label">Placas</label>
                   <input type="text" class="form-control form-control-sm text-uppercase" id="placas" formControlName="placas"
                     [class.is-invalid]="validaCampo('placas')" (keyup)="placasVerifica()"
-                    maxlength="7" (ngModelChange)="verificarEngomado()">
+                    maxlength="7" (ngModelChange)="verificarEngomado()" id="placas">
                   <small *ngIf="validaCampo('placas') && !existenPlacas" class="text-danger">
                     campo requerido
                   </small>

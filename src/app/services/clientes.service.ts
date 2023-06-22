@@ -74,6 +74,19 @@ export class ClientesService {
       });
     });
   }
+  consulta_cliente_vehiculos(cliente): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `clientes/${cliente}/vehiculos`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const vehiculos = this._publicos.crearArreglo2(snapshot.val())
+          resolve(vehiculos);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
   consulta_empresas_new(): Promise<object> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `empresas`);

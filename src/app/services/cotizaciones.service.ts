@@ -14,6 +14,38 @@ const dbRef = ref(getDatabase());
 })
 export class CotizacionesService {
   camposCotizaciones = ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName']
+
+  camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refacciones_v','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
+
+  camposReporte_show = [
+    {valor:'descuento', show:'descuento'},
+    {valor:'iva', show:'iva'},
+    {valor:'meses', show:'meses'},
+    {valor:'mo', show:'mo'},
+    // {valor:'refacciones_a', show:'refacciones compra'},
+    {valor:'refacciones_v', show:'refacciones'},
+    {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    // {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
+    // {valor:'sobrescrito_paquetes', show:'sobrescrito paquetes'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'total', show:'total'},
+    // {valor:' ub', show:'ub'},
+  ]
+  camposReporte_show2 = {
+    mo: 0,
+    // refacciones_a: 0,
+    refacciones_v: 0,
+    sobrescrito: 0,
+    // sobrescrito_mo: 0,
+    // sobrescrito_refaccion: 0,
+    // sobrescrito_paquetes: 0,
+    meses: 0,
+    descuento: 0,
+    iva: 0,
+    subtotal: 0,
+    total: 0,
+  }
   constructor(
     private _publicos: ServiciosPublicosService,private _clientes: ClientesService,private _vehiculos: VehiculosService,
     private _sucursales: SucursalesService, private _servicios:ServiciosService

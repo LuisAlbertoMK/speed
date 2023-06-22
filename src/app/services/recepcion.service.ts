@@ -10,6 +10,15 @@ const urlServer = environment.firebaseConfig.databaseURL
 export class RecepcionService {
 
   constructor(private http: HttpClient) { }
+
+  camposReporte_estadisticas_arr:object[] = [
+    {valor:'TotalGastado', show:'Total gastado'},
+    {valor:'ticketGeneral', show:'Ticket general'},
+  ]
+  camposReporte_estadisticas_object:object = {
+    TotalGastado: 0,
+    ticketGeneral: 0,
+  }
   obtenrData(){
     return this.http.get(`${urlServer}/recepcion.json`)
   }

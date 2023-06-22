@@ -138,6 +138,7 @@ import { CotizacionesClienteComponent } from './pages/cotizaciones-cliente/cotiz
 import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-cliente.component';
 import { EstadisticasClienteComponent } from './pages/estadisticas-cliente/estadisticas-cliente.component';
 import { ComentariosClienteComponent } from './pages/comentarios-cliente/comentarios-cliente.component';
+import { HistorialClienteVehiculoComponent } from './pages/historial-cliente-vehiculo/historial-cliente-vehiculo.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -205,7 +206,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CotizacionesClienteComponent,
     ServiciosClienteComponent,
     EstadisticasClienteComponent,
-    ComentariosClienteComponent
+    ComentariosClienteComponent,
+    HistorialClienteVehiculoComponent
   ],
   imports: [
     BrowserModule,

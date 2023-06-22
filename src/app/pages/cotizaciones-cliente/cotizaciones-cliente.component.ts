@@ -14,7 +14,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
-import { Observable } from 'rxjs';
+
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 
