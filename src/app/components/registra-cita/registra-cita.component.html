@@ -137,6 +137,36 @@
                                             </div>
                                             </div>
                                         </div>
+                                        
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                                <label for="nota" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Utilizar cotización</label>
+                                                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                    <mat-radio-group formControlName="cotizacion_utiliza" >
+                                                        <mat-radio-button  class="m-1" [value]="false" >Sin cotizacion</mat-radio-button>
+                                                        <mat-radio-button  class="m-1" [value]="true">Usar cotizacion</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                                </div>
+                                        </div>
+                                        <ng-container *ngIf="citaForm.get('cotizacion_utiliza').value">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="mb-1 row">
+                                                    <label for="nota" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Cotizacion</label>
+                                                    <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                        <select formControlName="cotizacion" class="form-select  form-select-sm">
+                                                            <option value="" >Selecciona</option>
+                                                            <option [value]="item.id" *ngFor="let item of listaCotizacionesShow">{{item.no_cotizacion}}</option>
+                                                        </select>
+                                                    </div>
+                                                    </div>
+                                            </div>
+                                        </ng-container>
+                                        
+                                        <!-- <pre>
+                                            {{ citaForm.value | json}}
+                                        </pre> -->
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="mb-1 row">
                                             <label for="nota" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Nota</label>

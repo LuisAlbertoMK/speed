@@ -9,6 +9,7 @@ import { child, get, getDatabase, onValue, ref, set, push, update } from 'fireba
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { MatDatepickerCancel, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CitasService } from 'src/app/services/citas.service';
+import { CotizacionService } from 'src/app/services/cotizacion.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -60,8 +61,10 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   ]
 
   dateControl = new FormControl();
+  ligarCotizacion: boolean = false
+  listaCotizacionesShow = []
   constructor(private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,
-    private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _citas: CitasService) { }
+    private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _citas: CitasService, private _cotizacion : CotizacionService) { }
   ngOnInit(): void {
     this.rol()
     this.creaFormCitas()
@@ -261,25 +264,25 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     return user && user.fullname ? user.fullname : '';
   }
   clienteSeleccionado(){
-     const cliente = this.myControl.value
-    if (cliente instanceof Object) {
-      const campos = ['fullname','id','correo','sucursal','sucursalShow']
-      campos.forEach(c=>{
-        if (c === 'id') {
-          this.infoCita.cliente = cliente[c]
-        }else{
-          this.infoCita[c] = cliente[c]
-        }
-      })
-      // {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'', correo:''}
-      this.arr_vehiculos = cliente.vehiculos
-      this.citaForm.controls['cliente'].setValue(cliente.id)
-      this.citaForm.controls['correo'].setValue(cliente.correo)
-      this.citaForm.controls['vehiculo'].setValue(null)
-    }else{
+    //  const cliente = this.myControl.value
+    // if (cliente instanceof Object) {
+    //   const campos = ['fullname','id','correo','sucursal','sucursalShow']
+    //   campos.forEach(c=>{
+    //     if (c === 'id') {
+    //       this.infoCita.cliente = cliente[c]
+    //     }else{
+    //       this.infoCita[c] = cliente[c]
+    //     }
+    //   })
+    //   // {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'', correo:''}
+    //   this.arr_vehiculos = cliente.vehiculos
+    //   this.citaForm.controls['cliente'].setValue(cliente.id)
+    //   this.citaForm.controls['correo'].setValue(cliente.correo)
+    //   this.citaForm.controls['vehiculo'].setValue(null)
+    // }else{
       
       
-    }
+    // }
     
   }
  
@@ -297,7 +300,9 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       vehiculo: ['', Validators.required],
       servicio: ['', Validators.required],
       nota: ['', Validators.required],
-      comentario: ['', Validators.required]
+      comentario: ['', Validators.required],
+      cotizacion_utiliza: [false, Validators.required],
+      cotizacion: ['', Validators.required],
     });
 
     if (this.SUCURSAL === 'Todas'){
@@ -306,8 +311,23 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.myControl.disable()
       // this.clienteSeleccionado(null)
       this.myControl.setValue(null)
+      this.citaForm.controls['cliente'].setValue(null)
+      this.citaForm.controls['cliente'].disable()
+      this.citaForm.controls['vehiculo'].setValue(null)
+      this.citaForm.controls['vehiculo'].disable()
     }  
     this.vigilaDia()
+  }
+  horarios_new (sucursal){
+    if (sucursal === '-N2glF34lV3Gj0bQyEWK') {
+      this._citas.consulta_horarios_sucursal_new(sucursal).then((horarios)=>{
+        this.horariosDisponibles = horarios
+      })
+    }else{
+      this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
+        this.horariosDisponibles = horarios
+      })
+    }
   }
   vigilaDia(){
     this.citaForm.get('sucursal').valueChanges.subscribe((sucursal: string) => {
@@ -316,6 +336,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         this.myControl.enable()
         this.myControl.setValue(null)
         this.automaticos()
+        this.citaForm.controls['cliente'].enable()
+        this.horarios_new(sucursal)
       }else{
         this.dateControl.setValue(null); 
         this.dateControl.disable();
@@ -323,8 +345,10 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         this.myControl.disable()
         // this.clienteSeleccionado(null)
         this.myControl.setValue(null)
+        
       }
     })
+    //TODO verificar que este seleccionada la sucursal, cliente y vehiculo
     this.citaForm.get('dia').valueChanges.subscribe((dia: string) => {
       const info_form = this.citaForm.value
       if (dia) {
@@ -392,6 +416,72 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         }
       }
     })
+    this.citaForm.get('cliente').valueChanges.subscribe(async (cliente: string) => {
+      if (cliente) {
+        this.citaForm.controls['vehiculo'].enable()
+      }else{
+        this.citaForm.controls['vehiculo'].setValue(false)
+        this.citaForm.controls['vehiculo'].disable()
+      }
+    })
+    this.myControl.valueChanges.subscribe(cliente=>{
+      if (!cliente) {
+        // console.log('aqdfgdfh');
+        
+        this.citaForm.controls['vehiculo'].setValue(false)
+        this.citaForm.controls['vehiculo'].disable()
+        this.citaForm.controls['cliente'].setValue(null)
+      }else{
+        // console.log(cliente);
+        if (cliente instanceof Object) {
+          const campos = ['fullname','id','correo','sucursal','sucursalShow']
+          campos.forEach(c=>{
+            if (c === 'id') {
+              this.infoCita.cliente = cliente[c]
+            }else{
+              this.infoCita[c] = cliente[c]
+            }
+          })
+          this.arr_vehiculos = cliente.vehiculos
+          this.citaForm.controls['cliente'].setValue(cliente.id)
+          this.citaForm.controls['correo'].setValue(cliente.correo)
+          this.citaForm.controls['vehiculo'].enable()
+          this.citaForm.controls['vehiculo'].setValue(null)
+        }else{
+          this.arr_vehiculos = []
+          this.citaForm.controls['cliente'].setValue(null)
+          this.citaForm.controls['correo'].setValue(null)
+          this.citaForm.controls['vehiculo'].disable()
+          this.citaForm.controls['vehiculo'].setValue(null)
+        }
+      }
+    })
+
+    this.citaForm.get('vehiculo').valueChanges.subscribe(async (vehiculo: string) => {
+      if (vehiculo) {
+        this.citaForm.controls['cotizacion_utiliza'].enable()
+      }else{
+        this.citaForm.controls['cotizacion_utiliza'].setValue(false)
+        this.citaForm.controls['cotizacion_utiliza'].disable()
+      }
+    })
+    this.citaForm.get('cotizacion_utiliza').valueChanges.subscribe(async (cotizacion_utiliza: string) => {
+      if (cotizacion_utiliza) {
+        const cotizaciones = await this._cotizacion.consulta_cotizaciones_new()
+        const vehiculo_utilizado = this.citaForm.get('vehiculo').value
+        const cotizaciones_filter = cotizaciones.filter(cot=>cot.vehiculo.id === vehiculo_utilizado)
+        const ordenadas = this._publicos.ordenarData(cotizaciones_filter,'fechaCompara', false)
+        this.listaCotizacionesShow = cotizaciones_filter
+      }else{
+        this.citaForm.get('cotizacion').setValue(null)
+        this.listaCotizacionesShow = []
+      }
+    })
+    this.citaForm.get('cotizacion').valueChanges.subscribe(async (cotizacion: string) => {
+      if (cotizacion) {
+        
+      }
+    })
   }
   validarCampo(campo: string){
     return this.citaForm.get(campo).invalid && this.citaForm.get(campo).touched
@@ -399,6 +489,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   guardarCita() {
     const data = this.citaForm.value
     const necesarios = [ ...this.citasCampos]
+    const info = this.citaForm.get('cotizacion_utiliza').value
+    if(info) necesarios.push('cotizacion')
     const { faltante_s, ok} = this._publicos.realizaValidaciones(necesarios,data)
     this.faltente = faltante_s
     // data.dia = this._publicos.formatearFecha(data.dia['_d'],true)

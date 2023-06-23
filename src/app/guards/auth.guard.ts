@@ -15,6 +15,7 @@ export class AuthGuard implements CanActivate {
     if (this._auth.estaAutenticado()) {
       return true
     }else{
+      console.log(next);
       window.location.href = '/home'
       return false
     }

@@ -184,7 +184,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   observaciones:string = null
   //TODO: aqui la informacion que es nueva
   enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:''}
-
+  ParamsGet:any = {}
   constructor(
     private router: Router, private rutaActiva: ActivatedRoute, private _clientes:ClientesService,
     private _mail:EmailsService, private _publicos:ServiciosPublicosService,private _sucursales: SucursalesService, 
@@ -228,7 +228,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   async rol(){
     
-    this.rutaActiva.queryParams.subscribe(params => {
+    this.rutaActiva.queryParams.subscribe(async params => {
+     
+      this.ParamsGet = params
       const anterior = params['anterior'];
       const tipo = params['tipo'];
       const cliente = params['cliente'];
@@ -240,6 +242,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.enrutamiento.cliente = cliente
       this.enrutamiento.anterior = anterior
       this.enrutamiento.tipo = tipo
+      // console.log(tipo);
+      
       if (tipo === 'nueva') {
         this._clientes.consulta_cliente_new(cliente).then((cliente_get:any)=>{
           this.infoConfirmar.cliente = cliente_get
@@ -249,22 +253,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
             this.extra = vehiculo
             this.infoConfirmar.vehiculo = cliente_get.vehiculos.find(v=>v.id === vehiculo)
           }
-          // this.infoConfirmar.servicios = [
-          //   {
-          //       "id": "-NM_TK5u-YtvZKTFrlYc",
-          //       "cantidad": 1,
-          //       "costo": 0,
-          //       "marca": "",
-          //       "status": true,
-          //       "descripcion": "",
-          //       "aprobado": true,
-          //       "nombre": "vieleta",
-          //       "precio": 800,
-          //       "tipo": "refaccion",
-          //       "index": 0,
-          //       "total": 1000
-          //   }]
-        this.realizaOperaciones()
+        
         })
       }else if(tipo === 'cotizacion'){
         this._cotizacion.consulta_cotizacion_new(id_cotizacion).then((cotizacion:any)=>{
@@ -276,9 +265,22 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           this.enrutamiento.cliente = cotizacion.cliente.id
           this.extra = cotizacion.vehiculo.id
           this.consultaVehiculosCliente()
-          this.realizaOperaciones()
+          
         })
+      } else if (tipo === 'cita'){
+        // console.log( console.log(params));
+        const {cliente, vehiculo, cotizacion} = params;
+        const clienteData:any = await this._clientes.consulta_cliente_new(cliente);
+        this.infoConfirmar.cliente = clienteData
+        this.infoConfirmar.vehiculos = clienteData.vehiculos
+        this.extra = vehiculo
+        this.infoConfirmar.vehiculo = clienteData.vehiculos.find(v=>v.id === vehiculo)
+        if(cotizacion){
+          const cotizacionData: any = await this._cotizacion.consulta_cotizacion_new(cotizacion)
+          this.infoConfirmar.servicios = cotizacionData.elementos
+        }
       }
+      this.realizaOperaciones()
     });
     
   }
@@ -1032,7 +1034,9 @@ vehiculoInfonew(idVehiculo:string){
                     this.infoConfirmar.servicio = 1
                     updates[`recepciones/${this._publicos.generaClave()}`] = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
                     this._mail.EmailRecepcion(dataMail)
-
+                    if (this.ParamsGet.tipo === 'cita') {
+                      updates[`${this.ParamsGet.ruta}/status`] = 'concretada'
+                    }
                     update(ref(db), updates).then(()=>{
                       pdfDocGenerator.download(`Recepcion_${this.infoConfirmar.no_os}`)
                       Swal.close()

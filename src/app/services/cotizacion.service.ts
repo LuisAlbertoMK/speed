@@ -43,6 +43,7 @@ export class CotizacionService {
             cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;
             cotizacion.searchPlacas = `${cotizacion.vehiculo.placas}`;
             cotizacion.reporte = this._publicos.realizarOperaciones_2(cotizacion).reporte
+            cotizacion.fechaCompara = this._publicos.construyeFechaString(cotizacion.fecha,cotizacion.hora)
           });
           resolve(cotizaciones);
         } else {
