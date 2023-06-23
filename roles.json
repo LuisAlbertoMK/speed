@@ -1,17 +1,15 @@
 // Enviar
+private router: Router
 this.router.navigate([`/${this.enrutamiento.anterior}`], { 
       queryParams: 
       { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
     });
 
 //recuperar
+private rutaActiva: ActivatedRoute
 enrutamiento = {vehiculo:'', cliente:'', anterior:''}
     this.rutaActiva.queryParams.subscribe(params => {
-      const vehiculo = params['vehiculo'];
-      const cliente = params['cliente'];
-      const anterior = params['anterior'];
-      console.log(vehiculo);
-      console.log(cliente);
+      const { vehiculo, cliente, anterior } = params
       if(vehiculo && cliente){
         this.acciones(vehiculo, cliente)
         this.enrutamiento.vehiculo = vehiculo

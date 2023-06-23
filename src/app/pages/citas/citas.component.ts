@@ -61,19 +61,22 @@ export class CitasComponent implements OnInit {
       left: 'prev,next today',
       center: 'title',
       // right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      right: 'dayGridMonth,timeGridDay,listWeek'
+      right: 'dayGridMonth,timeGridDay,listWeek',
+      
     },
     
     views: {
       listWeek: {
         buttonText: 'Lista Semanal'
       },
+      
     },
     buttonText: {
       today: 'Hoy',
       month: 'Mes',
       // week: 'Semana',
       day: 'Dia',
+      
     },
     
     // locale: esLocale,
@@ -88,12 +91,15 @@ export class CitasComponent implements OnInit {
     dayMaxEvents: true,
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this)
+    eventsSet: this.handleEvents.bind(this),
+    
     /* you can update a remote database when these fire:
     eventAdd:
     eventChange:
     eventRemove:
+    
     */
+    
   };
   
   currentEvents: EventApi[] = [];
@@ -163,6 +169,10 @@ export class CitasComponent implements OnInit {
     this.fecha_muestra = fecha_muestra
     
     this.filtro_citas_mes_all = this._publicos.ordenarData(citasDiaSelect,'horario',true)
+    console.log('aqui');
+    console.log(this.calendarOptions);
+    
+    
   }
 //cuando selecciona un evento de calendario
   handleEventClick(clickInfo: EventClickArg) {
@@ -398,8 +408,9 @@ vigilaCalendario(){
         this.calendarOptions.events = citasFinales;
         
     }
-
-    
+  }
+  reseteaHoras(){
+    this.addEvent(null,null)
   }
   openBottomSheet(valor): void {
     const bottomSheetRef = this._bottomSheet.open(CitaComponent,{

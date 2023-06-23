@@ -17,6 +17,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-estadisticas-cliente',
   templateUrl: './estadisticas-cliente.component.html',
@@ -32,7 +33,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class EstadisticasClienteComponent implements OnInit {
 
   constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
-  private _cotizaciones: CotizacionesService,private _servicios: ServiciosService, private _clientes: ClientesService) { }
+  private _cotizaciones: CotizacionesService,private _servicios: ServiciosService, private _clientes: ClientesService,
+  private router: Router) { }
 
 
   rol_cliente:string = 'cliente'
@@ -70,12 +72,12 @@ export class EstadisticasClienteComponent implements OnInit {
   }
   async obtenerInformacion_cliente(cliente:string){
 
-    const vehiculos = await this._clientes.consulta_cliente_vehiculos(cliente)
-    // console.log(vehiculos);
-    const vehiculos_ids:any[] = vehiculos.map(c=> { return c.id })
+    
 
     const starCountRef_recepciones = ref(db, `recepciones`);
     onValue(starCountRef_recepciones, async (snapshot) => {
+      const vehiculos = await this._clientes.consulta_cliente_vehiculos(cliente)
+      const vehiculos_ids:any[] = vehiculos.map(c=> { return c.id })
       const recepciones = await this._servicios.consulta_recepciones_new();
       
       const recepciones_filter = recepciones.filter((c) => c.cliente.id === cliente);
@@ -109,7 +111,7 @@ export class EstadisticasClienteComponent implements OnInit {
         ticketGeneral += Number(coti.reporte['total'])
       })
 
-      console.log(this.clavesVehiculos);
+      // console.log(this.clavesVehiculos);
       
 
       this.dataSource.data = this.clavesVehiculos
@@ -133,5 +135,20 @@ export class EstadisticasClienteComponent implements OnInit {
     // }
     }, 500)
   }
+
+  irPagina(pagina,vehiculo){
+    // /:ID/:tipo/:extra
+    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+    const ID_cliente = this._security.servicioDecrypt(variableX['usuario'])
+
+    let params = {}
+    if (pagina === 'historialCliente-vehiculo') {
+      params = { anterior:'estadisticasCliente', cliente: ID_cliente,vehiculo } 
+    }
+    this.router.navigate([`/${pagina}`], { 
+      queryParams: params
+    });
+  }
+
 
 }

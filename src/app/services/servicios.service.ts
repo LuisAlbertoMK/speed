@@ -84,6 +84,11 @@ export class ServiciosService {
       {valor:'tirador_lateral_izquierda_2', show:'tirador lateral izquierda 2',status:false},
       {valor:'tirador_posterior', show:'tirador posterior',status:false}
     ]
+    camposGastos = ['concepto','referencia','fecha_registro','gasto_tipo','metodoShow','monto']
+    camposGastos_show = ['concepto','referencia','fecha registro','Tipo','Metodo','monto']
+    camposPagos = ['concepto','fecha_registro','metodoShow','monto']
+    camposPagos_show = ['concepto','fecha registro','metodo','monto']
+    
 //TODO aqui las nuevas funciones
 
 consulta_recepciones_new(): Promise<any[]> {
@@ -93,7 +98,9 @@ consulta_recepciones_new(): Promise<any[]> {
         const recepciones = this._publicos.crearArreglo2(snapshot.val());
         recepciones.map(c=>{
           c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}` 
-          c.searchPlacas = `${c.vehiculo.placas}` 
+          c.searchPlacas = `${c.vehiculo.placas}`
+          c.fechaRecibido = this._publicos.convertirFecha(c.fecha_recibido)
+          c.fechaEntregado = (c.fecha_entregado) ? this._publicos.convertirFecha(c.fecha_entregado) : null
         })
         resolve(recepciones);
       } else {

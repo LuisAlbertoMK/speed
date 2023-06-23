@@ -46,6 +46,47 @@ export class CotizacionesService {
     subtotal: 0,
     total: 0,
   }
+
+  camposDesgloce = [
+    {valor:'mo', show:'mo'},
+    // {valor:'refacciones_a', show:'refacciones a'},
+    {valor:'refacciones_v', show:'refacciones'},
+    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
+    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
+    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
+    {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'descuento', show:'descuento'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+    {valor:'meses', show:'meses'},
+  ]
+  camposVehiculo=[
+    {valor: 'placas', show:'Placas'},
+    {valor: 'marca', show:'marca'},
+    {valor: 'modelo', show:'modelo'},
+    {valor: 'anio', show:'añio'},
+    {valor: 'categoria', show:'categoria'},
+    {valor: 'cilindros', show:'cilindros'},
+    {valor: 'engomado', show:'engomado'},
+    {valor: 'color', show:'color'},
+    {valor: 'transmision', show:'transmision'},
+    {valor: 'no_motor', show:'No. Motor'},
+    {valor: 'vinChasis', show:'vinChasis'},
+    {valor: 'marcaMotor', show:'marcaMotor'}
+  ]
+  camposCliente=[
+    {valor: 'no_cliente', show:'# Cliente'},
+    {valor: 'nombre', show:'Nombre'},
+    {valor: 'apellidos', show:'Apellidos'},
+    {valor: 'correo', show:'Correo'},
+    {valor: 'correo_sec', show:'Correo adicional'},
+    {valor: 'telefono_fijo', show:'Tel. Fijo'},
+    {valor: 'telefono_movil', show:'Tel. cel.'},
+    {valor: 'tipo', show:'Tipo'},
+    {valor: 'empresa', show:'Empresa'},
+    {valor: 'sucursal', show:'Sucursal'}
+  ]
   constructor(
     private _publicos: ServiciosPublicosService,private _clientes: ClientesService,private _vehiculos: VehiculosService,
     private _sucursales: SucursalesService, private _servicios:ServiciosService

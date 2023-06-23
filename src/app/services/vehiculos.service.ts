@@ -35,6 +35,20 @@ export class VehiculosService {
 'transmision',
 'vinChasis',
   ]
+  camposVehiculo_=[
+    {valor: 'placas', show:'Placas'},
+    {valor: 'marca', show:'marca'},
+    {valor: 'modelo', show:'modelo'},
+    {valor: 'anio', show:'añio'},
+    {valor: 'categoria', show:'categoria'},
+    {valor: 'cilindros', show:'cilindros'},
+    {valor: 'engomado', show:'engomado'},
+    {valor: 'color', show:'color'},
+    {valor: 'transmision', show:'transmision'},
+    {valor: 'no_motor', show:'No. Motor'},
+    {valor: 'vinChasis', show:'vinChasis'},
+    {valor: 'marcaMotor', show:'marcaMotor'}
+  ]
   consulta_vehiculo_new(cliente,vehiculo): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `clientes/${cliente}/vehiculos/${vehiculo}`);

@@ -67,7 +67,7 @@
               <th mat-header-cell *matHeaderCellDef [ngStyle]="{'max-width':(miniColumnas)*.2+'px'}"> &nbsp; </th>
               <td mat-cell *matCellDef="let row">
                 <i class="fa fa-book text-danger pointer" #tooltip="matTooltip"
-                matTooltip="Historial de vehiculo"  [routerLink]="['/historialCliente-vehiculo']" ></i>
+                matTooltip="Historial de vehiculo"  (click)="irPagina('historialCliente-vehiculo',row.id)" ></i>
               </td>
             </ng-container>
           

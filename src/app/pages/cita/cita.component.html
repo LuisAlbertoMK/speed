@@ -15,21 +15,95 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
           <h1>Cita {{ info.title }}</h1>
         </div>
+        <!-- <pre>
+          {{info | json}}
+        </pre> -->
         <ng-container>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-                <button class="btn btn-sm btn-danger m-1" (click)="eliminar()">
-                    <i class="fa fa-ban"></i> Cancelar
+          <ng-container *ngIf="info.status !== 'cancelada' && info.status !== 'concretada'">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+              <button class="btn btn-sm btn-primary  m-1" [matMenuTriggerFor]="menuCita">Status de cita</button>
+              <mat-menu #menuCita="matMenu">
+                <button mat-menu-item  (click)="citaAccion(item)" *ngFor="let item of opciones_menu">
+                  {{item}}
                 </button>
+                <!-- <button mat-menu-item *ngIf="info.status !== 'cancelada' && info.status !== 'concretada'" (click)="citaAccion('confirmada')">Confirmada</button>
+                <button mat-menu-item *ngIf="info.status !== 'cancelada' && info.status !== 'concretada'" (click)="citaAccion('noConfirmada')">No confirmada</button>
+                <button mat-menu-item *ngIf="info.status !== 'cancelada' && info.status !== 'concretada'" (click)="citaAccion('sinConfirmarDomicilio')">Sin confirmar domicilio</button>
+                <button mat-menu-item  (click)="citaAccion('cancelada')">Cancelar</button> -->
+              </mat-menu>
+            </div>
+          </ng-container>
+          
+              
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta text-center">
+                <span class="titulo">Status:</span>
+                <span [ngClass]="info.status" class="text-uppercase"><strong>{{info.mensajeStatus}}</strong></span>
               </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Cliente: <strong> {{info.fullname}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Correo: <strong> {{info.correo}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Placas: <strong> {{info.placas}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Dia: <strong> {{info.dia}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Horario: <strong> {{info.horario}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Sucursal: <strong> {{info.sucursalShow}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Asistio: <strong> {{info.asistenciaShow}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Recordatorio: <strong> {{info.recordatorioShow}} </strong></div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12">Confirmada: <strong> {{info.confirmadaShow}} </strong></div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta" >
+                <span class="titulo">Cliente:</span>
+                <span class="informacion">{{info.fullname}}</span>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
+                <span class="titulo">Correo:</span>
+                <span class="informacion">{{info.correo}}</span>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
+                <span class="titulo">Placas:</span>
+                <span class="informacion">{{info.placas}}</span>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
+                <span class="titulo">Dia:</span>
+                <span class="informacion">{{info.dia}} {{info.horario}}</span>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
+                <span class="titulo">Sucursal:</span>
+                <span class="informacion">{{info.sucursalShow}}</span>
+              </div>
+              <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
+                <span class="titulo">Concretada:</span>
+                <span class="informacion">{{info.asistenciaShow}}</span>
+              </div> -->
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
+                <span class="titulo">Recordatorio:</span>
+                <span class="informacion">{{info.recordatorioShow}}</span>
+              </div>
+              <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
+                <span class="titulo">Confirmada:</span>
+                <span class="informacion">{{info.confirmadaShow}}</span>
+              </div> -->
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card border-dark">
+                  <div class="card-body">
+                    <h1>Informacion de vehiculo</h1>
+                    <div class="row">
+                      <ng-container *ngFor="let item of camposVehiculo">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="info.dataVehiculo[item.valor]">
+                          <strong class="text-uppercase">{{item.show}} </strong>: {{info.dataVehiculo[item.valor]}}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                <h1>Comentarios de cita</h1>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Comentario</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of info.comentarios; let i = index">
+                        <th scope="row">{{i + 1}}</th>
+                        <td>{{item.comentario}}</td>
+                      </tr>
+                    </tbody>
+                  </table>  
+                </div>   
+              </div>
         </ng-container>
     </div>
     </ng-container>

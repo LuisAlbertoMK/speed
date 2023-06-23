@@ -32,6 +32,10 @@
         <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext ">
         <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext ">
       </mat-date-range-input>
+      <button class="btn btn-sm btn-danger" (click)="reseteaHoras()" #tooltip="matTooltip"
+      matTooltip="limpiar rango de fechas">
+        <i class="fa fa-trash"></i>
+      </button>
     </div>
   </div>
     <ng-container *ngIf="SUCURSAL === 'Todas'">

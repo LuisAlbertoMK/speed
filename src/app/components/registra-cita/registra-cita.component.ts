@@ -35,12 +35,12 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   // horarios_ocupados = []
   horarios_show = []
   citaForm: FormGroup;
-  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'', correo:''}
+  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'',comentarios:{}, correo:'',dataVehiculo:{},nota:''}
   camposInfoCita = [...this._citas.camposInfoCita]
   faltente:string
-  citasCampos = [ 'sucursal','cliente','correo','vehiculo','servicio','dia','horario']
+  citasCampos = [ 'sucursal','cliente','correo','vehiculo','servicio','dia','horario','nota','comentario']
+  nuevos = ['sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','nota','comentario']
   confirmar:boolean = false
-  
   startProceso:boolean = false
 
   ///
@@ -49,7 +49,15 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   tiempoRestante: number = this.tiempoLimite;
   temporizador
 
-  camposServicios = [...this._publicos.camposServicios()]
+  camposServicios = [
+    {valor:'1',nombre:'servicio'},
+    {valor:'2',nombre:'garantia'},
+    // {valor:'3',nombre:'retorno'},
+    // {valor:'4',nombre:'venta'},
+    // {valor:'5',nombre:'preventivo'},
+    // {valor:'6',nombre:'correctivo'},
+    {valor:'7',nombre:'rescate vial'}
+  ]
 
   dateControl = new FormControl();
   constructor(private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,
@@ -287,7 +295,9 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       sucursal: [sucursal, Validators.required],
       horario: ['', Validators.required],
       vehiculo: ['', Validators.required],
-      servicio: ['', Validators.required]
+      servicio: ['', Validators.required],
+      nota: ['', Validators.required],
+      comentario: ['', Validators.required]
     });
 
     if (this.SUCURSAL === 'Todas'){
@@ -401,22 +411,31 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.infoCita.servicioShow = this.camposServicios.find(s=>s.valor === this.infoCita.servicio).nombre
       this.infoCita.dia = data.dia
       this.infoCita.horario = data.horario
-      this.infoCita.placas = this.arr_vehiculos.find(v=>v.id === data.vehiculo).placas
+      this.infoCita.nota = data.nota
+      this.infoCita.comentarios = {
+        [this._publicos.generaClave()]: {comentario: data.comentario}
+      }
+      const dataVehiculo = this.arr_vehiculos.find(v=>v.id === data.vehiculo)
+      this.infoCita.placas = dataVehiculo.placas
+      this.infoCita.dataVehiculo = dataVehiculo
       this.confirmar = true
+      // console.log(this.infoCita);
     }
   }
   ConfirmaCita(){
-    let nuevos = ['sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario']
+    let nuevos = ['dataVehiculo','sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','nota','comentarios']
     if(this.id_cita){ nuevos = [...nuevos,'id'] }
     const validaciones_data = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
     const { faltante_s, ok} = this._publicos.realizaValidaciones(nuevos,validaciones_data)
     this.faltente = faltante_s
-
+    // console.log(faltante_s);
+    
     const recuperada = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
 
     const mi_fecha= this._publicos.convertirFecha(validaciones_data.dia);
-          const {dia, mes,anio}  = this._publicos.conveirtefecha_2(mi_fecha);        
-    //verificar si el horario ya ha sido ocupado
+    const {dia, mes,anio}  = this._publicos.conveirtefecha_2(mi_fecha);    
+
+    // verificar si el horario ya ha sido ocupado
     this._citas.consulta_cita_existe_new_2(anio,mes,validaciones_data.sucursal).then((citas)=>{
       let existe_horario = false
       for (const c of citas) {
@@ -435,11 +454,10 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
               //TODO verificar apartir de este punto
              
-                recuperada.confirmada = false
-                recuperada.asistencia = false
+                recuperada.status = 'noConfirmada'
                 recuperada.recordatorio = false
-                const envia_f =this._publicos.convertirFecha(recuperada.dia)
-                const fecha_formato = this._publicos.formatearFecha(envia_f, false)
+                // const envia_f =this._publicos.convertirFecha(recuperada.dia)
+                // const fecha_formato = this._publicos.formatearFecha(envia_f, false)
                 
                 //comprobar si ya tiene una cita
                 this._citas.consulta_cita_existe_new_2(anio,mes,validaciones_data.sucursal).then((citas)=>{

@@ -34,7 +34,8 @@ import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 })
 export class CotizacionesClienteComponent implements OnInit {
 
-  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _clientes: ClientesService, private _sucursales: SucursalesService, private _cotizaciones: CotizacionesService) { }
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, 
+    private _clientes: ClientesService, private _sucursales: SucursalesService, private _cotizaciones: CotizacionesService) { }
   rol_cliente:string = 'cliente'
 
   paquete: string = 'paquete'
