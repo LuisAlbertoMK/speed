@@ -5,3 +5,7 @@
   ::ng-deep .cdk-overlay-container {
     z-index: 1055 !important;
   }
+.direccion{
+  color: blue;
+  cursor: pointer;
+}

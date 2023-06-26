@@ -1,5 +1,5 @@
 
 // git add .
-// git commit -m "soluciones de 23062023"
+// git commit -m "soluciones de 26062023"
 // git push -u origin main
 

@@ -22,7 +22,10 @@ export class CitasService {
     {valor: 'placas', show:'placas'},
     {valor: 'servicioShow', show:'Servicio'},
     {valor: 'dia', show:'dia cita'},
-    {valor: 'horario', show:'Hora cita'}
+    {valor: 'horario', show:'Hora cita'},
+    {valor: 'cotizacionShow', show:'Cotización ocupada'},
+    {valor: 'cotizacionCosto', show:'Costo de cotización'},
+    {valor: 'direccion', show:'direccion de recoleccion'},
   ]
 
   colores_citas = [

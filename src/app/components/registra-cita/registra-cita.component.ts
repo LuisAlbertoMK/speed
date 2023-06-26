@@ -36,11 +36,11 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   // horarios_ocupados = []
   horarios_show = []
   citaForm: FormGroup;
-  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'',comentarios:{}, correo:'',dataVehiculo:{},nota:''}
+  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'',comentarios:{}, correo:'',dataVehiculo:{},cotizacionShow: '', cotizacionCosto:0, direccion:''}
   camposInfoCita = [...this._citas.camposInfoCita]
   faltente:string
-  citasCampos = [ 'sucursal','cliente','correo','vehiculo','servicio','dia','horario','nota','comentario']
-  nuevos = ['sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','nota','comentario']
+  citasCampos = [ 'sucursal','cliente','correo','vehiculo','servicio','dia','horario','comentario']
+  nuevos = ['sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','comentario']
   confirmar:boolean = false
   startProceso:boolean = false
 
@@ -57,12 +57,21 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     // {valor:'4',nombre:'venta'},
     // {valor:'5',nombre:'preventivo'},
     // {valor:'6',nombre:'correctivo'},
-    {valor:'7',nombre:'rescate vial'}
+    {valor:'7',nombre:'rescate vial'},
+    {valor:'8',nombre:'frenos'},
+    {valor:'9',nombre:'afinación'},
+    {valor:'10',nombre:'cambio de aceite'},
+    {valor:'11',nombre:'revisión general'},
+    {valor:'12',nombre:'revisión de falla'},
+    {valor:'13',nombre:'escaneo vehículo'},
   ]
 
   dateControl = new FormControl();
   ligarCotizacion: boolean = false
   listaCotizacionesShow = []
+
+  arreglo_correos = []
+  correo_viene_cliente: boolean = false
   constructor(private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,
     private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _citas: CitasService, private _cotizacion : CotizacionService) { }
   ngOnInit(): void {
@@ -130,7 +139,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
     this._sucursales.consultaSucursales_new().then((sucursales) => {
       this.sucursales_arr = sucursales
-      this.ListadoClientes(this.SUCURSAL)
+      // this.ListadoClientes(this.SUCURSAL)
       const sucursal = (this.SUCURSAL === 'Todas') ? false:  true
       if (sucursal) {
         this.horariosSucursal()
@@ -225,17 +234,21 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, () => {
       this._clientes.consulta_clientes_new().then((clientes) => {
+        let actu = [...clientes]
+        this.arreglo_correos = actu.map(c=>{
+          return c.correo
+        })
         clientes.map(c=>{
           c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal)?.sucursal
         })
-        const info = clientes.filter(c=>c.correo) 
+        const info = clientes //.filter(c=>c.correo)
+        
 
         const camposRecu= [...this._clientes.camposCliente,,'vehiculos','fullname','sucursalShow']
         const aqui = (!this.clientes_arr.length) ? clientes : this._publicos.actualizarArregloExistente(this.clientes_arr, info,camposRecu);
         // console.log(aqui);
         this.clientes_arr = this._publicos.ordenarData(aqui,'fullname',true)
 
-        this.clienteSeleccionado()
       }).catch((error) => {
         // Manejar el error si ocurre
         console.log(error);      
@@ -263,47 +276,30 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   displayFn(user: any): string {
     return user && user.fullname ? user.fullname : '';
   }
-  clienteSeleccionado(){
-    //  const cliente = this.myControl.value
-    // if (cliente instanceof Object) {
-    //   const campos = ['fullname','id','correo','sucursal','sucursalShow']
-    //   campos.forEach(c=>{
-    //     if (c === 'id') {
-    //       this.infoCita.cliente = cliente[c]
-    //     }else{
-    //       this.infoCita[c] = cliente[c]
-    //     }
-    //   })
-    //   // {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'', correo:''}
-    //   this.arr_vehiculos = cliente.vehiculos
-    //   this.citaForm.controls['cliente'].setValue(cliente.id)
-    //   this.citaForm.controls['correo'].setValue(cliente.correo)
-    //   this.citaForm.controls['vehiculo'].setValue(null)
-    // }else{
-      
-      
-    // }
-    
-  }
+ 
  
   creaFormCitas(){
     const sucursal = (this.SUCURSAL === 'Todas') ? '':  this.SUCURSAL
     // const muestra = (this.info_cita['id']) ? this.info_cita['id'] : null
-    
+    const urlRegex = /^(https?:\/\/)?goo.gl\/maps\/.*$/;
+
     this.citaForm = this.formBuilder.group({
       id:[''],
       dia: ['', Validators.required],
       cliente: ['', Validators.required],
-      correo: ['', Validators.required],
+      correo:['',[Validators.required,Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       sucursal: [sucursal, Validators.required],
       horario: ['', Validators.required],
       vehiculo: ['', Validators.required],
       servicio: ['', Validators.required],
-      nota: ['', Validators.required],
       comentario: ['', Validators.required],
       cotizacion_utiliza: [false, Validators.required],
       cotizacion: ['', Validators.required],
+      recoleccion: [false, Validators.required],
+      direccion: ['', [Validators.required, Validators.pattern(urlRegex)]],
     });
+
+
 
     if (this.SUCURSAL === 'Todas'){
       this.dateControl.disable();
@@ -315,7 +311,9 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.citaForm.controls['cliente'].disable()
       this.citaForm.controls['vehiculo'].setValue(null)
       this.citaForm.controls['vehiculo'].disable()
-    }  
+    }
+    this.citaForm.get('direccion').disable()
+    this.citaForm.get('correo').disable()
     this.vigilaDia()
   }
   horarios_new (sucursal){
@@ -338,10 +336,11 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         this.automaticos()
         this.citaForm.controls['cliente'].enable()
         this.horarios_new(sucursal)
+        this.ListadoClientes(sucursal)
+        
       }else{
         this.dateControl.setValue(null); 
         this.dateControl.disable();
-        this.myControl.setValue(null)
         this.myControl.disable()
         // this.clienteSeleccionado(null)
         this.myControl.setValue(null)
@@ -444,19 +443,39 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
           })
           this.arr_vehiculos = cliente.vehiculos
           this.citaForm.controls['cliente'].setValue(cliente.id)
-          this.citaForm.controls['correo'].setValue(cliente.correo)
+          
           this.citaForm.controls['vehiculo'].enable()
           this.citaForm.controls['vehiculo'].setValue(null)
+          if (!cliente.correo) {
+            this.correo_viene_cliente = false
+            this.citaForm.get('correo').enable()
+            this.citaForm.get('correo').setValue('')
+          }else{
+            this.correo_viene_cliente = true
+            this.citaForm.get('correo').disable()
+            this.citaForm.get('correo').setValue(cliente.correo)
+            this.infoCita.correo = cliente.correo
+          }
         }else{
           this.arr_vehiculos = []
           this.citaForm.controls['cliente'].setValue(null)
-          this.citaForm.controls['correo'].setValue(null)
           this.citaForm.controls['vehiculo'].disable()
           this.citaForm.controls['vehiculo'].setValue(null)
         }
       }
     })
-
+    this.citaForm.get('correo').valueChanges.subscribe(async (correo: string) => {
+      if (correo && !this.correo_viene_cliente) {
+        // console.log('verifica con la lista de correos');
+        const existe = this.arreglo_correos.find(c=>c === correo)
+        // console.log(existe);
+        if (existe) {
+          this._publicos.swalToastError('el correo ya se encuentra registrado')
+          this.citaForm.get('correo').setValue('')
+        }
+        
+      }
+    })
     this.citaForm.get('vehiculo').valueChanges.subscribe(async (vehiculo: string) => {
       if (vehiculo) {
         this.citaForm.controls['cotizacion_utiliza'].enable()
@@ -482,19 +501,46 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         
       }
     })
+    this.citaForm.get('recoleccion').valueChanges.subscribe(async (recoleccion: string) => {
+      if (recoleccion) {
+        this.citaForm.get('direccion').enable()
+        this.citaForm.get('direccion').setValue('')
+      }else{
+        this.citaForm.get('direccion').disable()
+        this.citaForm.get('direccion').setValue('')
+      }
+    })
   }
   validarCampo(campo: string){
     return this.citaForm.get(campo).invalid && this.citaForm.get(campo).touched
   }
   guardarCita() {
+    console.log(this.correo_viene_cliente);
+    const clienete_correo = this.citaForm.get('correo').value
+    const clientea = this.citaForm.get('cliente').value
+    // const updates[`clientes/${clientea}/correo`] =  clienete_correo
+    if (!this.correo_viene_cliente) {
+      const updates = {[`clientes/${clientea}/correo`]: clienete_correo};
+      update(ref(db), updates).then(()=>{
+        this.infoCita.correo = clienete_correo
+        this.correo_viene_cliente = true
+      })
+    }
+    
+
+
     const data = this.citaForm.value
     const necesarios = [ ...this.citasCampos]
-    const info = this.citaForm.get('cotizacion_utiliza').value
-    if(info) necesarios.push('cotizacion')
+    const cotizacion_utiliza = this.citaForm.get('cotizacion_utiliza').value
+    if(cotizacion_utiliza) necesarios.push('cotizacion')
+    const recoleccion = this.citaForm.get('recoleccion').value
+    if(recoleccion) necesarios.push('direccion')
+    data['correo'] = this.citaForm.get('correo').value
     const { faltante_s, ok} = this._publicos.realizaValidaciones(necesarios,data)
     this.faltente = faltante_s
     // data.dia = this._publicos.formatearFecha(data.dia['_d'],true)
-    // console.log(data);
+    console.log(faltante_s);
+    ///TODO aqui esta el problema del correo
     if(ok){
       this.infoCita.cliente = data.cliente
       this.infoCita.vehiculo = data.vehiculo
@@ -503,7 +549,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.infoCita.servicioShow = this.camposServicios.find(s=>s.valor === this.infoCita.servicio).nombre
       this.infoCita.dia = data.dia
       this.infoCita.horario = data.horario
-      this.infoCita.nota = data.nota
+      
+      this.infoCita.direccion = data.direccion
       this.infoCita.comentarios = {
         [this._publicos.generaClave()]: {comentario: data.comentario}
       }
@@ -512,20 +559,35 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.infoCita.dataVehiculo = dataVehiculo
       this.confirmar = true
       // console.log(this.infoCita);
+      const cotiza = this.citaForm.get('cotizacion').value
+      if (cotiza) {
+        // console.log(this.listaCotizacionesShow.find(c=>c.id === cotiza));
+        const {reporte, no_cotizacion} = this.listaCotizacionesShow.find(c=>c.id === cotiza)
+        this.infoCita.cotizacionShow = no_cotizacion
+        this.infoCita.cotizacionCosto = reporte.total
+      }else{
+        this.infoCita.cotizacionShow = ''
+        this.infoCita.cotizacionCosto = 0
+      }
+      
     }
   }
   ConfirmaCita(){
-    let nuevos = ['dataVehiculo','sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','nota','comentarios']
-    if(this.id_cita){ nuevos = [...nuevos,'id'] }
+    let nuevos = ['dataVehiculo','sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','comentarios']
+
+    if(this.id_cita){ nuevos = [...nuevos,'id',''] }
+    const cotizacion_utiliza = this.citaForm.get('cotizacion_utiliza').value
+    if(cotizacion_utiliza) nuevos.push('cotizacion')
+    const recoleccion = this.citaForm.get('recoleccion').value
+    if(recoleccion) nuevos.push('direccion')
     const validaciones_data = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
     const { faltante_s, ok} = this._publicos.realizaValidaciones(nuevos,validaciones_data)
     this.faltente = faltante_s
-    // console.log(faltante_s);
     
     const recuperada = this._publicos.nuevaRecuperacionData(this.infoCita,nuevos)
 
     const mi_fecha= this._publicos.convertirFecha(validaciones_data.dia);
-    const {dia, mes,anio}  = this._publicos.conveirtefecha_2(mi_fecha);    
+    const {dia, mes,anio}  = this._publicos.conveirtefecha_2(mi_fecha);
 
     // verificar si el horario ya ha sido ocupado
     this._citas.consulta_cita_existe_new_2(anio,mes,validaciones_data.sucursal).then((citas)=>{
@@ -582,12 +644,16 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
                     }
                   }else{
                     const clave = this._publicos.generaClave()
+                    if(recoleccion) recuperada['recoleccion'] = true
                     let updates = {[`Citas/${anio}/${mes}/${recuperada.sucursal}/${clave}`]: recuperada}
                     // let updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${clave}`]: recuperada}
                     if(recuperada.id){
                       updates = {[`Citas/${anio}/${mes}/${recuperada.sucursal}/${recuperada.id}`]: recuperada}
                       // updates = {[`Citas/${recuperada.sucursal}/${fecha_formato}/${recuperada.id}`]: recuperada}
                     }
+
+                    // console.log(updates);
+                    
                       update(ref(db), updates).then(()=>{
                         this.confirmar = false
                         this._publicos.mensajeSwal('Registro de cita correcto')

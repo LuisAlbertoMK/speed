@@ -275,6 +275,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.infoConfirmar.vehiculos = clienteData.vehiculos
         this.extra = vehiculo
         this.infoConfirmar.vehiculo = clienteData.vehiculos.find(v=>v.id === vehiculo)
+        this.infoConfirmar.sucursal = this.listaSucursales_arr.find(s=>s.id === clienteData.sucursal)
         if(cotizacion){
           const cotizacionData: any = await this._cotizacion.consulta_cotizacion_new(cotizacion)
           this.infoConfirmar.servicios = cotizacionData.elementos

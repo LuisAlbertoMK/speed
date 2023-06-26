@@ -17,6 +17,129 @@ export class EmailsService {
 
   constructor(private http: HttpClient) { }
   
+  
+  async EmailBienvenida(cliente:any){    
+    const dataEmail = {
+      // from:cliente['correos'][0],
+      cliente: cliente['nombre'],
+      subject: 'Bienvenido a SpeedPro',
+      emailAnexa: cliente['correos'],
+      tipo:'bienvenida',
+      no_cliente: cliente.no_cliente,
+      filtro_conceptos: []
+    }
+    
+    const dataMail = await this.template(cliente,'',dataEmail)
+     console.log(dataMail);
+    // return this.http.post(url,dataMail).subscribe()
+  }
+  async EmailCotizacion(data:any){
+    const dataEmail = {
+      filename: `${data.filename}.pdf`,
+      pathPDF: data.pathPDF,
+      subject: 'Nueva cotización SpeedPro',
+      tipo:'cotizacion',
+      emailAnexa:data['correos'],
+      filtro_conceptos: data.filtro_conceptos
+    }
+    // console.log(dataEmail);
+    const dataMail = await this.template(data['cliente'],data['vehiculo'],dataEmail)
+    console.log(dataMail);
+    return this.http.post(url,dataMail).subscribe()
+  }
+  async recordatorioCotizacion(cliente:any,vehiculo:any,cotizacion:any,filtro_conceptos:any){
+    const dataEmail = {
+      subject: 'recordatorio de cotización',
+      tipo:'recordatorioCotizacion',
+      fecha: cotizacion.fecha,
+      vencimiento: cotizacion.vencimiento,
+      filename: `${cotizacion.no_cotizacion}.pdf`,
+      pathPDF: `${cotizacion.pdf}`,
+      filtro_conceptos
+    }
+    const dataMail = await this.template(cliente,vehiculo,dataEmail)
+    console.log(dataMail);
+    // return this.http.post(url,dataMail).subscribe()
+  }
+  async EmailCambioStatus(data:any){
+    // console.log(data);
+    const dataEmail = {
+      subject: `Cambio status vehículo ha ${data.status}`,
+      tipo:'change',
+      correos: data.correos,
+      cliente: data.cliente,
+      vehiculo: data.vehiculo,
+      status:data.status,
+      no_os:data['no_os'],
+      desgloce: data['desgloce']
+    }
+    const dataMail = await this.template(data.cliente,data.vehiculo,dataEmail)
+    console.log(dataMail);
+    // return this.http.post(url,dataMail).subscribe()
+  }
+  async cambioInformacionOS(data:any){
+    const dataEmail = {  
+      subject: data.subject,
+      tipo:'changeElemento',
+      correos: data.correos,
+      cliente: data.cliente,
+      vehiculo: data.vehiculo,
+      resumen:data.resumen,
+      no_os:data.no_os,
+      desgloce: data.desgloce
+    }
+    const dataMail = await this.template(data.cliente,data.vehiculo,dataEmail)
+    console.log(dataMail);
+    // return this.http.post(url,dataMail).subscribe() 
+  }
+  async EmailRecepcion(data:any){
+    const  vehiculo = data.vehiculo
+    const  cliente = data.cliente
+    const tecnico = data.tecnico
+    // console.log(tecnico);
+    const dataEmail = {
+      subject: `Recepcion de vehiculo ${data.vehiculo.placas.toUpperCase()}`,
+      tipo:'recepcionVehiculo',
+      correos: data.correos,
+      pathPDF: data['pathPDF'],
+      filename: data['filename'],
+      nombreRecepcion: data.no_os,
+      arregloString: data.arregloString,
+      desgloce: data.desgloce
+    }
+    
+    const dataMail = await this.template(cliente,vehiculo,dataEmail)
+    console.log(dataMail);
+    // return this.http.post(url,dataMail).subscribe()
+  }
+  async recordatorioCita(data:any){
+    const dataEmail = {
+      subject: `Recordatorio de cita ${data.dia} ${data.horario}`,
+      tipo:'recordatorio_cita',
+      correos: data.correos,
+      vehiculo: data.placas,
+      cliente: data.fullname,
+      dia: data.dia,
+      horario: data.horario
+    }
+    const dataMail = await this.template(null,null,dataEmail)
+    console.log(dataMail);
+    // return this.http.post(url,dataMail).subscribe()
+  }
+  async cancelaRecoleccion(data){
+    const dataEmail = {
+      subject: data.subject,
+      tipo:'SinRecoleccion',
+      correos: data.correos,
+      fullname: data.fullname,
+      placas: data.placas,
+      dia: data.dia,
+      motivo: data.motivo
+    }
+    
+    const dataMail = await this.template(null,null,dataEmail)
+    console.log(dataMail);
+  }
   template(cliente?:any,vehiculo?:any,dataEmail?:any){
     let filename = dataEmail.filename
     let pathPDF = dataEmail.pathPDF
@@ -127,116 +250,19 @@ export class EmailsService {
         <br>Gracias por confiar en nosotros. <br> <small>Cualquier duda o aclaración favor de ponerse en contacto con nosotros</small>`
       }
     }
+    if (tipo === 'SinRecoleccion') {
+      tempEmail ={
+        from: dataEmail.correos[0],
+        email: dataEmail.correos,
+        subject: dataEmail.subject,
+        // mensaje: `Estimado <strong style='text-transform: uppercase;'>${cliente.fullname}</strong>.
+        // <br>Se le informa que hubo cambios en su O.S #${dataEmail.os} del vehiculo ${vehiculo.marca} ${vehiculo.modelo} con placas ${vehiculo.placas.toUpperCase()} ,
+        //  color ${vehiculo.color} anexo el resumen de la O.S: ${dataEmail.resumen}. <br> desgloce de operacion <br> ${dataEmail.desgloce}`,
+        mensaje: `Estimado/a ${dataEmail.fullname} <br>
+        le informamos que en su cita ${dataEmail.dia} del vehiculo con placas ${dataEmail.placas}  <br> ${dataEmail.motivo}`
+      }
+    }
     return tempEmail
   }
-  async EmailBienvenida(cliente:any){    
-    const dataEmail = {
-      // from:cliente['correos'][0],
-      cliente: cliente['nombre'],
-      subject: 'Bienvenido a SpeedPro',
-      emailAnexa: cliente['correos'],
-      tipo:'bienvenida',
-      no_cliente: cliente.no_cliente,
-      filtro_conceptos: []
-    }
-    
-    const dataMail = await this.template(cliente,'',dataEmail)
-     console.log(dataMail);
-    // return this.http.post(url,dataMail).subscribe()
-  }
-  async EmailCotizacion(data:any){
-    const dataEmail = {
-      filename: `${data.filename}.pdf`,
-      pathPDF: data.pathPDF,
-      subject: 'Nueva cotización SpeedPro',
-      tipo:'cotizacion',
-      emailAnexa:data['correos'],
-      filtro_conceptos: data.filtro_conceptos
-    }
-    // console.log(dataEmail);
-    const dataMail = await this.template(data['cliente'],data['vehiculo'],dataEmail)
-    console.log(dataMail);
-    return this.http.post(url,dataMail).subscribe()
-  }
-  async recordatorioCotizacion(cliente:any,vehiculo:any,cotizacion:any,filtro_conceptos:any){
-    const dataEmail = {
-      subject: 'recordatorio de cotización',
-      tipo:'recordatorioCotizacion',
-      fecha: cotizacion.fecha,
-      vencimiento: cotizacion.vencimiento,
-      filename: `${cotizacion.no_cotizacion}.pdf`,
-      pathPDF: `${cotizacion.pdf}`,
-      filtro_conceptos
-    }
-    const dataMail = await this.template(cliente,vehiculo,dataEmail)
-    console.log(dataMail);
-    // return this.http.post(url,dataMail).subscribe()
-  }
-  async EmailCambioStatus(data:any){
-    // console.log(data);
-    const dataEmail = {
-      subject: `Cambio status vehículo ha ${data.status}`,
-      tipo:'change',
-      correos: data.correos,
-      cliente: data.cliente,
-      vehiculo: data.vehiculo,
-      status:data.status,
-      no_os:data['no_os'],
-      desgloce: data['desgloce']
-    }
-    const dataMail = await this.template(data.cliente,data.vehiculo,dataEmail)
-    console.log(dataMail);
-    // return this.http.post(url,dataMail).subscribe()
-  }
-  async cambioInformacionOS(data:any){
-    const dataEmail = {  
-      subject: data.subject,
-      tipo:'changeElemento',
-      correos: data.correos,
-      cliente: data.cliente,
-      vehiculo: data.vehiculo,
-      resumen:data.resumen,
-      no_os:data.no_os,
-      desgloce: data.desgloce
-    }
-    const dataMail = await this.template(data.cliente,data.vehiculo,dataEmail)
-    console.log(dataMail);
-    // return this.http.post(url,dataMail).subscribe() 
-  }
-  async EmailRecepcion(data:any){
-    const  vehiculo = data.vehiculo
-    const  cliente = data.cliente
-    const tecnico = data.tecnico
-    // console.log(tecnico);
-    const dataEmail = {
-      subject: `Recepcion de vehiculo ${data.vehiculo.placas.toUpperCase()}`,
-      tipo:'recepcionVehiculo',
-      correos: data.correos,
-      pathPDF: data['pathPDF'],
-      filename: data['filename'],
-      nombreRecepcion: data.no_os,
-      arregloString: data.arregloString,
-      desgloce: data.desgloce
-    }
-    
-    const dataMail = await this.template(cliente,vehiculo,dataEmail)
-    console.log(dataMail);
-    // return this.http.post(url,dataMail).subscribe()
-  }
-  async recordatorioCita(data:any){
-    const dataEmail = {
-      subject: `Recordatorio de cita ${data.dia} ${data.horario}`,
-      tipo:'recordatorio_cita',
-      correos: data.correos,
-      vehiculo: data.placas,
-      cliente: data.fullname,
-      dia: data.dia,
-      horario: data.horario
-    }
-    const dataMail = await this.template(null,null,dataEmail)
-    console.log(dataMail);
-    // return this.http.post(url,dataMail).subscribe()
-  }
-
 
 }
