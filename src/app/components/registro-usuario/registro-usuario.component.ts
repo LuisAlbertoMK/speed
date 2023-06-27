@@ -5,6 +5,7 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { CustomValidators } from 'src/app/validators/password.validator';
 import { AuthService } from '../../services/auth.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -14,10 +15,12 @@ const dbRef = ref(getDatabase());
 })
 export class RegistroUsuarioComponent implements OnInit {
   
+  ROL:string; SUCURSAL:string;
+
+  sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+  
   @Input() usuario:any={}
 
-  ROL:string; SUCURSAL:string;
-  sucursales = []
   formUsuario: FormGroup
   faltantes: null
 
@@ -25,7 +28,7 @@ export class RegistroUsuarioComponent implements OnInit {
   // rolesGerente:string[]=['tecnico']
   rolesMostrarnew = []
 
-  constructor(private fb: FormBuilder, private _security:EncriptadoService, private _publicos: ServiciosPublicosService,private _auth: AuthService) { }
+  constructor(private fb: FormBuilder, private _security:EncriptadoService, private _publicos: ServiciosPublicosService,private _auth: AuthService,private _sucursales: SucursalesService,) { }
 
   ngOnInit(): void {
     this.rol()
@@ -49,7 +52,7 @@ export class RegistroUsuarioComponent implements OnInit {
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
           //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
-          this.sucursales = this._publicos.crearArreglo2(snapshot.val())
+          this.sucursales_array = this._publicos.crearArreglo2(snapshot.val())
           // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
         } 
       }, {

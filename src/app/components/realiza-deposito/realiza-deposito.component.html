@@ -28,7 +28,7 @@
                                         class="form-select form-select-sm"
                                         formControlName="sucursal">
                                         <option value="">Selecciona</option>
-                                        <option [value]="s.id" *ngFor="let s of Sucursales">
+                                        <option [value]="s.id" *ngFor="let s of sucursales_array">
                                             {{s.sucursal}}
                                         </option>
                                     </select>

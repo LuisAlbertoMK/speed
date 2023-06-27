@@ -44,7 +44,7 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12">
                       <select class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value; RealizaBarridoDia()">
                         <option value="">Selecciona</option>
-                        <option [value]="s.id"  *ngFor="let s of sucursales_arr" >{{s.sucursal}}</option>
+                        <option [value]="s.id"  *ngFor="let s of sucursales_array" >{{s.sucursal}}</option>
                       </select>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12">
@@ -93,7 +93,7 @@
               <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menu">Filtro sucursal {{sucursalFiltroShowReporte}}</button>
               <mat-menu #menu="matMenu">
                 <button mat-menu-item class="custom-menu-item" (click)="sucursalFiltroReporte = 'Todas'; sucursalFiltroShowReporte ='Todas'; realizarOperaciones()">Todas</button>
-                <button mat-menu-item class="custom-menu-item" *ngFor="let s of sucursales_arr"
+                <button mat-menu-item class="custom-menu-item" *ngFor="let s of sucursales_array"
                 (click)="sucursalFiltroReporte = s.id; sucursalFiltroShowReporte = s.sucursal;  realizarOperaciones()">{{s.sucursal}}</button>
               </mat-menu>
 
@@ -288,7 +288,7 @@
               </button>
               <mat-menu #menuAdministracion="matMenu">
                 <button mat-menu-item class="custom-menu-item" (click)="sucursalFiltro = 'Todas'; sucursalFiltroShow ='Todas'; operacionesAdmin()">Todas</button>
-                <button mat-menu-item class="custom-menu-item" *ngFor="let s of sucursales_arr" 
+                <button mat-menu-item class="custom-menu-item" *ngFor="let s of sucursales_array" 
                 (click)="sucursalFiltro = s.id; sucursalFiltroShow = s.sucursal;  operacionesAdmin()">{{s.sucursal}}</button>
               </mat-menu>
               

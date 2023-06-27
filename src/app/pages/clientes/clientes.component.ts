@@ -13,6 +13,7 @@ import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 
 
 const db = getDatabase()
@@ -31,36 +32,32 @@ export interface User {nombre: string}
   ]
 })
 export class ClientesComponent implements AfterViewInit, OnInit {
-  miniColumnas:number = 100
-  
-  displayedColumnsClientes: string[] = ['no_cliente','sucursalShow', 'fullname','tipo', 'correo','opciones']; //clientes
-  columnsToDisplayWithExpand = [...this.displayedColumnsClientes, 'expand'];
-  dataSourceClientes = new MatTableDataSource(); //clientes
-  expandedElement: any | null; //clientes
-  @ViewChild('clientesPaginator') paginatorClientes: MatPaginator //clientes
-  @ViewChild('clientes') sortClientes: MatSort //clientes
-
-  clickedRows = new Set<any>() //todas las tablas
-
-
-  //verificar si existe informacion de cliente
-  datCliente:any
-  cliente:string = null
-
-  vehiculo:string = null
-
-  ROL:String
-  SUCURSAL:string
-
-  clientes_arr=[]
-  sucursales_arr=[]
-
-  cargandoInformacion:boolean = true
-
-  tipos_cliente= ['todos','flotilla','particular']
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
-    private _clientes: ClientesService, private router: Router, private _auth: AuthService){}
+    private _clientes: ClientesService, private router: Router, private _auth: AuthService,private _campos: CamposSystemService,){}
+    ROL:string; SUCURSAL:string;
+  
+    sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
+    tipos_cliente     =  [ ...this._clientes.tipos_cliente ]
+    
+    miniColumnas:number =  this._campos.miniColumnas
+    
+    cargandoInformacion:boolean = true
+    
+    clientes_arr=[]
 
+    displayedColumnsClientes: string[] = ['no_cliente','sucursalShow', 'fullname','tipo', 'correo','opciones']; //clientes
+    columnsToDisplayWithExpand = [...this.displayedColumnsClientes, 'expand'];
+    dataSourceClientes = new MatTableDataSource(); //clientes
+    expandedElement: any | null; //clientes
+    @ViewChild('clientesPaginator') paginatorClientes: MatPaginator //clientes
+    @ViewChild('clientes') sortClientes: MatSort //clientes
+  
+    clickedRows = new Set<any>() //todas las tablas
+
+    //verificar si existe informacion de cliente
+    datCliente:any
+    cliente:string = null
+    vehiculo:string = null
   ngOnInit() {
     this.rol()
   }
@@ -69,13 +66,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.sucursales_arr = sucursales
-      this.ListadoClientes()
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
+    this.ListadoClientes()
   }
   irPagina(pagina, cliente, vehiculo?, cotizacion?){
     // /:ID/:tipo/:extra
@@ -97,21 +88,13 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, () => {
       this._clientes.consulta_clientes_new().then((clientes) => {
-        const clientes_new = clientes
-        clientes_new.map(c=>{
-          c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal).sucursal
-        })
-        const info = (this.SUCURSAL !=='Todas') ? clientes_new.filter(c=>c.sucursal === this.SUCURSAL) : clientes_new
+        const info = (this.SUCURSAL !=='Todas') ? clientes.filter(c=>c.sucursal === this.SUCURSAL) : clientes
+
         const camposRecu = [...this._publicos.camposCliente(),'vehiculos','fullname']
-        let aqui = []
-        if (!this.clientes_arr.length) {
-          aqui = info;
-        } else {
-          aqui = this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
-        }
-        this.clientes_arr = aqui        
-        
-        this.dataSourceClientes.data = aqui
+
+        const data_ocupada  = (!this.clientes_arr.length) ?  info :  this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+        this.clientes_arr = data_ocupada
+        this.dataSourceClientes.data = data_ocupada
         this.newPagination('clientes')
       }).catch((error) => {
         // Manejar el error si ocurre

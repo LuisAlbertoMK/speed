@@ -18,6 +18,7 @@ import { MatSort } from '@angular/material/sort';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 @Component({
   selector: 'app-estadisticas-cliente',
   templateUrl: './estadisticas-cliente.component.html',
@@ -33,16 +34,17 @@ import { Router } from '@angular/router';
 export class EstadisticasClienteComponent implements OnInit {
 
   constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
+  private _campos: CamposSystemService,
   private _cotizaciones: CotizacionesService,private _servicios: ServiciosService, private _clientes: ClientesService,
   private router: Router) { }
 
 
   rol_cliente:string = 'cliente'
-  camposReporte = [...this._cotizaciones.camposReporte]
-  camposReporte_show = [...this._cotizaciones.camposReporte_show]
-  camposReporte_show2 = {...this._cotizaciones.camposReporte_show2}
+  camposReporte        = [...this._cotizaciones.camposReporte]
+  camposReporte_show   = [...this._cotizaciones.camposReporte_show]
+  camposReporte_show2  = {...this._cotizaciones.camposReporte_show2}
 
-  miniColumnas:number = 100
+  miniColumnas:number  = this._campos.miniColumnas
 
   campos_estadisticas_show = [
     {valor: 'servicios_gen', show:'Total de servicios', symbol:''},

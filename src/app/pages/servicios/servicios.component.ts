@@ -17,12 +17,14 @@ import { ExporterService } from 'src/app/services/exporter.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { ServiciosService } from 'src/app/services/servicios.service';
+import { CamposSystemService } from '../../services/campos-system.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-
-
-
 @Component({
   selector: 'app-servicios',
   templateUrl: './servicios.component.html',
@@ -40,163 +42,82 @@ const dbRef = ref(getDatabase());
 })
 export class ServiciosComponent implements OnInit, OnDestroy {
 
-  ROL:string; SUCURSAL:string
-  sucursales_arr=[]
-  recepciones_arr=[]
-  miniColumnas:number = 100
-
-  // tabla
-  dataSource = new MatTableDataSource(); //elementos
-  elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
-  columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
-  expandedElement: any | null; //elementos
-  @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
-  @ViewChild('elements') sort: MatSort //elementos
-
-  camposDesgloce = [
-    {valor:'mo', show:'mo'},
-    // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'refacciones_v', show:'refacciones'},
-    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
-    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
-    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    {valor:'sobrescrito', show:'sobrescrito'},
-    {valor:'descuento', show:'descuento'},
-    {valor:'subtotal', show:'subtotal'},
-    {valor:'iva', show:'iva'},
-    {valor:'total', show:'total'},
-    {valor:'meses', show:'meses'},
-  ]
-  camposCliente=[
-    {valor: 'no_cliente', show:'# Cliente'},
-    {valor: 'nombre', show:'Nombre'},
-    {valor: 'apellidos', show:'Apellidos'},
-    {valor: 'correo', show:'Correo'},
-    {valor: 'correo_sec', show:'Correo adicional'},
-    {valor: 'telefono_fijo', show:'Tel. Fijo'},
-    {valor: 'telefono_movil', show:'Tel. cel.'},
-    {valor: 'tipo', show:'Tipo'},
-    {valor: 'empresa', show:'Empresa'},
-    {valor: 'sucursal', show:'Sucursal'}
-  ]
-  camposVehiculo=[
-    {valor: 'placas', show:'Placas'},
-    {valor: 'marca', show:'marca'},
-    {valor: 'modelo', show:'modelo'},
-    {valor: 'anio', show:'añio'},
-    {valor: 'categoria', show:'categoria'},
-    {valor: 'cilindros', show:'cilindros'},
-    {valor: 'engomado', show:'engomado'},
-    {valor: 'color', show:'color'},
-    {valor: 'transmision', show:'transmision'},
-    {valor: 'no_motor', show:'No. Motor'},
-    {valor: 'vinChasis', show:'vinChasis'},
-    {valor: 'marcaMotor', show:'marcaMotor'}
-  ]
-  formasPago=[
-    {id:'1',pago:'contado',interes:0,numero:0},
-    {id:'2',pago:'3 meses',interes:4.49,numero:3},
-    {id:'3',pago:'6 meses',interes:6.99,numero:6},
-    {id:'4',pago:'9 meses',interes:9.90,numero:9},
-    {id:'5',pago:'12 meses',interes:11.95,numero:12},
-    {id:'6',pago:'18 meses',interes:17.70,numero:18},
-    {id:'7',pago:'24 meses',interes:24.,numero:24}
-  ]
-  metodospago = [
-    {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
-    {valor:'2', show:'Cheque', ocupa:'Cheque'},
-    {valor:'3', show:'Tarjeta', ocupa:'Tarjeta'},
-    {valor:'4', show:'Transferencia', ocupa:'Transferencia'},
-    {valor:'5', show:'Credito', ocupa:'credito'},
-    // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
-    // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
-    {valor:'6', show:'Terminal BBVA', ocupa:'BBVA'},
-    {valor:'7', show:'Terminal BANAMEX', ocupa:'BANAMEX'}
-  ]
-
-  paquete: string = 'paquete'
-  refaccion: string = 'refaccion'
-  mo: string = 'mo'
-
-  estatusServicioUnico = [
-    {valor: 'aprobado'   , show: 'Aprobar'},
-    {valor: 'Noaprobado'  , show: 'No Aprobado'},
-    {valor: 'terminar'   , show: 'Terminado'},
-    {valor: 'eliminado'  , show: 'Eliminar'},
-    {valor: 'cancelado'  , show: 'Cancelado'}
-  ]
-  statusOS = [
-    {valor: 'espera'   , show: 'Espera'},
-    {valor: 'recibido'   , show: 'Recibido'},
-    {valor: 'autorizado'  , show: 'Autorizado'},
-    {valor: 'terminado'   , show: 'Terminado'},
-    {valor: 'entregado'  , show: 'Entregado'},
-    {valor: 'cancelado'  , show: 'Cancelado'}
-  ]
-  // 'espera','autorizado','recibido','terminado','entregado','cancelado'
-  indexEdicionRecepcion: number; indexEdicionRecepcionBoolean: boolean =  false
-  dataOcupadaOS:any = {}
-
-  busquedaStatus: string = 'todos'
-  busquedaSucursalString: string = 'Todas'
-  busquedaSucursalStringShow: string = 'Todas'
   
-  fechas_filtro = new FormGroup({
-    start: new FormControl(Date),
-    end: new FormControl(Date),
-  });
-
-  fechas_get = {start: this._publicos.resetearHoras(new Date()), end: this._publicos.resetearHoras(new Date())}
-  busquedaServicios:string = null
-  
-  idSucursalOS: string = null
-
-  dataRecepcionEditar = null
-  tiempoReal = true
-  
-
-  realizaGasto:string = null
-  
-  BusquedaTo: string = 'fecha_recibido'
-
-  busqueda2 = [
-    {valor:'fecha_recibido', show:'Fecha de Recibido'},
-    {valor:'fecha_entregado', show:'Fecha de Entregado'},
-  ]
-  menuListaBusqueda_arr = [
-    {valor:'hoy',show:'Hoy', dias: 0},
-    {valor:'ayer',show:'Ayer', dias: -1},
-    {valor:'ult7dias',show:'Últimos 7 días', dias:-7},
-    {valor:'ult30dias',show:'Últimos 30 días', dias: -30},
-    {valor:'esteMes',show:'Este mes', dias: 0},
-    {valor:'ultMes',show:'Último mes', dias: 0},
-    {valor:'esteAnio',show:'Este año', dias: 0},
-    {valor:'ultAnio',show:'Último año', dias: 0},
-    {valor:'personalizado',show:'Personalizado',dias: 0},
-  ]
-  diasBusqueda: number = 0
-  rangoBusqueda = {valor:'hoy',show:'Hoy', dias: 0}
-
-
-  reporteEstancias = {  servicios_totales:0, ticket_total:0, ticketPromedio:0, diasSucursal_total:0, diasSucursal:0, horas_totales_totales:0, horas_totales:0}
-  camposEstancia = [
-    {valor: 'servicios_totales', show:'Numero servicios'},
-    {valor: 'ticket_total', show:'ticket total'},
-    {valor: 'ticketPromedio', show:'ticket promedio'},
-    {valor: 'diasSucursal_total', show:'dias Sucursal total'},
-    {valor: 'diasSucursal', show:'dias Sucursal promedio'},
-    {valor: 'horas_totales_totales', show:'horas totales'},
-    {valor: 'horas_totales', show:'horas totales promedio'},
-  ]
   constructor( 
     private _publicos: ServiciosPublicosService, 
     private _email:EmailsService, 
     private _security:EncriptadoService,
     private _export_excel: ExporterService,
-    private _sucursales: SucursalesService
+    private _sucursales: SucursalesService,
+    private _clientes: ClientesService,
+    private _cotizaciones: CotizacionesService,
+    private _vehiculos: VehiculosService,
+    private _servicios: ServiciosService,
+    private _campos: CamposSystemService
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
+     ROL:string; SUCURSAL:string
+     
+     recepciones_arr=[]
+     // tabla
+     dataSource = new MatTableDataSource(); //elementos
+     elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
+     columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
+     expandedElement: any | null; //elementos
+     @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
+     @ViewChild('elements') sort: MatSort //elementos
+   
+     camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
+     camposCliente    =  [ ...this._clientes.camposCliente_show ]
+     camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
+     formasPago       =  [ ...this._cotizaciones.formasPago ]
+     metodospago      =  [ ...this._cotizaciones.metodospago ]
+     sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+
+     paquete: string     = this._campos.paquete
+     refaccion: string   = this._campos.refaccion
+     mo: string          = this._campos.mo
+     miniColumnas:number = this._campos.miniColumnas
+   
+     estatusServicioUnico = [ ...this._servicios.estatusServicioUnico]
+     statusOS             = [ ...this._servicios.statusOS ]
+     // 'espera','autorizado','recibido','terminado','entregado','cancelado'
+     indexEdicionRecepcion: number; indexEdicionRecepcionBoolean: boolean =  false
+     dataOcupadaOS:any = {}
+   
+     busquedaStatus: string = 'todos'
+     busquedaSucursalString: string = 'Todas'
+     busquedaSucursalStringShow: string = 'Todas'
+     
+     fechas_filtro = new FormGroup({
+       start: new FormControl(Date),
+       end: new FormControl(Date),
+     });
+   
+     fechas_get = {start: this._publicos.resetearHoras(new Date()), end: this._publicos.resetearHoras(new Date())}
+     busquedaServicios:string = null
+     
+     idSucursalOS: string = null
+   
+     dataRecepcionEditar = null
+     tiempoReal = true
+     
+   
+     realizaGasto:string = null
+     
+     BusquedaTo: string = 'fecha_recibido'
+   
+     busqueda2 = [
+       {valor:'fecha_recibido', show:'Fecha de Recibido'},
+       {valor:'fecha_entregado', show:'Fecha de Entregado'},
+     ]
+     menuListaBusqueda_arr = [ ...this._servicios.menuListaBusqueda_arr]
+     diasBusqueda: number = 0
+     rangoBusqueda = {valor:'hoy',show:'Hoy', dias: 0}
+   
+     reporteEstancias = {  ...this._servicios.reporteEstancias}
+     camposEstancia = [ ...this._servicios.camposEstancia]
     
      ngOnDestroy(){
       
@@ -205,17 +126,11 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      
      }
     ngOnInit(): void {
-      this.consultaSucursales()
+      // this.consultaSucursales()
+      this.rol()
     }
 
-  consultaSucursales(){
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.sucursales_arr = sucursales
-      this.rol()
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
-  }
+  
   rol(){
     if (localStorage.getItem('dataSecurity')) {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
@@ -223,7 +138,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
       if (this.SUCURSAL !=='Todas') {
         this.busquedaSucursalString = this.SUCURSAL
-        const {sucursal} = this.sucursales_arr.find(s=>s.id === this.SUCURSAL)
+        const {sucursal} = this.sucursales_array.find(s=>s.id === this.SUCURSAL)
         this.busquedaSucursalStringShow = sucursal
       }    
       this.acciones()
@@ -237,90 +152,22 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
   acciones(){
     const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const ordenes_s = this._publicos.crearArreglo2(snapshot.val())
-        ordenes_s.map((recep,index)=>{
-          recep.index  = index
-          // console.log(recep.id);
-          recep.searchCliente = recep.cliente['nombre']
-          recep.searchPlacas = recep.vehiculo['placas']
-          // if (recep.id === '-NJLWImtmWlFAvUZDPof') {
-            const getTime  = this._publicos.getFechaHora()
-            recep.diasSucursal = this._publicos.calcularDias(recep.fecha_recibido, getTime.fecha)
-          // }
-          const updates = {
-            [`recepciones/${recep.id}/diasSucursal`]: recep.diasSucursal
-          };
-          update(ref(db), updates)
-          .then(() => {});
-          
-          recep.hitorial_gastos = (recep.HistorialGastos) ? this._publicos.crearArreglo2(recep.HistorialGastos) : []
-          recep.historial_pagos = (recep.HistorialPagos) ? this._publicos.crearArreglo2(recep.HistorialPagos) : []
-          let totalGastos = 0, totalPagos=0
-          recep.historial_pagos.forEach(element => {
-            element.tipoNuevo = 'pago'
-            const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
-            element.metodoShow = show
-            if(element.status) totalPagos += element.monto
-          });
-          recep.hitorial_gastos.forEach(element => {
-            element.tipoNuevo = 'gasto'
-            const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
-            element.metodoShow = show
-            if(element.status) totalGastos += element.monto
-          });
-          recep.totalGastos = totalGastos
-          recep.totalPagos = totalPagos
-          const {reporte, ocupados} = this._publicos.realizarOperaciones_2(recep)
-          recep.reporte = reporte
-          recep.servicios = ocupados
-          recep.fecha_recibido_compara = this._publicos.construyeFechaString(recep.fecha_recibido)
-          if (recep.fecha_entregado) {
-            recep.fecha_entrega_compara = this._publicos.construyeFechaString(recep.fecha_entregado)
-          }
-          recep.fechaRecibido = `${recep.fecha_recibido} ${recep.hora_recibido}`
-          recep.fechaEntregado = `${recep.fecha_entregado} ${recep.hora_entregado}`
-        })
-        this.fechas_get.start.setHours(0,0,0,0)
-        this.fechas_get.end.setHours(0,0,0,0)
-        const comparaOrdenes = (this.busquedaSucursalString === 'Todas') ? ordenes_s :  ordenes_s.filter(os=>os.sucursal.id === this.busquedaSucursalString)
-        if(!this.recepciones_arr.length){
-          this.recepciones_arr = comparaOrdenes
-        }else{
-          if (comparaOrdenes.length === this.recepciones_arr.length) {
-            comparaOrdenes.map((os, index)=>{
-                if (JSON.stringify(os) !== JSON.stringify(this.recepciones_arr[index])) {
-                  const camposRecupera = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva','hitorial_gastos','historial_pagos',
-                    'margen','sucursal','notificar','reporte','servicio','servicios','status','vehiculo','fecha_entregado','hora_entregado','tecnico','showNameTecnico']
-                    camposRecupera.forEach(c=>{
-                      // this.recepciones_arr[index][c] = os[c]
-                      if (os[c] !== this.recepciones_arr[index][c]) {
-                        this.recepciones_arr[index][c] = os[c];
-                      }
-                    })
-                } 
-            })
-          }else if(comparaOrdenes.length > this.recepciones_arr.length){
-            this.recepciones_arr.push(...comparaOrdenes.slice(this.recepciones_arr.length));
-          }else{
-            // this.recepciones_arr = ordenes_s
-            this.recepciones_arr.splice(comparaOrdenes.length, this.recepciones_arr.length - comparaOrdenes.length);
-          }
-        }
-        
-        
-
-        setTimeout(()=>{
-          this.nuevasBusquedas()
+    onValue(starCountRef, async (snapshot) => {
+      this.fechas_get.start.setHours(0,0,0,0)
+      this.fechas_get.end.setHours(0,0,0,0)
+      const recepcionesNew = await this._servicios.consulta_recepciones_new()
+      const comparaOrdenes = (this.busquedaSucursalString === 'Todas') ? recepcionesNew :  recepcionesNew.filter(os=>os.sucursal.id === this.busquedaSucursalString)
+      if (!this.recepciones_arr.length) {
+        this.recepciones_arr = comparaOrdenes
+      }else{
+        const camposRecupera = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva','hitorial_gastos','historial_pagos', 'margen','sucursal','notificar','reporte','servicio','servicios','status','vehiculo','fecha_entregado','hora_entregado','tecnico','showNameTecnico']
+        this.recepciones_arr =  this._publicos. actualizarArregloExistente(this.recepciones_arr, comparaOrdenes,camposRecupera);
+      } 
+      setTimeout(()=>{
+              this.nuevasBusquedas()
         },500)
-        
-        
-      }
     })
-  }
-  sonIguales(obj1, obj2) {
-    return JSON.stringify(obj1) === JSON.stringify(obj2);
+    
   }
   accionServicio(padre, hijo, statusGet){
     const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
@@ -493,7 +340,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       return fecha >= start && fecha <= end;
     });
     const reporte = {ticket:0, diasSucursal:0, horas_totales:0}
-    gastosFechas.forEach(element => {
+    gastosFechas.forEach((element,index) => {
+      element.index = index + 1
       reporte.ticket += element.reporte.total
       if(element.diasSucursal) reporte.diasSucursal += element.diasSucursal
       if(element.fecha_entrega_compara ){

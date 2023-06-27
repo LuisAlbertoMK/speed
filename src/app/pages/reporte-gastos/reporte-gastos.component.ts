@@ -16,6 +16,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ExporterService } from 'src/app/services/exporter.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { CamposSystemService } from '../../services/campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -35,9 +37,25 @@ const dbRef = ref(getDatabase());
   
 })
 export class ReporteGastosComponent implements OnInit {
-  miniColumnas:number = 100
+  
+  myFilter = (d: Date | null): boolean => {
+      const fecha = new Date(d)
+      const day = fecha.getDay()
+      return day !== 0;
+  };
+  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private _export: ExporterService, private _sucursales: SucursalesService, private _cotizaciones: CotizacionesService, private _campos: CamposSystemService) { }
   ROL:string; SUCURSAL:string
-  sucursales_arr=[]
+
+  camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce ]
+  metodospago       =   [ ...this._cotizaciones.metodospago]
+  sucursales_array  =   [ ...this._sucursales.lista_en_duro_sucursales]
+
+  paquete: string = this._campos.paquete
+  refaccion: string = this._campos.refaccion
+  mo: string = this._campos.mo
+  miniColumnas:number = this._campos.miniColumnas
+
+  
   gastosOperacion_arr = []
   gastosDiarios_arr = []
   pagosGastosOP_arr = []
@@ -45,29 +63,10 @@ export class ReporteGastosComponent implements OnInit {
   listaConjunta_arr = []
 
   listaos_arr = []
-  metodospago = [
-    {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
-    {valor:'2', show:'Cheque', ocupa:'Cheque'},
-    {valor:'3', show:'Tarjeta', ocupa:'Tarjeta'},
-    {valor:'4', show:'Transferencia', ocupa:'Transferencia'},
-    {valor:'5', show:'Credito', ocupa:'credito'},
-    // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
-    // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
-    {valor:'6', show:'Terminal BBVA', ocupa:'BBVA'},
-    {valor:'7', show:'Terminal BANAMEX', ocupa:'BANAMEX'}
-  ]
-  paquete: string = 'paquete'
-  refaccion: string = 'refaccion'
-  mo: string = 'mo'
-
-  
-
-  
 
   // tabla
   dataSource = new MatTableDataSource(); //elementos
   elementos = ['id','sucursalShow','no_os','metodoShow','status','monto','tipo','fecha']; //elementos
-  // elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'expand']; //elementos
   expandedElement: any | null; //elementos
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
@@ -75,7 +74,6 @@ export class ReporteGastosComponent implements OnInit {
   // tabla
   dataSourceAdministracion = new MatTableDataSource(); //elementos
   elementosAdministracion = ['id','sucursalShow','no_os','fecha_recibido','fecha_entregado','total','cliente','formaPago']; //elementos
-  // elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
   columnsToDisplayWithExpandAdministracion = [...this.elementosAdministracion, 'opciones', 'expand']; //elementos
   // expandedElement: any | null; //elementos
   @ViewChild('AdministracionPaginator') paginatorAdministracion: MatPaginator //elementos
@@ -123,20 +121,6 @@ export class ReporteGastosComponent implements OnInit {
 
   sucursalFiltroReporte: string = 'Todas'
   sucursalFiltroShowReporte: string = 'Todas'
-  camposDesgloce = [
-    {valor:'mo', show:'mo'},
-    // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'refacciones_v', show:'refacciones'},
-    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
-    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
-    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    {valor:'sobrescrito', show:'sobrescrito'},
-    {valor:'descuento', show:'descuento'},
-    {valor:'subtotal', show:'subtotal'},
-    {valor:'iva', show:'iva'},
-    {valor:'total', show:'total'},
-    {valor:'meses', show:'meses'},
-  ]
   //´para el ordenamiento de las tablas
   fechas_reporte:boolean = true
   ordenamientoCampo_reporte = 'index'
@@ -151,13 +135,6 @@ export class ReporteGastosComponent implements OnInit {
 
   nuevo_gastosDiarios = []
  
-  myFilter = (d: Date | null): boolean => {
-      const fecha = new Date(d)
-      const day = fecha.getDay()
-      return day !== 0;
-  };
-  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private _export: ExporterService, private _sucursales: SucursalesService) { }
-
   ngOnInit(): void {
     this.rol()
   }
@@ -169,15 +146,10 @@ export class ReporteGastosComponent implements OnInit {
       this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
       this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
 
-      this._sucursales.consultaSucursales_new().then((sucursales) => {
-        this.sucursales_arr = sucursales
-        this.funcionesNueva()
-        this.gastosDiarios()
-        this.gastosOperacion()
-        this.ordenesServicios()
-      }).catch((error) => {
-        // Manejar el error si ocurre
-      });
+      this.funcionesNueva()
+      this.gastosDiarios()
+      this.gastosOperacion()
+      this.ordenesServicios()
     }
   }
 
@@ -196,7 +168,7 @@ export class ReporteGastosComponent implements OnInit {
               if(registro.fecha_registro){
                 registro.fechaCompara = this._publicos.construyeFechaString(registro.fecha_registro)
               }
-              const {sucursal} = this.sucursales_arr.find(s=>s.id === registro.sucursal)
+              const {sucursal} = this.sucursales_array.find(s=>s.id === registro.sucursal)
               registro.sucursalShow = sucursal,
               // registro.tipo = 'diario'
               nuevosGO.push(registro)
@@ -222,7 +194,7 @@ export class ReporteGastosComponent implements OnInit {
         let gastosOperacion = []
         const gastosOp = this._publicos.crearArreglo2(snapshot.val())
         gastosOp.forEach(go=>{
-          const {sucursal} = this.sucursales_arr.find(s=>s.id === go.sucursal)
+          const {sucursal} = this.sucursales_array.find(s=>s.id === go.sucursal)
           go.sucursalShow = sucursal
           go.tipo = 'operacion'
           // go.fechaCompara = this._publicos.construyeFechaString(go.fecha)
@@ -271,7 +243,7 @@ export class ReporteGastosComponent implements OnInit {
           nuevosHistoriales.forEach(histo => {
             histo.fechaCompara = this._publicos.construyeFechaString(histo.fecha_registro)
             
-            const {sucursal} = this.sucursales_arr.find(s=>s.id === histo.sucursal)
+            const {sucursal} = this.sucursales_array.find(s=>s.id === histo.sucursal)
             histo.sucursalShow = sucursal
             histo.no_os = os.no_os
             histo.vehiculo = os.vehiculo
@@ -288,7 +260,7 @@ export class ReporteGastosComponent implements OnInit {
           if(os.fecha_recibido){
             os.fecha_recibido_compara = this._publicos.construyeFechaString(os.fecha_recibido)
           }
-          const {sucursal} = this.sucursales_arr.find(s=>s.id === os.sucursal.id)
+          const {sucursal} = this.sucursales_array.find(s=>s.id === os.sucursal.id)
           os.sucursalShow = sucursal
           os.reporte = this._publicos.realizarOperaciones_2(os).reporte
         })         

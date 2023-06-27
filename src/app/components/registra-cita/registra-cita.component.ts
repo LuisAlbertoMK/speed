@@ -20,60 +20,65 @@ const dbRef = ref(getDatabase());
   styleUrls: ['./registra-cita.component.css']
 })
 export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, OnDestroy {
-  @Input() nuevaCita:boolean = false
-  @Input() info_cita 
-  @Input() id_cita
-  miniColumnas:number = 100
-  ROL:String
-  SUCURSAL:string
-  myControl = new FormControl('');
-  filteredOptions: Observable<string[]>;
-  clientes_arr=[]
-  todos_clientes = []
-  sucursales_arr = []
-  arr_vehiculos = []
-  horariosDisponibles = []
-  // horarios_ocupados = []
-  horarios_show = []
-  citaForm: FormGroup;
-  infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'',comentarios:{}, correo:'',dataVehiculo:{},cotizacionShow: '', cotizacionCosto:0, direccion:''}
-  camposInfoCita = [...this._citas.camposInfoCita]
-  faltente:string
-  citasCampos = [ 'sucursal','cliente','correo','vehiculo','servicio','dia','horario','comentario']
-  nuevos = ['sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','comentario']
-  confirmar:boolean = false
-  startProceso:boolean = false
-
-  ///
-
-  tiempoLimite: number = 300;
-  tiempoRestante: number = this.tiempoLimite;
-  temporizador
-
-  camposServicios = [
-    {valor:'1',nombre:'servicio'},
-    {valor:'2',nombre:'garantia'},
-    // {valor:'3',nombre:'retorno'},
-    // {valor:'4',nombre:'venta'},
-    // {valor:'5',nombre:'preventivo'},
-    // {valor:'6',nombre:'correctivo'},
-    {valor:'7',nombre:'rescate vial'},
-    {valor:'8',nombre:'frenos'},
-    {valor:'9',nombre:'afinación'},
-    {valor:'10',nombre:'cambio de aceite'},
-    {valor:'11',nombre:'revisión general'},
-    {valor:'12',nombre:'revisión de falla'},
-    {valor:'13',nombre:'escaneo vehículo'},
-  ]
-
-  dateControl = new FormControl();
-  ligarCotizacion: boolean = false
-  listaCotizacionesShow = []
-
-  arreglo_correos = []
-  correo_viene_cliente: boolean = false
+  
   constructor(private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,
     private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _citas: CitasService, private _cotizacion : CotizacionService) { }
+
+    ROL:string; SUCURSAL:string
+
+    camposInfoCita    =  [  ...this._citas.camposInfoCita  ]
+    sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
+
+    @Input() nuevaCita:boolean = false
+    @Input() info_cita 
+    @Input() id_cita
+    miniColumnas:number = 100
+    
+    myControl = new FormControl('');
+    filteredOptions: Observable<string[]>;
+    clientes_arr=[]
+    todos_clientes = []
+    arr_vehiculos = []
+    horariosDisponibles = []
+    // horarios_ocupados = []
+    horarios_show = []
+    citaForm: FormGroup;
+    infoCita = {id:null,sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'',servicio:'',servicioShow:'', placas: '', dia:'', horario:'',comentarios:{}, correo:'',dataVehiculo:{},cotizacionShow: '', cotizacionCosto:0, direccion:''}
+    
+    faltente:string
+    citasCampos = [ 'sucursal','cliente','correo','vehiculo','servicio','dia','horario','comentario']
+    nuevos = ['sucursal','sucursalShow','cliente','correo','fullname','vehiculo','servicio','servicioShow','placas','dia','horario','comentario']
+    confirmar:boolean = false
+    startProceso:boolean = false
+  
+    ///
+  
+    tiempoLimite: number = 300;
+    tiempoRestante: number = this.tiempoLimite;
+    temporizador
+  
+    camposServicios = [
+      {valor:'1',nombre:'servicio'},
+      {valor:'2',nombre:'garantia'},
+      // {valor:'3',nombre:'retorno'},
+      // {valor:'4',nombre:'venta'},
+      // {valor:'5',nombre:'preventivo'},
+      // {valor:'6',nombre:'correctivo'},
+      {valor:'7',nombre:'rescate vial'},
+      {valor:'8',nombre:'frenos'},
+      {valor:'9',nombre:'afinación'},
+      {valor:'10',nombre:'cambio de aceite'},
+      {valor:'11',nombre:'revisión general'},
+      {valor:'12',nombre:'revisión de falla'},
+      {valor:'13',nombre:'escaneo vehículo'},
+    ]
+  
+    dateControl = new FormControl();
+    ligarCotizacion: boolean = false
+    listaCotizacionesShow = []
+  
+    arreglo_correos = []
+    correo_viene_cliente: boolean = false
   ngOnInit(): void {
     this.rol()
     this.creaFormCitas()
@@ -135,18 +140,10 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
 
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.sucursales_arr = sucursales
-      // this.ListadoClientes(this.SUCURSAL)
-      const sucursal = (this.SUCURSAL === 'Todas') ? false:  true
-      if (sucursal) {
-        this.horariosSucursal()
-      }
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
+    (this.SUCURSAL === 'Todas') ? false:  this.horariosSucursal()
+
   }
   horariosSucursal(){
     if (this.SUCURSAL === '-N2glF34lV3Gj0bQyEWK') {
@@ -239,7 +236,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
           return c.correo
         })
         clientes.map(c=>{
-          c.sucursalShow = this.sucursales_arr.find(s=>s.id === c.sucursal)?.sucursal
+          c.sucursalShow = this.sucursales_array.find(s=>s.id === c.sucursal)?.sucursal
         })
         const info = clientes //.filter(c=>c.correo)
         

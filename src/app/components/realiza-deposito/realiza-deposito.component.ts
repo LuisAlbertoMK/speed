@@ -13,19 +13,24 @@ const dbRef = ref(getDatabase());
   styleUrls: ['./realiza-deposito.component.css']
 })
 export class RealizaDepositoComponent implements OnInit {
-  miniColumnas:number=100
-  selected: Date | null;
-  informacionFaltante:string
-
-  formDeposito:FormGroup
-
-  @Input() dataRecepcion:any = null
-  @Output() showHideForm : EventEmitter<any>
+ 
   
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, 
     private _security:EncriptadoService, private _sucursales: SucursalesService) {
       this.showHideForm = new EventEmitter()
     }
+
+    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+
+    miniColumnas:number=100
+    selected: Date | null;
+    informacionFaltante:string
+  
+    formDeposito:FormGroup
+  
+    @Input() dataRecepcion:any = null
+    @Output() showHideForm : EventEmitter<any>
+
     metodospago = [
       {metodo:1, show:'Efectivo'},
       {metodo:2, show:'Cheque'},
@@ -35,7 +40,6 @@ export class RealizaDepositoComponent implements OnInit {
       {metodo:6, show:'Terminal BBVA'},
       {metodo:7, show:'Terminal BANAMEX'}
     ]
-    Sucursales= []
     sucursal:string
     ordenes = []
     usuario:string
@@ -46,7 +50,6 @@ export class RealizaDepositoComponent implements OnInit {
       return day !== 0;
     };
   ngOnInit(): void {
-    this.listaSucursales()
     this.listaOrdenes()
     this.infoDATA()
     this.crearFormPago()
@@ -70,14 +73,7 @@ export class RealizaDepositoComponent implements OnInit {
       }
     })
   }
-  listaSucursales(){
 
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-        this.Sucursales = sucursales
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
-  }
   infoDATA(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     if (variableX['sucursal']) {

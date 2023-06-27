@@ -77,7 +77,8 @@ export class SucursalesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   //array lista de sucursales
 
-  listaArrarySucursales:any[]=[]
+  // listaArrarySucursales:any[]=[]
+  sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
   //IDSucursal
   IDsucursal:string=''
 
@@ -113,14 +114,14 @@ export class SucursalesComponent implements OnInit {
     // }).catch((error) => {
     //   // Manejar el error si ocurre
     // });
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.listaArrarySucursales = this._publicos.crearArreglo2(snapshot.val())
-      }
-    }, {
-        onlyOnce: true
-      })
+    // const starCountRef = ref(db, `sucursales`)
+    // onValue(starCountRef, (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     this.listaArrarySucursales = this._publicos.crearArreglo2(snapshot.val())
+    //   }
+    // }, {
+    //     onlyOnce: true
+    //   })
   }
   getInformacionSucursal(id:string){
     //priemro obtener informacion de sucursal

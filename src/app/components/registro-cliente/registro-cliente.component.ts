@@ -26,14 +26,15 @@ export class RegistroClienteComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private _sucursales: SucursalesService, private _clientes: ClientesService, 
     private _publicos: ServiciosPublicosService,private _auth: AuthService, public _router: Router, private _usuarios: UsuariosService) { }
   registroForm: FormGroup
-  sucursales_arr = []
+  sucursales_array =  [  ...this._sucursales.lista_en_duro_sucursales  ]
+
   infoGenera = {sucursal:null, nombre:null, apellidos:null}
   correos_full = []
   correosClientes = []
   correosUsuarios = []
   correoValido:boolean = true
   ngOnInit(): void {
-    this.sucursales_arr = this._sucursales.lista_en_duro_sucursales
+    
     this.consultaCorreos()
     this.crea_formulario_cliente()
     this.generaNO_cliente()
@@ -57,7 +58,7 @@ export class RegistroClienteComponent implements OnInit {
   unir(){
     // this.correos_full = [...this.correosClientes,...this.correosUsuarios]
     // console.log(this.correos_full);
-    const correos_sucursales = this.sucursales_arr.map(c=>{return String(c.correo).toLowerCase() })
+    const correos_sucursales = this.sucursales_array.map(c=>{return String(c.correo).toLowerCase() })
     const array = [...correos_sucursales,...this.correosClientes,...this.correosUsuarios]
     const uniqueArray = array.filter((value, index, self) => {
       return self.indexOf(value) === index;
@@ -99,7 +100,7 @@ export class RegistroClienteComponent implements OnInit {
       });
     };
     this.registroForm.get('sucursal').valueChanges.subscribe((sucursal: string) => {
-        this.infoGenera.sucursal  = ( sucursal ) ? this.sucursales_arr.find(s=>s.id === sucursal).sucursal : null
+        this.infoGenera.sucursal  = ( sucursal ) ? this.sucursales_array.find(s=>s.id === sucursal).sucursal : null
         this.nuevo()
     })
     this.registroForm.get('correo').valueChanges.subscribe((correo: string) => {

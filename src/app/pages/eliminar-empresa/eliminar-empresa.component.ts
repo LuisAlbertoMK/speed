@@ -8,6 +8,7 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -17,9 +18,13 @@ const dbRef = ref(getDatabase());
 })
 export class EliminarEmpresaComponent implements OnInit {
   
-  constructor(private _sucursales: SucursalesService,private _security:EncriptadoService, private _empresas: EmpresasService, private _clientes: ClientesService,private _publicos: ServiciosPublicosService) { }
+  constructor(private _sucursales: SucursalesService,private _security:EncriptadoService, private _campos: CamposSystemService,
+    private _empresas: EmpresasService, private _clientes: ClientesService,private _publicos: ServiciosPublicosService) { }
   ROL:string; SUCURSAL:string
-  miniColumnas:number = 100
+
+  lista_en_duro_sucursales = [...this._sucursales.lista_en_duro_sucursales]
+
+  miniColumnas:number = this._campos.miniColumnas
   // variables
   empresas_arr = []
   diferencias = []
@@ -30,7 +35,7 @@ export class EliminarEmpresaComponent implements OnInit {
   myControl_reemplaza = new FormControl('');
   filteredOptions_reemplaza: Observable<string[]>;
   afecta_clientes = []
-  lista_en_duro_sucursales = [...this._sucursales.lista_en_duro_sucursales]
+  
   sucursal_elimina
   ngOnInit(): void {
     this.rol()

@@ -16,6 +16,9 @@ const dbRef = ref(getDatabase());
   providedIn: 'root'
 })
 export class CotizacionService {
+  
+  constructor(private http: HttpClient,private _publicos: ServiciosPublicosService, private _clientes: ClientesService,
+              private _vehiculos: VehiculosService, private _sucursales:SucursalesService) { }
   formasPago=[
     {id:'1',pago:'contado',interes:0,numero:0},
     {id:'2',pago:'3 meses',interes:4.49,numero:3},
@@ -26,9 +29,12 @@ export class CotizacionService {
     {id:'7',pago:'24 meses',interes:24.,numero:24}
   ]
    camposCotizaciones = ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName']
-  constructor(private http: HttpClient,private _publicos: ServiciosPublicosService, private _clientes: ClientesService,
-              private _vehiculos: VehiculosService, private _sucursales:SucursalesService) { }
+   sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
 
+   infoCotizacion = {
+    cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
+    fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio: '1', descripcion: '', pdf:null
+  }
   consulta_cotizaciones_new(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, 'cotizacionesRealizadas');
@@ -38,6 +44,8 @@ export class CotizacionService {
           cotizaciones.forEach((cotizacion, index)=> {
             cotizacion.formaPago = cotizacion.formaPago || '1';
             cotizacion.index = index
+            cotizacion.sucursalShow = this.sucursales_array.find(s=>s.id === cotizacion.cliente.sucursal).sucursal
+            cotizacion.cliente.sucursalShow = cotizacion.sucursalShow 
             cotizacion.margen = (cotizacion.margen) ? cotizacion.margen : 25
             cotizacion.pagoName = this.formasPago.find(f => f.id === String(cotizacion.formaPago)).pago;
             cotizacion.searchName = `${cotizacion.cliente.nombre} ${cotizacion.cliente.apellidos}`;

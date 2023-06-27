@@ -11,6 +11,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort'
 import { EmailsService } from '../../services/emails.service';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -21,70 +22,73 @@ export interface User {nombre: string, apellidos:string}
   styleUrls: ['./modificar-cotizacion.component.css']
 })
 export class ModificarCotizacionComponent implements OnInit {
-  // variables de informacion de recepcion
-  idCotizacion:string= ''
-  idCliente:string=''
-  sucursalCliente:string = ''
-  idVehiculo:string = ''
-  //array de sucursales
-  listaSucursales=[]
-  //informacion de l¿cliente
-  fullname:string = ''
-  //informacion de cotizacion
-  infoCotizacion:any=[]
-  //de claracion de formularios
-  formCotizacion: FormGroup
-  //autocompletado
-  myControl = new FormControl('');
-  filteredOptions: Observable<any[]>
-  //conocer al cliente
-  IDClienteGetData:string=''
+  constructor(private rutaActiva: ActivatedRoute, private _uploadfirma: UploadFirmaService, 
+    private router : Router, private _email:EmailsService, private _campos: CamposSystemService,
+  private fb: FormBuilder) { }
+
+
+  miniColumnas:number = this._campos.miniColumnas
+// variables de informacion de recepcion
+idCotizacion:string= ''
+idCliente:string=''
+sucursalCliente:string = ''
+idVehiculo:string = ''
+//array de sucursales
+// listaSucursales=[]
+//informacion de l¿cliente
+fullname:string = ''
+//informacion de cotizacion
+infoCotizacion:any=[]
+//de claracion de formularios
+formCotizacion: FormGroup
+//autocompletado
+myControl = new FormControl('');
+filteredOptions: Observable<any[]>
+//conocer al cliente
+IDClienteGetData:string=''
 //manejo de tablas en ventanas modal
-  venatanaModalPaquetes:boolean = false
-  venatanaModalManoObra:boolean = false
-  venatanaModalRecacciones:boolean = false
-    // array paquete y complementos
-    tempCot:any=[]
-    //para paginacion de resultados
-    dataSource: MatTableDataSource<any>
-    @ViewChild(MatPaginator) paginator: MatPaginator
-    @ViewChild(MatSort) sort: MatSort
-    
-    //tables de material ui
-   
-   columnasModal:string[]=['nombre','marca','modelo','cilindros','total','status','opciones']
-   columnasModalManoObra:string[]=['nombre','precio','descripcion','status','opciones']
-   columnasModalRefacciones:string[]=['nombre','precio','descripcion','status','opciones']
-    
-    //para fecha y hora
-    fecha:string = ''
-    hora:string=''
-    //tal de la cotizacion
-    totalCotizacion:number = 0
-     //arraytempDataCotizacion
+venatanaModalPaquetes:boolean = false
+venatanaModalManoObra:boolean = false
+venatanaModalRecacciones:boolean = false
+  // array paquete y complementos
+  tempCot:any=[]
+  //para paginacion de resultados
+  dataSource: MatTableDataSource<any>
+  @ViewChild(MatPaginator) paginator: MatPaginator
+  @ViewChild(MatSort) sort: MatSort
+  
+  //tables de material ui
+ 
+ columnasModal:string[]=['nombre','marca','modelo','cilindros','total','status','opciones']
+ columnasModalManoObra:string[]=['nombre','precio','descripcion','status','opciones']
+ columnasModalRefacciones:string[]=['nombre','precio','descripcion','status','opciones']
+  
+  //para fecha y hora
+  fecha:string = ''
+  hora:string=''
+  //tal de la cotizacion
+  totalCotizacion:number = 0
+   //arraytempDataCotizacion
   tempdataCotizacion:any=[]
   tempdataCotizacionmuestra:any=[]
    //informacion de cliente si existe 
    clienteExiste:any=[]
    ///informacion de vehiculos
    infoVehiculos:any=[]
-    //ancho minimo de columnas
-  miniColumnas:number = 100
+  
    //informacion global
    nombre:string=''
    totalShow:string = ''
-     // lista de complementos de paquete 
-     complemntosPQ:any = []
+   // lista de complementos de paquete 
+   complemntosPQ:any = []
 
 
-     dataDetalles:any=''
-     dataCliente:any=[]
-     dataVehiculo:any = []
-     dataRecepcion:any=[]
-     //temp costo cotizacion
-     costoAnt:number=0; servicios:any=['servicio','garantia','retorno','preventivo','correctivo','rescate vial']
-  constructor(private rutaActiva: ActivatedRoute, private _uploadfirma: UploadFirmaService, private router : Router, private _email:EmailsService,
-    private fb: FormBuilder) { }
+   dataDetalles:any=''
+   dataCliente:any=[]
+   dataVehiculo:any = []
+   dataRecepcion:any=[]
+   //temp costo cotizacion
+   costoAnt:number=0; servicios:any=['servicio','garantia','retorno','preventivo','correctivo','rescate vial']
 
   ngOnInit(): void {
     this.asignacionParametros()

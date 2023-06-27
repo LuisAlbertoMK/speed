@@ -78,7 +78,7 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
-import { OrdenesCotizacionesComponent } from './pages/ordenes-cotizaciones/ordenes-cotizaciones.component';
+
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 
@@ -88,7 +88,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin  from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
-import { NewcotizacionComponent } from './pages/newcotizacion/newcotizacion.component';
+
 import { MonedasPipe } from './pipes/monedas.pipe';
 import { NumerosLetrasPipe } from './pipes/numeros-letras.pipe';
 import { CapitalizarUnoPipe } from './pipes/capitalizar-uno.pipe';
@@ -165,9 +165,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     UsuariosComponent,
     FooterComponent,
     HeaderComponent,
-    OrdenesCotizacionesComponent,
     NavbarComponent,
-    NewcotizacionComponent,
+    
     MonedasPipe,
     NumerosLetrasPipe,
     CapitalizarUnoPipe,

@@ -28,6 +28,7 @@ import { CitaComponent } from '../cita/cita.component';
 import { EmailsService } from 'src/app/services/emails.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 
 @Component({
   selector: 'app-citas',
@@ -35,92 +36,93 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
   styleUrls: ['./citas.component.css']
 })
 export class CitasComponent implements OnInit {
-  ROL:string; SUCURSAL:string;
-  enrutamiento = {vehiculo:'', cliente:'', anterior:''}
-  miniColumnas:number = 100
-
-  citaForm: FormGroup;
-  sucursales_arr=[]
-  citasCampos = [ 'sucursal','cliente','vehiculo','dia','horario']
-  infoCita = {sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'', placas: '',servicio:'',servicioShow:'', dia:'', horario:'', correo:''}
-  camposInfoCita = [...this._citas.camposInfoCita]
-  nuevaCita: boolean = false
-  lista_citas_dia = []
-  lista_citas_proximas = []
-  citas_mes_all = []
-  filtro_citas_mes_all = []
-  id_cita = null
-  info_cita = null
   
-  sucursalCalendario = 'Todas'
-  citas_no_asistencia = []
-  // calendario
-  calendarVisible = true;
-  calendarOptions: CalendarOptions = {
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      // right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      right: 'dayGridMonth,timeGridDay,listWeek',
-      
-    },
-    
-    views: {
-      listWeek: {
-        buttonText: 'Lista Semanal'
-      },
-      
-    },
-    buttonText: {
-      today: 'Hoy',
-      month: 'Mes',
-      // week: 'Semana',
-      day: 'Dia',
-      
-    },
-    
-    // locale: esLocale,
-    // locales: [esLocale],
-    locale:'es',
-    initialView: 'dayGridMonth',
-    initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
-    weekends: true,
-    editable: true,
-    selectable: true,
-    selectMirror: true,
-    dayMaxEvents: true,
-    select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this),
-    
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    
-    */
-    
-  };
-  
-  currentEvents: EventApi[] = [];
-  range = new FormGroup({
-    start: new FormControl(null),
-    end: new FormControl(null),
-  });
-
-  infoCitaUnica
-
-  fecha_muestra:string = '' || 'dia seleccionado'
-  rango_select: string = '' || 'rango seleccionado'
-
-
-  panelOpenState = false;
 
   
-  constructor(private _publicos: ServiciosPublicosService, private _citas: CitasService,
+  constructor(private _publicos: ServiciosPublicosService, private _citas: CitasService, private _campos: CamposSystemService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, public dialog: MatDialog,
     private _email: EmailsService, private rutaActiva: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }
+    ROL:string; SUCURSAL:string;
+
+    camposInfoCita    =  [ ...this._citas.camposInfoCita ]
+    sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
+    citasCampos       =  [ this._citas.citasCampos ]
+    
+    miniColumnas:number =  this._campos.miniColumnas
+    
+    enrutamiento = {vehiculo:'', cliente:'', anterior:''}
+    
+    citaForm: FormGroup;
+    
+    
+    infoCita = {sucursal:'', sucursalShow:'', cliente:'', fullname:'', vehiculo:'', placas: '',servicio:'',servicioShow:'', dia:'', horario:'', correo:''}
+    
   
+    nuevaCita: boolean = false
+    lista_citas_dia = []
+    lista_citas_proximas = []
+    citas_mes_all = []
+    filtro_citas_mes_all = []
+    id_cita = null
+    info_cita = null
+    
+    sucursalCalendario = 'Todas'
+    citas_no_asistencia = []
+    // calendario
+    calendarVisible = true;
+    calendarOptions: CalendarOptions = {
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        // right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        right: 'dayGridMonth,timeGridDay,listWeek',
+        
+      },
+      
+      views: {
+        listWeek: {
+          buttonText: 'Lista Semanal'
+        },
+        
+      },
+      buttonText: {
+        month: "Mes", week: "Semana", day: "Día", list: "Agenda", prev: "Prev", next: "Sig", today: "hoy",
+        weekHeader: "Sm"
+      },
+      locale:'es',
+      initialView: 'dayGridMonth',
+      initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
+      weekends: true,
+      editable: true,
+      selectable: true,
+      selectMirror: true,
+      dayMaxEvents: true,
+      select: this.handleDateSelect.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      eventsSet: this.handleEvents.bind(this),
+      dateClick: this.handleDateClick.bind(this),
+      /* you can update a remote database when these fire:
+      eventAdd:
+      eventChange:
+      eventRemove:
+      
+      */
+      
+    };
+    
+    currentEvents: EventApi[] = [];
+    range = new FormGroup({
+      start: new FormControl(null),
+      end: new FormControl(null),
+    });
+  
+    infoCitaUnica
+  
+    fecha_muestra:string = '' || 'dia seleccionado'
+    rango_select: string = '' || 'rango seleccionado'
+  
+  
+    panelOpenState = false;
   ngOnInit(): void {
     this.rol()
   }
@@ -133,7 +135,7 @@ export class CitasComponent implements OnInit {
     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
 
     this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.sucursales_arr = sucursales
+      this.sucursales_array = sucursales
       this.sucursalCalendario = this.SUCURSAL
       this.vigilaCitas()
     }).catch((error) => {
@@ -146,7 +148,12 @@ export class CitasComponent implements OnInit {
     this.vigilaCalendario()
   }
   handleDateClick(arg) {
-    alert('date click! ' + arg.dateStr)
+    // alert('date click! ' + arg.dateStr)
+    // this.calendarOptions.initialDate = arg.dateStr
+    // this.calendarOptions.now = arg.dateStr
+    // this.calendarOptions.allDayContent = arg.dateStr
+    // console.log(arg);
+    
   }
   handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;
@@ -169,8 +176,8 @@ export class CitasComponent implements OnInit {
     this.fecha_muestra = fecha_muestra
     
     this.filtro_citas_mes_all = this._publicos.ordenarData(citasDiaSelect,'horario',true)
-    console.log('aqui');
-    console.log(this.calendarOptions);
+    // this.calendarOptions.initialDate = new Date('06/24/2023')
+    // this.calendarOptions.now = new Date(selectInfo['start'])
     
     
   }
@@ -200,6 +207,7 @@ export class CitasComponent implements OnInit {
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
   }
+  
   //verificar si cambia la informacion de las citas
   vigilaCitas(){
     const {mes,anio}  = this._publicos.conveirtefecha_2(new Date());
@@ -379,7 +387,7 @@ vigilaCalendario(){
           //enviar en caso de que las horas sean mayor a 24 horas
             if(!cita.recordatorio && difencia_dias > 24 ) {
               updates[`Citas/${anio}/${mes}/${sucursal}/${id}/recordatorio`] = true
-              const correo_sucursal = this.sucursales_arr.find(s=>s.id === cita.sucursal).correo
+              const correo_sucursal = this.sucursales_array.find(s=>s.id === cita.sucursal).correo
               const correos = [correo_sucursal,cita.correo]
               ocupados.push(
                 Object({

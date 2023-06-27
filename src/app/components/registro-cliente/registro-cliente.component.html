@@ -10,7 +10,7 @@
                 <div class="col-sm-9 col-md-8 col-lg-8 ">
                     <select formControlName="sucursal" class="form-control form-control-sm">
                         <option value="">Selecciona sucursal</option>
-                        <option [value]="sucursal.id" *ngFor="let sucursal of sucursales_arr">{{sucursal.sucursal}}</option>
+                        <option [value]="sucursal.id" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal}}</option>
                       </select>
                     <small *ngIf="validarCampo('sucursal')" class="text-danger">Seleccionar sucursal de cliente</small>
                 </div>

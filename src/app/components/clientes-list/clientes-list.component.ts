@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 
 
 const db = getDatabase()
@@ -19,6 +20,14 @@ const dbRef = ref(getDatabase());
 })
 export class ClientesListComponent implements OnInit {
 
+  
+
+  constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService, private _clientes: ClientesService,
+    private _sucursales: SucursalesService) {
+    this.dataCliente = new EventEmitter()
+  }
+  sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+  
   myControl = new FormControl('');
   filteredOptions: Observable<string[]>;
   listaClientes_arr = []
@@ -27,31 +36,14 @@ export class ClientesListComponent implements OnInit {
   @Input() sucursal :string
 
   ROL:string; SUCURSAL:string
-  listaSucursales_arr= []
   empresas_alls= {}
-  constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService, private _clientes: ClientesService) {
-    this.dataCliente = new EventEmitter()
-  }
 
   ngOnInit(): void {
     this.rol()
-    // this.listarClientes()
-    this.listaSucursales()
+    this.listaEmpresas()
     this.automaticos()
   }
-  listaSucursales(){
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.listaSucursales_arr = this._publicos.crearArreglo2(snapshot.val())
-        this.listaEmpresas()
-        
-      }
-    }, {
-        onlyOnce: true
-      })
-	
-  }
+
   rol(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
@@ -67,7 +59,7 @@ export class ClientesListComponent implements OnInit {
     onValue(starCountRef, (snapshot) => {
       this._clientes.consulta_clientes_new().then((clientes)=>{
         clientes.map(c=>{
-          c.showSucursal  = this.listaSucursales_arr.find(s=>s.id === c.sucursal).sucursal
+          c.showSucursal  = this.sucursales_array.find(s=>s.id === c.sucursal).sucursal
           if(c.empresa) {
             const {empresa: em} = this.empresas_alls[c.sucursal][c.empresa]
             c.empresaShow  = em

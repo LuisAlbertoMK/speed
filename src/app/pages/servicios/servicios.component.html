@@ -53,7 +53,7 @@
         </button>
         <mat-menu #menuSucursales="matMenu">
           <button mat-menu-item (click)="busquedaSucursalString = 'Todas'; busquedaSucursalStringShow = 'Todas'; nuevasBusquedas()" >Todas</button>
-          <button mat-menu-item (click)="busquedaSucursalString = item.id; busquedaSucursalStringShow = item.sucursal; nuevasBusquedas()" *ngFor="let item of sucursales_arr">{{item.sucursal}}</button>
+          <button mat-menu-item (click)="busquedaSucursalString = item.id; busquedaSucursalStringShow = item.sucursal; nuevasBusquedas()" *ngFor="let item of sucursales_array">{{item.sucursal}}</button>
         </mat-menu>
       
     </ng-container>
@@ -122,7 +122,7 @@
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
       <td mat-cell *matCellDef="let row">
-        {{row.index + 1 }}
+        {{row.index }}
     </td>
     </ng-container>
     <ng-container matColumnDef="no_os">
@@ -366,7 +366,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr *ngFor="let item of row.hitorial_gastos; let i = index">
+                                  <tr *ngFor="let item of row.HistorialGastos_; let i = index">
                                     <th scope="row">{{i +1 }}</th>
                                     <td class="text-start">{{item.concepto | capitalizarUno}}</td>
                                     <td class="text-start">{{item.referencia | capitalizarUno}}</td>
@@ -406,7 +406,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr *ngFor="let item of row.historial_pagos; let i = index">
+                                  <tr *ngFor="let item of row.HistorialPagos_; let i = index">
                                     <th scope="row">{{i +1 }}</th>
                                     <td class="text-start">{{item.concepto | capitalizarUno}}</td>
                                     <td class="text-start">{{item.fecha_registro}}</td>

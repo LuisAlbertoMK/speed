@@ -53,7 +53,24 @@ const starCountRef = ref(db, `clientes`)
         onlyOnce: true
       })
 	
-35089441
+
+    private _clientes:ClientesService, private _vehiculos: VehiculosService, 
+    private _cotizaciones: CotizacionesService,
+    private _sucursales: SucursalesService,
+    private _campos: CamposSystemService,
+
+
+    camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
+    camposCliente    =  [ ...this._clientes.camposCliente_show ]
+    camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
+    formasPago       =  [ ...this._cotizaciones.formasPago ]
+    metodospago      =  [ ...this._cotizaciones.metodospago ]
+    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+
+    paquete: string     =  this._campos.paquete
+  refaccion: string   =  this._campos.refaccion
+  mo: string          =  this._campos.mo
+  miniColumnas:number =  this._campos.miniColumnas
 
 get(child(dbRef, `users/${userId}`)).then((snapshot) => {
   if (snapshot.exists()) {

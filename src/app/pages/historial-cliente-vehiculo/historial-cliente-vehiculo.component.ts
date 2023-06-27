@@ -14,6 +14,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 @Component({
   selector: 'app-historial-cliente-vehiculo',
   templateUrl: './historial-cliente-vehiculo.component.html',
@@ -29,14 +30,21 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class HistorialClienteVehiculoComponent implements OnInit {
 
   constructor(private rutaActiva: ActivatedRoute,private _security:EncriptadoService,private router: Router,
+    private _campos: CamposSystemService,
     private _servicios: ServiciosService, private _cotizaciones: CotizacionesService, private _publicos: ServiciosPublicosService) { }
   enrutamiento = {vehiculo:'', cliente:'', anterior:''}
 
-  paquete: string = 'paquete'
-  refaccion: string = 'refaccion'
-  mo: string = 'mo'
+  camposDesgloce    =  [  ...this._cotizaciones.camposDesgloce ]
+  camposVehiculo    =  [  ...this._cotizaciones.camposVehiculo ]
+  camposGastos      =  [  ...this._servicios.camposGastos ]
+  camposGastos_show =  [  ...this._servicios.camposGastos_show ]
+  camposPagos       =  [  ...this._servicios.camposPagos ]
+  camposPagos_show  =  [  ...this._servicios.camposPagos_show ]
 
-  miniColumnas:number = 100
+  paquete: string     =  this._campos.paquete
+  refaccion: string   =  this._campos.refaccion
+  mo: string          =  this._campos.mo
+  miniColumnas:number =  this._campos.miniColumnas
 
   // tabla
   dataSourceCotizaciones = new MatTableDataSource(); //elementos
@@ -56,16 +64,9 @@ export class HistorialClienteVehiculoComponent implements OnInit {
 
   lista_cotizaciones_arr = []
   lista_recepciones_arr = []
-  camposDesgloce = [...this._cotizaciones.camposDesgloce]
-  camposVehiculo = [...this._cotizaciones.camposVehiculo]
-
-  camposGastos = [...this._servicios.camposGastos]
-  camposGastos_show = [...this._servicios.camposGastos_show]
-  camposPagos = [...this._servicios.camposPagos]
-  camposPagos_show = [...this._servicios.camposPagos_show]
+ 
   ngOnInit(): void {
     this.recupera_enrutamiento()
-    
   }
   recupera_enrutamiento(){
     this.rutaActiva.queryParams.subscribe(params => {

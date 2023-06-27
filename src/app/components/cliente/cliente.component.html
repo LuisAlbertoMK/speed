@@ -143,7 +143,7 @@
                 <div class="col-sm-9 col-md-8 col-lg-9">
                   <select class=" form-select  form-select-sm" formControlName="sucursal" (change)="actualizaNoCliente()"
                     [class.is-invalid]="validarCampo('sucursal')" id="sucursal" (change)="verificarCorreoExiste()">
-                    <option [ngValue]="sucursal.id" *ngFor="let sucursal of Sucursales;let i=index">
+                    <option [ngValue]="sucursal.id" *ngFor="let sucursal of sucursales_array;let i=index">
                       {{sucursal.sucursal}}</option>
                   </select>
                   <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>

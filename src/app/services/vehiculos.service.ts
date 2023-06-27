@@ -19,21 +19,7 @@ export class VehiculosService {
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService) { }
 
   camposVehiculo = ['id','marca','marcaMotor','modelo','no_motor','placas','status','transmision','vinChasis']
-  camposVehiculosave =  [
-    'anio',
-'categoria',
-'cilindros',
-'cliente',
-'color',
-'engomado',
-'id',
-'marca',
-'marcaMotor',
-'modelo',
-'no_motor',
-'placas',
-'transmision',
-'vinChasis',
+  camposVehiculosave =  ['anio','categoria','cilindros','cliente','color','engomado','id','marca','marcaMotor','modelo','no_motor','placas','transmision','vinChasis',
   ]
   camposVehiculo_=[
     {valor: 'placas', show:'Placas'},
@@ -49,6 +35,9 @@ export class VehiculosService {
     {valor: 'vinChasis', show:'vinChasis'},
     {valor: 'marcaMotor', show:'marcaMotor'}
   ]
+  lista_cilindros_arr = ['4','5','6','8','10']
+
+  
   consulta_vehiculo_new(cliente,vehiculo): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `clientes/${cliente}/vehiculos/${vehiculo}`);

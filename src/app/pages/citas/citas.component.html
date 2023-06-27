@@ -48,7 +48,7 @@
             <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm"
              (ngModelChange)="addEvent(range.controls['start'].value, range.controls['end'].value)">
               <option value="Todas" >Todas</option>
-              <option [value]="s.id" *ngFor="let s of sucursales_arr">{{s.sucursal}}</option>
+              <option [value]="s.id" *ngFor="let s of sucursales_array">{{s.sucursal}}</option>
             </select>
           </div>
         </div>
@@ -64,7 +64,7 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-8">
-        <full-calendar [options]="calendarOptions"  ></full-calendar>
+        <full-calendar [options]="calendarOptions" ></full-calendar>
       </div>
       <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4 col-xxl-4">
         <mat-accordion>

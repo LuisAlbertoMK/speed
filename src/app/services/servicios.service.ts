@@ -11,6 +11,7 @@ import { ServiciosPublicosService } from './servicios-publicos.service';
 import { ClientesService } from './clientes.service';
 import { VehiculosService } from './vehiculos.service';
 import { SucursalesService } from './sucursales.service';
+import { CotizacionesService } from './cotizaciones.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Injectable({
@@ -88,7 +89,65 @@ export class ServiciosService {
     camposGastos_show = ['concepto','referencia','fecha registro','Tipo','Metodo','monto']
     camposPagos = ['concepto','fecha_registro','metodoShow','monto']
     camposPagos_show = ['concepto','fecha registro','metodo','monto']
-    
+
+    estatusServicioUnico = [
+      {valor: 'aprobado'   , show: 'Aprobar'},
+      {valor: 'Noaprobado'  , show: 'No Aprobado'},
+      {valor: 'terminar'   , show: 'Terminado'},
+      {valor: 'eliminado'  , show: 'Eliminar'},
+      {valor: 'cancelado'  , show: 'Cancelado'}
+    ]
+    statusOS = [
+      {valor: 'espera'   , show: 'Espera'},
+      {valor: 'recibido'   , show: 'Recibido'},
+      {valor: 'autorizado'  , show: 'Autorizado'},
+      {valor: 'terminado'   , show: 'Terminado'},
+      {valor: 'entregado'  , show: 'Entregado'},
+      {valor: 'cancelado'  , show: 'Cancelado'}
+    ]
+    menuListaBusqueda_arr = [
+      {valor:'hoy',show:'Hoy', dias: 0},
+      {valor:'ayer',show:'Ayer', dias: -1},
+      {valor:'ult7dias',show:'Últimos 7 días', dias:-7},
+      {valor:'ult30dias',show:'Últimos 30 días', dias: -30},
+      {valor:'esteMes',show:'Este mes', dias: 0},
+      {valor:'ultMes',show:'Último mes', dias: 0},
+      {valor:'esteAnio',show:'Este año', dias: 0},
+      {valor:'ultAnio',show:'Último año', dias: 0},
+      {valor:'personalizado',show:'Personalizado',dias: 0},
+    ]
+    camposEstancia = [
+      {valor: 'servicios_totales', show:'Numero servicios'},
+      {valor: 'ticket_total', show:'ticket total'},
+      {valor: 'ticketPromedio', show:'ticket promedio'},
+      {valor: 'diasSucursal_total', show:'dias Sucursal total'},
+      {valor: 'diasSucursal', show:'dias Sucursal promedio'},
+      {valor: 'horas_totales_totales', show:'horas totales'},
+      {valor: 'horas_totales', show:'horas totales promedio'},
+    ]
+    reporteEstancias = {  servicios_totales:0, ticket_total:0, ticketPromedio:0, diasSucursal_total:0, diasSucursal:0, horas_totales_totales:0, horas_totales:0}
+    metodospago = [ 
+        {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
+        {valor:'2', show:'Cheque', ocupa:'Cheque'},
+        {valor:'3', show:'Tarjeta', ocupa:'Tarjeta'},
+        {valor:'4', show:'Transferencia', ocupa:'Transferencia'},
+        {valor:'5', show:'Credito', ocupa:'credito'},
+        // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
+        // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
+        {valor:'6', show:'Terminal BBVA', ocupa:'BBVA'},
+        {valor:'7', show:'Terminal BANAMEX', ocupa:'BANAMEX'}
+      
+    ]
+    servicios=[
+      {valor:1,nombre:'servicio'},
+      {valor:2,nombre:'garantia'},
+      {valor:3,nombre:'retorno'},
+      {valor:4,nombre:'venta'},
+      {valor:5,nombre:'preventivo'},
+      {valor:6,nombre:'correctivo'},
+      {valor:7,nombre:'rescate vial'}
+    ]
+    sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
 //TODO aqui las nuevas funciones
 
 consulta_recepciones_new(): Promise<any[]> {
@@ -97,10 +156,42 @@ consulta_recepciones_new(): Promise<any[]> {
       if (snapshot.exists()) {
         const recepciones = this._publicos.crearArreglo2(snapshot.val());
         recepciones.map(c=>{
-          c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}` 
+          const getTime  = this._publicos.getFechaHora()
+          const diasSucursal =  this._publicos.calcularDias(c.fecha_recibido, getTime.fecha)
+          //asiganmos el fullname de cliente
+
+          if (diasSucursal !== c.diasSucursal) {
+            const updates = { [`recepciones/${c.id}/diasSucursal`]: diasSucursal };
+            update(ref(db), updates) .then(() => {});
+          }
+          c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}`
+          c.searchCliente = c.fullname
+          c.sucursalShow = this.sucursales_array.find(s=>s.id === c.cliente.sucursal).sucursal
+          c.cliente.sucursalShow = c.sucursalShow
           c.searchPlacas = `${c.vehiculo.placas}`
           c.fechaRecibido = this._publicos.convertirFecha(c.fecha_recibido)
           c.fechaEntregado = (c.fecha_entregado) ? this._publicos.convertirFecha(c.fecha_entregado) : null
+          //convierte a arreglo si existen historiales de pagos y gastos
+          c.HistorialPagos_ =  (c.HistorialPagos) ? this._publicos.crearArreglo2(c.HistorialPagos) : []
+          c.HistorialGastos_ =  (c.HistorialGastos) ? this._publicos.crearArreglo2(c.HistorialGastos) : []
+          
+          const {pagos, gastos, totalPagos, totalGastos} = this.obtenerTotalesHistoriales(c.HistorialPagos_ ,c.HistorialGastos_)
+          c.HistorialPagos_ = [...pagos]
+          c.HistorialGastos_ = [...gastos]
+          c.totalPagos = totalPagos
+          c.totalGastos = totalGastos
+          //convierte la fecha para su uso en filtro por fechas
+          c.fecha_recibido_compara = this._publicos.construyeFechaString(c.fecha_recibido)
+          if (c.fecha_entregado) {
+            c.fecha_entrega_compara = this._publicos.construyeFechaString(c.fecha_entregado)
+          }
+          // c.fechaRecibido = `${c.fecha_recibido} ${c.hora_recibido}`
+          // c.fechaEntregado = `${c.fecha_entregado} ${c.hora_entregado}`
+
+          ///obtener el reporte 
+          const {reporte, ocupados} = this._publicos.realizarOperaciones_2(c)
+          c.reporte = reporte
+          c.servicios = ocupados
         })
         resolve(recepciones);
       } else {
@@ -108,6 +199,24 @@ consulta_recepciones_new(): Promise<any[]> {
       }
     })
   });
+}
+
+obtenerTotalesHistoriales(pagos, gastos){
+  let totalPagos=0, totalGastos = 0
+
+  pagos.forEach(element => {
+    element.tipoNuevo = 'pago'
+    const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
+    element.metodoShow = show
+    if(element.status) totalPagos += element.monto
+  });
+  gastos.forEach(element => {
+    element.tipoNuevo = 'gasto'
+    const { show } = this.metodospago.find(m => m.valor === String(element.metodo))
+    element.metodoShow = show
+    if(element.status) totalGastos += element.monto
+  });
+  return {pagos, gastos, totalPagos, totalGastos}
 }
 //TODO aqui las nuevas funciones
 

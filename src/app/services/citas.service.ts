@@ -39,6 +39,8 @@ export class CitasService {
     {valor: 'nombre', show:'Nombre'},
   ]
 
+  citasCampos = [ 'sucursal','cliente','vehiculo','dia','horario']
+
   consulta_citas_mes_new(anio, mes, sucursal): Promise<any[]> {
     function formatoDosDigitos(numero) { return numero.toString().padStart(2, '0'); }
     return new Promise((resolve, reject) => {

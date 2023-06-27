@@ -6,6 +6,9 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -24,11 +27,18 @@ const dbRef = ref(getDatabase());
 
 export class CatalogosComponent implements  OnDestroy, OnInit  {
   
-  listaPaquetes = []
-  // @Input() modelo:string
-  // @Output() infoPaquete : EventEmitter<any>
-  miniColumnas:number = 100
+  constructor(private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _cotizaciones: CotizacionesService,
+    private _campos: CamposSystemService,
+    private _vehiculos: VehiculosService) {     }
 
+  camposDesgloce        =  [  ...this._cotizaciones.camposDesgloce    ]
+  lista_cilindros_arr   =  [  ...this._vehiculos.lista_cilindros_arr  ]
+
+  reporteGeneral        =  {  ...this._cotizaciones.reporteGeneral  }
+
+  miniColumnas:number   =  this._campos.miniColumnas
+  
+  listaPaquetes = []
   // tabla
   dataSourcePaquetes = new MatTableDataSource(); //paquetes
   paquetes = ['index','nombre','modelo','marca','precio']; //paquetes
@@ -56,13 +66,11 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   listaPaquetes_arr=[]
   filtrar:boolean = true
 
-  elementosDePaqueteNuevo = []
-
   paqueteForm: FormGroup;
-
-
+  
+  elementosDePaqueteNuevo = []
   lista_marcas_arr = []
-  lista_cilindros_arr = ['4','5','6','8','10']
+  
   lista_todos_arr = []
   lista_modelos_arr = []
   categoria:string = ''
@@ -75,26 +83,8 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     descuento: 0,
     formaPago: '1'
   }
-  reporteGeneral = {
-    iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
-    subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
-  }
-  camposDesgloce = [
-    {valor:'mo', show:'mo'},
-    // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'refacciones_v', show:'refacciones'},
-    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
-    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
-    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    {valor:'sobrescrito', show:'sobrescrito'},
-    {valor:'descuento', show:'descuento'},
-    {valor:'subtotal', show:'subtotal'},
-    {valor:'iva', show:'iva'},
-    {valor:'total', show:'total'},
-    {valor:'meses', show:'meses'},
-  ]
-  constructor(private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder) {     }
-
+  
+  
   ngOnInit() {
     this.consultaMarcas()
     this.consultaMO()

@@ -25,6 +25,7 @@ export class ClientesService {
   camposCliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
   camposCliente_show=[
     {valor: 'no_cliente', show:'# Cliente'},
+    // {valor: 'fullname', show:'Nombre'},
     {valor: 'nombre', show:'Nombre'},
     {valor: 'apellidos', show:'Apellidos'},
     {valor: 'correo', show:'Correo'},
@@ -33,8 +34,13 @@ export class ClientesService {
     {valor: 'telefono_movil', show:'Tel. cel.'},
     {valor: 'tipo', show:'Tipo'},
     {valor: 'empresa', show:'Empresa'},
+    {valor: 'sucursalShow', show:'Sucursal'}
   ]
   camposSave= ['no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','empresaShow','sucursalShow']
+
+  tipos_cliente= ['todos','flotilla','particular']
+  sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
+
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService, private _sucursales: SucursalesService,
     private _vehiculos: VehiculosService,
     private _mail: EmailsService) { }
@@ -50,6 +56,7 @@ export class ClientesService {
             c.fullname = `${c.nombre} ${c.apellidos}`
             const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
             c.vehiculos = vehiculos
+            c.sucursalShow = this.sucursales_array.find(s=>s.id === c.sucursal).sucursal
           })
           resolve(clientes);
         } else {
@@ -66,6 +73,10 @@ export class ClientesService {
           const clientes = snapshot.val()
           clientes.fullname = `${clientes.nombre} ${clientes.apellidos}`
           const vehiculos = (clientes['vehiculos']) ? this._publicos.crearArreglo2(clientes['vehiculos']) : []
+          clientes.sucursalShow = this.sucursales_array.find(s=>s.id === clientes.sucursal).sucursal
+          vehiculos.map((v, index)=>{
+            v['index'] = index +1
+          })
           clientes.vehiculos = vehiculos
           resolve(clientes);
         } else {

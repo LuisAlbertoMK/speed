@@ -36,9 +36,8 @@ export class MiperfilComponent implements OnInit {
   rol_cliente:string = 'cliente'
   info_cliente = {}
   info_cliente_editar = {}
-  camposCliente_show = [...this._clientes.camposCliente_show,
-  {valor:'sucursalShow', show:'Sucursal'}]
-  sucursales_arr = [...this._sucursales.lista_en_duro_sucursales]
+  camposCliente_show  = [ ...this._clientes.camposCliente_show ]
+  sucursales_arr      = [ ...this._sucursales.lista_en_duro_sucursales ]
 
   misVehiculos = []
 
@@ -67,19 +66,9 @@ export class MiperfilComponent implements OnInit {
     onValue(starCountRef, async (snapshot) => {
       const cliente:any = await this._clientes.consulta_cliente_new(id)
       const {vehiculos} = cliente
-        cliente['sucursalShow'] = this.sucursales_arr.find(s=>s.id === cliente.sucursal).sucursal
         this.info_cliente = cliente
-        vehiculos.map((v, index)=>{
-          v['index'] = index +1
-        })
-
-        if (!this.misVehiculos.length) {
-          this.misVehiculos = vehiculos;
-          // this.cargandoInformacion = false
-        } else {
-          this.misVehiculos = this._publicos.actualizarArregloExistente(this.misVehiculos,vehiculos,[...this._vehiculos.camposVehiculo])
-          // this.cargandoInformacion = false
-        }    
+        const vehiculosnew =  (!this.misVehiculos.length) ? vehiculos : this._publicos.actualizarArregloExistente(this.misVehiculos,vehiculos,[...this._vehiculos.camposVehiculo])
+        this.misVehiculos = vehiculosnew
         this.dataSource.data = this.misVehiculos
         this.newPagination()
         

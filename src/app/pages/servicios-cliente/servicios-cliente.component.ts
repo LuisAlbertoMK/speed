@@ -16,6 +16,8 @@ import { MatSort } from '@angular/material/sort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { ServiciosService } from '../../services/servicios.service';
+import { CamposSystemService } from '../../services/campos-system.service';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 @Component({
   selector: 'app-servicios-cliente',
   templateUrl: './servicios-cliente.component.html',
@@ -31,15 +33,18 @@ import { ServiciosService } from '../../services/servicios.service';
 export class ServiciosClienteComponent implements OnInit {
 
   constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, 
-    private _clientes: ClientesService, private _sucursales: SucursalesService, 
-    private _vehiculos: VehiculosService, private _servicios: ServiciosService) { }
+    private _clientes: ClientesService, private _sucursales: SucursalesService, private _campos: CamposSystemService,
+    private _vehiculos: VehiculosService, private _servicios: ServiciosService, private _cotizaciones: CotizacionesService) { }
 
   rol_cliente:string = 'cliente'
-  paquete: string = 'paquete'
-  refaccion: string = 'refaccion'
-  mo: string = 'mo'
 
-  miniColumnas:number = 100
+  camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce  ]
+  camposVehiculo    =   [ ...this._vehiculos.camposVehiculo_  ]
+
+  paquete: string     =   this._campos.paquete
+  refaccion: string   =   this._campos.refaccion
+  mo: string          =   this._campos.mo
+  miniColumnas:number =   this._campos.miniColumnas
 
   ///elementos de la tabla de vehiculos
   dataSource = new MatTableDataSource(); //elementos
@@ -49,37 +54,8 @@ export class ServiciosClienteComponent implements OnInit {
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
   @ViewChild('elements') sort: MatSort //elementos
 
-
   recepciones_clinete = []
 
-  camposDesgloce = [
-    {valor:'mo', show:'mo'},
-    // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'refacciones_v', show:'refacciones'},
-    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
-    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
-    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    {valor:'sobrescrito', show:'sobrescrito'},
-    {valor:'descuento', show:'descuento'},
-    {valor:'subtotal', show:'subtotal'},
-    {valor:'iva', show:'iva'},
-    {valor:'total', show:'total'},
-    {valor:'meses', show:'meses'},
-  ]
-  camposVehiculo=[
-    {valor: 'placas', show:'Placas'},
-    {valor: 'marca', show:'marca'},
-    {valor: 'modelo', show:'modelo'},
-    {valor: 'anio', show:'añio'},
-    {valor: 'categoria', show:'categoria'},
-    {valor: 'cilindros', show:'cilindros'},
-    {valor: 'engomado', show:'engomado'},
-    {valor: 'color', show:'color'},
-    {valor: 'transmision', show:'transmision'},
-    {valor: 'no_motor', show:'No. Motor'},
-    {valor: 'vinChasis', show:'vinChasis'},
-    {valor: 'marcaMotor', show:'marcaMotor'}
-  ]
   ngOnInit(): void {
     this.rol()
   }

@@ -13,6 +13,7 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 const auth = getAuth();
@@ -24,8 +25,12 @@ const auth = getAuth();
 export class NavbarComponent implements AfterViewInit ,OnInit {
   @ViewChild(InicioComponent) child;
   constructor(private _auth:AuthService, private router : Router, private _email:EmailsService, 
+    private _sucursales: SucursalesService,
     private _security:EncriptadoService,  public _router: Router, public _location: Location) { }
-  @Input() childMessage: string
+  
+    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+
+    @Input() childMessage: string
 
   
   maniana:string = ''
@@ -270,18 +275,12 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     });
   }
   nombreSucursal(){
-    this.SUCURSAL =localStorage.getItem('sucursal')
-    if (this.SUCURSAL!=='Todas') {
-      const starCountRef = ref(db, 'sucursales')
-      onValue(starCountRef, (snapshot) => {
-        const data = snapshot.val()
-        let temp = this.crearArreglo2(data)
-        temp.forEach(sucursal => {
-          if (sucursal.id === this.SUCURSAL) {
-            this.nombreSucursalMuestra = sucursal.sucursal
-          }
-        });
-      })
+    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+    this.ROL = this._security.servicioDecrypt(variableX['rol'])
+    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
+    
+    if (this.SUCURSAL!=='Todas' ) {
+      this.nombreSucursalMuestra = this.sucursales_array.find(s=>s.id === this.SUCURSAL).sucursal
     }
   }
   ///CONTADOR DE CITAS PENDIENTES

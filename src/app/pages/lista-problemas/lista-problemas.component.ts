@@ -11,6 +11,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -29,55 +30,30 @@ const dbRef = ref(getDatabase());
   ],
 })
 export class ListaProblemasComponent implements OnInit {
-  miniColumnas:number = 100
-  listaModulos= [
-    { valor:'1', show:'inicio', ruta: 'inicio'},
-    { valor:'2', show:'catalogos', ruta: 'catalogos'},
-    { valor:'3', show:'citas', ruta: 'citas'},
-    { valor:'4', show:'clientes', ruta: 'clientes'},
-    { valor:'5', show:'cotizacion', ruta: 'cotizacion'},
-    { valor:'6', show:'sucursales', ruta: 'sucursales'},
-    { valor:'7', show:'vehiculos', ruta: 'vehiculos'},
-    { valor:'8', show:'administracion', ruta: 'administracion'},
-    { valor:'9', show:'servicios', ruta: 'servicios'},
-    { valor:'10', show:'usuarios', ruta: 'usuarios'},
-    { valor:'11', show:'recordatorios', ruta: 'recordatorios'},
-    { valor:'12', show:'historial', ruta: 'historial-vehiculo/:idvehiculo'},
-    { valor:'13', show:'historial', ruta: 'historial-cliente/:rutaAnterior/:idCliente'},
-    { valor:'14', show:'cotizacionNueva', ruta: 'cotizacionNueva/:ID/:tipo/:extra'},
-    { valor:'15', show:'vehiculos', ruta: 'vehiculos/:rutaAnterior/:accion'},
-    { valor:'16', show:'Servicios Confirmar', ruta: 'ServiciosConfirmar/:ID/:tipo/:extra'},
-    { valor:'17', show:'modifica Recepcion', ruta: 'modificaRecepcion/:rutaAnterior/:idRecepcion'},
-    { valor:'18', show:'login', ruta: 'loginv1'},
-    { valor:'19', show:'reporte Gastos', ruta: 'reporteGastos'},
-    { valor:'20', show:'registra Problemas', ruta: 'registraProblemas'},
-  ]
-  ROL:string; SUCURSAL:string
-
-  tiempoReal:boolean = false
-  sucursales_arr=[]
-
-  formProblema:FormGroup
-  faltantes = null
-
-
-  // tabla
-  dataSource = new MatTableDataSource(); //elementos
-  elementos = ['id','sucursalShow','fecha_registro','hora_registro','revisado','resuelto','status']; //elementos
-  columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
-  expandedElement: any | null; //elementos
-  @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
-  @ViewChild('elements') sort: MatSort //elementos
-
- 
-// git add .
-// git commit -m "problemas_15052023"
-// git push -u origin main
-
-  ordenarproblema: boolean = true
-  id_registro_fix:string = null
-  constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, 
+  
+  constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, private _campos: CamposSystemService, 
     private _security:EncriptadoService,private _sucursales:  SucursalesService) { }
+
+    ROL:string; SUCURSAL:string
+
+    sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
+    listaModulos      =  [ ...this._campos.listaModulos ]
+
+    miniColumnas:number = this._campos.miniColumnas
+
+    tiempoReal:boolean = false
+    formProblema:FormGroup
+    faltantes = null
+    // tabla
+    dataSource = new MatTableDataSource(); //elementos
+    elementos = ['id','sucursalShow','fecha_registro','hora_registro','revisado','resuelto','status']; //elementos
+    columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
+    expandedElement: any | null; //elementos
+    @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
+    @ViewChild('elements') sort: MatSort //elementos
+  
+    ordenarproblema: boolean = true
+    id_registro_fix:string = null
 
   ngOnInit(): void {
     this.rol()
@@ -88,13 +64,7 @@ export class ListaProblemasComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-
-      this._sucursales.consultaSucursales_new().then((sucursales) => {
-        this.sucursales_arr = sucursales
-        this.consultaErrores()
-      }).catch((error) => {
-        // Manejar el error si ocurre
-      });
+      this.consultaErrores()
     }
   }
 
@@ -168,7 +138,7 @@ export class ListaProblemasComponent implements OnInit {
         nuevosD.forEach((p, index) => {
           p.index = index;
           if(p.sucursal && p.sucursal !=='desarrollador'){
-            const {sucursal} = this.sucursales_arr.find(s=>s.id === p.sucursal)
+            const {sucursal} = this.sucursales_array.find(s=>s.id === p.sucursal)
             p.sucursalShow = sucursal
           }else{
             p.sucursalShow  = 'desarrollador'

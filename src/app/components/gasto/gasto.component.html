@@ -62,7 +62,7 @@
                       <div class="col-sm-8 col-md-6 col-lg-6 col-12">
                         <select id="sucursal" class="form-select form-select-sm" formControlName="sucursal">
                           <option value="">Selecciona</option>
-                          <option [value]="s.id" *ngFor="let s of sucursales_arr">
+                          <option [value]="s.id" *ngFor="let s of sucursales_array">
                             {{s.sucursal}}
                           </option>
                         </select>

@@ -11,6 +11,12 @@ const dbRef = ref(getDatabase());
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ClientesService } from '../../services/clientes.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { ServiciosService } from 'src/app/services/servicios.service';
+import { CamposSystemService } from '../../services/campos-system.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 
 @Component({
   selector: 'app-historial-cliente',
@@ -25,120 +31,67 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
   ],
 })
 export class HistorialClienteComponent implements OnInit {
-  miniColumnas:number = 100
-  ROL:string; SUCURSAL:string
-  sucursales_arr=[]
-  //informacion de cliente
-  cliente = {cliente:{}, vehiculos:[], cotizaciones:[],servicios:[]}
-
-  camposCliente=[
-    {valor: 'no_cliente', show:'# Cliente'},
-    {valor: 'nombre', show:'Nombre'},
-    {valor: 'apellidos', show:'Apellidos'},
-    {valor: 'correo', show:'Correo'},
-    {valor: 'correo_sec', show:'Correo adicional'},
-    {valor: 'telefono_fijo', show:'Tel. Fijo'},
-    {valor: 'telefono_movil', show:'Tel. cel.'},
-    {valor: 'tipo', show:'Tipo'},
-    {valor: 'empresa', show:'Empresa'},
-    // {valor: 'sucursal', show:'Sucursal'}
-  ]
-  camposVehiculo=[
-    {valor: 'placas', show:'Placas'},
-    {valor: 'marca', show:'marca'},
-    {valor: 'modelo', show:'modelo'},
-    {valor: 'anio', show:'añio'},
-    {valor: 'categoria', show:'categoria'},
-    {valor: 'cilindros', show:'cilindros'},
-    {valor: 'engomado', show:'engomado'},
-    {valor: 'color', show:'color'},
-    {valor: 'transmision', show:'transmision'},
-    {valor: 'no_motor', show:'No. Motor'},
-    {valor: 'vinChasis', show:'vinChasis'},
-    {valor: 'marcaMotor', show:'marcaMotor'}
-  ]
-  formasPago=[
-    {id:'1',pago:'contado',interes:0,numero:0},
-    {id:'2',pago:'3 meses',interes:4.49,numero:3},
-    {id:'3',pago:'6 meses',interes:6.99,numero:6},
-    {id:'4',pago:'9 meses',interes:9.90,numero:9},
-    {id:'5',pago:'12 meses',interes:11.95,numero:12},
-    {id:'6',pago:'18 meses',interes:17.70,numero:18},
-    {id:'7',pago:'24 meses',interes:24.,numero:24}
-  ]
-  camposDesgloce = [
-    {valor:'mo', show:'mo'},
-    // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'refacciones_v', show:'refacciones'},
-    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
-    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
-    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    {valor:'sobrescrito', show:'sobrescrito'},
-    {valor:'descuento', show:'descuento'},
-    {valor:'subtotal', show:'subtotal'},
-    {valor:'iva', show:'iva'},
-    {valor:'total', show:'total'},
-    {valor:'meses', show:'meses'},
-  ]
-  estatusServicioUnico = [
-    {valor: 'aprobado'   , show: 'Aprobar'},
-    {valor: 'Noaprobado'  , show: 'No Aprobado'},
-    {valor: 'terminar'   , show: 'Terminado'},
-    {valor: 'eliminado'  , show: 'Eliminar'},
-    {valor: 'cancelado'  , show: 'Cancelado'}
-  ]
-  statusOS = [
-    {valor: 'espera'   , show: 'Espera'},
-    {valor: 'recibido'   , show: 'Recibido'},
-    {valor: 'autorizado'  , show: 'Autorizado'},
-    {valor: 'terminado'   , show: 'Terminado'},
-    {valor: 'entregado'  , show: 'Entregado'},
-    {valor: 'cancelado'  , show: 'Cancelado'}
-  ]
-  tiemoReal: true
-
-  paquete: string = 'paquete'
-  refaccion: string = 'refaccion'
-  mo: string = 'mo'
-
-   // tabla
-   dataSource = new MatTableDataSource(); //elementos
-   elementos = ['index','placas','marca','modelo']; //elementos
-   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
-   expandedElement: any | null; //elementos
-   @ViewChild('VehiculosPaginator') paginator: MatPaginator //elementos
-   @ViewChild('Vehiculos') sort: MatSort //elementos
-
-   // tabla
-   dataSourceCotizaciones = new MatTableDataSource(); //elementos
-   cotizaciones =  ['index','no_cotizacion','searchName','searchPlacas']; //cotizaciones
-   columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'expand']; //elementos
-   expandedElementCotizaciones: any | null; //elementos
-   @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
-   @ViewChild('Cotizaciones') sortCotizaciones: MatSort //elementos
-
-   // tabla
-   dataSourceRecepciones = new MatTableDataSource(); //elementos
-   recepciones = ['id','no_os','searchName','searchPlacas','fechaRecibido','fechaEntregado'];//recepciones
-   columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'expand']; //elementos
-   expandedElementRecepciones: any | null; //elementos
-   @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
-   @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
-
-  ordenamiento_Asc_vehiculos: boolean = true
-  campoSelect_vehiculos = 'placas'
-  ordenamiento_Asc_cotizaciones: boolean = true
-  campoSelect_cotizaciones = 'no_cotizacion'
-
-  reporteHistorial = {reporteCotizaciones:0,reporteRecepciones:0}
-  rutaAnterior:null
-  idCliente:string
-  rutaActual: string
-  enrutamiento = {cliente:'', anterior:''}
+  
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private rutaActiva: ActivatedRoute,
-    private router: Router) { }
+    private router: Router, private _clientes: ClientesService, private _vehiculos: VehiculosService, private _cotizaciones: CotizacionesService,
+    private _servicios: ServiciosService, private _campos: CamposSystemService, private _sucursales: SucursalesService) { }
 
-
+    
+    ROL:string; SUCURSAL:string
+    // sucursales_arr=[]
+    //informacion de cliente
+    cliente = {cliente:{}, vehiculos:[], cotizaciones:[],servicios:[]}
+  
+    camposCliente        =  [ ...this._clientes.camposCliente_show ]
+    camposVehiculo       =  [ ...this._vehiculos.camposVehiculo_ ]
+    camposDesgloce       =  [ ...this._cotizaciones.camposDesgloce ]
+    formasPago           =  [ ...this._cotizaciones.formasPago ]
+    metodospago          =  [ ...this._cotizaciones.metodospago ]
+    statusOS             =  [ ...this._servicios.statusOS ]
+    estatusServicioUnico =  [ ...this._servicios.estatusServicioUnico ]
+    sucursales_array     =  [ ...this._sucursales.lista_en_duro_sucursales ]
+    
+  
+    paquete: string     =  this._campos.paquete
+    refaccion: string   =  this._campos.refaccion
+    mo: string          =  this._campos.mo
+    miniColumnas:number =  this._campos.miniColumnas
+  
+    tiemoReal: true
+     // tabla
+     dataSource = new MatTableDataSource(); //elementos
+     elementos = ['index','placas','marca','modelo']; //elementos
+     columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
+     expandedElement: any | null; //elementos
+     @ViewChild('VehiculosPaginator') paginator: MatPaginator //elementos
+     @ViewChild('Vehiculos') sort: MatSort //elementos
+  
+     // tabla
+     dataSourceCotizaciones = new MatTableDataSource(); //elementos
+     cotizaciones =  ['index','no_cotizacion','searchName','searchPlacas']; //cotizaciones
+     columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'expand']; //elementos
+     expandedElementCotizaciones: any | null; //elementos
+     @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
+     @ViewChild('Cotizaciones') sortCotizaciones: MatSort //elementos
+  
+     // tabla
+     dataSourceRecepciones = new MatTableDataSource(); //elementos
+     recepciones = ['id','no_os','searchName','searchPlacas','fechaRecibido','fechaEntregado'];//recepciones
+     columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'expand']; //elementos
+     expandedElementRecepciones: any | null; //elementos
+     @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
+     @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
+  
+    ordenamiento_Asc_vehiculos: boolean = true
+    campoSelect_vehiculos = 'placas'
+    ordenamiento_Asc_cotizaciones: boolean = true
+    campoSelect_cotizaciones = 'no_cotizacion'
+  
+    reporteHistorial = {reporteCotizaciones:0,reporteRecepciones:0}
+    rutaAnterior:null
+    idCliente:string
+    rutaActual: string
+    enrutamiento = {cliente:'', anterior:''}
   async ngOnInit() {
     this.rol()
   }
@@ -185,12 +138,14 @@ export class HistorialClienteComponent implements OnInit {
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         const infoCliente = snapshot.val()
+        infoCliente.fullname = `${infoCliente.nombre} ${infoCliente.apellidos}`
+        infoCliente.sucursalShow = this.sucursales_array.find(s=>s.id === infoCliente.sucursal).sucursal
         const vehiculos = (infoCliente.vehiculos) ? this._publicos.crearArreglo2(infoCliente.vehiculos) : []
         // console.log(vehiculos);
         
         // console.log(vehiculos);
         
-        const camposCliente = [...this._publicos.camposCliente()]
+        const camposCliente = [...this._publicos.camposCliente(),'fullname','sucursalShow']
         const recuperda = this._publicos.nuevaRecuperacionData(infoCliente,camposCliente)
         // console.log(recuperda);
         this.cliente.cliente = recuperda

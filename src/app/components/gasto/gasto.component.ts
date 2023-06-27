@@ -7,6 +7,7 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import { SucursalesService } from '../../services/sucursales.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -18,22 +19,46 @@ const dbRef = ref(getDatabase());
 export class GastoComponent implements OnInit {
 
 
-  @Input() dataRecepcion:any = null
-  // @Input() sucursal:any = null
-
-  @Output() showGastoHide : EventEmitter<any>
-
-  ROL:string; SUCURSAL:string
-  sucursales_arr=[]
-  miniColumnas:number=100
-  formGasto:FormGroup
-  selected: Date | null;
-  informacionFaltante:string
-  constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, 
+  
+  constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService,
+    private _campos: CamposSystemService, 
     private _security:EncriptadoService, private _sucursales: SucursalesService, private dateAdapter: DateAdapter<Date>) {
       this.showGastoHide = new EventEmitter()
       this.dateAdapter.getFirstDayOfWeek = () => 0;
     }
+
+    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales  ]
+    metodospago      =  [  ...this._campos.MetodosPago  ]
+
+    @Input() dataRecepcion:any = null
+    @Output() showGastoHide : EventEmitter<any>
+  
+    ROL:string; SUCURSAL:string
+    
+    miniColumnas:number=100
+    formGasto:FormGroup
+    selected: Date | null;
+    informacionFaltante:string
+
+    validaciones= [
+      {valor: 'tipo', show:'Tipo de gasto'},
+      {valor: 'monto', show:'Monto'},
+      {valor: 'metodo', show:'Metodo'},
+      {valor: 'concepto', show:'Concepto'},
+      {valor: 'referencia', show:'Referencia'},
+      {valor: 'fecha', show:'Fecha de pago'},
+      {valor: 'fecha_registro', show:'Fecha de registro'},
+      {valor: 'hora_registro', show:'Hora de registro'},
+      {valor: 'sucursal', show:'Sucursal'},
+      {valor: 'rol', show:'ROL'},
+    ]
+        
+    ordenes = []
+    muestraLista:boolean = false
+    fechaIIII:Date = new Date(2000,0,1) 
+    tiempoReal:boolean = true
+
+
     dateClass = (date: Date): string => {
       const day = new Date(date).getDay()
       // const day = fecha.getDay()
@@ -42,34 +67,7 @@ export class GastoComponent implements OnInit {
       }
       return '';
     };
-  metodospago = [
-    {metodo:1, show:'Efectivo'},
-    {metodo:2, show:'Cheque'},
-    {metodo:3, show:'Tarjeta'},
-    {metodo:4, show:'Transferencia'},
-  ]
-  
-  
-
-  validaciones= [
-  {valor: 'tipo', show:'Tipo de gasto'},
-  {valor: 'monto', show:'Monto'},
-  {valor: 'metodo', show:'Metodo'},
-  {valor: 'concepto', show:'Concepto'},
-  {valor: 'referencia', show:'Referencia'},
-  {valor: 'fecha', show:'Fecha de pago'},
-  {valor: 'fecha_registro', show:'Fecha de registro'},
-  {valor: 'hora_registro', show:'Hora de registro'},
-  {valor: 'sucursal', show:'Sucursal'},
-  {valor: 'rol', show:'ROL'},
-  
-  ]
-  Sucursales= []
-  
-  ordenes = []
-  muestraLista:boolean = false
-  fechaIIII:Date = new Date(2000,0,1) 
-  tiempoReal:boolean = true
+ 
   
   ngOnInit(): void {
     this.rol()
@@ -80,13 +78,7 @@ export class GastoComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-
-      this._sucursales.consultaSucursales_new().then((sucursales) => {
-        this.sucursales_arr = sucursales
-        this.listaOrdenes()
-      }).catch((error) => {
-        // Manejar el error si ocurre
-      });
+      this.listaOrdenes()
     }
   }
   listaOrdenes(){

@@ -60,7 +60,7 @@
                                 <div class="col-sm-9 col-md-8 col-lg-8">
                                     <select class="form-control form-control-sm" [class.is-invalid]="validarCampo('sucursal')" formControlName="sucursal">
                                         <option value="" selected>Seleccione una sucursal</option>
-                                        <option [value]="item.id" *ngFor="let item of sucursales">{{item.sucursal}}</option>
+                                        <option [value]="item.id" *ngFor="let item of sucursales_array">{{item.sucursal}}</option>
                                     </select>
                                 </div>
                                 <small *ngIf="validarCampo('sucursal')" class="text-danger">Campo requerido</small>

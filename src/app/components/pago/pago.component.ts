@@ -31,7 +31,9 @@ export class PagoComponent implements OnInit {
       this.showPagoHide = new EventEmitter()
     }
     ROL:string; SUCURSAL:string
-    sucursales_arr=[]
+    
+    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+
     metodospago = [
       {metodo:'1', show:'Efectivo'},
       {metodo:'2', show:'Cheque'},
@@ -74,14 +76,7 @@ export class PagoComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      // this.acciones()
-
-      this._sucursales.consultaSucursales_new().then((sucursales) => {
-        this.sucursales_arr = sucursales
-        this.listaOrdenes()
-      }).catch((error) => {
-        // Manejar el error si ocurre
-      });
+      this.listaOrdenes()
     }
   }
   listaOrdenes(){

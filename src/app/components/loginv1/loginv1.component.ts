@@ -28,7 +28,7 @@ export class Loginv1Component implements OnInit {
   userToken:string = ''
   usuario: UsuarioModel = new UsuarioModel()
 
-  encPassword:string =  'SpeedProSecureCondifidential';  
+  
   
   apuntadores = {usuario: true, password: true}
 

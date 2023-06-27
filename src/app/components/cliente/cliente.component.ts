@@ -24,42 +24,7 @@ const dbRef = ref(getDatabase());
 
 export class ClienteComponent implements OnInit {
 
-  @Input() cliente:any={}
-  @Input() sucursal:string
-  @Input() data:any
-  @Input() id:string
-
-  @Output() heroeSlec : EventEmitter<any>
   
-  empresaSelect = null
-  form_cliente: FormGroup;
-  formaEmpresa: FormGroup;
-  listaEmpresas=[]
-  sucursales =[]
-  Sucursales = []
-  correoExistente: boolean= false
-  telefonoExistente: boolean = false
-  empresa_valida: boolean = true
-  sucursalForm:boolean = false
-  empresasSucursal =[]
-  arreglo_correos = []
-  telefonosInvalidos:any[]=['5555555555','1111111111','0000000000','7777777777','1234567890','0123456789'];
-  contadroClientes= 0
-  infonew = {}
-  muestraFormEmpresa:boolean = false
-  
-  correo_utilizado: string = 'personal'
-  correos = [{value:'personal', show:'Personal'},{value:'sucursal', show:'Sucursal'}];
-  
-  ROL:string
-  SUCURSAL:string
-  
-  clientes = []
-  registraEmpresaShow: boolean = false
-
-  myControl_empresa = new FormControl('');
-  // options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions_empresa: Observable<string[]>;
 
   
   constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
@@ -67,11 +32,50 @@ export class ClienteComponent implements OnInit {
       this.heroeSlec = new EventEmitter()
     }
 
+    @Input() cliente:any={}
+    @Input() sucursal:string
+    @Input() data:any
+    @Input() id:string
+  
+    @Output() heroeSlec : EventEmitter<any>
+    
+    empresaSelect = null
+    form_cliente: FormGroup;
+    formaEmpresa: FormGroup;
+    listaEmpresas=[]
+    // sucursales =[]
+    // Sucursales = []
+    correoExistente: boolean= false
+    telefonoExistente: boolean = false
+    empresa_valida: boolean = true
+    sucursalForm:boolean = false
+    empresasSucursal =[]
+    arreglo_correos = []
+    telefonosInvalidos:any[]=['5555555555','1111111111','0000000000','7777777777','1234567890','0123456789'];
+    contadroClientes= 0
+    infonew = {}
+    muestraFormEmpresa:boolean = false
+    
+    correo_utilizado: string = 'personal'
+    correos = [{value:'personal', show:'Personal'},{value:'sucursal', show:'Sucursal'}];
+    
+    ROL:string
+    SUCURSAL:string
+    
+    clientes = []
+    registraEmpresaShow: boolean = false
+  
+    myControl_empresa = new FormControl('');
+    // options: string[] = ['One', 'Two', 'Three'];
+    filteredOptions_empresa: Observable<string[]>;
+  
+    sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
+
   ngOnInit(): void {
     this.roles()
     this.crearFormularioClientes()
     this.crearFormEmpresa()
-    this.listaSucursales()
+    // this.listaSucursales()
     // this.listadoEmpresas()
     
 
@@ -323,7 +327,7 @@ export class ClienteComponent implements OnInit {
             if (cliente.dataFacturacion){
               cliente.dataFacturacion = cliente.dataFacturacion['unica']
             }
-            const {sucursal} = this.Sucursales.find(s=>s.id === cliente.sucursal)
+            const {sucursal} = this.sucursales_array.find(s=>s.id === cliente.sucursal)
             cliente.showSucursal = sucursal
             this.heroeSlec.emit( {cliente, status: true})
           }
@@ -349,7 +353,7 @@ export class ClienteComponent implements OnInit {
       .then( ()=>{
         
         // if (this.correo_utilizado === 'personal') {
-           const {correo} =  this.Sucursales.find(s=>s['id'] === saveInfo['sucursal'] )
+           const {correo} =  this.sucursales_array.find(s=>s['id'] === saveInfo['sucursal'] )
             
             const infocorreo = {
               nombre: `${saveInfo['nombre']} ${saveInfo['apellidos']}`,
@@ -385,13 +389,16 @@ export class ClienteComponent implements OnInit {
     })
   }
   //sucursales
-  listaSucursales(){
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.Sucursales = sucursales
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
-  }
+  // listaSucursales(){
+  //   console.log(this.sucursales_array);
+    
+  //   this._sucursales.consultaSucursales_new().then((sucursales) => {
+  //     this.Sucursales = sucursales
+  //     console.log(sucursales);
+  //   }).catch((error) => {
+  //     // Manejar el error si ocurre
+  //   });
+  // }
   //empresas
   listadoEmpresas(sucursal){
     const starCountRef = ref(db, `empresas/${sucursal}`)

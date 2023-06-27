@@ -26,6 +26,10 @@ import { ClientesService } from '../../services/clientes.service';
 import { CotizacionService } from '../../services/cotizacion.service';
 import { EmailsService } from '../../services/emails.service';
 import { UploadPDFService } from '../../services/upload-pdf.service';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { ServiciosService } from '../../services/servicios.service';
+import { CamposSystemService } from '../../services/campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 export interface User {nombre: string, apellidos:string}
@@ -42,57 +46,29 @@ export interface User {nombre: string, apellidos:string}
   ],
 })
 export class CotizacionNewComponent implements OnInit,AfterViewInit {
-  miniColumnas:number = 100
+  
+  constructor(
+    private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
+    private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
+    private router: Router, private _sucursales: SucursalesService, private _clientes: ClientesService, private _cotizacion: CotizacionService,
+    private _cotizaciones: CotizacionesService, private _vehiculos: VehiculosService, private _servicios: ServiciosService, private _campos: CamposSystemService) { }
+    
   ROL:string; SUCURSAL:string
   
-  infoCotizacion = {
-    cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
-    fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio: '1', descripcion: '', pdf:null
-  }
+  infoCotizacion   =  { ...this._cotizacion.infoCotizacion}
 
-  camposDesgloce = [
-    {valor:'mo', show:'mo'},
-    // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'sobrescrito_mo', show:'sobrescrito mo'},
-    {valor:'refacciones_v', show:'refacciones'},
-    {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
-    {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    // {valor:'sobrescrito', show:'sobrescrito'},
-    {valor:'descuento', show:'descuento'},
-    {valor:'subtotal', show:'subtotal'},
-    {valor:'iva', show:'iva'},
-    {valor:'total', show:'Total venta'},
-    {valor:'meses', show:'meses'},
-  ]
-
+  camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
+  camposCliente    =  [ ...this._clientes.camposCliente_show ]
+  camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
+  formasPago       =  [ ...this._cotizaciones.formasPago ]
+  servicios        =  [ ...this._servicios.servicios ]
+  promociones      =  [ ...this._campos.promociones ]
+  sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales ]
   
-  camposCliente=[
-    {valor: 'no_cliente', show:'# Cliente'},
-    {valor: 'nombre', show:'Nombre'},
-    {valor: 'apellidos', show:'Apellidos'},
-    {valor: 'correo', show:'Correo'},
-    {valor: 'correo_sec', show:'Correo adicional'},
-    {valor: 'telefono_fijo', show:'Tel. Fijo'},
-    {valor: 'telefono_movil', show:'Tel. cel.'},
-    {valor: 'tipo', show:'Tipo'},
-    {valor: 'empresa', show:'Empresa'},
-    // {valor: 'sucursal', show:'Sucursal'}
-  ]
-  camposVehiculo=[
-    {valor: 'placas', show:'Placas'},
-    {valor: 'marca', show:'marca'},
-    {valor: 'modelo', show:'modelo'},
-    {valor: 'anio', show:'añio'},
-    {valor: 'categoria', show:'categoria'},
-    {valor: 'cilindros', show:'cilindros'},
-    {valor: 'engomado', show:'engomado'},
-    {valor: 'color', show:'color'},
-    {valor: 'transmision', show:'transmision'},
-    {valor: 'no_motor', show:'No. Motor'},
-    {valor: 'vinChasis', show:'vinChasis'},
-    {valor: 'marcaMotor', show:'marcaMotor'}
-  ]
-
+  paquete: string     =  this._campos.paquete
+  refaccion: string   =  this._campos.refaccion
+  mo: string          =  this._campos.mo
+  miniColumnas:number =  this._campos.miniColumnas
    // tabla
    dataSource = new MatTableDataSource(); //elementos
    elementos = ['nombre','cantidad','sobrescrito','precio','total']; //elementos
@@ -101,39 +77,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
    @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
    @ViewChild('elements') sort: MatSort //elementos
 
-   paquete: string = 'paquete'
-   refaccion: string = 'refaccion'
-   mo: string = 'mo'
 
-   checksBox = this._formBuilder.group({
+  checksBox = this._formBuilder.group({
     iva: true,
     detalles: false
   });
 
   formPlus: FormGroup
 
-  servicios=[
-    {valor:1,nombre:'servicio'},
-    {valor:2,nombre:'garantia'},
-    {valor:3,nombre:'retorno'},
-    {valor:4,nombre:'venta'},
-    {valor:5,nombre:'preventivo'},
-    {valor:6,nombre:'correctivo'},
-    {valor:7,nombre:'rescate vial'}
-  ]
-  formasPago=[
-    {id:'1',pago:'contado',interes:0,numero:0},
-    {id:'2',pago:'3 meses',interes:4.49,numero:3},
-    {id:'3',pago:'6 meses',interes:6.99,numero:6},
-    {id:'4',pago:'9 meses',interes:9.90,numero:9},
-    {id:'5',pago:'12 meses',interes:11.95,numero:12},
-    {id:'6',pago:'18 meses',interes:17.70,numero:18},
-    {id:'7',pago:'24 meses',interes:24.,numero:24}
-  ]
-
-  promociones=['ninguna','facebook','cartelera','instagram','radio']; 
-
-  sucursales=[]
   obligatorios:string
   opcionales:string
   extra:string
@@ -150,11 +101,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   elementosPrueba = []
 
-enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
-  constructor(
-    private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
-    private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
-    private router: Router, private _sucursales: SucursalesService, private _clientes: ClientesService, private _cotizacion: CotizacionService) { }
+  enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -229,13 +176,6 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      // Obtenemos una lista de las sucursales 
-      this._sucursales.consultaSucursales_new().then((sucursales) => {
-        this.sucursales = sucursales
-      }).catch((error) => {
-        // Manejar el error si ocurre
-      });
-
       
       this.rutaActiva.queryParams.subscribe(params => {
         // anterior:'clientes', cliente, tipo: 'new', extra: null 
@@ -267,7 +207,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
     if (tipo === 'cliente' && cliente) {
       // if(cliente){
         this._clientes.consulta_cliente_new(cliente).then((cliente:any)=>{
-          this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
+          this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s['id'] === cliente['sucursal'])
           this.infoCotizacion.cliente = cliente
           this.infoCotizacion.vehiculos = cliente.vehiculos
           if(vehiculo){
@@ -285,7 +225,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
         this._clientes.consulta_cliente_new(cotizacion.cliente.id).then((cliente:any)=>{
           this.infoCotizacion.vehiculos = cliente.vehiculos
         })
-        this.infoCotizacion.sucursal = this.sucursales.find(s=>s.id === cotizacion.sucursal)
+        this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s.id === cotizacion.sucursal)
 
         this.extra = cotizacion.vehiculo.id
         const camposRecupera = ['elementos','iva','formaPago','nota','descripcion','servicio','descuento','sucursal']
@@ -308,7 +248,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
     if (status) {
       this.infoCotizacion.vehiculo = null
       this.extra = null
-      this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === cliente['sucursal'])
+      this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s['id'] === cliente['sucursal'])
       
       this.infoCotizacion.cliente = cliente
       if ( cliente.vehiculos) {
@@ -338,7 +278,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
         const infonew:any= await this._clientes.consulta_cliente_new(cliente.id)
           this.infoCotizacion.cliente = infonew
           this.infoCotizacion.vehiculos = infonew.vehiculos
-          this.infoCotizacion.sucursal = this.sucursales.find(s=>s['id'] === infonew.sucursal)
+          this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s['id'] === infonew.sucursal)
           
         // }
         if (this.extra && cliente.vehiculos) {
@@ -453,26 +393,13 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
   //ya que tenemos los elementos nuevos con caracteristicas nuevas los reemplzamos por los que se tenia anteriormente
   // realizamos la paginacion y asigancaion de resultados
   realizaOperaciones(){
-    // const  { elementos, margen, iva, formaPago, descuento } = data
-    // console.log(this.infoCotizacion.elementos);
     
-    if (this.formPlus) {
-      this.infoCotizacion.formaPago =  this.formPlus.controls['formaPago'].value
-    }else{
-      this.infoCotizacion.formaPago = '1'
-    }
-    // 
-    
+    this.infoCotizacion.formaPago  = (this.formPlus) ? this.formPlus.controls['formaPago'].value : '1'
     this.infoCotizacion.iva = this.checksBox.controls['iva'].value
     const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoCotizacion)
     this.infoCotizacion.elementos = ocupados
     this.infoCotizacion.reporte = reporte
     this.dataSource.data = ocupados
-    // console.log(ocupados);
-    // console.log(this.infoCotizacion.elementos);
-
-    // localStorage.setItem('infocotizacion',JSON.stringify(this.infoCotizacion))
-    
     this.newPagination()
   }
   //verificamos que existe el vehiculo seleccionado y que este tenga un id de lo contrario colocamos la informacion en null
@@ -532,7 +459,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
     //asignamos la informacion de la sucursal para obtener el numero de cotizacion 
     let infoSucursal = this.infoCotizacion.sucursal
     if (!infoSucursal['id']) {
-      infoSucursal = this.sucursales.find(s=>s.id === this.infoCotizacion.sucursal)
+      infoSucursal = this.sucursales_array.find(s=>s.id === this.infoCotizacion.sucursal)
     }
     
     await this._publicos.generaNombreCotizacion(infoSucursal['sucursal'], this.ROL).then(ans=>{

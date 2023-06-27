@@ -25,9 +25,9 @@ export class CitaComponent implements OnInit {
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private _publicos: ServiciosPublicosService, private _vehiculos:VehiculosService,
   private _citas: CitasService,private router: Router, private _sucursales: SucursalesService, private _cliente: ClientesService, private _email: EmailsService) { }
   editar:boolean = false
-  camposVehiculo:any[] = [...this._vehiculos.camposVehiculo_]
-  colores_citas = [...this._citas.colores_citas]
-  opciones_menu = []
+  camposVehiculo:any[]   = [...this._vehiculos.camposVehiculo_]
+  colores_citas          = [...this._citas.colores_citas]
+  opciones_menu          = []
   menus= [ 'concretada','noConfirmada','confirmada','sinConfirmarDomicilio','cancelada' ]
   comentario:string
   enrutamiento = {vehiculo:'', cliente:'', anterior:''}

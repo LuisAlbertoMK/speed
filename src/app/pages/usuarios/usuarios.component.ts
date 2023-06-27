@@ -15,6 +15,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { CamposSystemService } from '../../services/campos-system.service';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -28,25 +29,27 @@ import { SucursalesService } from 'src/app/services/sucursales.service';
   ],
 })
 export class UsuariosComponent implements OnInit {
-  miniColumnas:number = 100
-  ROL:string; SUCURSAL:string
-  sucursales=[]
-
-   // tabla
-   dataSource = new MatTableDataSource(); //elementos
-   elementos = ['nombre','sucursalShow','correo','rol']; //elementos
-   columnsToDisplayWithExpand = [...this.elementos, 'expand']; //elementos
-   expandedElement: any | null; //elementos
-   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
-   @ViewChild('elements') sort: MatSort //elementos
-
-
-   usuarioS:{}
+ 
 
   constructor(
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
-    private router: Router, private _sucursales: SucursalesService) { }
+    private router: Router, private _sucursales: SucursalesService, private _campos: CamposSystemService) { }
 
+    miniColumnas:number = this._campos.miniColumnas
+    sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
+    ROL:string; SUCURSAL:string
+    // sucursales=[]
+  
+     // tabla
+     dataSource = new MatTableDataSource(); //elementos
+     elementos = ['nombre','sucursalShow','correo','rol']; //elementos
+     columnsToDisplayWithExpand = [...this.elementos, 'expand']; //elementos
+     expandedElement: any | null; //elementos
+     @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
+     @ViewChild('elements') sort: MatSort //elementos
+  
+  
+     usuarioS:{}
   ngOnInit(): void {
     this.rol()
   }
@@ -55,14 +58,7 @@ export class UsuariosComponent implements OnInit {
       const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
       this.ROL = this._security.servicioDecrypt(variableX['rol'])
       this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-
-      this._sucursales.consultaSucursales_new().then((sucursales) => {
-        this.sucursales = sucursales
-        // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
-        this.accion()
-      }).catch((error) => {
-        // Manejar el error si ocurre
-      });
+      this.accion()
     }
   }
   accion(){
@@ -72,7 +68,7 @@ export class UsuariosComponent implements OnInit {
         const usuarios = this._publicos.crearArreglo2(snapshot.val())
         const nuevos = usuarios.map(a=>{
           if(a.sucursal !=='Todas'){
-            a.sucursalShow = this.sucursales.find(b=>b.id == a.sucursal).sucursal
+            a.sucursalShow = this.sucursales_array.find(b=>b.id == a.sucursal).sucursal
           }else{
             a.sucursalShow = a.sucursal
           }

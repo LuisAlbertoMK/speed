@@ -41,7 +41,7 @@
                                                 <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
                                                     [class.is-invalid]="validarCampo('sucursal')">
                                                     <option value="" >Selecciona</option>
-                                                    <option [value]="item.id" *ngFor="let item of sucursales_arr">{{item.sucursal}}</option>
+                                                    <option [value]="item.id" *ngFor="let item of sucursales_array">{{item.sucursal}}</option>
                                                     </select>
                                                 <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
                                                 </div>
