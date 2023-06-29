@@ -20,6 +20,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
+import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-automaticos',
@@ -30,9 +31,40 @@ export class AutomaticosComponent implements OnInit {
   
   constructor(private _automaticos: AutomaticosService, private _encript: EncriptadoService, private _publicos: ServiciosPublicosService,
     private _security:EncriptadoService, public _router: Router, public _location: Location,private _pdfRecepcion: PdfRecepcionService,
-    private _sucursales: SucursalesService, private _clientes: ClientesService, private _vehiculos: VehiculosService
-    ) { }
-
+    private _sucursales: SucursalesService, private _clientes: ClientesService, private _vehiculos: VehiculosService,
+    ) {   }
+    infoSelect = {value: 0, name:''}
+   
+    view: [number, number] = [700, 400];
+    legend: boolean = true;
+    animations: boolean = true;    
+    legendPosition: string = 'below';
+    legendTitle = 'GSF5675'
+    single = [
+      {
+        "name": "mo",
+        "value": 7920
+      },
+      {
+        "name": "refacciones",
+        "value": 1989.38
+      },
+      {
+        "name": "sobrescrito",
+        "value": 300
+      },
+      {
+        "name": "iva",
+        "value": 56
+      },
+    ]
+    colorScheme:Color = {
+      group: ScaleType.Ordinal, 
+      selectable: true, 
+      name: 'Customer Usage', 
+      domain: ['#3574FA', '#FF8623', '#a8385d', '#5ca04a']
+    };
+  
   ngOnInit(): void {
     this.rol()
     // this.realizaOperacionesClientes()
@@ -108,25 +140,52 @@ export class AutomaticosComponent implements OnInit {
         "telefono": "5570451111"
       }
     }
+
     const  clientes = {}
-    console.log(this._publicos.crearArreglo2(clientes).length);
+    // console.log(this._publicos.crearArreglo2(clientes).length);
     
-    const claves = Object.keys(clientes)
+    // const claves = Object.keys(marcas_autos)
     let nuevas =  {}
 
     //TODO aqui la lo que se realizara
-    const ca = this._clientes.camposCliente
-    const ca_v = this._vehiculos.camposVehiculosave
-    claves.forEach(clav=>{
-      
-    })
-
+    
     
     //TODO aqui la lo que se realizara
 
-    console.log(nuevas);
-    console.log(this._publicos.crearArreglo2(nuevas).length);
+    // console.log(marcas_autos);
     
     
+    
+  }
+  onSelect(event) {
+    console.log(event);
+  }
+  onActivate(data): void {
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
+    const {  value  } = JSON.parse(JSON.stringify(data))
+    const {  value: nuevoValue, name  } = value
+    this.infoSelect.name = name
+    this.infoSelect.value = (  !nuevoValue  ) ? this.single.find(c=>c.name === name).value : nuevoValue
+  }
+
+  onDeactivate(data): void {
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+  valueFormatting(value: number): string {
+    if (!value || isNaN(value)) {
+      return `$ 0.00`;
+    }
+    const isNegative = value < 0;
+    const [integerPart, decimalPart = '00'] = Math.abs(value).toFixed(2).split('.');
+    const formattedIntegerPart = integerPart
+      .split('')
+      .reverse()
+      .reduce((result, digit, index) => {
+        const isThousands = index % 3 === 0 && index !== 0;
+        return `${digit}${isThousands ? ',' : ''}${result}`;
+      }, '');
+  
+    const formattedValue = `$ ${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
+    return formattedValue;
   }
 }

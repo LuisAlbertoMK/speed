@@ -1269,5 +1269,89 @@ export class ServiciosPublicosService {
       
         return cadena;
       }
+      transform(value: number, symbol = '$'): string {
+        if (!value || isNaN(value)) {
+          return `${symbol} 0.00`;
+        }
+        
+        const isNegative = value < 0;
+        const [integerPart, decimalPart = '00'] = Math.abs(value).toFixed(2).split('.');
+        const formattedIntegerPart = integerPart
+          .split('')
+          .reverse()
+          .reduce((result, digit, index) => {
+            const isThousands = index % 3 === 0 && index !== 0;
+            return `${digit}${isThousands ? ',' : ''}${result}`;
+          }, '');
+      
+        const formattedValue = `${symbol}${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
+        return formattedValue;
+      }
+
+      obtenerValorMaximoMinimo(arreglo) {
+        if (arreglo.length === 0) {
+            return {
+                maximo: 0,
+                no_maximo: '',
+                contadorMaximo: 0,
+                arreglo_maximo: [],
+                minimo: 0,
+                no_minimo: '',
+                contadorMinimo: 0,
+                arreglo_minimo: []
+              };
+        }
+        
+        let maximo = arreglo[0].reporte.total;
+          let minimo = arreglo[0].reporte.total;
+          let no_maximo = arreglo[0].no_os;
+          let no_minimo = arreglo[0].no_os;
+          let contadorMaximo = 1;
+          let contadorMinimo = 1;
+          let arreglo_maximo = [no_maximo];
+          let arreglo_minimo = [no_minimo];
+
+
+          for (let i = 1; i < arreglo.length; i++) {
+            const compara = arreglo[i].reporte.total;
+            const no_os = arreglo[i].no_os;
+        
+            if (compara > maximo) {
+              no_maximo = no_os;
+              maximo = compara;
+              contadorMaximo = 1;
+              arreglo_maximo = [no_maximo];
+            } else if (compara === maximo) {
+              if (!arreglo_maximo.includes(no_os)) {
+                arreglo_maximo.push(no_os);
+              }
+              contadorMaximo++;
+            }
+        
+            if (compara < minimo) {
+              no_minimo = no_os;
+              minimo = compara;
+              contadorMinimo = 1;
+              arreglo_minimo = [no_minimo];
+            } else if (compara === minimo) {
+              if (!arreglo_minimo.includes(no_os)) {
+                arreglo_minimo.push(no_os);
+              }
+              contadorMinimo++;
+            }
+          }
+        
+          return {
+            maximo,
+            no_maximo,
+            contadorMaximo,
+            arreglo_maximo,
+            minimo,
+            no_minimo,
+            contadorMinimo,
+            arreglo_minimo
+          };
+      }
+      
       
  }

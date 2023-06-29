@@ -3,6 +3,23 @@
 <div class="row">
     <div class="col">
         <button class="btn btn-sm btn-danger" (click)="realizaOperacionesClientes()"> realizaOperacionesClientes</button>
+
+        <ngx-charts-gauge
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="single"
+            [legend]="legend"
+            [legendTitle]="legendTitle"
+            (select)="onSelect($event)"
+            [animations]="animations"
+            [customColors] = "colorScheme"
+            [valueFormatting]="valueFormatting"
+            (activate)="onActivate($event)"
+            (deactivate)="onDeactivate($event)"
+            >
+            <!-- units="34" -->
+            </ngx-charts-gauge>
+            <pre> {{ infoSelect | json }} </pre>
         <!-- <app-registra-cita [RegistraCita]="true"></app-registra-cita> -->
         <!-- <app-mo-refacciones></app-mo-refacciones> -->
         <!-- <button class="btn btn-danger m-1" (click)="registraMarcas()">Registra marcas</button>

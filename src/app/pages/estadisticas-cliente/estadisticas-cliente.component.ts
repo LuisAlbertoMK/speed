@@ -19,6 +19,10 @@ import { MatSort } from '@angular/material/sort';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
+
+import { Color, ScaleType } from '@swimlane/ngx-charts';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
 @Component({
   selector: 'app-estadisticas-cliente',
   templateUrl: './estadisticas-cliente.component.html',
@@ -36,7 +40,7 @@ export class EstadisticasClienteComponent implements OnInit {
   constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
   private _campos: CamposSystemService,
   private _cotizaciones: CotizacionesService,private _servicios: ServiciosService, private _clientes: ClientesService,
-  private router: Router) { }
+  private router: Router) { registerLocaleData(localeEs) }
 
 
   rol_cliente:string = 'cliente'
@@ -62,6 +66,33 @@ export class EstadisticasClienteComponent implements OnInit {
   @ViewChild('cotizacionesPaginator') paginator: MatPaginator //elementos
   @ViewChild('cotizaciones') sort: MatSort //elementos
 
+  ///variables para las estadisticas
+  ;
+  infoSelect = {value: 0, name:'--------',contador: 0,arreglo:[]}
+  view: [number, number] = [800, 500];
+    legend_general: boolean = false;
+    showText_general: boolean = false;
+    legend: boolean = true;
+    animations: boolean = true;    
+    legendPosition: string = 'below';
+    legendTitle_general = ''
+    single_generales = [ ]
+    clonado = []
+    single_auto = []
+    colorScheme:Color = {
+      group: ScaleType.Ordinal, 
+      selectable: true, 
+      name: 'Customer Usage', 
+      domain: ['#3574FA', '#FF8623', '#a8385d', '#5ca04a']
+    };
+
+  seleciona = [
+    'Ticket general',
+    'Más caro',
+    'Ticket promedio',
+    'Más barato',
+  ]
+  
 
   ngOnInit(): void {
     this.rol()
@@ -73,8 +104,6 @@ export class EstadisticasClienteComponent implements OnInit {
     if (rol === this.rol_cliente && ID_cliente) this.obtenerInformacion_cliente(ID_cliente) 
   }
   async obtenerInformacion_cliente(cliente:string){
-
-    
 
     const starCountRef_recepciones = ref(db, `recepciones`);
     onValue(starCountRef_recepciones, async (snapshot) => {
@@ -113,9 +142,8 @@ export class EstadisticasClienteComponent implements OnInit {
         ticketGeneral += Number(coti.reporte['total'])
       })
 
-      // console.log(this.clavesVehiculos);
-      
-
+      const { maximo,no_maximo, contadorMaximo,arreglo_maximo, minimo, no_minimo,contadorMinimo,arreglo_minimo} = this._publicos.obtenerValorMaximoMinimo(recepciones_filter)
+     
       this.dataSource.data = this.clavesVehiculos
       this.newPagination()
 
@@ -123,6 +151,36 @@ export class EstadisticasClienteComponent implements OnInit {
         ticketPromedioFinal: ticketGeneral / servicios_gen, 
         servicios_gen, 
         gasto_gen: ticketGeneral }
+      
+      this.clonado = [
+        {
+          name: "Ticket general",
+          value: ticketGeneral,
+          contador: 0,
+          arreglo:[]
+        },
+        {
+          name: "Más caro",
+          value: maximo,
+          no_os: no_maximo,
+          contador: contadorMaximo,
+          arreglo: arreglo_maximo
+        },
+        {
+          name: "Ticket promedio",
+          value: ticketGeneral / servicios_gen,
+          contador: 0,
+          arreglo:[]
+        },
+        {
+          name: "Más barato",
+          value: minimo,
+          no_os: no_minimo,
+          contador: contadorMinimo,
+          arreglo: arreglo_minimo
+        },
+      ]
+      this.single_generales = [ ...this.clonado]
     });
   }
   applyFilter(event: Event) {
@@ -150,6 +208,45 @@ export class EstadisticasClienteComponent implements OnInit {
     this.router.navigate([`/${pagina}`], { 
       queryParams: params
     });
+  }
+
+  //funciones para las graficas de auto y general
+  onSelect_general(event) {
+    if (event) {
+      const busqueda = (typeof event === 'object') ? event.name : event
+      this.infoSelect  = this.clonado.find(c=>c.name === busqueda)
+    }else{
+      this.infoSelect = {value: 0, name:'--------',contador: 0,arreglo:[]}
+    }
+  }
+  onActivate_general(data): void {
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
+    // const {  value  } = JSON.parse(JSON.stringify(data))
+    // const {  value: nuevoValue, name  } = value
+    // this.infoSelect.name = name
+    // this.infoSelect.value = (  !nuevoValue  ) ? this.single_generales.find(c=>c.name === name).value : nuevoValue
+  }
+
+  onDeactivate(data): void {
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+  valueFormatting(value: number): string {
+    if (!value || isNaN(value)) {
+      return `$ 0.00`;
+    }
+    const isNegative = value < 0;
+    const [integerPart, decimalPart = '00'] = Math.abs(value).toFixed(2).split('.');
+    const formattedIntegerPart = integerPart
+      .split('')
+      .reverse()
+      .reduce((result, digit, index) => {
+        const isThousands = index % 3 === 0 && index !== 0;
+        return `${digit}${isThousands ? ',' : ''}${result}`;
+      }, '');
+  
+    const formattedValue = `$ ${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
+    return formattedValue;
+    // return formattedValue;
   }
 
 

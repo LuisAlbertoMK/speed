@@ -124,7 +124,7 @@ import { RegistroUsuarioComponent } from './components/registro-usuario/registro
 import { RegistraCitaComponent } from './components/registra-cita/registra-cita.component';
 
 // import { getDutchPaginatorIntl } from "../app/models/tras";
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 
@@ -219,6 +219,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     AngularFirestoreModule,
     FormsModule,
     NgxDropzoneModule,
+    NgxChartsModule,
     TranslateModule.forRoot(),
     APP_ROUTING,
     ReactiveFormsModule,  

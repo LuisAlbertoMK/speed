@@ -8,6 +8,7 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { child, getDatabase, onValue, push, ref, update } from "firebase/database";
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -18,37 +19,42 @@ const dbRef = ref(getDatabase());
 })
 export class VehiculoComponent implements OnInit, OnChanges  {
 
-  miniColumnas:number = 100
-  ROL:string; SUCURSAL:string
-
-  @Input() cliente:string
-  @Input() vehiculo:string
-  @Input() vehiculoDat:string
   
-
-  @Output() dataVehiculo : EventEmitter<any>
-
-  form_vehiculo: FormGroup;
-  myControl = new FormControl('');
-  filteredOptions: Observable<any[]>
-  existenPlacas:boolean = false
-  modeloAuto:string ='';
-  marcas:any=[];
-  arrayModelos=[]
-  categorias=[];
-  anio:number=0;
-  listaArrayAnios=[];
-  colores:any=[];
-  engomadoColors:any=[];
-  clientes = []
-  listaPlacas =[]
 
   
   constructor(private fb: FormBuilder, private _vehiculos: VehiculosService, private _clientes : ClientesService,
-    private _publicos: ServiciosPublicosService, private _security:EncriptadoService,) {
+    private _publicos: ServiciosPublicosService, private _security:EncriptadoService,private _campos: CamposSystemService,) {
       this.dataVehiculo = new EventEmitter()
     }
 
+    ROL:string; SUCURSAL:string
+
+    listaArrayAnios = [ ...this._campos.anios]
+
+    miniColumnas:number = 100
+
+  
+    @Input() cliente:string
+    @Input() vehiculo:string
+    @Input() vehiculoDat:string
+    
+  
+    @Output() dataVehiculo : EventEmitter<any>
+  
+    form_vehiculo: FormGroup;
+    myControl = new FormControl('');
+    filteredOptions: Observable<any[]>
+    existenPlacas:boolean = false
+    modeloAuto:string ='';
+    marcas:any=[];
+    arrayModelos=[]
+    categorias=[];
+    anio:number=0;
+    colores:any=[];
+    engomadoColors:any=[];
+    clientes = []
+    listaPlacas =[]
+    
   ngOnInit(): void {
     this.rol()
     this.crearFormularioLlenadoManual()
@@ -281,16 +287,16 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     }
   }
   aniosModelo(){
-    this.listaArrayAnios=[]
-    const marca =this.form_vehiculo.controls['marca'].value
-    const modelo =this.form_vehiculo.controls['modelo'].value
-    if (marca && modelo) {
-      const filtro = this.arrayModelos.find(m=>m['modelo'] === modelo)
-      const anios:any[]= filtro['anios']
-      this.listaArrayAnios = anios
-      this.form_vehiculo.controls['categoria'].setValue(filtro['categoria'])
-      // this.listaArrayAnios = filtro['anios']
-    }
+    // this.listaArrayAnios=[]
+    // const marca =this.form_vehiculo.controls['marca'].value
+    // const modelo =this.form_vehiculo.controls['modelo'].value
+    // if (marca && modelo) {
+    //   const filtro = this.arrayModelos.find(m=>m['modelo'] === modelo)
+    //   const anios:any[]= filtro['anios']
+    //   this.listaArrayAnios = anios
+    //   this.form_vehiculo.controls['categoria'].setValue(filtro['categoria'])
+    //   // this.listaArrayAnios = filtro['anios']
+    // }
   }
   resetFormVehiculo(){
     const cliente = (this.cliente)? this.cliente : null

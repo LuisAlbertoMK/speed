@@ -217,3 +217,53 @@ tr.example-element-row:not(.example-expanded-row):active {
 .mat-tab-group {
   margin-bottom: 48px;
 }
+
+.cita-tarjeta{
+  /* border-radius: 7px;
+  background: rgb(252, 252, 252);
+  padding: auto 3px;
+  border-style: solid;
+  border-width: thin;
+  align-items: center;
+  border-color: rgb(108, 107, 107); */
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  padding: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  align-items: center;
+  /* width: 300px; */
+}
+.cita-tarjeta .titulo{
+  text-align: right;
+  color:rgb(192, 65, 46);
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 5px;
+  text-transform: capitalize;
+}
+.cita-tarjeta .informacion{
+  text-align: left;
+  color:rgb(19, 75, 75);
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 5px;
+  text-transform: uppercase;
+}
+
+/* Estilos personalizados para las marcas de graduación */
+:host /deep/ .gauge-tick {
+  fill: #ff0000; /* Cambia el color de relleno a rojo */
+}
+
+:host /deep/ .gauge-tick-large {
+  stroke: #00ff00; /* Cambia el color del borde a verde */
+  stroke-width: 0px; /* Cambia el ancho del borde a 2 píxeles */
+}
+
+:host /deep/ ngx-charts-legend {
+  /* Agrega tus estilos personalizados aquí */
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333333;
+}
