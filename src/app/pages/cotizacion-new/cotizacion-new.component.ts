@@ -112,6 +112,30 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void {
     // this.crearFormPlus()
   }
+  rol(){
+    
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+    
+    this.rutaActiva.queryParams.subscribe(params => {
+      // anterior:'clientes', cliente, tipo: 'new', extra: null 
+      const tipo = params['tipo'];
+      const cliente = params['cliente'];
+      const anterior = params['anterior'];
+      const vehiculo = params['vehiculo'];
+      const cotizacion = params['cotizacion'];
+      // if(cliente && tipo){
+        this.enrutamiento.cliente = cliente
+        this.enrutamiento.tipo = tipo
+        this.enrutamiento.vehiculo = vehiculo
+        this.enrutamiento.cotizacion = cotizacion
+        this.accion(cliente, tipo, vehiculo, cotizacion)
+      // }
+      this.enrutamiento.anterior = anterior
+    });
+  }
   verificarInfoVehiculos(){
     if (this.infoCotizacion.cliente['id']) {
       this._clientes.consulta_cliente_new(this.infoCotizacion.cliente['id']).then((cliente:any)=>{
@@ -171,32 +195,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     return this.formPlus.get(campo).invalid && this.formPlus.get(campo).touched
   }
   // primer hay que saber que tipo de usuario es en cada modulo para sus permisos, filtros, etc ademas de la SUCURSAL
-  rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      
-      this.rutaActiva.queryParams.subscribe(params => {
-        // anterior:'clientes', cliente, tipo: 'new', extra: null 
-        const tipo = params['tipo'];
-        const cliente = params['cliente'];
-        const anterior = params['anterior'];
-        const vehiculo = params['vehiculo'];
-        const cotizacion = params['cotizacion'];
-        // if(cliente && tipo){
-          this.enrutamiento.cliente = cliente
-          this.enrutamiento.tipo = tipo
-          this.enrutamiento.vehiculo = vehiculo
-          this.enrutamiento.cotizacion = cotizacion
-          this.accion(cliente, tipo, vehiculo, cotizacion)
-        // }
-        this.enrutamiento.anterior = anterior
-      });
-    }else{
-      this._publicos.swalToastError('No se puede cargar la informacion')
-    } 
-  }
+  
   regresar(){
     this.router.navigate([`/${this.enrutamiento.anterior}`], { 
       queryParams: {}

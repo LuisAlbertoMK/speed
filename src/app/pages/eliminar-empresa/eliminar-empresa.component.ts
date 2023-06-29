@@ -42,9 +42,11 @@ export class EliminarEmpresaComponent implements OnInit {
     this.automaticos()
   }
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+    
     if(this.SUCURSAL !== 'Todas') this.sucursal_elimina = this.SUCURSAL
     if(this.sucursal_elimina !== 'Todas') this.listadoEmpresas(this.sucursal_elimina)
   }

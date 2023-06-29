@@ -78,12 +78,12 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     }
   }
   rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      this.listaClientes()
-    }
+    const { rol, sucursal} = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal;
+    
+    this.listaClientes()
   }
   cargaDataVehiculo(){
 

@@ -6,6 +6,7 @@ import { child, get, getDatabase, onValue, push, ref, set } from "firebase/datab
 import {debounceTime, map, startWith} from 'rxjs/operators'
 import { Vehiculo } from 'src/app/models/vehiculos.model';
 import Swal from 'sweetalert2';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 export interface User {nombre: string, apellidos:string}
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -25,7 +26,7 @@ export class RecepcionComponent implements OnInit {
   articulosFormControl: any[] = ['Tapetes','Espejos','Encendedor','Autoestéreo','CarátulaDeEstereo','BotonesInteriores','Cristales','extinguidor','herramienta','señales','CablePasacorriente','Viceras','LlantaRefacción','Gato','LlaveManeral','BirlosDeSeguridad','Molduras','Antena','TaponDeGasolina','Limpiadores','BocinadeClaxon','TarjetaDeCirculacion','ComprobanteDeVerificacion','InstrumentosdeTablero','TaponesBayonetaDeMotor','EspejoRetrovisor'];
   articulos = ['Tapetes','Espejos','Encendedor','Autoestéreo','Carátula de Estéreo','Botones Interiores','Cristales','extinguidor','herramienta','señales','Cable Pasacorriente','Viceras','Llanta Refacción','Gato','Llave Maneral','Birlos de Seguridad','Molduras','Antena','Tapón de Gasolina','Limpiadores','Bocina de Claxón','Tarjeta de Circulación','Comprobante de Verificación','Instrumentos de Tablero','Tapones y Bayoneta de Motor','Espejo Retrovisor'];
   formRecepcion: FormGroup; formularioArticulos: FormGroup; infoCotizacion:any=null; infoCliente:any=''
-  constructor(private fb: FormBuilder,private router: Router,private rutaActiva: ActivatedRoute) { }
+  constructor(private fb: FormBuilder,private router: Router,private rutaActiva: ActivatedRoute,private _security:EncriptadoService,) { }
 
   ngOnInit(): void {
     this.rol()
@@ -36,8 +37,11 @@ export class RecepcionComponent implements OnInit {
     this.crearFormularioArticulos()
   }
   rol(){
-    this.ROL =localStorage.getItem('tipoUsuario')
-    this.SUCURSAL =localStorage.getItem('sucursal')
+   
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
     this.regresar = this.rutaActiva.snapshot.params['pagina']
     this.recepcion = this.rutaActiva.snapshot.params['recepcion']
     if (this.ROL === null) {

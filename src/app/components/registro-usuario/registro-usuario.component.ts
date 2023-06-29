@@ -35,33 +35,13 @@ export class RegistroUsuarioComponent implements OnInit {
     this.CrearFormulario()
   }
   rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
+    const { rol, sucursal } = this._security.usuarioRol()
 
-      if (this.ROL === 'SuperSU') {
-        this.rolesMostrarnew = this.roles
-      }else if(this.ROL === 'Gerente') {
-        this.rolesMostrarnew = ['tecnico']
-        // this.formUsuario.controls['rol'].setValue('tecnico')
-      }
+    this.ROL = rol
+    this.SUCURSAL = sucursal;
 
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      // Obtenemos una lista de las sucursales 
-      const starCountRef = ref(db, `sucursales`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          //cuando se tenga la lista de las sucursales creamos el arreglo de las mismas y asiganamos para su uso posterior
-          this.sucursales_array = this._publicos.crearArreglo2(snapshot.val())
-          // llamamos a la siguiente accion cuando se tiene la informacion de las sucursales
-        } 
-      }, {
-        onlyOnce: true
-      })
-
-    }else{
-      this._publicos.swalToastError('No se puede cargar la informacion')
-    }
+    this.rolesMostrarnew = (this.ROL === 'SuperSU') ? this.roles : ['tecnico']
+    
   }
   CrearFormulario(){
     const sucursal = (this.SUCURSAL === 'Todas')? '' : this.SUCURSAL

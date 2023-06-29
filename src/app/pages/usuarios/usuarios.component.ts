@@ -54,12 +54,10 @@ export class UsuariosComponent implements OnInit {
     this.rol()
   }
   rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      this.accion()
-    }
+    const { rol, sucursal } = this._security.usuarioRol()
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+    this.accion()
   }
   accion(){
     const starCountRef = ref(db, `usuarios`)

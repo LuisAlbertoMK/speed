@@ -80,17 +80,13 @@ export class HistorialClienteVehiculoComponent implements OnInit {
     });
   }
   irPagina(pagina,vehiculo){
-    // /:ID/:tipo/:extra
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    const ID_cliente = this._security.servicioDecrypt(variableX['usuario'])
-
-    let params = {}
+    
+    const { usuario } = this._security.usuarioRol()
+    let queryParams = {}
     if (pagina === 'historialCliente-vehiculo') {
-      params = { anterior:'estadisticasCliente', cliente: ID_cliente,vehiculo } 
+      queryParams = { anterior:'estadisticasCliente', cliente: usuario,vehiculo } 
     }
-    this.router.navigate([`/${pagina}`], { 
-      queryParams: params
-    });
+    this.router.navigate([`/${pagina}`], {  queryParams });
   }
   regresar(){
     const { anterior } = this.enrutamiento

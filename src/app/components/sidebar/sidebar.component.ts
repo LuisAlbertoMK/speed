@@ -13,6 +13,12 @@ const db = getDatabase()
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+  
+
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _sucursales: SucursalesService) { }
+
+  sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+
   ocultar:boolean= false
   ROL:string = ''
   SUCURSAL:string=''
@@ -48,9 +54,6 @@ export class SidebarComponent implements OnInit {
     {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
     // {path:'citasCliente', show:'Mis citas',icono:'debug'}
   ]
-
-  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _sucursales: SucursalesService) { }
-
   ngOnInit(): void {
     this.rol()
     // this.NombreSucursal()
@@ -58,18 +61,17 @@ export class SidebarComponent implements OnInit {
  
   
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-    this.TIPO_USUARIO = this._security.servicioDecrypt(variableX['alias'])
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
+    const { rol, sucursal, alias} = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal;
+    this.TIPO_USUARIO = alias
+    
     // this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
     if (this.ROL==='SuperSU') {
       this.mostrarAdministracion = true
     }else{
-      this._sucursales.consultaSucursales_new().then((sucursales)=>{
-        this.nombreSucursalMuestra = sucursales.find(s=>s.id === this.SUCURSAL).sucursal
-      })
+      this.nombreSucursalMuestra = this.sucursales_array.find(s=>s.id === this.SUCURSAL).sucursal
     }
 
     if (this.ROL==='SuperSU') {

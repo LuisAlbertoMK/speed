@@ -81,7 +81,10 @@ export class ReporteGastosComponent implements OnInit {
 
 
   reporte = {operacion:0, gastos:0, pagos:0, depositos:0,sobrante:0}
-  reporteAdministracion = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0,libre_neto_sin_iva:0, libre_neto_con_iva:0}
+  reporteAdministracion = {
+    iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,
+    margen:0, por_margen:0
+  }
 
   camposReporte = [
     {valor:'depositos', show:'Depositos'},
@@ -91,16 +94,19 @@ export class ReporteGastosComponent implements OnInit {
     {valor:'sobrante', show:'Sobrante'},
   ]
   camposReporteAdministracion = [
-    {valor:'gastosmoRefacciones', show:'Gastos ordenes'},
-    {valor:'operacion', show:'Operacion'},
-    {valor:'subtotal', show:'Subtotal'},
-    {valor:'iva', show:'I.V.A'},
-    {valor:'total', show:'total'},
-    {valor:'libreSinIVA', show:'libre sin Iva'},
-    {valor:'libreIva', show:'Libre con iva'},
+    {valor:'cantidad', show:'Ordenes cerradas'},
+    {valor:'subtotal', show:'Monto de ventas (Antes de IVA)'},
+    {valor:'refacciones', show:'Costos Refacciones (de los autos cerrados)'},
+    {valor:'operacion', show:'Costo Operacion'},
+    {valor:'margen', show:'Margen'},
+    {valor:'por_margen', show:'% Margen'},
+    // {valor:'iva', show:'I.V.A'},
+    // {valor:'total', show:'total'},
+    // {valor:'libreSinIVA', show:'libre sin Iva'},
+    // {valor:'libreIva', show:'Libre con iva'},
     // {valor:'libre_neto', show:'Libre neto con iva'},
-    {valor:'libre_neto_sin_iva', show:'Libre neto sin iva'},
-    {valor:'libre_neto_con_iva', show:'Libre neto con iva'},
+    // {valor:'libre_neto_sin_iva', show:'Libre neto sin iva'},
+    // {valor:'libre_neto_con_iva', show:'Libre neto con iva'},
   ]
   tiempoReal: true
   realizaGasto:string = null
@@ -139,18 +145,19 @@ export class ReporteGastosComponent implements OnInit {
     this.rol()
   }
   rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
-      this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
+    
+    const { rol, sucursal } = this._security.usuarioRol()
 
-      this.funcionesNueva()
-      this.gastosDiarios()
-      this.gastosOperacion()
-      this.ordenesServicios()
-    }
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+
+    this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
+    this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : this.SUCURSAL
+
+    this.funcionesNueva()
+    this.gastosDiarios()
+    this.gastosOperacion()
+    this.ordenesServicios()
   }
 
   gastosDiarios(){
@@ -406,7 +413,7 @@ export class ReporteGastosComponent implements OnInit {
   }
   operacionesAdmin(){
 
-    const reporteEND = {iva:0, gastosmoRefacciones:0, total:0, subtotal:0, operacion:0, libreSinIVA:0, libreIva:0, libre_neto:0,libre_neto_sin_iva:0,libre_neto_con_iva:0}
+    const reporteEND = {iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,margen:0, por_margen:0}
     const filtrarEntregados = this.listaos_arr.filter(r=>r.status === 'entregado')
     
     const filtrosSucursal = (this.sucursalFiltro === 'Todas') ? filtrarEntregados :  filtrarEntregados.filter(os=>os.sucursal.id === this.sucursalFiltro )
@@ -424,7 +431,8 @@ export class ReporteGastosComponent implements OnInit {
     this.newPagination('admin')
     gastosFechas.forEach(os=>{
        os.hitorial_gastos.forEach(gasto => {
-        if(gasto.status ) reporteEND.gastosmoRefacciones += gasto.monto
+
+        // if(gasto.status ) reporteEND.gastosmoRefacciones += gasto.monto
       });
       const {reporte} = os
       const {subtotal, total, iva} = reporte
@@ -434,20 +442,34 @@ export class ReporteGastosComponent implements OnInit {
         reporteEND.iva     += iva
       }
     })
-    
+
+    const Cerradas = gastosFechas.filter(c=>c.status === 'entregado')
+    // console.log(Cerradas.length);
+    // console.log(Cerradas);
+    Cerradas.forEach(os=>{
+      os.hitorial_gastos.forEach(gasto => {
+        if(gasto.status && gasto.gasto_tipo === 'refaccion') reporteEND.refacciones += gasto.monto
+      })
+    })
+    //margen de la ordenes cerradas
+    reporteEND.margen = reporteEND.total - reporteEND.refacciones
+    //porcentaje de margen
+    reporteEND.por_margen = (reporteEND.margen / reporteEND.total) * 100
+
     const gastosOperacionFechas = this.gastosOperacion_arr.filter(a => a.fecha_registro_compara >= this.fechas_getAdministracion.inicio && a.fecha_registro_compara <= this.fechas_getAdministracion.final)
 
     // const filtrosSucursal2 = (this.sucursalFiltro !== this.SUCURSAL) ? gastosOperacionFechas :  gastosOperacionFechas.filter(os=>os.sucursal.id === this.sucursalFiltro )
     gastosOperacionFechas.forEach(element => {
       if(element.status) reporteEND.operacion += element.monto
     });
-    reporteEND.libreSinIVA = reporteEND.subtotal - reporteEND.gastosmoRefacciones
-    reporteEND.libreIva = reporteEND.total - (reporteEND.gastosmoRefacciones)
-    reporteEND.libre_neto = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+    reporteEND.cantidad = Cerradas.length
+    // reporteEND.libreSinIVA = reporteEND.subtotal - reporteEND.gastosmoRefacciones
+    // reporteEND.libreIva = reporteEND.total - (reporteEND.gastosmoRefacciones)
+    // reporteEND.libre_neto = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
 
 
-    reporteEND.libre_neto_sin_iva = reporteEND.subtotal - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
-    reporteEND.libre_neto_con_iva = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+    // reporteEND.libre_neto_sin_iva = reporteEND.subtotal - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
+    // reporteEND.libre_neto_con_iva = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
 
     this.reporteAdministracion = reporteEND
   }

@@ -177,14 +177,8 @@ export class CitaComponent implements OnInit {
   
   irPagina(){
     const Params =this._publicos.nuevaRecuperacionData(this.info, ['cliente','vehiculo','cotizacion','ruta','id'])
-    this.router.navigate([`/ServiciosConfirmar`], { 
-          queryParams: 
-          { 
-            anterior: 'citas',
-            tipo: 'cita',
-            ...Params
-          }
-        });
+    const queryParams = { anterior: 'citas', tipo: 'cita', ...Params}
+    this.router.navigate([`/ServiciosConfirmar`], { queryParams });
   }
 
 }

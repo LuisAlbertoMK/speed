@@ -22,6 +22,7 @@ import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { ServiciosService } from 'src/app/services/servicios.service';
 import { CamposSystemService } from '../../services/campos-system.service';
+import { Router } from '@angular/router';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -53,7 +54,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     private _cotizaciones: CotizacionesService,
     private _vehiculos: VehiculosService,
     private _servicios: ServiciosService,
-    private _campos: CamposSystemService
+    private _campos: CamposSystemService,
+    private router: Router
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
@@ -132,17 +134,19 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
   
   rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      if (this.SUCURSAL !=='Todas') {
-        this.busquedaSucursalString = this.SUCURSAL
-        const {sucursal} = this.sucursales_array.find(s=>s.id === this.SUCURSAL)
-        this.busquedaSucursalStringShow = sucursal
-      }    
-      this.acciones()
-    }
+    
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal 
+
+    if (this.SUCURSAL !=='Todas') {
+      this.busquedaSucursalString = this.SUCURSAL
+      const {sucursal} = this.sucursales_array.find(s=>s.id === this.SUCURSAL)
+      this.busquedaSucursalStringShow = sucursal
+    }    
+    this.acciones()
+    
     if(localStorage.getItem('busquedaServicios')){
       this.busquedaServicios = localStorage.getItem('busquedaServicios')
     }
@@ -458,11 +462,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             });
           })
         }
-      })
-      
+      }) 
     }
-    
-    
   }
   generaReporteExcel(){
     if(this.dataSource.data.length){
@@ -470,6 +471,10 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     }else{
       this._publicos.swalToastError('no hay ningun dato para generar excel!!')
     }
+  }
+  irPagina(pagina){
+    const queryParams = { anterior: 'servicios', tipo: 'nueva' }
+    this.router.navigate([`/${pagina}`], { queryParams });
   }
   
 }

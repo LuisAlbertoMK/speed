@@ -97,7 +97,9 @@
           <!-- Fruit Column -->
           <ng-container matColumnDef="opciones">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
-            <td mat-cell *matCellDef="let row"> 
+            <td mat-cell *matCellDef="let row">
+              <i class="fa fa-book text-danger pointer" #tooltip="matTooltip"
+                matTooltip="Historial de vehiculo"  (click)="irPagina('historialCliente-vehiculo',row.id)" ></i>
             </td>
           </ng-container>
          

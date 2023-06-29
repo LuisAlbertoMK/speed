@@ -30,7 +30,7 @@
       <div class="card-body">
         <div class="card-text">
           <div class="text-end  mb-3" *ngIf="ROL==='SuperSU' || ROL === 'Administrador'">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detallesSucursal"
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detallesSucursal" id="btndetallesSucursal"
               (click)="resetAntes()"> Nueva sucursal</button>
           </div>
           <div class="row" *ngIf="sucursales_array.length!==0">
@@ -69,7 +69,7 @@
                       <ng-container  *ngIf="ROL!== 'SuperSU' && ROL !== 'Administrador'">
                         <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1">
                           <div class="d-grid gap-2">
-                            <button class="btn verImagen btn-sm" type="button" alt="info"
+                            <button class="btn verImagen btn-sm" type="button" alt="info" id="btncorreo"
                               (click)="verImagen(sucursal)" style="cursor: pointer"><i class="fad fa-expand"></i></button>
                           </div>
                         </div>

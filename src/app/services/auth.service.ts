@@ -78,13 +78,10 @@ export class AuthService {
     localStorage.setItem('tokenTemporal',idToken)
   }
   leerToken(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'));
-      (variableX['accessToken'])? this.userToken = variableX['accessToken']: this.userToken = '';
-    }else{
-      this.userToken = ''
-    }
+    const { accessToken } = this._security.usuarioRol();
+    this.userToken = (accessToken) ? accessToken: null
     return this.userToken
+    
   }
   estaAutenticado():boolean{
     if (this.userToken.length < 2) {
@@ -96,24 +93,27 @@ export class AuthService {
     if (expiraDate > new Date()) {
       return true
     }else{
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      if (variableX['sesion']) {
+      const { sesion } = this._security.usuarioRol()
+      if (sesion) {
         this.refresacarToken()
         return true
       }else{
         return false
       }
     }
+
   }
   refresacarToken(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+
+    const { refresh_token } = this._security.usuarioRol()
+
     this.http.post(`https://securetoken.googleapis.com/v1/token?key=${fire.firebaseConfig.apiKey}`,'',
     {
       params: {
         grant_type:'refresh_token',
-        refresh_token: this._security.servicioDecrypt(variableX['refresh_token'])
+        refresh_token
       }
-      
     },
     ).subscribe(ans=>{
       localStorage.setItem(variableX['accessToken'],this._security.servicioEncriptado(ans['access_token']))

@@ -66,10 +66,10 @@ export class CotizacionesClienteComponent implements OnInit {
     this.rol()
   }
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    const rol = this._security.servicioDecrypt(variableX['rol'])
-    const ID_cliente = this._security.servicioDecrypt(variableX['usuario'])
-    if (rol === this.rol_cliente && ID_cliente) this.obtenerInformacion_cliente(ID_cliente) 
+
+    const { rol, sucursal, usuario } = this._security.usuarioRol()
+
+    if (rol === this.rol_cliente && usuario) this.obtenerInformacion_cliente(usuario) 
   }
 
   obtenerInformacion_cliente(cliente:string){

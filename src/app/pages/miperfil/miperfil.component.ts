@@ -15,6 +15,7 @@ import { MatSort } from '@angular/material/sort';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -32,7 +33,8 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 export class MiperfilComponent implements OnInit {
 
-  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _clientes: ClientesService, private _sucursales: SucursalesService, private _vehiculos: VehiculosService) { }
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _clientes: ClientesService, 
+    private _sucursales: SucursalesService, private _vehiculos: VehiculosService, private router: Router) { }
   rol_cliente:string = 'cliente'
   info_cliente = {}
   info_cliente_editar = {}
@@ -56,10 +58,9 @@ export class MiperfilComponent implements OnInit {
     this.rol()
   }
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    const rol = this._security.servicioDecrypt(variableX['rol'])
-    const ID_cliente = this._security.servicioDecrypt(variableX['usuario'])
-    if (rol === this.rol_cliente && ID_cliente) this.obtenerInformacion_cliente(ID_cliente) 
+    const {rol, usuario, sucursal } = this._security.usuarioRol()
+
+    if (rol === this.rol_cliente && usuario) this.obtenerInformacion_cliente(usuario) 
   }
   obtenerInformacion_cliente(id:string){
     const starCountRef = ref(db, `clientes/${id}`)
@@ -67,11 +68,14 @@ export class MiperfilComponent implements OnInit {
       const cliente:any = await this._clientes.consulta_cliente_new(id)
       const {vehiculos} = cliente
         this.info_cliente = cliente
-        const vehiculosnew =  (!this.misVehiculos.length) ? vehiculos : this._publicos.actualizarArregloExistente(this.misVehiculos,vehiculos,[...this._vehiculos.camposVehiculo])
+
+        const vehiculosnew =  (!this.misVehiculos.length) ? 
+        vehiculos : 
+        this._publicos.actualizarArregloExistente(this.misVehiculos,vehiculos,[...this._vehiculos.camposVehiculo])
+
         this.misVehiculos = vehiculosnew
         this.dataSource.data = this.misVehiculos
         this.newPagination()
-        
     })
   }
 
@@ -100,5 +104,13 @@ export class MiperfilComponent implements OnInit {
       this.editar = false
     }
     
+  }
+  irPagina(pagina,vehiculo){
+    const { usuario } = this._security.usuarioRol()
+    let queryParams = {}
+    
+    if (pagina === 'historialCliente-vehiculo')  queryParams = { anterior:'miPerfil', cliente: usuario,vehiculo }
+
+    if (pagina) this.router.navigate([`/${pagina}`], {  queryParams });
   }
 }

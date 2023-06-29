@@ -275,9 +275,10 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     });
   }
   nombreSucursal(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
     
     if (this.SUCURSAL!=='Todas' ) {
       this.nombreSucursalMuestra = this.sucursales_array.find(s=>s.id === this.SUCURSAL).sucursal

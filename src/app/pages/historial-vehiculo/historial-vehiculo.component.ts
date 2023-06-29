@@ -31,10 +31,11 @@ const dbRef = ref(getDatabase());
 })
 export class HistorialVehiculoComponent implements OnInit {
   
-  constructor(private rutaActiva: ActivatedRoute,private _security:EncriptadoService,private _servicios: ServiciosService,
-              private _cotizaciones: CotizacionesService, private _publicos: ServiciosPublicosService, private router: Router,
-              private _campos: CamposSystemService, private _clientes: ClientesService, private _vehiculos: VehiculosService,
-              
+  constructor(
+    private rutaActiva: ActivatedRoute,private _cotizaciones: CotizacionesService,
+    private _publicos: ServiciosPublicosService, private router: Router,
+    private _campos: CamposSystemService, private _clientes: ClientesService,
+    private _vehiculos: VehiculosService,
     ) { }
     ROL:string;SUCURSAL:string;
 
@@ -43,8 +44,6 @@ export class HistorialVehiculoComponent implements OnInit {
     reporte_Recepciones={subtotal:0, iva:0, total:0}
     campos_reportes = ['subtotal','iva','total']
     
-       
-  
     camposCliente   =  [ ...this._clientes.camposCliente_show ]
     camposVehiculo  =  [ ...this._vehiculos.camposVehiculo_ ]
     camposDesgloce  =  [ ...this._cotizaciones.camposDesgloce ]
@@ -52,8 +51,6 @@ export class HistorialVehiculoComponent implements OnInit {
     paquete: string     =  this._campos.paquete
     refaccion: string   =  this._campos.refaccion
     mo: string          =  this._campos.mo
-    // rutaAnterior: string
-  
     // tabla
     dataSourceCotizaciones = new MatTableDataSource(); //elementos
     cotizaciones =  ['index','no_cotizacion','fullname','searchPlacas']; //cotizaciones
@@ -74,7 +71,6 @@ export class HistorialVehiculoComponent implements OnInit {
     enrutamiento = {vehiculo:'', cliente:'', anterior:''}
   ngOnInit(): void {
     this.rol()
-   
   }
 
   rol(){
@@ -88,15 +84,7 @@ export class HistorialVehiculoComponent implements OnInit {
         this.enrutamiento.cliente = cliente
       }
       this.enrutamiento.anterior = anterior
-      // console.log(`${anterior}/clientes/${cliente}`);
-
-      // ...
     });
-    // http://localhost:4200/historial-vehiculo?vehiculo=-NYVGoh5OT4ghcXeKJyp&cliente=-NFVB-LASl4wBCkOcmmu&anterior=historial-cliente
-    
-    // this.router.navigate([-1]);
-    // console.log(this.router.navigate([-1]));
-    
   }
   regresar(){
     this.router.navigate([`/${this.enrutamiento.anterior}`], { 

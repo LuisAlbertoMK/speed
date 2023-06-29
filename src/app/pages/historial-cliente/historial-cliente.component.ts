@@ -97,8 +97,7 @@ export class HistorialClienteComponent implements OnInit {
   }
   irPagina(vehiculo){
     this.router.navigate(['/historial-vehiculo'], { 
-      queryParams: 
-      { vehiculo, cliente: this.idCliente, anterior:'historial-cliente' } 
+      queryParams: { vehiculo, cliente: this.idCliente, anterior:'historial-cliente' } 
     });
   }
   regresar(){
@@ -108,12 +107,10 @@ export class HistorialClienteComponent implements OnInit {
     });
   }
   rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      // Obtenemos una lista de las sucursales 
-    }
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
 
     this.rutaActual = this.router.url;
     // console.log('Ruta anterior:', rutaActual);

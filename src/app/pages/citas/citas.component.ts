@@ -128,23 +128,11 @@ export class CitasComponent implements OnInit {
   }
   //obtener informacion basica para consulta de informacion de cualquier indele y permisos de usuario
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    
-    
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+    const { rol, sucursal } = this._security.usuarioRol()
 
-    this._sucursales.consultaSucursales_new().then((sucursales) => {
-      this.sucursales_array = sucursales
-      this.sucursalCalendario = this.SUCURSAL
-      this.vigilaCitas()
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
-    this.rutaActiva.queryParams.subscribe(params => {
-      // this.enrutamiento.anterior = params['anterior']
-      // console.log( params['anterior']);
-    });
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+    this.vigilaCitas()
     this.vigilaCalendario()
   }
   handleDateClick(arg) {
@@ -153,7 +141,6 @@ export class CitasComponent implements OnInit {
     // this.calendarOptions.now = arg.dateStr
     // this.calendarOptions.allDayContent = arg.dateStr
     // console.log(arg);
-    
   }
   handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;

@@ -94,9 +94,11 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
   ngOnDestroy(): void {}
   rol() {
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+    
     this.cargandoInformacion = true
     this.accion()
     if(localStorage.getItem('busquedaCotizaciones')){
@@ -108,19 +110,17 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
   irPagina(pagina, cliente?, vehiculo?, cotizacion?,tipo?){
     // /:ID/:tipo/:extra
-    let params = {}
+    let queryParams = {}
     if (pagina === 'historial-cliente') {
-      params = { anterior:'clientes', cliente  } 
+      queryParams = { anterior:'clientes', cliente  } 
     } else if (pagina === 'cotizacionNueva') {
-      params = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
+      queryParams = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
     }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      params = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
+      queryParams = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
     }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      params = { anterior:'cotizacion', cliente, tipo: 'nueva', vehiculo, cotizacion  } 
+      queryParams = { anterior:'cotizacion', cliente, tipo: 'nueva', vehiculo, cotizacion  } 
     }
-    this.router.navigate([`/${pagina}`], { 
-      queryParams: params
-    });
+    this.router.navigate([`/${pagina}`], { queryParams });
   }
   accion(){
     const starCountRef = ref(db, `cotizacionesRealizadas`)

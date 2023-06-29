@@ -7,7 +7,7 @@ import { EncriptadoService } from '../services/encriptado.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private _auth: AuthService, private router: Router, private _security:EncriptadoService){}
+  constructor(private _auth: AuthService){}
 
   canActivate(
     next: ActivatedRouteSnapshot,

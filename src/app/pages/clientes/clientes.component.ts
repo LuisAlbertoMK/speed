@@ -63,24 +63,25 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
   ngAfterViewInit(): void {  }
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+    
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+    
     this.ListadoClientes()
   }
   irPagina(pagina, cliente, vehiculo?, cotizacion?){
     // /:ID/:tipo/:extra
-    let params = {}
+    let queryParams = {}
     if (pagina === 'historial-cliente') {
-      params = { anterior:'clientes', cliente  } 
+      queryParams = { anterior:'clientes', cliente  } 
     } else if (pagina === 'cotizacionNueva') {
-      params = { anterior:'clientes', cliente, tipo: 'cliente', vehiculo, cotizacion  } 
+      queryParams = { anterior:'clientes', cliente, tipo: 'cliente', vehiculo, cotizacion  } 
     } else if (pagina === 'ServiciosConfirmar') {
-      params = { anterior:'clientes', cliente, tipo: 'nueva', vehiculo } 
+      queryParams = { anterior:'clientes', cliente, tipo: 'nueva', vehiculo } 
     }
-    this.router.navigate([`/${pagina}`], { 
-      queryParams: params
-    });
+    this.router.navigate([`/${pagina}`], { queryParams });
   }
 
   ListadoClientes(){

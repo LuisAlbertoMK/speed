@@ -24,7 +24,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   constructor(private _security:EncriptadoService, private _sucursales: SucursalesService, private _clientes: ClientesService,
     private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _citas: CitasService, private _cotizacion : CotizacionService) { }
 
-    ROL:string; SUCURSAL:string
+    ROL:string
+    SUCURSAL:string
 
     camposInfoCita    =  [  ...this._citas.camposInfoCita  ]
     sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
@@ -138,9 +139,11 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     // }
   }
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal']);
+   
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal;
 
     (this.SUCURSAL === 'Todas') ? false:  this.horariosSucursal()
 

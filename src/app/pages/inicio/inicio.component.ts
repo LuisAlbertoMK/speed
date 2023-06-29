@@ -49,12 +49,10 @@ export class InicioComponent implements OnInit {
     // this.brow()
   }
   rol(){
-    // this.ROL =localStorage.getItem('tipoUsuario')
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    // console.log(this._security.servicioDecrypt(variableX['rol']));
-    // console.log(this._security.servicioDecrypt(variableX['usuario']));
-    // this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    
     if (this.ROL==='SuperSU') {
       this.mostrarAdministracion = true
       this.SuperSU_rol = true

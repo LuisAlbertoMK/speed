@@ -51,8 +51,8 @@ export class ServiciosClienteComponent implements OnInit {
   elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
   expandedElement: any | null; //elementos
-  @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
-  @ViewChild('elements') sort: MatSort //elementos
+  @ViewChild('recepcionesPaginator') paginator: MatPaginator //elementos
+  @ViewChild('recepciones') sort: MatSort //elementos
 
   recepciones_clinete = []
 
@@ -60,10 +60,9 @@ export class ServiciosClienteComponent implements OnInit {
     this.rol()
   }
   rol(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    const rol = this._security.servicioDecrypt(variableX['rol'])
-    const ID_cliente = this._security.servicioDecrypt(variableX['usuario'])
-    if (rol === this.rol_cliente && ID_cliente) this.obtenerInformacion_cliente(ID_cliente) 
+    const { rol, sucursal, usuario} = this._security.usuarioRol()
+
+    if (rol === this.rol_cliente && usuario) this.obtenerInformacion_cliente(usuario) 
   }
   obtenerInformacion_cliente(cliente:string){
     const starCountRef = ref(db, `clientes`)

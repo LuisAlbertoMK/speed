@@ -74,12 +74,12 @@ export class GastoComponent implements OnInit {
     this.crearFormGasto()
   }
   rol(){
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      this.ROL = this._security.servicioDecrypt(variableX['rol'])
-      this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-      this.listaOrdenes()
-    }
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
+    this.listaOrdenes()
+    
   }
   listaOrdenes(){
     const starCountRef = ref(db, `recepciones`)

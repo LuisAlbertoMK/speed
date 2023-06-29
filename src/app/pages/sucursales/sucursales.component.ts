@@ -101,12 +101,10 @@ export class SucursalesComponent implements OnInit {
   }
   rol(){
     
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-    if (this.ROL === null) {
-      this.router.navigateByUrl('/login')
-    }
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this.ROL = rol
+    this.SUCURSAL = sucursal
   }
   listaSucursales(){
     // this._sucursales.consultaSucursales_new().then((sucursales) => {

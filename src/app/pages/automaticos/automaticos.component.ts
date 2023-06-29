@@ -70,7 +70,7 @@ export class AutomaticosComponent implements OnInit {
     // this.realizaOperacionesClientes()
   }
   rol(){
-    
+    const { rol, sucursal, usuario } = this._security.usuarioRol()
   }
   realizaOperacionesClientes(){
     const correoElimina = [
