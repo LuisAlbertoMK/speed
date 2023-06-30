@@ -1,6 +1,2 @@
-
-
-start chrome.exe
-code . && ng serve
-
-
+git pull
+ng serve
