@@ -90,7 +90,7 @@
                         <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
                           <div class="d-grid gap-2">
                             <button class="btn btn-danger btn-sm" type="button"
-                              (click)="changeStatus(sucursal, i,false)"><i class="fad fa-trash"></i></button>
+                              (click)="changeStatus(sucursal,false)"><i class="fad fa-trash"></i></button>
                           </div>
                         </div>
                         </div>
@@ -114,7 +114,7 @@
                         <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1 ">
                           <div class="d-grid gap-2">
                             <button class="btn btn-success btn-sm text-white" type="button"
-                              (click)="changeStatus(sucursal, i,true)"><i class="fad fa-check-circle"></i></button>
+                              (click)="changeStatus(sucursal,true)"><i class="fad fa-check-circle"></i></button>
                           </div>
                         </div>
       
@@ -212,7 +212,7 @@
                   <label for="imagen" class="form-label">Imagen</label>
                   <input type="hidden" class="form-control" id="imagen" formControlName="imagen"
                     [class.is-invalid]="validarSucursal('imagen')">
-                    <input type="text" class="form-control" value="{{imagenSucursal}}" disabled>
+                    <input type="text" class="form-control" value="{{imagenSucursal}}" readonly>
                 </div>
               </div>
   

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { getDatabase, onValue, ref } from 'firebase/database';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 import Swal from 'sweetalert2';
 const db = getDatabase()
 @Component({
@@ -9,6 +11,9 @@ const db = getDatabase()
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  
+  constructor(private _security:EncriptadoService,private _sucursales: SucursalesService,private _publicos:ServiciosPublicosService) { }
+  sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
   servicios:any = [
     {servicio:'Cambio de Aceite de Motor',icono:'fas fa-oil-can'},
     {servicio:'Cambio de Amortiguadores',icono:'fas fa-car-bump'},
@@ -17,48 +22,32 @@ export class HomeComponent implements OnInit {
     {servicio:'Venta de Llantas',icono:'fas fa-tire'},
     {servicio:'Verificación Vehicular',icono:'fas fa-cars'}
   ]
-  sucursales:any=[]
   color:number=0
   colores:any=['text-primary','text-danger','text-success','text-secondary','text-info']
   sesion:boolean = false
-  constructor(private _security:EncriptadoService,) { }
-
   ngOnInit(): void {
     this.logeado()
-    this.listasucursales()
     this.animarTexto()
   }
-  listasucursales(){
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-	    this.sucursales= this.crearArreglo2(snapshot.val())
-      // console.log(this.sucursales);
-    })
-  }
+  
   logeado(){
-
     if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-
-    this.sesion = Boolean(variableX['sesion'])
-    // console.log(this.sesion);
-    
-    if (!this.sesion) {
-      // layout-top-nav
-      let body = $(document.body)
-      body.removeClass('hold-transition sidebar-mini layout-fixed sidebar-collapse mat-typography layout-navbar-fixed')
-      body.addClass('hold-transition layout-top-nav layout-navbar-fixed')
-      setTimeout(() => {
-          this.logeado()
-      }, 1000);
-    }else{
-      this.mensajeCorrecto('Sesion activa espere ...')
-      setTimeout(() => {
-        window.location.href = '/inicio'
-      }, 1000);
+      const { sesion } = this._security.usuarioRol()
+      this.sesion = (sesion) ? sesion : false
+      if(!this.sesion){
+        let body = $(document.body)
+        body.removeClass('hold-transition sidebar-mini layout-fixed sidebar-collapse mat-typography layout-navbar-fixed')
+        body.addClass('hold-transition layout-top-nav layout-navbar-fixed')
+        setTimeout(() => {
+            this.logeado()
+        }, 1500);
+      }else{
+        this._publicos.swalToastCenter('Sesion activa espere ...')
+        setTimeout(() => {
+          window.location.href = '/inicio'
+        }, 1500);
+      }
     }
-    }
-
     
   }
   animarTexto(){
@@ -75,52 +64,7 @@ export class HomeComponent implements OnInit {
     }, 1000);
 
   }
-  mensajeCorrecto(mensaje:string){
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'center',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      allowOutsideClick:false,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-    
-    Toast.fire({
-      icon: 'success',
-      title: mensaje
-    })
-  }
-  mensajeIncorrecto(mensaje:string){
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'center',
-      showConfirmButton: false,
-      timer: 2500,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-    
-    Toast.fire({
-      icon: 'error',
-      title: mensaje
-    })
-  }
-  private crearArreglo2(arrayObj:object){
-    const arrayGet:any[]=[]
-    if (arrayObj===null) { return [] }
-    Object.keys(arrayObj).forEach(key=>{
-      const arraypush: any = arrayObj[key]
-      arraypush.id=key
-      arrayGet.push(arraypush)
-    })
-    return arrayGet
-  }
+  
+  
 
 }

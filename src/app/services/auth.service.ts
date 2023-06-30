@@ -79,7 +79,7 @@ export class AuthService {
   }
   leerToken(){
     const { accessToken } = this._security.usuarioRol();
-    this.userToken = (accessToken) ? accessToken: null
+    this.userToken = (accessToken) ? accessToken: ''
     return this.userToken
     
   }

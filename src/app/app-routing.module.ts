@@ -36,6 +36,7 @@ import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-c
 import { EstadisticasClienteComponent } from './pages/estadisticas-cliente/estadisticas-cliente.component';
 import { ComentariosClienteComponent } from './pages/comentarios-cliente/comentarios-cliente.component';
 import { HistorialClienteVehiculoComponent } from './pages/historial-cliente-vehiculo/historial-cliente-vehiculo.component';
+import { FacturacionComponent } from './pages/facturacion/facturacion.component';
 
 const routes: Routes = [];
 
@@ -64,6 +65,7 @@ const APP_ROUTES: Routes = [
   { path: 'reporteGastos', component: ReporteGastosComponent, canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'registraProblemas', component: ListaProblemasComponent,canActivate:[AuthGuard]},
   { path: 'eliminarEmpresa', component: EliminarEmpresaComponent,canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'facturacion', component: FacturacionComponent,canActivate:[AuthGuard,GuardClienteGuard]},
 
   { path: 'automaticos', component: AutomaticosComponent, canActivate:[GuardClienteGuard,AuthGuard]},
 

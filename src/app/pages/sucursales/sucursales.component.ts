@@ -86,14 +86,13 @@ export class SucursalesComponent implements OnInit {
   formaSucursal: FormGroup
   formaUploadFile: FormGroup
   desactivaGuardar:boolean = false
-  constructor(private route: ActivatedRoute,private fb: FormBuilder,  private _publicos: ServiciosPublicosService,
+  constructor(private route: ActivatedRoute,private fb: FormBuilder,
     private _sucursal: SucursalesService, private _uploadImagen: UploadFileService,
-    private router:Router, private _security:EncriptadoService, private _sucursales: SucursalesService) {}
+    private _security:EncriptadoService, private _sucursales: SucursalesService) {}
 
   ngOnInit(): void {
     this.rol()
     this.crearFormularioSucursal()
-    this.listaSucursales()
     this.brow()
   }
   ngAfterViewInit() {
@@ -106,53 +105,12 @@ export class SucursalesComponent implements OnInit {
     this.ROL = rol
     this.SUCURSAL = sucursal
   }
-  listaSucursales(){
-    // this._sucursales.consultaSucursales_new().then((sucursales) => {
-    //   this.listaArrarySucursales = sucursales
-    // }).catch((error) => {
-    //   // Manejar el error si ocurre
-    // });
-    // const starCountRef = ref(db, `sucursales`)
-    // onValue(starCountRef, (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     this.listaArrarySucursales = this._publicos.crearArreglo2(snapshot.val())
-    //   }
-    // }, {
-    //     onlyOnce: true
-    //   })
-  }
   getInformacionSucursal(id:string){
     //priemro obtener informacion de sucursal
     this.IDsucursal=id
-    get(child(dbRef, `sucursales/${id}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-        const resp = snapshot.val()
-        this.formaSucursal.reset({
-              sucursal:resp.sucursal,
-              serie:resp.serie,
-              direccion:resp.direccion,
-              telefono:resp.telefono,
-              correo:resp.correo,
-              imagen:resp.imagen,
-            })
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    // this._sucursal.getSucursal(id).subscribe((resp:any)=>{
-    //   this.imagenSucursal=resp.imagen
-    //   this.formaSucursal.reset({
-    //     sucursal:resp.sucursal,
-    //     serie:resp.serie,
-    //     direccion:resp.direccion,
-    //     telefono:resp.telefono,
-    //     correo:resp.correo,
-    //     imagen:resp.imagen,
-    //   })
-    // })
+    const info = this.sucursales_array.find(s=>s.id === id)
+    this.imagenSucursal = info.imagen
+    this.formaSucursal.reset(Object(info))
   }
   resetAntes(){
     this.IDsucursal = ''
@@ -168,7 +126,7 @@ export class SucursalesComponent implements OnInit {
       // imageAlt: 'Custom image',
     })
   }
-  changeStatus(sucursal:any,indice:number, status:boolean){
+  changeStatus(sucursal:any, status:boolean){
     let sttu ='',sttu2 =''
     if (status) { sttu='Activar',sttu2='Activada'}
     else{ sttu='Desactivar',sttu2='Desactivada' }
@@ -384,21 +342,9 @@ brow(){
     if (M[0]==='Firefox') {
       setTimeout(() => {
         this.mensajeCorrecto('Espere porfavor ...')
-        this.listaSucursales()
       }, 500);
      
     }
 }
-
-  private crearArreglo2(arrayObj:object){
-    const arrayGet:any[]=[]
-    if (arrayObj===null) { return [] }
-    Object.keys(arrayObj).forEach(key=>{
-      const arraypush: any = arrayObj[key]
-      arraypush.id=key
-      arrayGet.push(arraypush)
-    })
-    return arrayGet
-  }
 }
 

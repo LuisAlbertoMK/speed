@@ -19,6 +19,7 @@ export class InicioComponent implements OnInit {
     {path:'clientes', show:'Clientes',icono:'user'},
     {path:'cotizacion', show:'Cotizaciones',icono:'folder'},
     {path:'catalogos', show:'Catalogos',icono:'address-book'},
+    {path:'facturacion', show:'Facturación',icono:'file-contract'},
     {path:'reporteGastos', show:'Reporte de gastos',icono:'book'},
     {path:'sucursales', show:'Sucursales',icono:'landmark'},
     {path:'servicios', show:'vehículos en piso',icono:'car-building'},

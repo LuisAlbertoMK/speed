@@ -42,18 +42,7 @@ export class Loginv1Component implements OnInit {
   ngOnInit(): void {
     this.crearFormularioLogin()
     this.leerToken()
-    // dataSecurity
-    if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      const camposDec  = Object.keys(variableX)
-      if(variableX['usuario']){
-        for (let index = 0; index < camposDec.length; index++) {
-          const element = camposDec[index];
-          // console.log(element, `${this._security.servicioDecrypt(variableX[element])}`);
-        }
-      }
-      // this.recordarme = true
-    }
+    
     if (localStorage.getItem('email')  ) {
       Swal.fire({
         title: 'Continuar sesion?',
@@ -72,7 +61,6 @@ export class Loginv1Component implements OnInit {
             email: this.usuario.email,
             password: this.usuario.password
           })
-          // this._publicos.mensajeCorrecto('Iniciando sesión')
           this.Login()
         }
       })
@@ -170,8 +158,6 @@ export class Loginv1Component implements OnInit {
              if (existeUsuario['id']) {
               // console.log(existeUsuario);
               const variableX = {
-                email: this._security.servicioEncriptado(existeUsuario['correo']),
-                password: this._security.servicioEncriptado(existeUsuario['password']),
                 rol: this._security.servicioEncriptado(existeUsuario['rol']),
                 sucursal: this._security.servicioEncriptado(existeUsuario['sucursal']),
                 status: existeUsuario['status'],
@@ -232,22 +218,25 @@ export class Loginv1Component implements OnInit {
   }
   leerToken(){
     if (localStorage.getItem('dataSecurity')) {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      const camposDec  = Object.keys(variableX)
-      let existe={sesion:false,accessToken:false}
-      if(variableX['usuario']){
-        for (let index = 0; index < camposDec.length; index++) {
-          const element = camposDec[index];
-          (variableX['sesion'])? existe.sesion = true: '';
-          (variableX['accessToken'])? existe.accessToken = true: '';
-          // console.log(element, `${this._security.servicioDecrypt(variableX[element])}`);
-        }
-        if (existe.sesion && existe.accessToken) {
-          window.location.href = '/inicio'
-        }else{
-          // window.location.href = '/loginv1'          
-        }
-      }
+      // const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+      // const camposDec  = Object.keys(variableX)
+      const { sesion, accessToken } = this._security.usuarioRol()
+
+      if(sesion && accessToken) window.location.href = '/inicio'
+      // let existe={sesion:false,accessToken:false}
+      // if(variableX['usuario']){
+      //   for (let index = 0; index < camposDec.length; index++) {
+      //     const element = camposDec[index];
+      //     (variableX['sesion'])? existe.sesion = true: '';
+      //     (variableX['accessToken'])? existe.accessToken = true: '';
+      //     // console.log(element, `${this._security.servicioDecrypt(variableX[element])}`);
+      //   }
+      //   if (existe.sesion && existe.accessToken) {
+      //     window.location.href = '/inicio'
+      //   }else{
+      //     // window.location.href = '/loginv1'          
+      //   }
+      // }
     }
     
     // if (localStorage.getItem('sesion') && localStorage.getItem('token')) {

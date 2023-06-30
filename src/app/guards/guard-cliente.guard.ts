@@ -12,13 +12,20 @@ export class GuardClienteGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      const rol = this._security.servicioDecrypt(variableX['rol'])
-    if (rol === 'cliente') {
+      // const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+      // const rol = this._security.servicioDecrypt(variableX['rol'])
+    // if (rol === 'cliente') {
+    //   window.location.href = '/inicio'
+    //   return false
+    // }else{
+    //   // window.location.href = '/loginv1'
+    //   return true
+    // }
+    const { rol } = this._security.usuarioRol()
+    if(rol && rol ==='cliente') {
       window.location.href = '/inicio'
       return false
-    }else{
-      // window.location.href = '/loginv1'
+    } else{
       return true
     }
   }

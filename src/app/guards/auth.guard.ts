@@ -7,7 +7,7 @@ import { EncriptadoService } from '../services/encriptado.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private _auth: AuthService){}
+  constructor(private _auth: AuthService, private router: Router){}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -15,8 +15,8 @@ export class AuthGuard implements CanActivate {
     if (this._auth.estaAutenticado()) {
       return true
     }else{
-      console.log(next);
-      window.location.href = '/home'
+      // window.location.href = '/home'
+      this.router.navigate(['/home']);
       return false
     }
     

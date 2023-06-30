@@ -1,6 +1,10 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+
+
+
+
 import { initializeApp } from "firebase/app";
 export const environment = {
   firebaseConfig: {
@@ -15,7 +19,9 @@ export const environment = {
   usuarios: 'https://identitytoolkit.googleapis.com/v1',
   production: false,
   cloud: 'https://us-central1-speed-pro-app.cloudfunctions.net/sendMail',
-  cloud_local: 'http://127.0.0.1:5001/speed-pro-app/us-central1/sendMail'
+  cloud_local: 'http://127.0.0.1:5001/speed-pro-app/us-central1/sendMail',
+  clave_publica: 'pk_test_51NOlofEg8nFeK6NC5vc2fyMVer0VolgF93B3sk60HbPUzPM0p93nQLAoxJuoXr00c0DDVJ6iU55NdOMYiTgeB8hy00KurfK9Is',
+  clave_secreta: 'sk_test_51NOlofEg8nFeK6NCYFm9FST2EY3m3PbUkEXJgIOEdF8WJ44UtQtZtry1wCK1MIQrAQmiQWbp8zTYQSqWazh88al80091NAHBAc'
 }
 const app = initializeApp(environment.firebaseConfig);
 /*
