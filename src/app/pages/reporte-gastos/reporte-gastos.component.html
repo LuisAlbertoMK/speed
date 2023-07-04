@@ -296,7 +296,7 @@
           </ng-container>
           
           
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
             <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12"> -->
               <div class="card border-success mb-3">
                 <div class="card-header text-center">Reporte de administrración</div>
@@ -305,19 +305,19 @@
                   <div class="row ">
                     <ng-container *ngFor="let campo of camposReporteAdministracion; let i = index">
 
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" *ngIf="campo.valor !== 'cantidad' && campo.valor !== 'por_margen' ">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="campo.valor !== 'cantidad' && campo.valor !== 'por_margen' ">
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">{{campo.show}}</div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor]  | monedas}}</strong></div>
                       </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" *ngIf="campo.valor === 'cantidad'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="campo.valor === 'cantidad'">
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">{{campo.show}}</div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor]}}</strong></div>
                       </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-12" *ngIf="campo.valor === 'por_margen'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="campo.valor === 'por_margen'">
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">{{campo.show}}</div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor] | monedas:'%'}}</strong></div>
