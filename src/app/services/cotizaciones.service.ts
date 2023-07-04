@@ -148,5 +148,21 @@ export class CotizacionesService {
       })
     });
   }
+  consulta_cotizacion_new(cotizacion): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      get(child(dbRef, `cotizacionesRealizadas/${cotizacion}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          const recepciones = this._publicos.crearArreglo2(snapshot.val());
+          recepciones.map(c=>{
+            c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}` 
+            c.searchPlacas = `${c.vehiculo.placas}` 
+          })
+          resolve(recepciones);
+        } else {
+          resolve([]);
+        }
+      })
+    });
+  }
   
 }

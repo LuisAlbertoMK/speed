@@ -12,7 +12,12 @@ const db = getDatabase()
 })
 export class HomeComponent implements OnInit {
   
-  constructor(private _security:EncriptadoService,private _sucursales: SucursalesService,private _publicos:ServiciosPublicosService) { }
+  constructor(
+    private _security:EncriptadoService,private _sucursales: SucursalesService,
+    private _publicos:ServiciosPublicosService
+    ) { }
+  
+  
   sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
   servicios:any = [
     {servicio:'Cambio de Aceite de Motor',icono:'fas fa-oil-can'},

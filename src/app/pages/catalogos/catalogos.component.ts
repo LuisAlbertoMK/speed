@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
+import { CatalogosService } from 'src/app/services/catalogos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -28,7 +29,7 @@ const dbRef = ref(getDatabase());
 export class CatalogosComponent implements  OnDestroy, OnInit  {
   
   constructor(private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _cotizaciones: CotizacionesService,
-    private _campos: CamposSystemService,
+    private _campos: CamposSystemService, private _catalogos: CatalogosService,
     private _vehiculos: VehiculosService) {     }
 
   camposDesgloce        =  [  ...this._cotizaciones.camposDesgloce    ]
@@ -87,10 +88,30 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   
   ngOnInit() {
     this.consultaMarcas()
-    this.consultaMO()
+    // this.consultaMO()
     this.construyeFirmularioPaquete()
+    this.nuevas_consultas()
   }
   ngOnDestroy(): void {
+    
+  }
+  async nuevas_consultas(){
+    //consultamos las manos de obra y asiganamos para la paginacion de los resultados
+    const mo = await this._catalogos.consulta_mo_new()
+    this.dataSourceMO.data = mo
+    this.newPagination('mo')
+
+    //consultamos las refacciones y asiganamos para la paginacion de los resultados
+    const refacciones = await this._catalogos.consulta_refacciones_new()
+    this.dataSourceRefacciones.data = refacciones
+    this.newPagination('refacciones')
+
+    //consultamos los paquetes y asiganamos para la paginacion de los resultados
+    const paquetes = await this._catalogos.consulta_paquetes_new([...refacciones, ...mo])
+    //filtramos los paquetes que si tengan elementos
+    const filtro_paquetes = paquetes.filter((p) => p.elementos.length);
+    this.dataSourcePaquetes.data = filtro_paquetes
+    this.newPagination('paquetes')
     
   }
   consultaMarcas(){
@@ -204,86 +225,6 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   }
   validarCampo(campo: string){
     return this.paqueteForm.get(campo).invalid && this.paqueteForm.get(campo).touched
-  }
-  
-  consultaMO(){
-    const starCountRef = ref(db, `manos_obra`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const mo= this._publicos.crearArreglo2(snapshot.val())
-        mo.map((r,index)=>{ 
-          r['tipo'] = 'mo',
-          r.index = index 
-          r.descripcion = (r.descripcion) ? r.descripcion : ''
-        })
-        this.listaMO = mo
-        this.dataSourceMO.data = mo
-        this.newPagination('mo')
-        this.refacciones()
-      } else {
-        this.refacciones()
-      }
-    })
-  }
-  refacciones(){
-    const starCountRef = ref(db, `refacciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const refacciones= this._publicos.crearArreglo2(snapshot.val())
-        refacciones.map((r,index)=>{ 
-          r['tipo'] = 'refaccion'
-          r.index = index 
-          r.descripcion = (r.descripcion) ? r.descripcion : ''
-         })
-        this.listaRefacciones = refacciones
-        this.dataSourceRefacciones.data = refacciones
-        this.newPagination('refacciones')
-        this.consultaPaquetes()
-      } else {
-        this.consultaPaquetes()
-      }
-    })
-  }
-  consultaPaquetes(){
-    const unidos = this.listaMO.concat(this.listaRefacciones)
-    const starCountRef = ref(db, `paquetes`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const paquetes= this._publicos.crearArreglo2(snapshot.val())
-            for (const [index, p] of paquetes.entries()) {
-              const {elementos, reporte} = this._publicos.reportePaquete(p.elementos, 1.25);
-              const elementosActualizados = elementos.map((e) => {
-                if (e.catalogo || e.enCatalogo) {
-                  const info = unidos.find((u) => u.id === e.IDreferencia) ?? {};
-                  const camposNuevos = ['id', 'nombre', 'tipo'];
-          
-                  camposNuevos.forEach((c) => {
-                    e[c] = info[c] ?? '';
-                  });
-                }
-                return e;
-              });
-          
-              paquetes[index] = {
-                ...p,
-                index,
-                elementos: elementosActualizados,
-                reporte,
-                precio: reporte.total,
-                total: reporte.total,
-                tipo: 'paquete',
-                aprobado: true,
-                cantidad: 1,
-                costo: 0,
-              };
-            }
-        this.listaPaquetes_arr = paquetes.filter((p) => p.elementos.length);
-        this.dataSourcePaquetes.data = this.listaPaquetes_arr
-        this.newPagination('paquetes')
-      } else {
-        this.newPagination('paquetes')
-      }
-    })
   }
 
   applyFilter(tabla: string, event: Event) {

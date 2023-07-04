@@ -15,7 +15,7 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { RecordartoriosComponent } from './pages/recordartorios/recordartorios.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AutomaticosComponent } from './pages/automaticos/automaticos.component';
-import { RecepcionComponent } from './pages/recepcion/recepcion.component';
+
 import { HistorialVehiculoComponent } from './pages/historial-vehiculo/historial-vehiculo.component';
 import { HistorialClienteComponent } from './pages/historial-cliente/historial-cliente.component';
 import { CotizacionNewComponent } from './pages/cotizacion-new/cotizacion-new.component';
@@ -55,7 +55,6 @@ const APP_ROUTES: Routes = [
   { path: 'sucursales', component: SucursalesComponent,  canActivate:[AuthGuard] },
   { path: 'servicios', component: ServiciosComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
   { path: 'usuarios', component: UsuariosComponent,  canActivate:[AuthGuard,GuardClienteGuard] },
-  { path: 'recepcion/:recepcion/:pagina', component: RecepcionComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'recordatorios', component: RecordartoriosComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'historial-vehiculo', component: HistorialVehiculoComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'historial-cliente', component: HistorialClienteComponent ,  canActivate:[AuthGuard,GuardClienteGuard]},

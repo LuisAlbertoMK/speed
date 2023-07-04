@@ -44,9 +44,9 @@ export class EstadisticasClienteComponent implements OnInit {
 
 
   rol_cliente:string = 'cliente'
-  camposReporte        = [...this._cotizaciones.camposReporte]
-  camposReporte_show   = [...this._cotizaciones.camposReporte_show]
-  camposReporte_show2  = {...this._cotizaciones.camposReporte_show2}
+  camposReporte        = [  ...this._cotizaciones.camposReporte  ]
+  camposReporte_show   = [  ...this._cotizaciones.camposReporte_show  ]
+  camposReporte_show2  = {  ...this._cotizaciones.camposReporte_show2  }
 
   miniColumnas:number  = this._campos.miniColumnas
 

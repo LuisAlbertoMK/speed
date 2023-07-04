@@ -22,6 +22,83 @@ export class CatalogosService {
 
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService) { }
 
+  consulta_mo_new(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `manos_obra`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const mo = this._publicos.crearArreglo2(snapshot.val())
+          mo.map((r,index)=>{ 
+            r['tipo'] = 'mo',
+            r.index = index 
+            r.descripcion = (r.descripcion) ? r.descripcion : ''
+          })
+          resolve(mo);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+  consulta_refacciones_new(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `refacciones`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const refacciones = this._publicos.crearArreglo2(snapshot.val())
+          refacciones.map((r,index)=>{ 
+            r['tipo'] = 'refaccion'
+            r.index = index 
+            r.descripcion = (r.descripcion) ? r.descripcion : ''
+           })
+          resolve(refacciones);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+  consulta_paquetes_new(unidos): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `paquetes`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const paquetes= this._publicos.crearArreglo2(snapshot.val())
+            for (const [index, p] of paquetes.entries()) {
+              const {elementos, reporte} = this._publicos.reportePaquete(p.elementos, 1.25);
+              const elementosActualizados = elementos.map((e) => {
+                if (e.catalogo || e.enCatalogo) {
+                  const info = unidos.find((u) => u.id === e.IDreferencia) ?? {};
+                  const camposNuevos = ['id', 'nombre', 'tipo'];
+          
+                  camposNuevos.forEach((c) => {
+                    e[c] = info[c] ?? '';
+                  });
+                }
+                return e;
+              });
+          
+              paquetes[index] = {
+                ...p,
+                index,
+                elementos: elementosActualizados,
+                reporte,
+                precio: reporte.total,
+                total: reporte.total,
+                tipo: 'paquete',
+                aprobado: true,
+                cantidad: 1,
+                costo: 0,
+              };
+            }
+          resolve(paquetes);
+        } else {
+          resolve([]);
+        }
+      });
+    });
+  }
+
   async listaPaquetes(){
     let paquetes = []
     await get(child(dbRef, `paquetes`)).then((snapshot) => {

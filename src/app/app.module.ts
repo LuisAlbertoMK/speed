@@ -96,7 +96,7 @@ import { ModificarCotizacionComponent } from './pages/modificar-cotizacion/modif
 import { RecordartoriosComponent } from './pages/recordartorios/recordartorios.component';
 import { NavbarHomeComponent } from './components/navbar-home/navbar-home.component';
 import { AutomaticosComponent } from './pages/automaticos/automaticos.component';
-import { RecepcionComponent } from './pages/recepcion/recepcion.component';
+
 import { HistorialVehiculoComponent } from './pages/historial-vehiculo/historial-vehiculo.component';
 import { HistorialClienteComponent } from './pages/historial-cliente/historial-cliente.component';
 import { CotizacionNewComponent } from './pages/cotizacion-new/cotizacion-new.component';
@@ -175,7 +175,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RecordartoriosComponent,
     NavbarHomeComponent,
     AutomaticosComponent,
-    RecepcionComponent,
+    
     HistorialVehiculoComponent,
     HistorialClienteComponent,
     CotizacionNewComponent,
