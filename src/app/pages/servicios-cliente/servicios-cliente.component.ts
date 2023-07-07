@@ -60,9 +60,9 @@ export class ServiciosClienteComponent implements OnInit {
     this.rol()
   }
   rol(){
-    const { rol, sucursal, usuario} = this._security.usuarioRol()
+    const { rol, sucursal, uid} = this._security.usuarioRol()
 
-    if (rol === this.rol_cliente && usuario) this.obtenerInformacion_cliente(usuario) 
+    if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
   }
   obtenerInformacion_cliente(cliente:string){
     const starCountRef = ref(db, `clientes`)

@@ -65,11 +65,6 @@ export class MiperfilComponent implements OnInit {
   }
   rol(){
     const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
-    const otra = this._security.usuarioRol()
-    console.log(uid);
-    console.log(usuario);
-    console.log(sucursal);
-    console.log(otra);
     
     if (rol === this.rol_cliente && uid) {
       this.vigila(uid)

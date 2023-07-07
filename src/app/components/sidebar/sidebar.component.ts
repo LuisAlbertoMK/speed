@@ -61,11 +61,12 @@ export class SidebarComponent implements OnInit {
  
   
   rol(){
-    const { rol, sucursal, alias} = this._security.usuarioRol()
-
+    const { rol, sucursal, alias,usuario} = this._security.usuarioRol()
+    console.log(usuario);
+    
     this.ROL = rol
     this.SUCURSAL = sucursal;
-    this.TIPO_USUARIO = alias
+    this.TIPO_USUARIO = usuario
     
     // this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
     if (this.ROL==='SuperSU') {
