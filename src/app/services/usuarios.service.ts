@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 const urlServer = environment.firebaseConfig.databaseURL
@@ -8,17 +8,21 @@ const usuarios = 'https://identitytoolkit.googleapis.com/v1'
 import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database"
 import { ServiciosPublicosService } from './servicios-publicos.service';
 import { map } from 'rxjs';
+import { resolve } from 'dns';
+import { EncriptadoService } from './encriptado.service';
 
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-
-
+import { getAuth, updateEmail, updatePassword } from "firebase/auth";
+const auth = getAuth();
 @Injectable({
   providedIn: 'root'
 })
 export class UsuariosService {
   decPassword:string = 'SpeedProSecureCondifidential' 
-  constructor(private http: HttpClient, private _publicos: ServiciosPublicosService) { }
+  constructor(private http: HttpClient, private _publicos: ServiciosPublicosService, private _security: EncriptadoService) { }
 
 
   consulta_usuarios_correos(): Promise<any[]> {
@@ -26,18 +30,52 @@ export class UsuariosService {
       const starCountRef = ref(db, 'usuarios');
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          const clientes = this._publicos.crearArreglo2(snapshot.val());
-          clientes.map(c=>{
-            c.fullname = `${c.nombre} ${c.apellidos}`
-            const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
-            c.vehiculos = vehiculos
-          })
-          resolve(clientes);
+          const usuarios = this._publicos.crearArreglo2(snapshot.val());
+          resolve(usuarios);
         } else {
           resolve([]);
         }
       });
     });
+  }
+  consulta_usuario_data(usuario): Promise<object> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `usuarios/${usuario}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(Object(snapshot.val()));
+        } else {
+          resolve({});
+        }
+      });
+    });
+  }
+  update_data_usuario(usuario) {
+    let token = localStorage.getItem('tokenTemporal')
+    const dataReset={
+      idToken: token,
+      email: usuario.correo,
+      password:usuario.password,
+      returnSecureToken: true
+    }
+    return this.http.post(`${usuarios}/accounts:update?key=${apiKey}`,dataReset)
+    // resolve this.http.post(`${usuarios}/accounts:update?key=${apiKey}`,dataReset)
+    // return new Promise((resolve, reject) => {
+    //   const starCountRef = ref(db, 'usuarios');
+    //   onValue(starCountRef, (snapshot) => {
+    //     if (snapshot.exists()) {
+    //       const clientes = this._publicos.crearArreglo2(snapshot.val());
+    //       clientes.map(c=>{
+    //         c.fullname = `${c.nombre} ${c.apellidos}`
+    //         const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
+    //         c.vehiculos = vehiculos
+    //       })
+    //       resolve(clientes);
+    //     } else {
+    //       resolve([]);
+    //     }
+    //   });
+    // });
   }
 
   
@@ -136,16 +174,53 @@ export class UsuariosService {
       password:usuario.password,
       returnSecureToken: true
     }
-    return this.http.post(`${usuarios}/accounts:update?key=${apiKey}`,dataReset)
+    this.http.post(`${usuarios}/accounts:update?key=${apiKey}`,dataReset)
+    .pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Ocurrió un error desconocido';
+        
+        if (error.error && error.error.error && error.error.error.message) {
+          errorMessage = error.error.error.message;
+        }
+        console.log(errorMessage);
+        return errorMessage
+      })
+    )
+    .subscribe((response) => {
+      // Manejar la respuesta exitosa de la API
+      return response
+    })
   }
-  restablecerPassword(usuario:any){    
-    const dataReset={
-      requestType: 'PASSWORD_RESET',
-      email: usuario.correo,
-      password: usuario.password
-    }
-    return this.http.post(`${usuarios}/accounts:sendOobCode?key=${apiKey}`,dataReset)
+  actualiza_email(correo){
+    updateEmail(auth.currentUser, correo).then((ans) => {
+      console.log('update', correo);
+      console.log('update', ans);
+    }).catch((error) => {
+      // An error occurred
+      console.log(error);
+    });
   }
+  actualiza_password(password){
+
+    updatePassword(auth.currentUser, password).then((ans) => {
+      console.log('update', password);
+    }).catch((error) => {
+      // An error occurred
+      console.log(error);
+    });
+  }
+  restablece_new(donde:string, valor:string, idToken){
+    // let idToken = localStorage.getItem('tokenTemporal')
+    let  dataReset={
+      idToken,
+      returnSecureToken: false,
+      [donde]: valor
+    }    
+    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`,dataReset)
+  }
+
+
+
   getInfoSuperSU(){
     return this.http.get(`${urlServer}/usuarios/SuperSU.json`)
     .pipe(

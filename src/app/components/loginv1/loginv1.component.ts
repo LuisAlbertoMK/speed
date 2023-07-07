@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged,signOut  } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged,signOut, updateCurrentUser, updateProfile  } from "firebase/auth";
 
 import { child, get, getDatabase, onValue, ref, set, update } from "firebase/database"
 const db = getDatabase()
@@ -14,6 +14,8 @@ import { ServiciosPublicosService } from '../../services/servicios-publicos.serv
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioModel } from 'src/app/models/usuario.model';
+import { ClientesService } from '../../services/clientes.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-loginv1',
@@ -37,37 +39,15 @@ export class Loginv1Component implements OnInit {
   intentos = 0
   miniColumnas:number = 100
 
-  constructor(private fb: FormBuilder,private _publicos:ServiciosPublicosService, private _security:EncriptadoService,private _auth:AuthService) { }
+  constructor(private fb: FormBuilder,private _publicos:ServiciosPublicosService, 
+    private _security:EncriptadoService,private _auth:AuthService,
+    private _clientes: ClientesService, private _usuarios: UsuariosService
+    ) { }
 
   ngOnInit(): void {
     this.crearFormularioLogin()
     this.leerToken()
-    
-    if (localStorage.getItem('email')  ) {
-      Swal.fire({
-        title: 'Continuar sesion?',
-        text: "Ingresar con correo y contraseña encontrados!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Confirmar',
-        cancelButtonText:'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.usuario.email = this._security.servicioDecrypt(localStorage.getItem('email'))
-          this.usuario.password = this._security.servicioDecrypt(localStorage.getItem('password'))
-          this.formularioLogin.reset({
-            email: this.usuario.email,
-            password: this.usuario.password
-          })
-          this.Login()
-        }
-      })
-      
-      
-    }
-    this.recordarme = true
+    this.verificaLogeo()
   }
   crearFormularioLogin(){
     this.formularioLogin = this.fb.group({
@@ -77,45 +57,102 @@ export class Loginv1Component implements OnInit {
   }
   Login(){
 
-    if (this.intentos <=3) {
-      
-    const formularioLogin = this.formularioLogin.value
-    signInWithEmailAndPassword(auth, formularioLogin['email'], formularioLogin['password'])
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        this.obternerInformacion(userCredential['_tokenResponse'])
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        this.intentos ++
-      // console.log(errorCode);
-      
-        switch (error.code) {
-          case 'auth/user-not-found':
-            // this._publicos.mensajeIncorrecto('UsuarioCorreo incorrecto')
-            this.apuntadores.usuario = false
-            this.apuntadores.password = true
-            break;
-          case 'auth/wrong-password':
-            // this._publicos.mensajeIncorrecto('error de contraseña')
-            this.apuntadores.usuario = true
-            this.apuntadores.password = false
-            break;
-        
-          default:
-            // this.apuntadores.usuario = false
-            break;
-        }
-        // console.log(errorCode);
-        // console.log(errorMessage);
-        
-      });
+    if (localStorage.getItem('dataSecurity')) {
+      console.log('no hacer peticion firebase auth');
+      console.log('redirigir a sesion home/inicio');
     }else{
-      this._publicos.mensajeIncorrecto('Contactar con administrador')
+      const {email, password} = this.formularioLogin.value
+      signInWithEmailAndPassword(auth, email, password)
+        .then(({user}) => {
+          // console.log(user);
+          localStorage.setItem('email',this._security.servicioEncriptado(email))
+          localStorage.setItem('password',this._security.servicioEncriptado(password))
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          this.intentos ++
+        console.log(error);
+        
+          switch (error.code) {
+            case 'auth/user-not-found':
+              // this._publicos.mensajeIncorrecto('UsuarioCorreo incorrecto')
+              this.apuntadores.usuario = false
+              this.apuntadores.password = true
+              break;
+            case 'auth/wrong-password':
+              // this._publicos.mensajeIncorrecto('error de contraseña')
+              this.apuntadores.usuario = true
+              this.apuntadores.password = false
+              break;
+            case 'auth/user-disabled':
+              // this._publicos.mensajeIncorrecto('error de contraseña')
+              // this.apuntadores.usuario = true
+              // this.apuntadores.password = false
+              break;
+          
+            default:
+              // this.apuntadores.usuario = false
+              break;
+          }
+          // console.log(errorCode);
+          // console.log(errorMessage);
+          
+        });
     }
+
+    
+  }
+  verificaLogeo(){
+    onAuthStateChanged(auth, async (user) => {
+      if(user){
+        // console.log('esta logeado');
+        console.log(user);
+        user.providerData.forEach((profile) => {
+          console.log("Sign-in provider: " + profile.providerId);
+          console.log("  Provider-specific UID: " + profile.uid);
+          console.log("  Name: " + profile.displayName);
+          console.log("  Email: " + profile.email);
+          console.log("  Photo URL: " + profile.photoURL);
+        });
+
+        let dataSecurity = { sesion: true }
+
+        const asiganaData_usuario = ['correo', 'password', 'rol', 'sucursal', 'usuario']
+        const camposFirebase = ['uid','accessToken','refreshToken']
+
+        const {email, password: newpass} = this.formularioLogin.value
+
+        let usuario_econtrado = await this._clientes.consulta_usuario_new(user.uid)
+
+        if (!usuario_econtrado['correo']) {
+          console.log('este usuario necesita otro tipo de busqueda');
+          const usuarios = await this._usuarios.consulta_usuarios_correos()
+          console.log(usuarios);
+          
+          usuario_econtrado = usuarios.find(u=>String(u.correo).toLowerCase() === String(email).toLowerCase())
+          console.log(usuario_econtrado);
+          
+        }
+        // console.log(usuario_econtrado);
+        if (usuario_econtrado['correo']) {
+          dataSecurity['status'] = usuario_econtrado['status']
+          asiganaData_usuario.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(usuario_econtrado[c]) })
+          camposFirebase.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(user[c]) })
+          localStorage.setItem('email',this._security.servicioEncriptado(email))
+          localStorage.setItem('password',this._security.servicioEncriptado(newpass))
+          localStorage.setItem('dataSecurity',JSON.stringify(dataSecurity))
+          this.estalogeado()
+        }else{
+          console.log('no existe data de usuario');
+        }
+        
+      }else{
+        // console.log('sin logeo');
+        this.logout()
+        this.preguntar_acceso()
+      }
+    })
   }
   logout(){
     signOut(auth).then(() => {
@@ -139,109 +176,11 @@ export class Loginv1Component implements OnInit {
   }
 
 
-  obternerInformacion(info:any){
-    // console.log(info);
-    
-    onAuthStateChanged(auth, (data:any) => {
-      if (data) {
-        const uid = data.uid;
-        const accessToken = data.accessToken;
-        this.informacionAuth.data['accessToken'] = accessToken
-        this.informacionAuth.data['uid'] = uid
-        this.informacionAuth.auth = true
-        
-        const formularioLogin = this.formularioLogin.value
-        get(child(dbRef, `usuarios`)).then((snapshot) => {
-          if (snapshot.exists()) {
-            const usuarios =this._publicos.crearArreglo2(snapshot.val())
-            const existeUsuario = usuarios.find(o=>o.correo.trim() === formularioLogin['email'])
-             if (existeUsuario['id']) {
-              // console.log(existeUsuario);
-              const variableX = {
-                rol: this._security.servicioEncriptado(existeUsuario['rol']),
-                sucursal: this._security.servicioEncriptado(existeUsuario['sucursal']),
-                status: existeUsuario['status'],
-                uid: this._security.servicioEncriptado(uid),
-                accessToken: this._security.servicioEncriptado(accessToken),
-                sesion: true,
-                usuario: this._security.servicioEncriptado(existeUsuario['id']),
-                alias: this._security.servicioEncriptado(existeUsuario['usuario']),
-                refresh_token: this._security.servicioEncriptado(info['refreshToken']),
-              }
-              localStorage.setItem('dataSecurity',JSON.stringify(variableX))
-              if (this.recordarme) {
-                localStorage.setItem('email',this._security.servicioEncriptado(existeUsuario['correo']))
-                localStorage.setItem('password',this._security.servicioEncriptado(existeUsuario['password']))
-              }
-
-              this._auth.nuevo_exp()
-              let timerInterval
-              Swal.fire({
-                title: 'Accesando espere ...',
-                // html: 'I will close in <b></b> milliseconds.',
-                timer: 2000,
-                timerProgressBar: true,
-                allowOutsideClick: false,
-                didOpen: () => {
-                  Swal.showLoading()
-                  const b = Swal.getHtmlContainer().querySelector('b')
-                  timerInterval = setInterval(() => {
-                    // b.textContent = String(Swal.getTimerLeft())
-                  }, 100)
-                },
-                willClose: () => {
-                  clearInterval(timerInterval)
-                }
-              }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-                  // console.log('I was closed by the timer')
-                  window.location.href = '/inicio'
-                }
-              })
-             }else{
-              // console.log('no existe informacion de usuario'); 
-              this._publicos.mensajeIncorrecto('No se puede acceder no existe informacion de usuario')           
-             }
-          } else {
-            console.log("No data available");
-          }
-        }).catch((error) => {
-          console.error(error);
-        });
-    
-      } else {
-          this.informacionAuth.auth = false
-          this.informacionAuth.data['uid'] = ''
-      }
-    });
-  }
   leerToken(){
     if (localStorage.getItem('dataSecurity')) {
-      // const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-      // const camposDec  = Object.keys(variableX)
-      const { sesion, accessToken } = this._security.usuarioRol()
-
+      const { sesion, accessToken, status } = this._security.usuarioRol()
       if(sesion && accessToken) window.location.href = '/inicio'
-      // let existe={sesion:false,accessToken:false}
-      // if(variableX['usuario']){
-      //   for (let index = 0; index < camposDec.length; index++) {
-      //     const element = camposDec[index];
-      //     (variableX['sesion'])? existe.sesion = true: '';
-      //     (variableX['accessToken'])? existe.accessToken = true: '';
-      //     // console.log(element, `${this._security.servicioDecrypt(variableX[element])}`);
-      //   }
-      //   if (existe.sesion && existe.accessToken) {
-      //     window.location.href = '/inicio'
-      //   }else{
-      //     // window.location.href = '/loginv1'          
-      //   }
-      // }
     }
-    
-    // if (localStorage.getItem('sesion') && localStorage.getItem('token')) {
-    //       window.location.href = '/inicio'
-    // }
   }
   estaAutenticado():boolean{
     if (this.userToken.length < 2) {
@@ -259,5 +198,44 @@ export class Loginv1Component implements OnInit {
     
     
   }
+  estalogeado(){
+    if (localStorage.getItem('dataSecurity')) {
+      const { sesion, accessToken, status } = this._security.usuarioRol()
+      if(sesion && accessToken && status){
+        window.location.href = '/inicio'
+      }else{
+        this._publicos.swalToastError('Su usuario esta deshabilitado')
+        this.logout()
+      }
+    }
+  }
+  preguntar_acceso(){
+    if (localStorage.getItem('email') && localStorage.getItem('password') ) {
+      const email = this._security.servicioDecrypt(localStorage.getItem('email'))
+      const password = this._security.servicioDecrypt(localStorage.getItem('password'))
+      const {status } = this._security.usuarioRol()
+      if (email && password && status) {
+        Swal.fire({
+          title: 'Continuar sesion?',
+          text: "Ingresar con correo y contraseña encontrados!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Confirmar',
+          cancelButtonText:'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.formularioLogin.reset({
+              email,
+              password
+            })
+            this.Login()
+          }
+        })
+      }
+    }
+  }
+  
   
 }

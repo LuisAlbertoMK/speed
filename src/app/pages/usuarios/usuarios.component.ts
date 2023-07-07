@@ -16,6 +16,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { CamposSystemService } from '../../services/campos-system.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { UpdateUserComponent } from 'src/app/components/update-user/update-user.component';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -33,7 +35,7 @@ export class UsuariosComponent implements OnInit {
 
   constructor(
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
-    private router: Router, private _sucursales: SucursalesService, private _campos: CamposSystemService) { }
+    private router: Router, private _sucursales: SucursalesService, private _campos: CamposSystemService, private _bottomSheet: MatBottomSheet) { }
 
     miniColumnas:number = this._campos.miniColumnas
     sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
@@ -43,7 +45,7 @@ export class UsuariosComponent implements OnInit {
      // tabla
      dataSource = new MatTableDataSource(); //elementos
      elementos = ['nombre','sucursalShow','correo','rol']; //elementos
-     columnsToDisplayWithExpand = [...this.elementos, 'expand']; //elementos
+     columnsToDisplayWithExpand = [...this.elementos, 'opciones','expand']; //elementos
      expandedElement: any | null; //elementos
      @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
      @ViewChild('elements') sort: MatSort //elementos
@@ -71,6 +73,7 @@ export class UsuariosComponent implements OnInit {
             a.sucursalShow = a.sucursal
           }
           return {
+            id: a.id,
             sucursal: a.sucursal,
             usuario: a.usuario,
             sucursalShow: a.sucursalShow,
@@ -140,6 +143,13 @@ export class UsuariosComponent implements OnInit {
     // }
     }, 500)
   }
- 
+  obtenerinfo(data){
+    const bottomSheetRef = this._bottomSheet.open(UpdateUserComponent,{ data });
+    // bottomSheetRef.afterDismissed().subscribe(() => {
+    //   console.log('Bottom sheet has been dismissed.');
+    // });
+    
+    // bottomSheetRef.dismiss();
+  }
 }
 

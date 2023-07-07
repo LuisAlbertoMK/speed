@@ -46,6 +46,13 @@
             {{row.rol | capitalizarUno}}
           </td>
         </ng-container>
+        <ng-container matColumnDef="opciones">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp;</th>
+          <td mat-cell *matCellDef="let row">
+            <i class="fa fa-edit m-1 text-primary" (click)="obtenerinfo(row)"></i>
+            <i class="fa fa-eye  m-1 text-danger" (click)="confidencial(row)"></i>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="expand">
           <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
           <td mat-cell *matCellDef="let element">
@@ -67,7 +74,7 @@
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
         <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-            class="example-element-row" (click)="confidencial(element)"
+            class="example-element-row" 
             [class.example-expanded-row]="expandedElement === element">
             <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
         </tr>

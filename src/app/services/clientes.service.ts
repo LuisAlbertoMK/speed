@@ -85,6 +85,18 @@ export class ClientesService {
       });
     });
   }
+  consulta_usuario_new(usuario): Promise<object> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `usuarios/${usuario}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      });
+    });
+  }
   consulta_cliente_vehiculos(cliente): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, `clientes/${cliente}/vehiculos`);

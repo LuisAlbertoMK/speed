@@ -3,57 +3,5 @@
 <div class="row">
     <div class="col">
         <button class="btn btn-sm btn-danger" (click)="realizaOperacionesClientes()"> realizaOperacionesClientes</button>
-
-        <ngx-charts-gauge
-            [view]="view"
-            [scheme]="colorScheme"
-            [results]="single"
-            [legend]="legend"
-            [legendTitle]="legendTitle"
-            (select)="onSelect($event)"
-            [animations]="animations"
-            [customColors] = "colorScheme"
-            [valueFormatting]="valueFormatting"
-            (activate)="onActivate($event)"
-            (deactivate)="onDeactivate($event)"
-            >
-            <!-- units="34" -->
-            </ngx-charts-gauge>
-            <pre> {{ infoSelect | json }} </pre>
-        <!-- <app-registra-cita [RegistraCita]="true"></app-registra-cita> -->
-        <!-- <app-mo-refacciones></app-mo-refacciones> -->
-        <!-- <button class="btn btn-danger m-1" (click)="registraMarcas()">Registra marcas</button>
-        <button class="btn btn-danger m-1" (click)="registrasCategorias()">Registra categorias</button> 
-        <button class="btn btn-danger m-1" (click)="servicioEncriptado()">Encriptado </button>
-        <button class="btn btn-danger m-1" (click)="checklist()">checkList </button> 
-        <button class="btn btn-danger m-1" (click)="registraEmpresas()">registraEmpresas </button>
-        <button class="btn btn-danger m-1" (click)="combinarClientesVehiculos()">R V-C </button>
-        <button class="btn btn-danger m-1" (click)="siNoexistenCampos()">verificaInfo</button>
-        <button class="btn btn-danger m-1" (click)="refresh()">refresh</button>
-        <button class="btn btn-danger m-1" (click)="recepcionesChange()">RecepcioneChangeInfo</button>
-        <button class="btn btn-danger m-1" (click)="reemplahistoriales()">reemplahistoriales</button> -->
-        <!-- <button class="btn btn-success m-1" (click)="realizaPDF()">realizaPDFRecepcion</button> -->
-        <!-- <app-mo-refacciones></app-mo-refacciones> -->
-        <!-- <app-realiza-deposito></app-realiza-deposito> -->
-        <!-- <app-data-facturacion-cliente clienteID="-NEvGgxapGc_2IQyfCPQ" (dataEmit)="mirespuesta( $event )"></app-data-facturacion-cliente> -->
-        <!-- <app-cliente  (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente> -->
-        <!-- <app-paquetes (infoPaquete)="infopaquete( $event)"></app-paquetes> -->
-        <!-- <app-clientes-list (dataCliente)="infoCliente ( $event )"></app-clientes-list> -->
-        <!-- <button class="btn btn-sm btn-danger" (click)="construyeNuevos()">construyeNuevos</button> -->
-        <!-- <app-lista-tecnicos (dataTecnico)="infoTecnico ( $event )"></app-lista-tecnicos> -->
-        <!-- <button class="btn btn-sm btn-secondary" (click)="generaClave()">generaClave</button>
-        <input type="text" class="form-control" [value]="claveGenerada"> -->
-        <!-- <button class="btn btn-sm btn-primary" (click)="arreglaInformacionCotizaciones()">Arregla informacion</button> -->
-        <!-- <app-registro-usuario [usuario]="usuarioS"></app-registro-usuario> -->
     </div>
 </div>
-
- <!-- <app-gasto></app-gasto> -->
-<!-- <app-pago></app-pago>  -->
-
-<!-- <app-vehiculo [cliente]="'-ksdfjgndfgn'"></app-vehiculo> -->
-<!-- <app-vehiculo (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo> -->
-
-
-
-

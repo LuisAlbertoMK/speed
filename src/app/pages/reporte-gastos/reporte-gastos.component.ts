@@ -46,9 +46,9 @@ export class ReporteGastosComponent implements OnInit {
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private _export: ExporterService, private _sucursales: SucursalesService, private _cotizaciones: CotizacionesService, private _campos: CamposSystemService) { }
   ROL:string; SUCURSAL:string
 
-  camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce ]
-  metodospago       =   [ ...this._cotizaciones.metodospago]
-  sucursales_array  =   [ ...this._sucursales.lista_en_duro_sucursales]
+  camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce  ]
+  metodospago       =   [ ...this._cotizaciones.metodospago  ]
+  sucursales_array  =   [ ...this._sucursales.lista_en_duro_sucursales  ]
 
   paquete: string = this._campos.paquete
   refaccion: string = this._campos.refaccion

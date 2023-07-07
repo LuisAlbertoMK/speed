@@ -93,9 +93,9 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
         const camposRecu = [...this._publicos.camposCliente(),'vehiculos','fullname']
 
-        const data_ocupada  = (!this.clientes_arr.length) ?  info :  this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
-        this.clientes_arr = data_ocupada
-        this.dataSourceClientes.data = data_ocupada
+        const nueva  = (!this.clientes_arr.length) ?  info :  this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+        this.clientes_arr = nueva
+        this.dataSourceClientes.data = nueva
         this.newPagination('clientes')
       }).catch((error) => {
         // Manejar el error si ocurre

@@ -12,8 +12,12 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import { Route, Router } from '@angular/router';
 
 import { UsuariosService } from 'src/app/services/usuarios.service';
+
+import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword ,onAuthStateChanged,signOut, deleteUser  } from "firebase/auth";
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
+const auth = getAuth();
 
 @Component({
   selector: 'app-registro-cliente',
@@ -24,7 +28,8 @@ export class RegistroClienteComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private _sucursales: SucursalesService, private _clientes: ClientesService, 
-    private _publicos: ServiciosPublicosService,private _auth: AuthService, public _router: Router, private _usuarios: UsuariosService) { }
+    private _publicos: ServiciosPublicosService,private _auth: AuthService, public _router: Router, private _usuarios: UsuariosService,
+    private _security:EncriptadoService) { }
   registroForm: FormGroup
   sucursales_array =  [  ...this._sucursales.lista_en_duro_sucursales  ]
 
@@ -38,6 +43,7 @@ export class RegistroClienteComponent implements OnInit {
     this.consultaCorreos()
     this.crea_formulario_cliente()
     this.generaNO_cliente()
+    this.verifica()
   }
   consultaCorreos(){
               
@@ -144,51 +150,88 @@ export class RegistroClienteComponent implements OnInit {
     
     const recupera_usuario= ['correo','password','sucursal']
     const recupera_cliente = ['nombre','apellidos','correo','password','sucursal','telefono_movil','tipo','no_cliente']
+
+
     this._publicos.mensaje_pregunta('Seguro de registrar usuario').then(({respuesta})=>{
       if (respuesta) {
-        const recuperada_cliente = this._publicos.nuevaRecuperacionData(registroData,recupera_cliente)
-        const recuperada_usuarios = this._publicos.nuevaRecuperacionData(registroData,recupera_usuario)
+        createUserWithEmailAndPassword(auth,registroData['correo'],registroData['password'])
+        .then(({user})=>{
+          // console.log(user);
 
-        recuperada_cliente['no_cliente'] = this.registroForm.get('no_cliente').value
+          const {uid, email } = Object(user)
 
-        recuperada_usuarios['rol'] = 'cliente'
-        recuperada_usuarios['status'] = true
-        recuperada_cliente['status'] = true
-        recuperada_usuarios['usuario'] = `${recuperada_cliente.nombre}`
-        
-        
-        const otra = { email:    recuperada_cliente.correo,password: recuperada_cliente.password,nombre:   recuperada_cliente.usuario }
-        const clave = this._publicos.generaClave()
-        const updates = { 
-          [`clientes/${clave}`]: recuperada_cliente,
-          [`usuarios/${clave}`]: recuperada_usuarios
-         };
-        //  console.log(updates);
-         
-        this._auth.nuevoUsuario(otra).subscribe((token)=>{
-          if (token) {
+          const recuperada_cliente = this._publicos.nuevaRecuperacionData(registroData,recupera_cliente)
+          const recuperada_usuarios = this._publicos.nuevaRecuperacionData(registroData,recupera_usuario)
+
+          let dataSecurity = { sesion: true, status: true }
+
+          const inf_usuario = {...recuperada_usuarios, rol: 'cliente', usuario: recuperada_cliente.nombre}
+          const inf_cliente = {...recuperada_cliente}
+
+          const asiganaData_cliente = ['correo', 'password', 'rol', 'sucursal', 'usuario']
+          let recuperanueva = {...inf_usuario, ...inf_cliente}
+
+          asiganaData_cliente.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(recuperanueva[c]) })
+          // asiganaData_cliente.forEach((c)=>{ console.log(c, recuperanueva[c]);
+          //  })
+
+          const camposFirebase = ['uid','accessToken','refreshToken']
+          camposFirebase.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(user[c]) })
+          
+
+          inf_usuario['status'] = true
+          inf_cliente['status'] = true
+
+          const updates = { [`clientes/${uid}`]: inf_cliente, [`usuarios/${uid}`]: inf_usuario };
+          
             update(ref(db), updates)
-              .then(a=>{
-                this._publicos.swalToast('Se registro usuario')
-                // this._auth.login(otra)
-                setTimeout(()=>{
-                  window.location.href = '/loginv1'
-                },200)
+              .then(()=>{
                 this.registroForm.reset()
+                localStorage.setItem('email',this._security.servicioEncriptado(email))
+                localStorage.setItem('password',this._security.servicioEncriptado(recuperada_cliente['password']))
+                localStorage.setItem('dataSecurity',JSON.stringify(dataSecurity))
+                this.verifica()
               })
               .catch(err=>{
-                this._publicos.swalToastError('Error al registrar usuario')
+                deleteUser(uid).then(()=>{
+                  this._publicos.swalToastError('Error al registrar usuario')
+                })
+                this.verifica()
               })
-          }else{
-            this._publicos.swalToastError('Error al generar token')
-          }
+        })
+        .catch(err=>{
+          // console.log({err});
+          const mensaje = this.codigosErrores(err)
+          this._publicos.swalToastError(mensaje)
         })
       }
     })
-    // Realizar la lógica de registro de usuario
-    // ...
-
-    // Mostrar una alerta de registro exitoso
-    // Swal.fire('Registro Exitoso', 'El usuario ha sido registrado correctamente.', 'success');
+  }
+  verifica(){
+    onAuthStateChanged(auth, async (user) => {
+      if(user){
+        console.log('esta logeado');
+        if (localStorage.getItem('dataSecurity')) {
+          const { sesion, accessToken, status } = this._security.usuarioRol()
+          if(sesion && accessToken) window.location.href = '/inicio'
+        }
+      }else{
+        console.log('sin logeo');
+      }
+    })
+  }
+  codigosErrores(err){
+      const { code } = err
+      let mensaje = ''
+      switch (code) {
+        case 'auth/email-already-in-use':
+          mensaje = 'El correo ingresado esta en uso'
+          break;
+      
+        default:
+          mensaje = 'uknow'
+          break;
+      }
+      return mensaje
   }
 }

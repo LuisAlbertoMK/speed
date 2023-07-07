@@ -37,7 +37,7 @@ export class AuthService {
       returnSecureToken: true
     }
     return this.http.post(`${fire.usuarios}/accounts:signInWithPassword?key=${fire.firebaseConfig.apiKey}`,authData)
-    .pipe(map( resp=>{      
+    .pipe(map( resp=>{
       this.tokenUsuarioTemporal(resp['idToken'])
       return resp
     }))
@@ -63,11 +63,10 @@ export class AuthService {
   }
   private guardarToken(idToken:string){
     // this.userToken = idToken
-    // localStorage.setItem('token',idToken)
     let hoy = new Date()
     hoy.setSeconds(3300)
     localStorage.setItem('expira',hoy.getTime().toString())
-    
+    localStorage.setItem('token',idToken)
   }
   nuevo_exp(){
     let hoy = new Date()
@@ -81,7 +80,6 @@ export class AuthService {
     const { accessToken } = this._security.usuarioRol();
     this.userToken = (accessToken) ? accessToken: ''
     return this.userToken
-    
   }
   estaAutenticado():boolean{
     if (this.userToken.length < 2) {
@@ -106,7 +104,7 @@ export class AuthService {
   refresacarToken(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
 
-    const { refresh_token } = this._security.usuarioRol()
+    const { refreshToken: refresh_token } = this._security.usuarioRol()
 
     this.http.post(`https://securetoken.googleapis.com/v1/token?key=${fire.firebaseConfig.apiKey}`,'',
     {

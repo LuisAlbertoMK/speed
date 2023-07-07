@@ -1,5 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import { Form } from '@angular/forms';
 import {
     child,
     get,
@@ -598,7 +599,7 @@ export class ServiciosPublicosService {
         let mensajeAnswer = { respuesta: false }
         await Swal
             .fire({
-                title: `${mensaje} ?`,
+                title: `¿${mensaje}?`,
                 showDenyButton: false,
                 showCancelButton: true,
                 confirmButtonText: 'Confirmar',
@@ -672,6 +673,19 @@ export class ServiciosPublicosService {
       })
       if (answer.faltantes.length) answer.ok = false 
       answer.faltante_s = answer.faltantes.join(', ')
+      return answer
+    }
+    realizavalidaciones_new(data:object, campos:any[]){
+      const answer = {faltante_s:null, ok:true}
+      let faltantes = []
+
+      campos.forEach((campo)=>{
+        if (campo !== 'costo') {
+          if (!data[campo]) faltantes.push(campo)
+        }
+      })
+      if (faltantes.length) answer.ok = false 
+      answer.faltante_s = faltantes.join(', ')
       return answer
     }
 
@@ -1152,6 +1166,20 @@ export class ServiciosPublicosService {
           return arregloExistente.slice(0, nuevaInformacion.length);
         }
       }
+      // actualizarObjectExistente(obj_existente, obj_nuevo, camposRecupera){
+        
+      // }
+      actualizarObjectExistente(objetoExistente:object, objetoNuevo: object, campos):object {
+        const camposDiferentes = {...objetoExistente};
+      
+        for (const campo of campos) {
+          if (objetoExistente[campo] !== objetoNuevo[campo]) {
+            camposDiferentes[campo] =  objetoNuevo[campo];
+          }
+        }
+        return camposDiferentes
+      }
+      
       
       reporte_cotizaciones_recepciones(arregloCotizaciones){
         const reporte = {total:0, subtotal:0,iva:0}
@@ -1351,6 +1379,11 @@ export class ServiciosPublicosService {
             contadorMinimo,
             arreglo_minimo
           };
+      }
+
+      recuperaDatos(form){
+        const formValue = form.getRawValue();
+        return formValue
       }
       
       

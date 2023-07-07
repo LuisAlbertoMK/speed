@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
-import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
-const db = getDatabase()
-const dbRef = ref(getDatabase());
+
+
 
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,7 +16,11 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { Router } from '@angular/router';
 
-
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import { getAuth,onAuthStateChanged  } from "firebase/auth";
+const db = getDatabase()
+const dbRef = ref(getDatabase());
+const auth = getAuth();
 @Component({
   selector: 'app-miperfil',
   templateUrl: './miperfil.component.html',
@@ -53,30 +56,41 @@ export class MiperfilComponent implements OnInit {
 
 
   editar:boolean = false
-
+  cargando:boolean = true
+  uid: string =  null
   ngOnInit(): void {
     this.rol()
+    this.verifica()
+    
   }
   rol(){
-    const {rol, usuario, sucursal } = this._security.usuarioRol()
-
-    if (rol === this.rol_cliente && usuario) this.obtenerInformacion_cliente(usuario) 
+    const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
+    if (rol === this.rol_cliente && uid) {
+      this.vigila(uid)
+      this.uid = uid
+    }else{
+      this.uid = null
+    }
   }
-  obtenerInformacion_cliente(id:string){
+  vigila(id){
     const starCountRef = ref(db, `clientes/${id}`)
     onValue(starCountRef, async (snapshot) => {
-      const cliente:any = await this._clientes.consulta_cliente_new(id)
-      const {vehiculos} = cliente
-        this.info_cliente = cliente
-
-        const vehiculosnew =  (!this.misVehiculos.length) ? 
-        vehiculos : 
-        this._publicos.actualizarArregloExistente(this.misVehiculos,vehiculos,[...this._vehiculos.camposVehiculo])
-
-        this.misVehiculos = vehiculosnew
-        this.dataSource.data = this.misVehiculos
-        this.newPagination()
+      if (snapshot.exists()) {
+        this.cargando= true
+        this.obtenerInformacion_cliente(id)
+      }
     })
+  }
+  async obtenerInformacion_cliente(id:string){
+    const cliente:any = await this._clientes.consulta_cliente_new(id);
+    this.info_cliente = cliente
+    this.misVehiculos = cliente['vehiculos']
+    
+    this.dataSource.data = this.misVehiculos
+    this.newPagination()
+    this.cargando = false
+    // setTimeout(()=>{  },2000)
+
   }
 
   applyFilter(event: Event) {
@@ -112,5 +126,14 @@ export class MiperfilComponent implements OnInit {
     if (pagina === 'historialCliente-vehiculo')  queryParams = { anterior:'miPerfil', cliente: usuario,vehiculo }
 
     if (pagina) this.router.navigate([`/${pagina}`], {  queryParams });
+  }
+  verifica(){
+    onAuthStateChanged(auth, (user) => {
+      if(user){
+          // this.rol()
+      }else{
+        console.log('sin logeo');
+      }
+    })
   }
 }

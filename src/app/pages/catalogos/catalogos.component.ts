@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit,OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,6 +13,8 @@ import { CatalogosService } from 'src/app/services/catalogos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { EditaElementoComponent } from 'src/app/components/edita-elemento/edita-elemento.component';
 @Component({
   selector: 'app-catalogos',
   templateUrl: './catalogos.component.html',
@@ -29,7 +31,7 @@ const dbRef = ref(getDatabase());
 export class CatalogosComponent implements  OnDestroy, OnInit  {
   
   constructor(private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _cotizaciones: CotizacionesService,
-    private _campos: CamposSystemService, private _catalogos: CatalogosService,
+    private _campos: CamposSystemService, private _catalogos: CatalogosService, private _bottomSheet: MatBottomSheet,
     private _vehiculos: VehiculosService) {     }
 
   camposDesgloce        =  [  ...this._cotizaciones.camposDesgloce    ]
@@ -50,14 +52,14 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
   dataSourceMO = new MatTableDataSource(); //MO
   columnsToDisplayMO = ['index','nombre','precio']; //MO
-  columnsToDisplayWithExpandMO = [...this.columnsToDisplayMO, 'expand'];//MO
+  columnsToDisplayWithExpandMO = [...this.columnsToDisplayMO,'opciones', 'expand'];//MO
   @ViewChild('MOPaginator') paginatorMO: MatPaginator //MO
   @ViewChild('MO') sortMO: MatSort //MO
   expandedElementMO: any | null;
 
   dataSourceRefacciones = new MatTableDataSource(); //MO
   columnsToDisplayRefacciones = ['index','nombre','precio']; //MO
-  columnsToDisplayWithExpandRefacciones = [...this.columnsToDisplayRefacciones, 'expand'];//MO
+  columnsToDisplayWithExpandRefacciones = [...this.columnsToDisplayRefacciones,'opciones', 'expand'];//MO
   @ViewChild('RefaccionesPaginator') paginatorRefacciones: MatPaginator //MO
   @ViewChild('Refacciones') sortRefacciones: MatSort //MO
   expandedElementRefacciones: any | null;
@@ -85,7 +87,9 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     formaPago: '1'
   }
   
-  
+  ///nuevas
+  @Output() datosSeleccionados: EventEmitter<any> = new EventEmitter<any>();
+  elemento_get
   ngOnInit() {
     this.consultaMarcas()
     // this.consultaMO()
@@ -95,23 +99,55 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   ngOnDestroy(): void {
     
   }
+  enviarDatos(item: any) {
+    this.datosSeleccionados.emit(item);
+  }
   async nuevas_consultas(){
     //consultamos las manos de obra y asiganamos para la paginacion de los resultados
-    const mo = await this._catalogos.consulta_mo_new()
-    this.dataSourceMO.data = mo
-    this.newPagination('mo')
+    const starCountRef = ref(db, `manos_obra`)
+    onValue(starCountRef, async (snapshot) => {
+
+      const mo = await this._catalogos.consulta_mo_new()
+
+      const nuevos  = (!this.listaMO.length) ?  mo :  this._publicos. actualizarArregloExistente(this.listaMO, mo,[...this._campos.campos_elemento_mo]);
+      this.listaMO = nuevos
+
+      this.dataSourceMO.data = nuevos
+      this.newPagination('mo')
+    })
+    
 
     //consultamos las refacciones y asiganamos para la paginacion de los resultados
-    const refacciones = await this._catalogos.consulta_refacciones_new()
-    this.dataSourceRefacciones.data = refacciones
-    this.newPagination('refacciones')
+    const starCountRef_refacciones = ref(db, `refacciones`)
+    onValue(starCountRef_refacciones, async (snapshot) => {
+
+      const refacciones = await this._catalogos.consulta_refacciones_new()
+
+      const nuevos  = (!this.listaRefacciones.length) ?  refacciones :  this._publicos. actualizarArregloExistente(this.listaRefacciones, refacciones,[...this._campos.campos_elemento_refacciones]);
+
+      this.listaRefacciones = nuevos
+
+      this.dataSourceRefacciones.data = nuevos
+      this.newPagination('refacciones')
+    })
+    
 
     //consultamos los paquetes y asiganamos para la paginacion de los resultados
-    const paquetes = await this._catalogos.consulta_paquetes_new([...refacciones, ...mo])
-    //filtramos los paquetes que si tengan elementos
-    const filtro_paquetes = paquetes.filter((p) => p.elementos.length);
-    this.dataSourcePaquetes.data = filtro_paquetes
-    this.newPagination('paquetes')
+    const starCountRef_paquetes = ref(db, `paquetes`)
+    onValue(starCountRef_paquetes, async (snapshot) => {
+
+      const paquetes = await this._catalogos.consulta_paquetes_new([...this.listaRefacciones, ...this.listaMO])
+
+      //filtramos los paquetes solo aquellos que tengan elementos 
+      const filtro_paquetes =  paquetes.filter((p) => p.elementos.length);
+
+      const nuevos  = (!this.listaPaquetes_arr.length) ?  filtro_paquetes :  this._publicos. actualizarArregloExistente(this.listaPaquetes_arr, filtro_paquetes,[...this._campos.campos_elemento_paquetes])
+  
+      
+      this.listaPaquetes_arr =  nuevos
+      this.dataSourcePaquetes.data = nuevos
+      this.newPagination('paquetes')
+    })
     
   }
   consultaMarcas(){
@@ -223,6 +259,21 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     this.infoAdicional.elementos = this.elementosDePaqueteNuevo
     this.paqueteForm.reset()
   }
+  //TODO realiza edicion de elemento
+  inicia(){
+    setTimeout(()=>{ this.openBottomSheet(this.elemento_get) },100)
+  }
+  openBottomSheet(valor): void {
+    const bottomSheetRef = this._bottomSheet.open(EditaElementoComponent,{
+      data: valor , panelClass: 'full-width-bottom-sheet'
+    });
+    // bottomSheetRef.afterDismissed().subscribe(() => {
+    //   console.log('Bottom sheet has been dismissed.');
+    // });
+    
+    // bottomSheetRef.dismiss();
+  }
+  //TODO realiza edicion de elemento
   validarCampo(campo: string){
     return this.paqueteForm.get(campo).invalid && this.paqueteForm.get(campo).touched
   }

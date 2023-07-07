@@ -458,7 +458,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             };
             
             update(ref(db), updates).then(()=>{
-              this.recepciones_arr[index]['notificar'] = false 
+              // this.recepciones_arr[index].notificar = false 
             });
           })
         }

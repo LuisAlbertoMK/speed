@@ -71,3 +71,7 @@ tr.anima:hover{
 tr.anima{
   height: 35px;
 }  
+
+.full-width-bottom-sheet {
+  width: 100%;
+}

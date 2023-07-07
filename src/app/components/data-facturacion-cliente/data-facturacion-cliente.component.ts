@@ -23,7 +23,8 @@ export class DataFacturacionClienteComponent implements OnInit {
   
   formFacturacion: FormGroup
   faltantes:String
-  rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-V1-9][A-Z\d]{0,2}$/;
+  // rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-V1-9][A-Z\d]{0,2}$/;
+  rfcPattern = /^(?!^(\d{10})$)^([A-ZÑ&]{3,4})(\d{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[A-Z\d]{2}\d{1}$/;
 
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, private _security:EncriptadoService) { 
     this.dataEmit = new EventEmitter()

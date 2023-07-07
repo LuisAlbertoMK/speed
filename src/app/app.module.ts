@@ -140,6 +140,8 @@ import { EstadisticasClienteComponent } from './pages/estadisticas-cliente/estad
 import { ComentariosClienteComponent } from './pages/comentarios-cliente/comentarios-cliente.component';
 import { HistorialClienteVehiculoComponent } from './pages/historial-cliente-vehiculo/historial-cliente-vehiculo.component';
 import { FacturacionComponent } from './pages/facturacion/facturacion.component';
+import { EditaElementoComponent } from './components/edita-elemento/edita-elemento.component';
+import { UpdateUserComponent } from './components/update-user/update-user.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -208,7 +210,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     EstadisticasClienteComponent,
     ComentariosClienteComponent,
     HistorialClienteVehiculoComponent,
-    FacturacionComponent
+    FacturacionComponent,
+    EditaElementoComponent,
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,

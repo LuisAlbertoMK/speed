@@ -55,16 +55,22 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="emiteFalse()"></button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-5">
-          <ng-container *ngIf="!form_cliente.controls['id'].value; else elseCliente">
+          <ng-container *ngIf="!form_cliente.controls['uid'].value; else elseCliente">
             <h1 class="text-primary"> Registro cliente</h1>
           </ng-container>
           <ng-template #elseCliente>
             <h1 class="text-success"> Actualiza cliente</h1>
+            <p>
+              <span class="text-danger fs-6">La actualización de correo y contraseña no aplica para información general</span>
+            </p>
+            <p>
+              <span class="text-info fs-6">para modificar correo y contraseña click Aqui</span>
+            </p>
           </ng-template>
           
         </div>
       </div>
-      <div class="row mb-2">
+      <div class="row mb-2" *ngIf="!data">
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
           <span class="mr-1 fs-6">Usar correo <strong class="text-danger">{{correo_utilizado}}</strong>:</span>
@@ -82,6 +88,7 @@
         </div>
       </div>
   
+      <!-- <button class="btn btn-danger" (click)="constverifica()">post</button> -->
      
       <form (ngSubmit)="guardarCliente()" [formGroup]="form_cliente">
         <div class="row text-start">
@@ -124,7 +131,7 @@
                         </button>
                       </ng-container>
                       <ng-template #elseTemplate>
-                        <button [disabled]="form_cliente.controls['tipo'].value === 'particular' "
+                        <button [disabled]="form_cliente.controls['tipo'].value === 'particular'" *ngIf="ROL !== 'cliente'"
                           class="btn btn-sm btn-outline-danger" type="button" (click)="registraEmpresaShow = true">
                           <i class="fa fa-layer-plus"></i>
                         </button>
@@ -190,7 +197,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="this.correo_utilizado === 'personal'">
+          <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="correo_utilizado === 'personal' && !data">
             <div class="mb-1 row">
               <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
@@ -248,8 +255,8 @@
         <div class="row text-center">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
             <!--  -->
-            <button  data-bs-dismiss="modal" type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1"
-              [disabled]="(telefonoExistente || correoExistente || !form_cliente.valid || !empresa_valida) ? 'disabled': null">Guardar</button>
+            <button  type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1"
+              [disabled]="(telefonoExistente || correoExistente || !empresa_valida) ? 'disabled': null">Guardar</button>
             <button type="button" [disabled]="id" class="btn btn-sm btn-danger col-lg-4 col-md-4 col-sm-6 col-6 m-1"
               (click)="resetForm()">Limpiar</button>
           </div>
