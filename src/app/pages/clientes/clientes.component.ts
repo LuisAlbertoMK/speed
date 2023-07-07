@@ -184,7 +184,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       }
       const otra = { email: data.correo, password: dataSave.password, nombre: data.nombre }
       const updates = { [`usuarios/${data.id}`]: dataSave, [`clientes/${data.id}/usuario`]:true };
-      //  console.log(updates);
+       console.log(updates);
         this._auth.nuevoUsuario(otra).subscribe((token)=>{
           if (token) {
             update(ref(db), updates)

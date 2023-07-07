@@ -108,13 +108,13 @@ export class Loginv1Component implements OnInit {
       if(user){
         // console.log('esta logeado');
         console.log(user);
-        user.providerData.forEach((profile) => {
-          console.log("Sign-in provider: " + profile.providerId);
-          console.log("  Provider-specific UID: " + profile.uid);
-          console.log("  Name: " + profile.displayName);
-          console.log("  Email: " + profile.email);
-          console.log("  Photo URL: " + profile.photoURL);
-        });
+        // user.providerData.forEach((profile) => {
+        //   console.log("Sign-in provider: " + profile.providerId);
+        //   console.log("  Provider-specific UID: " + profile.uid);
+        //   console.log("  Name: " + profile.displayName);
+        //   console.log("  Email: " + profile.email);
+        //   console.log("  Photo URL: " + profile.photoURL);
+        // });
 
         let dataSecurity = { sesion: true }
 
@@ -128,10 +128,10 @@ export class Loginv1Component implements OnInit {
         if (!usuario_econtrado['correo']) {
           console.log('este usuario necesita otro tipo de busqueda');
           const usuarios = await this._usuarios.consulta_usuarios_correos()
-          console.log(usuarios);
+          // console.log(usuarios);
           
           usuario_econtrado = usuarios.find(u=>String(u.correo).toLowerCase() === String(email).toLowerCase())
-          console.log(usuario_econtrado);
+          // console.log(usuario_econtrado);
           
         }
         // console.log(usuario_econtrado);
@@ -139,6 +139,9 @@ export class Loginv1Component implements OnInit {
           dataSecurity['status'] = usuario_econtrado['status']
           asiganaData_usuario.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(usuario_econtrado[c]) })
           camposFirebase.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(user[c]) })
+          if (usuario_econtrado['id']) {
+            dataSecurity['uid'] = this._security.servicioEncriptado(usuario_econtrado['id'])
+          }
           localStorage.setItem('email',this._security.servicioEncriptado(email))
           localStorage.setItem('password',this._security.servicioEncriptado(newpass))
           localStorage.setItem('dataSecurity',JSON.stringify(dataSecurity))
