@@ -37,6 +37,10 @@ col-lg-12 col-md-12 col-sm-12 col-12
 
 .col-lg-12.col-md-12.col-sm-12.col-12
 
+const closeButton = document.querySelector('[data-bs-dismiss="modal"]');
+        if (closeButton) {
+          closeButton.dispatchEvent(new Event('click'));
+        }
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 const db = getDatabase()

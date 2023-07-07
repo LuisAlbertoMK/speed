@@ -41,6 +41,22 @@ export class ClientesService {
   tipos_cliente= ['todos','flotilla','particular']
   sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
 
+  campos_cliente = ['no_cliente','nombre','apellidos','correo','tipo','sucursal','telefono_movil']
+  campos_permitidos_Actualizar = ['nombre','apellidos','tipo','telefono_movil']
+  campos_opcionales = ['correo_sec','telefono_fijo']
+  campos_permitidos_new_register = [...this.campos_cliente,...this.campos_opcionales]
+  campos_show_validaciones = [
+    {valor: 'no_cliente', show:'# Cliente' },
+    {valor: 'telefono_movil', show:'Tel. cel.' },
+    {valor: 'telefono_fijo', show:'Tel. Fijo' },
+    {valor: 'nombre', show:'Nombre' },
+    {valor: 'apellidos', show:'Apellidos' },
+    {valor: 'sucursal', show:'Sucursal' },
+    {valor: 'correo_sec', show:'Correo adicional' },
+    {valor: 'empresa', show:'Empresa' },
+    {valor: 'correo', show:'Correo' },
+  ]
+
   constructor(private http: HttpClient, private _publicos:ServiciosPublicosService, private _sucursales: SucursalesService,
     private _vehiculos: VehiculosService,
     private _mail: EmailsService) { }

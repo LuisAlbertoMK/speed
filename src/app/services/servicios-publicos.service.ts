@@ -1385,6 +1385,15 @@ export class ServiciosPublicosService {
         const formValue = form.getRawValue();
         return formValue
       }
-      
+      reemplaza_strig(cadena:string, arreglo:any[]){
+        let cadenanew = null
+        if (cadena.length) {
+          cadenanew = cadena
+          arreglo.forEach(r=>{
+            cadenanew = cadenanew.replace(r['valor'],r.show)
+          })
+        }
+        return cadenanew
+      }
       
  }

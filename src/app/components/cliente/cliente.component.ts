@@ -70,15 +70,13 @@ export class ClienteComponent implements OnInit {
     filteredOptions_empresa: Observable<string[]>;
   
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
-    
+    faltante_s:string
   ngOnInit(): void {
     this.roles()
     this.crearFormularioClientes()
     this.crearFormEmpresa()
     this.perteneceA()
-    this.automaticos_empresa()
-    console.log(this.data);
-    
+    this.automaticos_empresa()    
   }
   automaticos_empresa(){
     this.filteredOptions_empresa = this.myControl_empresa.valueChanges.pipe(
@@ -123,6 +121,7 @@ export class ClienteComponent implements OnInit {
       telefono_movil: this.data['telefono_movil'],
       uid: this.id,
       correo_sec: this.data['correo_sec'],
+      correo: this.data['correo'],
       telefono_fijo: this.data['telefono_fijo'],
       // correo: this.data['correo'],
     })
@@ -155,7 +154,7 @@ export class ClienteComponent implements OnInit {
     }
     this.form_cliente = this.fb.group({
       uid:['',[]],
-      no_cliente:['',[Validators.required]],
+      no_cliente:['',[Validators.required,Validators.minLength(14), Validators.maxLength(14)]],
       nombre:['',[Validators.required,Validators.minLength(3), Validators.maxLength(30)]],
       apellidos:['',[Validators.required,Validators.minLength(3), Validators.maxLength(30)]],
       correo:['',[Validators.required,Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
@@ -276,40 +275,70 @@ export class ClienteComponent implements OnInit {
   
   async guardarCliente(){
     const info_get = this._publicos.recuperaDatos(this.form_cliente);
-    console.log(info_get);
+    // console.log(info_get);
     
+    const campos_cliente                 = [ ...this._clientes.campos_cliente ]
+    const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]
+    const campos_opcionales              = [ ...this._clientes.campos_opcionales ]
+    const campos_permitidos_new_register = [ ...campos_cliente,...campos_opcionales ]
+
+    const saveInfo = {};
+
+    campos_cliente.forEach(campo=>{
+      saveInfo[campo] = info_get[campo]?.trim()
+    });
+    campos_opcionales.forEach(campo=>{
+      saveInfo[campo] = (info_get[campo]) ? String(info_get[campo]).trim(): null;
+    });
+
+    if(info_get.tipo  === 'flotilla') {
+      campos_cliente.push('empresa'); 
+      campos_permitidos_Actualizar.push('empresa');
+      campos_permitidos_new_register.push('empresa');
+    }
+
+    const { ok, faltante_s } = this._publicos.realizavalidaciones_new(info_get,campos_cliente)
     
-
-    const campos = ['no_cliente','nombre','apellidos','correo','tipo','sucursal','telefono_movil']
-
-    const saveInfo = {
-      no_cliente: info_get.no_cliente?.trim(),
-      nombre: info_get.nombre?.trim(),
-      apellidos: info_get.apellidos?.trim(),
-      fullname: `${info_get.nombre} ${info_get.apellidos}`.trim(),
-      telefono_movil: info_get.telefono_movil?.trim(),
-      tipo: info_get.tipo?.trim(),
-      correo: info_get.correo?.trim(),
-      sucursal: info_get.sucursal?.trim(),
-  };
-
-  (info_get['correo_sec']) ? saveInfo['correo_sec'] = String(info_get['correo_sec']).trim(): null;
-  (info_get['telefono_fijo']) ? saveInfo['telefono_fijo'] = String(info_get['telefono_fijo']).trim(): null;
-  (info_get['empresa']) ? saveInfo['empresa'] = String(info_get['empresa']).trim(): null;
-
-    if(info_get.tipo  === 'flotilla') campos.push('empresa')
-
-    const { ok, faltante_s } = this._publicos.realizavalidaciones_new(info_get,campos)
-
+    this.faltante_s = this._publicos.reemplaza_strig(faltante_s,[...this._clientes.campos_show_validaciones])
+    // console.log();
     
     if (ok && !faltante_s) {
+      const updates = {};
+      const mensaje = (this.id) ? 'Actualización de cliente correcto!!': 'Registro de cliente correcto!!'
       if (this.id) {
-        console.log('actualiza ...');
+        const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_Actualizar);
+        
+        campos_permitidos_Actualizar.forEach(campo=>{
+          if (informacion_recuperada [campo] !== this.data[campo]) {
+            updates[`clientes/${this.id}/${campo}`] = informacion_recuperada [campo]
+          }
+        })
       }else{
-        console.log('registra nuevo cliente ...');
+
+        const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_new_register);
+        const nueva_clave_generada = this._publicos.generaClave()
+
+        campos_permitidos_new_register.forEach(campo=>{
+          if (informacion_recuperada [campo]) {
+            updates[`clientes/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
+          }
+        })
+        updates[`clientes/${ nueva_clave_generada }/status`] = true
       }
-    }else{
-      console.log(faltante_s);
+      const existen_campos_update = Object.keys(updates)
+      if (existen_campos_update.length) {
+        try {
+          await update(ref(db), updates);
+          this._publicos.mensajeSwal(`${mensaje}`, true, `...`);
+          this.resetForm();
+          this.heroeSlec.emit({ cliente: '', status: true });
+        } catch (err) {
+          this.heroeSlec.emit(Object({ cliente: null, status: false }));
+          this._publicos.mensajeSwalError(`Ocurrió un error`, true, `...`);
+        }
+      }else{
+        this.heroeSlec.emit( {cliente:'', status: true})
+      }
     }
   }
   emiteFalse(){
@@ -327,65 +356,12 @@ export class ClienteComponent implements OnInit {
       correo_sec:''
     })
   }
-  //sucursales
-  // listaSucursales(){
-  //   console.log(this.sucursales_array);
-    
-  //   this._sucursales.consultaSucursales_new().then((sucursales) => {
-  //     this.Sucursales = sucursales
-  //     console.log(sucursales);
-  //   }).catch((error) => {
-  //     // Manejar el error si ocurre
-  //   });
-  // }
-  //empresas
   listadoEmpresas(sucursal){
     const starCountRef = ref(db, `empresas/${sucursal}`)
     onValue(starCountRef, async (snapshot) => {
       const empresas = await this._empresas.consulta_sucursales_new(sucursal)
       this.empresasSucursal = empresas
     })
-    
-    // const starCountRef = ref(db, `empresas`)
-    // onValue(starCountRef, (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     this._clientes.getEmpresas().then(({contenido, data})=>{
-    //       if (contenido) {
-    //         let empre = []
-    //         const sucursales = Object.keys(data)
-    //         sucursales.forEach(element => {
-    //           const empresas = this._publicos.crearArreglo2(data[element])
-    //           empresas.map(emp=>{
-    //             const temp = {
-    //               empresa: emp['empresa'],
-    //               id: emp['id'],
-    //               sucursal: element
-    //             }
-    //             empre.push(temp)
-    //           })
-    //         });
-    //         this.empresaSelect = this.form_cliente.controls['empresa'].value
-    //         if (this.sucursal ==='Todas') {
-    //           this.empresasSucursal = this._publicos.ordernarPorCampo(empre,'empresa')
-    //         }else{
-    //           const nuevos = empre.filter(em=>em['sucursal'] === this.sucursal)
-    //           this.empresasSucursal = this._publicos.ordernarPorCampo(nuevos,'empresa')
-    //         }
-            
-            
-    //         setTimeout(() => {
-    //           const existeEmpresa = empre.find(o=>o['id'] === this.empresaSelect)
-    //           if (existeEmpresa) {
-    //             this.form_cliente.controls['empresa'].setValue(this.empresaSelect) 
-    //           }else{
-    //             this.form_cliente.controls['empresa'].setValue('')
-    //             this.empresaValida()
-    //           }
-    //         }, 200);
-    //       }
-    //     })
-    //   } 
-    // })
     
   }
   limpiarFormEmpresa(){

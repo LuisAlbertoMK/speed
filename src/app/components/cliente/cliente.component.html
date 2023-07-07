@@ -52,7 +52,7 @@
         </ng-container>
   
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="emiteFalse()"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-5">
           <ng-container *ngIf="!form_cliente.controls['uid'].value; else elseCliente">
@@ -67,11 +67,9 @@
               <span class="text-info fs-6">para modificar correo y contraseña click Aqui</span>
             </p>
           </ng-template>
-          
         </div>
       </div>
-      <div class="row mb-2" *ngIf="!data">
-        
+      <div class="row mb-2" *ngIf="!data && !id">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
           <span class="mr-1 fs-6">Usar correo <strong class="text-danger">{{correo_utilizado}}</strong>:</span>
           <mat-radio-group
@@ -87,9 +85,6 @@
           </mat-radio-group>
         </div>
       </div>
-  
-      <!-- <button class="btn btn-danger" (click)="constverifica()">post</button> -->
-     
       <form (ngSubmit)="guardarCliente()" [formGroup]="form_cliente">
         <div class="row text-start">
           <div class="col-lg-6 col-md-6 col-sm-12">
@@ -121,7 +116,6 @@
                     <ng-template #elseEmpresas>
                     </ng-template>
                   </select>
-                  <!-- <ng-container *ngIf="SUCURSAL === 'Todas' && form_cliente.controls['sucursal'].value"> -->
                     <ng-container *ngIf="form_cliente.controls['tipo'].value === 'flotilla' ">
                       <ng-container *ngIf="muestraFormEmpresa; else elseTemplate">
                         <button [disabled]="form_cliente.controls['tipo'].value === 'particular' "
@@ -164,7 +158,7 @@
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="no_cliente" formControlName="no_cliente"
                   [class.is-invalid]="validarCampo('no_cliente')" [attr.disabled]="true">
-                <input type="hidden" formControlName="id" class="form-control form-control-sm">
+                <input type="hidden" formControlName="uid" class="form-control form-control-sm">
                 <small *ngIf="validarCampo('no_cliente')" class="text-danger">
                   campo requerido
                 </small>
@@ -262,6 +256,14 @@
           </div>
         </div>
       </form>
+      <ng-container *ngIf="faltante_s">
+        <div class="row mt-2">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
+            Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
+          </div>
+        </div>
+      </ng-container>
+      
     </div>
   </div>
 </ng-template>

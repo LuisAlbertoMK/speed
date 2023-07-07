@@ -12,7 +12,7 @@
 </div>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-    <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalNewUser" (click)="cliente = null">
+    <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalNewUser" (click)="cliente = null; datCliente = null">
       <i class="fa fa-user-plus"></i>
     </button>
     <button class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cliente = null; vehiculo= null">
@@ -172,6 +172,9 @@
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
     <div class="modal-content">
       <div class="modal-body">
+        <!-- <pre>
+          {{datCliente | json}}
+        </pre> -->
         <ng-container *ngIf="datCliente; else elseNewCliente">
           <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
         </ng-container>
@@ -187,7 +190,7 @@
   </div>
 </div>
 <div class="modal fade" id="modalNewVehiculo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
     <div class="modal-content">

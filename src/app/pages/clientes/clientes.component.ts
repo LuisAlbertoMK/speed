@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -19,6 +19,9 @@ import { CamposSystemService } from 'src/app/services/campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 export interface User {nombre: string}
+
+
+
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
@@ -58,6 +61,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     datCliente:any
     cliente:string = null
     vehiculo:string = null
+
   ngOnInit() {
     this.rol()
   }
@@ -88,6 +92,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     this.cargandoInformacion = true
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, () => {
+      
       this._clientes.consulta_clientes_new().then((clientes) => {
         const info = (this.SUCURSAL !=='Todas') ? clientes.filter(c=>c.sucursal === this.SUCURSAL) : clientes
 
@@ -115,9 +120,19 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     }
   }
   clientesInfo(info:any){
+    // this.myModal.nativeElement.classList.remove('show');
+    // this.myModal.nativeElement.classList.add('hide');
+
+    
+    
+    
     const {cliente, status} = info
     if(!info.CerrarModal){
       if (status) {
+        const closeButton = document.querySelector('[data-bs-dismiss="modal"]');
+        if (closeButton) {
+          closeButton.dispatchEvent(new Event('click'));
+        }
         this._publicos.mensajeCorrecto('registro de cliente correcto')
       }else{
         this._publicos.mensajeSwalError('Ocurrio un error')
