@@ -8,8 +8,6 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { EncriptadoService } from 'src/app/services/encriptado.service';
-import { ServiciosService } from '../../services/servicios.service';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { CamposSystemService } from '../../services/campos-system.service';
@@ -75,24 +73,22 @@ export class HistorialVehiculoComponent implements OnInit {
 
   rol(){
     this.rutaActiva.queryParams.subscribe(params => {
-      const vehiculo = params['vehiculo'];
-      const cliente = params['cliente'];
-      const anterior = params['anterior'];
+      const {vehiculo, cliente, anterior} = params
       if(vehiculo && cliente){
-        this.acciones(vehiculo, cliente)
         this.enrutamiento.vehiculo = vehiculo
         this.enrutamiento.cliente = cliente
+        this.acciones(vehiculo)
       }
       this.enrutamiento.anterior = anterior
+      
     });
   }
   regresar(){
     this.router.navigate([`/${this.enrutamiento.anterior}`], { 
-      queryParams: 
-      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+      queryParams: Object(this.enrutamiento)
     });
   }
-  acciones(vehiculo, cliente){
+  acciones(vehiculo){
     const idVehiculo = vehiculo
     this._cotizaciones.consulta_cotizaciones_new().then((cotizaciones)=>{
       const mis_cotizaciones = cotizaciones.filter(c=>c.vehiculo.id === idVehiculo)

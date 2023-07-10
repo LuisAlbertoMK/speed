@@ -90,10 +90,7 @@ export class MiperfilComponent implements OnInit {
     this.dataSource.data = this.misVehiculos
     this.newPagination()
     this.cargando = false
-    // setTimeout(()=>{  },2000)
-
   }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -121,10 +118,10 @@ export class MiperfilComponent implements OnInit {
     
   }
   irPagina(pagina,vehiculo){
-    const { usuario } = this._security.usuarioRol()
+    const { uid } = this._security.usuarioRol()
     let queryParams = {}
     
-    if (pagina === 'historialCliente-vehiculo')  queryParams = { anterior:'miPerfil', cliente: usuario,vehiculo }
+    if (pagina === 'historialCliente-vehiculo')  queryParams = { anterior:'miPerfil', cliente: uid,vehiculo }
 
     if (pagina) this.router.navigate([`/${pagina}`], {  queryParams });
   }

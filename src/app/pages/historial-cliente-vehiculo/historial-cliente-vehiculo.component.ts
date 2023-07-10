@@ -90,9 +90,7 @@ export class HistorialClienteVehiculoComponent implements OnInit {
   }
   regresar(){
     const { anterior } = this.enrutamiento
-    this.router.navigate([`/${anterior}`], { 
-      queryParams: {}
-    });
+    this.router.navigate([`/${anterior}`], { queryParams: {} });
   }
 
   async cotizaciones_get(cliente, vehiculo){

@@ -90,7 +90,6 @@ export class HistorialClienteComponent implements OnInit {
     reporteHistorial = {reporteCotizaciones:0,reporteRecepciones:0}
     rutaAnterior:null
     idCliente:string
-    rutaActual: string
     enrutamiento = {cliente:'', anterior:''}
   async ngOnInit() {
     this.rol()
@@ -111,13 +110,8 @@ export class HistorialClienteComponent implements OnInit {
 
     this.ROL = rol
     this.SUCURSAL = sucursal
-
-    this.rutaActual = this.router.url;
-    // console.log('Ruta anterior:', rutaActual);
     this.rutaActiva.queryParams.subscribe(params => {
-      const cliente = params['cliente'];
-      const anterior = params['anterior'];
-
+      const {cliente, anterior} = params
       if(cliente){
         this.enrutamiento.cliente = cliente
         this.acciones(cliente)
