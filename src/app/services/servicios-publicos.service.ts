@@ -14,6 +14,7 @@ import {
     push
 } from "firebase/database";
 import Swal from 'sweetalert2';
+import { CotizacionesService } from './cotizaciones.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -60,6 +61,21 @@ export class ServiciosPublicosService {
     ]
     constructor(private http : HttpClient) {}
     url: string
+    camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refacciones_v','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
+    camposReporte_show2 = {
+      mo: 0,
+      // refacciones_a: 0,
+      refacciones_v: 0,
+      sobrescrito: 0,
+      // sobrescrito_mo: 0,
+      // sobrescrito_refaccion: 0,
+      // sobrescrito_paquetes: 0,
+      meses: 0,
+      descuento: 0,
+      iva: 0,
+      subtotal: 0,
+      total: 0,
+    }
     soloNumeros(evt){
         var code = (evt.which) ? evt.which : evt.keyCode;
     
@@ -1394,6 +1410,26 @@ export class ServiciosPublicosService {
           })
         }
         return cadenanew
+      }
+      obtener_ticketPromedioFinal(arreglo:any[]){
+        let aqui, ticketGeneral = 0
+
+        const reporteSum = {...this.camposReporte_show2};
+        arreglo.forEach((coti) => {
+
+          const { reporte } = coti;
+          const { total } = reporte
+          ticketGeneral += total
+
+            this.camposReporte.forEach((c) => {
+              reporteSum[c] += Number(reporte[c]);
+            });
+            // aqui  = {  servicios_totales: arreglo.length,ticketPromedio:0, reporte: { ...reporteSum }, ticketGeneral };
+            aqui  = {  servicios_totales: arreglo.length,ticketPromedio:0, ticketGeneral };
+            aqui.ticketPromedio = aqui.ticketGeneral / aqui.servicios_totales
+            
+        });
+        return aqui
       }
       
  }

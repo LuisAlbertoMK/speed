@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-import { SucursalesService } from 'src/app/services/sucursales.service';
-import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
@@ -23,6 +21,7 @@ import { CamposSystemService } from 'src/app/services/campos-system.service';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-estadisticas-cliente',
   templateUrl: './estadisticas-cliente.component.html',
@@ -58,6 +57,8 @@ export class EstadisticasClienteComponent implements OnInit {
   campos_estadisticas = { ticketPromedioFinal:0 ,servicios_gen:0,gasto_gen:0 }
 
   clavesVehiculos = []
+  calves_vehiculos_new = []
+  vehiculos_new = []
 
   dataSource = new MatTableDataSource(); //elementos
   elementos = ['placas','marca','modelo','categoria','anio']; //elementos
@@ -66,8 +67,9 @@ export class EstadisticasClienteComponent implements OnInit {
   @ViewChild('cotizacionesPaginator') paginator: MatPaginator //elementos
   @ViewChild('cotizaciones') sort: MatSort //elementos
 
+
+  recepciones_generales = []
   ///variables para las estadisticas
-  ;
   infoSelect = {value: 0, name:'--------',contador: 0,arreglo:[]}
   view: [number, number] = [800, 500];
     legend_general: boolean = false;
@@ -86,20 +88,45 @@ export class EstadisticasClienteComponent implements OnInit {
       domain: ['#3574FA', '#FF8623', '#a8385d', '#5ca04a']
     };
 
+    //grafica comparativa
+    single = []
+    view_comparativa: [number, number] = [500, 200];
+    clonado_busqueda = []
+    infoSelect_busqueda = {value: 0, name:'--------',contador: 0,arreglo:[]}
+    // options
+      gradient: boolean = true;
+      showLegend: boolean = true;
+      showLabels: boolean = true;
+      isDoughnut: boolean = false;
+      // legendPosition: string = 'below';
+    
+      // colorScheme = {
+      //   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      // };
+      muestra_busqueda:string
+
   seleciona = [
-    'Ticket general',
-    'Más caro',
-    'Ticket promedio',
-    'Más barato',
+    'Monto total invertido',
+    'Monto mas grande en una orden',
+    'Ticket promedio servicios',
+    'Monto mas pequeño en en servicios',
   ]
   
+  range_busqueda = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
+
+  fechas_busqueda = {inicio: this._publicos.resetearHoras(new Date()), final: this._publicos.resetearHoras(new Date())}
+
+
 
   ngOnInit(): void {
     this.rol()
   }
   rol(){
   
-    const { rol, sucursal,uid } = this._security.usuarioRol()
+    const { rol,uid } = this._security.usuarioRol()
     
     if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
   }
@@ -109,9 +136,11 @@ export class EstadisticasClienteComponent implements OnInit {
     onValue(starCountRef_recepciones, async (snapshot) => {
       const vehiculos = await this._clientes.consulta_cliente_vehiculos(cliente)
       const vehiculos_ids:any[] = vehiculos.map(c=> { return c.id })
+      this.calves_vehiculos_new = vehiculos_ids
+      this.vehiculos_new = vehiculos
       const recepciones = await this._servicios.consulta_recepciones_new();
-      
       const recepciones_filter = recepciones.filter((c) => c.cliente.id === cliente);
+      this.recepciones_generales = recepciones_filter
       let ticketGeneral = 0
       
       const servicios_gen = recepciones_filter.length, info = {};
@@ -131,6 +160,7 @@ export class EstadisticasClienteComponent implements OnInit {
           }
         });
       });
+      
       this.clavesVehiculos = this._publicos.crearArreglo2(info)
       this.clavesVehiculos.map(coti=>{
         const  {data} = coti
@@ -141,6 +171,8 @@ export class EstadisticasClienteComponent implements OnInit {
         coti['searchAnio'] = data.anio
         ticketGeneral += Number(coti.reporte['total'])
       })
+      // console.log(this.clavesVehiculos);
+      
 
       const { maximo,no_maximo, contadorMaximo,arreglo_maximo, minimo, no_minimo,contadorMinimo,arreglo_minimo} = this._publicos.obtenerValorMaximoMinimo(recepciones_filter)
      
@@ -154,26 +186,26 @@ export class EstadisticasClienteComponent implements OnInit {
       
       this.clonado = [
         {
-          name: "Ticket general",
+          name: "Monto total invertido",
           value: ticketGeneral,
           contador: 0,
           arreglo:[]
         },
         {
-          name: "Más caro",
+          name: "Monto mas grande en una orden",
           value: maximo,
           no_os: no_maximo,
           contador: contadorMaximo,
           arreglo: arreglo_maximo
         },
         {
-          name: "Ticket promedio",
+          name: "Ticket promedio servicios",
           value: ticketGeneral / servicios_gen,
           contador: 0,
           arreglo:[]
         },
         {
-          name: "Más barato",
+          name: "Monto mas pequeño en en servicios",
           value: minimo,
           no_os: no_minimo,
           contador: contadorMinimo,
@@ -242,6 +274,92 @@ export class EstadisticasClienteComponent implements OnInit {
     const formattedValue = `$ ${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
     return formattedValue;
     // return formattedValue;
+  }
+  onSelect_busqueda(event){
+    // console.log(event);
+    
+    if (event) {
+      const busqueda = (typeof event === 'object') ? event.name : event
+      this.infoSelect_busqueda  = this.clonado_busqueda.find(c=>c.name === busqueda)
+      // console.log('aqui');
+      const encontrado = this.seleciona.find(c=>c === busqueda)
+      // console.log(encontrado);
+      this.muestra_busqueda = encontrado
+      this.cambiosFechas()
+      
+    }else{
+      this.infoSelect_busqueda = {value: 0, name:'--------',contador: 0,arreglo:[]}
+    }
+    // console.log(this.infoSelect_busqueda);
+    
+  }
+  cambiosFechas(){
+
+    const {start, end} = this.range_busqueda.value
+    if (start && end && (start['_d'] && end['_d'] ) && this.muestra_busqueda) {
+      
+      // console.log('si es fecha');
+      // console.log(this.muestra_busqueda);
+      
+      const fechaAsigan = {inicio: this._publicos.resetearHoras(start['_d']), final: this._publicos.resetearHoras(end['_d'])}
+      this.fechas_busqueda = fechaAsigan
+      // console.log(this.fechas_busqueda);
+      // console.log(this.recepciones_generales);
+      const filtro_entregado = 
+      // this.recepciones_generales.filter(
+      //   r=>r.status === 'entregado' && (fechaAsigan.inicio >= r.fechaEntregado && fechaAsigan.final <= r.fechaEntregado)
+      // )
+       this.recepciones_generales.filter(r => {
+        const fechaEntregado = new Date(r.fechaEntregado);
+        return r.status === 'entregado' && fechaEntregado >= fechaAsigan.inicio && fechaEntregado <= fechaAsigan.final;
+      });
+      //TODO CONTINUAR CON LA MUESTRA DE INFORMACION EN ESTADISTICAS DE CLIENTE
+      // console.log(filtro_entregado);
+      let pertenecientes = {}
+      const clonar = []
+      this.calves_vehiculos_new.forEach(c=>{
+        const recepciones       = filtro_entregado.filter(re=>re.vehiculo.id === c)
+        const max_min           = this._publicos.obtenerValorMaximoMinimo(recepciones)
+        const data_vehiculo     = this.vehiculos_new.find(v=>v.id === c)
+        const {ticketGeneral, ticketPromedio}= this._publicos.obtener_ticketPromedioFinal(recepciones)
+
+        let ocupado, contador=0, arreglo = [], servicios = recepciones.length
+        switch (this.muestra_busqueda) {
+          case 'Monto total invertido':
+            ocupado = ticketGeneral
+            break;
+          case 'Monto mas grande en una orden':
+            ocupado = max_min.maximo
+            arreglo = max_min.arreglo_maximo
+            contador = max_min.contadorMaximo
+            break;
+          case 'Ticket promedio servicios':
+            ocupado = ticketPromedio
+            break;
+          case 'Monto mas pequeño en en servicios':
+            ocupado = max_min.minimo
+            arreglo = max_min.arreglo_minimo
+            contador = max_min.contadorMinimo
+            break;
+        
+          default:
+            break;
+        }
+        const objeto =  {data_max_min: max_min, vehiculo: data_vehiculo}    
+        pertenecientes[c] = Object(objeto)
+        
+        clonar.push(Object({name: ' '+String(data_vehiculo.placas).toUpperCase(), value: ocupado, contador, arreglo, servicios_totales: servicios}))
+      })
+      this.clonado_busqueda = [...clonar]
+      this.single = [...clonar]
+      // console.log(pertenecientes);
+      // console.log(this.single);
+      
+      
+    }else{
+      // console.log('no es fecha');
+      
+    }
   }
 
 

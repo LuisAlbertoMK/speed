@@ -1,5 +1,5 @@
 
 git add .
-git commit -m "soluciones de 07072023-2"
+git commit -m "Modirifiacion estadisticas cliente, comparativo de vehiculos"
 git push -u origin main
 

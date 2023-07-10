@@ -13,82 +13,135 @@
     </div>
   </div>
 <div class="row">
-  
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-    <div class="card  mb-3">
-      <div class="card-header">Estadisticas de <strong>recepciones, </strong> Totales: <strong>{{campos_estadisticas.servicios_gen}}</strong></div>
-      <div class="card-body text-success">
-        <h5 class="card-title"></h5>
-        <div class="row">
-          <!-- <ng-container *ngFor="let item of campos_estadisticas_show">
-              <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-end">{{item.show | capitalizarUno}}</div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-start">{{campos_estadisticas[item.valor] | monedas:item.symbol}}</div>
-          </ng-container> -->
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
-            <ngx-charts-gauge
-            [view]="view"
-              [scheme]="colorScheme"
-              [results]="single_generales"
-              [legend]="legend_general"
-              [showText]="showText_general"
-              [legendTitle]="legendTitle_general"
-              [animations]="animations"
-              [angleSpan]="90"
-              [showAxis]="true"
-              [bigSegments]="5" [smallSegments]="5"
-              [customColors] = "colorScheme"
-              (select)="onSelect_general($event)"
-              [valueFormatting]="valueFormatting"
-              (activate)="onActivate_general($event)"
-              (deactivate)="onDeactivate($event)"
-            >
-    <!-- [view]="view" -->
-            <!-- units="34" -->
-  </ngx-charts-gauge>
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card  mb-3">
+          <div class="card-header">
+            Estadisticas de <strong>recepciones, </strong>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+          <div class="card-body text-success">
+            <h5 class="card-title"></h5>
             <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">seleccionado:</span>
-                <span  class="text-uppercase informacion"><strong>{{infoSelect.name}}</strong></span>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
                 <div class="row">
-                  <div class="col-lg-8 col-md-8 col-sm-12 col-12 m-1">
-                    <select class="form-control form-control-sm informacion" #valor (change)="onSelect_general(valor.value)">
-                      <option value="" >Selecciona</option>
-                      <option [value]="item" *ngFor="let item of seleciona">{{item}}</option>
-                    </select>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                    <span class="titulo">seleccionado:</span>
+                    <span  class="text-uppercase informacion"><strong>{{infoSelect.name}}</strong></span>
+                    <div class="row">
+                      <div class="col-lg-8 col-md-8 col-sm-12 col-12 m-1">
+                        <select class="form-control form-control-sm informacion" #valor (change)="onSelect_general(valor.value)">
+                          <option value="" >Selecciona</option>
+                          <option [value]="item" [selected]="item === infoSelect.name" *ngFor="let item of seleciona">{{item}}</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                    <span class="titulo">Total de servicios:</span>
+                    <span  class="text-uppercase informacion"><strong>{{campos_estadisticas.servicios_gen}}</strong></span>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                    <span class="titulo">Dinero:</span>
+                    <span  class="text-uppercase informacion"><strong>{{infoSelect.value | monedas}}</strong></span>
+                  </div>
+                  <ng-container *ngIf="infoSelect.contador">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                      <span class="titulo">cuantos:</span>
+                      <span  class="text-uppercase informacion"><strong>{{infoSelect.contador}}</strong></span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="infoSelect.arreglo.length">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta" >
+                      <span class="titulo">cuales:</span>
+                      <span  class="text-uppercase informacion">
+                        <strong>
+                          <ng-container *ngFor="let item of infoSelect.arreglo">
+                              {{item}}, &nbsp;
+                          </ng-container>
+                        </strong>
+                      </span>
+                    </div>
+                  </ng-container>
                 </div>
               </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Dinero:</span>
-                <span  class="text-uppercase informacion"><strong>{{infoSelect.value | monedas}}</strong></span>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
+                <ngx-charts-gauge
+                [view]="view"
+                  [scheme]="colorScheme"
+                  [results]="single_generales"
+                  [legend]="legend_general"
+                  [showText]="showText_general"
+                  [legendTitle]="legendTitle_general"
+                  [animations]="animations"
+                  [angleSpan]="90"
+                  [showAxis]="true"
+                  [bigSegments]="5" [smallSegments]="5"
+                  [customColors] = "colorScheme"
+                  (select)="onSelect_general($event)"
+                  [valueFormatting]="valueFormatting"
+                  (activate)="onActivate_general($event)"
+                  (deactivate)="onDeactivate($event)"
+                >
+        <!-- [view]="view" -->
+                <!-- units="34" -->
+                </ngx-charts-gauge>
               </div>
-              <ng-container *ngIf="infoSelect.contador">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                  <span class="titulo">cuantos:</span>
-                  <span  class="text-uppercase informacion"><strong>{{infoSelect.contador}}</strong></span>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="infoSelect.arreglo.length">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta" >
-                  <span class="titulo">cuales:</span>
-                  <span  class="text-uppercase informacion">
-                    <strong>
-                      <ng-container *ngFor="let item of infoSelect.arreglo">
-                          {{item}}, &nbsp;
-                      </ng-container>
-                    </strong>
-                  </span>
-                </div>
-              </ng-container>
+              
+              
             </div>
           </div>
-          
         </div>
       </div>
     </div>
   </div>
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+    <div class="card">
+      <div class="card-body">
+        <h3>Comparativo mis vehículos</h3>
+        <select class="form-control form-control-sm informacion m-1" #valorbusqueda (change)="onSelect_busqueda(valorbusqueda.value)">
+          <option value="" >Selecciona</option>
+          <option [value]="item" *ngFor="let item of seleciona">{{item}}</option>
+        </select>
+        
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 m-1">
+          Fecha filtro:
+          <div class="input-group mb-3 ">
+            <mat-date-range-picker #pickerBusqueda></mat-date-range-picker>
+            <mat-date-range-input 
+            (click)="pickerBusqueda.open()" 
+            class="pointer form-control" 
+            [formGroup]="range_busqueda"
+            [rangePicker]="pickerBusqueda">
+            <input matStartDate class="mr-2" formControlName="start" readonly (dateChange)="cambiosFechas()"   placeholder="Inicio">
+            <input matEndDate   class="mr-2" formControlName="end" readonly (dateChange)="cambiosFechas()"  placeholder="Final">
+          </mat-date-range-input>
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBusqueda.open()">
+              <i class="fa fa-calendar-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <ngx-charts-pie-chart
+          [view]="view_comparativa"
+          [scheme]="colorScheme"
+          [results]="single"
+          [gradient]="gradient"
+          
+
+          [labels]="showLabels"
+          [doughnut]="isDoughnut"
+          
+         
+          >
+        </ngx-charts-pie-chart>
+      </div>
+      </div>
+    </div>
+  </div>
+  
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
     
   </div>
