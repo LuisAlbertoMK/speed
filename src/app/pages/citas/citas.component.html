@@ -1,0 +1,224 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0"></h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li> -->
+          <li class="breadcrumb-item active pointer"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active">Citas </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end text-uppercase fs-5 text-body">
+      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = true; info_cita= null; id_cita = null">
+          <i class="fas fa-calendar-edit"></i> Agendar cita
+      </button>
+  </div>
+</div> -->
+<div class="row mb-2">
+  <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+    <div class="input-group col-lg-12 col-md-12 col-sm-12 col-12">
+      <span class="input-group-text pointer text-primary" id="basic-addon1" (click)="picker.open()">
+        <i class="fa fa-calendar"></i>
+      </span>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-date-range-input  class="form-control" [formGroup]="range" [rangePicker]="picker" >
+        <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext ">
+        <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext ">
+      </mat-date-range-input>
+      <button class="btn btn-sm btn-danger" (click)="reseteaHoras()" #tooltip="matTooltip"
+      matTooltip="limpiar rango de fechas">
+        <i class="fa fa-trash"></i>
+      </button>
+    </div>
+  </div>
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      <div class="col-lg-4 col-md-4 col-sm-6 col-6">
+        <div class="row m-1">
+          <div class=" input-group col-lg-4 col-md-4 col-sm-8 col-8">
+            <span class="input-group-text pointer text-danger" id="basic-addon1">
+              <i class="fa fa-filter"></i>
+            </span>
+            <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm"
+             (ngModelChange)="addEvent(range.controls['start'].value, range.controls['end'].value)">
+              <option value="Todas" >Todas</option>
+              <option [value]="s.id" *ngFor="let s of sucursales_array">{{s.sucursal}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = true; info_cita= null; id_cita = null">
+        <i class="fas fa-calendar-edit"></i> Agendar cita
+      </button>
+    </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-8">
+        <full-calendar [options]="calendarOptions" ></full-calendar>
+      </div>
+      <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-4 col-xxl-4">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Citas proximas ( HOY )
+              </mat-panel-title>
+              <!-- <mat-panel-description>
+                This is a summary of the content
+              </mat-panel-description> -->
+            </mat-expansion-panel-header>
+            
+            <div class="scroll-wrapper">
+              <ol class="list-group list-group-numbered text-start">
+                <li class="list-group-item" *ngFor="let cita of lista_citas_proximas">
+                  <strong>{{cita.horario}}</strong> {{cita.placas | uppercase }} {{cita.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
+                </li>
+              </ol>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                               (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Citas {{fecha_muestra}}
+              </mat-panel-title>
+              <!-- <mat-panel-description>
+                Currently I am {{panelOpenState ? 'open' : 'closed'}}
+              </mat-panel-description> -->
+            </mat-expansion-panel-header>
+            <div class="scroll-wrapper">
+              <ol class="list-group list-group-numbered text-start">
+                <li class="list-group-item" *ngFor="let cita of filtro_citas_mes_all">
+                  <strong>{{cita.horario}}</strong> {{cita.placas | uppercase }} {{cita.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
+                  <!-- <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"
+                    data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = false; info_cita= cita; id_cita = cita.id"></i> -->
+                    <p>
+                      <span class="badge bg-primary rounded-pill" [ngClass]="{'bg-danger': !cita.confirmada}">{{cita.confirmadaShow}} Confirmada </span>
+                    </p>
+                </li>
+              </ol>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                               (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Rango {{rango_select}}
+              </mat-panel-title>
+              <!-- <mat-panel-description>
+                Currently I am {{panelOpenState ? 'open' : 'closed'}}
+              </mat-panel-description> -->
+            </mat-expansion-panel-header>
+            <div class="scroll-wrapper">
+              <ol class="list-group list-group-numbered text-start">
+                <li class="list-group-item" *ngFor="let cita of citas_mes_all">
+                  <strong>{{cita.horario}}</strong> {{cita.placas | uppercase }} {{cita.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
+                </li>
+              </ol>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+ 
+</div>
+<div class="row mb-5 mt-5">
+  <div class="col">
+
+  </div>
+</div>
+<!-- <full-calendar ></full-calendar> -->
+<div class="modal fade" id="modalCita" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
+  <div class="modal-content">
+    <div class="modal-body m-2">
+      <app-registra-cita [id_cita]="id_cita" [info_cita]="info_cita" [nuevaCita]="nuevaCita"></app-registra-cita>
+      <!-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button> -->
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="modalCitaDetalles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
+  <div class="modal-content">
+    <div class="modal-body m-2">
+      <!-- fsjkfdgb -->
+      <div class="modal-body m-2">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h1>Citas del dia</h1>
+          </div>
+          <ng-container *ngIf="info_cita">
+            <div class="card col-lg-4 col-md-4 col-sm-6 col-12">
+              <div class="card-body">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Cliente: <strong> {{info_cita.fullname}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Correo: <strong> {{info_cita.correo}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Placas: <strong> {{info_cita.placas}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Dia: <strong> {{info_cita.dia}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Horario: <strong> {{info_cita.horario}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Sucursal: <strong> {{info_cita.sucursalShow}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Asistio: <strong> {{info_cita.asistenciaShow}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Recordatorio: <strong> {{info_cita.recordatorioShow}} </strong></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">Confirmada: <strong> {{info_cita.confirmadaShow}} </strong></div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      
+      <!-- fsjkfdgb -->
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+      </div>
+      <div class="modal-body">
+        Hide this modal and show the first with the button below.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#modalCita" data-bs-toggle="modal">Regresar</button>
+      </div>
+    </div>
+  </div>
+</div>

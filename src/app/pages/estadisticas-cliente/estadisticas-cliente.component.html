@@ -1,0 +1,272 @@
+
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+            <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li> -->
+            <li class="breadcrumb-item active">Mi estadisticas</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="row">
+  <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card  mb-3">
+          <div class="card-header">
+            Estadisticas de <strong>recepciones </strong>
+          </div>
+          <div class="card-body text-success">
+            <h5 class="card-title"></h5>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                    <span class="titulo">seleccionado:</span>
+                    <span  class="text-uppercase informacion"><strong>{{infoSelect.name}}</strong></span>
+                    <div class="row">
+                      <div class="col-lg-8 col-md-8 col-sm-12 col-12 m-1">
+                        <select class="form-control form-control-sm informacion" #valor (change)="onSelect_general(valor.value)">
+                          <option value="" >Selecciona</option>
+                          <option [value]="item" [selected]="item === infoSelect.name" *ngFor="let item of seleciona">{{item}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                    <span class="titulo">Total de servicios:</span>
+                    <span  class="text-uppercase informacion"><strong>{{campos_estadisticas.servicios_gen}}</strong></span>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                    <span class="titulo">Dinero:</span>
+                    <span  class="text-uppercase informacion"><strong>{{infoSelect.value | monedas}}</strong></span>
+                  </div>
+                  <ng-container *ngIf="infoSelect.contador">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                      <span class="titulo">cuantos:</span>
+                      <span  class="text-uppercase informacion"><strong>{{infoSelect.contador}}</strong></span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="infoSelect.arreglo.length">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta" >
+                      <span class="titulo">cuales:</span>
+                      <span  class="text-uppercase informacion">
+                        <strong>
+                          <ng-container *ngFor="let item of infoSelect.arreglo">
+                              {{item}}, &nbsp;
+                          </ng-container>
+                        </strong>
+                      </span>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+              
+              <div #guet class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <button class="btn btn-sm btn-danger m-1" (click)="applyDimensions()">Ajustar grafica</button>
+                <ngx-charts-gauge
+                [view]="view"
+                  [scheme]="colorScheme"
+                  [results]="single_generales"
+                  [legend]="legend_general"
+                  [units]="gaugeUnits"
+                  [showText]="showText_general"
+                  [legendTitle]="legendTitle_general"
+                  [legendPosition]="legendPosition"
+                  [animations]="animations"
+                  [angleSpan]="240"
+                  [showAxis]="showAxis"
+                  [showText]="true"
+                  [textValue]="gaugeTextValue"
+                  [axisTickFormatting]="axisTickFormatting"
+                  [bigSegments]="10" [smallSegments]="10"
+                  [customColors] = "colorScheme"
+                  (select)="onSelect_general($event)"
+                  [valueFormatting]="valueFormatting"
+                  (activate)="onActivate_general($event)"
+                  (deactivate)="onDeactivate($event)"
+                  class="bg-cyan"
+                  [margin]="margin ? [marginTop, marginRight, marginBottom, marginLeft] : [40, 1, 1, 1]"
+                >
+        <!-- [view]="view" -->
+                <!-- units="34" -->
+                </ngx-charts-gauge>
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+    <div class="card">
+      <div class="card-body">
+        <h3>Comparativo mis vehículos</h3>
+        <select class="form-control form-control-sm informacion m-1" #valorbusqueda (change)="onSelect_busqueda(valorbusqueda.value)">
+          <option value="" >Selecciona</option>
+          <option [value]="item" *ngFor="let item of seleciona">{{item}}</option>
+        </select>
+        
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 m-1">
+          Fecha filtro:
+          <div class="input-group mb-3 ">
+            <mat-date-range-picker #pickerBusqueda></mat-date-range-picker>
+            <mat-date-range-input 
+            (click)="pickerBusqueda.open()" 
+            class="pointer form-control" 
+            [formGroup]="range_busqueda"
+            [rangePicker]="pickerBusqueda">
+            <input matStartDate class="mr-2" formControlName="start" readonly (dateChange)="cambiosFechas()"   placeholder="Inicio">
+            <input matEndDate   class="mr-2" formControlName="end" readonly (dateChange)="cambiosFechas()"  placeholder="Final">
+          </mat-date-range-input>
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBusqueda.open()">
+              <i class="fa fa-calendar-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <ngx-charts-pie-chart
+          [view]="view_comparativa"
+          [scheme]="colorScheme"
+          [results]="single"
+          [gradient]="gradient"
+          [doughnut]="isDoughnut"
+
+          [tooltipText]="tooltipText"
+          [labelFormatting]="axisTickFormatting"
+          
+          >
+        </ngx-charts-pie-chart>
+      </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+    
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+      <div class="row m-1">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <input  (keyup)="applyFilter($event)" placeholder="Busqueda cualquier criterio" #input class="form-control form-control-sm">
+          </div>
+      </div>
+      <div class="mat-elevation-z8 table-responsive">
+          <table #cotizaciones="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+      
+            
+            <ng-container matColumnDef="placas">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Placas </th>
+              <td mat-cell *matCellDef="let row"> <strong>{{row.searchPlacas  | uppercase}}</strong>   </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="marca">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+              <td mat-cell *matCellDef="let row" class="text-uppercase"> {{row.searchMarca | capitalizarUno}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="modelo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
+              <td mat-cell *matCellDef="let row" class="text-uppercase"> {{row.searchModelo | capitalizarUno}} </td>
+            </ng-container>
+            <ng-container matColumnDef="categoria">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+              <td mat-cell *matCellDef="let row" class="text-uppercase"> {{row.searchCategoria | capitalizarUno}} </td>
+            </ng-container>
+            <ng-container matColumnDef="anio">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Año </th>
+              <td mat-cell *matCellDef="let row" class="text-uppercase"> {{row.searchAnio}} </td>
+            </ng-container>
+
+            <!-- Fruit Column -->
+            <ng-container matColumnDef="opciones">
+              <th mat-header-cell *matHeaderCellDef [ngStyle]="{'max-width':(miniColumnas)*.2+'px'}"> &nbsp; </th>
+              <td mat-cell *matCellDef="let row">
+                <i class="fa fa-book text-danger pointer" #tooltip="matTooltip"
+                matTooltip="Historial de vehiculo"  (click)="irPagina('historialCliente-vehiculo',row.id)" ></i>
+              </td>
+            </ng-container>
+          
+      
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+              <td mat-cell *matCellDef="let element"  >
+                <!-- indexPosicionamiento -->
+                  <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation();" >
+                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                  </button>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
+                <div class="example-element-detail row"
+                    [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="row m-1">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-12">Servicios totales: <strong> {{row.servicios_totales}} </strong></div>
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-12">Ticket Promedio: <strong> {{row.ticketPromedio | monedas}} </strong></div>
+                          <!-- <p></p>
+                        <p></p> -->
+                        </div>
+                      </div>
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="card border-success mb-3">
+                              <div class="card-header">Reporte de vehiculo <strong class="text-warning">Gastos</strong></div>
+                              <div class="card-body text-success">
+                                <h5 class="card-title"></h5>
+                                <div class="row">
+                                  <ng-container *ngFor="let item of camposReporte_show">
+                                    <ng-container *ngIf="row.reporte[item.valor] >0">
+                                      <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-end">{{item.show | capitalizarUno}}</div>
+                                      <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-start">{{row.reporte[item.valor] | monedas}}</div>
+                                    </ng-container>
+                                  </ng-container>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </td>
+            </ng-container>
+          
+      
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element"
+                (click)=" expandedElement = expandedElement === element ? null : element;">
+                <!--  -->
+                <!-- indexPosicionamiento -->
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
+      
+            <!-- Row shown when there is no matching data. -->
+            <!-- <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+            </tr> -->
+          </table>
+      
+          <mat-paginator #cotizacionesPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        </div>
+  </div>
+</div>
+<!-- <pre>
+  {{clavesVehiculos | json }}
+</pre> -->

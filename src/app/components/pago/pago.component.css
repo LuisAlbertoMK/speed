@@ -1,0 +1,7 @@
+.demo-inline-calendar-card {
+  width: 300px;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 1055 !important;
+}

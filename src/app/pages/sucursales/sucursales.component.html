@@ -1,0 +1,319 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a class="breadcrumb-item"  [routerLink]="['/inicio']">Inicio</a></li>
+            <li class="breadcrumb-item active">Sucursales</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <div class="con-flot">
+    <input type="checkbox" id="btn-mas">
+    <div class="redes">
+      <a  class="mat-elevation-z8" [routerLink]="['/inicio']" ><i class="fad fa-arrow-alt-left"></i></a>
+      <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-up"></i></a>
+      <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-down"></i></a>
+    </div>
+    <div class="btn-mas">
+      <label for="btn-mas" class="btn-ma"><strong><i class="fad fa-plus-circle"></i></strong></label>
+    </div>
+  </div>
+  <!-- <pre>{{listaArrarySucursales }}</pre> -->
+  <div class="row col-lg-12 col-md-12 col-sm-12 ">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-text">
+          <div class="text-end  mb-3" *ngIf="ROL==='SuperSU' || ROL === 'Administrador'">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detallesSucursal" id="btndetallesSucursal"
+              (click)="resetAntes()"> Nueva sucursal</button>
+          </div>
+          <div class="row" *ngIf="sucursales_array.length!==0">
+            <ng-container *ngFor="let sucursal of sucursales_array; let i = index">
+              <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt-2">
+                <div class="card h-100">
+                  <img src="{{sucursal.imagen}}" class="card-img-top img-thumbnail rounded "
+                    [alt]="sucursal.sucursal" *ngIf="sucursal.imagen!==''" [ngStyle]="{'height':(minAltura)*1.5+'px'}">
+                  <img src="assets/img/default-image.jpg" class="card-img-top img-thumbnail rounded "
+                    [alt]="sucursal.sucursal" *ngIf="sucursal.imagen===''" [ngStyle]="{'height':(minAltura)*1.5+'px'}">
+                  <div class="card-body ">
+                    <div class="row">
+                      <div class="col">
+                        <h5 class="card-title">
+                          <figure>
+                            <blockquote class="blockquote">
+                              <p>{{sucursal.sucursal}}</p>
+                            </blockquote>
+                            <figcaption class="blockquote-footer">
+                              Serie <cite title="Source Title">{{sucursal.serie}}</cite>
+                            </figcaption>
+                          </figure>
+                        </h5>
+                      </div>
+                    </div>
+                    <ng-container class="card-text">
+                      <label>Dirección: </label> {{sucursal.direccion}} <br>
+                      <ng-container *ngIf="sucursal['telefono2']">
+                        <!-- <label>Telefonos: </label> <br> {{sucursal.telefono}} /  {{sucursal.telefono2}}  -->
+                      </ng-container> 
+                      <ng-container *ngIf="!sucursal['telefono2']">
+                        <label>Telefono: </label> {{sucursal.telefono}} 
+                      </ng-container>
+                      <br>
+                      <label>Correo: </label> {{sucursal.correo}} <br>
+                      <ng-container  *ngIf="ROL!== 'SuperSU' && ROL !== 'Administrador'">
+                        <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1">
+                          <div class="d-grid gap-2">
+                            <button class="btn verImagen btn-sm" type="button" alt="info" id="btncorreo"
+                              (click)="verImagen(sucursal)" style="cursor: pointer"><i class="fad fa-expand"></i></button>
+                          </div>
+                        </div>
+                      </ng-container>
+                      
+                    </ng-container>
+                  </div>
+                  <div class="card-footer text-muted">
+                    <ng-container  *ngIf="ROL==='SuperSU' || ROL === 'Administrador'">
+                      <div class="row" *ngIf="sucursal.status">
+                        <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-sm" type="button" (click)="getInformacionSucursal(sucursal.id)"
+                              data-bs-toggle="modal" data-bs-target="#detallesSucursal"
+                              style="cursor: pointer"><i class="fad fa-edit"></i></button>
+                          </div>
+                        </div>
+                        <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-danger btn-sm" type="button"
+                              (click)="changeStatus(sucursal,false)"><i class="fad fa-trash"></i></button>
+                          </div>
+                        </div>
+                        </div>
+                      <div class="row" *ngIf="sucursal.status">
+                        <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-sm" type="button"
+                              (click)="getInforSucursalNew(sucursal.id, sucursal.sucursal)" data-bs-toggle="modal"
+                              data-bs-target="#cargaImagen" style="cursor: pointer"><i class="fad fa-images"></i></button>
+                          </div>
+                        </div>
+                        <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
+                          <div class="d-grid gap-2">
+                            <button class="btn verImagen btn-sm" type="button" alt="info"
+                              (click)="verImagen(sucursal)" style="cursor: pointer"><i class="fad fa-expand"></i></button>
+                          </div>
+                        </div>
+      
+                      </div>
+                      <div class="row text-center" *ngIf="!sucursal.status">
+                        <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1 ">
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-sm text-white" type="button"
+                              (click)="changeStatus(sucursal,true)"><i class="fad fa-check-circle"></i></button>
+                          </div>
+                        </div>
+      
+                      </div>
+                    </ng-container>
+                  </div>
+                    
+                  
+                </div>
+              </div>
+              
+            </ng-container>
+            
+  
+          </div>
+          <div class="row " *ngIf="sucursales_array.length===0">
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+              <div class="alert alert-info">
+                <h3> No hay ninguna sucursal registrada!!</h3> <br>
+                <i class="fad fa-info fa-2x"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--modal nueva o modificar datos de sucursal-->
+  <div class="modal fade" id="detallesSucursal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-xxl-down">
+      <div class="modal-content">
+        <div class="modal-header ml-3">
+          <h2 class="modal-title fw-bold text-primary " id="staticBackdropLabel" *ngIf="IDsucursal===''">Nueva sucursal </h2>
+          <h2 class="modal-title fw-bold text-primary " id="staticBackdropLabel" *ngIf="IDsucursal!==''">Modificar sucursal </h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-3">
+          <form (ngSubmit)="guardarSucursal()" [formGroup]="formaSucursal" class="mt-2">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="mb-1">
+                  <label for="sucursal" class="form-label">Nombre de sucursal</label>
+                  <input type="text" class="form-control" id="sucursal" formControlName="sucursal"
+                    [class.is-invalid]="validarSucursal('sucursal')">
+                  <small *ngIf="validarSucursal('sucursal')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="mb-1">
+                  <label for="serie" class="form-label">Serie</label>
+                  <input type="text" class="form-control" id="serie" formControlName="serie"
+                    [class.is-invalid]="validarSucursal('serie')">
+                  <small *ngIf="validarSucursal('serie')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="mb-1">
+                  <label for="direccion" class="form-label">Dirección</label>
+                  <input type="text" class="form-control" id="direccion" formControlName="direccion"
+                    [class.is-invalid]="validarSucursal('direccion')">
+                  <small *ngIf="validarSucursal('direccion')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="mb-1">
+                  <label for="telefono" class="form-label">Telefono</label>
+                  <input type="text" class="form-control" id="telefono" formControlName="telefono"
+                    [class.is-invalid]="validarSucursal('telefono')" maxlength="10" minlength="10">
+                  <small *ngIf="validarSucursal('telefono')" class="text-danger">
+                    Telefono incorrecto
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="mb-1">
+                  <label for="correo" class="form-label">Correo</label>
+                  <input type="text" class="form-control" id="correo" formControlName="correo"
+                    [class.is-invalid]="validarSucursal('correo')">
+                  <small *ngIf="validarSucursal('correo')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="mb-1">
+                  <label for="imagen" class="form-label">Imagen</label>
+                  <input type="hidden" class="form-control" id="imagen" formControlName="imagen"
+                    [class.is-invalid]="validarSucursal('imagen')">
+                    <input type="text" class="form-control" value="{{imagenSucursal}}" readonly>
+                </div>
+              </div>
+  
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="d-grid gap-2 col-6 mx-auto mt-2">
+                  <button type="submit" class="btn btn-primary" [ngClass]="{'disabled': desactivaGuardar}">Guardar</button>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="d-grid gap-2 col-6 mx-auto mt-2">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+              </div>
+            </div>
+  
+  
+          </form>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  <!-- modal para carga de imagen a firebase-->
+  <div class="modal fade" id="cargaImagen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-xxl-down">
+      <div class="modal-content">
+        <div class="modal-header ml-3">
+          <h2 class="modal-title text-primary" id="staticBackdropLabel">Cambiar imagen de sucursal </h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-3">
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+              <ngx-dropzone (change)="onSelect($event)" class="well drop-zone" [multiple]="false"
+                accept="image/jpeg,image/jpg,image/png">
+                <ngx-dropzone-label>Arrastra o click aqui!</ngx-dropzone-label>
+                <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                  <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                </ngx-dropzone-preview>
+              </ngx-dropzone>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-12 col-12 text-center" >
+              <div class="row">
+                <label>Vista previa de imagen a subir</label>
+              </div>
+              <div class="row ">
+                <div class="col-12 text-center">
+                  <ng-container *ngIf="archivos.length===0">
+                    <img src="assets/img/default-image.jpg" class=" img-thumbnail col-lg-4 col-md-6 col-sm-6 col-12 "  >
+                  </ng-container>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  <ng-container *ngIf="archivos.length!==0" >
+                    <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" >
+                      <!--ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label-->
+                    </ngx-dropzone-image-preview>
+                  </ng-container>
+                </div>
+                
+              </div>
+              <!-- <img [src]="archivos[0]" class="img-fluid" alt="..."> -->
+            </div>
+  
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 mt-1 align-items-center">
+              <button class="btn btn-success" (click)="uploadFile()" [disabled]="files.length===0">Cargar imagen</button>
+            </div>
+          </div>
+          <div class="row" *ngIf="archivos.length !== 0">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead >
+                  <tr>
+                    <th>Nombre original</th>
+                    <th>Nombre nuevo</th>
+                    <th>Tamaño</th>
+                    <th>Progreso</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let archivo of archivos " class="animate__animated animate__fadeInDown">
+                    <td class="ajustar" [ngClass]="{ 'text-green': archivo.progreso>= 100 }"> {{ archivo.nombreArchivo | slice:0:15 }} ...</td>
+                    <td class="ajustar">{{nombreSucursal}}</td>
+                    <td class="ajustar">{{ archivo.archivo.size / 1024 /1024 | number: '.2-2' }} MB</td>
+                    <td class="ajustar">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': archivo.progreso + '%' }">
+                          {{archivo.progreso}} %</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

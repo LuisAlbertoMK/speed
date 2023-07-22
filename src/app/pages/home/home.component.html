@@ -1,0 +1,109 @@
+
+<div class="row mt-5">
+  <div class="card mt-2">
+    <div class="card-body">
+      <h5 class="card-title"></h5>
+      <div class="card-text">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              <h1 class="display-4 animate__animated animate__bounce">SpeedPro</h1>
+              <p class="lead texto-justificado">
+                Speed Service se constituye ante la creciente necesidad de servicios automotrices honestos y confiables que garanticen el óptimo desempeño de los vehículos al mejor costo y en el menor tiempo posible. ​ Es por ello que enfocamos nuestros esfuerzos en brindar servicios profesionales bajo estrictos estándares de calidad y con las mejores refacciones.
+              </p>
+            </div>
+          </div>
+          <!-- <app-registro-cliente></app-registro-cliente> -->
+          <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                        <div class="text-center">
+                            <h2><strong>Todo lo que necesitas para tu Automovil</strong></h2>
+                            <hr>
+                            <div class="row">
+                                <div class="col-4 icono-servicio" *ngFor="let servicio of servicios">
+                                    <i [class]="servicio.icono+  ' fa-4x '"></i>
+                                    <strong><p class="m-1">{{servicio.servicio}}</p></strong>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="text-center"><h2>Horarios de atención</h2></div>
+                        <table class="table">
+                            <!-- <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                              </tr>
+                            </thead> -->
+                            <tbody>
+                              <tr class="anima">
+                                <th scope="row">Lunes – Viernes</th>
+                                <td>8am – 6pm</td>
+                              </tr>
+                              <tr class="anima">
+                                <th scope="row">Sábados</th>
+                                <td>8am – 3pm</td>
+                              </tr>
+                              <tr class="anima">
+                                <th scope="row">Domingos</th>
+                                <td >cerrado</td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="text-center">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-12">
+                        <h2><strong>Nuestras sucursales</strong></h2><br>
+                        <strong>Sucursales en toda la ciudad de México</strong>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12" >
+                        <h2 ngClass="{{colores[color]}}"><strong>Vamos por tu auto totalmente ¡Gratis!</strong></h2>
+                    </div>
+                </div>
+                <hr>
+               
+                <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mt-3" *ngFor="let sucursal of sucursales_array" >
+                            <div class="card h-100 ">
+                                <img [src]="sucursal.imagen" class="card-img-top" height="200px">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <figure>
+                                        <blockquote class="blockquote">
+                                          <p>{{sucursal.sucursal}}</p>
+                                        </blockquote>
+                                        <figcaption class="blockquote-footer">
+                                          Serie <cite title="Source Title">{{sucursal.serie}}</cite>
+                                        </figcaption>
+                                      </figure>
+                                </div>
+                                  <div class="card-text text-start">
+                                    <label>Dirección: </label> {{sucursal.direccion}} <br>
+                                    <label>Telefono: </label> {{sucursal.telefono}} <br>
+                                    <label>Correo: </label> {{sucursal.correo}} <br>
+                                  </div>
+                                 
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <a  class="btn btn-primary">Ver mas...</a>
+                                  </div>
+                              </div>
+                        </div>
+                        
+                </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

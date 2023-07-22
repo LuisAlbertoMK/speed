@@ -1,0 +1,105 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <h1>Registro de usuario</h1>
+                <form (ngSubmit)="guardarCliente()" [formGroup]="formUsuario">
+                    <div class="row text-start">
+                      <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="mb-1 row">
+                            <label for="usuario" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Usuario</label>
+                            <div class="col-sm-9 col-md-8 col-lg-8">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('usuario')" formControlName="usuario">
+                            </div>
+                            <small *ngIf="validarCampo('usuario')" class="text-danger">Campo requerido</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="mb-1 row">
+                            <label for="correo" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Correo</label>
+                            <div class="col-sm-9 col-md-8 col-lg-8">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('correo')" formControlName="correo">
+                            </div>
+                            <small *ngIf="validarCampo('correo')" class="text-danger">Campo requerido</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="mb-1 row">
+                            <label for="confirmCorreo" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Confirmar correo</label>
+                            <div class="col-sm-9 col-md-8 col-lg-8">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('confirmCorreo')" formControlName="confirmCorreo">
+                            </div>
+                            <small *ngIf="validarCampo('confirmCorreo')" class="text-danger">Campo requerido</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="mb-1 row">
+                            <label for="password" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Contraseña</label>
+                            <div class="col-sm-9 col-md-8 col-lg-8">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('password')" formControlName="password">
+                            </div>
+                            <small *ngIf="validarCampo('password')" class="text-danger">Campo requerido</small>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="mb-1 row">
+                            <label for="confirmPassword" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Confirmar contraseña</label>
+                            <div class="col-sm-9 col-md-8 col-lg-8">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('confirmPassword')" formControlName="confirmPassword">
+                            </div>
+                            <small *ngIf="validarCampo('confirmPassword')" class="text-danger">Campo requerido</small>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="SUCURSAL === 'Todas'">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-1 row">
+                                <label for="sucursal" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Sucursal</label>
+                                <div class="col-sm-9 col-md-8 col-lg-8">
+                                    <select class="form-control form-control-sm" [class.is-invalid]="validarCampo('sucursal')" formControlName="sucursal">
+                                        <option value="" selected>Seleccione una sucursal</option>
+                                        <option [value]="item.id" *ngFor="let item of sucursales_array">{{item.sucursal}}</option>
+                                    </select>
+                                </div>
+                                <small *ngIf="validarCampo('sucursal')" class="text-danger">Campo requerido</small>
+                            </div>
+                          </div>
+                      </ng-container>
+                      <ng-container>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="mb-1 row">
+                                <label for="rol" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Rol</label>
+                                <div class="col-sm-9 col-md-8 col-lg-8 ">
+                                    <!-- <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('rol')" formControlName="rol"> -->
+                                    <select class="form-control form-control-sm" [class.is-invalid]="validarCampo('rol')" formControlName="rol">
+                                        <option value="">Seleccione Rol</option>
+                                        <option [value]="item" *ngFor="let item of rolesMostrarnew">{{item | capitalizarUno}}</option>
+                                    </select>
+                                </div>
+                                <small *ngIf="validarCampo('rol')" class="text-danger">Campo requerido</small>
+                            </div>
+                          </div>
+                      </ng-container>
+                    </div>
+                    <div class="row text-center">
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                          <button class="btn btn-sm btn-primary" (click)="guardarCliente()">
+                            <i class="fa fa-save mx-1"></i> Registrar
+                          </button>
+                        </div>
+                        <ng-container *ngIf="faltantes">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                Información faltante: <strong class="text-danger">{{faltantes}}</strong>
+                            </div>
+                        </ng-container>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+  </div>
+
+

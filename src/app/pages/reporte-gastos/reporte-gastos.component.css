@@ -1,0 +1,92 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  td, th {
+    width: 25%;
+  }
+
+  .pointer{
+    cursor: pointer;
+  }
+  a{
+    text-decoration:none;
+  }
+
+  tr.anima:hover{
+    background-color: lavender;
+  }
+  tr.anima{
+    height: 35px;
+  }
+  .eliminado{
+    background-color: rgb(245, 128, 128);
+  }
+  /* ::ng-deep .mat-form-field input {
+    height: 10px;
+    transition: height ease-in-out 400ms;
+  } */
+  table {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+  .extraInput{
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    width: 100%;
+  }
+  .custom-menu-item {
+    height: 25px; /* Cambia la altura según tus necesidades */
+    display: flex;
+    align-items: center;
+  }
+  

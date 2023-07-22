@@ -1,0 +1,104 @@
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+.pointer{
+  cursor: pointer;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 1055 !important;
+}
+::ng-deep .mat-tooltip {
+  font-size: 1em;
+  min-width: 200px;
+}
+
+.tipo-paquete {
+  color: #5ca04a !important;
+}
+
+.tipo-refaccion {
+  color: #FF8623 !important;
+}
+
+.tipo-mo {
+  color: #3574FA;
+}
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+  width: 100%;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+tr.anima:hover{
+  background-color: lavender;
+}
+tr.anima{
+  height: 35px;
+}
+/* limpiar */
+
+::ng-deep .mat-sort-header-container {
+  /* color: white; */
+  /* margin-left: 10%; */
+  /* background-color: blue !important; */
+  /* text-align:  right !important; */
+}
+
+input.smallInput {
+  max-width: 60px;
+}

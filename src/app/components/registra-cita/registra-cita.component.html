@@ -1,0 +1,280 @@
+
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-text">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
+                    <button type="button" (click)="inicioDetenerCita(false)" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center   text-body">
+                    <h2 class="text-capitalize fs-5"> Tiempo restante: &nbsp; <span id="temporizador">00:00</span> </h2>
+                    <ng-container *ngIf="!startProceso; else elseTemplate">
+                        <button class="btn btn-sm btn-primary text-uppercase" (click)="inicioDetenerCita(true)">
+                            <i class="far fa-play-circle"></i> Comenzar
+                        </button>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <!-- <button class="btn btn-sm btn-danger text-uppercase" (click)="inicioDetenerCita(false)">
+                            <i class="far fa-stop-circle"></i> Iniciar otra cita
+                        </button> -->
+                        <ng-container *ngIf="!confirmar; else elseConfirmar" >
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase fs-5 text-body ">
+                                    <ng-container *ngIf="info_cita; else elseID">
+                                        <h2> Reagendar cita </h2>
+                                        <p>Fecha anterior de cita {{info_cita['dia']}} {{info_cita['horario']}}</p>
+                                    </ng-container>
+                                    <ng-template #elseID>
+                                        <h2> Registro de Citas </h2>
+                                    </ng-template>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <form [formGroup]="citaForm" (ngSubmit)="guardarCita()">
+                                        <div class="row text-start">
+                                        <ng-container *ngIf="SUCURSAL === 'Todas'">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                                <label for="sucursal" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal</label>
+                                                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
+                                                    [class.is-invalid]="validarCampo('sucursal')">
+                                                    <option value="" >Selecciona</option>
+                                                    <option [value]="item.id" *ngFor="let item of sucursales_array">{{item.sucursal}}</option>
+                                                    </select>
+                                                <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </ng-container>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="cliente" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Cliente</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <ng-container *ngIf="info_cita; else elseTemplate">
+                                                    {{info_cita['fullname']}}
+                                                </ng-container>
+                                                <ng-template #elseTemplate>
+                                                    <form class="example-form">
+                                                        <input type="text"
+                                                            placeholder="Nombre cliente"
+                                                            aria-label="Number"
+                                                            class="form-control form-control-sm"
+                                                            [formControl]="myControl"
+                                                            [matAutocomplete]="auto">
+                                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
+                                                            {{option['fullname']}} - {{option['correo']}}
+                                                        </mat-option>
+                                                        </mat-autocomplete>
+                                                    </form>
+                                                </ng-template>
+                                                
+                                                    
+                                                <small *ngIf="validarCampo('cliente')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="correo" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <input type="text" id="correo" class="form-control form-control-sm" formControlName="correo">
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="vehiculo" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Placas </label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="vehiculo" required 
+                                                [class.is-invalid]="validarCampo('vehiculo')">
+                                                <option value="" >selecciona</option>
+                                                <option [value]="item.id" *ngFor="let item of arr_vehiculos">{{item.placas | uppercase}}</option>
+                                                </select>
+                                                <small *ngIf="validarCampo('vehiculo')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="servicio" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Servicio </label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="servicio" required 
+                                                [class.is-invalid]="validarCampo('servicio')">
+                                                <option value="" >selecciona</option>
+                                                <option [value]="item.valor" *ngFor="let item of camposServicios">{{item.nombre | uppercase}}</option>
+                                                </select>
+                                                <small *ngIf="validarCampo('servicio')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="dia" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Dia</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <div class="input-group mb-3">
+                                                    <input class="form-control form-control-sm" (click)="picker.open()" 
+                                                     [matDatepickerFilter]="myFilter" [formControl]="dateControl" [matDatepicker]="picker" (dateChange)="addEvent($event)" >
+                                                    <mat-datepicker #picker ></mat-datepicker>
+                                                  </div>
+                                                <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="horario" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Hora</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <select class=" form-select  form-select-sm" formControlName="horario" required 
+                                                [class.is-invalid]="validarCampo('horario')">
+                                                    <option value="" >selecciona</option>
+                                                    <option [value]="hora" *ngFor="let hora of horarios_show">{{hora }}</option>
+                                                </select>
+                                                <small *ngIf="validarCampo('horario')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                                <label for="cotizacion_utiliza" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Utilizar cotización</label>
+                                                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                    <mat-radio-group formControlName="cotizacion_utiliza" >
+                                                        <mat-radio-button  class="m-1" [value]="false" >Sin cotizacion</mat-radio-button>
+                                                        <mat-radio-button  class="m-1" [value]="true">Usar cotizacion</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                                </div>
+                                        </div>
+                                        <ng-container *ngIf="citaForm.get('cotizacion_utiliza').value">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="mb-1 row">
+                                                    <label for="cotizacion" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Cotizacion</label>
+                                                    <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                        <select formControlName="cotizacion" class="form-select  form-select-sm">
+                                                            <option value="" >Selecciona</option>
+                                                            <option [value]="item.id" *ngFor="let item of listaCotizacionesShow">{{item.no_cotizacion}}</option>
+                                                        </select>
+                                                    </div>
+                                                    </div>
+                                            </div>
+                                        </ng-container>
+                                        
+                                        <!-- <pre>
+                                            {{ citaForm.value | json}}
+                                        </pre> -->
+                                        
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="comentario" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Comentario</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <textarea  style="width: 100%;" formControlName="comentario"></textarea>
+                                                <small *ngIf="validarCampo('comentario')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                            <div class="mb-1 row">
+                                            <label for="recoleccion" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Recoleccion a domicilio</label>
+                                            <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                <mat-radio-group formControlName="recoleccion" >
+                                                    <mat-radio-button  class="m-1" [value]="false" >NO</mat-radio-button>
+                                                    <mat-radio-button  class="m-1" [value]="true">SI</mat-radio-button>
+                                                </mat-radio-group>
+                                                <small *ngIf="validarCampo('recoleccion')" class="text-danger">campo requerido</small>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <ng-container *ngIf="citaForm.get('recoleccion').value">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <span class="text-danger">
+                                                    La citas a domicilio son a reserva de confirmación dependiendo horarios y distancias, pero se estaría confirmando vía correo o bien un ejecutivo se estaría poniendo en contacto para mas detalles.
+                                                </span>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="mb-1 row">
+                                                <label for="direccion" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Link de dirección</label>
+                                                <div class="col-sm-9 col-md-8 col-lg-9 ">
+                                                    <textarea  style="width: 100%;" formControlName="direccion"></textarea>
+                                                    <!-- <input type="text"  formControlName="direccion"> -->
+                                                    <small *ngIf="validarCampo('direccion')" class="text-danger">campo requerido</small>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                            <button type="submit" class="btn btn-primary btn-sm text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+                                                <i class="fas fa-file-alt"></i> Genera cita
+                                            </button>
+                                            
+                                            <button type="button" class="btn btn-sm btn-danger text-uppercase" (click)="iniciarOtraCita()">
+                                                <i class="far fa-stop-circle"></i> Reiniciar
+                                            </button>
+                                            <button type="button" (click)="inicioDetenerCita(false)" class="btn btn-sm btn-danger text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-dismiss="modal" aria-label="Close">
+                                                <i class="fa fa-ban"></i> salir
+                                            </button>
+                                        </div>
+                                        </div>
+                                        <ng-container *ngIf="faltente">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mt-2 mb-2">
+                                                Falta información <strong class="text-danger">{{faltente}}</strong>
+                                            </div>
+                                        </div>
+                                        </ng-container>
+                                    </form>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #elseConfirmar>
+                            <!-- {{infoCita | json}} -->
+                            <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <ul class="list-group">
+                                <div class="row">
+                                    <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase fs-5 text-body">Confirma información</li>
+                                    <ng-container *ngFor="let campo of camposInfoCita">
+                                        <ng-container *ngIf="infoCita[campo.valor]">
+                                            <li class="col-lg-4 col-md-4 col-sm-12 col-12 list-group-item text-end">{{campo.show | capitalizarUno}}</li>
+                                            <ng-container *ngIf="campo.valor === 'cotizacionCosto'">
+                                                <li class="col-lg-8 col-md-8 col-sm-12 col-12 list-group-item text-start" >{{infoCita[campo.valor] | monedas}}</li>
+                                            </ng-container>
+                                            <ng-container *ngIf="campo.valor === 'direccion'">
+                                                <li class="col-lg-8 col-md-8 col-sm-12 col-12 list-group-item text-start direccion" >
+                                                    <a [href]="infoCita[campo.valor]" target="_blank">{{infoCita[campo.valor] }}</a>
+                                                </li>
+                                            </ng-container>
+                                            <ng-container *ngIf="campo.valor !== 'cotizacionCosto' && campo.valor !== 'direccion' ">
+                                                <li class="col-lg-8 col-md-8 col-sm-12 col-12 list-group-item text-start">{{infoCita[campo.valor] | uppercase}}</li>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                <button (click)="ConfirmaCita()" class="btn btn-sm btn-danger text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+                                    <i class="fa fa-save"></i> Confirmar 
+                                </button>
+                                <button (click)="confirmar = false" 
+                                class="btn-close" 
+                                class="btn btn-sm btn-primary text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+                                    <i class="fa fa-ban"></i> Cancelar
+                                </button>
+                            </div>
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+  </div>
+

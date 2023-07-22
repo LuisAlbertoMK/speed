@@ -1,0 +1,29 @@
+<ng-container *ngIf="sesion" >
+  <app-navbar  ></app-navbar>
+  <app-sidebar ></app-sidebar> 
+  <div class="container-wraper " >
+    <div class="content-wrapper">
+      <section class="content ">
+      <div class="container-fluid ">
+        <router-outlet></router-outlet>
+      </div>
+    </section>
+    </div>
+  </div>
+  </ng-container>
+<ng-container *ngIf="!sesion">
+  <app-navbar-home></app-navbar-home>
+  <div class="container-wraper " >
+    <div class="content-wrapper">
+      <section class="content">
+      <div class="container-fluid ">
+        <router-outlet></router-outlet>
+      </div>
+    </section>
+    </div>
+  </div>
+</ng-container>
+<!-- <div class="row mb-5"></div> -->
+
+  
+  

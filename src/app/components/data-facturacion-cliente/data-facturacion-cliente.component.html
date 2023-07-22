@@ -1,0 +1,89 @@
+<div class="card text-left">
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <h2 class="text-primary">
+                    <strong>Formulario registro de información de facturación</strong>
+                </h2>
+            </div>
+           
+            
+        </div>
+        <!-- <pre>{{clienteID | json}}</pre> -->
+        <!-- <pre>{{formFacturacion.value | json}}</pre>  -->
+        <form (ngSubmit)="guardaDataFacturacion()" [formGroup]="formFacturacion" class="m-2">
+            <div class="row">
+                <!-- <input type="text" formControlName="cliente" [value]="clienteID"> -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+                    <div class="row">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
+                            <div class="mb-1 row">
+                                <label
+                                    [ngClass]="{'text-danger': validaCampo('razon'),'text-success': !validaCampo('razon')}"
+                                    for="razon"
+                                    class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Razon social
+                                </label>
+                                <div class="col-sm-8 col-md-6 col-lg-6 col-12">
+                                    <input
+                                        id="razon"
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        formControlName="razon"></div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+                    <div class="row">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
+                            <div class="mb-1 row">
+                                <label
+                                    [ngClass]="{'text-danger': validaCampo('rfc'),'text-success': !validaCampo('rfc')}"
+                                    for="rfc"
+                                    class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">R.F.C
+                                </label>
+                                <div class="col-sm-8 col-md-6 col-lg-6 col-12">
+                                    <input
+                                        id="rfc"
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        formControlName="rfc"></div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        
+                        <button type="submit" class="btn btn-sm btn-primary m-1" data-bs-dismiss="modal" aria-label="Close" [disabled]="formFacturacion.invalid" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Guardar</button>
+                        <button type="button" class="btn btn-sm btn-secondary m-1"  (click)="Validar()" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Validar</button>
+                        <button type="button" class="btn btn-sm btn-danger m-1" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Cancelar</button>
+                    </div>
+            </div>
+        </form>
+        <ng-container *ngIf="faltantes; else elsefaltantes">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                    Falta información: <br>
+                    <strong class="text-danger text-uppercase">{{ faltantes }}</strong>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #elsefaltantes>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                    <strong class="text-success text-uppercase">Información correcta</strong>
+                </div>
+            </div>
+        </ng-template>
+        
+        </div>
+        <div>
+
+        </div>

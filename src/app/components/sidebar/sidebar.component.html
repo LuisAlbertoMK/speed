@@ -1,0 +1,66 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a class="brand-link">
+      <img src="assets/logoSpeedPro/logoSpeed.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        style="opacity: .8">
+      <span class="brand-text font-weight-light">SpeedPro</span>
+    </a>
+  
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <!-- <div class="image">
+          <img src="assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div> -->
+        <div class="info">
+          <strong class="text-uppercase text-white">{{TIPO_USUARIO}}</strong>
+        </div>
+      </div>
+  
+      <!-- SidebarSearch Form -->
+      <!--div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div-->
+  
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+               <li class="nav-item">
+                <a  [routerLink]="['/inicio']" class="nav-link">
+                  <i class="nav-icon fad fa-home-alt fa-1x"></i>
+                  <p>
+                    Inicio
+                    <!--span class="right badge badge-danger">New</span-->
+                  </p>
+                </a>
+              </li>
+               <ng-container *ngIf="Gerente_rol || SuperSU_rol">
+                <li class="nav-item" *ngFor="let gerente of asigancion_roles_gerente">
+                  <a  [routerLink]="['/'+ gerente.path]" class="nav-link" >
+                    <i class=" nav-icon fa  fa-1x" [class]="'fa-'+gerente.icono"></i>
+                    <p> {{gerente.show | capitalizarUno}} </p>
+                  </a>
+                </li>
+                
+              </ng-container>
+              <ng-container *ngIf="Cliente_rol">
+                <li class="nav-item" *ngFor="let gerente of asigancion_roles_cliente">
+                  <a  [routerLink]="['/'+ gerente.path]" class="nav-link" >
+                    <i class=" nav-icon fa  fa-1x" [class]="'fa-'+gerente.icono"></i>
+                    <p> {{gerente.show | capitalizarUno}} </p>
+                  </a>
+                </li>
+              </ng-container>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  

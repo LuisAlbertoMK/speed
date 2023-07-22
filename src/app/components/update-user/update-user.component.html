@@ -1,0 +1,66 @@
+<div class="mb-4 mt-1"></div>
+<h1>Editar Información de usuario</h1>
+<form (ngSubmit)="guardaInfo()" [formGroup]="formUsuario">
+    <div class="row text-start">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="mb-1 row">
+          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Usuario (Alias)</label>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="usuario">
+            <small *ngIf="validarCampo('usuario')" class="text-danger">campo requerido</small>
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Correo</label>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="correo">
+            <small *ngIf="validarCampo('correo')" class="text-danger">campo requerido</small>
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Correo new</label>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="correonew">
+            <small *ngIf="validarCampo('correonew')" class="text-danger">campo requerido</small>
+          </div>
+        </div>
+        <div class="mb-1 row">
+          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Contraseña actual</label>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 input-group">
+            <input type="{{ passwordFieldType }}" class="form-control form-control-sm" formControlName="password">
+            <span class="input-group-text pointer" (click)="toggleFieldType('password')">
+                <i class="fa fa-eye text-danger"></i>
+            </span>
+          </div>
+          <small *ngIf="validarCampo('password')" class="text-danger">campo requerido</small>
+        </div>
+        <div class="mb-1 row">
+          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Contraseña nueva</label>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 input-group">
+            <input type="{{ passwordFieldType2 }}" class="form-control form-control-sm" formControlName="passwordnew">
+            <span class="input-group-text pointer" (click)="toggleFieldType('passwordnew')">
+                <i class="fa fa-eye text-danger"></i>
+            </span>
+          </div>
+          <small *ngIf="validarCampo('passwordnew')" class="text-danger">campo requerido</small>
+        </div>
+        <div class="d-flex justify-content-center m-1">
+            <button class="btn btn-sm btn-danger">
+                <i class="fa fa-save"></i> &nbsp; Guardar
+            </button>
+        </div>
+      </div>
+    </div>
+</form>
+<ng-container *ngIf="faltante_s" class="text-center">
+    <div class="d-flex justify-content-center m-1 text-center">
+        Información faltante: <strong class="text-danger">{{ faltante_s }}</strong>
+    </div>
+</ng-container>
+<pre>
+    {{data | json}}
+</pre>
+
+
+
+<div class="mb-4 mt-1"></div>

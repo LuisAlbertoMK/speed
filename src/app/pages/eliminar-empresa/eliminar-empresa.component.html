@@ -1,0 +1,115 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <li class="breadcrumb-item active">Elimina empresa</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body text-center">
+    <h1>Selecciona la empresa a eliminar y la empresa por la cual se reemplazara</h1>
+    <span class="text-danger">Solo empresas ya registradas</span>
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      <div class="mb-1 row">
+        <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label text-end">Sucursal</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+          <select class="form-control form-control-sm" [(ngModel)]="sucursal_elimina" (ngModelChange)="listadoEmpresas(sucursal_elimina)">
+            <option selected value="">Selecciona</option>
+            <option [value]="item.id" *ngFor="let item of lista_en_duro_sucursales">{{item.sucursal}}</option>
+          </select>
+        </div>
+      </div>
+    </ng-container>
+    
+    <div class="mb-1 row">
+      <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label text-end">Empresa a eliminar</label>
+      <div class="col-sm-9 col-md-8 col-lg-9 ">
+        <input type="text" class="form-control form-control-sm text-uppercase" [formControl]="myControl_elimina" [matAutocomplete]="auto_elimina">
+          <mat-autocomplete #auto_elimina="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions_elimina | async" [value]="option">
+              {{option['empresa']}}
+            </mat-option>
+          </mat-autocomplete>
+      </div>
+    </div>
+    <div class="mb-1 row">
+      <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label text-end">Empresa reemplazo</label>
+      <div class="col-sm-9 col-md-8 col-lg-9 ">
+        <input type="text" class="form-control form-control-sm text-uppercase" [formControl]="myControl_reemplaza" [matAutocomplete]="auto_reemplaza">
+          <mat-autocomplete #auto_reemplaza="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions_reemplaza | async" [value]="option">
+              {{option['empresa']}}
+            </mat-option>
+          </mat-autocomplete>
+      </div>
+    </div>
+    <div class="mb-1 row text-center">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <button class="btn btn-sm btn-primary col-lg-4 col-md-4 col-sm-4 col-6" (click)="listaClientes_afectados()">
+          <i class="fa fa-search"></i> Comprobar clientes afectados
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <ng-container *ngIf="!afecta_clientes.length; else elseAfectados">
+      <div class="alert alert-info fs-4 text-center">
+        <p>No hay ningun resultado</p>
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>
+    </ng-container>
+    <ng-template #elseAfectados>
+      <h1>Lista de clientes afectados</h1>
+        <p>
+          <span class="text-danger">Revisar detalladamente cada cliente</span>
+        </p>
+        <p>
+          <span class="text-danger"><strong>Esta acción no se podra revertir!!</strong></span>
+        </p>
+        <ng-container *ngIf="afecta_clientes.length>0">
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-sm btn-danger" (click)="ReemplzarInformacion()">
+                <i class="fa fa-ban"></i> Reemplazar
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">No. Cliente</th>
+              <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">Nombre</th>
+              <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">Correo</th>
+              <th scope="col" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}">Empresa</th>
+              <th scope="col">Tel. cel</th>
+              <th scope="col">Sucursal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of afecta_clientes; let i = index">
+              <th scope="row">{{i + 1}}</th>
+              <td>{{item.no_cliente}}</td>
+              <td>{{item.fullname | capitalizarUno}}</td>
+              <td>{{item.correo.toLowerCase()}}</td>
+              <td>{{item.empresaShow}}</td>
+              <td>{{item.telefono_movil}}</td>
+              <td>{{item.sucursalShow}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>    
+  </div>
+</div>
+

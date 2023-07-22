@@ -1,0 +1,207 @@
+// Enviar
+private router: Router
+this.router.navigate([`/${this.enrutamiento.anterior}`], { 
+      queryParams: 
+      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+    });
+
+//recuperar
+private rutaActiva: ActivatedRoute
+enrutamiento = {vehiculo:'', cliente:'', anterior:''}
+    this.rutaActiva.queryParams.subscribe(params => {
+      const { vehiculo, cliente, anterior } = params
+      if(vehiculo && cliente){
+        this.acciones(vehiculo, cliente)
+        this.enrutamiento.vehiculo = vehiculo
+        this.enrutamiento.cliente = cliente
+      }
+      this.enrutamiento.anterior = anterior
+      // console.log(`${anterior}/clientes/${cliente}`);
+
+      // ...
+    });
+
+    const control = this.citaForm.get('dia').disabled;
+
+onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+
+//ancho minimo de columnas
+   miniColumnas:number = 100
+
+[ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
+
+onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+
+modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down modal-dialog-scrollable
+col-lg-12 col-md-12 col-sm-12 col-12
+
+.col-lg-12.col-md-12.col-sm-12.col-12
+
+const closeButton = document.querySelector('[data-bs-dismiss="modal"]');
+        if (closeButton) {
+          closeButton.dispatchEvent(new Event('click'));
+        }
+
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+const db = getDatabase()
+const dbRef = ref(getDatabase());
+          
+const starCountRef = ref(db, `clientes`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+      } else {
+        console.log("No data available");
+      }
+    }, {
+        onlyOnce: true
+      })
+	
+
+    private _clientes:ClientesService, private _vehiculos: VehiculosService, 
+    private _cotizaciones: CotizacionesService,
+    private _sucursales: SucursalesService,
+    private _campos: CamposSystemService,
+
+
+    camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
+    camposCliente    =  [ ...this._clientes.camposCliente_show ]
+    camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
+    formasPago       =  [ ...this._cotizaciones.formasPago ]
+    metodospago      =  [ ...this._cotizaciones.metodospago ]
+    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
+
+    paquete: string     =  this._campos.paquete
+  refaccion: string   =  this._campos.refaccion
+  mo: string          =  this._campos.mo
+  miniColumnas:number =  this._campos.miniColumnas
+
+get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+  if (snapshot.exists()) {
+    console.log(snapshot.val());
+  } else {
+    console.log("No data available");
+  }
+}).catch((error) => {
+  console.error(error);
+});
+
+	//generar nueva key y poder utilizarla para almacenar informacion
+ 	const newPostKey = push(child(ref(db), 'posts')).key
+
+
+const updates = {};
+updates[``] = postData;
+update(ref(db), updates).then(()=>{
+  console.log('finalizo');
+})
+.catch(err=>{
+  console.log(err);
+})
+
+  private _security:EncriptadoService,
+    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+    this.ROL = this._security.servicioDecrypt(variableX['rol'])
+    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+
+
+{  text: `aqui`,bold: true, alignment: 'center', style:'sucursal'},
+
+let timerInterval
+clearInterval(timerInterval)
+       
+
+
+       getUserMedia({
+  audio: true,
+  video: { facingMode: "user" }
+})
+
+getUserMedia({
+  audio: true,
+  video: {
+    facingMode: { exact: "environment" }
+  }
+})
+
+if (valida) {
+  this._publicos.mensaje_pregunta('Seguro de registrar usuario').then(({respuesta})=>{
+    if (respuesta) {
+      const recupera = ['usuario','correo','password','sucursal','rol']
+      const recuperada = this._publicos.nuevaRecuperacionData(this.formUsuario.value, recupera)
+      console.log(recuperada);
+      const updates = {
+        [`usuarios/${this._publicos.generaClave()}`]: recuperada
+      };
+      update(ref(db), updates)
+      .then(a=>{this._publicos.swalToast('Se registro usuario')})
+      .catch(err=>{
+        this._publicos.swalToastError('Error al registrar usuario')
+      })
+    }
+  })
+}else{
+  this._publicos.swalToastError('LLenar datos de formulario')
+}
+
+
+//para remover validaciones
+    this.form_cliente.controls['nombre'].clearValidators()
+    //agregar validaciones
+    this.form_cliente.controls['nombre'].addValidators([
+      Validators.required
+    ])
+    //actualizar validaciones
+    this.form_cliente.controls['nombre'].updateValueAndValidity()
+
+
+    console.time('Execution Time');
+        
+    console.timeEnd('Execution Time');
+
+
+    <button
+    class="btn btn-sm btn-outline-primary m-5"
+    (click)="generaPdfRemision()">Genera</button>
+
+<div class="card text-left">
+    <div class="card-body">
+        <div class="col text-center">
+            <h2 class="text-primary">
+                <strong>Forlulario de complementos</strong>
+            </h2>
+        </div>
+        <form (ngSubmit)="registroGasto()" [formGroup]="FormComplementos" class="m-2">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+                    <div class="row">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
+                            <div class="mb-1 row">
+                                <label
+                                    [ngClass]="{'text-danger': validaCampo('kilometraje'),'text-success': !validaCampo('kilometraje')}"
+                                    for="kilometraje"
+                                    class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Kilometraje
+                                </label>
+                                <div class="col-sm-8 col-md-6 col-lg-6 col-12">
+                                    <input
+                                        id="kilometraje"
+                                        type="number"
+                                        min="0"
+                                        max="10000000"
+                                        class="form-control form-control-sm"
+                                        formControlName="kilometraje"></div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+
+        </div>
+
+
+        [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}"

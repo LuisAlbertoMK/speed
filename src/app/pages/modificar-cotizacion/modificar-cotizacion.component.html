@@ -1,0 +1,714 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0"></h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li> -->
+          <li class="breadcrumb-item active"><a class="breadcrumb-item" [routerLink]="['/cotizacion']">Órdenes y
+              Cotizaciones</a></li>
+          <li class="breadcrumb-item active">Firma </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="con-flot">
+  <input type="checkbox" id="btn-mas">
+  <div class="redes">
+    <a  class="mat-elevation-z8" [routerLink]="['/inicio']" ><i class="fad fa-arrow-alt-left"></i></a>
+    <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-up"></i></a>
+    <a class="mat-elevation-z8" ><i class="fad fa-arrow-alt-down"></i></a>
+  </div>
+  <div class="btn-mas">
+    <label for="btn-mas" class="btn-ma"><strong><i class="fad fa-plus-circle"></i></strong></label>
+  </div>
+</div>
+<div class="row col-lg-12 col-md-12 col-sm-12 mt-1 ">
+    <div class="card">
+      <div class="card-body">
+        <!-- <pre>
+          {{infoCotizacion | json}}
+        </pre> -->
+        <div class="row">
+          <div class="col-lg-5 col-md-6 col-sm-12">
+            
+            <form (ngSubmit)="guardarCotizacionNew()" [formGroup]="formCotizacion">
+  
+              <div class="row g-3 align-items-center m-1">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                  <label class="form-label text-capitalize">cliente</label> 
+                </div>
+                
+                <div class="col-sm-9 col-md-9 col-lg-9">
+                  <select class=" form-select form-control " formControlName="cliente" [ngModel]="dataRecepcion.cliente">
+                    <option [defaultSelected]="dataRecepcion.cliente" [value]="dataRecepcion.cliente">{{dataCliente.fullname}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row g-3 align-items-center m-1">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                  <label for="vehiculo" class="form-label text-capitalize ">Vehiculo</label>
+                </div>
+                <div class="col-sm-9 col-md-9 col-lg-9">
+                  <select class=" form-select form-control text-uppercase" formControlName="vehiculo" [ngModel]="dataRecepcion.vehiculo">
+                    <option [defaultSelected]="dataRecepcion.vehiculo" [value]="dataRecepcion.vehiculo">{{dataVehiculo.placas}}</option>
+                  </select>
+                </div>
+              </div>
+             
+              <div class="row g-3 align-items-center m-1">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                  <label for="servicio" class="form-label text-capitalize ">Servicios</label>
+                </div>
+                <div class="col-sm-9 col-md-9 col-lg-9" >
+                  <select class=" form-select form-control text-uppercase" formControlName="servicio" [ngModel]="dataRecepcion.servicio" (change)="verificaTipoServicio()" [class.is-invalid]="validarFormCotizacion('servicio')">
+                    <option [defaultSelected]="" value="">Selecciona servicio</option>
+                    <option [defaultSelected]="dataRecepcion.servicio === servicio" value="{{servicio}}" *ngFor="let servicio of servicios;let i = index" (click)="verificaTipoServicio()">
+                      {{servicio}}</option>
+                  </select>
+                  <small *ngIf="validarFormCotizacion('servicio')" class="text-danger">
+                    Seleccionar servicio
+                  </small>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                  <!-- <button type="submit" class="btn btn-primary col-lg-4 col-md-4 col-sm-4 m-1">Guardar</button> -->
+                  <!-- <button type="button" data-bs-dismiss="modal" class="btn btn-danger col-lg-4 col-md-4 col-sm-4 m-1" (click)="limpiarFormulario()">Salir</button> -->
+                </div>
+              </div>
+            </form>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <div class="card-text">
+  
+                      <h3><i class="fad fa-layer-plus"></i> Buscar reparación en el catálogo</h3>
+                      <div class="btn-group d-grid gap-2 d-md-block" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle text-capitalize" data-bs-toggle="dropdown" aria-expanded="false">
+                          catálogo ...
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="width: 50%">
+                          <li><a class="dropdown-item" data-bs-toggle="modal" 
+                            data-bs-target="#AddPaquetes" (click)="verificaDatos()">Paquetes</a></li>
+                          <li><a class="dropdown-item" data-bs-toggle="modal"
+                            data-bs-target="#addManoObra" (click)="consultaManoObra()">Mano de obra</a></li>
+                            <li><a class="dropdown-item"  data-bs-toggle="modal"
+                              data-bs-target="#addRefaccion" (click)="consultaRefacciones()">Refacción</a></li>
+                        </ul>
+                      </div>
+                      
+  <!-- 
+                      <button type="button" rol="button" class="btn m-1" mat-stroked-button data-bs-toggle="modal"
+                        data-bs-target="#AddPaquetes" (click)="verificaDatos()">Paquetes</button>
+                      <button type="button" rol="button" class="btn m-1" mat-stroked-button data-bs-toggle="modal"
+                        data-bs-target="#addManoObra" (click)="consultaManoObra()">Mano de obra</button>
+                      <button type="button" rol="button" class="btn m-1" mat-stroked-button data-bs-toggle="modal"
+                        data-bs-target="#addRefaccion" (click)="consultaRefacciones()">Refacción</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 text-center pointer">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <div class="card-text  ">
+                      <h3 class="" data-bs-toggle="modal" data-bs-target="#AddNewReparacion" >
+                        <i class="fad fa-layer-plus"></i>Agregar nueva reparación
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-6 col-sm-12">
+  
+            <!-- {{formCotizacion.value | json}} -->
+            <div class="">
+              <div class="row">
+                <div class="col-12  text-end">
+                  <!-- <pre>{{formCotizacion.valid}}</pre> -->
+                  <button role="button" (click)="guardaraCotizacion()" class="btn btn-success col-6" [disabled]="(tempdataCotizacionmuestra.length===0 || formCotizacion.invalid) ? 'disabled': null" >
+                    Guardar cotización</button>
+                    <!-- <button role="button" class="btn text-primary" alt="editar una cotizacion"><i class="fas fa-comment-alt-edit fa-2x"></i></button> -->
+                </div>
+               
+              </div>
+              <div class="row">
+                <h2 class="fw-bolder text-warning text-uppercase sombratext">elementos en cotización</h2>
+               
+              </div>
+            </div>
+            <div class="row text-end">
+              <div class="col-lg-12 col-md-12 col-sm-12">Costo de cotizacion: <strong>
+                  {{totalCotizacion | monedas}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let agregado of tempdataCotizacionmuestra;let i = index">
+                <ng-container *ngIf="!agregado.status">
+                  <div class="card bg-danger bg-danger text-dark bg-opacity-25">
+                    <div class="card-body ">
+                      <div class="text-end">
+                        <a role="button" (click)="dropPaqueteCotizacion(agregado.idPaquete)"><i
+                            class="fas fa-trash-alt text-dark"></i></a>
+                      </div> 
+                      <h3 class="card-title fw-bolder text-capitalize ">
+                        <strong class="text-dark">{{agregado.nombre}}</strong>
+                      </h3>
+                      <!-- <h6 class="card-subtitle mb-2 text-muted">{{agregado.total}}</h6> -->
+                      <div class="card-text">
+                        <p>Tipo: <strong>{{agregado.tipo}}</strong></p>
+                        <p>Costo: <strong>$ {{agregado.total | number}}</strong></p>
+                        <p> Descripcion: {{agregado.descripcion | slice:0:15}}</p>
+                      </div>
+                           </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="agregado.status">
+                  <div class="card">
+                    <div class="card-body ">
+                      <div class="text-end">
+                        <a role="button" (click)="dropPaqueteCotizacion(agregado.idPaquete)"><i
+                            class="fas fa-trash-alt"></i></a>
+                      </div>
+                      <h3 class="card-title fw-bolder text-capitalize ">
+                        <strong class="text-success">{{agregado.nombre}}</strong>
+                      </h3>
+                      <!-- <h6 class="card-subtitle mb-2 text-muted">{{agregado.total}}</h6> -->
+                      <div class="card-text">
+                        <p>Tipo: <strong>{{agregado.tipo}}</strong></p>
+                        <p>Costo: <strong>{{agregado.total  | monedas}}</strong></p>
+                        <p> Descripcion: {{agregado.descripcion | slice:0:35 }}...</p>
+                      </div>
+                           </div>
+                  </div>
+                </ng-container>
+              </div>
+              <!-- <pre>{{tempdataCotizacionmuestra | json}}</pre> -->
+            </div>
+  
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ventanas modal para agregar Paquetes -->
+<div class="modal fade" id="AddPaquetes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <div class="modal-header ml-3">
+      <h2 class="modal-title text-primary" id="staticBackdropLabel">Agregar paquetes </h2>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body m-3">
+
+      <div class="row">
+        <div class="col-lg-5 col-md-6 col-sm-12">
+
+          <mat-form-field appearance="standard">
+            <mat-label class="text-capitalize">búsqueda</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+          </mat-form-field>
+
+          <div class="mat-elevation-z8 table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Nombre </th>
+                <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="marca">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Marca </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"> {{row.marca}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="modelo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> modelo </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}"> {{row.modelo}} </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="cilindros">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> cil. </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.3+'px'}"> {{row.cilindros}} </td>
+              </ng-container>
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Total </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.8+'px'}"> <strong>$ {{row.total}} </strong> </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> status </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+                  
+                  <div [ngSwitch]="row.status">
+                    <div *ngSwitchCase="true" class="text-success"><i class="fas fa-circle"></i></div>
+                    <div *ngSwitchDefault class="text-danger"><i class="fas fa-circle"></i></div>
+                  </div>
+                <td>
+              </ng-container>
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Menú </th>
+                <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+                  <div class="btn-group" role="group">
+                    <a id="btnGroupDrop1" class="btn btn-light dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="fad fa-tools"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                      <li><a class="dropdown-item" (click)="getCompleta(row.id,row)">Detalles</a></li>
+                      <li><a class="dropdown-item" (click)="addCotizacion(row.id,row,'paquete')">Agregar a
+                          cotizacion</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container>
+                <!-- <ng-container *ngIf="ROL === 'SuperSU' || ROL === 'Administrador'"> -->
+                <tr mat-header-row *matHeaderRowDef="columnasModal"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnasModal;">
+
+                </tr>
+              </ng-container>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+            <ng-container *ngIf="venatanaModalPaquetes">
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+            </ng-container>
+          </div>
+          <ng-container *ngIf="complemntosPQ.length!==0">
+
+          
+          <h2>Detalles de paquete {{nombre}}</h2>
+          <div class="table-responsive">
+            <table class="table table-borderless table-sm caption-top table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*.5+'px','width':'50px'}">
+                    #</th>
+                  <th scope="col" class="">Tipo</th>
+                  <th scope="col" class="">Nombre</th>
+                  <!-- <th scope="col">Status</th> -->
+                  <!-- <th scope="col">Modelo</th> -->
+                  <th scope="col">Marca</th>
+                  <th scope="col">Costo</th>
+                  <!-- <th scope="col">Stock</th> -->
+                  <th scope="col">Subtotal</th>
+                  <!-- <th scope="col" [ngStyle]="{'min-width':miniColumnas*5+'px'}">Descripción</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let conjunto of complemntosPQ; let i = index">
+                  <td scope="row" class="text-center">{{i +1}}</td>
+                  <td class="text-capitalize">{{conjunto.tipo }}</td>
+                  <td>{{conjunto.nombre}}</td>
+                  <!-- <td *ngIf="conjunto.status === 'active'" class="text-success fw-bolder">Habilitado</td> -->
+                  <!-- <td *ngIf="conjunto.status !== 'active'" class="text-danger fw-bolder">Deshabilitado</td> -->
+                  <!-- <td>{{conjunto.modelo}}</td> -->
+                  <td>{{conjunto.marca }}</td>
+                  <td class="text-center">{{conjunto.precio }}</td>
+                  <!-- <td class="text-center">{{conjunto.stock }}</td> -->
+                  <td class="text-center">{{conjunto.subtotal }}</td>
+                  <!-- <td class="texto-justificado"> {{conjunto.descripcion }}</td> -->
+                </tr>
+              </tbody>
+
+            </table>
+            <div class="text-end col-lg-12 col-md-12 col-sm-12">
+              Costo total: <strong> ${{ totalShow}}</strong>
+            </div>
+          </div>
+        </ng-container>
+        </div>
+        <div class="col-lg-7 col-md-6 col-sm-12 mt-2">
+          <h2 class="text-info text-uppercase ">elementos en cotización</h2>
+          <div class="row text-end">
+            <div class="col-lg-12 col-md-12 col-sm-12">Costo de cotizacion: <strong> {{totalCotizacion | monedas}}</strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let agregado of tempdataCotizacionmuestra;let i = index">
+              <div class="card">
+                <div class="card-body ">
+                  <div class="text-end">
+                    <a role="button" (click)="dropPaqueteCotizacion(agregado.idPaquete)"><i
+                        class="fas fa-trash-alt text-danger"></i></a>
+                  </div>
+                  <h3 class="card-title fw-bolder text-capitalize ">
+                    <strong class="text-success">{{agregado.nombre}}</strong>
+                  </h3>
+                  <div class="card-text">
+                    <p>Tipo: <strong>{{agregado.tipo}}</strong></p>
+                    <p>Costo: <strong>$ {{agregado.total}}</strong></p>
+
+                  </div>
+                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <br>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+</div>
+<!-- ventanas modal para agregar Paquetes -->
+<div class="modal fade" id="addManoObra" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title text-primary" id="staticBackdropLabel">Agregar Mano de obra </h2>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <mat-form-field appearance="standard">
+            <mat-label class="text-capitalize">búsqueda</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+          </mat-form-field>
+          <div class="mat-elevation-z8 table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Nombre </th>
+                <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{row.nombre}}
+                </td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> precio </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{row.precio}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> descripcion </th>
+                <td mat-cell *matCellDef="let row"> {{row.descripcion}} </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> status </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+                  <div [ngSwitch]="row.status">
+                    <div *ngSwitchCase="true" class="text-success"><i class="fas fa-circle"></i></div>
+                    <div *ngSwitchDefault class="text-danger"><i class="fas fa-circle"></i></div>
+                  </div>
+                <td>
+              </ng-container>
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Opciones </th>
+                <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+                  <div class="btn-group" role="group">
+                    <a id="btnGroupDrop1" class="btn btn-light dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="fad fa-tools"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                      <li><a class="dropdown-item" (click)="getDetalles(row)">Detalles</a></li>
+                      <li><a class="dropdown-item" (click)="addCotizacion(row.id,row,'Mano de obra')">Agregar a
+                          cotizacion</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container>
+                <!-- <ng-container *ngIf="ROL === 'SuperSU' || ROL === 'Administrador'"> -->
+                <tr mat-header-row *matHeaderRowDef="columnasModalManoObra"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnasModalManoObra;">
+
+                </tr>
+              </ng-container>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+            <ng-container *ngIf="venatanaModalManoObra">
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+            </ng-container>
+          </div>
+          <ng-container *ngIf="dataDetalles!==''">
+
+         
+          <h2>Detalles mano de obra {{dataDetalles.nombre}}</h2>
+          <div class="table-responsive">
+            <table class="table table-borderless table-sm caption-top table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*.5+'px','width':'50px'}">
+                    #</th>
+                  <th scope="col" class="">Nombre</th>
+                  <th scope="col">precio</th>
+                  <th scope="col">descripción</th>
+                  <th scope="col">status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row" class="text-center">{{1}}</td>
+                  <td>{{dataDetalles.nombre}}</td>
+                  <td>{{dataDetalles.precio }}</td>
+                  <td class="text-center">{{dataDetalles.descripcion }}</td>
+                  <td class="text-center">
+                    <div [ngSwitch]="dataDetalles.status">
+                      <div *ngSwitchCase="true" class="text-success"><i class="fas fa-circle"></i></div>
+                      <div *ngSwitchDefault class="text-danger"><i class="fas fa-circle"></i></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+          <h2 class="text-success text-uppercase ">elementos en cotización</h2>
+          <div class="row text-end">
+            <div class="col-lg-12 col-md-12 col-sm-12">Costo de cotizacion: <strong>{{totalCotizacion | monedas}}</strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let agregado of tempdataCotizacionmuestra;let i = index">
+              <div class="card">
+                <div class="card-body ">
+                  <div class="text-end">
+                    <a role="button" (click)="dropPaqueteCotizacion(agregado.idPaquete)"><i
+                        class="fas fa-trash-alt text-danger"></i></a>
+                  </div>
+                  <h3 class="card-title fw-bolder text-capitalize ">
+                    <strong class="text-success">{{agregado.nombre}}</strong>
+                  </h3>
+                  <!-- <h6 class="card-subtitle mb-2 text-muted">{{agregado.total}}</h6> -->
+                  <div class="card-text">
+                    <p>Tipo: <strong>{{agregado.tipo}}</strong></p>
+                    <p>Costo: <strong>$ {{agregado.total }}</strong></p>
+
+                  </div>
+                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+
+</div>
+</div>
+<!-- ventanas modal para agregar Paquetes -->
+<div class="modal fade" id="addRefaccion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title text-primary" id="staticBackdropLabel">Agregar refacción </h2>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+      <!-- <h2 class="modal-title text-primary" id="staticBackdropLabel">Agregar Refacción </h2> -->
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <mat-form-field appearance="standard">
+            <mat-label class="text-capitalize">búsqueda</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+          </mat-form-field>
+          <div class="mat-elevation-z8 table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+              <!-- ID Column -->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Nombre </th>
+                <td mat-cell *matCellDef="let row" class="text-capitalize"
+                  [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{row.nombre}} </td>
+              </ng-container>
+
+              <!-- Progress Column -->
+
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> precio </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}"> {{row.precioCompra}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> descripcion </th>
+                <td mat-cell *matCellDef="let row" class="texto-justificado"> {{row.descripcion | slice:0:20}}...
+                </td>
+              </ng-container>
+
+              <!-- Fruit Column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> status </th>
+                <td mat-cell *matCellDef="let row" class="text-center"
+                  [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+                  <div [ngSwitch]="row.status">
+                    <div *ngSwitchCase="true" class="text-success"><i class="fas fa-circle"></i></div>
+                    <div *ngSwitchDefault class="text-danger"><i class="fas fa-circle"></i></div>
+                  </div>
+                <td>
+              </ng-container>
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"> Opciones </th>
+                <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+                  <div class="btn-group" role="group">
+                    <a id="btnGroupDrop1" class="btn btn-light dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="fad fa-tools"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                      <li><a class="dropdown-item" (click)="getDetalles(row)">Detalles</a></li>
+                      <li><a class="dropdown-item" (click)="addCotizacion(row.id,row,'refacción')">Agregar a
+                          cotizacion</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container>
+                <!-- <ng-container *ngIf="ROL === 'SuperSU' || ROL === 'Administrador'"> -->
+                <tr mat-header-row *matHeaderRowDef="columnasModalManoObra"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnasModalManoObra;">
+
+                </tr>
+              </ng-container>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+            <ng-container *ngIf="venatanaModalRecacciones">
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+            </ng-container>
+          </div>
+          <ng-container *ngIf="dataDetalles!==''">
+          <h2>Detalles refacción {{dataDetalles.nombre}}</h2>
+          <div class="table-responsive">
+            <table class="table table-borderless table-sm caption-top table-striped">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*.5+'px','width':'50px'}">
+                    #</th>
+                  <th scope="col" class="">Nombre</th>
+                  <th scope="col">precio</th>
+                  <th scope="col">descripción</th>
+                  <th scope="col">status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row" class="text-center">{{1}}</td>
+                  <td>{{dataDetalles.nombre}}</td>
+                  <td>{{dataDetalles.precioCompra }}</td>
+                  <td class="text-center texto-justificado">{{dataDetalles.descripcion }}</td>
+                  <td class="text-center">
+                    <div [ngSwitch]="dataDetalles.status">
+                      <div *ngSwitchCase="true" class="text-success"><i class="fas fa-circle"></i></div>
+                      <div *ngSwitchDefault class="text-danger"><i class="fas fa-circle"></i></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+          <!-- <div class="col-lg-7 col-md-6 col-sm-12 mt-2" *ngIf="nombre!==''"> -->
+          <h2 class="text-success text-uppercase ">elementos en cotización</h2>
+          <div class="row text-end">
+            <div class="col-lg-12 col-md-12 col-sm-12">Costo de cotizacion: <strong>{{totalCotizacion | monedas}}</strong>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let agregado of tempdataCotizacionmuestra;let i = index">
+              <div class="card">
+                <div class="card-body ">
+                  <div class="text-end">
+                    <a role="button" (click)="dropPaqueteCotizacion(agregado.idPaquete)"><i
+                        class="fas fa-trash-alt text-danger"></i></a>
+                  </div>
+                  <h3 class="card-title fw-bolder text-capitalize ">
+                    <strong class="text-success">{{agregado.nombre}}</strong>
+                  </h3>
+                  <!-- <h6 class="card-subtitle mb-2 text-muted">{{agregado.total}}</h6> -->
+                  <div class="card-text">
+                    <p>Tipo: <strong>{{agregado.tipo}}</strong></p>
+                    <p>Costo: <strong>$ {{agregado.total}}</strong></p>
+
+                  </div>
+                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+
+</div>
+</div>

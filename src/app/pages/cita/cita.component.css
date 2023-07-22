@@ -1,0 +1,57 @@
+.cita-tarjeta{
+    /* border-radius: 7px;
+    background: rgb(252, 252, 252);
+    padding: auto 3px;
+    border-style: solid;
+    border-width: thin;
+    align-items: center;
+    border-color: rgb(108, 107, 107); */
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    align-items: center;
+    /* width: 300px; */
+}
+.cita-tarjeta .titulo{
+    text-align: right;
+    color:rgb(192, 65, 46);
+    /* font-weight: bold; */
+    font-size: 14px;
+    margin-right: 5px;
+    text-transform: capitalize;
+}
+.cita-tarjeta .informacion{
+    text-align: left;
+    color:rgb(29, 37, 37);
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 5px;
+    text-transform: uppercase;
+}
+
+.confirmada{
+    color: #17a2b8;
+}
+
+.cancelada{
+    color: #dc3545;
+}
+.noConfirmada{
+    color: #ffc107;
+}
+.sinConfirmarDomicilio{
+    color: #28a745;
+}
+.concretada{
+    color: #007bff;
+}
+.comentario{
+    font-size: 12;
+    color: #dc3545;
+}
+.direccion{
+    color: blue;
+    cursor: pointer;
+  }

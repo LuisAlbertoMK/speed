@@ -1,0 +1,172 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row mb-3">
+            <ng-container *ngIf="registro">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center" >
+                <h3 class="text-primary">Buscar elemento en catalogo / Registro</h3>
+                <h4><span class="text-danger mb-1 mt-1">Nombre máximo 50 caracteres, si ocupa más utilizar descripción</span></h4>
+                <ng-container *ngIf="encontrado; else elseTemplate">
+                <span class="text-danger">Elemento encontrado con el mismo nombre</span>
+                </ng-container>
+                <ng-template #elseTemplate>
+                 <span class="text-success">Se puede registrar</span> 
+                </ng-template>
+              </div>
+            </ng-container>
+        </div>
+          <form [formGroup]="formElemento" (ngSubmit)="colocarElemento()">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
+                <div class="row">
+                  <label for="nombre"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">nombre</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
+                    <!-- <input type="text" class="form-control form-control-sm"  id="nombre" formControlName="nombre"> -->
+                    <input type="text" class="form-control form-control-sm text-capitalize"
+                     placeholder="Nombre de Refaccón / MO"
+                     aria-label="Nombre"
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"
+                     maxlength="50"
+                     >
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)"
+                      [ngClass]="{'tipo-refaccion': option['tipo'] === 'refaccion','tipo-mo': option['tipo'] === 'mo'}"
+                      >
+                          {{option['nombre'] | capitalizarUno}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="cantidad"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">Cantidad</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                    <input type="number" onkeypress="soloNumeros(event)" class="form-control form-control-sm" min="1" id="cantidad"
+                      formControlName="cantidad">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="precio"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalizee">Costo</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                    <input type="number" onkeypress="validarDecimal(event)" class="form-control form-control-sm" min="1" id="precio"
+                      formControlName="precio">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="costo"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">Costo sobrescrito</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                    <input type="number" onkeypress="validarDecimal(event)" class="form-control form-control-sm" min="0" id="costo"
+                      formControlName="costo">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="tipo"
+                    class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">tipo</label>
+                  <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
+                    <select  class="form-select form-select-sm" formControlName="tipo">
+                      <option value="mo">Mano obra</option>
+                      <option value="refaccion">Refaccion</option>
+                  </select>
+                  </div>
+                </div>
+
+              </div>
+              <ng-container *ngIf="marca; else elseMarca">
+                <!-- Muestra lista marcas -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="formElemento.controls['tipo'].value === 'refaccion'">
+                    <div class="mb-1 row ">
+                      <label for="marca"
+                        class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">marca</label>
+                      <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+                        <div class="input-group mb-3">
+                          <!-- <select [(ngModel)]="marcaSelect" class="form-select form-select-sm" id="marca"
+                            formControlName="marca">
+                            <option value="">Ninguna</option>
+                            <option [selected]="marca.id === marcaSelect" value="marca.id"
+                              *ngFor="let marca of refaccionesMarcas">{{marca.marca}}</option>
+                          </select> -->
+                          <!-- <button class="btn btn-outline-primary" type="button" id="button-addon2"
+                            (click)="mensajeMarca()">+</button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </ng-container>
+            <ng-template #elseMarca>
+                
+            </ng-template>
+              
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="descripcion"
+                    class="col-12 col-sm-3 col-md-2 col-lg-2 col-form-label text-capitalize">descripcion</label>
+                  <div class="col-12 col-sm-9 col-md-10 col-lg-10">
+                    <textarea id="descripcion" cols="30" rows="3" formControlName="descripcion"
+                      style="width: 100%;"></textarea>
+                      <span>Se requiere descripción estará ayudara a identificar el elemento con más precisión</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-4 m-2">
+                Costo de venta: <strong>{{totalMuestra | monedas}}</strong>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <button type="submit" 
+                class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Colocar</button>
+                <button type="button" (click)="limpiarControl()" 
+                class="btn btn-sm btn-danger m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Limpiar Inf.</button>
+              </div>
+              <ng-container *ngIf="faltantes_string">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                    Falta informacion: <strong class="text-danger">{{faltantes_string}}</strong>
+                </div>
+              </ng-container>
+            </div>
+          </form>
+          <!-- <pre>{{formElemento.value | json}}</pre> -->
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <h4>Calcular costo a colocar</h4>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">Margen</label>
+                    <div class="col-sm-8">
+                      <input type="number" min="16" [value]="por" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="soloNumeros(event)"   >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div class="mb-3 row">
+                    <label for="inputPassword" class="col-sm-4 col-form-label">precio / costo</label>
+                    <div class="col-sm-8">
+                      <input type="number" min="1"  [value]="cantidad"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="validarDecimal(event)"        >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-5">
+              calculo sin margen: <strong>{{calculo | monedas}}</strong> - calculo del margen: <strong>{{ calculoMargen | monedas}}</strong>
+            </div>
+          </div>
+          
+    </div>
+  </div>
+<!-- {{listado | json}} -->
+  <!-- <button (click)="combinar()">change</button> -->

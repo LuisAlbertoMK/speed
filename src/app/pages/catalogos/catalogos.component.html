@@ -1,0 +1,508 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+            <li class="breadcrumb-item active">Catalogos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalElemento" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Registra MO / Refacción</button>
+      <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modaNewPaquete" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Registra Paquete</button>
+    </div>
+  </div>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab label="Paquetes">
+      <div class="row m-1">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
+          <input class="form-control" (keyup)="applyFilter('paquetes',$event)" placeholder="Buscar paquete" #input>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="table-responsive mat-elevation-z8">
+            <table #paquetes="matSort" matSort mat-table [dataSource]="dataSourcePaquetes" multiTemplateDataRows>
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+                  [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> index </th>
+                <td mat-cell *matCellDef="let element" class="text-center"> {{element.index + 1}}</td>
+              </ng-container>
+              <ng-container matColumnDef="modelo">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+                  [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> modelo </th>
+                <td mat-cell *matCellDef="let element" class="text-start"> {{element.modelo }}</td>
+              </ng-container>
+              <ng-container matColumnDef="marca">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+                  [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> marca </th>
+                <td mat-cell *matCellDef="let element" class="text-start"> {{element.marca + 1}}</td>
+              </ng-container>
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+                  [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> precio </th>
+                <td mat-cell *matCellDef="let element" class="text-start"> {{element.precio | monedas }}</td>
+              </ng-container>
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize text-end"
+                  [ngStyle]="{'min-width':(miniColumnas)*1.3+'px'}"> nombre </th>
+                <td mat-cell *matCellDef="let element" class="td-2"> 
+                  <strong
+                    [ngClass]="{'tipo-mo':element.tipo === 'mo','tipo-refaccion':element.tipo === 'refaccion','tipo-paquete':element.tipo === 'paquete'}">
+                    {{element.nombre | capitalizarUno}}</strong>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="cantidad">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"
+                  [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}"> cantidad </th>
+                <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-center">
+                  <input type="number" min="1" max="20" [value]="element.cantidad"> 
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="sobrescrito">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="td-2">
+                  precio sobrescrito </th>
+                <td mat-cell *matCellDef="let element; let indicePadre = dataIndex;" class="text-end td-2">
+                  <input type="number" min="0" max="10000" [value]="element.costo">
+                </td>
+              </ng-container>
+              
+              <ng-container matColumnDef="normal">
+                <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
+                  [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" >
+                  <span class="pointer" style="width: 100%;">normal &nbsp;
+                  </span> 
+    
+                   </th>
+                <td mat-cell *matCellDef="let element" class="text-end"> 
+                  <ng-container *ngIf="element.costo > 0; else elseTemplate">
+                    {{element.costo * 1.30 | monedas}}
+                  </ng-container>
+                  <ng-template #elseTemplate>
+                    {{element.precio * 1.30 | monedas}}
+                  </ng-template>
+                  
+              </ng-container>
+              <ng-container matColumnDef="flotilla">
+                <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
+                  [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" 
+                  > 
+                  <!-- (click)="ordenamiento = !ordenamiento; ordenarElementos('flotilla')" -->
+                  <span class="pointer" style="width: 100%;">flotilla &nbsp;
+                    <!-- <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
+                      <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                    </ng-container>
+                    <ng-template #elseOrdenamiento>
+                      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                    </ng-template> -->
+                  </span>
+                
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-end">
+                {{element.precio | monedas}}                
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-center"
+                [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> opciones </th>
+                <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-center">
+                  <!-- <i class="fa fa-edit btn btn-sm btn-success fa-xs m-1" (click)="agregarelementopaquete(!elementoAgregar, element.index)"></i> --> 
+                  <!-- <ng-container>
+                    <i class="fa fa-trash btn btn-sm btn-danger fa-xs m-1" (click)="eliminaElemento(element['index'])"></i>
+                    
+                  </ng-container> -->
+                  <!-- <i class="fa fa-plus btn btn-sm btn-primary" aria-hidden="true" (click)="dataElement( element)"></i> -->
+                  
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                  <ng-container *ngIf="element.tipo === 'paquete'">
+                    <button mat-icon-button aria-label="expand row"
+                      (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                      <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                      <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                    </button>
+                  </ng-container>
+                </td>
+              </ng-container>
+      
+              <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element;let indexPadre = dataIndex"
+                  [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="row" style="width: 100%;">
+                      <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                        <button type="button" 
+                          class="btn btn-sm btn-success m-1">
+                          <i class="fa fa-edit fa-xs m-1"></i> Agregar elemento
+                        </button>
+                        
+                      </div> -->
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <!-- <th colspan="8" class="col text-center fs-5">U.B {{element.reporte_interno['ub'] | monedas:'%'}}</th> -->
+                              </tr>
+                              <tr>
+                                <th scope="col" class="text-capitalize">#</th>
+                                <th scope="col" class="text-capitalize">nombre</th>
+                                <th scope="col" class="text-capitalize">cantidad</th>
+                                <!-- <th scope="col" class="text-capitalize">costo</th> -->
+                                <th scope="col" class="text-capitalize">precio</th>
+                                <th scope="col" class="text-capitalize">total</th>
+                                <!-- <th scope="col" class="text-capitalize">eliminar</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of element.elementos; let indexHijo = index" class="anima">
+                                <th scope="row" class="text-center">{{indexHijo +1}}</th>
+                                <td>
+                                    
+                                    <strong
+                                    [ngClass]="{'tipo-mo':item.tipo === 'mo','tipo-refaccion':item.tipo === 'refaccion','tipo-paquete':item.tipo === 'paquete'}">
+                                    {{item.nombre | capitalizarUno}}</strong>
+                                </td>
+                                <td class="text-center"> {{item.cantidad }} </td>
+                                <!-- <td> {{item.costo | monedas}} </td> -->
+                                <td class="text-end"> {{item.precio | monedas}} </td>
+                                <td class="text-end">
+                                 {{item.total | monedas}}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+      
+                    <!-- <pre>{{element.elementos | json}}</pre> -->
+                  </div>
+                </td>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" class=""></tr>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row "
+                [class.example-expanded-row]="expandedElement === element" >
+                <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+            <mat-paginator #paquetesPaginator role="group" [pageSizeOptions]="[10,20, 50, 100]"></mat-paginator>
+          </div>
+        </div>
+      
+    </div>
+    </mat-tab>
+    <mat-tab label="Mano de obra">
+      <div class="row m-1">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
+          <input class="form-control" (keyup)="applyFilter('mo',$event)" placeholder="Buscar mo" #input>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <table #MO="matSort" matSort mat-table [dataSource]="dataSourceMO" multiTemplateDataRows class="mat-elevation-z8">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef> # </th>
+              <td mat-cell *matCellDef="let element"> {{element.index + 1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.nombre.slice(0,25) | capitalizarUno}}... 
+                <ng-container *ngIf="element.status; else disabledStatus">
+                  <span class="badge badge-success"> Activo </span>
+                </ng-container>
+                <ng-template #disabledStatus>
+                  <span class="badge badge-danger"> Deshabilitado </span>
+                </ng-template>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef> Costo </th>
+              <td mat-cell *matCellDef="let element"> {{element.precio | monedas}} </td>
+            </ng-container>
+            <ng-container matColumnDef="opciones">
+              <th mat-header-cell *matHeaderCellDef>&nbsp;<th>
+              <td mat-cell *matCellDef="let element">
+                <i class="fa fa-edit text-primary" (click)="elemento_get = element; inicia()"></i>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button aria-label="expand row" (click)="(expandedElementMO = expandedElementMO === element ? null : element); $event.stopPropagation()">
+                  <mat-icon *ngIf="expandedElementMO !== element">keyboard_arrow_down</mat-icon>
+                  <mat-icon *ngIf="expandedElementMO === element">keyboard_arrow_up</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpandMO.length">
+                <div class="example-element-detail row"
+                    [@detailExpand]="element == expandedElementMO ? 'expanded' : 'collapsed'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                      <p>Nombre: {{element.nombre |capitalizarUno}}</p>
+                      <p>Descripcion: {{element.descripcion | capitalizarUno}}</p>
+                    </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpandMO"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpandMO;"
+                class="example-element-row"
+                [class.example-expanded-row]="expandedElementMO === element"
+                (click)="expandedElementMO = expandedElementMO === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+          </table>
+        <mat-paginator #MOPaginator role="group" [pageSizeOptions]="[10,20, 50, 100]"></mat-paginator>
+
+
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Refacciones">
+      <div class="row m-1">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
+          <input class="form-control" (keyup)="applyFilter('refacciones',$event)" placeholder="Buscar refaccion" #input>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <table #Refacciones="matSort" matSort mat-table [dataSource]="dataSourceRefacciones" multiTemplateDataRows class="mat-elevation-z8">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef> # </th>
+              <td mat-cell *matCellDef="let element"> {{element.index + 1}} </td>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef>Nombre </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.nombre.slice(0,25) | capitalizarUno}}... 
+                <ng-container *ngIf="element.status; else disabledStatus">
+                  <span class="badge badge-success"> Activo </span>
+                </ng-container>
+                <ng-template #disabledStatus>
+                  <span class="badge badge-danger"> Deshabilitado </span>
+                </ng-template>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef> Costo </th>
+              <td mat-cell *matCellDef="let element"> {{element.precio | monedas}} </td>
+            </ng-container>
+            <ng-container matColumnDef="opciones">
+              <th mat-header-cell *matHeaderCellDef> &nbsp; </th>
+              <td mat-cell *matCellDef="let element"> 
+                <i class="fa fa-edit text-primary" (click)="elemento_get = element; inicia()"></i> </td>
+            </ng-container>
+            <ng-container matColumnDef="expand">
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button aria-label="expand row" (click)="(expandedElementMO = expandedElementMO === element ? null : element); $event.stopPropagation()">
+                  <mat-icon *ngIf="expandedElementMO !== element">keyboard_arrow_down</mat-icon>
+                  <mat-icon *ngIf="expandedElementMO === element">keyboard_arrow_up</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpandRefacciones.length">
+                <div class="example-element-detail row"
+                    [@detailExpand]="element == expandedElementMO ? 'expanded' : 'collapsed'">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                      <p>Nombre: {{element.nombre |capitalizarUno}}</p>
+                      <p>Descripcion: {{element.descripcion | capitalizarUno}}</p>
+                    </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpandRefacciones"></tr>
+            <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpandRefacciones;"
+                class="example-element-row"
+                [class.example-expanded-row]="expandedElementMO === element"
+                (click)="expandedElementMO = expandedElementMO === element ? null : element">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+          </table>
+        <mat-paginator #RefaccionesPaginator role="group" [pageSizeOptions]="[10,20, 50, 100]"></mat-paginator>
+
+
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div class="row mb-5">
+    <div class="col mb-5">&nbsp;</div>
+  </div>
+
+
+  <div class="modal fade" id="modalElemento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-2">
+        <app-mo-refacciones [registro]="false"></app-mo-refacciones>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modaNewPaquete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header ml-3">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-2">
+        <h1>Registro de paquete </h1>
+        <form [formGroup]="paqueteForm" (ngSubmit)="registraPaquete()" class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
+              <div class="row g-3 align-items-center">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                  <label for="nombre">Nombre:</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                  <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre" required>
+                  <small *ngIf="validarCampo('nombre')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
+              <div class="row g-3 align-items-center">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                  <label for="marca">Marca:</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                  <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="marca" formControlName="marca" required>
+                    <option selected>Selecciona marca</option>
+                    <option [value]="item" *ngFor="let item of lista_marcas_arr">{{item}}</option>
+                  </select>
+                  <small *ngIf="validarCampo('marca')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
+              <div class="row g-3 align-items-center">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                  <label for="modelo">Modelo:</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                  <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="modelo" formControlName="modelo" required>
+                    <option selected>Selecciona modelo</option>
+                    <option [value]="item.modelo" (click)="categoria = item.categoria" *ngFor="let item of lista_modelos_arr">
+                      {{item.modelo}} - {{item.categoria }}
+                    </option>
+                  </select>
+                  <small *ngIf="validarCampo('modelo')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
+              <div class="row g-3 align-items-center">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                  <label for="cilindros">Cilindros:</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                  <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="cilindros" formControlName="cilindros" required>
+                    <option selected>Selecciona cilindros</option>
+                    <option [value]="item" *ngFor="let item of lista_cilindros_arr">{{ item }}</option>
+                  </select>
+                  <small *ngIf="validarCampo('cilindros')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </form>
+        
+        <app-mo-refacciones [registro]="true" (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <button type="submit" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*2+'px'}" (click)="registraPaquete()">Guardar paquete</button>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <ng-container *ngIf="infoFaltente_paquete">
+               Falta la siguiente informacion: <strong class="text-danger">{{infoFaltente_paquete}}</strong>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="card border-success mb-3">
+            <div class="card-header text-center text-success" [ngClass]="{'text-danger':reporteGeneral['ub'] <55}">Normal {{ reporteGeneral['ub'] | monedas: '%' }}</div>
+            <div class="card-body text-success ">
+              <h5 class="card-title"></h5>
+              <div class="row">
+                <ng-container *ngFor="let campo of camposDesgloce">
+                  <ng-container *ngIf="reporteGeneral[campo.valor] > 0">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show'] | capitalizarUno}}</div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporteGeneral[campo.valor] * 1.30 | monedas}}</strong></div>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="reporteGeneral['meses'] > 0">
+                  <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
+                  <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporteGeneral['meses'] * 1.30 | monedas}}</strong></div>
+                </ng-container>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{reporteGeneral['total'] * 1.30  | numerosLetras}}</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mat-elevation-z8 table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{ 'nombre' | capitalizarUno}}</th>
+                <th scope="col">{{ 'cantidad' | capitalizarUno}}</th>
+                <th scope="col">{{ 'precio' | capitalizarUno}}</th>
+                <th scope="col">{{ 'total' | capitalizarUno}}</th>
+                <th scope="col">{{ 'Opciones' | capitalizarUno}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of elementosDePaqueteNuevo">
+                <th scope="row">{{item.index + 1}}</th>
+                <td>{{item.nombre | capitalizarUno}}</td>
+                <td>{{item.cantidad}}</td>
+                <td>{{item.precio | monedas}}</td>
+                <td>{{item.total | monedas}}</td>
+                <td>
+                  <i class="fa fa-trash text-danger pointer" (click)="eliminaElemento(item.index)"></i>
+                </td>
+                <td>{{item.descripcion | capitalizarUno}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row mb-5">
+          <div class="col mb-5">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+<div class="card">
+  <div class="card-body">
+    
+  </div>
+</div> -->
+
+
+

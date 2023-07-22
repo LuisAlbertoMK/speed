@@ -1,0 +1,23 @@
+<form class="example-form ">
+  clientes disponibles : <strong> {{listaClientes_arr.length}}</strong>
+      <div class="input-group mb-3">
+
+        <input type="text"
+        placeholder="Buscar por nombre / correo"
+        aria-label="Nombre"
+        class="form-control"
+        [formControl]="myControl"
+        [matAutocomplete]="auto">
+        <!-- <button class="btn btn-group-sm btn-sm btn-outline-primary" type="button" id="button-addon1"  data-bs-toggle="modal" data-bs-target="#exampleModal"
+        #tooltip="matTooltip" matTooltip="Registra nuevo cliente">
+            <i class="fa fa-user-plus"></i>
+        </button> -->
+      </div>
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clienteSeleccionado(option)">
+            {{option['nombre'] }} {{option['apellidos'] }}
+        </mat-option>
+      </mat-autocomplete>
+  </form>
+
+  <!-- Modal -->

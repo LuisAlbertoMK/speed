@@ -1,0 +1,25 @@
+.texto-justificado {
+    text-align: justify;
+  }
+  
+  .ajustar {
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  .sombra{
+    -webkit-box-shadow: 10px 10px 15px #999;
+    -moz-box-shadow: 2px 2px 5px #999;
+    filter: shadow(color=#999999, direction=135, strength=2);
+  }
+
+div img#logo{
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}

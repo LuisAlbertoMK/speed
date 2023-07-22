@@ -1,0 +1,322 @@
+
+<ng-container *ngIf="registraEmpresaShow; else elseregistraEmpresaShow">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+          <h1 class="text-uppercase text-primary">Registra empresa</h1>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <form (ngSubmit)="registraEmpresa()" [formGroup]="formaEmpresa">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <input type="text"
+                      placeholder="Nombre de empresa"
+                      aria-label="Nombre"
+                      class="form-control form-control-sm"
+                      [class.is-invalid]="validarEmpresa('empresa')"
+                      [formControl]="myControl_empresa"
+                      (ngModelChange)="verificaInfoEmpresa()"
+                      [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of filteredOptions_empresa | async" [value]="option" (click)="empresaSeleccionda(option)">
+                    {{option['empresa']}}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <button  type="submit" class="btn btn-sm btn-danger">
+                <i class="fa fa-save"></i> Registrar
+              </button>
+                <button type="button" class="btn btn-sm btn-danger m-1" (click)="registraEmpresaShow = false">
+                  <i class="fa fa-times"></i> Cancelar
+                </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+</ng-container>
+<ng-template #elseregistraEmpresaShow>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <ng-container *ngIf="muestraFormEmpresa">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            
+          </div>
+        </ng-container>
+  
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-5">
+          <ng-container *ngIf="!form_cliente.controls['uid'].value; else elseCliente">
+            <h1 class="text-primary"> Registro cliente</h1>
+          </ng-container>
+          <ng-template #elseCliente>
+            <h1 class="text-success"> Actualiza cliente</h1>
+            <p>
+              <span class="text-danger fs-6">La actualización de correo y contraseña no aplica para información general</span>
+            </p>
+            <p>
+              <span class="text-info fs-6">para modificar correo y contraseña click Aqui</span>
+            </p>
+          </ng-template>
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="!data && !id">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+          <span class="mr-1 fs-6">Usar correo <strong class="text-danger">{{correo_utilizado}}</strong>:</span>
+          <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            class="example-radio-group"
+            [(ngModel)]="correo_utilizado" >
+            <mat-radio-button class="example-radio-button m-1" value="personal" (click)="coloca('')">
+              Personal
+            </mat-radio-button>
+            <mat-radio-button class="example-radio-button m-1" value="sucursal" (click)="coloca('sucursal')">
+              Sucursal
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <form (ngSubmit)="guardarCliente()" [formGroup]="form_cliente">
+        <div class="row text-start">
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="mb-1 row">
+              <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <select class=" form-select  form-select-sm" formControlName="tipo"
+                  [class.is-invalid]="validarCampo('tipo')" id="tipo_cliente">
+                  <option value="particular">Particular</option>
+                  <option value="flotilla">Flotilla</option>
+                </select>
+                <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12" >
+            <div class="mb-1 row">
+              <label class="col-sm-3 col-md-4 col-lg-3 col-form-label">Empresa</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <div class="input-group mb-3">
+                  <select class=" form-select  form-select-sm" [ngModel]="empresaSelect" (ngModelChange)="empresaValida()" formControlName="empresa"
+                    [class.is-invalid]="validarCampo('tipo')">
+                    <option value="">Seleccionar</option>
+                    <ng-container *ngIf="empresasSucursal; else elseEmpresas">
+                      <option [selected]="empresaSelect === item.id" [value]="item.id"
+                        *ngFor="let item of empresasSucursal">{{ item['empresa'] | capitalizarUno}}
+                      </option>
+                    </ng-container>
+                    <ng-template #elseEmpresas>
+                    </ng-template>
+                  </select>
+                    <ng-container *ngIf="form_cliente.controls['tipo'].value === 'flotilla' ">
+                      <ng-container *ngIf="muestraFormEmpresa; else elseTemplate">
+                        <button [disabled]="form_cliente.controls['tipo'].value === 'particular' "
+                          class="btn btn-sm btn-outline-primary" type="button"
+                          (click)="mensajeEmpresa(!muestraFormEmpresa)">
+                          <i class="fa fa-layer-minus"></i>
+                        </button>
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <button [disabled]="form_cliente.controls['tipo'].value === 'particular'" *ngIf="ROL !== 'cliente'"
+                          class="btn btn-sm btn-outline-danger" type="button" (click)="registraEmpresaShow = true">
+                          <i class="fa fa-layer-plus"></i>
+                        </button>
+                      </ng-template>
+    
+                    </ng-container>
+                </div>
+                <small *ngIf="validarCampo('empresa')" class="text-danger"></small>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="sucursal ==='Todas'">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-1 row">
+                <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal </label>
+                <div class="col-sm-9 col-md-8 col-lg-9">
+                  <select class=" form-select  form-select-sm" formControlName="sucursal" (change)="actualizaNoCliente()"
+                    [class.is-invalid]="validarCampo('sucursal')" id="sucursal" (change)="verificarCorreoExiste()">
+                    <option [ngValue]="sucursal.id" *ngFor="let sucursal of sucursales_array;let i=index">
+                      {{sucursal.sucursal}}</option>
+                  </select>
+                  <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="mb-1 row">
+              <label for="no_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label"># Cliente</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <input type="text" class="form-control form-control-sm" id="no_cliente" formControlName="no_cliente"
+                  [class.is-invalid]="validarCampo('no_cliente')" [attr.disabled]="true">
+                <input type="hidden" formControlName="uid" class="form-control form-control-sm">
+                <small *ngIf="validarCampo('no_cliente')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="mb-1 row">
+              <label for="nombre" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nombre</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
+                  [class.is-invalid]="validarCampo('nombre')" (keyup)="actualizaNoCliente()" onkeypress="validarLetras(event)"
+                  (change)="actualizaNoCliente()">
+                <small *ngIf="validarCampo('nombre')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="mb-1 row">
+              <label for="apellidos" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Apellidos</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <input type="text" class="form-control form-control-sm" id="apellidos" formControlName="apellidos"
+                  [class.is-invalid]="validarCampo('apellidos')" maxlength="30" (keyup)="actualizaNoCliente()" onkeypress="validarLetras(event)"
+                  (change)="actualizaNoCliente()">
+                <small *ngIf="validarCampo('apellidos')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="correo_utilizado === 'personal' && !data">
+            <div class="mb-1 row">
+              <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <input type="text" class="form-control form-control-sm" id="correo" formControlName="correo"
+                  [class.is-invalid]="validarCampo('correo')" maxlength="50" (keyup)="verificarCorreoExiste()">
+                <small *ngIf="validarCampo('correo')" class="text-danger">
+                  campo requerido
+                </small>
+                <small *ngIf="correoExistente" class="text-danger">El correo ingresado esta en uso, verificar
+                  información</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="mb-1 row">
+              <label for="telefono_movil" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tel. movil</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <input type="text" class="form-control form-control-sm" id="telefono_movil"
+                  formControlName="telefono_movil" (keyup)="verificarTelefono()" onkeypress="soloNumeros(event)"
+                  [class.is-invalid]="validarCampo('telefono_movil')" maxlength="10">
+                <small *ngIf="validarCampo('telefono_movil')" class="text-danger">campo requerido</small>
+                <ng-container *ngIf="telefonoExistente">
+                  <small class="text-danger">el telefono ingresado no esta permitido</small>
+                </ng-container>
+              </div>
+            </div>
+  
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="mb-1 row">
+              <label for="correo_sec" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo adicional</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <input type="text" class="form-control form-control-sm" id="correo_sec" formControlName="correo_sec"
+                  [class.is-invalid]="validarCampo('correo_sec')" maxlength="50">
+                <small *ngIf="validarCampo('correo_sec')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="mb-1 row">
+              <label for="telefono_fijo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tel. fijo</label>
+              <div class="col-sm-9 col-md-8 col-lg-9 ">
+                <input type="text" class="form-control form-control-sm" id="telefono_fijo" formControlName="telefono_fijo"
+                  [class.is-invalid]="validarCampo('telefono_fijo')" maxlength="10" onkeypress="soloNumeros(event)">
+                <small *ngIf="validarCampo('telefono_fijo')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row text-center">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <!--  -->
+            <button  type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1"
+              [disabled]="(telefonoExistente || correoExistente || !empresa_valida) ? 'disabled': null">Guardar</button>
+            <button type="button" [disabled]="id" class="btn btn-sm btn-danger col-lg-4 col-md-4 col-sm-6 col-6 m-1"
+              (click)="resetForm()">Limpiar</button>
+          </div>
+        </div>
+      </form>
+      <ng-container *ngIf="faltante_s">
+        <div class="row mt-2">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
+            Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
+          </div>
+        </div>
+      </ng-container>
+      
+    </div>
+  </div>
+</ng-template>
+
+
+
+<div class="modal fade" id="modalEmpresa" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Modal 2</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Hide this modal and show the first with the button below.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to
+          first</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" data-bs-backdrop="static" id="exampleModalToggle2">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Registrar nueva empresa</h1>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="registraEmpresa()" [formGroup]="formaEmpresa">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="mb-1 row">
+                  <label for="tipo_cliente"
+                    class="col-sm-3 col-md-4 col-lg-3 col-form-label">{{'nombre de empresa' | capitalizarUno}}</label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="text" class="form-control form-control-sm" id="no_cliente" formControlName="empresa"
+                      [class.is-invalid]="validarEmpresa('empresa')" >
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <button data-bs-dismiss="modal" type="submit" class="btn btn-sm btn-danger"
+                [disabled]="formaEmpresa.controls['empresa'].invalid">Guardar empresa</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-dismiss="modal" (click)="limpiarFormEmpresa()">Regresar</button>
+        </div>
+      </div>
+    </div>
+  </div>

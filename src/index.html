@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>SpeedPro</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
+    
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.gstatic.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/dist/css/adminlte.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="./assets/plugins/fullcalendar/main.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link id="material-theme" rel="stylesheet" href="styles.css"/>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse mat-typography layout-navbar-fixed ">
+  <div class="wrapper">
+    <app-root></app-root>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous">
+  </script>
+  
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="./assets/plugins/jquery/jquery.min.js"></script>
+  <!-- fullCalendar 2.2.5 -->
+  <script src="./assets/plugins/moment/moment.min.js"></script>
+  <script src="./assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <script src="./assets/dist/js/adminlte.js"></script>
+  <script>
+    function validarDecimal(event) {
+        const charCode = event.which ? event.which : event.keyCode;
+        const input = event.target.value;
+        // Permitir solo números del 0 al 9, punto decimal y teclas de navegación
+        if (
+          (charCode >= 48 && charCode <= 57) ||  // Números del 0 al 9
+          charCode === 46 ||                     // Punto decimal
+          charCode === 8 ||                      // Tecla de retroceso (backspace)
+          charCode === 9 ||                      // Tecla de tabulación (tab)
+          charCode === 13 ||                     // Tecla de retorno de carro (enter)
+          charCode === 37 ||                     // Tecla de flecha izquierda
+          charCode === 39                        // Tecla de flecha derecha
+        ) {
+          // Verificar si ya hay un punto decimal en el input
+          const decimalIndex = input.indexOf('.');
+          if (charCode === 46 && decimalIndex !== -1) {
+            event.preventDefault(); // Evitar agregar un segundo punto decimal
+          } else if (charCode >= 48 && charCode <= 57 && decimalIndex !== -1) {
+            // Verificar si ya hay dos decimales ingresados
+            const decimalDigits = input.substring(decimalIndex + 1);
+            if (decimalDigits.length >= 2) {
+              event.preventDefault(); // Evitar ingresar más de dos decimales
+            }
+          }
+        } else {
+          event.preventDefault(); // Restringir cualquier otro carácter
+        }
+      }
+    function soloNumeros(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+      // Permitir solo números del 0 al 9 y teclas de navegación
+      if (
+        (charCode >= 48 && charCode <= 57) ||  // Números del 0 al 9
+        charCode === 8 ||                      // Tecla de retroceso (backspace)
+        charCode === 9 ||                      // Tecla de tabulación (tab)
+        charCode === 13 ||                     // Tecla de retorno de carro (enter)
+        charCode === 37 ||                     // Tecla de flecha izquierda
+        charCode === 39                        // Tecla de flecha derecha
+      ) {
+        return true; // Permitir el ingreso del carácter
+      } else {
+        event.preventDefault(); // Restringir cualquier otro carácter
+        return false;
+      }
+    }
+    function validarLetras(event) {
+      const charCode = event.which ? event.which : event.keyCode;
+
+      // Permitir solo letras en mayúsculas y minúsculas
+      if (
+        (charCode >= 65 && charCode <= 90) ||  // Letras mayúsculas (A-Z)
+        (charCode >= 97 && charCode <= 122) || // Letras minúsculas (a-z)
+        charCode === 8 ||                      // Tecla de retroceso (backspace)
+        charCode === 9 ||                      // Tecla de tabulación (tab)
+        charCode === 13 ||                     // Tecla de retorno de carro (enter)
+        charCode === 32                        // Espacio
+      ) {
+        return true; // Permitir el ingreso del carácter
+      } else {
+        event.preventDefault(); // Restringir cualquier otro carácter
+        return false;
+      }
+    }
+
+    
+
+
+  </script>
+</body>
+
+</html>

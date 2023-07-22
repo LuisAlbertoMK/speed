@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+      <button type="button" class="close" aria-label="Close" (click)="cancela()" data-bs-dismiss="modal">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card text-left">
+            <div class="card-body">
+                <div class="col text-center">
+                    <h2 class="text-primary">
+                        <strong>Registro de Deposito </strong>
+                    </h2>
+                </div>
+                    
+                <h4>(Forma de deposito Efectivo)</h4>
+                <form (ngSubmit)="registroDeposito()" [formGroup]="formDeposito" class="m-2">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+                            <div class="mb-1 row">
+                                <label
+                                    [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
+                                    for="sucursal"
+                                    class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Sucursal</label>
+                                <div class="col-sm-8 col-md-6 col-lg-6 col-12">
+                                    <select
+                                        id="sucursal"
+                                        class="form-select form-select-sm"
+                                        formControlName="sucursal">
+                                        <option value="">Selecciona</option>
+                                        <option [value]="s.id" *ngFor="let s of sucursales_array">
+                                            {{s.sucursal}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="mb-1 row text-start">
+                                <label
+                                    [ngClass]="{'text-danger': validaCampo('monto'),'text-success': !validaCampo('monto')}"
+                                    for="monto"
+                                    class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Monto de deposito
+                                </label>
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                                    <input
+                                        id="monto"
+                                        type="number" onkeypress="validarDecimal(event)"
+                                        min="0"
+                                        max="10000000"
+                                        class="form-control form-control-sm"
+                                        formControlName="monto"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="mb-1 row text-start">
+                                    <label
+                                        [ngClass]="{'text-danger': validaCampo('concepto'),'text-success': !validaCampo('concepto')}"
+                                        for="concepto"
+                                        class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">concepto de la orden #
+                                    </label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                                        <input
+                                            id="concepto"
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            formControlName="concepto"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                    <button
+                                        type="submit"
+                                        [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
+                                        class="btn btn-sm btn-primary m-1">Realizar deposito</button>
+                                    <button
+                                        type="button"
+                                        [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
+                                        class="btn btn-sm btn-danger m-1"
+                                        (click)="cancela()"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="informacionFaltante">
+                                <div class="row text-center">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                        Falta información:
+                                        <strong class="text-danger">{{informacionFaltante}}</strong>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                        </form>
+                    </div>
+                </div>
+    </div>
+  </div>
+        

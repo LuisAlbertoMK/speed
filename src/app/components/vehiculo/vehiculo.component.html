@@ -1,0 +1,217 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <ng-container *ngIf="!vehiculo; else elseVehiculonew">
+              <h1 class="text-primary fw-bold">Registro de nuevo vehículo</h1>
+            </ng-container>
+            <ng-template #elseVehiculonew>
+              <h1 class="text-primary fw-bold">Actualizacion de vehículo</h1>
+            </ng-template>
+          </div>
+        </div>
+        <!-- <pre>{{form_vehiculo.value | json}}</pre>
+        {{vehiculo}} -->
+        <form (ngSubmit)="guardarLlenadoManual()" [formGroup]="form_vehiculo" class="mt-2">
+            <div class="row">
+                <ng-container *ngIf="!cliente; else elseCliente">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                        <div class="mb-1">
+                          <label for="cliente" class="form-label obligatorio">Cliente <span class="obligatorio">*</span></label>
+                          <ng-container *ngIf="!cliente">
+                            <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente"
+                            (click)="automaticos()" (ngModelChange)="vericainfo()"
+                              class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto">
+                            <small *ngIf="validaCampo('cliente')" class="text-danger">
+                              Campo requerido
+                            </small>
+                            <mat-autocomplete #auto="matAutocomplete" class="text-capitalize" [displayWith]="displayFn">
+                              <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
+                                (click)="infoAdiciona(option)" #tooltip="matTooltip"
+                                [matTooltip]="'Nombre: '+option.fullname +', Sucursal: '+ '' +', Correo: '+option.correo"
+                                matTooltipPosition="right"
+                                aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
+                                {{option.fullname}}
+                              </mat-option>
+                            </mat-autocomplete>                      
+                          </ng-container>
+                        </div>
+                      </div>
+                </ng-container>
+                <ng-template #elseCliente>
+                    
+                </ng-template>
+              <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="mb-1">
+                  <label for="placas" class="form-label ">Placas <span class="obligatorio">*</span></label>
+                  <input type="text" class="form-control form-control-sm text-uppercase" id="placas" formControlName="placas"
+                    [class.is-invalid]="validaCampo('placas')" (keyup)="placasVerifica()"
+                    maxlength="7" (ngModelChange)="verificarEngomado()" id="placas">
+                  <small *ngIf="validaCampo('placas') && !existenPlacas" class="text-danger">
+                    campo requerido
+                  </small>
+                  <ng-container *ngIf="existenPlacas">
+                    <small class="text-danger mt-1"><strong>Placas registradas verificar información</strong></small>
+                  </ng-container>
+                </div>
+              </div>
+              
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1 ">
+                  <label for="marca" class="form-label ">Marca <span class="obligatorio">*</span></label>
+                  <select class="form-select form-select-sm" formControlName="marca"
+                    [class.is-invalid]="validaCampo('marca')" (ngModelChange)="submarcas()">
+                    <option [defaultSelected]="" value="">Seleccione ...</option>
+                    <option value="{{marca.id}}" *ngFor="let marca of marcas;let i = index">{{marca.id}}</option>
+                  </select>
+                </div>
+                <small *ngIf="validaCampo('marca')" class="text-danger">
+                  Campo requerido 
+                </small>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1 ">
+                  <label for="modelo" class="form-label ">Modelo <span class="obligatorio">*</span></label>
+                  <ng-container *ngIf="modeloAuto!==null">
+                    <select class="form-select form-select-sm" formControlName="modelo" 
+                      [class.is-invalid]="validaCampo('modelo')">
+                      <option [defaultSelected]="modelo.modelo" [value]="modelo.modelo" *ngFor="let modelo of arrayModelos" >{{modelo.modelo}}</option>
+                    </select>
+                  </ng-container>
+                  <ng-container *ngIf="modeloAuto===null">
+                    <select class="form-select form-select-sm" formControlName="modelo"
+                      [class.is-invalid]="validaCampo('modelo')" [ngModel]="">
+                      <option [defaultSelected]="" value="">Seleccione marca</option>
+                    </select>
+                  </ng-container>
+                </div>
+                <small *ngIf="validaCampo('modelo')" class="text-danger">
+                  Campo requerido
+                </small>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1 ">
+                  <label for="categoria" class="form-label">Categoria</label>
+                  <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="categoria">
+                  <!-- <select class="form-select form-select-sm"  readonly formControlName=""
+                    [class.is-invalid]="validaCampo('categoria')" [attr.disabled]="true">
+                    <option value="{{categoria}}" *ngFor="let categoria of categorias">{{categoria}}</option>
+                  </select> -->
+                </div>
+                <!-- <small *ngIf="validaCampo('categoria')" class="text-danger">
+                  Campo requerido
+                </small> -->
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1">
+                  <label for="anio" class="form-label ">Año <span class="obligatorio">*</span></label>
+
+                  <select class="form-select form-select-sm" formControlName="anio" [class.is-invalid]="validaCampo('anio')">
+                    <option [defaultSelected]="" value="">Selecciona año</option>
+                    <!-- [defaultSelected]="anio===anioS" value="{{anioS}}" -->
+                    <option [value]="a"  *ngFor="let a of listaArrayAnios">
+                      {{a}}
+                    </option>
+                  </select>
+                  <small *ngIf="validaCampo('anio')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1 ">
+                  <label for="cilindros" class="form-label ">Cilindros <span class="obligatorio">*</span></label>
+                  <select class="form-select form-select-sm" formControlName="cilindros"
+                    [class.is-invalid]="validaCampo('cilindros')">
+                    <option [defaultSelected]="" value="">Seleccione</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
+                <small *ngIf="validaCampo('cilindros')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1">
+                  <label for="no_motor" class="form-label ">No. de motor </label>
+                  <input type="text" class="form-control form-control-sm" id="no_motor" formControlName="no_motor"
+                    [class.is-invalid]="validaCampo('no_motor')" maxlength="17">
+                  <small *ngIf="validaCampo('no_motor')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1 ">
+                  <label for="color" class="form-label ">Color <span class="obligatorio">*</span></label>
+                  <select class="form-select form-select-sm" formControlName="color"
+                    [class.is-invalid]="validaCampo('color')">
+                    <option [defaultSelected]="" value="">Seleccione ...</option>
+                    <option value="{{color}}" *ngFor="let color of colores">{{color}}</option>
+                  </select>
+                </div>
+                <small *ngIf="validaCampo('color')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1">
+                  <label for="engomado" class="form-label">Engomado </label>
+                  <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="engomado">
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                <div class="mb-1 ">
+                  <label for="transmision" class="form-label">Transmisión</label>
+                  <select class="form-select form-select-sm" formControlName="transmision"
+                    [class.is-invalid]="validaCampo('transmision')">
+                    <option [defaultSelected]="" value="">Seleccione ...</option>
+                    <option value="Estandar">Manual o estándar</option>
+                    <option value="Automatica">automática </option>
+
+                  </select>
+                </div>
+                <small *ngIf="validaCampo('transmision')" class="text-danger">
+                  campo requerido
+                </small>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+                <div class="mb-1">
+                  <label for="marcaMotor" class="form-label">Marca de motor</label>
+                  <input type="text" class="form-control form-control-sm" id="marcaMotor" formControlName="marcaMotor"
+                    [class.is-invalid]="validaCampo('marcaMotor')" maxlength="60">
+                  <small *ngIf="validaCampo('marcaMotor')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="mb-1">
+                  <label for="vinChasis" class="form-label">vinChasis</label>
+                  <input type="text" class="form-control form-control-sm" id="vinChasis" formControlName="vinChasis"
+                    [class.is-invalid]="validaCampo('vinChasis')" maxlength="17">
+                  <small *ngIf="validaCampo('vinChasis')" class="text-danger">
+                    campo requerido
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="d-grid gap-2 col-lg-4 col-md-4 col-sm-6 mx-auto mt-2">
+              <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal"
+                [disabled]="(existenPlacas || form_vehiculo.invalid)  ? 'disabled': null">Guardar</button>
+            </div>
+          </form>
+
+          <!-- <pre>
+            {{form_vehiculo.value | json}}
+          </pre> -->
+    </div>
+  </div>
