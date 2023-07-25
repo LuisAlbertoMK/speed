@@ -1,5 +1,5 @@
 
 git add .
-git commit -m "Arreglar historial de cliente"
+git commit -m "Arreglar cotizacion"
 git push -u origin main
 

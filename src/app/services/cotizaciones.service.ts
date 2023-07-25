@@ -156,14 +156,76 @@ export class CotizacionesService {
       const starCountRef = ref(db, `${ruta}`);
       onValue(starCountRef, async (snapshot) => {
         if (snapshot.exists()) {
-          const cotizaciones = this._publicos.crearArreglo2(snapshot.val()).map(c=>{
-            c.data_cliente = data_cliente
-            c.data_vehehiculo = vehiculos.find(v=>v.id === c.vehiculo)
+          const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
+          const data_cotizcion = cotizaciones.map(c=>{
+            // c.data_cliente = data_cliente
+            c.pagoName = this.formasPago.find(f=>String(f.id) === String(c.formaPago)).pago
+            const info_v  = vehiculos.find(v=>v.id === c.vehiculo)
+            c.data_vehiculo = info_v
+            c.placas = info_v.placas
+            return c
           })
-          // data_cotizcion.data_cliente = await this.getInfo_cliente(data_cotizcion)
-          // data_cotizcion.data_vehiculo = await this.getInfo_vehiculo(data_cotizcion)
-          
-          const data_cotizcion = cotizaciones
+          resolve(data_cotizcion);
+        } else {
+          resolve([]);
+        }
+      },{
+        onlyOnce: true
+      });
+    });
+  }
+  consulta_cotizaciones_(data): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const {ruta, sucursal} = data
+      const starCountRef = ref(db, `${ruta}`);
+      onValue(starCountRef, async (snapshot) => {
+        if (snapshot.exists()) {
+          let data_cotizacion = []
+          if (sucursal === 'Todas') {
+            
+          }else{
+            // data_cotizacion = snapshot.val()
+
+            snapshot.forEach((childSnapshot) => {
+              const childKey = childSnapshot.key;
+              const childData = childSnapshot.val();
+              console.log(childKey);
+              console.log(childData);
+              
+            })
+            // Object.entries(snapshot.val()).forEach(([key, entrie])=>{
+            //   const nuevas_entries = this._publicos.crearArreglo2(entrie)
+            //   nuevas_entries.forEach(async (c)=>{
+            //     const data_cliente = await this.getInfo_cliente(c)
+            //     const nueva = {...c, data_cliente}
+            //     data_cotizacion.push(nueva)
+            //   })
+            // })
+          }
+          resolve(data_cotizacion);
+        } else {
+          resolve([]);
+        }
+      },{
+        onlyOnce: true
+      });
+    });
+  }
+  consulta_cotizaciones_vehiculo(data): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const {ruta, data_cliente, vehiculos} = data
+      const starCountRef = ref(db, `${ruta}`);
+      onValue(starCountRef, async (snapshot) => {
+        if (snapshot.exists()) {
+          const cotizaciones = this._publicos.crearArreglo2(snapshot.val())
+          const data_cotizcion = cotizaciones.map(c=>{
+            // c.data_cliente = data_cliente
+            c.pagoName = this.formasPago.find(f=>String(f.id) === String(c.formaPago)).pago
+            const info_v  = vehiculos.find(v=>v.id === c.vehiculo)
+            c.data_vehiculo = info_v
+            c.placas = info_v.placas
+            return c
+          })
           resolve(data_cotizcion);
         } else {
           resolve([]);

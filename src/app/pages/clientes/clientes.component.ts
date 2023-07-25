@@ -81,7 +81,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
   irPagina(pagina, cliente){
     // /:ID/:tipo/:extra
-    console.log(cliente);
+    // console.log(cliente);
     const { id, sucursal, tipo } = cliente
     
     let queryParams = {}
@@ -93,7 +93,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       queryParams = { anterior:'clientes',  tipo:'cliente', cliente: id, sucursal, vehiculo:'' } 
     }
 
-    console.log(queryParams);
+    // console.log(queryParams);
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }

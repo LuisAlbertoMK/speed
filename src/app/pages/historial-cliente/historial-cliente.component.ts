@@ -36,12 +36,8 @@ export class HistorialClienteComponent implements OnInit {
     private router: Router, private _clientes: ClientesService, private _vehiculos: VehiculosService, private _cotizaciones: CotizacionesService,
     private _servicios: ServiciosService, private _campos: CamposSystemService, private _sucursales: SucursalesService) { }
 
-    
     ROL:string; SUCURSAL:string
-    // sucursales_arr=[]
-    //informacion de cliente
-    cliente = {cliente:{}, vehiculos:[], cotizaciones:[],servicios:[]}
-  
+
     camposCliente        =  [ ...this._clientes.camposCliente_show ]
     camposVehiculo       =  [ ...this._vehiculos.camposVehiculo_ ]
     camposDesgloce       =  [ ...this._cotizaciones.camposDesgloce ]
@@ -61,14 +57,14 @@ export class HistorialClienteComponent implements OnInit {
      // tabla
      dataSource = new MatTableDataSource(); //elementos
      elementos = ['index','placas','marca','modelo']; //elementos
-     columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
+     columnsToDisplayWithExpand = [...this.elementos, 'opciones']; //elementos
      expandedElement: any | null; //elementos
      @ViewChild('VehiculosPaginator') paginator: MatPaginator //elementos
      @ViewChild('Vehiculos') sort: MatSort //elementos
   
      // tabla
      dataSourceCotizaciones = new MatTableDataSource(); //elementos
-     cotizaciones =  ['index','no_cotizacion','searchName','searchPlacas']; //cotizaciones
+     cotizaciones =  ['index','no_cotizacion','placas','fecha_recibido']; //cotizaciones
      columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'expand']; //elementos
      expandedElementCotizaciones: any | null; //elementos
      @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
@@ -76,7 +72,7 @@ export class HistorialClienteComponent implements OnInit {
   
      // tabla
      dataSourceRecepciones = new MatTableDataSource(); //elementos
-     recepciones = ['id','no_os','searchName','searchPlacas','fechaRecibido','fechaEntregado'];//recepciones
+     recepciones = ['id','no_os','placas','fecha_recibido','fecha_entregado'];//recepciones
      columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'expand']; //elementos
      expandedElementRecepciones: any | null; //elementos
      @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
@@ -84,26 +80,28 @@ export class HistorialClienteComponent implements OnInit {
   
     ordenamiento_Asc_vehiculos: boolean = true
     campoSelect_vehiculos = 'placas'
-    ordenamiento_Asc_cotizaciones: boolean = true
+    ordenamiento_Asc_cotizaciones: boolean = false
     campoSelect_cotizaciones = 'no_cotizacion'
   
     reporteHistorial = {reporteCotizaciones:0,reporteRecepciones:0}
     rutaAnterior:null
     idCliente:string
     enrutamiento = {cliente:'', anterior:'',sucursal:''}
+
+    data_cliente
   async ngOnInit() {
     this.rol()
   }
   irPagina(vehiculo){
+    const { cliente, sucursal }  = this.enrutamiento
+    const  queryParams = {  cliente, anterior:'historial-cliente',sucursal, vehiculo } 
+
     this.router.navigate(['/historial-vehiculo'], { 
-      queryParams: { vehiculo, cliente: this.idCliente, anterior:'historial-cliente' } 
+      queryParams
     });
   }
   regresar(){
-    this.router.navigate([`/${this.enrutamiento.anterior}`], { 
-      queryParams: 
-      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
-    });
+    this.router.navigate([`/clientes`]);
   }
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
@@ -118,22 +116,39 @@ export class HistorialClienteComponent implements OnInit {
   }
   async acciones(){
     const { cliente, sucursal }  = this.enrutamiento
-    console.log(this.enrutamiento);
-    const ruta_buqueda_vehiculos = `vehiculos/${sucursal}/${cliente}`
+    // console.log(this.enrutamiento);
+    // const ruta_buqueda_vehiculos = `vehiculos/${sucursal}/${cliente}`
     const ruta_buqueda_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
     const ruta_buqueda_recepciones = `recepciones/${sucursal}/${cliente}`
-    console.log(ruta_buqueda_vehiculos);
-    console.log(ruta_buqueda_cotizaciones);
-    console.log(ruta_buqueda_recepciones);
+    
     
     const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
     const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
     const cotizaciones = await this._cotizaciones.consulta_cotizaciones({ruta: ruta_buqueda_cotizaciones, data_cliente, vehiculos})
-    console.log(cotizaciones);
+    const recepciones = await this._servicios.consulta_recepciones({ruta: ruta_buqueda_recepciones, data_cliente, vehiculos})
+    // console.log(recepciones);
+
+    this.data_cliente = data_cliente
     
 
-    // this.dataSource.data = vehiculos
-    // this.ordenamiento('vehiculos','placas')
+    this.dataSource.data = vehiculos
+    this.ordenamiento('vehiculos','placas')
+
+    this.dataSourceCotizaciones.data = cotizaciones
+    this.ordenamiento('cotizaciones','fecha_recibido')
+
+    this.dataSourceRecepciones.data = recepciones
+    this.ordenamiento('recepciones','fecha_recibido')
+
+    // console.log(recepciones);
+    
+
+    const {ticketGeneral: cotizaciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(cotizaciones)
+    const {ticketGeneral: recepciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(recepciones)
+
+    this.reporteHistorial.reporteCotizaciones = cotizaciones_ticketGeneral
+    this.reporteHistorial.reporteRecepciones = recepciones_ticketGeneral
+
     
   }
 

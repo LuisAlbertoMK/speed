@@ -13,6 +13,7 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { CamposSystemService } from '../../services/campos-system.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { ServiciosService } from 'src/app/services/servicios.service';
 const db = getDatabase();
 const dbRef = ref(getDatabase());
 @Component({
@@ -33,7 +34,7 @@ export class HistorialVehiculoComponent implements OnInit {
     private rutaActiva: ActivatedRoute,private _cotizaciones: CotizacionesService,
     private _publicos: ServiciosPublicosService, private router: Router,
     private _campos: CamposSystemService, private _clientes: ClientesService,
-    private _vehiculos: VehiculosService,
+    private _vehiculos: VehiculosService, private _servicios: ServiciosService
     ) { }
     ROL:string;SUCURSAL:string;
 
@@ -51,7 +52,7 @@ export class HistorialVehiculoComponent implements OnInit {
     mo: string          =  this._campos.mo
     // tabla
     dataSourceCotizaciones = new MatTableDataSource(); //elementos
-    cotizaciones =  ['index','no_cotizacion','fullname','searchPlacas']; //cotizaciones
+    cotizaciones =  ['index','no_cotizacion','placas','fecha_recibido']; //cotizaciones
     columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'opciones', 'expand']; //elementos
     expandedElementCotizaciones: any | null; //elementos
     @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
@@ -59,51 +60,75 @@ export class HistorialVehiculoComponent implements OnInit {
   
     // tabla
     dataSourceRecepciones = new MatTableDataSource(); //elementos
-    recepciones = ['id','no_os','fullname','searchPlacas','fechaRecibido','fechaEntregado'];//recepciones
+    recepciones = ['id','no_os','placas','fecha_recibido','fecha_entregado'];//recepciones
     columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'opciones', 'expand']; //elementos
     expandedElementRecepciones: any | null; //elementos
     @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
     @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
   
     anterior:string
-    enrutamiento = {vehiculo:'', cliente:'', anterior:''}
+    enrutamiento = {vehiculo:'', cliente:'', anterior:'', sucursal:''}
+
+    data_cliente
+    data_vehiculo
   ngOnInit(): void {
     this.rol()
   }
 
   rol(){
-    this.rutaActiva.queryParams.subscribe(params => {
-      const {vehiculo, cliente, anterior} = params
-      if(vehiculo && cliente){
-        this.enrutamiento.vehiculo = vehiculo
-        this.enrutamiento.cliente = cliente
-        this.acciones(vehiculo)
-      }
-      this.enrutamiento.anterior = anterior
-      
+    this.rutaActiva.queryParams.subscribe((params:any) => {
+      this.enrutamiento = params
+      this.acciones()
     });
   }
   regresar(){
-    this.router.navigate([`/${this.enrutamiento.anterior}`], { 
-      queryParams: Object(this.enrutamiento)
+    // this.enrutamiento.anterior = ''
+    const {vehiculo, cliente, anterior, sucursal} = this.enrutamiento
+  
+    const queryParams = {vehiculo, cliente, sucursal}
+    this.router.navigate([`/${anterior}`], { 
+      queryParams
     });
   }
-  acciones(vehiculo){
-    const idVehiculo = vehiculo
-    this._cotizaciones.consulta_cotizaciones_new().then((cotizaciones)=>{
-      const mis_cotizaciones = cotizaciones.filter(c=>c.vehiculo.id === idVehiculo)
-      this.reporte_Cotizaciones = this._publicos.reporte_cotizaciones_recepciones(mis_cotizaciones)
-      mis_cotizaciones.map((c,index)=>{ c.index = index})
-      this.dataSourceCotizaciones.data = mis_cotizaciones
-      this.newPagination('cotizaciones')
+  async acciones(){
+    const {vehiculo, cliente, sucursal} = this.enrutamiento
+    // console.log( this.enrutamiento);
+    // const ruta_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
+    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    // console.log(data_cliente);
+    const data_vehiculo = await this._vehiculos.consulta_vehiculo_new({sucursal, cliente, vehiculo})
+    // console.log(data_vehiculo);
+
+    const ruta_buqueda_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
+    const ruta_buqueda_recepciones = `recepciones/${sucursal}/${cliente}`
+    let vehiculos = [ ]
+    vehiculos.push(data_vehiculo)
+
+    const cotizaciones = await this._cotizaciones.consulta_cotizaciones({ruta: ruta_buqueda_cotizaciones, data_cliente, vehiculos})
+    const filtro_cotizaciones = cotizaciones.filter(c=>c.vehiculo === vehiculo)
+
+
+    const recepciones = await this._servicios.consulta_recepciones({ruta: ruta_buqueda_recepciones, data_cliente, vehiculos})
+    const filtro_recepciones = recepciones.filter(c=>c.vehiculo === vehiculo)
+
+
+    this.data_cliente = data_cliente
+    this.data_vehiculo = data_vehiculo
+
+    filtro_cotizaciones.map((c, index)=>{
+      c.index = index
     })
-    this._cotizaciones.consulta_recepciones_new().then((recepciones)=>{
-      const mis_recepciones = recepciones.filter(c=>c.vehiculo.id === idVehiculo)
-      this.reporte_Recepciones = this._publicos.reporte_cotizaciones_recepciones(mis_recepciones)
-      mis_recepciones.map((c,index)=>{ c.index = index})
-      this.dataSourceRecepciones.data = mis_recepciones
-      this.newPagination('recepciones')
+    filtro_recepciones.map((c, index)=>{
+      c.index = index
     })
+
+    this.reporte_Cotizaciones = this._publicos.obtener_subtotales(filtro_cotizaciones)
+    this.reporte_Recepciones = this._publicos.obtener_subtotales(filtro_recepciones)
+    this.dataSourceCotizaciones.data = filtro_cotizaciones
+    this.dataSourceRecepciones.data = filtro_recepciones
+
+    this.newPagination('cotizaciones')
+    this.newPagination('recepciones')
   }
 
   newPagination(tabla){

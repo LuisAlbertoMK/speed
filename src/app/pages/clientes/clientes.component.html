@@ -54,7 +54,7 @@
       <td mat-cell *matCellDef="let row" class="text-uppercase"> {{row.no_cliente}} </td>
     </ng-container>
     <ng-container matColumnDef="sucursalShow">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> sucursal </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Sucursal </th>
       <td mat-cell *matCellDef="let row"> {{row.sucursalShow | capitalizarUno}} </td>
     </ng-container>
 
@@ -85,8 +85,7 @@
           <button mat-menu-item (click)="irPagina('cotizacionNueva',row)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('historial-cliente',row)">  Historial cliente <i class="fa fa-book text-danger ml-1"></i></button>
-          <button mat-menu-item  
-          *ngIf="!row.usuario && row.correo" (click)="registraUsuario(row)">  Registra usuario <i class="fa fa-user-plus text-danger ml-1"></i></button>
+          <!-- <button mat-menu-item  *ngIf="!row.usuario && row.correo" (click)="registraUsuario(row)">  Registra usuario <i class="fa fa-user-plus text-danger ml-1"></i></button> -->
         </mat-menu>
       </td>
     </ng-container>

@@ -103,6 +103,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
       // this.cargaDataCliente_new()
+      this.accion()
     });
   }
   irPagina(pagina, data){
@@ -124,9 +125,23 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }
-  accion(){
+  async accion(){
+    const busqueda = (this.SUCURSAL === 'Todas') ? 'cotizacionesRealizadas': `cotizacionesRealizadas/${this.SUCURSAL}`
+    console.log(busqueda);
+    // const clientes = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
+    const cotizaciones = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
+    console.log(cotizaciones);
     
-      
+    // const updates = {}
+    // let nuevas = []
+    // Object.entries(cotizaciones).forEach(([key, entrie])=>{
+    //   const nuevas_entries = this._publicos.crearArreglo2(entrie)
+    //   nuevas_entries.forEach(c=>{
+    //     nuevas.push(c)
+    //   })
+    // })
+    // console.log(nuevas);
+    
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

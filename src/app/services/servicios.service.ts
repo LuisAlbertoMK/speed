@@ -181,6 +181,29 @@ async getInfo_cliente(data){
 async getInfo_vehiculo(data){
   return await this._vehiculos.consulta_vehiculo_new(data)
 }
+
+consulta_recepciones(data): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    const { vehiculos, ruta} = data
+    const starCountRef = ref(db, `${ruta}`);
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const recepciones = this._publicos.crearArreglo2(snapshot.val())
+        const data_recepciones = recepciones.map(c=>{
+          const info_v  = vehiculos.find(v=>v.id === c.vehiculo)
+          c.data_vehiculo = info_v
+          c.placas = info_v.placas
+          return c
+        })
+        resolve(data_recepciones);
+      } else {
+        resolve([]);
+      }
+    },{
+      onlyOnce: true
+    });
+  });
+}
 //TODO aqui las nuevas funciones
 
 

@@ -1223,6 +1223,19 @@ export class ServiciosPublicosService {
       });
       return {servicios_totales: aqui.servicios_totales, ticketPromedio: aqui.ticketPromedio, ticketGeneral: aqui.ticketGeneral}
     }
+    obtener_subtotales(arreglo:any[]){
+      let aqui = { iva: 0 ,subtotal:0, total:0 };
+      arreglo.forEach((coti) => {
+        const { reporte } = coti;
+        const { total, iva, subtotal } = reporte
+
+          aqui.iva += iva
+          aqui.subtotal += subtotal
+          aqui.total += total
+      });
+      
+      return aqui
+    }
 
     
     cerrar_modal(cual){

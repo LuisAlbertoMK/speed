@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormateHoraPipe implements PipeTransform {
 
   transform(fecha: string, incluirHora: boolean = false, ...args: unknown[]): string {
+    if(!fecha) return ''
     const fechaObj = new Date(fecha);
     const dia = fechaObj.getDate();
     const mes = fechaObj.getMonth() + 1; // Los meses en JavaScript son base 0, por eso se suma 1

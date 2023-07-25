@@ -202,3 +202,12 @@ table {
     font-size: 1em;
     min-width: 200px;
   }
+
+  ::ng-deep .cdk-overlay-container .mat-menu-item {
+    /* background-color: red; */
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
