@@ -33,6 +33,21 @@ export class EmpresasService {
       });
     });
   }
+  consulta_empresas(sucursal): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, `empresas/${sucursal}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const empre = snapshot.val()
+          resolve(this._publicos.ordenarData(empre,'empresa',true));
+        } else {
+          resolve([]);
+        }
+      },{
+        onlyOnce : true
+      });
+    });
+  }
   async listaempresas(){
     let answer = {contenido:false, data:[]}
     await get(child(dbRef, `empresas`)).then(async (snapshot) => {

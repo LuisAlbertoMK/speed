@@ -1,5 +1,5 @@
 
 git add .
-git commit -m "actualiza la informacion de clientes, vehiculos, cotizaciones"
+git commit -m "seguimos con la modificacion de BD"
 git push -u origin main
 

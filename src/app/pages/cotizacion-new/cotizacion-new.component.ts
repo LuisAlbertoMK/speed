@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onChildChanged, onChildRemoved} from "firebase/database";
+import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onChildChanged, onChildRemoved, query, orderByChild, startAt, equalTo} from "firebase/database";
 
 
 import pdfMake from "pdfmake/build/pdfmake";
@@ -101,7 +101,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   elementosPrueba = []
 
-  enrutamiento = {vehiculo:'', cliente:'', anterior:'', tipo:'', cotizacion:''}
+  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'',}
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -119,22 +119,52 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.ROL = rol
     this.SUCURSAL = sucursal
     
-    this.rutaActiva.queryParams.subscribe(params => {
+    this.rutaActiva.queryParams.subscribe((params:any) => {
       // anterior:'clientes', cliente, tipo: 'new', extra: null 
-      const tipo = params['tipo'];
-      const cliente = params['cliente'];
-      const anterior = params['anterior'];
-      const vehiculo = params['vehiculo'];
-      const cotizacion = params['cotizacion'];
-      // if(cliente && tipo){
-        this.enrutamiento.cliente = cliente
-        this.enrutamiento.tipo = tipo
-        this.enrutamiento.vehiculo = vehiculo
-        this.enrutamiento.cotizacion = cotizacion
-        this.accion(cliente, tipo, vehiculo, cotizacion)
-      // }
-      this.enrutamiento.anterior = anterior
+
+      // const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo} = params
+      // console.log(params);
+      this.enrutamiento = params
+      // console.log(this.enrutamiento);
+      this.cargaDataCliente_new()
+      // const tipo = params['tipo'];
+      // const cliente = params['cliente'];
+      // const anterior = params['anterior'];
+      // const vehiculo = params['vehiculo'];
+      // const cotizacion = params['cotizacion'];
+      // const cotizacion = params['cotizacion'];
+      // // if(cliente && tipo){
+      //   this.enrutamiento.cliente = cliente
+      //   this.enrutamiento.tipo = tipo
+      //   this.enrutamiento.vehiculo = vehiculo
+      //   this.enrutamiento.cotizacion = cotizacion
+      //   this.accion(cliente, tipo, vehiculo, cotizacion)
+      // // }
+      // this.enrutamiento.anterior = anterior
     });
+  }
+  async cargaDataCliente_new(){
+    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo,} = this.enrutamiento
+    console.log(this.enrutamiento);
+    const cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    // const cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    const topUserPostsRef = query(ref(db, `vehiculos/${sucursal}`), equalTo(`${cliente}`));
+
+    // const starCountRef = ref(db, `clientes`)
+    onValue(topUserPostsRef, (snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        
+      }
+    }, {
+        onlyOnce: true
+      })
+    // console.log(topUserPostsRef.toJSON);
+    
+    console.log(cliente_info);
+    this.infoCotizacion.cliente = cliente_info
+
+    
   }
   verificarInfoVehiculos(){
     if (this.infoCotizacion.cliente['id']) {

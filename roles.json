@@ -156,7 +156,6 @@ if (valida) {
 
 
     console.time('Execution Time');
-        
     console.timeEnd('Execution Time');
 
 

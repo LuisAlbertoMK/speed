@@ -524,7 +524,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body">
-        <ng-container *ngIf="datCliente; else elseNewCliente">
+        <!-- <ng-container *ngIf="datCliente; else elseNewCliente">
           <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
         </ng-container>
         <ng-template #elseNewCliente>
@@ -533,7 +533,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
               <app-cliente (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
             </div>
           </div>
-        </ng-template>
+        </ng-template> -->
       </div>
     </div>
   </div>
@@ -553,22 +553,20 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
         <ng-container *ngIf="cliente; else elseVehiculo">
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <app-vehiculo [cliente]="cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+              <!-- <app-vehiculo [cliente]="cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo> -->
             </div>
           </div>
         </ng-container>
         <ng-template #elseVehiculo>
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <ng-container *ngIf="vehiculoData; else elseIDvehiculo">
-                <!-- tiene cliente -->
-                <!-- <app-vehiculo [vehiculo]="vehiculoData['id']" [vehiculoDat]="vehiculoData" [cliente]="vehiculoData['id']" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo> -->
-                <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" [cliente]="vehiculoData['id']"></app-vehiculo>
+              <!-- <ng-container *ngIf="vehiculoData; else elseIDvehiculo">
+               <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" [cliente]="vehiculoData['id']"></app-vehiculo>
               </ng-container>
               <ng-template #elseIDvehiculo>
                 no tiene cliente
                 registra  vehiculo desde 0
-              </ng-template>
+              </ng-template> -->
             </div>
           </div>
         </ng-template>
@@ -583,7 +581,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body m-2">
-        <app-data-facturacion-cliente [clienteID]="clienteId"></app-data-facturacion-cliente>
+        <!-- <app-data-facturacion-cliente [clienteID]="clienteId"></app-data-facturacion-cliente> -->
       </div>
     </div>
   </div>

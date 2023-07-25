@@ -52,6 +52,7 @@ export class ClientesService {
     {valor: 'nombre', show:'Nombre' },
     {valor: 'apellidos', show:'Apellidos' },
     {valor: 'sucursal', show:'Sucursal' },
+    {valor: 'tipo', show:'Tipo' },
     {valor: 'correo_sec', show:'Correo adicional' },
     {valor: 'empresa', show:'Empresa' },
     {valor: 'correo', show:'Correo' },
@@ -62,6 +63,40 @@ export class ClientesService {
     private _mail: EmailsService) { }
   url:string= 'https://speed-pro-app-default-rtdb.firebaseio.com'
 
+
+  //TODO
+  consulta_clientes__busqueda(busqueda, sucursal): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const starCountRef = ref(db, busqueda);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(sucursal);
+          let clientes = []
+          if (sucursal !== 'Todas') {
+            clientes = this.crearArreglo2(snapshot.val()).map(c => this.formato_informacion_cliente(c));
+          } else {
+            clientes = Object.values(snapshot.val()).flatMap(value => {
+              const clientes_new = this.crearArreglo2(Object(value));
+              return clientes_new.map(c => this.formato_informacion_cliente(c));
+            });
+          }
+          resolve(clientes);
+        } else {
+          resolve([]);
+        }
+      }, {
+        onlyOnce: true
+      });
+    });
+  }
+  formato_informacion_cliente(data_cliente){
+    const {nombre, apellidos} = data_cliente
+    const sucursalShow = this.sucursales_array.find(s=>s.id === data_cliente.sucursal).sucursal
+    data_cliente.fullname =  `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+    data_cliente.sucursalShow =  `${sucursalShow}`
+    return data_cliente
+  }
+  //TODO
   consulta_clientes_new(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const starCountRef = ref(db, 'clientes');
@@ -72,7 +107,7 @@ export class ClientesService {
             c.fullname = `${c.nombre} ${c.apellidos}`
             const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
             c.vehiculos = vehiculos
-            c.sucursalShow = this.sucursales_array.find(s=>s.id === c.sucursal).sucursal
+            // c.sucursalShow = this.sucursales_array.find(s=>s.id === c.sucursal).sucursal
           })
           resolve(clientes);
         } else {
@@ -81,20 +116,13 @@ export class ClientesService {
       });
     });
   }
-  consulta_cliente_new(cliente): Promise<object> {
+  consulta_cliente_new(data): Promise<object> {
     return new Promise((resolve, reject) => {
-      const starCountRef = ref(db, `clientes/${cliente}`);
+      const {sucursal, cliente} = data
+      const starCountRef = ref(db, `clientes/${sucursal}/${cliente}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          const clientes = snapshot.val()
-          clientes.fullname = `${clientes.nombre} ${clientes.apellidos}`
-          const vehiculos = (clientes['vehiculos']) ? this._publicos.crearArreglo2(clientes['vehiculos']) : []
-          clientes.sucursalShow = this.sucursales_array.find(s=>s.id === clientes.sucursal).sucursal
-          vehiculos.map((v, index)=>{
-            v['index'] = index +1
-          })
-          clientes.vehiculos = vehiculos
-          resolve(clientes);
+          resolve(snapshot.val());
         } else {
           resolve({});
         }

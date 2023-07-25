@@ -154,17 +154,13 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
   class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
   <div class="modal-content">
     <div class="modal-body">
-      <ng-container *ngIf="uid && editar; else elseNewCliente">
+      <!-- <ng-container *ngIf="uid && editar; else elseNewCliente">
         <app-cliente [data]="info_cliente" [id]="uid" (heroeSlec)="clientesInfo( $event )"></app-cliente>
       </ng-container>
       <ng-template #elseNewCliente>
         <button class="btn btn-sm btn-danger" (click)="editar = !editar">Cancelar</button>
-        <!-- <div class="row">
-          <div class="col text-center">
-            <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
-          </div>
-        </div> -->
-      </ng-template>
+       
+      </ng-template> -->
     </div>
   </div>
 </div>

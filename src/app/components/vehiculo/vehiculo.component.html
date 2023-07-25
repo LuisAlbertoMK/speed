@@ -5,39 +5,40 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-            <ng-container *ngIf="!vehiculo; else elseVehiculonew">
+            <h1 class="text-primary fw-bold">Registro de nuevo vehículo</h1>
+            <!-- <ng-container *ngIf="!vehiculo; else elseVehiculonew">
               <h1 class="text-primary fw-bold">Registro de nuevo vehículo</h1>
             </ng-container>
             <ng-template #elseVehiculonew>
               <h1 class="text-primary fw-bold">Actualizacion de vehículo</h1>
-            </ng-template>
+            </ng-template> -->
           </div>
         </div>
         <!-- <pre>{{form_vehiculo.value | json}}</pre>
         {{vehiculo}} -->
         <form (ngSubmit)="guardarLlenadoManual()" [formGroup]="form_vehiculo" class="mt-2">
             <div class="row">
-                <ng-container *ngIf="!cliente; else elseCliente">
+                <ng-container *ngIf="!data_cliente; else elseCliente">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                         <div class="mb-1">
                           <label for="cliente" class="form-label obligatorio">Cliente <span class="obligatorio">*</span></label>
-                          <ng-container *ngIf="!cliente">
+                          <!-- <ng-container *ngIf="!cliente"> -->
                             <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente"
-                            (click)="automaticos()" (ngModelChange)="vericainfo()"
+                            (click)="automaticos()"
                               class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto">
                             <small *ngIf="validaCampo('cliente')" class="text-danger">
                               Campo requerido
                             </small>
                             <mat-autocomplete #auto="matAutocomplete" class="text-capitalize" [displayWith]="displayFn">
                               <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
-                                (click)="infoAdiciona(option)" #tooltip="matTooltip"
+                                #tooltip="matTooltip"
                                 [matTooltip]="'Nombre: '+option.fullname +', Sucursal: '+ '' +', Correo: '+option.correo"
                                 matTooltipPosition="right"
                                 aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
                                 {{option.fullname}}
                               </mat-option>
                             </mat-autocomplete>                      
-                          </ng-container>
+                          <!-- </ng-container> -->
                         </div>
                       </div>
                 </ng-container>
@@ -48,8 +49,8 @@
                 <div class="mb-1">
                   <label for="placas" class="form-label ">Placas <span class="obligatorio">*</span></label>
                   <input type="text" class="form-control form-control-sm text-uppercase" id="placas" formControlName="placas"
-                    [class.is-invalid]="validaCampo('placas')" (keyup)="placasVerifica()"
-                    maxlength="7" (ngModelChange)="verificarEngomado()" id="placas">
+                    [class.is-invalid]="validaCampo('placas')" 
+                    maxlength="7" id="placas">
                   <small *ngIf="validaCampo('placas') && !existenPlacas" class="text-danger">
                     campo requerido
                   </small>
@@ -63,9 +64,9 @@
                 <div class="mb-1 ">
                   <label for="marca" class="form-label ">Marca <span class="obligatorio">*</span></label>
                   <select class="form-select form-select-sm" formControlName="marca"
-                    [class.is-invalid]="validaCampo('marca')" (ngModelChange)="submarcas()">
+                    [class.is-invalid]="validaCampo('marca')" >
                     <option [defaultSelected]="" value="">Seleccione ...</option>
-                    <option value="{{marca.id}}" *ngFor="let marca of marcas;let i = index">{{marca.id}}</option>
+                    <option value="{{marca}}" *ngFor="let marca of marcas_vehiculos_id">{{marca}}</option>
                   </select>
                 </div>
                 <small *ngIf="validaCampo('marca')" class="text-danger">
@@ -75,18 +76,13 @@
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1 ">
                   <label for="modelo" class="form-label ">Modelo <span class="obligatorio">*</span></label>
-                  <ng-container *ngIf="modeloAuto!==null">
+                  <!-- <ng-container *ngIf="modeloAuto!==null"> -->
                     <select class="form-select form-select-sm" formControlName="modelo" 
                       [class.is-invalid]="validaCampo('modelo')">
-                      <option [defaultSelected]="modelo.modelo" [value]="modelo.modelo" *ngFor="let modelo of arrayModelos" >{{modelo.modelo}}</option>
+                      <option [defaultSelected]="" value="" >Seleccione ...</option>
+                      <option  [value]="modelo.modelo" *ngFor="let modelo of array_modelos" >{{modelo.modelo}}</option>
                     </select>
-                  </ng-container>
-                  <ng-container *ngIf="modeloAuto===null">
-                    <select class="form-select form-select-sm" formControlName="modelo"
-                      [class.is-invalid]="validaCampo('modelo')" [ngModel]="">
-                      <option [defaultSelected]="" value="">Seleccione marca</option>
-                    </select>
-                  </ng-container>
+                  <!-- </ng-container> -->
                 </div>
                 <small *ngIf="validaCampo('modelo')" class="text-danger">
                   Campo requerido
@@ -112,7 +108,7 @@
                   <select class="form-select form-select-sm" formControlName="anio" [class.is-invalid]="validaCampo('anio')">
                     <option [defaultSelected]="" value="">Selecciona año</option>
                     <!-- [defaultSelected]="anio===anioS" value="{{anioS}}" -->
-                    <option [value]="a"  *ngFor="let a of listaArrayAnios">
+                    <option [value]="a"  *ngFor="let a of anios">
                       {{a}}
                     </option>
                   </select>
@@ -205,13 +201,15 @@
               </div>
             </div>
             <div class="d-grid gap-2 col-lg-4 col-md-4 col-sm-6 mx-auto mt-2">
-              <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal"
-                [disabled]="(existenPlacas || form_vehiculo.invalid)  ? 'disabled': null">Guardar</button>
+              <button type="submit" class="btn btn-sm btn-primary" >Guardar</button>
             </div>
           </form>
-
-          <!-- <pre>
-            {{form_vehiculo.value | json}}
-          </pre> -->
+          <div class="row m-1">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+              <ng-container *ngIf="faltante_s">
+                información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
+              </ng-container>
+            </div>
+          </div>
     </div>
   </div>

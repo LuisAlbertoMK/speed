@@ -29,6 +29,8 @@ export class EncriptadoService {
       const newrefresh_token = this.servicioDecrypt(refreshToken)
       const newuid = this.servicioDecrypt(uid)
       
+      
+      
       return {
         rol: newrol, usuario: newusuario,
         uid: newuid,

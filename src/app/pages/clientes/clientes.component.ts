@@ -49,7 +49,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     clientes_arr=[]
 
     displayedColumnsClientes: string[] = ['no_cliente','sucursalShow', 'fullname','tipo', 'correo','opciones']; //clientes
-    columnsToDisplayWithExpand = [...this.displayedColumnsClientes, 'expand'];
+    // columnsToDisplayWithExpand = [...this.displayedColumnsClientes, 'expand'];
+    columnsToDisplayWithExpand = [...this.displayedColumnsClientes];
     dataSourceClientes = new MatTableDataSource(); //clientes
     expandedElement: any | null; //clientes
     @ViewChild('clientesPaginator') paginatorClientes: MatPaginator //clientes
@@ -59,9 +60,11 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
     //verificar si existe informacion de cliente
     datCliente:any
-    cliente:string = null
-    vehiculo:string = null
+    // cliente:string = null
+    // vehiculo:string = null
 
+
+    data_cliente= {}
   ngOnInit() {
     this.rol()
   }
@@ -75,39 +78,39 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     
     this.ListadoClientes()
   }
-  irPagina(pagina, cliente, vehiculo?, cotizacion?){
+  irPagina(pagina, cliente){
     // /:ID/:tipo/:extra
+    // console.log(cliente);
+    const { id, sucursal } = cliente
+    
     let queryParams = {}
     if (pagina === 'historial-cliente') {
-      queryParams = { anterior:'clientes', cliente  } 
+      queryParams = { anterior:'clientes',  } 
     } else if (pagina === 'cotizacionNueva') {
-      queryParams = { anterior:'clientes', cliente, tipo: 'cliente', vehiculo, cotizacion  } 
+      queryParams = { anterior:'clientes', cliente: id, sucursal, tipo: 'cliente'  } 
     } else if (pagina === 'ServiciosConfirmar') {
-      queryParams = { anterior:'clientes', cliente, tipo: 'nueva', vehiculo } 
+      queryParams = { anterior:'clientes',  tipo: 'nueva' } 
     }
+
+    // console.log(queryParams);
+    
     this.router.navigate([`/${pagina}`], { queryParams });
   }
 
   ListadoClientes(){
-    this.cargandoInformacion = true
     const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, () => {
-      console.log('aqui');
-      
-      
-      this._clientes.consulta_clientes_new().then((clientes) => {
-        const info = (this.SUCURSAL !=='Todas') ? clientes.filter(c=>c.sucursal === this.SUCURSAL) : clientes
-
-        const camposRecu = [...this._clientes.camposCliente,'vehiculos','fullname']
-
-        const nueva  = (!this.clientes_arr.length) ?  info :  this._publicos. actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        // console.time('Execution Time');
+        const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
+        const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
+        const camposRecu = [...this._clientes.camposCliente,'fullname']
+        const nueva  = (!this.clientes_arr.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes_arr, clientes,camposRecu);
         this.clientes_arr = nueva
         this.dataSourceClientes.data = nueva
         this.newPagination('clientes')
-      }).catch((error) => {
-        // Manejar el error si ocurre
-        console.log(error);      
-      });
+        // console.timeEnd('Execution Time');
+      }
     })
   }
   

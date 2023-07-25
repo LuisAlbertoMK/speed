@@ -247,7 +247,7 @@
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body">
-        <ng-container *ngIf="datCliente; else elseNewCliente">
+        <!-- <ng-container *ngIf="datCliente; else elseNewCliente">
           <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
         </ng-container>
         <ng-template #elseNewCliente>
@@ -256,7 +256,7 @@
               <app-cliente (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
             </div>
           </div>
-        </ng-template>
+        </ng-template> -->
       </div>
     </div>
   </div>

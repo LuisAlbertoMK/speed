@@ -23,7 +23,7 @@
 
 
 
-<app-clientes-list (dataCliente)="infoCliente ( $event )" [sucursal]="SUCURSAL" class="m-1" ></app-clientes-list>
+<!-- <app-clientes-list (dataCliente)="infoCliente ( $event )" [sucursal]="SUCURSAL" class="m-1" ></app-clientes-list> -->
 <div class="card border-dark" >
   <div class="card-body">
     <h1>Informacion de cliente 
@@ -430,7 +430,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body">
-        <ng-container *ngIf="datCliente; else elseNewCliente">
+        <!-- <ng-container *ngIf="datCliente; else elseNewCliente">
           <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
         </ng-container>
         <ng-template #elseNewCliente>
@@ -439,7 +439,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
               <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
             </div>
           </div>
-        </ng-template>
+        </ng-template> -->
       </div>
     </div>
   </div>
@@ -452,12 +452,12 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-body m-2">
         <!-- Vehiculo: <strong>{{vehiculoData}}</strong>
         Cliente <strong>{{infoCotizacion.cliente['id']}}</strong> -->
-        <ng-container *ngIf="vehiculoData; else elseTemplate">
+        <!-- <ng-container *ngIf="vehiculoData; else elseTemplate">
           <app-vehiculo [cliente]="vehiculoData" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
         </ng-container>
         <ng-template #elseTemplate>
           <app-vehiculo (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
-        </ng-template>
+        </ng-template> -->
         
       </div>
     </div>
@@ -468,7 +468,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down "> <!-- modal-dialog-scrollable -->
     <div class="modal-content">
       <div class="modal-body">
-          <app-cliente  (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL" ></app-cliente>
+          <!-- <app-cliente  (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL" ></app-cliente> -->
       </div>
     </div>
   </div>

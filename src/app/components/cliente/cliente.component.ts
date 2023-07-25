@@ -1,5 +1,5 @@
 import { map, startWith } from 'rxjs/operators';
-import { Component, OnInit, Input, Output,EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SucursalesService } from '../../services/sucursales.service';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
@@ -22,7 +22,7 @@ const postRef = ref(db, '/clientes');
 })
 
 
-export class ClienteComponent implements OnInit {
+export class ClienteComponent implements OnInit, OnChanges {
 
   
 
@@ -32,10 +32,7 @@ export class ClienteComponent implements OnInit {
       this.heroeSlec = new EventEmitter()
     }
 
-    @Input() cliente:any={}
-    @Input() sucursal:string
-    @Input() data:any
-    @Input() id:string
+    @Input() data_cliente
   
     @Output() heroeSlec : EventEmitter<any>
     
@@ -75,9 +72,46 @@ export class ClienteComponent implements OnInit {
     this.roles()
     this.crearFormularioClientes()
     this.crearFormEmpresa()
-    this.perteneceA()
-    this.automaticos_empresa()    
+    this.automaticos_empresa()
+    
+    this.vigila()
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['data_cliente']) {
+      const nuevoValor = changes['data_cliente'].currentValue;
+      const valorAnterior = changes['data_cliente'].previousValue;
+      console.log({nuevoValor, valorAnterior});
+      
+      if (nuevoValor['id']) {
+        setTimeout(()=>{
+          console.log(nuevoValor['id']);
+          if (nuevoValor === valorAnterior) {
+            this.cargaDataForm(valorAnterior)
+          }else{
+            this.cargaDataForm(nuevoValor)
+          }
+        },500)
+      }else{
+        setTimeout(()=>{
+          this.cargaDataForm(Object({}))
+        },500)
+      }
+
+    }
+  }
+  cargaDataForm(cliente){
+    if (cliente['id']) {
+      const data_recuperada = this._publicos.nuevaRecuperacionData(cliente, this._clientes.camposCliente )
+
+      this.form_cliente.reset(Object({...data_recuperada, uid: data_recuperada.id}))
+      this.form_cliente.controls['correo'].disable();
+    }else{
+      this.form_cliente.reset()
+      this.form_cliente.controls['correo'].enable();
+    }
+   
+  }
+
   automaticos_empresa(){
     this.filteredOptions_empresa = this.myControl_empresa.valueChanges.pipe(
       startWith(''),
@@ -89,45 +123,11 @@ export class ClienteComponent implements OnInit {
 
     this.ROL = rol
     this.SUCURSAL = sucursal
-      
-    if(this.SUCURSAL !== 'Todas') this.listadoEmpresas(this.SUCURSAL)
-    this._clientes.consulta_clientes_new().then((clientes) => {
-      this.clientes = clientes
-      // this.contadroClientes = clientes.length +1 
-      this.arreglo_correos = clientes.map(c=>{
-          return c.correo
-      })
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
-  }
-  perteneceA(){
-    if (this.id) {
-      this.informacionGet()
-    }else{
-      setTimeout(() => {
-        this.resetForm()
-      }, 200);
-    }
-  }
-  informacionGet(){
-    this.form_cliente.reset({
-      nombre: this.data['nombre'],
-      apellidos: this.data['apellidos'],
-      tipo: this.data['tipo'],
-      no_cliente: this.data['no_cliente'],
-      sucursal: this.data['sucursal'],
-      empresa: this.data['empresa'],
-      telefono_movil: this.data['telefono_movil'],
-      uid: this.id,
-      correo_sec: this.data['correo_sec'],
-      correo: this.data['correo'],
-      telefono_fijo: this.data['telefono_fijo'],
-      // correo: this.data['correo'],
-    })
   }
  
   coloca(val:string){
+    // console.log(this.data_cliente);
+    
     if(val) this.form_cliente.controls['correo'].setValue('patito@gmail.com')
     else  this.form_cliente.controls['correo'].setValue(val)
   }
@@ -148,10 +148,7 @@ export class ClienteComponent implements OnInit {
     if (info) this.telefonoExistente = true
   }
   crearFormularioClientes(){
-    let sucursal =  null
-    if (this.sucursal!=='Todas') {
-      sucursal = this.sucursal
-    }
+    let sucursal = (this.SUCURSAL === 'Todas') ? '' : this.SUCURSAL 
     this.form_cliente = this.fb.group({
       uid:['',[]],
       no_cliente:['',[Validators.required,Validators.minLength(14), Validators.maxLength(14)]],
@@ -164,29 +161,23 @@ export class ClienteComponent implements OnInit {
       tipo:['',[Validators.required]],
       sucursal:[sucursal,[Validators.required]],
       empresa:['',[]]
-    })
-    let isFlotilla: boolean = false;
+    })    
+  }
+  vigila(){
     this.form_cliente.get('tipo').valueChanges.subscribe((tipo: string) => {
       if (tipo === 'flotilla') {
-        const data = this.formaEmpresa.value
-        // Habilitar el campo "empresa" si el tipo es flotilla
         this.form_cliente.get('empresa').enable();
         this.empresa_valida = false
-        if (this.data) {
-          if (this.data.empresa) {
-            this.empresaSelect = this.data.empresa
-          }
-        }
       } else {
-        // Deshabilitar el campo "empresa" si el tipo es particular
         this.form_cliente.get('empresa').disable();
         this.form_cliente.get('empresa').setValue('');
         this.empresa_valida = true
       }
     });
-    this.form_cliente.get('sucursal').valueChanges.subscribe((sucursal: string) => {
+    this.form_cliente.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
+      // let sucursal_ = ''
       if (sucursal) {
-        this.listadoEmpresas(sucursal)
+        this.empresasSucursal = await this._empresas.consulta_empresas(sucursal)
       }
     })
   }
@@ -245,11 +236,11 @@ export class ClienteComponent implements OnInit {
     const nombre = this.form_cliente.controls['nombre'].value?.trim();
     const apellidos = this.form_cliente.controls['apellidos'].value?.trim();
     const uid = this.form_cliente.controls['uid'].value?.trim();
-    let sucursal = this.sucursal;
+    let sucursal = '';
   
-    if (this.sucursal === 'Todas') {
-      sucursal = this.form_cliente.controls['sucursal'].value;
-    }
+    // if (this.sucursal === 'Todas') {
+    //   sucursal = this.form_cliente.controls['sucursal'].value;
+    // }
   
     if (!uid && nombre?.length >= 2 && apellidos?.length >= 2 && sucursal) {
       try {
@@ -274,13 +265,18 @@ export class ClienteComponent implements OnInit {
   }
   
   async guardarCliente(){
+    
+    
     const info_get = this._publicos.recuperaDatos(this.form_cliente);
-    // console.log(info_get);
+    console.log(info_get);
+
+    
     
     const campos_cliente                 = [ ...this._clientes.campos_cliente ]
     const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]
     const campos_opcionales              = [ ...this._clientes.campos_opcionales ]
     const campos_permitidos_new_register = [ ...campos_cliente,...campos_opcionales ]
+
 
     const saveInfo = {};
 
@@ -304,27 +300,27 @@ export class ClienteComponent implements OnInit {
     
     if (ok && !faltante_s) {
       const updates = {};
-      const mensaje = (this.id) ? 'Actualización de cliente correcto!!': 'Registro de cliente correcto!!'
-      if (this.id) {
+      const mensaje = (info_get.uid) ? 'Actualización de cliente correcto!!': 'Registro de cliente correcto!!'
+      if (info_get.uid) {
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_Actualizar);
-        
         campos_permitidos_Actualizar.forEach(campo=>{
-          if (informacion_recuperada [campo] !== this.data[campo]) {
-            updates[`clientes/${this.id}/${campo}`] = informacion_recuperada [campo]
+          if (informacion_recuperada [campo] !== campo) {
+          // if (informacion_recuperada [campo] !== this.data[campo]) {
+            updates[`clientes/${info_get.sucursal}/${info_get.uid}/${campo}`] = informacion_recuperada [campo]
           }
         })
       }else{
-
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_new_register);
         const nueva_clave_generada = this._publicos.generaClave()
 
         campos_permitidos_new_register.forEach(campo=>{
           if (informacion_recuperada [campo]) {
-            updates[`clientes/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
+            updates[`clientes/${info_get.sucursal}/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
           }
         })
-        updates[`clientes/${ nueva_clave_generada }/status`] = true
+        updates[`clientes/${info_get.sucursal}/${ nueva_clave_generada }/status`] = true
       }
+      
       const existen_campos_update = Object.keys(updates)
       if (existen_campos_update.length) {
         try {
@@ -345,16 +341,7 @@ export class ClienteComponent implements OnInit {
     this.heroeSlec.emit( Object({CerrarModal: false}) )
   }
   resetForm(){
-    let sucu = this.sucursal
-    if (this.sucursal === 'Todas') sucu = ''
-    this.form_cliente.reset({
-      tipo:'particular',  sucursal: sucu,
-      no_cliente:'',      uid:'',
-      nombre:'',          apellidos:'',
-      correo:'',          telefono_fijo:'',
-      telefono_movil:'',  empresa: '',
-      correo_sec:''
-    })
+    this.form_cliente.reset()
   }
   listadoEmpresas(sucursal){
     const starCountRef = ref(db, `empresas/${sucursal}`)

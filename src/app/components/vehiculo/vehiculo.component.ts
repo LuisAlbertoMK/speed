@@ -29,14 +29,9 @@ export class VehiculoComponent implements OnInit, OnChanges  {
 
     ROL:string; SUCURSAL:string
 
-    listaArrayAnios = [ ...this._campos.anios]
-
     miniColumnas:number = 100
 
-  
-    @Input() cliente:string
-    @Input() vehiculo:string
-    @Input() vehiculoDat:string
+    @Input() data_cliente
     
   
     @Output() dataVehiculo : EventEmitter<any>
@@ -45,146 +40,75 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     myControl = new FormControl('');
     filteredOptions: Observable<any[]>
     existenPlacas:boolean = false
-    modeloAuto:string ='';
-    marcas:any=[];
-    arrayModelos=[]
-    categorias=[];
-    anio:number=0;
-    colores:any=[];
-    engomadoColors:any=[];
+   
+    colores:any=              [...this._vehiculos.colores_autos];
+    anios:any=                [...this._vehiculos.anios];
+    marcas_vehiculos:any=     this._vehiculos.marcas_vehiculos
+    marcas_vehiculos_id = []
+    array_modelos = []
+    
     clientes = []
     listaPlacas =[]
+
+    faltante_s 
     
   ngOnInit(): void {
     this.rol()
     this.crearFormularioLlenadoManual()
-    this.consultaMarcas()
-    this.listaColores()
-    this.listaClientes()
     this.automaticos()
-    // this.cargaDataVehiculo()
-    
+    this.vigila()
+    this.consultaPlacas()
+    this.ListadoClientes()
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['cliente']) {
-      const nuevoValor = changes['cliente'].currentValue;
-      const valorAnterior = changes['cliente'].previousValue;
-      
+    if (changes['data_cliente']) {
+      const nuevoValor = changes['data_cliente'].currentValue;
+      const valorAnterior = changes['data_cliente'].previousValue;
+      // console.log({nuevoValor, valorAnterior});
+      if (nuevoValor['id']) {
+        setTimeout(()=>{
+          console.log(nuevoValor['id']);
+          this.cargaDataVehiculo(nuevoValor)
+        },500)
+      }
     }
-    if (changes['vehiculo']) {
-      const nuevoValor = changes['vehiculo'].currentValue;
-      const valorAnterior = changes['vehiculo'].previousValue;
-      this.cargaDataVehiculo()
-    }
+  }
+  consultaPlacas(){{
+    const starCountRef = ref(db, `placas`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.listaPlacas = snapshot.val()
+      } 
+    })
+  }}
+  ListadoClientes(){
+    const starCountRef = ref(db, `clientes`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        // console.time('Execution Time');
+        const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
+        const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
+        const camposRecu = [...this._clientes.camposCliente,'fullname']
+        const nueva  = (!this.clientes.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes, clientes,camposRecu);
+        
+        // console.timeEnd('Execution Time');
+        this.clientes = nueva
+      }
+    },{
+      onlyOnce: true
+    })
   }
   rol(){
     const { rol, sucursal} = this._security.usuarioRol()
 
     this.ROL = rol
     this.SUCURSAL = sucursal;
-    
-    this.listaClientes()
   }
-  cargaDataVehiculo(){
-
-      const cliente = (this.cliente)? this.cliente : null
-      const vehiculo = (this.vehiculo)? this.vehiculo : null
-      // console.log(vehiculo);
-      // console.log(cliente);
-      if (vehiculo) {
-        this._vehiculos.consulta_vehiculo_new(cliente, vehiculo).then((vehiculo:any)=>{
-          // console.log(vehiculo);
-          const carga = [ 'id', 'cliente', 'placas', 'vinChasis',  'cilindros', 'no_motor', 'color', 'engomado', 'marcaMotor', 'transmision'
-          ]
-          this.form_vehiculo.controls['placas'].disable()
-          // this.form_vehiculo.get('marca').valueChanges.subscribe((marca: string) => {
-          //   console.log(marca);
-          //   const modelos = this.marcas.find(option=>option.id === vehiculo.marca)
-          //   this.arrayModelos = modelos
-          // })
-          carga.forEach(c=>{
-            this.form_vehiculo.controls[c].setValue(vehiculo[c])
-          })
-          setTimeout(() => {
-            this.form_vehiculo.controls['marca'].setValue(vehiculo['marca'])
-            setTimeout(() => {
-              this.form_vehiculo.controls['modelo'].setValue(vehiculo['modelo'])
-              setTimeout(() => {
-                this.form_vehiculo.controls['anio'].setValue(vehiculo['anio'])
-              }, 300);
-            }, 300);
-          }, 500); 
-        })
-      }else{
-        this.form_vehiculo.reset({
-          cliente,
-          id: vehiculo
-        })
-      }
-      
-    
-    // if (this.vehiculo) {
-    //   // console.log(this.vehiculo);
-    //   // console.log(this.vehiculoDat['placas']);
-      
-    //   this.form_vehiculo.reset({
-    //     id: this.vehiculoDat['id'],
-    //     cliente: this.vehiculoDat['cliente'],
-    //     placas: this.vehiculoDat['placas'],
-    //     vinChasis: this.vehiculoDat['vinChasis'],
-    //     cilindros: this.vehiculoDat['cilindros'],
-    //     no_motor: this.vehiculoDat['no_motor'],
-    //     color: this.vehiculoDat['color'],
-    //     engomado: this.vehiculoDat['engomado'],
-    //     marcaMotor: this.vehiculoDat['marcaMotor'],
-    //     transmision: this.vehiculoDat['transmision'],
-    //   })
-    //   setTimeout(() => {
-    //     this.form_vehiculo.controls['placas'].disable()
-        
-    //     this.form_vehiculo.controls['marca'].setValue(this.vehiculoDat['marca'])
-    //     setTimeout(() => {
-    //       this.form_vehiculo.controls['modelo'].setValue(this.vehiculoDat['modelo'])
-    //       setTimeout(() => {
-    //         this.form_vehiculo.controls['anio'].setValue(this.vehiculoDat['anio'])
-    //       }, 200);
-    //     }, 200);
-    //   }, 500);
-      
-      
-    // }
-  }
-  consultaMarcas(){
-    this._vehiculos.get_marcas().then(({contenido,data})=>{
-      if (contenido) {
-        this.marcas = data
-      }
-    })
-  }
-  listaColores(){
-    this._vehiculos.getColores().then(({contenido,data})=>{
-      if (contenido) {
-        this.colores = data
-      }
-    })
-  }
-  listaClientes(){
-    this._clientes.consulta_clientes_new().then((clientes) => {
-      // this.clientes = clientes
-      this.listaPlacas = []
-      clientes.map(cli=>{
-        cli.vehiculos = (cli.vehiculos) ? this._publicos.crearArreglo2(cli.vehiculos) : []
-        cli.vehiculos.map(v=>{
-          this.listaPlacas.push(v['placas'])
-        })
-      })
-      this.clientes = (this.SUCURSAL === 'Todas') ? clientes : clientes.filter(c=>c.sucursal === this.SUCURSAL)
-    }).catch((error) => {
-      // Manejar el error si ocurre
-    });
+  cargaDataVehiculo(nuevoValor){
+    const {sucursal, id} = nuevoValor
+    this.form_vehiculo.reset({sucursal, cliente:id})
   }
   
-
   automaticos(){
     this.filteredOptions = this.myControl.valueChanges.pipe(
       debounceTime(100),
@@ -193,79 +117,95 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     )
   }
   crearFormularioLlenadoManual(){
-    const cliente = (this.cliente ) ? this.cliente  : '' 
-    const vehiculo = (this.vehiculo ) ? this.vehiculo  : '' 
-    
-    this.form_vehiculo = this.fb.group({
-      id:[vehiculo,[]],
-      cliente:[cliente,[Validators.required]],
-      placas:['',[Validators.required,Validators.minLength(6),Validators.maxLength(7)]],
-      vinChasis:[''],
-      marca:['',[Validators.required]],
-      modelo:['',[Validators.required]],
-      categoria:['',[Validators.required]],
-      anio:['',[Validators.required]],
-      cilindros:['',[Validators.required]],
-      no_motor:[''],
-      color:['',[Validators.required]],
-      engomado:['',[Validators.required]],
-      marcaMotor:['',[]],
-      transmision:['',[]]
+      this.form_vehiculo = this.fb.group({
+        id:['',[]],
+        cliente:['',[Validators.required]],
+        placas:['',[Validators.required,Validators.minLength(6),Validators.maxLength(7)]],
+        vinChasis:[''],
+        marca:['',[Validators.required]],
+        modelo:['',[Validators.required]],
+        categoria:['',[Validators.required]],
+        anio:['',[Validators.required]],
+        cilindros:['',[Validators.required]],
+        no_motor:[''],
+        color:['',[Validators.required]],
+        engomado:['',[Validators.required]],
+        marcaMotor:['',[]],
+        sucursal:['',[]],
+        transmision:['',[]]
+      })
+  }
+
+  vigila(){
+    const n = this._publicos.crearArreglo2(this._vehiculos.marcas_vehiculos)
+    this.marcas_vehiculos_id = n.map(c=>{
+      return c.id
     })
-    // this.form_vehiculo.controls['engomado'].disable()
+    this.form_vehiculo.get('marca').valueChanges.subscribe((marca: string) => {
+      this.array_modelos = []
+      if (marca) {
+        this.array_modelos = this.marcas_vehiculos[marca]
+      }
+    })
+    this.form_vehiculo.get('modelo').valueChanges.subscribe((modelo: string) => {
+      let modelo_ = ''
+      if (modelo) {
+         modelo_ = this.array_modelos.find(m=>m.modelo === modelo).categoria
+      }
+      this.form_vehiculo.controls['categoria'].setValue(modelo_)
+    })
+    this.form_vehiculo.get('placas').valueChanges.subscribe(async (placas: string) => {
+      if (placas) {
+        const existe = this.listaPlacas.find(c=>String(c).toLowerCase() === String(placas).toLowerCase())
+        this.existenPlacas = (existe) ? true: false
+
+        let engomado_ = (placas.length>=6) ? await this._vehiculos.engomado(placas) : ''         
+        this.form_vehiculo.controls['engomado'].setValue(engomado_)
+      }
+    })
+
+    this.myControl.valueChanges.subscribe(cliente=>{
+      let id_cliente = (cliente instanceof Object) ? cliente.id : ''
+      let sucursal = (cliente instanceof Object) ? cliente.sucursal : ''
+      this.form_vehiculo.controls['sucursal'].setValue(sucursal)
+      this.form_vehiculo.controls['cliente'].setValue(id_cliente)
+    })
   }
   guardarLlenadoManual(){
     
-    const getVehiculo = this.form_vehiculo.value
-    if(this.vehiculoDat)  getVehiculo.placas = this.vehiculoDat['placas']
-    const camposRecupera = [
-      'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','transmision','marcaMotor','vinChasis','no_motor','id',
-    ]
-    const saveInfo:any = this._publicos.nuevaRecuperacionData(getVehiculo, camposRecupera)
+    const camposRecupera = [ 'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','sucursal','transmision','marcaMotor','vinChasis','no_motor','id']
+    const info_get = this._publicos.recuperaDatos(this.form_vehiculo);
+    const saveInfo:any = this._publicos.nuevaRecuperacionData(info_get, camposRecupera)
 
-    const controls_arr = ['placas','categoria']
-          controls_arr.forEach(c=>{
-            const control = this.form_vehiculo.get(c);
-            if (control.disabled) {
-              saveInfo[c] = this.form_vehiculo.get(c).value
-            }
-          })
-    this._vehiculos.registra_vehiculo_new(saveInfo).then((id)=>{
-      if(id){
-        this.resetFormVehiculo()
+    const {ok, faltante_s}  =this._publicos.realizavalidaciones_new(saveInfo, this._vehiculos.obligatorios)
+    this.faltante_s = faltante_s
 
-        this.myControl.setValue('')
-        this._publicos.mensajeCorrecto('Se registro vehiculo correctamente',1)
-        this.dataVehiculo.emit( id )
-      }else{
-        this.dataVehiculo.emit( false )
-        // this._publicos.mensajeIncorrecto('Ocurrio un error en el registro de vehiculo')
-        this._publicos.mensajeCorrecto('Ocurrio un error en el registro de vehiculo',0)
-      }
-    })
-  }
-  vericainfo(){
-    const cliente = this.myControl.value
-    if (!cliente) this.form_vehiculo.controls['cliente'].setValue('')    
-  }
-  placasVerifica(){
-    const placas = this.form_vehiculo.controls['placas'].value
-    this.existenPlacas = false
-    this.listaPlacas.map(p=>{
-      if(String(p).toLowerCase() === String(placas).toLowerCase()) {
-        this.existenPlacas = true
-        return
-      }
-    })
-  }
-  
-  verificarEngomado(){
-    const placas = String(this.form_vehiculo.controls['placas'].value).trim()
-    if (placas.length>=6) {
-      this._vehiculos.engomado(placas).then((engomado)=>{
-          this.form_vehiculo.controls['engomado'].setValue(engomado)
-      })
+    if (!ok || this.existenPlacas) return
+
+    const updates = {};
+    if (info_get.id) {
+      updates[`vehiculos`] = saveInfo;
+      const {sucursal, id} = info_get
+      updates[`vehiculos/${sucursal}/${id}`] = saveInfo;
+    }else{
+      const {sucursal } = this.data_cliente
+      const clave_nueva = this._publicos.generaClave()
+      updates[`vehiculos/${sucursal}/${clave_nueva}`] = saveInfo;
+      this.listaPlacas.push(String(saveInfo.placas).toLowerCase())
+      updates[`placas`] = this.listaPlacas;
     }
+
+    update(ref(db), updates).then(()=>{
+      this.dataVehiculo.emit( {ok: true, id: saveInfo.id } )
+      this.existenPlacas = false
+      const {sucursal, id} = this.data_cliente
+      this.form_vehiculo.reset({sucursal, cliente:id})
+      this._publicos.swalToast('Se registro vehiculo!!',1,'top-start')
+    })
+    .catch(err=>{
+      console.log(err);
+      this._publicos.swalToast('Error al registrar vehiculo',0,'top-start')
+    })
   }
   validaCampo(campo: string){
     return this.form_vehiculo.get(campo).invalid && this.form_vehiculo.get(campo).touched
@@ -273,51 +213,6 @@ export class VehiculoComponent implements OnInit, OnChanges  {
   displayFn(val: any): string {
     return val && (val.fullname ) ? (val.fullname) : ''
   }
-  infoAdiciona(val:any){
-    if (val===null) {
-      return
-    }
-    this.form_vehiculo.controls['cliente'].setValue(val.id)
-  }
-  submarcas(){
-    let marca =this.form_vehiculo.controls['marca'].value
-    
-    if (marca!=='' && marca!==null) { 
-      const modelos = this.marcas.find(option=>option.id === marca)
-      this.arrayModelos = modelos
-    }
-  }
-  aniosModelo(){
-    // this.listaArrayAnios=[]
-    // const marca =this.form_vehiculo.controls['marca'].value
-    // const modelo =this.form_vehiculo.controls['modelo'].value
-    // if (marca && modelo) {
-    //   const filtro = this.arrayModelos.find(m=>m['modelo'] === modelo)
-    //   const anios:any[]= filtro['anios']
-    //   this.listaArrayAnios = anios
-    //   this.form_vehiculo.controls['categoria'].setValue(filtro['categoria'])
-    //   // this.listaArrayAnios = filtro['anios']
-    // }
-  }
-  resetFormVehiculo(){
-    const cliente = (this.cliente)? this.cliente : null
-    const id = (this.vehiculo)? this.vehiculo : null
-    this.form_vehiculo.reset({
-      cliente, id
-    })
-  }
-
-
-
-
-
-
-
-
-
-
-
-  
   private _filter(value: any[]): string[] {
     if (value===null) {
       return null
