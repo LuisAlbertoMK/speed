@@ -28,12 +28,12 @@ export class CotizacionService {
     {id:'6',pago:'18 meses',interes:17.70,numero:18},
     {id:'7',pago:'24 meses',interes:24.,numero:24}
   ]
-   camposCotizaciones = ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName']
+   camposCotizaciones = ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName','']
    sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
 
    infoCotizacion = {
-    cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
-    fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio: '1', pdf:null
+    cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',
+    fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}
   }
   consulta_cotizaciones_new(): Promise<any[]> {
     return new Promise((resolve, reject) => {

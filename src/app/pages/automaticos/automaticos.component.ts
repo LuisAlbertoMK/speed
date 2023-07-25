@@ -42,110 +42,68 @@ export class AutomaticosComponent implements OnInit {
     const { rol, sucursal, usuario } = this._security.usuarioRol()
   }
   realizaOperacionesClientes(){
-    const lista_sucursal = {
-      '-N2gkVg1RtSLxK3rTMYc':{},
-      '-N2gkzuYrS4XDFgYciId':{},
-      '-N2glF34lV3Gj0bQyEWK':{},
-      '-N2glQ18dLQuzwOv3Qe3':{},
-      '-N2glf8hot49dUJYj5WP':{},
-      '-NN8uAwBU_9ZWQTP3FP_':{}
-    }
-    let nueva_data_clientes = {
-      '-N2gkVg1RtSLxK3rTMYc':{},
-      '-N2gkzuYrS4XDFgYciId':{},
-      '-N2glF34lV3Gj0bQyEWK':{},
-      '-N2glQ18dLQuzwOv3Qe3':{},
-      '-N2glf8hot49dUJYj5WP':{},
-      '-NN8uAwBU_9ZWQTP3FP_':{}
-    }
-    let nueva_data_vehiculos = {
-      '-N2gkVg1RtSLxK3rTMYc':{},
-      '-N2gkzuYrS4XDFgYciId':{},
-      '-N2glF34lV3Gj0bQyEWK':{},
-      '-N2glQ18dLQuzwOv3Qe3':{},
-      '-N2glf8hot49dUJYj5WP':{},
-      '-NN8uAwBU_9ZWQTP3FP_':{}
-    }
-    let nueva_data_cotizaciones = {
-      '-N2gkVg1RtSLxK3rTMYc':{},
-      '-N2gkzuYrS4XDFgYciId':{},
-      '-N2glF34lV3Gj0bQyEWK':{},
-      '-N2glQ18dLQuzwOv3Qe3':{},
-      '-N2glf8hot49dUJYj5WP':{},
-      '-NN8uAwBU_9ZWQTP3FP_':{}
-    }
-    let nueva_data_recepciones = {
-      '-N2gkVg1RtSLxK3rTMYc':{},
-      '-N2gkzuYrS4XDFgYciId':{},
-      '-N2glF34lV3Gj0bQyEWK':{},
-      '-N2glQ18dLQuzwOv3Qe3':{},
-      '-N2glf8hot49dUJYj5WP':{},
-      '-NN8uAwBU_9ZWQTP3FP_':{},
-    }
-    let nuevas_empresas = {
-      '-N2gkVg1RtSLxK3rTMYc':{},
-      '-N2gkzuYrS4XDFgYciId':{},
-      '-N2glF34lV3Gj0bQyEWK':{},
-      '-N2glQ18dLQuzwOv3Qe3':{},
-      '-N2glf8hot49dUJYj5WP':{},
-      '-NN8uAwBU_9ZWQTP3FP_':{},
-    }
-    // console.log(data_ocupada);
+   
     const array_placas = []
     
     const campos_recupera = [ 'apellidos','correo','correo_sec','id','no_cliente','nombre','sucursal','telefono_fijo','telefono_movil','tipo' ]
     const campos_vehiculos = ['anio','categoria','cilindros','cliente','color','engomado','id','marca','marcaMotor','modelo','no_motor','placas','status','transmision','vinChasis' ]
 
 
-    const {clientes, vehiculos} = BD
-    console.log({clientes, vehiculos});
+    const {clientes, vehiculos, cotizacionesRealizadas} = BD
 
-    let vehiculos_cliente = []
-    Object.entries(vehiculos).forEach(([key, entrie])=>{
-      // console.log(key);
-      // console.log(entrie);
-      const {cliente} = entrie
-      const bkup_vehiculo = this._publicos.nuevaRecuperacionData(entrie, campos_vehiculos)
-      vehiculos_cliente.push(bkup_vehiculo)
-    })
-    // console.log(vehiculos_cliente);
-    let nuevos_v = {}
-    Object.entries(clientes).forEach(([key, entrie])=>{
-      // console.log(key);
-        const nuevis = vehiculos_cliente.filter(v=>v.cliente === key)
-        let vehiculos__ = {}
-        nuevis.forEach((v,index)=>{
-          const {id} = v
-          vehiculos__[id] = v
-        })
+    // let vehiculos_cliente = []
+    // Object.entries(vehiculos).forEach(([key, entrie])=>{
+    //   const {cliente} = entrie
+    //   const bkup_vehiculo = this._publicos.nuevaRecuperacionData(entrie, campos_vehiculos)
+    //   vehiculos_cliente.push(bkup_vehiculo)
+    // })
 
-        if (entrie['vehiculos']) {
-          const nuevis = this._publicos.crearArreglo2(entrie['vehiculos'])
+    let updates = {}
+    // Object.entries(clientes).forEach(([key, entrie])=>{
+    //   const {sucursal} = entrie
+    //     const nuevis = vehiculos_cliente.filter(v=>v.cliente === key)
+    //     let vehiculos__ = {}
+    //     nuevis.forEach((v,index)=>{
+    //       const {id} = v
+    //       vehiculos__[id] = v
+    //     })
+    //     if (entrie['vehiculos']) {
+    //       const nuevis = this._publicos.crearArreglo2(entrie['vehiculos'])
          
-          nuevis.forEach((v,index)=>{
-            const {id} = v
-            vehiculos__[id] = v
-          })
-        }
+    //       nuevis.forEach((v,index)=>{
+    //         const {id} = v
+    //         vehiculos__[id] = {...v, cliente: key, sucursal}
+    //       })
+    //     }
+    //   })
+     
 
-        
+      // console.log(cotizacionesRealizadas);
+      
+      // Object.entries(cotizacionesRealizadas).forEach(([key, entrie])=>{
+      //   // console.log(entrie);
+      //   const {cliente, sucursal, fecha, hora, vehiculo} = entrie
+      //   const {id: idCliente, sucursal: idSucursal} = cliente
+      //   const {id: idVehiculo} = vehiculo
+      //   // const {id: idSucursal} = sucursal
+      //   const fecha_n = this._publicos.convertirFecha(fecha)
+      //   const fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_n, hora_recibida: hora }).toString
+      //   const nnn= this._publicos.sumarRestarDiasFecha(new Date(fecha_recibido), 20)
+      //   const vencimiento = this._publicos.retorna_fechas_hora({fechaString: new Date(nnn), hora_recibida: hora }).toString
+      //   const nueva_entri = {...entrie, cliente: idCliente, sucursal: idSucursal, fecha_recibido, vehiculo: idVehiculo, vencimiento }
+      //   delete nueva_entri.fecha
+      //   delete nueva_entri.hora
 
-        nuevos_v[key] = vehiculos__
-
-        Object.keys(nuevos_v).forEach(g=>{
-          if (entrie.sucursal === nueva_data_vehiculos[entrie.sucursal]) {
-            
-          }
-      })
-    })
-
-    
-    console.log(nuevos_v);
-
-    
-    
-    const updates = {}
-    
+      //   updates[`cotizacionesRealizadas/${idSucursal}/${idCliente}/${key}`] = nueva_entri
+      // })
+      // console.log(updates);
+      const updates1 = {['cotizacionesRealizadas']: null}
+    //  update(ref(db), updates).then(()=>{
+    //     console.log('finalizo');
+    //   })
+    //   .catch(err=>{
+    //     console.log(err);
+    //   })
 
     
   }

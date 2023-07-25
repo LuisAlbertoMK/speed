@@ -97,24 +97,42 @@ export class ClientesService {
     return data_cliente
   }
   //TODO
-  consulta_clientes_new(): Promise<any[]> {
+  consulta_clientes_new(busqueda, sucursal): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      const starCountRef = ref(db, 'clientes');
+      const starCountRef = ref(db, busqueda);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          const clientes = this._publicos.crearArreglo2(snapshot.val());
-          clientes.map(c=>{
-            c.fullname = `${c.nombre} ${c.apellidos}`
-            const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
-            c.vehiculos = vehiculos
-            // c.sucursalShow = this.sucursales_array.find(s=>s.id === c.sucursal).sucursal
-          })
+          let clientes = []
+          if (sucursal === 'Todas') {
+            snapshot.forEach((childSnapshot) => {
+              const childKey = childSnapshot.key;
+              const childData = childSnapshot.val();
+              // console.log(childKey);
+              // console.log(childData);
+              const cli = this._publicos.crearArreglo2(childData)
+              cli.forEach(c=>{
+                clientes.push(this.formatea_info_cliente(c))
+              })
+            })
+          }else{
+            const cli = this._publicos.crearArreglo2(snapshot.val());
+            cli.forEach(c=>{
+              clientes.push(this.formatea_info_cliente(c))
+            })
+          }
           resolve(clientes);
         } else {
           resolve([]);
         }
       });
     });
+  }
+
+  formatea_info_cliente(data_cliente){
+    const {nombre, apellidos, sucursal} = data_cliente
+    data_cliente.fullname = `${nombre} ${apellidos}`
+    data_cliente.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    return data_cliente
   }
   consulta_cliente_new(data): Promise<object> {
     return new Promise((resolve, reject) => {

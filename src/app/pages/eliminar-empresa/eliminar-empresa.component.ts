@@ -87,31 +87,31 @@ export class EliminarEmpresaComponent implements OnInit {
   }
 
   async listaClientes_afectados(){
-    const elimina = this.myControl_elimina.value instanceof Object ?  this.myControl_elimina.value : null
-    const reemplza = this.myControl_reemplaza.value instanceof Object ?  this.myControl_reemplaza.value : null
-    if (this.sucursal_elimina !== 'Todas' && this.sucursal_elimina) {
-      if (elimina && reemplza) {
-        const clientes = await this._clientes.consulta_clientes_new()
-        // const filtrados_sucursal = clientes.filter(c=>c.sucursal === this.SUCURSAL)
-        // const filtrados_tipo = filtrados_sucursal.filter(c=>c.tipo === 'flotilla')
-        // const filtrados_empresa = filtrados_tipo.filter(c=>c.empresa === elimina.id)
+    // const elimina = this.myControl_elimina.value instanceof Object ?  this.myControl_elimina.value : null
+    // const reemplza = this.myControl_reemplaza.value instanceof Object ?  this.myControl_reemplaza.value : null
+    // if (this.sucursal_elimina !== 'Todas' && this.sucursal_elimina) {
+    //   if (elimina && reemplza) {
+    //     const clientes = await this._clientes.consulta_clientes_new()
+    //     // const filtrados_sucursal = clientes.filter(c=>c.sucursal === this.SUCURSAL)
+    //     // const filtrados_tipo = filtrados_sucursal.filter(c=>c.tipo === 'flotilla')
+    //     // const filtrados_empresa = filtrados_tipo.filter(c=>c.empresa === elimina.id)
   
-        const filtrados_empresa = clientes.filter(c =>
-          c.sucursal === this.sucursal_elimina && c.tipo === 'flotilla' && c.empresa === elimina.id
-        );
-        filtrados_empresa.map(c=>{
-          c.sucursalShow = this.lista_en_duro_sucursales.find(s=>s.id === c.sucursal).sucursal
-          c.empresaShow = this.empresas_arr.find(s=>s.id === elimina.id).empresa
-        })
-        this.afecta_clientes = filtrados_empresa
-      }else{
-        this._publicos.mensajeSwal('Elegir ambas empresas',0)
-        this.afecta_clientes = []
-      }
-    }else{
-      this._publicos.mensajeSwal('Elegir sucursal',0)
-        this.afecta_clientes = []
-    }
+    //     const filtrados_empresa = clientes.filter(c =>
+    //       c.sucursal === this.sucursal_elimina && c.tipo === 'flotilla' && c.empresa === elimina.id
+    //     );
+    //     filtrados_empresa.map(c=>{
+    //       c.sucursalShow = this.lista_en_duro_sucursales.find(s=>s.id === c.sucursal).sucursal
+    //       c.empresaShow = this.empresas_arr.find(s=>s.id === elimina.id).empresa
+    //     })
+    //     this.afecta_clientes = filtrados_empresa
+    //   }else{
+    //     this._publicos.mensajeSwal('Elegir ambas empresas',0)
+    //     this.afecta_clientes = []
+    //   }
+    // }else{
+    //   this._publicos.mensajeSwal('Elegir sucursal',0)
+    //     this.afecta_clientes = []
+    // }
     
   }
 

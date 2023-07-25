@@ -42,6 +42,7 @@ export class ClientesListComponent implements OnInit {
     this.rol()
     this.listaEmpresas()
     this.automaticos()
+    this.vigila()
   }
 
   rol(){
@@ -50,43 +51,38 @@ export class ClientesListComponent implements OnInit {
     this.ROL = rol
     this.SUCURSAL = sucursal
   }
+  vigila(){
+    this.myControl.valueChanges.subscribe(cambio=>{
+      if (cambio instanceof Object) {
+        this.dataCliente.emit( {cliente: cambio} ) 
+      }
+    })
+  }
   async listaEmpresas(){
     const empresas = await this._clientes.consulta_empresas_new()
     this.empresas_alls = empresas
     this.listarClientes()
   }
-  listarClientes(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, (snapshot) => {
-      this._clientes.consulta_clientes_new().then((clientes)=>{
-        clientes.map(c=>{
-          c.showSucursal  = this.sucursales_array.find(s=>s.id === c.sucursal).sucursal
-          if(c.empresa) {
-            const {empresa: em} = this.empresas_alls[c.sucursal][c.empresa]
-            c.empresaShow  = em
-          }
-        })
-        // console.log('aqui desde la lista de clientes');
-        
-        this.listaClientes_arr = (this.SUCURSAL === 'Todas') ? clientes : clientes.filter(c=>c.sucursal === this.SUCURSAL)
-      })
-    })
+  async listarClientes(){
+    const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
+    const clientes = await this._clientes.consulta_clientes_new(busqueda,this.SUCURSAL)
+    this.listaClientes_arr = clientes
   }
 
-  clienteSeleccionado(data){
-    if (data.id) {
-      this.dataCliente.emit( Object({cliente: data, status: true}) )
-    }else{
-      this.dataCliente.emit( Object({status: false}))
-    }
-  }
-  clientesInfo(infoCliente){
-    if (infoCliente.registro) {
-      this.dataCliente.emit( infoCliente.cliente )
-    }else{
-      this.dataCliente.emit( {error:true} )
-    }    
-  }
+  // clienteSeleccionado(data){
+  //   if (data.id) {
+  //     this.dataCliente.emit( Object({cliente: data, status: true}) )
+  //   }else{
+  //     this.dataCliente.emit( Object({status: false}))
+  //   }
+  // }
+  // clientesInfo(infoCliente){
+  //   if (infoCliente.registro) {
+  //     this.dataCliente.emit( infoCliente.cliente )
+  //   }else{
+  //     this.dataCliente.emit( {error:true} )
+  //   }    
+  // }
 
   automaticos(){
     this.filteredOptions = this.myControl.valueChanges.pipe(

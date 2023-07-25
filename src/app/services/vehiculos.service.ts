@@ -2024,6 +2024,24 @@ export class VehiculosService {
         } else {
           resolve([]);
         }
+      },{
+        onlyOnce: true
+      });
+    });
+  }
+  consulta_vehiculos(data): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+        const {sucursal, id} = data
+      const starCountRef = ref(db, `vehiculos/${sucursal}/${id}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const vehiculo = this._publicos.crearArreglo2(snapshot.val())
+          resolve(vehiculo);
+        } else {
+          resolve([]);
+        }
+      },{
+        onlyOnce: true
       });
     });
   }

@@ -231,29 +231,29 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     }
   }
   ListadoClientes(sucursal){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, () => {
-      this._clientes.consulta_clientes_new().then((clientes) => {
-        let actu = [...clientes]
-        this.arreglo_correos = actu.map(c=>{
-          return c.correo
-        })
-        clientes.map(c=>{
-          c.sucursalShow = this.sucursales_array.find(s=>s.id === c.sucursal)?.sucursal
-        })
-        const info = clientes //.filter(c=>c.correo)
+    // const starCountRef = ref(db, `clientes`)
+    // onValue(starCountRef, () => {
+    //   this._clientes.consulta_clientes_new().then((clientes) => {
+    //     let actu = [...clientes]
+    //     this.arreglo_correos = actu.map(c=>{
+    //       return c.correo
+    //     })
+    //     clientes.map(c=>{
+    //       c.sucursalShow = this.sucursales_array.find(s=>s.id === c.sucursal)?.sucursal
+    //     })
+    //     const info = clientes //.filter(c=>c.correo)
         
 
-        const camposRecu= [...this._clientes.camposCliente,,'vehiculos','fullname','sucursalShow']
-        const aqui = (!this.clientes_arr.length) ? clientes : this._publicos.actualizarArregloExistente(this.clientes_arr, info,camposRecu);
-        // console.log(aqui);
-        this.clientes_arr = this._publicos.ordenarData(aqui,'fullname',true)
+    //     const camposRecu= [...this._clientes.camposCliente,,'vehiculos','fullname','sucursalShow']
+    //     const aqui = (!this.clientes_arr.length) ? clientes : this._publicos.actualizarArregloExistente(this.clientes_arr, info,camposRecu);
+    //     // console.log(aqui);
+    //     this.clientes_arr = this._publicos.ordenarData(aqui,'fullname',true)
 
-      }).catch((error) => {
-        // Manejar el error si ocurre
-        console.log(error);      
-      });
-    })
+    //   }).catch((error) => {
+    //     // Manejar el error si ocurre
+    //     console.log(error);      
+    //   });
+    // })
   }
 
   automaticos(){

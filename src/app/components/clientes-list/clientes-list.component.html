@@ -14,7 +14,7 @@
         </button> -->
       </div>
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clienteSeleccionado(option)">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{option['nombre'] }} {{option['apellidos'] }}
         </mat-option>
       </mat-autocomplete>

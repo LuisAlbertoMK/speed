@@ -503,23 +503,24 @@ export class ServiciosPublicosService {
     generaClave() {
         return push(child(ref(db), 'posts')).key
     }
-    realizavalidaciones_new(data:object, campos:any[]){
+    realizavalidaciones_new(data, campos:any[]){
       const answer = {faltante_s:null, ok:true}
       let faltantes = []
-
       campos.forEach((campo)=>{
         if (campo !== 'costo') {
-          
-          if (campo !== 'fecha') {
+          if (campo !== 'fecha' && campo !=='elementos') {
             if (!data[campo]) faltantes.push(campo)
           }else if(campo === 'fecha'){
             const cadena_contador = String(data[campo]).length
             if (cadena_contador < 10) {
               faltantes.push(campo)
             }
+            // || campo === 'servicios'
+          }else if(campo === 'elementos' ){
+           const elementos:any[] = (data[campo]) ? data[campo] : []
+           if(elementos.length <=0 ) faltantes.push(campo)
           }
         }
-        
       })
       if (faltantes.length) answer.ok = false 
       answer.faltante_s = faltantes.join(', ')

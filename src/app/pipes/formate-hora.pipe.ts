@@ -7,12 +7,11 @@ export class FormateHoraPipe implements PipeTransform {
 
   transform(fecha: string, incluirHora: boolean = false, ...args: unknown[]): string {
     const fechaObj = new Date(fecha);
-      const dia = fechaObj.getUTCDate();
-      const mes = fechaObj.getUTCMonth() + 1; // Los meses en JavaScript son base 0, por eso se suma 1
-      const anio = fechaObj.getUTCFullYear();
-      const hora = fechaObj.getUTCHours();
-      const minutos = fechaObj.getUTCMinutes();
-    
+    const dia = fechaObj.getDate();
+    const mes = fechaObj.getMonth() + 1; // Los meses en JavaScript son base 0, por eso se suma 1
+    const anio = fechaObj.getFullYear();
+    const hora = fechaObj.getHours();
+    const minutos = fechaObj.getMinutes();
       let fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
     
       if (incluirHora) {

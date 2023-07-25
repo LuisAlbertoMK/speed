@@ -47,18 +47,18 @@ export class RegistroClienteComponent implements OnInit {
   }
   consultaCorreos(){
               
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, async (snapshot) => {
-      const correos_cliente = await this._clientes.consulta_clientes_new()
-      this.correosClientes = correos_cliente.map(c=> {return String(c.correo).toLowerCase()})
-      this.unir()
-    })
-    const starCountRef_u = ref(db, `usuarios`)
-    onValue(starCountRef_u, async (snapshot) => {
-      const correos_usuarios = await this._usuarios.consulta_usuarios_correos()
-      this.correosUsuarios = correos_usuarios.map(c=> {return String(c.correo).toLowerCase()})
-      this.unir()
-    })
+    // const starCountRef = ref(db, `clientes`)
+    // onValue(starCountRef, async (snapshot) => {
+    //   const correos_cliente = await this._clientes.consulta_clientes_new()
+    //   this.correosClientes = correos_cliente.map(c=> {return String(c.correo).toLowerCase()})
+    //   this.unir()
+    // })
+    // const starCountRef_u = ref(db, `usuarios`)
+    // onValue(starCountRef_u, async (snapshot) => {
+    //   const correos_usuarios = await this._usuarios.consulta_usuarios_correos()
+    //   this.correosUsuarios = correos_usuarios.map(c=> {return String(c.correo).toLowerCase()})
+    //   this.unir()
+    // })
    
   }
   unir(){
@@ -128,13 +128,13 @@ export class RegistroClienteComponent implements OnInit {
   async nuevo() {
     const { sucursal, nombre, apellidos } = this.infoGenera;
     
-    if (sucursal && nombre  && nombre.length >= 3 && apellidos &&apellidos.length >= 3) {
-      const contador = await this._clientes.consulta_clientes_new();
-        const no_cliente = await this._clientes.genera_no_cliente(sucursal, nombre, apellidos, contador.length + 1);
-        this.registroForm.controls['no_cliente'].setValue(no_cliente);
-    } else {
-      this.registroForm.controls['no_cliente'].setValue(null);
-    }
+    // if (sucursal && nombre  && nombre.length >= 3 && apellidos &&apellidos.length >= 3) {
+    //   const contador = await this._clientes.consulta_clientes_new();
+    //     const no_cliente = await this._clientes.genera_no_cliente(sucursal, nombre, apellidos, contador.length + 1);
+    //     this.registroForm.controls['no_cliente'].setValue(no_cliente);
+    // } else {
+    //   this.registroForm.controls['no_cliente'].setValue(null);
+    // }
   }
   
   validarCampo(campo){

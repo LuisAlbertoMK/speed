@@ -23,7 +23,9 @@ export class PdfService {
   ]
   constructor(public _publicos:ServiciosPublicosService) { }
   async pdf(data:any,detalles:boolean){
-    const empresaShow = (data.cliente.empresaShow ) ? data.cliente.empresaShow : ''
+
+    const {data_cliente, data_sucursal, data_vehiculo, fecha_recibido, vencimiento} = data
+    const empresaShow = (data_cliente.empresaShow ) ? data_cliente.empresaShow : ''
     function table(data, columns, witdhsDef, showHeaders, headers, layoutDef) {
       return {
           table: {
@@ -443,7 +445,7 @@ export class PdfService {
             columns: [
               {
                 width: '100%',
-                text: `${data.sucursal.sucursal},${data.sucursal.direccion}, ${data.sucursal.correo}, Tel. ${data.sucursal.telefono}`,
+                text: `${data_sucursal.sucursal},${data_sucursal.direccion}, ${data_sucursal.correo}, Tel. ${data_sucursal.telefono}`,
                 style: 'sucursal'
               }
             ],
@@ -455,7 +457,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Fecha', style:'title' },
-              {width: '35%', text: `${data.fecha}`,  style:'info' },
+              {width: '35%', text: `${transforma_hora(fecha_recibido, true)}`,  style:'info' },
               {width: '15%', text: 'Promocion', style:'title' },
               {width: '35%', text: `FLOTILLA`,  style:'info'  },
             ]
@@ -463,7 +465,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Cliente', style:'title' },
-              {width: '35%', text: `${transformUppercase(data.cliente.nombre)} ${transformUppercase(data.cliente.apellidos)}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data_cliente.nombre)} ${transformUppercase(data_cliente.apellidos)}`,  style:'info'},
               {width: '15%', text: 'COT#', style:'title' },
               {width: '35%', text: `${transformUppercase(data.no_cotizacion)}`,  style:'info'},
             ]
@@ -471,17 +473,17 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'no. Cliente.', style:'title' },
-              {width: '35%', text: `${data['cliente'].no_cliente}`,  style:'info'},
+              {width: '35%', text: `${data_cliente.no_cliente}`,  style:'info'},
               {width: '15%', text: 'Mail', style:'title' },
-              {width: '35%', text: `${data['cliente'].correo}`,  style:'info'},
+              {width: '35%', text: `${data_cliente.correo}`,  style:'info'},
             ]
           },
           {
             columns: [
               {width: '15%', text: 'Tel.', style:'title' },
-              {width: '35%', text: `${data['cliente'].telefono_movil}`, style:'info' },
+              {width: '35%', text: `${data_cliente.telefono_movil}`, style:'info' },
               {width: '15%', text: 'Tipo', style:'title' },
-              {width: '35%', text: `${transformUppercase(data['cliente'].tipo)}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data_cliente.tipo)}`,  style:'info'},
             ]
           },
           {
@@ -489,25 +491,25 @@ export class PdfService {
               {width: '15%', text: 'Empresa', style:'title' },
               {width: '35%', text: `${empresaShow}`, style:'info' },
               {width: '15%', text: 'Cilidros', style:'title' },
-              {width: '35%', text: `${data['vehiculo'].cilindros}`,  style:'info'},
+              {width: '35%', text: `${data_vehiculo.cilindros}`,  style:'info'},
             ]
           },
           {
             columns: [
               {width: '15%', text: 'Marca', style:'title' },
-              {width: '35%', text: `${transformUppercase(data['vehiculo'].marca)}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data_vehiculo.marca)}`,  style:'info'},
               {width: '15%', text: 'Modelo', style:'title' },
-              {width: '35%', text: `${data['vehiculo'].modelo}`, style:'info' },
+              {width: '35%', text: `${data_vehiculo.modelo}`, style:'info' },
             ]
           },
           {
             columns: [
               {width: '15%', text: 'Placas', style:'title' },
-              {width: '35%', text: `${transformUppercase(data['vehiculo'].placas)}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data_vehiculo.placas)}`,  style:'info'},
               {width: '10%', text: 'Color', style:'title' },
-              {width: '12.5%', text: `${data['vehiculo'].color}`,  style:'info'},
+              {width: '12.5%', text: `${data_vehiculo.color}`,  style:'info'},
               {width: '12.5%', text: 'Año', style:'title' },
-              {width: '12.5%', text: `${data['vehiculo'].anio}`, style:'info' },
+              {width: '12.5%', text: `${data_vehiculo.anio}`, style:'info' },
             ]
           },
           {
@@ -515,7 +517,7 @@ export class PdfService {
               {width: '15%', text: 'KMS', style:'title' },
               {width: '35%', text: ``,  style:'info'},
               {width: '10%', text: 'Motor', style:'title' },
-              {width: '12.5%', text: `${data['vehiculo'].no_motor}`,  style:'info'},
+              {width: '12.5%', text: `${data_vehiculo.no_motor}`,  style:'info'},
               {width: '12.5%', text: 'O.S', style:'title' },
               {width: '12.5%', text: ``,  style:'info'},
             ]
@@ -860,7 +862,7 @@ export class PdfService {
             headerRows: 1,
             widths: [ 'auto'],
             body: [
-              [ { text: `fecha de vencimiento ${data.vencimiento}`, style:'vencimiento'}]
+              [ { text: `fecha de vencimiento ${transforma_hora(vencimiento, true)}`, style:'vencimiento'}]
             ]
           }
         }
@@ -908,4 +910,20 @@ function capUno(value: string, ...args: unknown[]): unknown {
   let arr =[...cadena]
   arr[0] = arr[0].toUpperCase()
   return arr.join('');
+}
+function transforma_hora(fecha: string, incluirHora: boolean = false, ...args: unknown[]): string {
+  const fechaObj = new Date(fecha);
+    const dia = fechaObj.getDate();
+    const mes = fechaObj.getMonth() + 1; // Los meses en JavaScript son base 0, por eso se suma 1
+    const anio = fechaObj.getFullYear();
+    const hora = fechaObj.getHours();
+    const minutos = fechaObj.getMinutes();
+  
+    let fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
+  
+    if (incluirHora) {
+      fechaFormateada += ` ${hora.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+    }
+  
+    return fechaFormateada;
 }

@@ -80,36 +80,27 @@ export class ClienteComponent implements OnInit, OnChanges {
     if (changes['data_cliente']) {
       const nuevoValor = changes['data_cliente'].currentValue;
       const valorAnterior = changes['data_cliente'].previousValue;
-      console.log({nuevoValor, valorAnterior});
+      // console.log({nuevoValor, valorAnterior});
+
+      setTimeout(()=>{
+        if (nuevoValor && nuevoValor['id']) {
+         this.cargaDataForm(nuevoValor)
+        } else  if (nuevoValor === valorAnterior) {
+          this.cargaDataForm(valorAnterior)
+        } else  {
+          this.form_cliente.reset()
+        }
+      },500)
       
-      if (nuevoValor['id']) {
-        setTimeout(()=>{
-          console.log(nuevoValor['id']);
-          if (nuevoValor === valorAnterior) {
-            this.cargaDataForm(valorAnterior)
-          }else{
-            this.cargaDataForm(nuevoValor)
-          }
-        },500)
-      }else{
-        setTimeout(()=>{
-          this.cargaDataForm(Object({}))
-        },500)
-      }
 
     }
   }
   cargaDataForm(cliente){
     if (cliente['id']) {
       const data_recuperada = this._publicos.nuevaRecuperacionData(cliente, this._clientes.camposCliente )
-
       this.form_cliente.reset(Object({...data_recuperada, uid: data_recuperada.id}))
       this.form_cliente.controls['correo'].disable();
-    }else{
-      this.form_cliente.reset()
-      this.form_cliente.controls['correo'].enable();
     }
-   
   }
 
   automaticos_empresa(){
@@ -266,12 +257,8 @@ export class ClienteComponent implements OnInit, OnChanges {
   
   async guardarCliente(){
     
-    
     const info_get = this._publicos.recuperaDatos(this.form_cliente);
-    console.log(info_get);
 
-    
-    
     const campos_cliente                 = [ ...this._clientes.campos_cliente ]
     const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]
     const campos_opcionales              = [ ...this._clientes.campos_opcionales ]

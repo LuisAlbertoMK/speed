@@ -65,12 +65,17 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       const nuevoValor = changes['data_cliente'].currentValue;
       const valorAnterior = changes['data_cliente'].previousValue;
       // console.log({nuevoValor, valorAnterior});
-      if (nuevoValor['id']) {
+      
         setTimeout(()=>{
-          console.log(nuevoValor['id']);
-          this.cargaDataVehiculo(nuevoValor)
+          if (nuevoValor['id']) {
+           this.cargaDataVehiculo(nuevoValor)
+          } else  if (nuevoValor === valorAnterior) {
+            this.cargaDataVehiculo(valorAnterior)
+          } else  {
+            this.cargaDataVehiculo({})
+          }
         },500)
-      }
+      
     }
   }
   consultaPlacas(){{
@@ -183,19 +188,22 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     if (!ok || this.existenPlacas) return
 
     const updates = {};
+    const {sucursal, cliente, id} = info_get
     if (info_get.id) {
       updates[`vehiculos`] = saveInfo;
-      const {sucursal, id} = info_get
-      updates[`vehiculos/${sucursal}/${id}`] = saveInfo;
+      
+      updates[`vehiculos/${sucursal}/${cliente}/${id}`] = saveInfo;
     }else{
-      const {sucursal } = this.data_cliente
+      const {sucursal, id } = this.data_cliente
       const clave_nueva = this._publicos.generaClave()
-      updates[`vehiculos/${sucursal}/${clave_nueva}`] = saveInfo;
+      updates[`vehiculos/${sucursal}/${cliente}/${clave_nueva}`] = saveInfo;
       this.listaPlacas.push(String(saveInfo.placas).toLowerCase())
       updates[`placas`] = this.listaPlacas;
     }
 
     update(ref(db), updates).then(()=>{
+      console.log(updates);
+      
       this.dataVehiculo.emit( {ok: true, id: saveInfo.id } )
       this.existenPlacas = false
       const {sucursal, id} = this.data_cliente

@@ -55,7 +55,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
   ROL:string; SUCURSAL:string
   
-  infoCotizacion   =  { ...this._cotizacion.infoCotizacion}
+  infoCotizacion   =  this._cotizacion.infoCotizacion
 
   camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
   camposCliente    =  [ ...this._clientes.camposCliente_show ]
@@ -85,8 +85,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   formPlus: FormGroup
 
-  obligatorios:string
-  opcionales:string
+  // obligatorios:string
+  // opcionales:string
   extra:string
   tipo:string
 
@@ -101,7 +101,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   elementosPrueba = []
 
-  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'',}
+  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:''}
+  faltante_s:string
+
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -120,49 +122,39 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.SUCURSAL = sucursal
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
-      // anterior:'clientes', cliente, tipo: 'new', extra: null 
-
-      // const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo} = params
-      // console.log(params);
       this.enrutamiento = params
-      // console.log(this.enrutamiento);
       this.cargaDataCliente_new()
-      // const tipo = params['tipo'];
-      // const cliente = params['cliente'];
-      // const anterior = params['anterior'];
-      // const vehiculo = params['vehiculo'];
-      // const cotizacion = params['cotizacion'];
-      // const cotizacion = params['cotizacion'];
-      // // if(cliente && tipo){
-      //   this.enrutamiento.cliente = cliente
-      //   this.enrutamiento.tipo = tipo
-      //   this.enrutamiento.vehiculo = vehiculo
-      //   this.enrutamiento.cotizacion = cotizacion
-      //   this.accion(cliente, tipo, vehiculo, cotizacion)
-      // // }
-      // this.enrutamiento.anterior = anterior
     });
   }
   async cargaDataCliente_new(){
-    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo,} = this.enrutamiento
-    console.log(this.enrutamiento);
-    const cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    // const cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    const topUserPostsRef = query(ref(db, `vehiculos/${sucursal}`), equalTo(`${cliente}`));
 
-    // const starCountRef = ref(db, `clientes`)
-    onValue(topUserPostsRef, (snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-        
-      }
-    }, {
-        onlyOnce: true
-      })
-    // console.log(topUserPostsRef.toJSON);
-    
-    console.log(cliente_info);
-    this.infoCotizacion.cliente = cliente_info
+    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo } = this.enrutamiento
+
+    console.log(tipo);
+    let  cliente_info = {},  vehiculos_cliente = []
+    this.infoCotizacion = this._cotizacion.infoCotizacion
+    if (tipo === 'cliente') {
+      cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+      vehiculos_cliente  = await this._vehiculos.consulta_vehiculos({sucursal, cliente})  
+    }if (tipo === 'nueva') {
+      console.log('muestra todo');
+    } if (tipo === 'cotizacion') {
+      const busqueda_ruta = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
+      console.log(busqueda_ruta);
+      const info_cotizacion = await  this._cotizaciones.consulta_cotizacion_new(busqueda_ruta)
+      console.log(info_cotizacion);
+      
+    }
+    // console.log(this.enrutamiento);
+   
+    this.infoCotizacion.data_cliente = cliente_info
+    this.infoCotizacion.cliente = cliente
+    this.infoCotizacion.vehiculos = vehiculos_cliente
+    this.infoCotizacion.vehiculo = vehiculo
+    this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    this.infoCotizacion.sucursal = sucursal
+
+    this.realizaOperaciones()
 
     
   }
@@ -231,61 +223,37 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     });
   }
   
-  accion(cliente, tipo, vehiculo?,cotizacion?){
-    if (tipo === 'cliente' && cliente) {
-      // if(cliente){
-        this._clientes.consulta_cliente_new(cliente).then((cliente:any)=>{
-          this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s['id'] === cliente['sucursal'])
-          this.infoCotizacion.cliente = cliente
-          this.infoCotizacion.vehiculos = cliente.vehiculos
-          if(vehiculo){
-            this.extra = vehiculo
-            const vehiculo_info= cliente.vehiculos.find(v=>v['id'] === vehiculo)
-            this.infoCotizacion.vehiculo = vehiculo_info
-          }
-          this.realizaOperaciones()
-        })
-      // }
-    }else if(tipo ==='cotizacion' && cotizacion){
-      this._cotizacion.consulta_cotizacion_new(cotizacion).then((cotizacion:any)=>{
-        this.infoCotizacion.cliente = cotizacion.cliente
-        this.infoCotizacion.vehiculo = cotizacion.vehiculo
-        this._clientes.consulta_cliente_new(cotizacion.cliente.id).then((cliente:any)=>{
-          this.infoCotizacion.vehiculos = cliente.vehiculos
-        })
-        this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s.id === cotizacion.sucursal)
-
-        this.extra = cotizacion.vehiculo.id
-        const camposRecupera = ['elementos','iva','formaPago','nota','servicio','descuento','sucursal']
-        camposRecupera.forEach(c=>{
-          this.infoCotizacion[c] = cotizacion[c]
-        })
-        this.realizaOperaciones()
-      })
-    }else if(tipo ==='new'){
-      
-      
-    }
-   
-    
-  }
   // REEMPLAZAR REFRIGERANTE Y PURGAR SISTEMA DE ENFRIAMIENTO
   //aqui la informacion del clienyte
-  infoCliente(info:any){
-    const {cliente, status } = info
-    if (status) {
-      this.infoCotizacion.vehiculo = null
-      this.extra = null
-      this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s['id'] === cliente['sucursal'])
-      
-      this.infoCotizacion.cliente = cliente
-      if ( cliente.vehiculos) {
-        this.infoCotizacion.vehiculos = cliente.vehiculos
-      }
-      this.realizaOperaciones()
-    }else{
-      this._publicos.mensaje('Intenta nuevamente',0)
+  async infoCliente(info:any){
+    console.log(info);
+    const {cliente} = info
+
+    if (cliente) {
+      const {data_sucursal, id, sucursal} = cliente
+      this.infoCotizacion.data_cliente = cliente
+      this.infoCotizacion.cliente = id
+      this.infoCotizacion.sucursal = sucursal
+      this.infoCotizacion.data_sucursal = data_sucursal
+      this.infoCotizacion.vehiculos =  await this._vehiculos.consulta_vehiculos(cliente)
     }
+    this.realizaOperaciones()
+
+
+    // const {cliente, status } = info
+    // if (status) {
+    //   this.infoCotizacion.vehiculo = null
+    //   this.extra = null
+    //   this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s['id'] === cliente['sucursal'])
+      
+    //   this.infoCotizacion.cliente = cliente
+    //   if ( cliente.vehiculos) {
+    //     this.infoCotizacion.vehiculos = cliente.vehiculos
+    //   }
+    //   
+    // }else{
+    //   this._publicos.mensaje('Intenta nuevamente',0)
+    // }
   }
   //cargar la informacion del cliente para poder editar
   cargaDataCliente(cliente:any){
@@ -306,7 +274,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         const infonew:any= await this._clientes.consulta_cliente_new(cliente.id)
           this.infoCotizacion.cliente = infonew
           this.infoCotizacion.vehiculos = infonew.vehiculos
-          this.infoCotizacion.sucursal = this.sucursales_array.find(s=>s['id'] === infonew.sucursal)
+          this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s['id'] === infonew.sucursal)
           
         // }
         if (this.extra && cliente.vehiculos) {
@@ -343,6 +311,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   
   vehiculoInfo(info:any){
+    console.log(info);
+    
     if (info) {
       this.extra =  info
       this.verificarInfoVehiculos()
@@ -432,70 +402,46 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   //verificamos que existe el vehiculo seleccionado y que este tenga un id de lo contrario colocamos la informacion en null
   vehiculo(IDVehiculo){
-    if (IDVehiculo) {
-      this.infoCotizacion.vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === IDVehiculo)
-      // infoCotizacion.vehiculo['modelo']
-      this.modeloVehiculo = this.infoCotizacion.vehiculo['modelo']
-      this.extra = IDVehiculo
-    }else{
       this.modeloVehiculo = null
       this.infoCotizacion.vehiculo = null
+      this.infoCotizacion.data_vehiculo = null
+    const vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === IDVehiculo)
+    if (vehiculo) {
+      this.extra = IDVehiculo
+      this.infoCotizacion.data_vehiculo = vehiculo
+      this.infoCotizacion.vehiculo = IDVehiculo
     }
   }
-  //realizamos las valiudaciones para informar al cliente que campos son obligatorios y opcionales en caso de que no se contenga la informacion
-  //necesaria para generar el pdf, subirlo y registrar cotizacion
-  validaciones(){
-    const obligatorios = ['sucursal','servicio', 'margen','formaPago']
-    const opcionales = ['promocion','descuento','nota','iva']
-    let camposObligatorios = [], camposOpcionales =[]
-
-    const valores_Form = this.formPlus.value
-    const claves = Object.keys(valores_Form)
-    claves.forEach(c=>{
-      (valores_Form[c]) ? this.infoCotizacion[c] = valores_Form[c] : this.infoCotizacion[c] = null
-    })
-    obligatorios.forEach(c=>{
-      if(!this.infoCotizacion[c]) camposObligatorios.push(c)
-    })
-    if (!this.infoCotizacion.cliente['id']) camposObligatorios.push('cliente')
-    if (!this.infoCotizacion.vehiculo || !this.infoCotizacion.vehiculo['id']) camposObligatorios.push('vehiculo')
-
-    if (!this.infoCotizacion.elementos.length)  camposObligatorios.push('elementos')
-    opcionales.forEach(c=>{
-      if(!this.infoCotizacion[c]) camposOpcionales.push(c)
-    })
-    // 
-    this.obligatorios = null
-    this.opcionales = null
-    this.obligatorios = camposObligatorios.join(', ')
-    this.opcionales = camposOpcionales.join(', ')
-    //verificamos si paso todas las pruebas continuar con el proceso de lo contrario mensaje de error
-    if (camposObligatorios.length) {
-      this._publicos.swalToast('Falta informacion', 0)
-    }else{
-      this.continuarCotizacion()
-    }
-  }
-  //aqui realizamos la obtencion de la informacion para el pdf y registro de cotizacion
   async continuarCotizacion(){
+    const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
+    const opcionales = ['promocion','descuento','nota','iva']
+    const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoCotizacion,obligatorios )
 
+    // console.log( {ok, faltante_s} );
+    this.faltante_s = faltante_s
+    if (!ok) return
+    const {promocion, descuento, nota} = this._publicos.recuperaDatos(this.formPlus)
+
+    this.infoCotizacion.descuento = descuento
+    this.infoCotizacion.nota = nota
+    this.infoCotizacion.promocion = promocion
+
+    // const recuperada = this._publicos.nuevaRecuperacionData(this.infoCotizacion,[...obligatorios, ...opcionales])
+    // console.log(recuperada);
+    
+
+    // return
     //pra el el envio de correos ocupamos correo de sucursal y cliente
-    const correos = this._publicos.dataCorreo(this.infoCotizacion.sucursal,this.infoCotizacion.cliente)
-    
-
-    // construirPDF
-    //asignamos la informacion de la sucursal para obtener el numero de cotizacion 
-    let infoSucursal = this.infoCotizacion.sucursal
-    if (!infoSucursal['id']) {
-      infoSucursal = this.sucursales_array.find(s=>s.id === this.infoCotizacion.sucursal)
-    }
-    
-    await this._cotizaciones.generaNombreCotizacion(infoSucursal['sucursal'], this.ROL).then(ans=>{
+    const correos = this._publicos.dataCorreo(this.infoCotizacion.data_sucursal,this.infoCotizacion.data_cliente)
+    const {sucursal, cliente, data_sucursal} = this.infoCotizacion
+    await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal}).then(ans=>{
       this.infoCotizacion.no_cotizacion = ans
     })
     //realizamos un string con el nombre de los elementos de la ctoizacion solo enviamos el array de los elementos
     const filtro_conceptos = this._publicos.obtenerNombresElementos(this.infoCotizacion.elementos)
     // asiganamos la datatemporal la cual sirve para correo, pdf
+    
+    // this.infoCotizacion.no_cotizacion = 'sadsgfhjh'
     const tempData = {
       filename:  this.infoCotizacion.no_cotizacion,
       correos,
@@ -506,13 +452,16 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
     //obtenemos la fecha, hora y fecha de vencimiento de la cotizacion asignamos a la informacion del pdf
     const getTime = this._publicos.getFechaHora()
-    this.infoCotizacion.fecha = getTime.fecha
-    this.infoCotizacion.hora = getTime.hora
-    this.infoCotizacion.vencimiento = getTime.vencimiento
+
+    const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+    const sumar = new Date(actual)
+    this.infoCotizacion.fecha_recibido = actual
+    const nueva = this._publicos.sumarRestarDiasFecha(sumar, 20)
+    this.infoCotizacion.vencimiento = this._publicos.retorna_fechas_hora({fechaString: nueva.toString()}).toString
+    
     // en caso de que el cliente no tenga nombre de empresa asiganamos un string vacio
-    if(!this.infoCotizacion.cliente['empresa'])  this.infoCotizacion.cliente['empresa'] = ''
-    // en caso de que no tenga nota asiganamos un string vacio
-    if(!this.infoCotizacion.nota)  this.infoCotizacion.nota = ''
+    // console.log(this.infoCotizacion);
+    
 
     // console.log('antes de todo revisar los paquetes no guardados ');
     //primero se filtra la informacion a solo paquetes
@@ -570,15 +519,16 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                   //limpiamos el intervalo ya que tenemos la ruta y realizamos depuracion de informacion
                   clearInterval(intervalo)
                   const updates = {};
-                  const campos = ['cliente','elementos','fecha','formaPago','hora','iva','margen','no_cotizacion',
+                  const campos = ['cliente','elementos','fecha_recibido','formaPago','iva','margen','no_cotizacion',
                                   'nota','reporte','servicio','sucursal','vehiculo','vencimiento','pdf'
                 ]
                 //asigamos solo los campos que queremos recuperaer
                 
                   const infoSave = this._publicos.nuevaRecuperacionData(this.infoCotizacion,campos)
-    
-                  updates['cotizacionesRealizadas/' + this._publicos.generaClave()] = infoSave;
+                  const {sucursal, cliente} = this.infoCotizacion
+                  updates[`cotizacionesRealizadas/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = infoSave;
                   // console.log(infoSave);
+                  // console.log(updates);
                   
                   // hacemos la llamada al registro de la cotizacion
                   update(ref(db), updates)
@@ -590,18 +540,20 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                     //llamamos la funcion de envio de email
                     this._email.EmailCotizacion(tempData)
                     //mensaje de correcto aunque no se envie email
-                    this._publicos.swalToast('Cotizacion realizada!!', 1)
+                    this._publicos.swalToast('Cotizacion realizada!!', 1, 'top-start')
                     //limpiamos la informacion para nueva cotizacion
-                    this.infoCotizacion = {
-                      cliente:{},vehiculo:{},vehiculos:[],elementos:[],sucursal:{},reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,
-                      fecha: null, hora:null, no_cotizacion:null, vencimiento:null, nota:null, servicio:'1', pdf : null
-                    }
+                    this.infoCotizacion = this._cotizacion.infoCotizacion
+                    this.formPlus.reset({
+                      servicio: 1,
+                      margen: 25,
+                      formaPago: '1'
+                    })
                     //redireccionamos a cotizaciones disponibles
                     this.router.navigateByUrl('/cotizacion')
                   })
                   .catch((error) => {
                     // The write failed...
-                    this._publicos.swalToast('Error al guardar la cotizacion', 0)
+                    this._publicos.swalToast('Error al guardar la cotizacion', 0, 'top-start')
                   });
                 }
               },200)

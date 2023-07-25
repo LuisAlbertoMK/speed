@@ -23,12 +23,12 @@
 
 
 
-<!-- <app-clientes-list (dataCliente)="infoCliente ( $event )" [sucursal]="SUCURSAL" class="m-1" ></app-clientes-list> -->
+<app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
 <div class="card border-dark" >
   <div class="card-body">
     <h1>Informacion de cliente 
 
-      <ng-container *ngIf="infoCotizacion.cliente['id']">
+      <ng-container *ngIf="infoCotizacion.cliente">
         <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion" 
         (click)="cargaDataCliente(infoCotizacion.cliente)" data-bs-toggle="modal" data-bs-target="#modalNewUser"></i>
       </ng-container>
@@ -37,8 +37,8 @@
     
     <div class="row">
       <ng-container *ngFor="let item of camposCliente">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="infoCotizacion.cliente[item.valor]">
-          <strong class="text-uppercase">{{item.show}} </strong>: {{infoCotizacion.cliente[item.valor]}}
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12" *ngIf="infoCotizacion.data_cliente[item.valor]">
+          <strong class="text-uppercase">{{item.show}} </strong>: {{infoCotizacion.data_cliente[item.valor]}}
         </div>
       </ng-container>
     </div>
@@ -46,17 +46,19 @@
 </div>
 <div class="card border-dark">
   <div class="card-body">
-    <ng-container *ngIf="infoCotizacion.cliente['id']">
+    <!-- <pre>{{ infoCotizacion.vehiculos | json}}</pre> -->
+    <ng-container *ngIf="infoCotizacion.cliente">
       <label for="exampleInputEmail1">Placas de vehiculos disponibles</label>
       <i class="fa fa-sync pointer btn btn-sm btn-outline-primary" (click)="verificarInfoVehiculos()"
-      *ngIf="infoCotizacion.cliente['id']"
+      *ngIf="infoCotizacion.cliente"
       ></i>
       <div class="input-group mb-3">
         <select class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
+          <option  value="">Selecciona placas</option>
           <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
         </select>
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" 
-        (click)="vehiculoData = infoCotizacion.cliente['id']"
+        (click)="vehiculoData = infoCotizacion.cliente"
         #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
           <i class="fa fa-car"></i>
         </button>
@@ -64,10 +66,10 @@
       </div>
     </ng-container>
     <h1>Informacion de vehiculo</h1>
-    <div class="row" *ngIf="infoCotizacion.vehiculo">
+    <div class="row" *ngIf="infoCotizacion.data_vehiculo">
       <ng-container *ngFor="let item of camposVehiculo">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoCotizacion.vehiculo[item.valor]">
-          <strong class="text-uppercase">{{item.show}} </strong>: {{infoCotizacion.vehiculo[item.valor]}}
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoCotizacion.data_vehiculo[item.valor]">
+          <strong class="text-uppercase">{{item.show}} </strong>: {{infoCotizacion.data_vehiculo[item.valor]}}
         </div>
       </ng-container>
     </div>
@@ -362,14 +364,14 @@
 
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-    <button class="btn btn-sm btn-success" (click)="validaciones()">Realizar cotizacion</button>
+    <button class="btn btn-sm btn-success" (click)="continuarCotizacion()">Realizar cotizacion</button>
   </div>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center " *ngIf="obligatorios">
-    Falta la siguiente informacion: <strong class="text-danger">{{obligatorios}}</strong> 
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center " *ngIf="faltante_s">
+    Falta la siguiente informacion: <strong class="text-danger">{{faltante_s}}</strong> 
   </div>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center " *ngIf="opcionales">
+  <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center " *ngIf="opcionales">
     Informacion opcional faltante: <strong class="text-warning">{{opcionales}}</strong>
-  </div>
+  </div> -->
 </div>
 <div class="row mt-5">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
@@ -450,6 +452,8 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body m-2">
+
+        <app-vehiculo [data_cliente]="infoCotizacion.data_cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
         <!-- Vehiculo: <strong>{{vehiculoData}}</strong>
         Cliente <strong>{{infoCotizacion.cliente['id']}}</strong> -->
         <!-- <ng-container *ngIf="vehiculoData; else elseTemplate">

@@ -172,7 +172,15 @@
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
     <div class="modal-content">
       <div class="modal-body">
-        <app-cliente [data_cliente]="data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>
+
+        <ng-container *ngIf="data_cliente['id']; else elseTemplateRegistroCLiente">
+          <app-cliente [data_cliente]="data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>
+        </ng-container>
+        <ng-template #elseTemplateRegistroCLiente>
+          <app-cliente (heroeSlec)="clientesInfo( $event )"></app-cliente>
+        </ng-template>
+
+        <!-- <app-cliente [data_cliente]="data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente> -->
         <!-- <ng-container *ngIf="data_cliente['id']; else elseRegistroCliente">
           'actualiza data cliente'
           <app-cliente [data_cliente]="data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>

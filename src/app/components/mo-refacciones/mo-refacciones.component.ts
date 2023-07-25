@@ -243,17 +243,17 @@ export class MoRefaccionesComponent implements OnInit  {
               const updates = {[`${path}/${nuevaInfo['id']}`]: nuevaInfo}
               // console.log(updates);
               update(ref(db), updates).then(()=>{
-                this._publicos.swalToast('Se agrego elemento',1)
+                this._publicos.swalToast('Se agrego elemento',1, 'top-start')
                 this.dataElemento.emit( nuevaInfo )
                 this.limpiarControl()
               })
               .catch(err=>{
-                this._publicos.swalToast('error al registrar elemento',0)
+                this._publicos.swalToast('error al registrar elemento',0, 'top-start')
               })
             } else{
               //en caso de que tenga id solo agregar
               this.dataElemento.emit( nuevaInfo )
-              this._publicos.swalToast('Se agrego elemento',1)
+              this._publicos.swalToast('Se agrego elemento',1, 'top-start')
               this.limpiarControl()
             }
           }

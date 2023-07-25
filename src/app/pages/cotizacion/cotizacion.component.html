@@ -12,10 +12,10 @@
 </div>
 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
   <button class="btn btn-success btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
-  (click)="irPagina('ServiciosConfirmar',null,null,null,'nueva')"> <i class="fad fa-layer-plus"></i> Recepción </button>
+  (click)="irPagina('ServiciosConfirmar',{})"> <i class="fad fa-layer-plus"></i> Recepción </button>
   <!-- <a role="button" class="btn btn-primary btn-sm m-1" 
    > </a> -->
-    <button class="btn btn-primary btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="irPagina('cotizacionNueva')">
+    <button class="btn btn-primary btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="irPagina('cotizacionNueva',{tipo: 'nueva'})">
       <i class="fad fa-layer-plus"></i>Cotizacón
     </button>
     <!-- [routerLink]="['/cotizacionNueva/new/new/null']" -->
@@ -74,8 +74,8 @@
         <!-- aqui el btn para eliminar -->
         <!-- (click)="eliminaElemento(row)" -->
         <!-- <i class="fa fa-layer-plus pointer btn btn-sm btn-success m-1"  [routerLink]="['/cotizacionNueva/'+row.id+'/cotizacion/null']" ></i> -->
-        <i class="fa fa-layer-plus pointer btn btn-sm btn-success m-1" (click)="irPagina('cotizacionNueva',null,null,row.id)" ></i>
-        <i class="fa fa-layer-plus pointer btn btn-sm btn-danger m-1"  (click)="irPagina('ServiciosConfirmar',null,null,row.id)" ></i>
+        <i class="fa fa-layer-plus pointer btn btn-sm btn-success m-1" (click)="irPagina('cotizacionNueva',{})" ></i>
+        <i class="fa fa-layer-plus pointer btn btn-sm btn-danger m-1"  (click)="irPagina('ServiciosConfirmar',{})" ></i>
         <!-- <i class="fa fa-file-pdf pointer btn btn-sm btn-danger m-1" ></i>
         <i class="fa fa-layer-plus pointer btn btn-sm btn-primary m-1" ></i> -->
         </td>

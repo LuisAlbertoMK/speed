@@ -148,29 +148,25 @@ export class CotizacionesService {
       })
     });
   }
-  consulta_cotizacion_new(cotizacion): Promise<any[]> {
+  consulta_cotizacion_new(busqueda_ruta): Promise<any> {
     return new Promise((resolve, reject) => {
-      get(child(dbRef, `cotizacionesRealizadas/${cotizacion}`)).then((snapshot) => {
+      get(child(dbRef, `${busqueda_ruta}`)).then((snapshot) => {
         if (snapshot.exists()) {
-          const recepciones = this._publicos.crearArreglo2(snapshot.val());
-          recepciones.map(c=>{
-            c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}` 
-            c.searchPlacas = `${c.vehiculo.placas}` 
-          })
-          resolve(recepciones);
+          resolve(snapshot.val());
         } else {
-          resolve([]);
+          resolve({});
         }
       })
     });
   }
-  async generaNombreCotizacion(infoSucursal:string,rol:string){
+  async generaNombreCotizacion(rol:string, data){
+    const  {sucursal, cliente, data_sucursal} = data
     const date: Date = new Date()
     const year = date.getFullYear().toString().slice(-2)
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
-    const nombreSucursal:string = infoSucursal.slice(0,2).toUpperCase()
+    const nombreSucursal:string = data_sucursal.sucursal.slice(0,2).toUpperCase()
     const nuevoRol:string = rol.slice(0,2).toUpperCase()
-    const cotizacionesSnapshot = await get(child(dbRef, `cotizacionesRealizadas`));
+    const cotizacionesSnapshot = await get(child(dbRef, `cotizacionesRealizadas/${sucursal}/${cliente}`));
     const cotizacionesArray = cotizacionesSnapshot.exists() ? this._publicos.crearArreglo2(cotizacionesSnapshot.val()) : []
     const secuencia = (cotizacionesArray.length + 1).toString().padStart(5, '0')
     return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`

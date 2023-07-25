@@ -109,85 +109,24 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
         this.indexPosicionamiento = Number(localStorage.getItem('indexSaveLocal'))
     }
   }
-  irPagina(pagina, cliente?, vehiculo?, cotizacion?,tipo?){
+  irPagina(pagina, data){
     // /:ID/:tipo/:extra
+    const {tipo} = data
     let queryParams = {}
     if (pagina === 'historial-cliente') {
-      queryParams = { anterior:'clientes', cliente  } 
+      // queryParams = { anterior:'clientes', cliente  } 
     } else if (pagina === 'cotizacionNueva') {
-      queryParams = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
+      queryParams = { anterior:'cotizacion', tipo} 
     }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      queryParams = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
+      // queryParams = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
     }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      queryParams = { anterior:'cotizacion', cliente, tipo: 'nueva', vehiculo, cotizacion  } 
+      // queryParams = { anterior:'cotizacion', cliente, tipo: 'nueva', vehiculo, cotizacion  } 
     }
     this.router.navigate([`/${pagina}`], { queryParams });
   }
   accion(){
     
-      console.time('Execution Time');
-
-      const starCountRef = ref(db, `cotizacionesRealizadas`)
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            // console.log(snapshot.val());
-            // const clientes_arr = this._publicos.crearArreglo2()
-            const clientes_arr = snapshot.val()
-            snapshot.forEach((childSnapshot) => {
-              const childKey = childSnapshot.key;
-              const childData = childSnapshot.val();
-              // console.log(childKey);
-              console.log(clientes_arr[childKey]);
-              
-              const  {cliente, vehiculo}  = clientes_arr[childKey]
-              console.log(' vehiculo: ',clientes_arr[childKey].vehiculo);
-              
-              const starCountRef_cliente = ref(db, `clientes/${cliente}`)
-              if (this.temp_data_clientes[cliente]) {
-                clientes_arr[childKey].data_cliente = this.temp_data_clientes[cliente]
-              }else{
-                onValue(starCountRef_cliente, (snapshot_cliente) => {
-                  clientes_arr[childKey].data_cliente =  snapshot_cliente.val()
-                  this.temp_data_clientes[cliente] = snapshot_cliente.val()
-                }, { onlyOnce: true })
-              }
-              const starCountRef_vehiculos = ref(db, `vehiculos/${vehiculo}`)
-              if (this.temp_data_vehiculos[vehiculo]) {
-                clientes_arr[childKey].data_vehiculo = this.temp_data_vehiculos[vehiculo]
-              }else{
-                onValue(starCountRef_vehiculos, (snapshot_vehiculo) => {
-                  clientes_arr[childKey].data_vehiculo =  snapshot_vehiculo.val()
-                  this.temp_data_vehiculos[vehiculo] = snapshot_vehiculo.val()
-                }, { onlyOnce: true })
-              }
-            });
-            console.log(this.temp_data_clientes);
-            
-            console.log(clientes_arr);
-            
-          } else {
-            console.log("No data available");
-          }
-        })
-
-        console.timeEnd('Execution Time');
-    
-    // const starCountRef = ref(db, `cotizacionesRealizadas`)
-    // onValue(starCountRef, () => {
-
-      // this._cotizacion.consulta_cotizaciones_new().then((cotizaciones) => {
-      //   const info = (this.SUCURSAL !=='Todas') ? cotizaciones.filter(c=>c.sucursal.id === this.SUCURSAL) : cotizaciones
-      //   if (!this.cotizacionesList.length) {
-      //     this.cotizacionesList = info;
-      //   } else {
-      //     this.cotizacionesList = this._publicos.actualizarArregloExistente(this.cotizacionesList, info,[...this._cotizaciones.camposCotizaciones]);
-      //   }
-      //   this.cargandoInformacion = false
-      //   this.newPagination()
-      // }).catch((error) => {
-      //   console.log(error);      
-      // });
-    // })
+      
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
