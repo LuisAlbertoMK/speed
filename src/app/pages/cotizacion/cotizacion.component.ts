@@ -50,7 +50,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     private _publicos: ServiciosPublicosService, private _security:EncriptadoService, private _campos: CamposSystemService,
     private router: Router, private _sucursales: SucursalesService, private _cotizacion: CotizacionService,
     private _servicios: ServiciosService, private _cotizaciones: CotizacionesService, private _clientes: ClientesService,
-    private _vehiculos: VehiculosService
+    private _vehiculos: VehiculosService, private rutaActiva: ActivatedRoute,
   ) {
     // this.itemsCollection = this.afs.collection<Item>('partesAuto');
     // this.items = this.itemsCollection.valueChanges()
@@ -86,6 +86,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   cargandoInformacion:boolean = true
   temp_data_clientes = {}
   temp_data_vehiculos = {}
+  enrutamiento = {cliente:'', sucursal:'', recepcion:'', tipo:'', anterior:'', vehiculo:''}
   async ngOnInit() {
     // this.listaSucursales()
     this.rol();
@@ -99,29 +100,28 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.ROL = rol
     this.SUCURSAL = sucursal
-    
-    this.cargandoInformacion = true
-    this.accion()
-    if(localStorage.getItem('busquedaCotizaciones')){
-        this.busqueda = localStorage.getItem('busquedaCotizaciones')
-    }
-    if(localStorage.getItem('indexSaveLocal')){
-        this.indexPosicionamiento = Number(localStorage.getItem('indexSaveLocal'))
-    }
+    this.rutaActiva.queryParams.subscribe((params:any) => {
+      this.enrutamiento = params
+      // this.cargaDataCliente_new()
+    });
   }
   irPagina(pagina, data){
     // /:ID/:tipo/:extra
-    const {tipo} = data
+    console.log(data);
+    // const {cliente, sucursal, recepcion, tipo, anterior, vehiculo } = this.enrutamiento
+    // console.log(this.enrutamiento);
+    
+    const {tipo: tipo_get} = data
     let queryParams = {}
     if (pagina === 'historial-cliente') {
       // queryParams = { anterior:'clientes', cliente  } 
     } else if (pagina === 'cotizacionNueva') {
-      queryParams = { anterior:'cotizacion', tipo} 
-    }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      // queryParams = { anterior:'cotizacion', cliente, tipo: 'cotizacion', vehiculo, cotizacion  } 
-    }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      // queryParams = { anterior:'cotizacion', cliente, tipo: 'nueva', vehiculo, cotizacion  } 
+      queryParams = { anterior:'cotizacion'} 
+    }else if (pagina === 'ServiciosConfirmar' && tipo_get === 'nueva') {
+      queryParams = { anterior:'cotizacion', tipo: tipo_get}
     }
+    console.log(queryParams);
+    
     this.router.navigate([`/${pagina}`], { queryParams });
   }
   accion(){

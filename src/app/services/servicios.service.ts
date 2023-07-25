@@ -148,53 +148,49 @@ export class ServiciosService {
       {valor:7,nombre:'rescate vial'}
     ]
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
-    camposGuardar = [ 'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','hora_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados']
+    camposGuardar = [ 'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados']
+
+    infoConfirmar=
+        {
+          cliente:'', data_cliente:{}, vehiculo:'', data_vehiculo:{},sucursal:'', data_sucursal:{}, reporte:{}, no_os:'', dataFacturacion: {},observaciones:'',
+          checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
+          detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
+          fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: ''
+        }  
 //TODO aqui las nuevas funciones
+consulta_recepcion_new(busqueda_ruta): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const starCountRef = ref(db, `${busqueda_ruta}`);
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const data_cotizcion = snapshot.val()
+        data_cotizcion.data_cliente = await this.getInfo_cliente(data_cotizcion)
+        data_cotizcion.data_vehiculo = await this.getInfo_vehiculo(data_cotizcion)
+        resolve(data_cotizcion);
+      } else {
+        resolve({});
+      }
+    },{
+      onlyOnce: true
+    });
+  });
+}
+async getInfo_cliente(data){
+  return await this._clientes.consulta_cliente_new(data)
+}
+async getInfo_vehiculo(data){
+  return await this._vehiculos.consulta_vehiculo_new(data)
+}
+//TODO aqui las nuevas funciones
+
+
+
 
 consulta_recepciones_new(): Promise<any[]> {
   return new Promise((resolve, reject) => {
     get(child(dbRef, `recepciones`)).then((snapshot) => {
       if (snapshot.exists()) {
-        const recepciones = this._publicos.crearArreglo2(snapshot.val());
-        recepciones.map(c=>{
-          const getTime  = this._publicos.getFechaHora()
-          const diasSucursal =  this._publicos.calcularDias(c.fecha_recibido, getTime.fecha)
-          //asiganmos el fullname de cliente
-
-          if (diasSucursal !== c.diasSucursal) {
-            const updates = { [`recepciones/${c.id}/diasSucursal`]: diasSucursal };
-            update(ref(db), updates) .then(() => {});
-          }
-          c.fullname = `${c.cliente.nombre} ${c.cliente.apellidos}`
-          c.searchCliente = c.fullname
-          c.sucursalShow = this.sucursales_array.find(s=>s.id === c.cliente.sucursal).sucursal
-          c.cliente.sucursalShow = c.sucursalShow
-          c.searchPlacas = `${c.vehiculo.placas}`
-          c.fechaRecibido = this._publicos.convertirFecha(c.fecha_recibido)
-          c.fechaEntregado = (c.fecha_entregado) ? this._publicos.convertirFecha(c.fecha_entregado) : null
-          //convierte a arreglo si existen historiales de pagos y gastos
-          c.HistorialPagos_ =  (c.HistorialPagos) ? this._publicos.crearArreglo2(c.HistorialPagos) : []
-          c.HistorialGastos_ =  (c.HistorialGastos) ? this._publicos.crearArreglo2(c.HistorialGastos) : []
-          
-          const {pagos, gastos, totalPagos, totalGastos} = this.obtenerTotalesHistoriales(c.HistorialPagos_ ,c.HistorialGastos_)
-          c.HistorialPagos_ = [...pagos]
-          c.HistorialGastos_ = [...gastos]
-          c.totalPagos = totalPagos
-          c.totalGastos = totalGastos
-          //convierte la fecha para su uso en filtro por fechas
-          c.fecha_recibido_compara = this._publicos.construyeFechaString(c.fecha_recibido)
-          if (c.fecha_entregado) {
-            c.fecha_entrega_compara = this._publicos.construyeFechaString(c.fecha_entregado)
-          }
-          // c.fechaRecibido = `${c.fecha_recibido} ${c.hora_recibido}`
-          // c.fechaEntregado = `${c.fecha_entregado} ${c.hora_entregado}`
-
-          ///obtener el reporte 
-          const {reporte, ocupados} = this._publicos.realizarOperaciones_2(c)
-          c.reporte = reporte
-          c.servicios = ocupados
-        })
-        resolve(recepciones);
+        resolve([]);
       } else {
         resolve([]);
       }
@@ -254,15 +250,17 @@ obtenerTotalesHistoriales(pagos, gastos){
     no_OS = `${sucursal}${mes}${muestra}${nuevoRol}${secuencia}` 
     return no_OS
   }
-  async generateOSNumber(infoSucursal: string, rol: string) {
+  async generateOSNumber(data, rol: string) {
     const date = new Date();
     const anio = date.getFullYear().toString().slice(-2);
     const mes = (date.getMonth() + 1).toString().padStart(2, '0');
-    const nombreSucursal = infoSucursal.slice(0, 2).toUpperCase();
+    const {sucursal, cliente}= data
+    const nameSucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+    const nombreSucursal = nameSucursal.slice(0, 2).toUpperCase();
     const nuevoRol = rol.slice(0, 2).toUpperCase();
   
     let cuantas = 0;
-    await get(child(dbRef, 'recepciones')).then((snapshot) => {
+    await get(child(dbRef, `recepciones/${sucursal}/${cliente}`)).then((snapshot) => {
       if (snapshot.exists()) {
         cuantas = this._publicos.crearArreglo2(snapshot.val()).length;
       }

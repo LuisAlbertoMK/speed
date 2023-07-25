@@ -22,7 +22,7 @@ const dbRef = ref(getDatabase());
 })
 export class ClientesService {
   telefonosInvalidos:any[]=['5555555555','1111111111','0000000000','7777777777','1234567890','0123456789'];
-  camposCliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa']
+  camposCliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','usuario']
   camposCliente_show=[
     {valor: 'no_cliente', show:'# Cliente'},
     // {valor: 'fullname', show:'Nombre'},
@@ -124,6 +124,8 @@ export class ClientesService {
         } else {
           resolve([]);
         }
+      },{
+        onlyOnce: true
       });
     });
   }
@@ -144,6 +146,8 @@ export class ClientesService {
         } else {
           resolve({});
         }
+      }, {
+        onlyOnce: true
       });
     });
   }

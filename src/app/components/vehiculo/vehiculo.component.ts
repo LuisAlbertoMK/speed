@@ -189,25 +189,26 @@ export class VehiculoComponent implements OnInit, OnChanges  {
 
     const updates = {};
     const {sucursal, cliente, id} = info_get
+    let nuevo_id  = ''
     if (info_get.id) {
       updates[`vehiculos`] = saveInfo;
       
       updates[`vehiculos/${sucursal}/${cliente}/${id}`] = saveInfo;
+      nuevo_id = id
     }else{
-      const {sucursal, id } = this.data_cliente
+      // const {sucursal, id } = this.data_cliente
       const clave_nueva = this._publicos.generaClave()
       updates[`vehiculos/${sucursal}/${cliente}/${clave_nueva}`] = saveInfo;
       this.listaPlacas.push(String(saveInfo.placas).toLowerCase())
       updates[`placas`] = this.listaPlacas;
+      nuevo_id = clave_nueva
     }
 
     update(ref(db), updates).then(()=>{
-      console.log(updates);
-      
-      this.dataVehiculo.emit( {ok: true, id: saveInfo.id } )
+      this.dataVehiculo.emit( nuevo_id )
       this.existenPlacas = false
-      const {sucursal, id} = this.data_cliente
-      this.form_vehiculo.reset({sucursal, cliente:id})
+      // const {sucursal, id} = saveInfo
+      this.form_vehiculo.reset({sucursal, cliente})
       this._publicos.swalToast('Se registro vehiculo!!',1,'top-start')
     })
     .catch(err=>{

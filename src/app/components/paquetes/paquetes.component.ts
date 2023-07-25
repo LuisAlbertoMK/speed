@@ -133,7 +133,7 @@ export class PaquetesComponent implements OnInit {
   dataElement(data:any){
     if (data['id']) {
       this.infoPaquete.emit(data)
-      this._publicos.swalToast('paquete agregado correcamente!', 1)
+      this._publicos.swalToast('paquete agregado correcamente!', 1, 'top-start')
     }
   }
   applyFilter(event: Event) {

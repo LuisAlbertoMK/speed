@@ -101,15 +101,11 @@ export class PdfRecepcionService {
   async pdf(data:any, bibliotecaVirtual:any){
     const colorTextoPDF: string = '#1215F4';
     // const dat = data
+    const {data_cliente, data_sucursal, data_vehiculo, checkList, fecha_recibido} = data
     
-    if (!data.cliente['empresa']) {
-      data.cliente['empresa'] =''
-      data.cliente['empresaShow'] =''
 
-    }else{
-      data.cliente['empresa']
-      data.cliente['empresaShow']
-    }
+
+    data_cliente['empresa'] = (data_cliente['empresa']) ? data_cliente['empresa'] : ''
 
     function Combustble(){
       let {status} = data['checkList'].find(c=>c['valor'] === 'nivel_gasolina')
@@ -148,7 +144,7 @@ export class PdfRecepcionService {
 
     function construirCheck (){
       let body = [], aqui = []
-      data['checkList'].forEach((e, index)=>{
+      checkList.forEach((e, index)=>{
         const color = (e.status.toLowerCase() === 'si' ) ? '#aadaa9' : '#f590b2'
         const item = {
           text: `${e.show}: ${e.status.toUpperCase()}`,
@@ -340,7 +336,7 @@ export class PdfRecepcionService {
               valing: 'center'
             },
             { 
-              text: `${data['sucursal'].direccion}`,bold: true, alignment: 'center', style:'otro'
+              text: `${data_sucursal.direccion}`,bold: true, alignment: 'center', style:'otro'
             },
             { 
               // text: 'fecha: 21/03/2023',bold: true, alignment: 'center', style:'info'
@@ -354,7 +350,7 @@ export class PdfRecepcionService {
                 body: [
                   [ 
                     {text: 'Fecha:',bold: true, alignment: 'left', style:'info'},
-                    {text: `${data['fecha_recibido']}`,bold: true, alignment: 'left', style:'info'},
+                    {text: `${transforma_hora(fecha_recibido, true)}`,bold: true, alignment: 'left', style:'info'},
                   ],
                   [ 
                     {text: 'No. Orden:',bold: true, alignment: 'left', style:'info'},
@@ -443,15 +439,15 @@ export class PdfRecepcionService {
                 body: [
                   [ 
                     { text: `Nombre:`,alignment: 'left', style:'info' },
-                    { text: `${data.cliente.nombre} ${data.cliente.apellidos}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data_cliente.nombre} ${data_cliente.apellidos}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Tel:`,alignment: 'left', style:'info' },
-                    { text: `${data['cliente'].telefono_movil}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data_cliente.telefono_movil}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Email:`,alignment: 'left', style:'info' },
-                    { text: `${data['cliente'].correo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data_cliente.correo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ]
                 ]
               }
@@ -467,21 +463,21 @@ export class PdfRecepcionService {
                 body: [
                   [ 
                     { text: `Placas:`,alignment: 'left', style:'info' },
-                    { text: `${data['vehiculo'].placas.toUpperCase()}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
+                    { text: `${data_vehiculo.placas.toUpperCase()}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `KMs:`,alignment: 'left', style:'info' },
                     { text: `123434234`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Marca:`,alignment: 'left', style:'info' },
-                    { text: `${data['vehiculo'].marca}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
+                    { text: `${data_vehiculo.marca}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `Modelo:`,alignment: 'left', style:'info' },
-                    { text: `${data['vehiculo'].modelo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data_vehiculo.modelo}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Empresa:`,alignment: 'left', style:'info' },
-                    { text: `${data['cliente']['empresaShow']}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
+                    { text: `${data_cliente['empresa']}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `Año:`,alignment: 'left', style:'info' },
-                    { text: `${data['vehiculo'].anio}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${data_vehiculo.anio}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                 ]
               }
@@ -894,6 +890,9 @@ export class PdfRecepcionService {
 
    async crearPdfRemision(data:any, ){
     // console.log(data);
+
+    const {data_cliente, data_sucursal, data_vehiculo, checkList, fecha_recibido} = data
+    data_cliente['empresa'] = (data_cliente['empresa']) ? data_cliente['empresa'] : ''
     const colorTextoPDF: string = '#1215F4';
     const documentDefinition = {
       footer: function(currentPage, pageCount) {
@@ -993,12 +992,12 @@ export class PdfRecepcionService {
                 widths: [ '100%' ],
         
                 body: [
-                  [ {  text: `${data['infoSucursal'].sucursal}`,bold: true, alignment: 'justify', style:'info'}, ],
+                  [ {  text: `${data_sucursal.sucursal}`,bold: true, alignment: 'justify', style:'info'}, ],
                   [ {  text: `Operadora de Servicios Automotrices integrales del centro del pais Speed Service GAFEAG Sa de CV`
                             ,bold: true, alignment: 'justify', style:'info'}, ],
-                  [ {  text: `${data['infoSucursal'].direccion}`,bold: true, alignment: 'justify', style:'info'}, ],
-                  [ {  text: `${data['infoSucursal'].telefono}`,bold: true, alignment: 'justify', style:'info'}, ],
-                  [ {  text: `${data['infoSucursal'].correo}`,bold: true, alignment: 'justify', style:'info'}, ],
+                  [ {  text: `${data_sucursal.direccion}`,bold: true, alignment: 'justify', style:'info'}, ],
+                  [ {  text: `${data_sucursal.telefono}`,bold: true, alignment: 'justify', style:'info'}, ],
+                  [ {  text: `${data_sucursal.correo}`,bold: true, alignment: 'justify', style:'info'}, ],
                 ]
               }
             }
@@ -1065,8 +1064,8 @@ export class PdfRecepcionService {
             {  text: `CORREO ELECTRÓNICO`,bold: true, alignment: 'left', style:'terminos2'}
           ],
           [ 
-            {  text: `${data['infoCliente'].nombre} ${data['infoCliente'].apellidos}`,bold: true, alignment: 'center', style:'sucursal'},
-            {  text: `${data['infoCliente'].correo}`,bold: true, alignment: 'center', style:'sucursal'}
+            {  text: `${data_cliente.nombre} ${data_cliente.apellidos}`,bold: true, alignment: 'center', style:'sucursal'},
+            {  text: `${data_cliente.correo}`,bold: true, alignment: 'center', style:'sucursal'}
           ],
         ]
       }
@@ -1086,7 +1085,7 @@ export class PdfRecepcionService {
             {  text: `TELÉFONO`,bold: true, alignment: 'left', style:'terminos2'}
           ],
           [ 
-            {  text: `${data['infoCliente'].empresa}`,bold: true, alignment: 'center', style:'sucursal'},
+            {  text: `${data_cliente.empresa}`,bold: true, alignment: 'center', style:'sucursal'},
             {  text: ` --- `,bold: true, alignment: 'center', style:'sucursal'},
             {  text: `${data['infoCliente'].telefono_movil}`,bold: true, alignment: 'center', style:'sucursal'},
           ],
@@ -1719,5 +1718,24 @@ function letras(num: number, ...args: unknown[]): unknown {
      }//NumeroALetras()
      return NumeroALetras(num)
   }
+
+  
    
+}
+
+function transforma_hora(fecha: string, incluirHora: boolean = false, ...args: unknown[]): string {
+  const fechaObj = new Date(fecha);
+    const dia = fechaObj.getDate();
+    const mes = fechaObj.getMonth() + 1; // Los meses en JavaScript son base 0, por eso se suma 1
+    const anio = fechaObj.getFullYear();
+    const hora = fechaObj.getHours();
+    const minutos = fechaObj.getMinutes();
+  
+    let fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
+  
+    if (incluirHora) {
+      fechaFormateada += ` ${hora.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+    }
+  
+    return fechaFormateada;
 }

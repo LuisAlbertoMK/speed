@@ -111,6 +111,8 @@ export class CotizacionesService {
     iva:0, mo:0, refacciones_a:0,refacciones_v:0, sobrescrito_mo:0,sobrescrito_refaccion:0, sobrescrito_paquetes:0, 
     subtotal:0, total:0, ub:0, meses:0, descuento:0,sobrescrito:0
   }
+
+  lista_en_duro_sucursales = [...this._sucursales.lista_en_duro_sucursales]
   constructor(
     private _publicos: ServiciosPublicosService,private _clientes: ClientesService,private _vehiculos: VehiculosService,
     private _sucursales: SucursalesService, private _servicios:ServiciosService
@@ -148,16 +150,51 @@ export class CotizacionesService {
       })
     });
   }
+  consulta_cotizaciones(data): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const {ruta, data_cliente, vehiculos} = data
+      const starCountRef = ref(db, `${ruta}`);
+      onValue(starCountRef, async (snapshot) => {
+        if (snapshot.exists()) {
+          const cotizaciones = this._publicos.crearArreglo2(snapshot.val()).map(c=>{
+            c.data_cliente = data_cliente
+            c.data_vehehiculo = vehiculos.find(v=>v.id === c.vehiculo)
+          })
+          // data_cotizcion.data_cliente = await this.getInfo_cliente(data_cotizcion)
+          // data_cotizcion.data_vehiculo = await this.getInfo_vehiculo(data_cotizcion)
+          
+          const data_cotizcion = cotizaciones
+          resolve(data_cotizcion);
+        } else {
+          resolve([]);
+        }
+      },{
+        onlyOnce: true
+      });
+    });
+  }
   consulta_cotizacion_new(busqueda_ruta): Promise<any> {
     return new Promise((resolve, reject) => {
-      get(child(dbRef, `${busqueda_ruta}`)).then((snapshot) => {
+      const starCountRef = ref(db, `${busqueda_ruta}`);
+      onValue(starCountRef, async (snapshot) => {
         if (snapshot.exists()) {
-          resolve(snapshot.val());
+          const data_cotizcion = snapshot.val()
+          data_cotizcion.data_cliente = await this.getInfo_cliente(data_cotizcion)
+          data_cotizcion.data_vehiculo = await this.getInfo_vehiculo(data_cotizcion)
+          resolve(data_cotizcion);
         } else {
           resolve({});
         }
-      })
+      },{
+        onlyOnce: true
+      });
     });
+  }
+  async getInfo_cliente(data){
+    return await this._clientes.consulta_cliente_new(data)
+  }
+  async getInfo_vehiculo(data){
+    return await this._vehiculos.consulta_vehiculo_new(data)
   }
   async generaNombreCotizacion(rol:string, data){
     const  {sucursal, cliente, data_sucursal} = data

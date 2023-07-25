@@ -2014,9 +2014,10 @@ export class VehiculosService {
         }
     ]}
 
-  consulta_vehiculo_new(cliente,vehiculo): Promise<any[]> {
+  consulta_vehiculo_new(data): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      const starCountRef = ref(db, `clientes/${cliente}/vehiculos/${vehiculo}`);
+    const {cliente, sucursal, vehiculo} = data
+      const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}/${vehiculo}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
           const vehiculo = snapshot.val()
@@ -2031,8 +2032,8 @@ export class VehiculosService {
   }
   consulta_vehiculos(data): Promise<any[]> {
     return new Promise((resolve, reject) => {
-        const {sucursal, id} = data
-      const starCountRef = ref(db, `vehiculos/${sucursal}/${id}`);
+        const {sucursal, cliente} = data
+      const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
           const vehiculo = this._publicos.crearArreglo2(snapshot.val())

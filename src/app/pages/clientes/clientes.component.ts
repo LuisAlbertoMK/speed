@@ -62,7 +62,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     datCliente:any
     // cliente:string = null
     // vehiculo:string = null
-
+    filtro_tipo:string = 'todos'
+    filtro_sucursal:string = 'Todas'
 
     data_cliente= {}
   ngOnInit() {
@@ -80,19 +81,19 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
   irPagina(pagina, cliente){
     // /:ID/:tipo/:extra
-    // console.log(cliente);
-    const { id, sucursal } = cliente
+    console.log(cliente);
+    const { id, sucursal, tipo } = cliente
     
     let queryParams = {}
     if (pagina === 'historial-cliente') {
-      queryParams = { anterior:'clientes',  } 
+      queryParams = { anterior:'clientes', sucursal, cliente: id  } 
     } else if (pagina === 'cotizacionNueva') {
       queryParams = { anterior:'clientes', cliente: id, sucursal, tipo: 'cliente'  } 
     } else if (pagina === 'ServiciosConfirmar') {
-      queryParams = { anterior:'clientes',  tipo: 'nueva' } 
+      queryParams = { anterior:'clientes',  tipo:'cliente', cliente: id, sucursal, vehiculo:'' } 
     }
 
-    // console.log(queryParams);
+    console.log(queryParams);
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }
@@ -164,10 +165,22 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       this.dataSourceClientes.paginator.firstPage();
     }
   }
-  filtra_tipo_cliente(tipo:string){
-    this.dataSourceClientes.data = (tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === tipo)
+  filtra_informacion(){
+    
+    let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
+    this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
+
     this.newPagination('clientes')
   }
+  // filtra_sucursal(sucursal:string){   
+  //   // console.log(this.filtra_tipo_cliente);
+  //   // console.log(this.filtra_tipo_cliente);
+  //   // this.dataSourceClientes.data = (sucursal === 'Todas') ? this.clientes_arr : this.clientes_arr.filter(c=>c.sucursal === sucursal)
+  //   // this.newPagination('clientes')
+
+  //   let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
+  //   this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
+  // }
   newPagination(data:string){
     this.cargandoInformacion = false
     setTimeout(() => {

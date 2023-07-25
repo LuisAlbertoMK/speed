@@ -104,6 +104,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:''}
   faltante_s:string
 
+
+  data_cliente = {}
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -130,41 +132,69 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo } = this.enrutamiento
 
-    console.log(tipo);
-    let  cliente_info = {},  vehiculos_cliente = []
+    let  cliente_info = {},  vehiculos_cliente = [], info_vehiculo = {}, info_elementos = [], info_servicio = '1', info_margen =25, info_iva= true
+    let info_vehiculo_ = vehiculo, info_descuento =0 
+    let info_formaPago = '1'
     this.infoCotizacion = this._cotizacion.infoCotizacion
-    if (tipo === 'cliente') {
+    if (tipo === 'cliente' || tipo === 'vehiculo') {
       cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-      vehiculos_cliente  = await this._vehiculos.consulta_vehiculos({sucursal, cliente})  
-    }if (tipo === 'nueva') {
-      console.log('muestra todo');
-    } if (tipo === 'cotizacion') {
+
+    } else if (tipo === 'nueva') {
+      // console.log('muestra todo');
+    } else if (tipo === 'cotizacion') {
       const busqueda_ruta = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
-      console.log(busqueda_ruta);
       const info_cotizacion = await  this._cotizaciones.consulta_cotizacion_new(busqueda_ruta)
-      console.log(info_cotizacion);
-      
+      const {data_cliente, data_vehiculo, elementos, servicio, margen, iva, formaPago, vehiculo: vv_, descuento} = info_cotizacion
+
+      cliente_info = data_cliente
+      info_vehiculo = data_vehiculo
+      info_elementos = elementos
+      info_servicio = servicio
+      info_margen = margen
+      info_iva = iva
+      info_formaPago = String(formaPago)
+      info_vehiculo_ = vv_
+      info_descuento = descuento
+
     }
-    // console.log(this.enrutamiento);
    
+    function verificaInfo_vehiculo(data_vehiculo){
+      let nueva_data = data_vehiculo
+      if (nueva_data.id) {
+        const campos= ['cilindros','anio','color','no_motor','marcaMotor','marca']
+        campos.forEach(campo=>{
+          nueva_data[campo] = (nueva_data[campo]) ? nueva_data[campo] : ''
+        })
+      }
+      return nueva_data
+    }
+    this.extra = info_vehiculo_
     this.infoCotizacion.data_cliente = cliente_info
     this.infoCotizacion.cliente = cliente
-    this.infoCotizacion.vehiculos = vehiculos_cliente
-    this.infoCotizacion.vehiculo = vehiculo
     this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     this.infoCotizacion.sucursal = sucursal
-
+    this.infoCotizacion.elementos = info_elementos
+    this.infoCotizacion.margen = info_margen
+    this.infoCotizacion.iva = info_iva
+    this.infoCotizacion.servicio = info_servicio
+    this.infoCotizacion.formaPago = info_formaPago
+    this.infoCotizacion.descuento = info_descuento
+    
+    this.consulta_vehiculos()
     this.realizaOperaciones()
-
+    
+    // if (this.extra) {
+    //   setTimeout(()=>{
+    //     this.verificarInfoVehiculos()
+    //   },400)
+    // }
     
   }
   verificarInfoVehiculos(){
-    if (this.infoCotizacion.cliente['id']) {
-      this._clientes.consulta_cliente_new(this.infoCotizacion.cliente['id']).then((cliente:any)=>{
-        this.infoCotizacion.vehiculos = cliente.vehiculos
-        this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
-      })
-    } 
+    if (this.infoCotizacion.cliente && this.extra ) {
+      this.infoCotizacion.data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
+      this._publicos.cerrar_modal('modal-vehiculo')
+    }
   }
   ///mensaje para poder agregar un paquete que no esta en el catalogo
   async mensajePaquete(){
@@ -226,7 +256,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   // REEMPLAZAR REFRIGERANTE Y PURGAR SISTEMA DE ENFRIAMIENTO
   //aqui la informacion del clienyte
   async infoCliente(info:any){
-    console.log(info);
+    // console.log(info);
     const {cliente} = info
 
     if (cliente) {
@@ -235,25 +265,22 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.infoCotizacion.cliente = id
       this.infoCotizacion.sucursal = sucursal
       this.infoCotizacion.data_sucursal = data_sucursal
-      this.infoCotizacion.vehiculos =  await this._vehiculos.consulta_vehiculos(cliente)
+      this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({sucursal, cliente: id}) 
+      this.extra = null
+      this.infoCotizacion.data_vehiculo = {}
+      this.infoCotizacion.vehiculo = null
+      // 
+      // this.infoCotizacion.vehiculos =  await this._vehiculos.consulta_vehiculos(cliente)
     }
     this.realizaOperaciones()
+  }
 
-
-    // const {cliente, status } = info
-    // if (status) {
-    //   this.infoCotizacion.vehiculo = null
-    //   this.extra = null
-    //   this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s['id'] === cliente['sucursal'])
-      
-    //   this.infoCotizacion.cliente = cliente
-    //   if ( cliente.vehiculos) {
-    //     this.infoCotizacion.vehiculos = cliente.vehiculos
-    //   }
-    //   
-    // }else{
-    //   this._publicos.mensaje('Intenta nuevamente',0)
-    // }
+  async consulta_vehiculos(){
+    const {sucursal, cliente} = this.infoCotizacion
+    this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({sucursal, cliente}) 
+    if (this.infoCotizacion.cliente && this.extra ) {
+      this.verificarInfoVehiculos()
+    }
   }
   //cargar la informacion del cliente para poder editar
   cargaDataCliente(cliente:any){
@@ -310,12 +337,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
   }
   
-  vehiculoInfo(info:any){
-    console.log(info);
-    
-    if (info) {
-      this.extra =  info
-      this.verificarInfoVehiculos()
+  vehiculoInfo(nuevo_id:any){
+    if (nuevo_id) {
+      this.consulta_vehiculos()
+      this.extra =  nuevo_id
+      setTimeout(()=>{ this.verificarInfoVehiculos() }, 500)
     }else{
       this._publicos.mensajeCorrecto('Accion no realizada', 0)
     }
@@ -426,12 +452,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.infoCotizacion.nota = nota
     this.infoCotizacion.promocion = promocion
 
-    // const recuperada = this._publicos.nuevaRecuperacionData(this.infoCotizacion,[...obligatorios, ...opcionales])
-    // console.log(recuperada);
-    
-
-    // return
-    //pra el el envio de correos ocupamos correo de sucursal y cliente
     const correos = this._publicos.dataCorreo(this.infoCotizacion.data_sucursal,this.infoCotizacion.data_cliente)
     const {sucursal, cliente, data_sucursal} = this.infoCotizacion
     await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal}).then(ans=>{
@@ -471,15 +491,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const filtroNotID = filter.filter(f=>!f.id)
     // console.log('los paquetes que no tienen id son: ',filtroNotID);
 
-
     //los paquees que no han sido registrados se guardan automaticamente 
     filtroNotID.forEach(p=>{
-      const campos = ['elementos','nombre','tipo']
+      const campos = ['elementos','nombre','tipo','cilindros','marca','modelo']
       const recuperada = {
         ...this._publicos.nuevaRecuperacionData(p,campos),
-        cilindros: this.infoCotizacion.vehiculo['cilindros'],
-        marca: this.infoCotizacion.vehiculo['marca'],
-        modelo: this.infoCotizacion.vehiculo['modelo'],
+        cilindros: this.infoCotizacion.data_vehiculo['cilindros'],
+        marca: this.infoCotizacion.data_vehiculo['marca'],
+        modelo: this.infoCotizacion.data_vehiculo['modelo'],
         status: true,
         enCatalogo: true
       }

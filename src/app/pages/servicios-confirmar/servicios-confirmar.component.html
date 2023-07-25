@@ -17,22 +17,22 @@
 <div class="card border-dark" >
   <div class="card-body">
     <h1>Informacion de cliente 
-      <ng-container *ngIf="infoConfirmar.cliente['id']">
+      <ng-container *ngIf="infoConfirmar.cliente">
         <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion"
-        (click)="cargaDataCliente(infoConfirmar.cliente)" data-bs-toggle="modal" data-bs-target="#modalNewUser"
+         data-bs-toggle="modal" data-bs-target="#modalNewUser"
         ></i>
       </ng-container>
     </h1>
 
     <div class="row">
       <ng-container *ngFor="let item of camposCliente">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoConfirmar.cliente[item.valor]">
-          <strong class="">{{item.show}} </strong>: {{infoConfirmar.cliente[item.valor]}}
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoConfirmar.data_cliente[item.valor]">
+          <strong class="">{{item.show}} </strong>: {{infoConfirmar.data_cliente[item.valor]}}
         </div>
       </ng-container>
       
     </div>
-    <ng-container *ngIf="infoConfirmar.cliente['id']">
+    <ng-container *ngIf="infoConfirmar.cliente">
       <div class="row">
         <div class="text-end">
           <ng-container *ngIf="infoConfirmar.dataFacturacion; else elseFacturacion">
@@ -45,7 +45,7 @@
             </div>
           </ng-container>
           <ng-template #elseFacturacion>
-            <button class="btn btn-sm btn-warning" (click)="clienteId =  infoConfirmar.cliente['id']"
+            <button class="btn btn-sm btn-warning" (click)="clienteId =  infoConfirmar.cliente"
                 data-bs-toggle="modal" data-bs-target="#modalFacturacion"  #tooltip="matTooltip" matTooltip="editar informacion de facturacion" >
                 <i class="fa fa-edit"></i></button>
           </ng-template>
@@ -56,15 +56,16 @@
 </div>
 <div class="card border-dark">
   <div class="card-body">
-    <ng-container *ngIf="infoConfirmar.cliente['id']">
+    <ng-container *ngIf="infoConfirmar.cliente">
       <label for="exampleInputEmail1">Placas de vehiculos disponibles 
-        <i class="fa fa-sync pointer m-1 fs-3 text-primary" (click)="consultaVehiculosCliente()"></i>
+        <i class="fa fa-sync pointer m-1 fs-3 text-primary" (click)="consulta_vehiculos()"></i>
       </label>
       
       <!-- (click)="verificarInfoVehiculos()" de arriba -->
       <div class="input-group mb-3">
         <!-- abajo  "-->
-        <select class=" form-select  form-select-sm text-uppercase" [ngModel]="extra" #valV (change)="vehiculoInfonew( valV.value )" >
+        <select class=" form-select  form-select-sm text-uppercase" [ngModel]="extra" #valV  (change)="vehiculo( valV.value )">
+          <option [selected]="extra" value="" >Seleccionar vehiculo</option>
           <option [value]="v.id" *ngFor="let v of infoConfirmar.vehiculos">{{v.placas}}</option>
         </select>
         <!-- <button class="btn btn-sm btn-warning" 
@@ -76,8 +77,8 @@
     <h1>Informacion de vehiculo</h1>
     <div class="row" *ngIf="infoConfirmar.vehiculo">
       <ng-container *ngFor="let item of camposVehiculo">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoConfirmar.vehiculo[item.valor]">
-          <strong class="text-uppercase">{{item.show}} </strong>: {{infoConfirmar.vehiculo[item.valor]}}
+        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoConfirmar.data_vehiculo[item.valor]">
+          <strong class="text-uppercase">{{item.show}} </strong>: {{infoConfirmar.data_vehiculo[item.valor]}}
         </div>
       </ng-container>
     </div>
@@ -469,18 +470,12 @@
 </mat-vertical-stepper>
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-    <button (click)="realizaValidaciones()" class="btn btn-sm btn-primary">Realizar recepcion</button>
+    <button (click)="continuar()" class="btn btn-sm btn-primary">Realizar recepcion</button>
   </div>
 </div>
-<ng-container *ngIf="validaciones">
-  <div class="row m-1">
-    <div class="card">
-      <div class="card-body text-center text-danger">
-        <h2>Datos faltantes: {{validaciones}}</h2>
-      </div>
-    </div>
-  </div>
-</ng-container>
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center " *ngIf="faltante_s">
+  Falta la siguiente informacion: <strong class="text-danger">{{faltante_s}}</strong> 
+</div>
 
 
 

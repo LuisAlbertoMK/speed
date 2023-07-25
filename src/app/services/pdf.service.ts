@@ -473,7 +473,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'no. Cliente.', style:'title' },
-              {width: '35%', text: `${data_cliente.no_cliente}`,  style:'info'},
+              {width: '35%', text: `${transformUppercase(data_cliente.no_cliente)}`,  style:'info'},
               {width: '15%', text: 'Mail', style:'title' },
               {width: '35%', text: `${data_cliente.correo}`,  style:'info'},
             ]
@@ -489,7 +489,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'Empresa', style:'title' },
-              {width: '35%', text: `${empresaShow}`, style:'info' },
+              {width: '35%', text: `${transformUppercase(empresaShow)}`, style:'info' },
               {width: '15%', text: 'Cilidros', style:'title' },
               {width: '35%', text: `${data_vehiculo.cilindros}`,  style:'info'},
             ]
@@ -499,7 +499,7 @@ export class PdfService {
               {width: '15%', text: 'Marca', style:'title' },
               {width: '35%', text: `${transformUppercase(data_vehiculo.marca)}`,  style:'info'},
               {width: '15%', text: 'Modelo', style:'title' },
-              {width: '35%', text: `${data_vehiculo.modelo}`, style:'info' },
+              {width: '35%', text: `${transformUppercase(data_vehiculo.modelo)}`, style:'info' },
             ]
           },
           {

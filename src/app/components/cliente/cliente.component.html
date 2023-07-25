@@ -1,4 +1,4 @@
-
+<!-- <pre>{{data_cliente | json}}</pre> -->
 <ng-container *ngIf="registraEmpresaShow; else elseregistraEmpresaShow">
   <div class="card">
     <div class="card-body">
@@ -60,12 +60,14 @@
           </ng-container>
           <ng-template #elseCliente>
             <h1 class="text-success"> Actualiza cliente</h1>
-            <p>
-              <span class="text-danger fs-6">La actualización de correo y contraseña no aplica para información general</span>
-            </p>
-            <p>
-              <span class="text-info fs-6">para modificar correo y contraseña click Aqui</span>
-            </p>
+            <ng-container *ngIf="data_cliente.usuario">
+              <p>
+                <span class="text-danger fs-6">La actualización de correo y contraseña no aplica para información general</span>
+              </p>
+              <p>
+                <span class="text-info fs-6">para modificar correo y contraseña click Aqui</span>
+              </p>
+            </ng-container>
           </ng-template>
         </div>
       </div>
@@ -93,7 +95,7 @@
         <div class="row text-start">
           <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="mb-1 row">
-              <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo</label>
+              <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo <span class="text-danger">*</span> </label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <select class=" form-select  form-select-sm" formControlName="tipo"
                   [class.is-invalid]="validarCampo('tipo')" id="tipo_cliente">
@@ -104,6 +106,21 @@
               </div>
             </div>
           </div>
+          <ng-container *ngIf="SUCURSAL === 'Todas'">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="mb-1 row">
+                <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal <span class="text-danger">*</span> </label>
+                <div class="col-sm-9 col-md-8 col-lg-9">
+                  <select class=" form-select  form-select-sm" formControlName="sucursal" 
+                    [class.is-invalid]="validarCampo('sucursal')" id="sucursal" >
+                    <option [ngValue]="sucursal.id" *ngFor="let sucursal of sucursales_array;let i=index">
+                      {{sucursal.sucursal}}</option>
+                  </select>
+                  <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
+                </div>
+              </div>
+            </div>
+          </ng-container>
           <div class="col-lg-6 col-md-6 col-sm-12" >
             <div class="mb-1 row">
               <label class="col-sm-3 col-md-4 col-lg-3 col-form-label">Empresa</label>
@@ -141,24 +158,10 @@
               </div>
             </div>
           </div>
-          <ng-container *ngIf="SUCURSAL === 'Todas'">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-              <div class="mb-1 row">
-                <label for="sucursal" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal </label>
-                <div class="col-sm-9 col-md-8 col-lg-9">
-                  <select class=" form-select  form-select-sm" formControlName="sucursal" (change)="actualizaNoCliente()"
-                    [class.is-invalid]="validarCampo('sucursal')" id="sucursal" (change)="verificarCorreoExiste()">
-                    <option [ngValue]="sucursal.id" *ngFor="let sucursal of sucursales_array;let i=index">
-                      {{sucursal.sucursal}}</option>
-                  </select>
-                  <small *ngIf="validarCampo('sucursal')" class="text-danger">campo requerido</small>
-                </div>
-              </div>
-            </div>
-          </ng-container>
+          
           <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="mb-1 row">
-              <label for="no_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label"># Cliente</label>
+              <label for="no_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label"># Cliente <span class="text-danger">*</span> </label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="no_cliente" formControlName="no_cliente"
                   [class.is-invalid]="validarCampo('no_cliente')" [attr.disabled]="true">
@@ -171,11 +174,10 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="mb-1 row">
-              <label for="nombre" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nombre</label>
+              <label for="nombre" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nombre <span class="text-danger">*</span> </label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
-                  [class.is-invalid]="validarCampo('nombre')" (keyup)="actualizaNoCliente()" onkeypress="validarLetras(event)"
-                  (change)="actualizaNoCliente()">
+                  [class.is-invalid]="validarCampo('nombre')"  onkeypress="validarLetras(event)">
                 <small *ngIf="validarCampo('nombre')" class="text-danger">
                   campo requerido
                 </small>
@@ -184,11 +186,10 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="mb-1 row">
-              <label for="apellidos" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Apellidos</label>
+              <label for="apellidos" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Apellidos <span class="text-danger">*</span> </label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="apellidos" formControlName="apellidos"
-                  [class.is-invalid]="validarCampo('apellidos')" maxlength="30" (keyup)="actualizaNoCliente()" onkeypress="validarLetras(event)"
-                  (change)="actualizaNoCliente()">
+                  [class.is-invalid]="validarCampo('apellidos')" maxlength="30" onkeypress="validarLetras(event)" >
                 <small *ngIf="validarCampo('apellidos')" class="text-danger">
                   campo requerido
                 </small>
@@ -197,10 +198,10 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12" *ngIf="correo_utilizado === 'personal'">
             <div class="mb-1 row">
-              <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo</label>
+              <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Correo <span class="text-danger">*</span> </label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="correo" formControlName="correo"
-                  [class.is-invalid]="validarCampo('correo')" maxlength="50" (keyup)="verificarCorreoExiste()">
+                  [class.is-invalid]="validarCampo('correo')" maxlength="50" >
                 <small *ngIf="validarCampo('correo')" class="text-danger">
                   campo requerido
                 </small>
@@ -211,7 +212,7 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="mb-1 row">
-              <label for="telefono_movil" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tel. movil</label>
+              <label for="telefono_movil" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tel. movil <span class="text-danger">*</span> </label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="telefono_movil"
                   formControlName="telefono_movil" (keyup)="verificarTelefono()" onkeypress="soloNumeros(event)"
@@ -253,7 +254,9 @@
         <div class="row text-center">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
             <!--  -->
-            <button  type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1">Guardar</button>
+            <button  type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1">
+              <i class="fa fa-save"></i> Guardar
+            </button>
             <button type="button"  class="btn btn-sm btn-danger col-lg-4 col-md-4 col-sm-6 col-6 m-1"
               >Limpiar</button>
           </div>

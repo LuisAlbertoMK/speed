@@ -65,6 +65,9 @@ export class ServiciosPublicosService {
           numero: 24
       }
     ]
+
+
+    
     convierteFecha(fecha : string) {
      if (!fecha) return '';
   
@@ -508,17 +511,16 @@ export class ServiciosPublicosService {
       let faltantes = []
       campos.forEach((campo)=>{
         if (campo !== 'costo') {
-          if (campo !== 'fecha' && campo !=='elementos') {
-            if (!data[campo]) faltantes.push(campo)
-          }else if(campo === 'fecha'){
+          if(campo === 'elementos' || campo === 'servicios'){
+            const elementos:any[] = (data[campo]) ? data[campo] : []
+            if(elementos.length <=0 ) faltantes.push(campo)
+          } else if(campo === 'fecha'){
             const cadena_contador = String(data[campo]).length
             if (cadena_contador < 10) {
               faltantes.push(campo)
             }
-            // || campo === 'servicios'
-          }else if(campo === 'elementos' ){
-           const elementos:any[] = (data[campo]) ? data[campo] : []
-           if(elementos.length <=0 ) faltantes.push(campo)
+          }else if (campo !== 'fecha') {
+            if (!data[campo]) faltantes.push(campo)
           }
         }
       })
@@ -1220,6 +1222,14 @@ export class ServiciosPublicosService {
           aqui.ticketPromedio = aqui.ticketGeneral / aqui.servicios_totales 
       });
       return {servicios_totales: aqui.servicios_totales, ticketPromedio: aqui.ticketPromedio, ticketGeneral: aqui.ticketGeneral}
+    }
+
+    
+    cerrar_modal(cual){
+      const closeButton = document.querySelector(`[id="${cual}"]`);
+      if (closeButton) {
+        closeButton.dispatchEvent(new Event('click'));
+      }
     }
       
  }

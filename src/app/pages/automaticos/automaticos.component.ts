@@ -48,9 +48,18 @@ export class AutomaticosComponent implements OnInit {
     const campos_recupera = [ 'apellidos','correo','correo_sec','id','no_cliente','nombre','sucursal','telefono_fijo','telefono_movil','tipo' ]
     const campos_vehiculos = ['anio','categoria','cilindros','cliente','color','engomado','id','marca','marcaMotor','modelo','no_motor','placas','status','transmision','vinChasis' ]
 
+    function eliminarElementosRepetidos(arr: any[]): any[] {
+      return arr.filter((item, index, self) => {
+        return self.indexOf(item) === index;
+      });
+    }
+    function limpiarArreglo(arr: any[]): any[] {
+      return arr.filter((element) => element !== undefined && element !== null && element !== "");
+    }
+
 
     const {clientes, vehiculos, cotizacionesRealizadas} = BD
-
+    let array_correos = []
     // let vehiculos_cliente = []
     // Object.entries(vehiculos).forEach(([key, entrie])=>{
     //   const {cliente} = entrie
@@ -58,9 +67,15 @@ export class AutomaticosComponent implements OnInit {
     //   vehiculos_cliente.push(bkup_vehiculo)
     // })
 
+    // console.log(vehiculos_cliente);
+    
+
     let updates = {}
     // Object.entries(clientes).forEach(([key, entrie])=>{
-    //   const {sucursal} = entrie
+      // const {sucursal} = entrie
+      // console.log(entrie);
+      
+      // array_correos.push(entrie['correo'])
     //     const nuevis = vehiculos_cliente.filter(v=>v.cliente === key)
     //     let vehiculos__ = {}
     //     nuevis.forEach((v,index)=>{
@@ -75,7 +90,17 @@ export class AutomaticosComponent implements OnInit {
     //         vehiculos__[id] = {...v, cliente: key, sucursal}
     //       })
     //     }
-    //   })
+      // })
+
+      // console.log(array_correos);
+      // console.log(eliminarElementosRepetidos(array_correos).length);
+      // const filtrados = eliminarElementosRepetidos(array_correos)
+      // console.log(filtrados);
+      // console.log(limpiarArreglo(filtrados));
+      
+      
+      // updates['correos'] = limpiarArreglo(filtrados)
+      
      
 
       // console.log(cotizacionesRealizadas);

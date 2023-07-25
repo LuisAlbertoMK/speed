@@ -14,7 +14,7 @@ import { EmpresasService } from '../../services/empresas.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-const postRef = ref(db, '/clientes');
+
 @Component({
   selector: 'app-cliente',
   templateUrl: './cliente.component.html',
@@ -68,13 +68,15 @@ export class ClienteComponent implements OnInit, OnChanges {
   
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
     faltante_s:string
+
+    correos_existentes = []
   ngOnInit(): void {
     this.roles()
     this.crearFormularioClientes()
     this.crearFormEmpresa()
     this.automaticos_empresa()
+    this.consulta_email_ocupados()
     
-    this.vigila()
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data_cliente']) {
@@ -87,8 +89,9 @@ export class ClienteComponent implements OnInit, OnChanges {
          this.cargaDataForm(nuevoValor)
         } else  if (nuevoValor === valorAnterior) {
           this.cargaDataForm(valorAnterior)
-        } else  {
-          this.form_cliente.reset()
+        } else if(!nuevoValor && !valorAnterior){
+          const sucursal = (this.SUCURSAL === 'Todas') ? '': this.SUCURSAL 
+          this.form_cliente.reset(sucursal)
         }
       },500)
       
@@ -98,8 +101,15 @@ export class ClienteComponent implements OnInit, OnChanges {
   cargaDataForm(cliente){
     if (cliente['id']) {
       const data_recuperada = this._publicos.nuevaRecuperacionData(cliente, this._clientes.camposCliente )
+
+      data_recuperada.no_cliente = String(data_recuperada.no_cliente).toUpperCase()
       this.form_cliente.reset(Object({...data_recuperada, uid: data_recuperada.id}))
-      this.form_cliente.controls['correo'].disable();
+      // console.log(data_recuperada);
+      if (data_recuperada.usuario) {
+        this.form_cliente.controls['correo'].disable();
+      }else{
+        this.form_cliente.controls['correo'].enable();
+      }
     }
   }
 
@@ -108,6 +118,13 @@ export class ClienteComponent implements OnInit, OnChanges {
       startWith(''),
       map(value => this._filter(value || '')),
     );
+  }
+
+  consulta_email_ocupados(){
+    const starCountRef = ref(db, `correos`)
+    onValue(starCountRef, (snapshot) => {
+      this.correos_existentes = (snapshot.exists()) ? snapshot.val() : []
+    })
   }
   roles(){
     const { rol, sucursal } = this._security.usuarioRol()
@@ -122,16 +139,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     if(val) this.form_cliente.controls['correo'].setValue('patito@gmail.com')
     else  this.form_cliente.controls['correo'].setValue(val)
   }
-  verificarCorreoExiste(){
-    if (this.correo_utilizado === 'sucursal') {
-      this.correoExistente = false
-    }else{
-      const correo = this.form_cliente.controls['correo'].value
-      const info = this.arreglo_correos.find(o=>o === correo)
-      this.correoExistente = false
-      if (info) this.correoExistente = true
-    }
-  }
+ 
   verificarTelefono(){
     const telefono = this.form_cliente.controls['telefono_movil'].value
     const info = this.telefonosInvalidos.find(o=>o === telefono)
@@ -153,12 +161,17 @@ export class ClienteComponent implements OnInit, OnChanges {
       sucursal:[sucursal,[Validators.required]],
       empresa:['',[]]
     })    
+    this.vigila()
   }
   vigila(){
-    this.form_cliente.get('tipo').valueChanges.subscribe((tipo: string) => {
+    this.form_cliente.get('tipo').valueChanges.subscribe(async (tipo: string) => {
       if (tipo === 'flotilla') {
         this.form_cliente.get('empresa').enable();
         this.empresa_valida = false
+        const sucursal =  this.form_cliente.get('sucursal').value
+        if (sucursal) {
+          this.empresasSucursal = await this._empresas.consulta_empresas(sucursal)
+        }
       } else {
         this.form_cliente.get('empresa').disable();
         this.form_cliente.get('empresa').setValue('');
@@ -166,9 +179,23 @@ export class ClienteComponent implements OnInit, OnChanges {
       }
     });
     this.form_cliente.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
-      // let sucursal_ = ''
       if (sucursal) {
         this.empresasSucursal = await this._empresas.consulta_empresas(sucursal)
+      }
+      this.actualizaNoCliente()
+    })
+    this.form_cliente.get('nombre').valueChanges.subscribe((nombre: string) => {
+        this.actualizaNoCliente()
+    })
+    this.form_cliente.get('apellidos').valueChanges.subscribe((apellidos: string) => {
+        this.actualizaNoCliente()
+    })
+    this.form_cliente.get('correo').valueChanges.subscribe((correo: string) => {
+      if (correo) {
+        const existe = this.correos_existentes.find(c=>c === correo)
+        this.correoExistente = (existe) ? true : false
+      }else{
+        this.correoExistente = false
       }
     })
   }
@@ -224,26 +251,24 @@ export class ClienteComponent implements OnInit, OnChanges {
     return this.form_cliente.get(campo).invalid && this.form_cliente.get(campo).touched
   }
   async actualizaNoCliente() {
+    
     const nombre = this.form_cliente.controls['nombre'].value?.trim();
     const apellidos = this.form_cliente.controls['apellidos'].value?.trim();
     const uid = this.form_cliente.controls['uid'].value?.trim();
-    let sucursal = '';
+    let sucursal = this.form_cliente.controls['sucursal'].value?.trim();
   
-    // if (this.sucursal === 'Todas') {
-    //   sucursal = this.form_cliente.controls['sucursal'].value;
-    // }
-  
+   
     if (!uid && nombre?.length >= 2 && apellidos?.length >= 2 && sucursal) {
       try {
-        const data = await this._sucursales.inforSucursalUnica(sucursal);
-        await this.constverifica()
-        
-        const nombreSucursal = data['sucursal'];
+        // const data = await this._sucursales.inforSucursalUnica(sucursal);
+        await this.constverifica(sucursal)
+        const nombre_sucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+        // const nombreSucursal = data['sucursal'];
         const date = new Date();
         const mes = (date.getMonth() + 1).toString().padStart(2, '0');
         const anio = date.getFullYear().toString().slice(-2);
         const secuencia = this.contadroClientes.toString().padStart(4, '0');
-        const nombreCotizacion = `${nombre?.slice(0, 2)}${apellidos?.slice(0, 2)}${nombreSucursal?.slice(0, 2)}${mes}${anio}${secuencia}`;
+        const nombreCotizacion = `${nombre?.slice(0, 2)}${apellidos?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`;
         this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion.toUpperCase());
       } catch (error) {
         this._publicos.mensajeCorrecto(`error: ${error}`, 0);
@@ -306,6 +331,8 @@ export class ClienteComponent implements OnInit, OnChanges {
           }
         })
         updates[`clientes/${info_get.sucursal}/${ nueva_clave_generada }/status`] = true
+        this.correos_existentes.push(informacion_recuperada.correo)
+        updates[`correos`] = this.correos_existentes
       }
       
       const existen_campos_update = Object.keys(updates)
@@ -364,7 +391,8 @@ export class ClienteComponent implements OnInit, OnChanges {
   displayFn(user: any): any {
     return user && user.empresa ? user.empresa : '';
   }
-  constverifica(){
+  constverifica(sucursal){
+    const postRef = ref(db, `clientes/${sucursal}`);
     runTransaction(postRef, (post) => {
       if (post) {
         this.contadroClientes = this._publicos.crearArreglo2(post).length + 1
