@@ -11,6 +11,7 @@ import { EmailsService } from 'src/app/services/emails.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { Observable } from 'rxjs';
 import { EmpresasService } from '../../services/empresas.service';
+import { CamposSystemService } from '../../services/campos-system.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -27,7 +28,7 @@ export class ClienteComponent implements OnInit, OnChanges {
   
 
   
-  constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
+  constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService, private _campos: CamposSystemService,
     private _clientes: ClientesService,private _mail: EmailsService,private _security:EncriptadoService, private _empresas: EmpresasService) {
       this.heroeSlec = new EventEmitter()
     }
@@ -307,7 +308,7 @@ export class ClienteComponent implements OnInit, OnChanges {
 
     const { ok, faltante_s } = this._publicos.realizavalidaciones_new(info_get,campos_cliente)
     
-    this.faltante_s = this._publicos.reemplaza_strig(faltante_s,[...this._clientes.campos_show_validaciones])
+    this.faltante_s = faltante_s
     // console.log();
     
     if (ok && !faltante_s) {

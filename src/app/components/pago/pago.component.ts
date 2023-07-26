@@ -80,7 +80,7 @@ export class PagoComponent implements OnInit {
 
     this.ROL = rol
     this.SUCURSAL = sucursal
-    this.listaOrdenes()
+    // this.listaOrdenes()
   }
   listaOrdenes(){
     const starCountRef = ref(db, `recepciones`)

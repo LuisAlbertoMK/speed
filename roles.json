@@ -56,6 +56,8 @@ const starCountRef = ref(db, `clientes`)
     }, {
         onlyOnce: true
       })
+
+      this._publicos.recuperaDatos()
 	
 
     private _clientes:ClientesService, private _vehiculos: VehiculosService, 

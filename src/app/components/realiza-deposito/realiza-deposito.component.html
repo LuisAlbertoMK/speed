@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-      <button type="button" class="close" aria-label="Close" (click)="cancela()" data-bs-dismiss="modal">
+      <button type="button" class="close" aria-label="Close" data-bs-dismiss="modal" id="modal-deposito">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -80,14 +80,13 @@
                                         data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                             </div>
-                            <ng-container *ngIf="informacionFaltante">
-                                <div class="row text-center">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        Falta información:
-                                        <strong class="text-danger">{{informacionFaltante}}</strong>
-                                    </div>
+                            <ng-container *ngIf="faltante_s">
+                                <div class="row mt-2">
+                                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
+                                    Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
+                                  </div>
                                 </div>
-                            </ng-container>
+                              </ng-container>
 
                         </form>
                     </div>

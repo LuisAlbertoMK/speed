@@ -189,9 +189,9 @@ export class CotizacionesService {
               data_cotizacion = [...cotizacionesPorCliente]
               snapshot.forEach((childSnapshot) => {
                 cotizacionesPorCliente.map(c=>{
-                  const {cliente, sucursal:idSUcursal, vehiculo, formaPago} = c
+                  const {cliente, sucursal:idSUcursal, vehiculo, formaPago, id} = c
                   c.data_sucursal = this.lista_en_duro_sucursales.find(s=>s.id === idSUcursal)
-
+                  c.id = id
                   c.pagoName = this.formasPago.find(f=>String(f.id) === String(formaPago)).pago
                   if (this.clientes_temporales[cliente]) {
                     const {nombre, apellidos} = this.clientes_temporales[cliente]
@@ -231,14 +231,17 @@ export class CotizacionesService {
           }else{
             // data_cotizacion = snapshot.val()
             // console.log('SUCURSAL: ', snapshot.key);
-            
+            // const cotizacionesPorCliente = obtenerCotizacionesPorCliente(snapshot.val());
+            //   console.log(cotizacionesPorCliente);
             snapshot.forEach((childSnapshot) => {
               // const childKey = childSnapshot.key;
               const childData = childSnapshot.val();
+              
+              
               // console.log(childKey);
               Object.entries(childData).forEach(async ([key, entrie])=>{
                 const nueva_entrie = Object(entrie)
-                const {cliente, sucursal, vehiculo, formaPago} = nueva_entrie
+                const {cliente, sucursal, vehiculo, formaPago, id} = nueva_entrie
                 const starCountRef_cliente = ref(db, `clientes/${sucursal}/${cliente}`);
                 const starCountRef_vehiculo = ref(db, `vehiculos/${sucursal}/${cliente}/${vehiculo}`);
                 
@@ -262,7 +265,7 @@ export class CotizacionesService {
                   onlyOnce: true
                 });
 
-               
+                nueva_entrie.id = key
                 nueva_entrie.pagoName = this.formasPago.find(f=>String(f.id) === String(formaPago)).pago
                 nueva_entrie.data_sucursal = this.lista_en_duro_sucursales.find(s=>s.id === sucursal)
                 data_cotizacion.push(nueva_entrie)
@@ -352,7 +355,8 @@ function obtenerCotizacionesPorCliente(jsonData: any): any[] {
     Object.keys(usuarios).forEach((claveUsuario) => {
       const cotizaciones = usuarios[claveUsuario];
       Object.keys(cotizaciones).forEach((claveCotizacion) => {
-        cotizacionesPorCliente.push(cotizaciones[claveCotizacion]);
+        const data = {...cotizaciones[claveCotizacion], id: claveCotizacion}
+        cotizacionesPorCliente.push(data);
       });
     });
   });

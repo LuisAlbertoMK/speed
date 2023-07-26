@@ -26,13 +26,13 @@ export class ExporterService {
     {id:7,pago:'24 meses',interes:24.,numero:24}
   ]
   servicios=[
-    {valor:1,nombre:'servicio'},
-    {valor:2,nombre:'garantia'},
-    {valor:3,nombre:'retorno'},
-    {valor:4,nombre:'venta'},
-    {valor:5,nombre:'preventivo'},
-    {valor:6,nombre:'correctivo'},
-    {valor:7,nombre:'rescate vial'}
+    {valor:'1',nombre:'servicio'},
+    {valor:'2',nombre:'garantia'},
+    {valor:'3',nombre:'retorno'},
+    {valor:'4',nombre:'venta'},
+    {valor:'5',nombre:'preventivo'},
+    {valor:'6',nombre:'correctivo'},
+    {valor:'7',nombre:'rescate vial'}
   ]
   MetodosPago = [
     {metodo:1, muestra:'Efectivo'},
@@ -45,108 +45,86 @@ export class ExporterService {
   constructor(private _publicos:ServiciosPublicosService, private _servicios: ServiciosService) { }
 
   
-  async exportToExcelCotizaciones(data:any, excelFileName: string){
-    const cotizaciones = data
-    console.log(cotizaciones);
+  async exportToExcelCotizaciones(data:any[], excelFileName: string){
+    console.log(data);
     
-    
-    const cotizacionPush =[]
+    let cotizacionPush = []
     const cotizacionPushIndivuduales =[]
-    // console.log(data);
-    // retur
-
-    cotizaciones.map(async(cot)=>{
-      // console.log(cot);
-      this.servicios.map(ser=>{
-        if(cot['servicio'] != ser.valor ) return
-        // if (cot['servicio'] == ser.valor) {
-          cot['servicio'] = ser.nombre
-        // }
-      })
-      // console.log(cot['servicio']);
+    Object.entries(data).forEach(([key, entrie])=>{
+      // console.log(entrie);
+      const {data_cliente, data_vehiculo, data_sucursal} = entrie
+      const _data_cliente = { ...data_cliente };
+      const _reporte = { ...entrie.reporte };
       
-      const cliente = cot.infoCliente
-      const sucursal = cot.infoSucursal
-      const vehiculo = cot.infoVehiculo
-      if(!cliente['empresa']) cliente['empresa'] = ''
-      if(!vehiculo['no_motor']) vehiculo['no_motor'] = ''
+      const _data_vehiculo = this.verificaInfo_vehiculo({...data_vehiculo})
+      const empresa = (_data_cliente.empresa) ? _data_cliente.empresa : ''
+      
       const tempData = {
-        no_cotizacion: `${cot.no_cotizacion}`,
-        no_cliente: `${cliente.no_cliente}`,
-        cliente: `${cliente.nombre} ${cliente.apellidos}`,
-        tipo_cliente: `${cliente.tipo}`,
-        sucursal: `${sucursal.sucursal}`,
-        correo: `${cliente.correo}`,
-        numero: `${cliente.telefono_movil}`,
-        empresa: `${cliente.empresa}`,
-        servicio: `${cot.servicio}`,
-        // aprobada: `${cot.aprobada}`,
-        fecha: `${cot.fecha}`,
-        hora: `${cot.hora}`,
-        marca: `${vehiculo.marca}`,
-        modelo: `${vehiculo.modelo}`,
-        placas: `${vehiculo.placas}`,
-        cilindros: `${vehiculo.cilindros}`,
-        transmision: `${vehiculo.transmision}`,
-        anio: `${vehiculo.anio}`,
-        categoria: `${vehiculo.categoria}`,
-        color: `${vehiculo.color}`,
-        engomado: `${vehiculo.engomado}`,
-        no_motor: `${vehiculo.no_motor}`,
-        subtotal: 0,
-        total: 0,
+        no_cotizacion: entrie.no_cotizacion,
+        fecha_recibido: this.transform_fecha(entrie.fecha_recibido, true),
+        tipo_cliente: _data_cliente.tipo,
+        empresa: empresa,
+        no_cliente: String(_data_cliente.no_cliente).toUpperCase(),
+        cliente: entrie.fullname,
+        numero: _data_cliente.telefono_movil,
+        correo: _data_cliente.correo,
+        sucursal: data_sucursal.sucursal,
+        categoria: _data_vehiculo.categoria,
+        servicio: this.servicios.find(s=>String(s.valor) === String(entrie.servicio)).nombre,
+        marca: _data_vehiculo.marca,
+        modelo: _data_vehiculo.modelo,
+        placas: String(_data_vehiculo.placas).toUpperCase() ,
+        cilindros: _data_vehiculo.cilindros,
+        transmision: _data_vehiculo.transmision,
+        anio: _data_vehiculo.anio,
+        color: _data_vehiculo.color,
+        engomado: _data_vehiculo.engomado,
+        no_motor: _data_vehiculo.no_motor,
+        subtotal: _reporte.subtotal,
+        iva: _reporte.iva,
+        total: _reporte.total,
       }
-      await this.realizarOperaciones(cot).then(des=>{
-        // console.log(des);
-        tempData.subtotal = des['subtotal']
-        tempData.total = des['total']
-        // if(!tempData['aprobada']) tempData['aprobada'] = ''
-        
-      })
-
-      const elementos = cot['elementos']
-      elementos.map(ele=>{
-        const registro = {...tempData,...ele}
-        if (ele.tipo !== 'paquete') {
-          registro.paquete = ' -- -- --'
-          delete registro.IDreferencia
-          delete registro.catalogo
-          delete registro.id
-          delete registro.aprobada
-          delete registro.flotilla2
-          delete registro.normal
-          // console.log(registro);
-          
-          cotizacionPushIndivuduales.push(registro)
-
-        }else{
-          const ele2 = ele['elementos']
-          ele2.map(ele2=>{
-            const registroEle = {...tempData,paquete:ele2.nombre,...ele2}
-            registroEle.paquete = ele2.nombre
-              delete registroEle.IDreferencia
-              delete registroEle.catalogo
-              delete registroEle.id
-              delete registroEle.aprobada
-              delete registroEle.flotilla2
-              delete registroEle.normal
-              cotizacionPushIndivuduales.push(registroEle)
-          })
-        }
-      })
-      
-
       cotizacionPush.push(tempData)
-      
+      const elementos:any = [...entrie.elementos]
+      elementos.forEach(element => {
+        const {tipo, nombre, precio, costo, cantidad, total, elementos} = element
+        if (tipo === 'paquete') {
+          const elementos_paquete:any[] = (elementos) ? elementos : []
+          elementos_paquete.forEach(ele=>{
+            const {nombre:nombre_, cantidad:cantidad_, precio:precio_, costo:costo_, total:total_} = ele
+            const temp = { 
+              ...tempData, tipo, nombre: String(nombre_).toLowerCase(), cantidad: cantidad_, 
+              precio: precio_, costo: costo_, precio_flotilla: total_, paquete: String(nombre).toLowerCase()
+            }
+            cotizacionPushIndivuduales.push(temp)
+          })
+        }else{
+          const temp = { 
+            ...tempData, tipo, nombre: String(nombre).toLowerCase(), cantidad, precio, costo, precio_flotilla: total, paquete:''
+          }
+          cotizacionPushIndivuduales.push(temp)
+        }
+      });
     })
-    setTimeout(()=>{
-
-      // console.log(cotizacionPush);
-      // console.log(cotizacionPushIndivuduales);
+    console.log(cotizacionPush);
+    
+    // setTimeout(()=>{
       
       const worksheetCotizaciones : XLSX.WorkSheet = XLSX.utils.json_to_sheet(cotizacionPush)
       const worksheetindividuales : XLSX.WorkSheet = XLSX.utils.json_to_sheet(cotizacionPushIndivuduales)
   
+      const columnWidthsCotizaciones = [
+        { wch: 20 }, { wch: 20 }, { wch: 10 }, { wch: 15 }, { wch: 25 }, { wch: 25 }, { wch: 15 },
+        { wch: 30 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 },
+      ];
+      worksheetCotizaciones['!cols'] = columnWidthsCotizaciones;
+
+      const columnWidthsCIndividuales = [
+        { wch: 20 }, { wch: 20 }, { wch: 10 }, { wch: 15 }, { wch: 25 }, { wch: 25 }, { wch: 15 },
+        { wch: 30 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 },
+      ];
+        worksheetindividuales['!cols'] = columnWidthsCIndividuales;
+
       const workbook: XLSX.WorkBook = {
         Sheets: {'cotizaciones':worksheetCotizaciones,'individuales':worksheetindividuales},
         SheetNames:['cotizaciones','individuales']
@@ -154,7 +132,7 @@ export class ExporterService {
       const excelBuffer:any= XLSX.write(workbook,{bookType:'xlsx',type:'array'})
       //llamar al metodo y su nombre
       this.saveAsExcel(excelBuffer,excelFileName)
-    }, 250)
+    // }, 250)
     
 
 
@@ -852,5 +830,33 @@ export class ExporterService {
     
     this.saveAsExcel(excelBuffer,'ReporteServicios')
   }
+  verificaInfo_vehiculo(data_vehiculo){
+    let nueva_data = data_vehiculo
+    if (nueva_data.id) {
+      const campos= ['cilindros','anio','color','no_motor','marcaMotor','marca','categoria','engomado']
+      campos.forEach(campo=>{
+        nueva_data[campo] = (nueva_data[campo]) ? nueva_data[campo] : ''
+      })
+    }
+    return nueva_data
+  }
+  transform_fecha(fecha: string, incluirHora: boolean = false, ...args: unknown[]): string {
+    if(!fecha) return ''
+    const fechaObj = new Date(fecha);
+    const dia = fechaObj.getDate();
+    const mes = fechaObj.getMonth() + 1; // Los meses en JavaScript son base 0, por eso se suma 1
+    const anio = fechaObj.getFullYear();
+    const hora = fechaObj.getHours();
+    const minutos = fechaObj.getMinutes();
+      let fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
+    
+      if (incluirHora) {
+        fechaFormateada += ` ${hora.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+      }
+    
+      return fechaFormateada;
+  }
   
 }
+
+

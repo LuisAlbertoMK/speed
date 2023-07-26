@@ -129,6 +129,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     });
   }
   async cargaDataCliente_new(){
+    // Swal.fire('Cargando ...','','info',)
+    // this._publicos.mensajeSwal('Cargando..',3,false)
+    Swal.fire({
+      position: 'center', icon:'info', title: 'Espere', showConfirmButton: false,
+      allowOutsideClick:false,
+      html:''
+      // timer: 1500
+  })
+    Swal.isLoading()
 
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo } = this.enrutamiento
 
@@ -158,16 +167,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     }
    
-    function verificaInfo_vehiculo(data_vehiculo){
-      let nueva_data = data_vehiculo
-      if (nueva_data.id) {
-        const campos= ['cilindros','anio','color','no_motor','marcaMotor','marca']
-        campos.forEach(campo=>{
-          nueva_data[campo] = (nueva_data[campo]) ? nueva_data[campo] : ''
-        })
-      }
-      return nueva_data
-    }
+    
     this.extra = info_vehiculo_
     this.infoCotizacion.data_cliente = cliente_info
     this.infoCotizacion.cliente = cliente
@@ -179,7 +179,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.infoCotizacion.servicio = info_servicio
     this.infoCotizacion.formaPago = info_formaPago
     this.infoCotizacion.descuento = info_descuento
-    
+    this.infoCotizacion.vehiculo = info_vehiculo_
+    this.infoCotizacion.data_vehiculo = {}
     this.consulta_vehiculos()
     this.realizaOperaciones()
     
@@ -190,11 +191,21 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     // }
     
   }
+  async consulta_vehiculos(){
+    const {sucursal, cliente} = this.infoCotizacion
+    this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
+    Swal.close()
+    if (this.infoCotizacion.cliente && this.extra ) {
+      this.verificarInfoVehiculos()
+    }
+  }
   verificarInfoVehiculos(){
     if (this.infoCotizacion.cliente && this.extra ) {
       this.infoCotizacion.data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
+      this.infoCotizacion.vehiculo = this.extra
       this._publicos.cerrar_modal('modal-vehiculo')
     }
+    
   }
   ///mensaje para poder agregar un paquete que no esta en el catalogo
   async mensajePaquete(){
@@ -275,13 +286,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.realizaOperaciones()
   }
 
-  async consulta_vehiculos(){
-    const {sucursal, cliente} = this.infoCotizacion
-    this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({sucursal, cliente}) 
-    if (this.infoCotizacion.cliente && this.extra ) {
-      this.verificarInfoVehiculos()
-    }
-  }
+ 
   //cargar la informacion del cliente para poder editar
   cargaDataCliente(cliente:any){
     this.datCliente = null
@@ -440,10 +445,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   async continuarCotizacion(){
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
-    const opcionales = ['promocion','descuento','nota','iva']
+    // const opcionales = ['promocion','descuento','nota','iva']
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoCotizacion,obligatorios )
 
-    // console.log( {ok, faltante_s} );
     this.faltante_s = faltante_s
     if (!ok) return
     const {promocion, descuento, nota} = this._publicos.recuperaDatos(this.formPlus)
@@ -457,11 +461,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal}).then(ans=>{
       this.infoCotizacion.no_cotizacion = ans
     })
-    //realizamos un string con el nombre de los elementos de la ctoizacion solo enviamos el array de los elementos
+
     const filtro_conceptos = this._publicos.obtenerNombresElementos(this.infoCotizacion.elementos)
-    // asiganamos la datatemporal la cual sirve para correo, pdf
-    
-    // this.infoCotizacion.no_cotizacion = 'sadsgfhjh'
+
     const tempData = {
       filename:  this.infoCotizacion.no_cotizacion,
       correos,
@@ -470,8 +472,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       cliente: this.infoCotizacion.cliente,
       vehiculo: this.infoCotizacion.vehiculo,
     }
-    //obtenemos la fecha, hora y fecha de vencimiento de la cotizacion asignamos a la informacion del pdf
-    const getTime = this._publicos.getFechaHora()
+
 
     const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
     const sumar = new Date(actual)
@@ -479,35 +480,31 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const nueva = this._publicos.sumarRestarDiasFecha(sumar, 20)
     this.infoCotizacion.vencimiento = this._publicos.retorna_fechas_hora({fechaString: nueva.toString()}).toString
     
-    // en caso de que el cliente no tenga nombre de empresa asiganamos un string vacio
-    // console.log(this.infoCotizacion);
-    
-
-    // console.log('antes de todo revisar los paquetes no guardados ');
-    //primero se filtra la informacion a solo paquetes
     const filter = this.infoCotizacion.elementos.filter(e=>e.tipo === 'paquete')
-    // console.log('los paquetes que no estan en catalogo son: ',filter);
-    //despues filtramos los paquetes que  no tengan id
-    const filtroNotID = filter.filter(f=>!f.id)
-    // console.log('los paquetes que no tienen id son: ',filtroNotID);
 
-    //los paquees que no han sido registrados se guardan automaticamente 
+    const filtroNotID = filter.filter(f=>!f.id)
+    const updates_paquetes = {  };
+
+    this.infoCotizacion.data_vehiculo = this._vehiculos.verificaInfo_vehiculo(this.infoCotizacion.data_vehiculo)
+    const {data_vehiculo} = this.infoCotizacion
     filtroNotID.forEach(p=>{
       const campos = ['elementos','nombre','tipo','cilindros','marca','modelo']
       const recuperada = {
         ...this._publicos.nuevaRecuperacionData(p,campos),
-        cilindros: this.infoCotizacion.data_vehiculo['cilindros'],
-        marca: this.infoCotizacion.data_vehiculo['marca'],
-        modelo: this.infoCotizacion.data_vehiculo['modelo'],
+        cilindros: data_vehiculo['cilindros'],
+        marca: data_vehiculo['marca'],
+        modelo: data_vehiculo['modelo'],
         status: true,
         enCatalogo: true
       }
-
       const clave = `paquetes/${this._publicos.generaClave()}`;
-      const updates = { [clave]: recuperada };
-      
-      update(ref(db), updates);
+      updates_paquetes[clave] = recuperada
     })   
+    update(ref(db), updates_paquetes);
+
+    
+    
+
     //hacemos el llamdo de la funcion para la creaciion del pdf    
     this._pdf.pdf(this.infoCotizacion,this.checksBox.controls['detalles'].value).then((ansPDF)=>{
       //cuando obtengamos la respuesta asignamos la misma a una variable para su uso de PDF
@@ -606,6 +603,5 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     // }
     }, 500)
   }
-
 
 }

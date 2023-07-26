@@ -217,3 +217,77 @@ tr.example-element-row:not(.example-expanded-row):active {
 .mat-tab-group {
   margin-bottom: 48px;
 }
+
+::ng-deep .cdk-overlay-container {
+  z-index: 1055 !important;
+}
+::ng-deep .mat-tooltip {
+  font-size: 1em;
+  min-width: 200px;
+}
+
+  
+  
+::ng-deep .cdk-overlay-container .mat-menu-item {
+  /* background-color: red; */
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* mi boton flotante */
+body {
+  position: relative;
+}
+
+::ng-deep .mat-tooltip {
+  font-size: 1em;
+  min-width: 200px;
+  z-index: 1000 !important;
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: #007BFF;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000 !important;
+}
+
+.floating-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* width: 35px;
+  height: 1em; */
+  color: #efefef;
+  /* background-color: #fff; */
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate {
+  animation: spin 2s linear infinite;
+}

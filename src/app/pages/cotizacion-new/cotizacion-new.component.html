@@ -12,15 +12,18 @@
   </div>
 </div>
 
-<div class="row">
+<div class="floating-btn" data-bs-toggle="modal" data-bs-target="#modalNewUser" #tooltip="matTooltip" matTooltip="Registra nuevo cliente" (click)="data_cliente = {}">
+  <span class="icon fa fa-user fa-2x"></span>
+</div>
+
+<!-- <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
     <button class="btn btn-group-sm btn-sm btn-outline-primary" type="button" id="button-addon1"  data-bs-toggle="modal" data-bs-target="#modalNewUser"
         #tooltip="matTooltip" matTooltip="Registra nuevo cliente" (click)="data_cliente = {}">
             <i class="fa fa-user-plus"></i>
         </button>
   </div>
-</div>
-
+</div> -->
 <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
 <div class="card border-dark" >
   <div class="card-body">

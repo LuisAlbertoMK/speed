@@ -84,46 +84,13 @@ export class GastoComponent implements OnInit {
 
     this.ROL = rol
     this.SUCURSAL = sucursal
-    this.listaOrdenes()
+    console.log(sucursal);
+   
+    // this.listaOrdenes()
     
   }
-  listaOrdenes(){
-    const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const recepciones = this._publicos.crearArreglo2(snapshot.val())
-        // espera
-        // recibido
-        // autorizado
-        // terminado
-        // entregado
-        // cancelado
-        function filtrarOrdenes(recepciones, sucursal) {
-          const rcp = recepciones
-            .filter(recep => {
-              const status = recep.status;
-              // return (status !== 'entregado' && status !== 'cancelado' && status !== 'espera');
-              return (status !== 'entregado' && status !== 'cancelado');
-              // return status;
-            })
-            .map(recep => {
-              return {
-                id: recep.id,
-                no_os: recep.no_os,
-                fecha: recep.fecha_recibido,
-                hora: recep.hora_recibido,
-                sucursal: recep.sucursal.id,
-                status: recep.status
-              };
-            });
-            
-            return (sucursal === 'Todas') ? rcp : rcp.filter(os => os.sucursal === sucursal);
-        }
-        this.ordenes = filtrarOrdenes(recepciones, this.SUCURSAL);
-        // console.log(this.ordenes);
-      }
-    })
-  }
+  
+ 
 
   crearFormGasto(){
     const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
@@ -139,11 +106,27 @@ export class GastoComponent implements OnInit {
       gasto_tipo:['',[]],
       facturaRemision:['',[]],
     })
-    this.resetea()
+    // this.resetea()
+    this.vigila()
   }
   validaCampo(campo: string){
     return this.formGasto.get(campo).invalid && this.formGasto.get(campo).touched
   }
+
+  vigila(){
+    if (this.SUCURSAL !== 'Todas')  this.formGasto.get('sucursal').disable()
+    this.formGasto.get('tipo').valueChanges.subscribe(async (tipo: string) => {
+      console.log(tipo);
+    })
+    this.formGasto.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
+      if (sucursal) {
+        console.log(sucursal);
+        
+      }
+    })
+
+  }
+  
   QueTipo(tipo){
     
     if (tipo === 'orden') {

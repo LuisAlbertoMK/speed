@@ -27,6 +27,7 @@ import { ServiciosService } from 'src/app/services/servicios.service';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
+import { ExporterService } from '../../services/exporter.service';
 
 registerLocaleData(localeES, 'es');
 @Component({
@@ -50,7 +51,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     private _publicos: ServiciosPublicosService, private _security:EncriptadoService, private _campos: CamposSystemService,
     private router: Router, private _sucursales: SucursalesService, private _cotizacion: CotizacionService,
     private _servicios: ServiciosService, private _cotizaciones: CotizacionesService, private _clientes: ClientesService,
-    private _vehiculos: VehiculosService, private rutaActiva: ActivatedRoute,
+    private _vehiculos: VehiculosService, private rutaActiva: ActivatedRoute, private _exporter_excel: ExporterService
   ) {
     // this.itemsCollection = this.afs.collection<Item>('partesAuto');
     // this.items = this.itemsCollection.valueChanges()
@@ -87,6 +88,8 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   temp_data_clientes = {}
   temp_data_vehiculos = {}
   enrutamiento = {cliente:'', sucursal:'', recepcion:'', tipo:'', anterior:'', vehiculo:''}
+
+  filtro_sucursal:string 
   async ngOnInit() {
     // this.listaSucursales()
     this.rol();
@@ -100,6 +103,8 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.ROL = rol
     this.SUCURSAL = sucursal
+
+    this.filtro_sucursal = sucursal
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
       // this.cargaDataCliente_new()
@@ -107,23 +112,22 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
   irPagina(pagina, data){
-    // /:ID/:tipo/:extra
-    console.log(data);
-    // const {cliente, sucursal, recepcion, tipo, anterior, vehiculo } = this.enrutamiento
+    // console.log(data);
+    const {cliente, sucursal, id: idCotizacion, tipo } = data
     // console.log(this.enrutamiento);
-    
-    const {tipo: tipo_get} = data
     let queryParams = {}
-    if (pagina === 'historial-cliente') {
-      // queryParams = { anterior:'clientes', cliente  } 
-    } else if (pagina === 'cotizacionNueva') {
-      queryParams = { anterior:'cotizacion'} 
-    }else if (pagina === 'ServiciosConfirmar' && tipo_get === 'nueva') {
-      queryParams = { anterior:'cotizacion', tipo: tipo_get}
+    if (pagina === 'cotizacionNueva' && !tipo) {
+      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+    }else if (pagina === 'cotizacionNueva' && tipo) {
+      queryParams = { anterior:'cotizacion', tipo} 
+    }else if (pagina === 'ServiciosConfirmar' && !tipo) {
+      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+    }else if (pagina === 'ServiciosConfirmar' && tipo) {
+      queryParams = { anterior:'cotizacion', tipo}
     }
-    console.log(queryParams);
+    // console.log(queryParams);
     
-    // this.router.navigate([`/${pagina}`], { queryParams });
+    this.router.navigate([`/${pagina}`], { queryParams });
   }
   async accion(){
     this.cargandoInformacion = true
@@ -133,48 +137,49 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     // console.log(busqueda);
     // const clientes = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
     const cotizaciones = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
-    cotizaciones.map((c,index)=>{
-      c.index = index
-    })
+    
     this.cotizacionesList = cotizaciones
-    this.newPagination()
+    // this.newPagination()
+    this.filtra_informacion()
 
     console.timeEnd('Execution Time');
-    // console.log(cotizaciones2);
-    
-    // const updates = {}
-    // let nuevas = []
-    // Object.entries(cotizaciones).forEach(([key, entrie])=>{
-    //   const nuevas_entries = this._publicos.crearArreglo2(entrie)
-    //   nuevas_entries.forEach(c=>{
-    //     nuevas.push(c)
-    //   })
-    // })
-    // console.log(nuevas);
-    
+
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    localStorage.setItem('busquedaCotizaciones',filterValue.trim().toLowerCase())
+    // localStorage.setItem('busquedaCotizaciones',filterValue.trim().toLowerCase())
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
   //paginacion de las cotizaciones
-  newPagination(){
+  newPagination(arreglo){
     setTimeout(() => {
+      arreglo.map((c,index)=>{
+        c.index = index
+      })
+      this.dataSource.data = arreglo
       this.cargandoInformacion = false
-      this.dataSource.data = this.cotizacionesList
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
     }, 300)
   }
 
-  indexSaveLocal(index){
-    this.indexPosicionamiento = index
-    localStorage.setItem('indexSaveLocal',index)
+ 
+
+  filtra_informacion(){
+    // console.log(this.filtro_sucursal);
+    const resultados = (this.filtro_sucursal === 'Todas') ? this.cotizacionesList : this.cotizacionesList.filter(c=>c.sucursal === this.filtro_sucursal)
+    this.newPagination(resultados)
+  }
+  exportar(){
+    if (this.cotizacionesList.length) {
+      this._exporter_excel.exportToExcelCotizaciones(this.dataSource.data,'exportacion')
+    }else{
+      this._publicos.swalToast('ningun dato ...',0, 'top-start')
+    }
   }
   
 }

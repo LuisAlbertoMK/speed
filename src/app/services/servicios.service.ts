@@ -155,7 +155,7 @@ export class ServiciosService {
           cliente:'', data_cliente:{}, vehiculo:'', data_vehiculo:{},sucursal:'', data_sucursal:{}, reporte:{}, no_os:'', dataFacturacion: {},observaciones:'',
           checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
           detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
-          fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: ''
+          fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: '', descuento:0
         }  
 //TODO aqui las nuevas funciones
 consulta_recepcion_new(busqueda_ruta): Promise<any> {

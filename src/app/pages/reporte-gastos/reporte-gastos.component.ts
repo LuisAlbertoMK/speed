@@ -164,47 +164,41 @@ export class ReporteGastosComponent implements OnInit {
     this.ROL = rol
     this.SUCURSAL = sucursal
 
-    this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : sucursal
-    this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : sucursal
+    // this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : sucursal
+    // this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : sucursal
     this.gastosDiarios()
-    this.gastosOperacion()
-    this.ordenesServicios()
+    // this.gastosOperacion()
+    // this.ordenesServicios()
     
   }
 
   gastosDiarios(){
     const starCountRef = ref(db, `gastosDiarios`)
-    onValue(starCountRef, (snapshot) => {
+    onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        let nuevosGO = []
-        const gastosDiarios= this._publicos.crearArreglo(snapshot.val())
-        gastosDiarios.forEach(go=>{
-          const clavesDias = Object.keys(go)
-          clavesDias.forEach(d=>{
-            const nuevosD = this._publicos.crearArreglo2(go[d])
-            // const nuevosD = this._publicos.crearArreglo2(go[d] || [])
-            nuevosD.forEach(registro=>{
-              
-              const {sucursal} = this.sucursales_array.find(s=>s.id === registro.sucursal)
-              registro.sucursalShow = sucursal,
-              // registro.tipo = 'diario'
-              nuevosGO.push(registro)
-            })
-          })
-        })
-        const filtro = (this.SUCURSAL === 'Todas') ? nuevosGO : nuevosGO.filter(g=>g.sucursal === this.SUCURSAL)
-        this.gastosDiarios_arr = filtro
-        // console.log('gastosDiarios_arr',filtro.length);
-        setTimeout(() => {
-          // setTimeout(()=>{
-            // console.log('segundo barrido');
-          // this.RealizaBarridoDia()
-          // },2000)
-          // console.log('aqui cambio informacion gastosDiarios');
-          this.unirResultados()
-          this.RealizaBarridoDia()
-        }, 1000);
+        // console.log('aqui');
         
+        const fecha = new Date()
+        const  dia = fecha.getDate().toString().padStart(2, '0')
+        const  mes = (fecha.getMonth()+1).toString().padStart(2, '0')
+        const  year = fecha.getFullYear()
+        const Fecha_formateada = `${dia}${mes}${year}`
+        const busqueda = (this.SUCURSAL === 'Todas') ? 'gastosDiarios': `gastosDiarios/${this.SUCURSAL}/${Fecha_formateada}`
+        // console.log(busqueda);
+        const gastos_hoy_array:any[] = await this._reporte_gastos.gastos_hoy({ruta: busqueda, sucursal: this.SUCURSAL})
+        // console.log(gastos_hoy_array);
+        gastos_hoy_array.map((c, index)=>{ c.index = index; return c})
+        if (this.SUCURSAL !== 'Todas') {
+          const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(gastos_hoy_array)
+          // console.log(reporte);
+          this.reporte = reporte
+        }else{
+          
+        }
+        
+        
+        this.dataSource.data = gastos_hoy_array
+        this.newPagination('gastosDiarios')
       }
     })
   }
@@ -707,6 +701,13 @@ export class ReporteGastosComponent implements OnInit {
       this.fechaBarrido = null
     }
     
+  }
+
+  data_deposito(event){
+    console.log(event);
+    if (event) {
+      this._publicos.cerrar_modal('modal-deposito')
+    }
   }
 
 }

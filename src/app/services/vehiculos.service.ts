@@ -2444,4 +2444,16 @@ export class VehiculosService {
     return marcas
   }
 
+
+  verificaInfo_vehiculo(data_vehiculo){
+    let nueva_data = data_vehiculo
+    if (nueva_data.id) {
+      const campos= ['cilindros','anio','color','no_motor','marcaMotor','marca','categoria','engomado']
+      campos.forEach(campo=>{
+        nueva_data[campo] = (nueva_data[campo]) ? nueva_data[campo] : ''
+      })
+    }
+    return nueva_data
+  }
+
 }

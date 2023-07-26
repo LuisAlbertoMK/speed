@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import { Form } from '@angular/forms';
 import { child, get, set, getDatabase, ref, onValue, onChildAdded, onChildChanged, onChildRemoved, push } from "firebase/database";
 import Swal from 'sweetalert2';
+import { CamposSystemService } from './campos-system.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -10,7 +11,7 @@ const dbRef = ref(getDatabase());
 @Injectable({providedIn: 'root'})
 export class ServiciosPublicosService {
     
-    constructor(private http : HttpClient) {}
+    constructor(private http : HttpClient, private _campos:CamposSystemService) {}
     url: string
     camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refacciones_v','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
     camposReporte_show2 = {
@@ -525,7 +526,8 @@ export class ServiciosPublicosService {
         }
       })
       if (faltantes.length) answer.ok = false 
-      answer.faltante_s = faltantes.join(', ')
+      const cadena = faltantes.join(', ')
+      answer.faltante_s = this.reemplaza_strig(cadena)
       return answer
     }
     swalToast(mensaje:string, icon_get:number, position_get?){
@@ -894,7 +896,13 @@ export class ServiciosPublicosService {
     
       return horaFormateada;
     }
-    
+    solo_numeros_fecha_hoy(){
+      const fecha = new Date()
+      const  dia = fecha.getDate().toString().padStart(2, '0')
+      const  mes = (fecha.getMonth()+1).toString().padStart(2, '0')
+      const  year = fecha.getFullYear()
+      return `${dia}${mes}${year}`
+    }
     
     
     
@@ -1196,12 +1204,13 @@ export class ServiciosPublicosService {
       const formValue = form.getRawValue();
       return formValue
     }
-    reemplaza_strig(cadena:string, arreglo:any[]){
+    reemplaza_strig(cadena:string){
+      const arreglo = this._campos.campos_reeemplza
       let cadenanew = null
       if (cadena.length) {
         cadenanew = cadena
         arreglo.forEach(r=>{
-          cadenanew = cadenanew.replace(r['valor'],r.show)
+          cadenanew = cadenanew.replace(r['campos'],r.reemplaza)
         })
       }
       return cadenanew
@@ -1236,6 +1245,8 @@ export class ServiciosPublicosService {
       
       return aqui
     }
+
+    
 
     
     cerrar_modal(cual){

@@ -153,7 +153,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   
   faltante_s
   ngOnInit(): void {
-    // this.listaSucursales()
     this.rol()
   }
   ngAfterViewInit() {
@@ -180,24 +179,15 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   async acciones(){
     const {vehiculo, cliente,sucursal, tipo, recepcion, cotizacion} = this.enrutamiento
 
-
-    
-
     let  cliente_info = {}, info_elementos = [], info_servicio = '1', info_margen =25, info_iva= true
     let info_vehiculo_ = vehiculo, info_descuento =0 
     let info_formaPago = '1'
-    // console.log(tipo);
-  
 
     if (tipo === 'cliente' || tipo === 'vehiculo') {
       cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    } else if (tipo === 'nueva') {
-      // console.log('    muestra todo');
     } else if (tipo === 'recepcion') {
-      // console.log('buscar info recepcion');
       const busqueda_ruta = `recepciones/${sucursal}/${cliente}/${recepcion}`
       const info_recepcion = await  this._servicios.consulta_recepcion_new(busqueda_ruta)
-      // console.log(info_recepcion);
 
       const {data_cliente, servicios, servicio, margen, iva, formaPago, vehiculo: vv_, descuento} = info_recepcion
 
@@ -212,12 +202,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     } else if (tipo === 'cotizacion') {
       const busqueda_ruta = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
       const info_cotizacion = await  this._cotizaciones.consulta_cotizacion_new(busqueda_ruta)
-      console.log(busqueda_ruta);
       
       const {data_cliente, elementos, servicio, margen, iva, formaPago, vehiculo: vv_, descuento} = info_cotizacion
 
       cliente_info = data_cliente
-      // info_vehiculo = data_vehiculo
       info_elementos = elementos
       info_servicio = servicio
       info_margen = margen
@@ -227,20 +215,21 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       info_descuento = descuento
 
     }
-
     this.extra = info_vehiculo_
     this.infoConfirmar.servicios = info_elementos
     this.infoConfirmar.margen = info_margen
     this.infoConfirmar.iva = info_iva
     this.infoConfirmar.servicio = info_servicio
     this.infoConfirmar.formaPago = info_formaPago
-    // this.infoConfirmar.descuento = info_descuento
+    this.infoConfirmar.descuento = info_descuento
 
     this.infoConfirmar.data_cliente = cliente_info
     this.infoConfirmar.cliente = cliente
     this.infoConfirmar.sucursal = sucursal
     this.infoConfirmar.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-  
+    
+    this.infoConfirmar.vehiculo = info_vehiculo_
+    this.infoConfirmar.data_vehiculo = {}
 
     this.realizaOperaciones()
     this.consulta_vehiculos()
@@ -260,7 +249,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   vehiculo(IDVehiculo){
-    // this.modeloVehiculo = null
     this.infoConfirmar.vehiculo = null
     this.infoConfirmar.data_vehiculo = null
     const vehiculo = this.infoConfirmar.vehiculos.find(v=>v.id === IDVehiculo)
@@ -269,8 +257,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.infoConfirmar.data_vehiculo = vehiculo
       this.infoConfirmar.vehiculo = IDVehiculo
     }
-  }
-  
+  } 
 
   cambiaAprobado(index, aprobado){
     setTimeout(() => {
@@ -289,12 +276,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         c.status = status
       })
     },100)
-    
   }
  
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    // this.events.push(`${type}: ${event.value}`);
-    // console.log(event.value);
     const fecha = event.value
  
     const startI = this._publicos.resetearHoras(fecha['_d'])
@@ -348,23 +332,23 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.realizaOperaciones()
   }
 
-realizaOperaciones(){
-  setTimeout(() => {
-    const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoConfirmar)
-    this.dataSource.data = ocupados
-    this.infoConfirmar.servicios = ocupados
-    this.infoConfirmar.reporte = reporte    
-    this.newPagination()
-  }, 100);
-}
-newPagination(){
-  setTimeout(() => {
-  // if (data==='elementos') {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort
-  // }
-  }, 500)
-}
+  realizaOperaciones(){
+    setTimeout(() => {
+      const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoConfirmar)
+      this.dataSource.data = ocupados
+      this.infoConfirmar.servicios = ocupados
+      this.infoConfirmar.reporte = reporte    
+      this.newPagination()
+    }, 100);
+  }
+  newPagination(){
+    setTimeout(() => {
+    // if (data==='elementos') {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort
+    // }
+    }, 500)
+  }
 
   ///cambiar status de check
   cambiarStatusCheckList(index, status){
@@ -482,9 +466,7 @@ newPagination(){
     const context = mainCanvas.getContext("2d")
     context.clearRect(0,0,700,500);
   }
-  // colorPlumaClick(color:String){
-  //   this.colorPluma = `${color}`
-  // }
+
   primeraAccion(){
     Swal.fire(
       {
@@ -502,9 +484,6 @@ newPagination(){
     },100)
   }
   guardarImagenCanvas(){
-    // this.disableBtnGuardarIMG = true
-    // this.blobDetallesPersonalizado = null
-    
     html2canvas(document.querySelector("#main-canvas")).then((canvas) => {
       const datURL = canvas.toDataURL()
       const blob = this.UrltoBlob(datURL)
@@ -555,12 +534,7 @@ newPagination(){
   }
   onRemove(event) {
     this.files.splice(this.files.indexOf(event), 1)
-    // console.log(this.files);
-  //  const da =  [...this.archivos] 
-  //  let da2 = [...da]
-    // this.archivos = da2.filter(o=>o.nombreArchivo ==='detallesPersonalizado.png')
     this.archivos = []
-    
     for(const f of this.files) {
       this.archTemp={
         archivo:f,
@@ -571,9 +545,6 @@ newPagination(){
       this.nombre=f.name
       this.archivos.push(this.archTemp)
     }
-    // console.log(this.archivos);
-    console.log(this.archivos);
-    
   }
   myFilter = (d: Date | null): boolean => {
     // console.log(d);
@@ -592,8 +563,6 @@ newPagination(){
   public onDragEnter(event:any){
     this.mouseSobre.emit(true)
   }
-  ///con el
-
   //acciones con la camara
   async getCamera(valor){
      
@@ -837,16 +806,11 @@ newPagination(){
       this.consulta_vehiculos()
     }
   }
-  
-
-  
   continuar(){
     const obligatorios = ['cliente','sucursal','servicios','vehiculo','margen','formaPago','firma_cliente','fecha_promesa','servicio']
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoConfirmar, obligatorios)
     
     this.faltante_s = faltante_s
-    // console.log(this.infoConfirmar);
-    
     if (!ok) return
     this.infoConfirmar.personalizados = this.archivos
     this.infoConfirmar.personalizados = []
@@ -858,7 +822,7 @@ newPagination(){
       const asigando = nuevonombre.replace(/ /g, '').slice(0, 10)
       const aqui = `${asigando.toLowerCase()}${index}`
       var file    = a.archivo
-      var reader  = new FileReader();
+      // var reader  = new FileReader();
       blobToBase64(file).then((ans)=>{
         arregloPer.push(Object({ nombre: aqui, data64: ans }))
       })
@@ -876,25 +840,13 @@ newPagination(){
     this.infoConfirmar.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: new Date()}).toString_completa
     
 
-    function verificaInfo_vehiculo(data_vehiculo){
-      let nueva_data = data_vehiculo
-      if (nueva_data.id) {
-        const campos= ['cilindros','anio','color','no_motor','marcaMotor','marca']
-        campos.forEach(campo=>{
-          nueva_data[campo] = (nueva_data[campo]) ? nueva_data[campo] : ''
-        })
-      }
-      return nueva_data
-    }
-    this.infoConfirmar.data_vehiculo = verificaInfo_vehiculo(this.infoConfirmar.data_vehiculo)
+    this.infoConfirmar.data_vehiculo = this._vehiculos.verificaInfo_vehiculo(this.infoConfirmar.data_vehiculo)
     
     this._pdfRecepcion.obtenerImege(this.infoConfirmar).then((pdfReturn:any) => {
       const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
-      // pdfDocGenerator.open();
-      
+
       const {sucursal, cliente,vehiculo, servicios, reporte, data_sucursal, data_cliente, data_vehiculo} = this.infoConfirmar
 
-      // console.log();
       const nueva = {
         mo: reporte['mo'],
         refacciones: reporte['refacciones_v'],
@@ -952,16 +904,14 @@ newPagination(){
                     this.infoConfirmar.pathPDF = ans.ruta
                     dataMail['pathPDF'] = ans.ruta
                     const updates = {}
-    //                 status:null, diasSucursal:0,
-    // fecha_recibido:null, hora_recibido:null, notifico:true,servicio:null, tecnico:null, showNameTecnico: null
+
                     this.infoConfirmar.status = 'recibido'
                     this.infoConfirmar.diasSucursal = 0
                     
                     this.infoConfirmar.notifico = true
-                    // this.infoConfirmar.servicio = 1
+
                     updates[`recepciones/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
-                    // console.log(updates);
-                    
+
                     this._mail.EmailRecepcion(dataMail)
                     // if (this.ParamsGet.tipo === 'cita') {
                     //   updates[`${this.ParamsGet.ruta}/status`] = 'concretada'
@@ -983,10 +933,6 @@ newPagination(){
           }
         })
       })
-      
-      
-      
-      
     })
   }
 }

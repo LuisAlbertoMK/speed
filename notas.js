@@ -1,5 +1,5 @@
 
 git add .
-git commit -m "Arreglar cotizacion parte 2"
+git commit -m "Arreglar detalles de gastos en reporte de gastos"
 git push -u origin main
 
