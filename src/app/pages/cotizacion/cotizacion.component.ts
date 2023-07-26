@@ -66,7 +66,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
 
    // tabla
    dataSource = new MatTableDataSource(); //cotizaciones
-   cotizaciones = ['index','no_cotizacion','searchName','searchPlacas']; //cotizaciones
+   cotizaciones = ['index','no_cotizacion','fullname','placas']; //cotizaciones
    columnsToDisplayWithExpand = [...this.cotizaciones, 'opciones', 'expand']; //cotizaciones
    expandedElement: any | null; //cotizaciones
    @ViewChild('cotizacionesPaginator') paginator: MatPaginator //cotizaciones
@@ -123,14 +123,24 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     console.log(queryParams);
     
-    this.router.navigate([`/${pagina}`], { queryParams });
+    // this.router.navigate([`/${pagina}`], { queryParams });
   }
   async accion(){
+    this.cargandoInformacion = true
+    console.time('Execution Time');
+    
     const busqueda = (this.SUCURSAL === 'Todas') ? 'cotizacionesRealizadas': `cotizacionesRealizadas/${this.SUCURSAL}`
-    console.log(busqueda);
+    // console.log(busqueda);
     // const clientes = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
     const cotizaciones = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
-    console.log(cotizaciones);
+    cotizaciones.map((c,index)=>{
+      c.index = index
+    })
+    this.cotizacionesList = cotizaciones
+    this.newPagination()
+
+    console.timeEnd('Execution Time');
+    // console.log(cotizaciones2);
     
     // const updates = {}
     // let nuevas = []
@@ -155,11 +165,11 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   //paginacion de las cotizaciones
   newPagination(){
     setTimeout(() => {
+      this.cargandoInformacion = false
       this.dataSource.data = this.cotizacionesList
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
-      
-    }, 500)
+    }, 300)
   }
 
   indexSaveLocal(index){

@@ -113,6 +113,9 @@ export class CotizacionesService {
   }
 
   lista_en_duro_sucursales = [...this._sucursales.lista_en_duro_sucursales]
+
+  clientes_temporales = {}
+  vehiculos_temporales = {}
   constructor(
     private _publicos: ServiciosPublicosService,private _clientes: ClientesService,private _vehiculos: VehiculosService,
     private _sucursales: SucursalesService, private _servicios:ServiciosService
@@ -182,25 +185,92 @@ export class CotizacionesService {
         if (snapshot.exists()) {
           let data_cotizacion = []
           if (sucursal === 'Todas') {
-            
+              const cotizacionesPorCliente = obtenerCotizacionesPorCliente(snapshot.val());
+              data_cotizacion = [...cotizacionesPorCliente]
+              snapshot.forEach((childSnapshot) => {
+                cotizacionesPorCliente.map(c=>{
+                  const {cliente, sucursal:idSUcursal, vehiculo, formaPago} = c
+                  c.data_sucursal = this.lista_en_duro_sucursales.find(s=>s.id === idSUcursal)
+
+                  c.pagoName = this.formasPago.find(f=>String(f.id) === String(formaPago)).pago
+                  if (this.clientes_temporales[cliente]) {
+                    const {nombre, apellidos} = this.clientes_temporales[cliente]
+                    c.data_cliente = this.clientes_temporales[cliente]
+                    c.fullname = `${nombre} ${apellidos}`
+                  }else{
+                    const starCountRef_cliente = ref(db, `clientes/${idSUcursal}/${cliente}`);
+                    onValue(starCountRef_cliente, (snapshot_cliente) => {
+                      const {nombre, apellidos} = Object(snapshot_cliente.val())
+                      c.data_cliente = snapshot_cliente.val()
+                      c.fullname = `${nombre} ${apellidos}`
+                      this.clientes_temporales[cliente] = snapshot_cliente.val()
+                    }, {
+                      onlyOnce: true
+                    });
+                  }
+                  if (this.vehiculos_temporales[vehiculo]) {
+                    // c.data_vehiculo = this.vehiculos_temporales[vehiculo]
+                    const {placas} = this.vehiculos_temporales[vehiculo]
+                    c.data_vehiculo = this.vehiculos_temporales[vehiculo]
+                    c.placas = placas
+                  }else{
+                    const starCountRef_vehiculo = ref(db, `vehiculos/${idSUcursal}/${cliente}/${vehiculo}`);
+                    onValue(starCountRef_vehiculo, (snapshot_vehiculo) => {
+                      this.vehiculos_temporales[vehiculo] = snapshot_vehiculo.val()
+                      const {placas} =  Object(snapshot_vehiculo.val())
+                      c.data_vehiculo = snapshot_vehiculo.val()
+                      c.placas = placas
+                    }, {
+                      onlyOnce: true
+                    });
+                  }
+                  
+                })
+              })
+              
           }else{
             // data_cotizacion = snapshot.val()
-
+            // console.log('SUCURSAL: ', snapshot.key);
+            
             snapshot.forEach((childSnapshot) => {
-              const childKey = childSnapshot.key;
+              // const childKey = childSnapshot.key;
               const childData = childSnapshot.val();
-              console.log(childKey);
-              console.log(childData);
-              
+              // console.log(childKey);
+              Object.entries(childData).forEach(async ([key, entrie])=>{
+                const nueva_entrie = Object(entrie)
+                const {cliente, sucursal, vehiculo, formaPago} = nueva_entrie
+                const starCountRef_cliente = ref(db, `clientes/${sucursal}/${cliente}`);
+                const starCountRef_vehiculo = ref(db, `vehiculos/${sucursal}/${cliente}/${vehiculo}`);
+                
+                onValue(starCountRef_cliente, (snapshot_cliente) => {
+                  // snapshot_cliente.forEach((childSnapshot_cliente) => {
+                    // if (!snapshot.exists()) { console.log(entrie)}
+                    const {nombre, apellidos} = snapshot_cliente.val()
+                    nueva_entrie.data_cliente = snapshot_cliente.val()
+                    nueva_entrie.fullname = `${nombre} ${apellidos}`
+                  // });
+                }, {
+                  onlyOnce: true
+                });
+                onValue(starCountRef_vehiculo, (snapshot_vehiculo) => {
+                  // snapshot_vehiculo.forEach((childSnapshot_vehiculo) => {
+                    const {placas} = snapshot_vehiculo.val()
+                    nueva_entrie.data_vehiculo = snapshot_vehiculo.val()
+                    nueva_entrie.placas = placas
+                  // });
+                }, {
+                  onlyOnce: true
+                });
+
+               
+                nueva_entrie.pagoName = this.formasPago.find(f=>String(f.id) === String(formaPago)).pago
+                nueva_entrie.data_sucursal = this.lista_en_duro_sucursales.find(s=>s.id === sucursal)
+                data_cotizacion.push(nueva_entrie)
+                
+                
+                // const data_cliente = await 
+              })
             })
-            // Object.entries(snapshot.val()).forEach(([key, entrie])=>{
-            //   const nuevas_entries = this._publicos.crearArreglo2(entrie)
-            //   nuevas_entries.forEach(async (c)=>{
-            //     const data_cliente = await this.getInfo_cliente(c)
-            //     const nueva = {...c, data_cliente}
-            //     data_cotizacion.push(nueva)
-            //   })
-            // })
           }
           resolve(data_cotizacion);
         } else {
@@ -271,4 +341,23 @@ export class CotizacionesService {
     return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
 }
   
+}
+
+function obtenerCotizacionesPorCliente(jsonData: any): any[] {
+  const cotizacionesPorCliente: any[] = [];
+
+  Object.keys(jsonData).forEach((claveSucursal) => {
+    const usuarios = jsonData[claveSucursal];
+
+    Object.keys(usuarios).forEach((claveUsuario) => {
+      const cotizaciones = usuarios[claveUsuario];
+      Object.keys(cotizaciones).forEach((claveCotizacion) => {
+        cotizacionesPorCliente.push(cotizaciones[claveCotizacion]);
+      });
+    });
+  });
+
+  
+
+  return cotizacionesPorCliente;
 }
