@@ -88,7 +88,7 @@ export class RealizaDepositoComponent implements OnInit {
       metodo:1,
       status:true,
       tipo:'deposito',
-      fecha_registro: this._publicos.retorna_fechas_hora().toString
+      fecha_recibido: this._publicos.retorna_fechas_hora().toString
     }
     this._publicos.mensaje_pregunta('Realizar deposito').then(({respuesta})=>{
       if (respuesta) {

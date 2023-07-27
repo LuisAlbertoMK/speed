@@ -62,7 +62,8 @@ export class ReporteGastosComponent implements OnInit {
   
   historial_gastos_operacion = []
   gastosDiarios_arr = []
-  pagosGastosOP_arr = []
+  historial_gastos_orden = []
+  todos_ultimate =[]
   
   listaConjunta_arr = []
 
@@ -70,7 +71,7 @@ export class ReporteGastosComponent implements OnInit {
 
   // tabla
   dataSource = new MatTableDataSource(); //elementos
-  elementos = ['id','sucursalShow','no_os','metodoShow','status','monto','tipo','fecha']; //elementos
+  elementos = ['sucursalShow','no_os','metodoShow','status','monto','tipo','fecha']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'expand']; //elementos
   expandedElement: any | null; //elementos
   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
@@ -149,6 +150,7 @@ export class ReporteGastosComponent implements OnInit {
 
   ocupados_gastos = []
   dias_espera = 1
+  campos_recupera = ['concepto','facturaRemision','fecha_recibido','id','index','metodo','metodoShow','monto','no_os','numero_os','referencia','status','sucursal','sucursalShow','tipo','numero_os']
   ngOnInit(): void {
     this.rol()
   }
@@ -168,33 +170,52 @@ export class ReporteGastosComponent implements OnInit {
     // this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : sucursal
     this.gastosDiarios()
     this.gastosOperacion()
+    this.gastosOrden()
+
+    this.vigila()
     // this.gastosOperacion()
     // this.ordenesServicios()
     
+  }
+  vigila(){
+    this.rangeReporteGastos.valueChanges.subscribe(({start, end})=>{
+        
+
+        if (start && start['_d'] && end && end['_d']) {
+          // const {_d: start_} = start
+          // const {_d: end_} = end
+          // const h_s = '00:00:01'
+          // const h_e = '23:59:59'
+          // const _start = this._publicos.resetearHoras_horas( new Date(start_),h_s)
+          // const _end = this._publicos.resetearHoras_horas( new Date(end_),h_e)
+          // console.log('inicio: ', _start);
+          // console.log('end: ', _end);
+          const h_s = '00:00:01';
+          const h_e = '23:59:59';
+          
+          const _start = this._publicos.resetearHoras_horas(new Date(start._d), h_s);
+          const _end = this._publicos.resetearHoras_horas(new Date(end._d), h_e);
+          
+          console.log('inicio: ', _start);
+          console.log('end: ', _end);
+
+        }
+    })
   }
 
   gastosDiarios(){
     const starCountRef = ref(db, `gastosDiarios`)
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        // console.log('aqui');
+
+        const Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(new Date())
         
-        const fecha = new Date()
-        const  dia = fecha.getDate().toString().padStart(2, '0')
-        const  mes = (fecha.getMonth()+1).toString().padStart(2, '0')
-        const  year = fecha.getFullYear()
-        const Fecha_formateada = `${dia}${mes}${year}`
         const busqueda = (this.SUCURSAL === 'Todas') ? 'gastosDiarios': `gastosDiarios/${this.SUCURSAL}/${Fecha_formateada}`
-        // console.log(busqueda);
+        
         const gastos_hoy_array:any[] = await this._reporte_gastos.gastos_hoy({ruta: busqueda, sucursal: this.SUCURSAL})
-        // console.log(gastos_hoy_array);
-        
-        
-        
+
         this.gastosDiarios_arr =  gastos_hoy_array
         this.unirResultados_new()
-        // this.dataSource.data = gastos_hoy_array
-        // this.newPagination('gastosDiarios')
       }
     })
   }
@@ -205,33 +226,51 @@ export class ReporteGastosComponent implements OnInit {
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
         const busqueda = (this.SUCURSAL === 'Todas') ? 'historial_gastos_operacion': `historial_gastos_operacion/${this.SUCURSAL}`
-        console.log(busqueda);
         const historial_gastos_operacion = await this._reporte_gastos.historial_gastos_operacion({ruta: busqueda, sucursal: this.SUCURSAL})
-        console.log(historial_gastos_operacion);
         const incio_dia = this._publicos.resetearHoras_horas(new Date(),'00:00:01')
         const fin_dia = this._publicos.resetearHoras_horas(new Date(),'23:59:59')
-        console.log(incio_dia);
-        console.log(fin_dia);
         
         const filtro = historial_gastos_operacion.filter(a => new Date(a.fecha_recibido) >= incio_dia && new Date(a.fecha_recibido) <= fin_dia)
-        console.log(filtro);
         
         this.historial_gastos_operacion = filtro
         this.unirResultados_new()
-        this.newPagination('gastosDiarios')
+
+      }
+    })
+  }
+  gastosOrden(){
+    const starCountRef = ref(db, `historial_gastos_orden`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const busqueda = (this.SUCURSAL === 'Todas') ? 'historial_gastos_orden': `historial_gastos_orden/${this.SUCURSAL}`
+        // console.log(snapshot.val());
+        
+        const historial_gastos_orden = await this._reporte_gastos.historial_gastos_orden({ruta: busqueda, sucursal: this.SUCURSAL})
+        const incio_dia = this._publicos.resetearHoras_horas(new Date(),'00:00:01')
+        const fin_dia = this._publicos.resetearHoras_horas(new Date(),'23:59:59')
+        const filtro = historial_gastos_orden.filter(a => new Date(a.fecha_recibido) >= incio_dia && new Date(a.fecha_recibido) <= fin_dia)
+        
+        this.historial_gastos_orden = filtro
+        this.unirResultados_new()
       }
     })
   }
 
   unirResultados_new(){
-    console.log(this.historial_gastos_operacion);
+    // console.log(this.historial_gastos_operacion);
     
-    const ultimate = [...this.gastosDiarios_arr, ...this.historial_gastos_operacion]
+    const ultimate = [...this.gastosDiarios_arr, ...this.historial_gastos_operacion, ...this.historial_gastos_orden]
+    const ordenados = this._publicos.ordenarData(ultimate,'fecha_recibido',false)
+
+    // this.todos_ultimate =  (!this.todos_ultimate.length) ?  ordenados :  this._publicos.actualizarArregloExistente(this.todos_ultimate, ordenados,this.campos_recupera);
+    // const nueva  = (!ordenados) ?  ultimate :  this._publicos. actualizarArregloExistente(this.todos_ultimate, ultimate,this.campos_recupera);
     // console.log(ultimate);
-    ultimate.map((c, index)=>{ c.index = index; return c})
+    
     if (this.SUCURSAL !== 'Todas') {
-      const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(ultimate)
+      const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(ordenados)
       this.reporte = reporte
+
+      // console.log(reporte);
     }else{
       
     }

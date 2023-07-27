@@ -80,8 +80,8 @@
             <div class="input-group mb-3 ">
               <mat-date-range-picker #picker></mat-date-range-picker>
               <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
-                <input matStartDate class="mr-2" formControlName="start" readonly (dateChange)="cambiosFechas('report')" placeholder="Inicio">
-                <input matEndDate formControlName="end" readonly (dateChange)="cambiosFechas('report')" placeholder="Final">
+                <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio">
+                <input matEndDate formControlName="end" readonly placeholder="Final">
               </mat-date-range-input>
               <div class="input-group-append">
                 <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
@@ -151,40 +151,13 @@
                   <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
                 </ng-container>
               </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
-                <ng-container *ngIf="row.status; then aprobadoTemplate else noAprobadoTemplate"></ng-container>
-
-                <ng-template #aprobadoTemplate>
-                  <strong class="text-success">Aprobado</strong>
-                </ng-template>
-
-                <ng-template #noAprobadoTemplate>
-                  <strong class="text-danger">No Aprobado</strong>
-                </ng-template>
-
-                
+              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*.8+'px'}"  class="text-start">
+                <strong class="text-success" [ngClass]="{'text-danger': !row.status}">
+                  {{(row.status)? 'Aprobado':'No Aprobado'}}
+                </strong>
               </td>
             </ng-container>
-            <ng-container matColumnDef="concepto">
-              <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('reporte','concepto'); fechas_reporte = !fechas_reporte">&nbsp; Concepto &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'concepto'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
-                {{row.concepto  | capitalizarUno}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="referencia">
-              <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('reporte','referencia'); fechas_reporte = !fechas_reporte">&nbsp; Referencia &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'referencia'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
-                  {{row.referencia}}
-              </td>
-            </ng-container>
+            
             <ng-container matColumnDef="monto">
               <th mat-header-cell *matHeaderCellDef class="text-end  pointer" (click)="ordenamiento('reporte','monto'); fechas_reporte = !fechas_reporte">&nbsp; Monto &nbsp; 
                 <ng-container *ngIf="ordenamientoCampo_reporte === 'monto'">
@@ -206,13 +179,13 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','fechaCompara'); fechas_reporte = !fechas_reporte">&nbsp; Fecha &nbsp;
+              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','fechaCompara'); fechas_reporte = !fechas_reporte">&nbsp; Fecha recibido &nbsp;
                 <ng-container *ngIf="ordenamientoCampo_reporte === 'fechaCompara'">
                   <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
                 </ng-container>
               </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
-                  {{row.fecha_recibido | formateHora}}
+              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"  class="text-start"> 
+                  {{row.fecha_recibido | formateHora:true}}
               </td>
             </ng-container>
             <ng-container matColumnDef="opciones">

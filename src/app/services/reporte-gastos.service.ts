@@ -66,7 +66,44 @@ export class ReporteGastosService {
       });
     });
   }
+  historial_gastos_orden(data:any): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const {sucursal, ruta} = data
+      const starCountRef = ref(db, ruta);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(sucursal);
+          let clientes = []
+          if (sucursal !== 'Todas') {
+            snapshot.forEach((childSnapshot) => {
+              const childKey = childSnapshot.key;
+              const childData = childSnapshot.val();
+              Object.entries(childData).forEach(([key, entrie])=>{
+                const entri_ = Object(entrie)
+                entri_.sucursalShow = this.sucursal_array.find(s=>s.id === entri_.sucursal).sucursal
+                entri_.metodoShow = this.formas_pago_arra.find(m=>String(m.metodo) === String(entri_.metodo)).show
+                const nueva:any= {...entri_, id: key}
+                clientes.push(nueva)
+              })
+            });
+          }
+          resolve(clientes);
+        } else {
+          resolve([]);
+        }
+      }, {
+        onlyOnce: true
+      });
+    });
+  }
 
+  fecha_numeros_sin_Espacions(fecha_){
+    let fecha = (fecha_)? fecha_ : new Date()
+    const  dia = fecha.getDate().toString().padStart(2, '0')
+    const  mes = (fecha.getMonth()+1).toString().padStart(2, '0')
+    const  year = fecha.getFullYear()
+    return `${dia}${mes}${year}`
+  }
   reporte_gastos_general(data:any[]){
     const tipos = ['deposito','operacion', 'sobrante', 'gasto','orden']
     const arreglos = { deposito: [], operacion: [], sobrante:[], gasto: [], orden:[]}

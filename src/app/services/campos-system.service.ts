@@ -110,7 +110,8 @@ export class CamposSystemService {
     {campos:'engomado', reemplaza:'Engomado'},
     {campos:'marcaMotor', reemplaza:'Marca motor'},
     {campos:'transmision', reemplaza:'Transmision'},
-    {campos:'gasto_Tipo', reemplaza:'tipo de gasto'},
+    {campos:'gasto_Tipo', reemplaza:'Tipo de gasto'},
     {campos:'fecha_recibido', reemplaza:'Fecha registro'},
+    {campos:'numero_os', reemplaza:'No. OS'},
   ]
 }

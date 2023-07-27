@@ -89,8 +89,8 @@ export class GastoComponent implements OnInit {
   crearFormGasto(){
     const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
     this.formGasto = this.fb.group({
-      tipo:['gasto',[Validators.required]],
-      no_os:['',[]],
+      tipo:['operacion',[Validators.required]],
+      numero_os:['',[]],
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
@@ -134,21 +134,7 @@ export class GastoComponent implements OnInit {
     const day = fecha.getDay()
     return day !== 0;
   };
-  validaInformacion(){
-    const camposNecesariosOperacion = ['tipo','monto','metodo','concepto','fecha','sucursal','referencia','facturaRemision']
-    const camposNecesariosOrden = ['tipo','no_os','monto','metodo','concepto','fecha','sucursal','referencia','gasto_tipo','facturaRemision']
-    // console.log(gastoData);
-    // console.log(this.SUCURSAL);
-    if (this.SUCURSAL !=='Todas') {
-      const fecha = this._publicos.retorna_fechas_hora({fechaString: new Date().toString()}).fecha_hora_actual
-      this.formGasto.controls['fecha'].setValue(fecha)
-    }
-    const gastoData = this._publicos.recuperaDatos(this.formGasto)
-    
-    const revisar = (gastoData.tipo === 'gasto') ? camposNecesariosOperacion : camposNecesariosOrden
-    const {ok, faltante_s}= this._publicos.realizavalidaciones_new(gastoData,revisar)
-    return {ok, faltante_s}
-  }
+
   registroGasto(){
     // this.validaInformacion()
     const info_get = this._publicos.recuperaDatos(this.formGasto)
@@ -165,7 +151,7 @@ export class GastoComponent implements OnInit {
     const campos_orden = [
       ...campos_operacion,
       'gasto_tipo',
-      'no_os',
+      'numero_os',
     ]
 
     const cuales_ = (info_get.tipo === 'orden') ? campos_orden : campos_operacion
@@ -176,9 +162,12 @@ export class GastoComponent implements OnInit {
 
     if (!ok) return
     const recuperada = this._publicos.nuevaRecuperacionData(info_get, cuales_)
-    const {sucursal, no_os, fecha_recibido: fech_} = recuperada
-    const data_orden =  this.claves_ordenes.find(f=>f.key === no_os)
+    const {sucursal, numero_os, fecha_recibido: fech_} = recuperada
+    const data_orden =  this.claves_ordenes.find(f=>f.key === numero_os)
+    if (info_get.tipo === 'orden') recuperada.no_os = data_orden.no_os
     const fecha_muestra = this.transform_fecha(fech_, true)
+    // console.log(recuperada);
+    
     this._publicos.mensaje_pregunta('Realizar deposito de fecha '+ fecha_muestra).then(({respuesta})=>{
       if (respuesta) {
         const clave_ = this._publicos.generaClave()
@@ -186,6 +175,7 @@ export class GastoComponent implements OnInit {
         `historial_gastos_orden/${sucursal}/${data_orden.key}/${clave_}` : 
         `historial_gastos_operacion/${sucursal}/${clave_}`
         recuperada.status = true
+        
         const updates = {[ruta]: recuperada }
         update(ref(db), updates).then(()=>{
           const titulo = (info_get.tipo === 'orden') ? 'Orden' :'Operacion'
@@ -207,7 +197,7 @@ export class GastoComponent implements OnInit {
   }
   reseteaForm(){
     const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
-    this.formGasto.reset({sucursal, tipo:'gasto'})
+    this.formGasto.reset({sucursal, tipo:'operacion'})
   }
   cancela(){
     this.reseteaForm()
