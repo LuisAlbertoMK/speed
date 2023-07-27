@@ -206,7 +206,28 @@ consulta_recepciones(data): Promise<any[]> {
 }
 //TODO aqui las nuevas funciones
 
-
+claves_recepciones(busqueda): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    get(child(dbRef, busqueda)).then((snapshot) => {
+      if (snapshot.exists()) {
+        // console.log(snapshot.val());
+        let claves = []
+        snapshot.forEach((childSnapshot) => {
+          const childKey = childSnapshot.key;
+          const childData = childSnapshot.val();
+          // console.log({childKey, childData});
+          Object.entries(childData).forEach(([key, entrie])=>{
+            const entrie_ = entrie
+              claves.push({key, no_os: entrie_['no_os'], cliente: entrie_['cliente']})
+          })
+        })
+        resolve(claves);
+      } else {
+        resolve([]);
+      }
+    })
+  });
+}
 
 
 consulta_recepciones_new(): Promise<any[]> {

@@ -60,7 +60,7 @@ export class ReporteGastosComponent implements OnInit {
   miniColumnas:number = this._campos.miniColumnas
 
   
-  gastosOperacion_arr = []
+  historial_gastos_operacion = []
   gastosDiarios_arr = []
   pagosGastosOP_arr = []
   
@@ -167,6 +167,7 @@ export class ReporteGastosComponent implements OnInit {
     // this.sucursalFiltro = (this.SUCURSAL === 'Todas') ? 'Todas' : sucursal
     // this.sucursalFiltroReporte = (this.SUCURSAL === 'Todas') ? 'Todas' : sucursal
     this.gastosDiarios()
+    this.gastosOperacion()
     // this.gastosOperacion()
     // this.ordenesServicios()
     
@@ -187,161 +188,57 @@ export class ReporteGastosComponent implements OnInit {
         // console.log(busqueda);
         const gastos_hoy_array:any[] = await this._reporte_gastos.gastos_hoy({ruta: busqueda, sucursal: this.SUCURSAL})
         // console.log(gastos_hoy_array);
-        gastos_hoy_array.map((c, index)=>{ c.index = index; return c})
-        if (this.SUCURSAL !== 'Todas') {
-          const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(gastos_hoy_array)
-          // console.log(reporte);
-          this.reporte = reporte
-        }else{
-          
-        }
         
         
-        this.dataSource.data = gastos_hoy_array
+        
+        this.gastosDiarios_arr =  gastos_hoy_array
+        this.unirResultados_new()
+        // this.dataSource.data = gastos_hoy_array
+        // this.newPagination('gastosDiarios')
+      }
+    })
+  }
+//   historial_gastos_orden
+// historial_gastos_operacion
+  gastosOperacion(){
+    const starCountRef = ref(db, `historial_gastos_operacion`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const busqueda = (this.SUCURSAL === 'Todas') ? 'historial_gastos_operacion': `historial_gastos_operacion/${this.SUCURSAL}`
+        console.log(busqueda);
+        const historial_gastos_operacion = await this._reporte_gastos.historial_gastos_operacion({ruta: busqueda, sucursal: this.SUCURSAL})
+        console.log(historial_gastos_operacion);
+        const incio_dia = this._publicos.resetearHoras_horas(new Date(),'00:00:01')
+        const fin_dia = this._publicos.resetearHoras_horas(new Date(),'23:59:59')
+        console.log(incio_dia);
+        console.log(fin_dia);
+        
+        const filtro = historial_gastos_operacion.filter(a => new Date(a.fecha_recibido) >= incio_dia && new Date(a.fecha_recibido) <= fin_dia)
+        console.log(filtro);
+        
+        this.historial_gastos_operacion = filtro
+        this.unirResultados_new()
         this.newPagination('gastosDiarios')
       }
     })
   }
-  gastosOperacion(){
-    const starCountRef = ref(db, `HistorialGastosOperacion`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        let gastosOperacion = []
-        const gastosOp = this._publicos.crearArreglo2(snapshot.val())
-        gastosOp.forEach(go=>{
-          const {sucursal} = this.sucursales_array.find(s=>s.id === go.sucursal)
-          go.sucursalShow = sucursal
-          go.tipo = 'operacion'
-          gastosOperacion.push(go)
-        })        
-        const filtro = (this.SUCURSAL === 'Todas') ? gastosOperacion : gastosOperacion.filter(g=>g.sucursal === this.SUCURSAL)
-        this.gastosOperacion_arr = filtro
-        
-        // console.log('gastosOperacion_arr',filtro.length);
-        setTimeout(() => {
-          // console.log('aqui cambio informacion HistorialGastosOperacion');
-          this.unirResultados()
-        }, 500);
-      }
-    })
-  }
-  ordenesServicios(){
-    const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        let recepciones= this._publicos.crearArreglo2(snapshot.val())
-        // HistorialGastos
-        // HistorialPagos
-        let aquiDocumentos = []
-        const updates = {}
-        recepciones.map(os=>{
-          
-          // if(os.id === '-NLS7TphRB86LSfRilno'){
-          //   console.log(os.no_os);
-          //   console.log(os);
-          // }
 
-          // const id = os.id
-          // updates[`recepciones/${os.id}/HistorialGastos`] = null
-          // updates[`recepciones/${os.id}/HistorialPagos`] = null
-          // console.log(os.no_os);
-          // console.log(os);
-          
-          // console.log(
-          //   this._reporte_gastos.nombresServicios(os.servicios)
-          // );
-          os.string_servicios =  this._reporte_gastos.nombresServicios(os.servicios)
-          
-            
-            
-          os.hitorial_gastos = (os.HistorialGastos) ? this._publicos.crearArreglo2(os.HistorialGastos) : []
-          os.historial_pagos = (os.HistorialPagos) ? this._publicos.crearArreglo2(os.HistorialPagos) : []
-
-          os.historial_pagos.map(element => {
-            element.tipoNuevo = 'pago'
-          });
-          let totalGastosOrden = 0
-          os.hitorial_gastos.map(element => {
-            element.tipoNuevo = 'gasto'
-            totalGastosOrden += element.monto
-          });
-          const mitad = os.reporte.total / 2
-          os.totalGastosOrden = totalGastosOrden
-          os.advertencia = ( totalGastosOrden > mitad) ? 'Cuidado' : 'Se ve bien!'
-          
-          const nuevosHistoriales = os.hitorial_gastos
-          
-          
-          nuevosHistoriales.forEach(histo => {
-            
-            const {sucursal} = this.sucursales_array.find(s=>s.id === histo.sucursal)
-            histo.sucursalShow = sucursal
-            histo.no_os = os.no_os
-            histo.vehiculo = os.vehiculo
-            histo.reporte = os.reporte
-            histo.statusOrden = os.status
-            histo.advertencia =  os.advertencia
-            histo.totalOrden =  os.reporte.total
-            histo.totalGastosOrden = os.totalGastosOrden
-            histo.id_orden = os.id
-            histo.string_servicios = os.string_servicios
-            aquiDocumentos.push(histo)
-          });
-          if (nuevosHistoriales.length) {
-            // console.log(nuevosHistoriales);
-          }
-          
-          if(os.status === 'entregado'){
-            os.fecha_entregado_compara = this._publicos.construyeFechaString(os.fecha_entregado)
-          }
-          if(os.fecha_recibido){
-            // os.fecha_recibido_compara = this._publicos.construyeFechaString(os.fecha_recibido)
-            // os.fecha_recibido_compara = this._publicos.asignarHoraAFecha(os.fecha_registro,os.hora_registro)
-          }
-          // const {sucursal} = this.sucursales_array.find(s=>s.id === os.sucursal.id)
-          // os.sucursalShow = sucursal
-          // os.reporte = this._publicos.realizarOperaciones_2(os).reporte
-        })
-        // console.log(updates);
-        // update(ref(db), updates).then(()=>{
-        //   console.log('finalizo');
-        // })
-        // .catch(err=>{
-        //   console.log(err);
-          
-        // })
-        
-        const filtro = (this.SUCURSAL === 'Todas') ? aquiDocumentos : aquiDocumentos.filter(os=>os.sucursal === this.SUCURSAL)
-        // console.log(filtro);
-        this.listaos_arr = (this.SUCURSAL === 'Todas') ? recepciones : recepciones.filter(os=>os.sucursal.id === this.SUCURSAL)
-        // console.log(this.listaos_arr);
-        
-        // this.operacionesAdmin()
-        
-        this.pagosGastosOP_arr = filtro
-        // console.log('pagosGastosOP_arr',filtro.length);
-        setTimeout(() => {
-          // console.log('aqui cambio informacion recepciones');
-          
-          this.unirResultados()
-        }, 500);
-        
-      } else {
-        console.log("No data available");
-      }
-    })
+  unirResultados_new(){
+    console.log(this.historial_gastos_operacion);
+    
+    const ultimate = [...this.gastosDiarios_arr, ...this.historial_gastos_operacion]
+    // console.log(ultimate);
+    ultimate.map((c, index)=>{ c.index = index; return c})
+    if (this.SUCURSAL !== 'Todas') {
+      const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(ultimate)
+      this.reporte = reporte
+    }else{
+      
+    }
+    this.dataSource.data = ultimate
   }
-  unirResultados(){
-    // const informa = this.gastosOperacion_arr.concat( this.gastosDiarios_arr ).concat( this.pagosGastosOP_arr )    
-    const informa = [...this.gastosOperacion_arr, ...this.gastosDiarios_arr, ...this.pagosGastosOP_arr];
-    informa.forEach(con => {
-      con.no_os = con.no_os || '';
-    });
-    this.listaConjunta_arr = informa    
-    // console.log(informa);
-    this.realizarOperaciones()
-    this.operacionesAdmin()
-  }
+ 
+ 
   async realizarOperaciones(){
 
     const fecha_inicial = new Date(this.fechas_get.inicio)
@@ -432,78 +329,15 @@ export class ReporteGastosComponent implements OnInit {
         const fechaAsigan = {inicio: this._publicos.resetearHoras(start['_d']), final: this._publicos.resetearHoras_horas(end['_d'],'23:59:59')}
         if(donde === 'admin'){
           this.fechas_getAdministracion = fechaAsigan
-          this.operacionesAdmin();
+          // this.operacionesAdmin();
         }else{
           this.fechas_get = fechaAsigan
-          this.unirResultados()
+          // this.unirResultados()
         }
       }
     }
   }
-  operacionesAdmin(){
-
-    const reporteEND = {iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,margen:0, por_margen:0}
-    const filtrarEntregados = this.listaos_arr.filter(r=>r.status === 'entregado')
-    
-    const filtrosSucursal = (this.sucursalFiltro === 'Todas') ? filtrarEntregados :  filtrarEntregados.filter(os=>os.sucursal.id === this.sucursalFiltro )
-    
-
-    const gastosFechas = filtrosSucursal.filter(a => a.fecha_entregado_compara >= this.fechas_getAdministracion.inicio && a.fecha_entregado_compara <= this.fechas_getAdministracion.final)
-    gastosFechas.map((g,index)=>{
-      g.index = index
-      const {cliente, reporte} = g
-      g.subtotal = reporte.subtotal
-      g.clienteShow = `${cliente.nombre} ${cliente.apellidos}`
-      const { show } = this.metodospago.find(m=>m.valor === String(g.formaPago))
-      g.formaPagoShow = show
-    })
-    this.dataSourceAdministracion.data = gastosFechas
-    this.newPagination('admin')
-    gastosFechas.forEach(os=>{
-       os.hitorial_gastos.forEach(gasto => {
-
-        // if(gasto.status ) reporteEND.gastosmoRefacciones += gasto.monto
-      });
-      const {reporte} = os
-      const {subtotal, total, iva} = reporte
-      reporteEND.subtotal  += subtotal
-      reporteEND.total     += total
-      if(os.iva){
-        reporteEND.iva     += iva
-      }
-    })
-
-    const Cerradas = gastosFechas.filter(c=>c.status === 'entregado')
-    // console.log(Cerradas.length);
-    // console.log(Cerradas);
-    Cerradas.forEach(os=>{
-      os.hitorial_gastos.forEach(gasto => {
-        if(gasto.status && gasto.gasto_tipo === 'refaccion') reporteEND.refacciones += gasto.monto
-      })
-    })
-    //margen de la ordenes cerradas
-    reporteEND.margen = reporteEND.subtotal - reporteEND.refacciones
-    //porcentaje de margen
-    reporteEND.por_margen = (reporteEND.margen / reporteEND.subtotal) * 100
-
-    const gastosOperacionFechas = this.gastosOperacion_arr.filter(a => a.fecha_registro_compara >= this.fechas_getAdministracion.inicio && a.fecha_registro_compara <= this.fechas_getAdministracion.final)
-
-    // const filtrosSucursal2 = (this.sucursalFiltro !== this.SUCURSAL) ? gastosOperacionFechas :  gastosOperacionFechas.filter(os=>os.sucursal.id === this.sucursalFiltro )
-    gastosOperacionFechas.forEach(element => {
-      if(element.status) reporteEND.operacion += element.monto
-    });
-    reporteEND.cantidad = Cerradas.length
-    // reporteEND.libreSinIVA = reporteEND.subtotal - reporteEND.gastosmoRefacciones
-    // reporteEND.libreIva = reporteEND.total - (reporteEND.gastosmoRefacciones)
-    // reporteEND.libre_neto = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
-
-
-    // reporteEND.libre_neto_sin_iva = reporteEND.subtotal - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
-    // reporteEND.libre_neto_con_iva = reporteEND.total - (reporteEND.gastosmoRefacciones + reporteEND.operacion)
-    // console.table(reporteEND);
   
-    this.reporteAdministracion = reporteEND
-  }
 
   generaReporteExcelReporteGastos(){
     

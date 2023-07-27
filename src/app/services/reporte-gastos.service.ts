@@ -41,6 +41,31 @@ export class ReporteGastosService {
       });
     });
   }
+  historial_gastos_operacion(data:any): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const {sucursal, ruta} = data
+      const starCountRef = ref(db, ruta);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          // console.log(sucursal);
+          let clientes = []
+          if (sucursal !== 'Todas') {
+            const nuevos  = this._publicos.crearArreglo2(snapshot.val())
+            clientes = nuevos.map(g=>{
+              g.sucursalShow = this.sucursal_array.find(s=>s.id === g.sucursal).sucursal
+              g.metodoShow = this.formas_pago_arra.find(m=>String(m.metodo) === String(g.metodo)).show
+              return g
+            })
+          }
+          resolve(clientes);
+        } else {
+          resolve([]);
+        }
+      }, {
+        onlyOnce: true
+      });
+    });
+  }
 
   reporte_gastos_general(data:any[]){
     const tipos = ['deposito','operacion', 'sobrante', 'gasto','orden']

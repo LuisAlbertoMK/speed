@@ -58,7 +58,30 @@ export class AutomaticosComponent implements OnInit {
     }
 
 
-    const {clientes, vehiculos, cotizacionesRealizadas} = BD
+    const {clientes, vehiculos, cotizacionesRealizadas, recepciones} = BD
+
+    console.log(recepciones);
+    let updates = {}
+    Object.entries(recepciones).forEach(([key, entrie])=>{
+      // console.log(key);
+      // console.log(entrie);
+
+      const data_entrie = {...entrie}
+      const { cliente, vehiculo, sucursal} = data_entrie
+      const {id: id_cliente} = cliente
+      const {id: id_vehiculo} = vehiculo
+      const {id: id_sucursal} = sucursal
+      
+      delete data_entrie.servicios_original
+
+      const nueva = {...data_entrie, cliente: id_cliente, vehiculo: id_vehiculo, sucursal: id_sucursal }
+      updates[`recepciones/${id_sucursal}/${id_cliente}/${key}`] = nueva
+      
+    })
+    console.log(updates);
+    
+
+    
     let array_correos = []
     // let vehiculos_cliente = []
     // Object.entries(vehiculos).forEach(([key, entrie])=>{
@@ -70,7 +93,7 @@ export class AutomaticosComponent implements OnInit {
     // console.log(vehiculos_cliente);
     
 
-    let updates = {}
+    
     // Object.entries(clientes).forEach(([key, entrie])=>{
       // const {sucursal} = entrie
       // console.log(entrie);

@@ -212,7 +212,7 @@
                 </ng-container>
               </th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
-                  {{row.fecha_registro | formateHora}}
+                  {{row.fecha_recibido | formateHora}}
               </td>
             </ng-container>
             <ng-container matColumnDef="opciones">
@@ -283,14 +283,14 @@
           <ng-container *ngIf="SUCURSAL === 'Todas'">
             <div class="col-lg-8 col-md-8 col-sm-12 col-12">
               <!-- <button mat-button [matMenuTriggerFor]="menuAdministracion">Menu</button> -->
-              <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuAdministracion">
+              <!-- <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuAdministracion">
                 Filtro sucursal {{sucursalFiltroShow}}
-              </button>
-              <mat-menu #menuAdministracion="matMenu">
+              </button> -->
+              <!-- <mat-menu #menuAdministracion="matMenu">
                 <button mat-menu-item class="custom-menu-item" (click)="sucursalFiltro = 'Todas'; sucursalFiltroShow ='Todas'; operacionesAdmin()">Todas</button>
                 <button mat-menu-item class="custom-menu-item" *ngFor="let s of sucursales_array" 
                 (click)="sucursalFiltro = s.id; sucursalFiltroShow = s.sucursal;  operacionesAdmin()">{{s.sucursal}}</button>
-              </mat-menu>
+              </mat-menu> -->
               
             </div>
           </ng-container>

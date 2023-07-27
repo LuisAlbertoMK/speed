@@ -59,6 +59,13 @@ const starCountRef = ref(db, `clientes`)
 
       this._publicos.recuperaDatos()
 	
+      <ng-container *ngIf="faltante_s">
+        <div class="row mt-2">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
+            Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
+          </div>
+        </div>
+      </ng-container>
 
     private _clientes:ClientesService, private _vehiculos: VehiculosService, 
     private _cotizaciones: CotizacionesService,
