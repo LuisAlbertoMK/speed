@@ -82,7 +82,7 @@ export class ReporteGastosComponent implements OnInit {
   @ViewChild('Administracion') sortAdministracion: MatSort //elementos
 
 
-  reporte = {deposito: 0, operacion: 0, sobrante:0, orden:0}
+  reporte = {deposito: 0, operacion: 0, sobrante:0, orden:0, restante:0}
   reporteAdministracion = {
     iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,
     margen:0, por_margen:0
@@ -90,10 +90,10 @@ export class ReporteGastosComponent implements OnInit {
 
   camposReporte = [
     {valor:'deposito', show:'Depositos'},
-    // {valor:'pagos', show:'Pagos'},
+    {valor:'sobrante', show:'Suma de sobrantes'},
     {valor:'operacion', show:'Gastos de operación'},
     {valor:'orden', show:'Gastos de ordenes'},
-    {valor:'sobrante', show:'Sobrante'},
+    {valor:'restante', show:'Sobrante op'},
   ]
   camposReporteAdministracion = [
     {valor:'cantidad', show:'Ordenes cerradas'},
@@ -114,6 +114,10 @@ export class ReporteGastosComponent implements OnInit {
   rangeAdministracion = new FormGroup({
     start: new FormControl(new Date()),
     end: new FormControl(new Date()),
+  });
+
+  rangeBarrido = new FormGroup({
+    start: new FormControl(new Date())
   });
 
   hora_start = '00:00:01';
@@ -150,6 +154,7 @@ export class ReporteGastosComponent implements OnInit {
   filtro_tipo:string = 'Todos'
   tipos_muestra:string [] = ['Todos','deposito','operacion','orden']
 
+  fecha_barrido = {start:null, end:null} 
 
   ngOnInit(): void {
     this.rol()
@@ -169,25 +174,28 @@ export class ReporteGastosComponent implements OnInit {
         if (start_ && start_['_d'] && end_ && end_['_d']) {
           const start = start_._d, end  = end_._d
           this.fechas_get = {start, end}
-          const {start:_start_format, end:_end_format} = this.formate_fecha_horas()
-          this.fechas_get_formateado = {start: _start_format, end: _end_format}
           this.llamada_multiple()
         }        
     })
+    this.rangeBarrido.valueChanges.subscribe(({start:start_})=>{
+      if (start_ && start_['_d'] ) {
+        this.fecha_barrido.start = this._publicos.resetearHoras_horas(new Date(start_['_d']),this.hora_start) 
+        this.fecha_barrido.end = this._publicos.resetearHoras_horas(new Date(start_['_d']), this.hora_end)
+      }        
+  })
   }
   formate_fecha_horas(){
     const {start:start_, end:end_}= this.fechas_get
     const start = this._publicos.resetearHoras_horas(start_,'00:00:01')
     const end = this._publicos.resetearHoras_horas(end_,'23:59:59')
-    return {start, end}
+    this.fechas_get_formateado = {start, end}
   }
   primeraVez_fechas_default(){
-    const {start, end} = this.formate_fecha_horas()
-    this.fechas_get_formateado = {start, end}
     this.llamada_multiple()
   }
 
   llamada_multiple(){
+    this.formate_fecha_horas()
     const arreglo = ['historial_gastos_orden','historial_gastos_diarios','historial_gastos_operacion']
     arreglo.forEach(donde=>{
       this.funcion_obervador(donde)
@@ -202,8 +210,6 @@ export class ReporteGastosComponent implements OnInit {
         
         let fecha_start :Date = new Date()
         const simular_fecha = this._publicos.sumarRestarDiasFecha(fecha_start, -1)
-
-        // this.fechas_get.start = simular_fecha
 
           const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
 
@@ -220,7 +226,6 @@ export class ReporteGastosComponent implements OnInit {
             await Promise.all(promesasVehiculos);
                     return gastos_hoy_array;
             });
-
           const promesas = await Promise.all(promesasConsultas);
 
           promesas.forEach(c=>{
@@ -246,7 +251,6 @@ export class ReporteGastosComponent implements OnInit {
     })
   }
 
- 
   obtenerArregloFechas_gastos_diarios(data){
     const {ruta, arreglo_sucursal} = data
     const fecha_start = this.fechas_get.start
@@ -268,13 +272,10 @@ export class ReporteGastosComponent implements OnInit {
         Rutas.push(`${ruta}/${s}/${Fecha_formateada_}`)
       })
     })
-    // return Rutas
     return Rutas
   }
 
   unirResultados_new(){
-    // console.log(this.historial_gastos_operacion);
-    
     const ultimate = [...this.historial_gastos_diarios, ...this.historial_gastos_operacion, ...this.historial_gastos_orden]
     const ordenados = this._publicos.ordenarData(ultimate,'fecha_recibido',false)
 
@@ -290,7 +291,6 @@ export class ReporteGastosComponent implements OnInit {
 
     let resultados_1 = (this.filtro_tipo === 'Todos') ? this.todos_ultimate : this.todos_ultimate.filter(c=>c.tipo === this.filtro_tipo)
     const resultados =  (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
-    // console.log(resultados);
     
     const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(resultados)
     this.reporte = reporte
@@ -306,7 +306,7 @@ export class ReporteGastosComponent implements OnInit {
         const save = {
           sucursal: this.filtro_sucursal,
           concepto:  'Sobrante dia anterior',
-          monto:     reporte.sobrante,      
+          monto:     reporte.restante,      
           metodo:    1,
           status:    true,
           tipo:      'sobrante',
@@ -323,21 +323,20 @@ export class ReporteGastosComponent implements OnInit {
         }
         const ruta_maniana = `historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`
         const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
-        console.log(existe_sobrante_anterior);
+        // console.log(existe_sobrante_anterior);
         
         if (!existe_sobrante_anterior) {
           updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`] = save
         }else{
-          updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior/monto`] = reporte.sobrante
+          updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior/monto`] = reporte.restante
         }
-        // update(ref(db), updates).then(()=>{
-        //   // console.log('finalizo');
-        // })
-        // .catch(err=>{
-        //   console.log(err);
-        // })
-       }
-       
+        update(ref(db), updates).then(()=>{
+          // console.log('finalizo');
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+       }  
     }
     
     this.dataSource.data = resultados
@@ -345,14 +344,9 @@ export class ReporteGastosComponent implements OnInit {
   }
   accion(data_get){
     const {accion, data, monto_caja} = data_get
-    // console.log({accion, data});
-    // console.log(data_get);
-    
     if (accion && data) {
       const data_accion = {...data}
-      // console.log(data_accion);
       const {fecha_recibido, sucursal, id} = data_accion
-      // 'deposito','operacion','orden'
       let donde 
       switch (data_accion.tipo) {
         case 'deposito':
@@ -377,42 +371,28 @@ export class ReporteGastosComponent implements OnInit {
         updates[`${ruta}/inhabilitado_por_usuario`] = this.USUARIO
         updates[`${ruta}/inhabilitado_por_rol`] = this.ROL
       } else if (accion === 'modificar' && monto_caja > 0) {
-        // if (typeof monto_caja === 'number' && monto_caja > 0) {
           updates[`${ruta}/status`] = true
           updates[`${ruta}/monto`] = parseInt(monto_caja)
           updates[`${ruta}/modificado_por_usuario`] = this.USUARIO
           updates[`${ruta}/modificado_por_rol`] = this.ROL
-        // }
       } 
       const modificado = this._publicos.retorna_fechas_hora({fechaString: new Date(fecha_recibido).toString()}).toString_completa
       updates[`${donde}/${sucursal}/${Fecha_formateada}/${id}/modificado`] = modificado
       // console.log(updates);
-      
       update(ref(db), updates).then(()=>{
         this._publicos.swalToast('acccion correcta',1,'top-start')
       })
       .catch(err=>{
         console.log(err);
-      })
-      
-      
+      }) 
     }
-    
   }
- 
- 
-  
-
-  
-
   generaReporteExcelReporteGastos(){
     
     let resultados_1 = (this.filtro_tipo === 'Todos') ? this.todos_ultimate : this.todos_ultimate.filter(c=>c.tipo === this.filtro_tipo)
     const resultados =  (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
 
     const arreglado = this.arreglado_para_reporte_excel(resultados)
-    // console.log(arreglado);
-    
 
     const filtro_facturas = resultados.filter(f=>f.facturaRemision === 'factura')
     const filtro_notas = resultados.filter(f=>f.facturaRemision === 'nota')
@@ -421,14 +401,11 @@ export class ReporteGastosComponent implements OnInit {
     const data_reporte_facturas = this._reporte_gastos.totales_arreglo_({arreglo: filtro_facturas, facturaRemision:'factura'})
     const data_reporte_notas = this._reporte_gastos.totales_arreglo_({arreglo: filtro_notas, facturaRemision:'nota'})
    
-    
     this._export.generaReporteGastosExcel({
       arreglo: arreglado, data_reporte_general, 
       data_reporte_facturas, data_reporte_notas,
       filtro_facturas, filtro_notas
     })
-
-    
   }
   arreglado_para_reporte_excel(arreglo:any[]){
     let nuevos = []
@@ -484,71 +461,127 @@ export class ReporteGastosComponent implements OnInit {
     this.newPagination(tabla);
   }
   ///extras
-  traerDosVecesBarrido(){
-    let timerInterval
+  async realizarBarrido(){
     
-    this.RealizaBarridoDia()
-    const time = this.dias_espera * 1000
-    Swal.fire({
-      title: 'Realizando calculos en gastos diarios',
-      html: 'espere porfavor ... ',
-      timer: time,
-      timerProgressBar: true,
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading()
-        // const b = Swal.getHtmlContainer().querySelector('b')
-        // timerInterval = setInterval(() => {
-        //   b.textContent = String(Swal.getTimerLeft())
-        // }, 1000)
-      },
-      willClose: () => {
-        clearInterval(timerInterval)
-      }
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-        // console.log('I was closed by the timer')
-        this.dias_espera = 1
-      }
-    })
-    
-    
-  }
-  async ultimoDia(){
-    // const ultimo_registro = this._publicos.sumarRestarDiasFecha(new Date(),1)
-    // const ultimo_registro_0 = this._publicos.resetearHoras(ultimo_registro)
-    // console.log(ultimo_registro_0);
-    // if(this.fechaBarrido && this.sucursalBarrido){
-    //   const formateada = this._publicos.formatearFecha(ultimo_registro_0,false)
-    //   const ruta = `gastosDiarios/${this.sucursalBarrido}/${formateada}/sobrante/monto`
-    //   const consulta_sobrante = await this._reporte_gastos.consultaSobrante(ruta)
-    //   console.log(consulta_sobrante);
-    // }
-  }
-  RealizaBarridoDia(){
-    
-    
-  }
-  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    const fecha = event.value
-    if (fecha) {
-      if(fecha['_d'] ){
-        this.fechaBarrido = fecha['_d']
+    if (this.sucursalBarrido && this.fecha_barrido.start) {
+      // mensaje, allowOutsideClick?, html?:string
+      
+
+      const { start }= this.fecha_barrido
+      
+      const inicial = new Date(start)
+      const final = this._publicos.resetearHoras_horas(new Date(),this.hora_end) 
+
+      const diffTiempo = final.getTime() - inicial.getTime();
+      const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
+
+      
+
+      // let arreglo = []
+      if(diffDias > 0){
+        const { respuesta } = await this._publicos.mensaje_pregunta(`Realizar barrido`,true,`${this.sucursalBarrido}`)
+
+        if(!respuesta) return
+
+        Swal.fire({
+          title: 'Realizando calculos en gastos diarios',
+          html: 'espere porfavor ... ',
+          allowOutsideClick: false,
+        })
+        const donde = ['historial_gastos_orden','historial_gastos_diarios','historial_gastos_operacion']
+        for (let i = 0; i <= diffDias; i++) {       
+          const fecha_retorna = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
+          if (!this._publicos.esDomingo(fecha_retorna)) {
+            const Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_retorna)
+            // arreglo.push(Fecha_formateada)
+            console.log(Fecha_formateada);
+            
+            let arreglo = []
+            donde.forEach(donde_=>{
+              arreglo.push(`${donde_}/${this.sucursalBarrido}/${Fecha_formateada}`)
+            })
+
+             const promesasConsultas = arreglo.map(async(c)=>{
+              return  await this._reporte_gastos.gastos_hoy({ ruta: c});
+            })
+            const promesas = await Promise.all(promesasConsultas);
+
+            let arreglo_resultados = []
+            promesas.forEach(c=>{
+              const arreglo_inter:any[] = c
+              arreglo_inter.forEach(f=>{
+                arreglo_resultados.push(f)
+              })
+            })
+            let updates = {}
+            const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(arreglo_resultados)
+            
+            const simular_fecha = this._publicos.sumarRestarDiasFecha(fecha_retorna, 1)
+            const save = {
+              sucursal: this.sucursalBarrido,
+              concepto:  'Sobrante dia anterior',
+              monto:     reporte.restante,      
+              metodo:    1,
+              status:    true,
+              tipo:      'sobrante',
+              fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: simular_fecha}).toString_completa
+            }
+            let Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(simular_fecha)
+            
+            if (this._publicos.esDomingo(simular_fecha)) {
+              // console.log('NO es domingo registra para el lunes');
+              const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
+              save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
+              Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_lunes)
+            }
+            const ruta_maniana = `historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`
+            const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
+
+            if (!existe_sobrante_anterior) {
+              updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`] = save
+            }else{
+              updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior/monto`] = reporte.restante
+            }
+            const actualizo = await this._reporte_gastos.registra_sobrante(updates); 
+          }
+        }
+        Swal.close()
+        this._publicos.swalToast(`Completado`,1,'top-start')
+        
       }else{
-        this.fechaBarrido = null
+        this._publicos.swalToast(`no se puede realizar el barrido`,0,'top-start')
       }
     }else{
-      this.fechaBarrido = null
+      this._publicos.swalToast(`no se puede realizar el barrido`,0,'top-start')
     }
+
+   
+
+    
+    
     
   }
 
+  realiza_regxxxxistro(data): Promise<object> {
+    return new Promise((resolve, reject) => {
+      const {sucursal, cliente} = data
+      const starCountRef = ref(db, `clientes/${sucursal}/${cliente}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      }, {
+        onlyOnce: true
+      });
+    });
+  }
+
+  
+
   data_deposito(event){
-    console.log(event);
-    if (event) {
-      this._publicos.cerrar_modal('modal-deposito')
-    }
+    if (event) this._publicos.cerrar_modal('modal-deposito')
   }
 
 }

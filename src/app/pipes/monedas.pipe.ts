@@ -20,7 +20,7 @@ export class MonedasPipe implements PipeTransform {
         return `${digit}${isThousands ? ',' : ''}${result}`;
       }, '');
   
-    const formattedValue = `${symbol}${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
+    const formattedValue = `${symbol} ${isNegative ? '-' : ''}${formattedIntegerPart}.${decimalPart}`;
     return formattedValue;
   }
   

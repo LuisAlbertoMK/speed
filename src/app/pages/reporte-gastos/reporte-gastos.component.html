@@ -49,7 +49,9 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12">
                       <div class="input-group mb-3 ">
-                        <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter"  class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)">
+                        <form  [formGroup]="rangeBarrido">
+                          <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
+                        </form>
                         <mat-datepicker #pickerBarrido></mat-datepicker>
                         <div class="input-group-append">
                           <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
@@ -59,7 +61,7 @@
                       </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                      <button class="btn btn-sm btn-success" (click)="traerDosVecesBarrido()">Realizar Reporte de dia</button>
+                      <button class="btn btn-sm btn-success" (click)="realizarBarrido()">Realiza barrido hasta la fecha actual</button>
                     </div>
                   </div>
                 </div>
@@ -119,7 +121,7 @@
             </ng-container>
             <ng-container matColumnDef="sucursalShow">
               <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','sucursalShow'); fechas_reporte = !fechas_reporte">
-                &nbsp; Sucursal &nbsp;
+                Sucursal &nbsp;
                 <ng-container *ngIf="ordenamientoCampo_reporte === 'sucursalShow'">
                   <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
                 </ng-container>
@@ -134,8 +136,8 @@
                   <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
                 </ng-container>
               </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-uppercase text-start">
-                &nbsp; {{row.no_os }} &nbsp;
+              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.4+'px'}"  class="text-uppercase text-start">
+                {{ row.no_os }} 
               </td>
             </ng-container>
             <ng-container matColumnDef="metodoShow">
@@ -188,7 +190,7 @@
                   <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
                 </ng-container>
               </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"  class="text-start"> 
+              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.7+'px'}"  class="text-start"> 
                   {{row.fecha_recibido | formateHora:true}}
               </td>
             </ng-container>
