@@ -217,8 +217,14 @@ claves_recepciones(busqueda): Promise<any[]> {
           const childData = childSnapshot.val();
           // console.log({childKey, childData});
           Object.entries(childData).forEach(([key, entrie])=>{
-            const entrie_ = entrie
-              claves.push({key, no_os: entrie_['no_os'], cliente: entrie_['cliente']})
+            const entrie_:any = entrie
+            function ubicar(arreglo:any[]){
+              let nombres_ = arreglo?.map(({nombre})=>{return nombre})
+              return String(nombres_.join(', ')).toLowerCase()
+            }
+            const servicios_a = (entrie_['servicios'] ) ? entrie_['servicios'] : []
+            
+            claves.push({key, descripcion: ubicar(servicios_a) ,no_os: entrie_['no_os'], cliente: entrie_['cliente'], status_orden: entrie_['status'], vehiculo: entrie_['vehiculo']})
           })
         })
         resolve(claves);

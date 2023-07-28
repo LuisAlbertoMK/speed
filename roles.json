@@ -41,6 +41,13 @@ const closeButton = document.querySelector('[data-bs-dismiss="modal"]');
         if (closeButton) {
           closeButton.dispatchEvent(new Event('click'));
         }
+        //promesas multiples
+        const promesasConsultas = arreglo_fechas_busca.map(async (f_search) => {
+          const gastos_hoy_array: any[] = await this._reporte_gastos.gastos_hoy({ ruta: f_search});
+          return gastos_hoy_array;
+        });
+        const promesas = await Promise.all(promesasConsultas);
+
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 const db = getDatabase()

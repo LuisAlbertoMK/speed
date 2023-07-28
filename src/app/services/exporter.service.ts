@@ -373,298 +373,188 @@ export class ExporterService {
     
     this.saveAsExcel(excelBuffer,'ReporteServicios')
   }
-  generaReporteGastosExcel(data:any[], reporte_get, enviar_totales_orden){
-    const registros = [...data]
-    console.log(registros);
-    console.log(enviar_totales_orden);
-    
-    const camposReporte = [
-      {valor:'depositos', show:'Depositos'},
-      // {valor:'pagos', show:'Pagos'},
-      {valor:'operacion', show:'Gastos de operación'},
-      {valor:'gastos', show:'Gastos de ordenes'},
-      {valor:'sobrante', show:'Sobrante'},
-    ]
-    let facturas = [], notas = []
-    const reporteFacturas = {subtotal: 0, iva: 0, total: 0}
-    const reporteNotas = {subtotal: 0, iva: 0, total: 0}
-    function obtenerPorcentajes(cantidad, porcentaje){
-      const iva = cantidad * (porcentaje / 100);
-      let subtotal = cantidad - iva 
-      let total = subtotal + iva
-      return {subtotal, iva, total}
-    }
-    const nueva = registros.map(r=>{
-      const estado = (r.status) ? 'Aprobado' : 'No aprobado';
-      if(r.tipo === 'orden'){
-        r.facturaRemision = (r.facturaRemision) ? r.facturaRemision : r.facturaRemision = 'nota';
-        if(r.facturaRemision === 'factura') {
-         const {subtotal,iva,total} = obtenerPorcentajes(r.monto,16)
-          reporteFacturas.subtotal += subtotal
-          reporteFacturas.iva += iva
-          reporteFacturas.total += total
-        } else {
-          const {subtotal,iva,total} = obtenerPorcentajes(r.monto,16)
-          reporteNotas.subtotal += subtotal
-          reporteNotas.iva += iva
-          reporteNotas.total += total
-        }
-        (r.facturaRemision === 'factura') ? facturas.push(r) : notas.push(r)
-      }
-      const descripcion = (r.reporte)? `Total de orden de servicio ${r.reporte.total}` : ''
-      const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
-      const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
-      const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
-
-      const nuevaD = (r.statusOrden === 'entregado') ? descripcion : ''
-      
-      let facturaRemision = ''
-      if(r.tipo === 'orden'){
-        facturaRemision = (r.facturaRemision) ?  r.facturaRemision : r.facturaRemision = 'nota';
-      }
-      // ${r.vehiculo.marca} ${r.vehiculo.modelo} ${r.vehiculo.placas} 
-
-      return {
-        'Fecha registro': this._publicos.retorna_fechas_hora({fechaString: new Date(r.fecha_registro)}).formateada,
-        'Tipo': r.tipo,
-        'Sucursal': r.sucursalShow,
-        'no O.S': r.no_os || '',
-        'descripcion servicio': r.string_servicios,
-        'Concepto': r.concepto,
-        'Referencia': r.referencia || '',
-        'nota / factura': facturaRemision,
-        'metodo pago': r.metodoShow,
-        'Monto': r.monto || 0,
-        'Status': estado,
-        'Status orden': r.statusOrden,
-        'Marca': marca,
-        'Modelo': modelo,
-        'Placas': placas,
-      }
-    })
-    // console.log(registros);
+  generaReporteGastosExcel(data){
+    const {arreglo, data_reporte_general, data_reporte_facturas, data_reporte_notas, filtro_facturas, filtro_notas} = data
+    let colocada = []
     const lieneaBlanca = {
-      'Fecha registro': '', 
-      'Tipo': '',
-      'Sucursal': '', 
-      'no O.S': '', 
+      'no O.S':'',
+      'Sucursal':'',
       'descripcion servicio':'',
-      'Concepto': '', 
-      'Referencia': '',
-      'nota / factura':'',
-      'metodo pago': '', 
-      'Monto': '',
-      'Status': '',
-      'Status orden':'',
-      'Marca': '',
-      'Modelo': '',
+      'Fecha registro':'',
+      'Referencia':'',
+      'Concepto':'',
+      'Marca':'',
+      'Modelo':'',
       'Placas':'',
+      'nota / factura':'',
+      'metodo pago':'',
+      'Monto':'',
+      'Status':'',
+      'Gasto tipo':'',
+      'Tipo':'',
+      'Status orden':'',
     };
+    console.log(arreglo);
     
-    const lieneaBlancaFactura = {
-      'fecha registro':  '',
-      'tipo':            '',
-      'sucursal':        '',
-      'no O.S':           '',
-      'descripcion servicio':      '',
-      'concepto':        '',
-      'referencia':      '',
-      'metodo':          '',
-      'monto':           '',
-      'subtotal':        '',
-      'iva':             '',
-      'total':           '',
-      'total orden':     '',
-      'gastos':          '',
-      'status':          '',
-      'Status orden': '',
-      'tipo Gasto':      '',
-      'Marca':           '',
-      'Modelo':          '',
-      'Placas':          '',
-      'advertencia': ''
-    };
-    const lieneaBlancaNotas = {
-      'fecha registro':  '',
-      'tipo':            '',
-      'sucursal':        '',
-      'no O.S':           '',
-      'descripcion servicio':      '',
-      'concepto':        '',
-      'referencia':      '',
-      'status':          '',
-      'Status orden': '',
-      'tipo Gasto':      '',
-      'metodo':          '',
-      'monto':           '',
-      'descripcion':     '',
-      'subtotal':        '',
-      'iva':             '',
-      'total':           '',
-      'total orden':     '',
-      'gastos':          '',
-      'Marca':           '',
-      'Modelo':          '',
-      'Placas':          '',
-      'advertencia':     ''
-    };
+    arreglo.forEach(r=>{
+      const {
+        no_os,
+        sucursal,
+        descripcion,
+        fecha_recibido,
+        referencia,
+        concepto,
+        marca,
+        modelo,
+        facturaRemision,
+        metodo,
+        monto,
+        status,
+        tipo,
+        placas,
+        gasto_tipo,
+        status_orden
+      } = r
+      const temp_colocar = {
+        'no O.S': no_os, 
+        'Sucursal': sucursal, 
+        'descripcion servicio': descripcion,
+        'Fecha registro': this.transform_fecha(fecha_recibido, true), 
+        'Referencia': referencia,
+        'Concepto': concepto,
+        'Marca': marca,
+        'Modelo': modelo,
+        'Placas': placas,
+        'nota / factura': facturaRemision,
+        'metodo pago': metodo, 
+        'Monto': monto,
+        'Status': status,
+        'Gasto tipo': gasto_tipo,
+        'Tipo': tipo,
+        'Status orden': status_orden,
+      }
+      colocada.push({ ...lieneaBlanca, ...temp_colocar });
 
-    const lieneaBlanca_ordenes = {
-      'no_os':        '',
-      'descripcion':      '',
-      'total_gastado':        '',
+    })
+
+    let nuevo___ = 
+    [
+      {
+          "no_os": "CU0123GE00007",
+          "sucursal": "Culhuacán",
+          "descripcion": "cambio de aceite y filtro",
+          "fecha_recibido": "Thu Jul 27 2023 17:32:11 GMT-0600 (GMT-06:00)",
+          "referencia": "asdsad",
+          "concepto": "asdas",
+          "marca": "Infiniti",
+          "modelo": "QX30",
+          "placas": "abc123",
+          "facturaRemision": "nota",
+          "metodo": "Cheque",
+          "monto": 22,
+          "status": "aprobado",
+          "tipo": "orden",
+          "gasto_tipo": "refaccion",
+          "status_orden": "recibido"
+      },
+      {
+          "no_os": "CU0123GE00008",
+          "sucursal": "Culhuacán",
+          "descripcion": "cambio de focos fundidos convencionales",
+          "fecha_recibido": "Thu Jul 27 2023 17:29:08 GMT-0600 (GMT-06:00)",
+          "referencia": "64545",
+          "concepto": "1212121",
+          "marca": "Alfa Romeo",
+          "modelo": "Giulia",
+          "placas": "1540wc",
+          "facturaRemision": "factura",
+          "metodo": "Efectivo",
+          "monto": 1212,
+          "status": "aprobado",
+          "tipo": "orden",
+          "gasto_tipo": "refaccion",
+          "status_orden": "recibido"
+      },
+      {
+          "no_os": "",
+          "sucursal": "Culhuacán",
+          "descripcion": "",
+          "fecha_recibido": "Thu Jul 27 2023 16:24:03 GMT-0600 (GMT-06:00)",
+          "referencia": "",
+          "concepto": "cubrie  los 1995",
+          "marca": "",
+          "modelo": "",
+          "placas": "",
+          "facturaRemision": "",
+          "metodo": "Efectivo",
+          "monto": 1000,
+          "status": "aprobado",
+          "tipo": "deposito",
+          "gasto_tipo": "",
+          "status_orden": ""
+      },
+      {
+          "no_os": "",
+          "sucursal": "Culhuacán",
+          "descripcion": "",
+          "fecha_recibido": "Thu Jul 27 2023 16:00:01 GMT-0600 (GMT-06:00)",
+          "referencia": "dfgdfg",
+          "concepto": "dfgdfgdf",
+          "marca": "",
+          "modelo": "",
+          "placas": "",
+          "facturaRemision": "factura",
+          "metodo": "Efectivo",
+          "monto": 388,
+          "status": "aprobado",
+          "tipo": "operacion",
+          "gasto_tipo": "",
+          "status_orden": ""
+      }
+  ]
+
+    function lineas_blancas(numero){
+      for (let index = 0; index < numero; index++) {
+        colocada.push({ ...lieneaBlanca });
+      }
     }
-    
-    //seprara facturas de remision
-    
-
-    const ordenadas = this._publicos.ordenarData(nueva,'Tipo',true)
-    const {subtotal,iva,total} = obtenerPorcentajes(reporteFacturas.total,16)
-    const aqui = obtenerPorcentajes(reporteNotas.total,16)
-    ordenadas.push({ ...lieneaBlanca });
-    ordenadas.push({ ...lieneaBlanca });
-    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total depositos', 'Concepto': reporte_get.depositos, 'Modelo': 'Subtotal facturas', 'Placas': `${subtotal}`, 'metodo pago': 'Subtotal notas', 'Monto': `${aqui.subtotal}` });
-    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total operacion', 'Concepto': reporte_get.operacion, 'Modelo': 'I.V.A facturas', 'Placas': `${iva}`, 'metodo pago': 'I.V.A notas', 'Monto': `${aqui.iva}`});
-    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total gastos', 'Concepto': reporte_get.gastos, 'Modelo': 'Total facturas', 'Placas': `${total}`,'metodo pago': 'Total notas', 'Monto': `${aqui.total}` });
-    ordenadas.push({ ...lieneaBlanca, 'Referencia': 'Total sobrante', 'Concepto': reporte_get.sobrante });
-
+    lineas_blancas(3)
 
     
+    const nuevos_ = [['deposito','subtotal'], ['operacion','iva'], ['orden','total'],['sobrante','']]
 
-
-    const nueva_facturas = facturas.map(r=>{
-      const estado = (r.status) ? 'Aprobado' : 'No aprobado';
-      const {subtotal, iva, total} = obtenerPorcentajes(r.monto,16)
-      const descripcion = (r.reporte)? `Total de orden de servicio ${r.reporte.total}` : ''
-      const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
-      const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
-      const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
-      return {
-        'concepto':         r.concepto || '',
-        'referencia':       r.referencia || '',
-        'sucursal':         r.sucursalShowm,
-        'no O.S':           r.no_os || '',
-        'tipo':             r.facturaRemision,
-        'Status orden': r.statusOrden,
-        'fecha registro':  this._publicos.retorna_fechas_hora({fechaString: new Date(r.fecha_registro)}).formateada,
-        'tipo Gasto':       r.tipoNuevo,
-        'metodo':           r.metodoShow,
-        'monto':            r.monto,
-        'descripcion servicio': descripcion,
-        'Marca': marca,
-        'Modelo': modelo,
-        'Placas': placas,
-        'status':           estado,
-        'subtotal':         `${subtotal}`,
-        'iva':              `${iva}`,
-        'total':            `${total}`,
-        'total orden':       r.totalOrden,
-        'gastos':           r.totalGastosOrden || '',
-        'advertencia':      r.advertencia || ''
-      }
+    nuevos_.forEach(g=>{
+      
+      colocada.push({ ...lieneaBlanca, 
+        'Fecha registro': `${g[0]}`, 
+        'Referencia': this.transform_monedas(data_reporte_general[g[0]]),
+        'Marca': `${g[1]} facturas`,
+        'Modelo': this.transform_monedas(data_reporte_facturas[g[1]]),
+        'nota / factura': `${g[1]} notas`,
+        'metodo pago': this.transform_monedas(data_reporte_notas[g[1]]),
+        });
     })
-    nueva_facturas.push({ ...lieneaBlancaFactura });
-    nueva_facturas.push({ ...lieneaBlancaFactura });
-    nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'Subtotal','metodo': `${subtotal}` });
-    nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'I.V.A','metodo': `${iva}` });
-    nueva_facturas.push({ ...lieneaBlancaFactura, 'tipo Gasto':'Total','metodo': `${total}` });
 
-    const worksheetFacturas : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva_facturas)
-    const columnWidthsFActuras = [
-      { wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, 
-      { wch: 10 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },
-      { wch: 30 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },
-    ];
-    worksheetFacturas['!cols'] = columnWidthsFActuras;
-
-    const nueva_Notas = notas.map(r=>{
-      const estado = (r.status) ? 'Aprobado' : 'No aprobado';
-      const {subtotal, iva, total} = obtenerPorcentajes(r.monto,0)
-      const descripcion = (r.reporte)? `Total de orden de servicio ${r.reporte.total}` : ''
-      const marca = (r.vehiculo)? `${r.vehiculo.marca}` : ''
-      const modelo = (r.vehiculo)? `${r.vehiculo.modelo}` : ''
-      const placas = (r.vehiculo)? `${r.vehiculo.placas}` : ''
-      return {
-        'concepto':         r.concepto || '',
-        'referencia':       r.referencia || '',
-        'sucursal':         r.sucursalShow,
-        'no O.S':           r.no_os || '',
-        'tipo':             r.facturaRemision,
-        'Status orden': r.statusOrden,
-        'fecha registro':  this._publicos.retorna_fechas_hora({fechaString: new Date(r.fecha_registro)}).formateada,
-        'tipo Gasto':       r.tipoNuevo,
-        'metodo':           r.metodoShow,
-        'monto':            r.monto,
-        'descripcion servicio': descripcion,
-        'Marca': marca,
-        'Modelo': modelo,
-        'Placas': placas,
-        'status':           estado,
-        'descripcion':      '',
-        'subtotal':         `${subtotal}`,
-        'iva':              `${iva}`,
-        'total':            `${total}`,
-        'total orden':       r.totalOrden,
-        'gastos':           r.totalGastosOrden || 0,
-        'advertencia':      r.advertencia || ''
-      }
-    })
-    nueva_Notas.push({ ...lieneaBlancaNotas });
-    nueva_Notas.push({ ...lieneaBlancaNotas });
-
+    lineas_blancas(3)
     
-    nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'Subtotal','metodo': `${aqui.subtotal}` });
-    nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'I.V.A','metodo': `${aqui.iva}` });
-    nueva_Notas.push({ ...lieneaBlancaNotas, 'tipo Gasto':'Total','metodo': `${aqui.total}` });
-
-
-    const worksheetCotizaciones : XLSX.WorkSheet = XLSX.utils.json_to_sheet(ordenadas)
-    const worksheetNotas : XLSX.WorkSheet = XLSX.utils.json_to_sheet(nueva_Notas)
-    const columnWidthsNotas = [
-      { wch: 30 }, { wch: 30 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, 
-      { wch: 10 }, { wch: 10 },{ wch: 10 },{ wch: 10 }, { wch: 10 },
-      { wch: 30 }, { wch: 15 },{ wch: 10 },{ wch: 15 }, { wch: 15 },  
-      { wch: 10 }, { wch: 15 },{ wch: 15 },{ wch: 15 }, { wch: 15 },  
-    ];
-    worksheetNotas['!cols'] = columnWidthsNotas;
-
-    const columnWidthsCotizaciones = [
-      { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, 
-      { wch: 30 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
-      { wch: 20 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
-      { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
-      { wch: 20 }
-    ];
-    worksheetCotizaciones['!cols'] = columnWidthsCotizaciones;
-    const envi= [
-      // {...lieneaBlanca_ordenes}
-    ]
-
-    enviar_totales_orden.forEach(element => {
-      envi.push(Object(element))
-    });
-
-    // lieneaBlanca_ordenes
-    const worksheetenviar_totales_orden : XLSX.WorkSheet = XLSX.utils.json_to_sheet(envi)
+    const worksheetenviar_totales_orden : XLSX.WorkSheet = XLSX.utils.json_to_sheet(colocada)
 
     const columnWidthsenviar_totales_orden = [
-      { wch: 20 }, { wch: 40 }, { wch: 15 }
+      { wch: 20 }, { wch: 10 }, { wch: 25 },{ wch: 15 },
+      { wch: 25 }, { wch: 25 }, { wch: 15 },{ wch: 15 },
+      { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
+      { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
     ];
     worksheetenviar_totales_orden['!cols'] = columnWidthsenviar_totales_orden;
-    // console.log(worksheetCotizaciones);
-    // console.log(worksheetenviar_totales_orden);
-    
+
     const workbook: XLSX.WorkBook = {
-      Sheets: {'Servicios':worksheetCotizaciones, 'Facturas':worksheetFacturas,'Notas':worksheetNotas,'Ordenes':worksheetenviar_totales_orden},
-      SheetNames:['Servicios','Facturas','Notas','Ordenes']
+      Sheets: {'Servicios':worksheetenviar_totales_orden},
+      SheetNames:['Servicios']
     }
     
     const excelBuffer:any= XLSX.write(workbook,{bookType:'xlsx',type:'array'})
-    //llamar al metodo y su nombre
-    // console.log(data);
-    
+
     this.saveAsExcel(excelBuffer,'Reporte de gastos')
-    
   }
   private saveAsExcel(buffer:any,fileName:string): void{
     const data: Blob = new Blob([buffer],{type: EXCEL_TYPE})
@@ -855,6 +745,24 @@ export class ExporterService {
       }
     
       return fechaFormateada;
+  }
+  transform_monedas(value: number): number {
+    if (!value || isNaN(value)) {
+      return 0;
+    }
+    
+    const isNegative = value < 0;
+    const [integerPart, decimalPart = '00'] = Math.abs(value).toFixed(2).split('.');
+    const formattedIntegerPart = integerPart
+      .split('')
+      .reverse()
+      .reduce((result, digit, index) => {
+        const isThousands = index % 3 === 0 && index !== 0;
+        return `${digit}${isThousands ? '' : ''}${result}`;
+      }, '');
+  
+    const formattedValue = `${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
+    return parseFloat(formattedValue);
   }
   
 }

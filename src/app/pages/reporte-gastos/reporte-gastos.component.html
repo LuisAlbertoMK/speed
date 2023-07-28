@@ -19,15 +19,15 @@
     data-bs-toggle="modal"  data-bs-target="#modalDeposito" -->
     <ng-container *ngIf="SUCURSAL === 'Todas'">
       <button  class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
-      data-bs-toggle="modal"  data-bs-target="#modalDeposito"
+      data-bs-toggle="modal"  data-bs-target="#modalDeposito" (click)="realizaGasto = 'pago'"
       >Nuevo deposito</button>
     </ng-container>
     
-    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" 
-    (click)="realizaGasto = 'gasto'"
+    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  (click)="realizaGasto = 'gasto'"
       data-bs-toggle="modal"  data-bs-target="#modalGasto">Nuevo gasto</button>
+
     <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
-    (click)="realizaGasto = 'pago'"
+    
     data-bs-toggle="modal"  data-bs-target="#modalGasto"
     >Registra pago</button>
   </div>
@@ -89,14 +89,18 @@
                 </button>
               </div>
             </div>
+            <button class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
+            matTooltip="filtro Tipo"><i class="fa fa-filter"></i></button>
+            <mat-menu #filtroTipo="matMenu">
+              <button mat-menu-item (click)="filtro_tipo = tipo; filtra_informacion()" *ngFor="let tipo of tipos_muestra">{{tipo | capitalizarUno}}</button>
+            </mat-menu>
             <ng-container *ngIf="SUCURSAL === 'Todas'">
-              <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menu">Filtro sucursal {{sucursalFiltroShowReporte}}</button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item class="custom-menu-item" (click)="sucursalFiltroReporte = 'Todas'; sucursalFiltroShowReporte ='Todas'; realizarOperaciones()">Todas</button>
-                <button mat-menu-item class="custom-menu-item" *ngFor="let s of sucursales_array"
-                (click)="sucursalFiltroReporte = s.id; sucursalFiltroShowReporte = s.sucursal;  realizarOperaciones()">{{s.sucursal}}</button>
+              <button class="btn btn-sm btn-danger m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
+              matTooltip="filtro sucursal"><i class="fa fa-filter"></i></button>
+              <mat-menu #filtroSucursal="matMenu">
+                <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
+                <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
               </mat-menu>
-
             </ng-container>
             <button class="btn btn-sm btn-success m-1" (click)="generaReporteExcelReporteGastos()">Genera excel</button>
           </div>
@@ -165,7 +169,7 @@
                 </ng-container>
               </th>
               <td mat-cell *matCellDef="let row" class="text-end" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-end"> 
-                  {{row.monto | monedas}} &nbsp; &nbsp;
+                {{row.monto | monedas}} &nbsp; &nbsp;
               </td>
             </ng-container>
             <ng-container matColumnDef="tipo">
@@ -191,6 +195,15 @@
             <ng-container matColumnDef="opciones">
               <th mat-header-cell *matHeaderCellDef> &nbsp; </th>
               <td mat-cell *matCellDef="let row">
+                <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
+                <mat-menu #Opciones="matMenu">
+                  <ng-container *ngIf="SUCURSAL === 'Todas'">
+                    <button mat-menu-item (click)="accion({accion:'activar', data: row})"> Habilitar <i class="fa fa-check-double text-success ml-1"></i></button>
+                  </ng-container>
+                  <button mat-menu-item (click)="accion({accion:'eliminar', data: row})"> Inhabilitar <i class="fa fa-ban text-danger ml-1"></i></button>
+                  <!-- <button mat-menu-item (click)="accion({accion:'modificar', data: row})"> Modificar <i class="fa fa-trash text-primary ml-1"></i></button> -->
+                </mat-menu>
+                  
               </td>
             </ng-container>
             <ng-container matColumnDef="expand">
@@ -209,12 +222,52 @@
               <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
                 <div class="example-element-detail row"
                      [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-                     <div class="row">
-                      <div class="alert alert-info">
-                        <p>Concepto: {{row.concepto  | capitalizarUno}}</p>              
-                      <p>Referencia: {{row.referencia  | capitalizarUno}}</p>
+                     <div class="row alert alert-info">
+                      <div class="col-lg-6 col-md-6 col-12 col-12">
+                        Concepto: {{row.concepto  | capitalizarUno}}
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-12 col-12">
+                        Referencia: {{row.referencia  | capitalizarUno}}
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-12 col-12">
+                        <ng-container *ngIf="SUCURSAL !== 'Todas'; else elseTemplate">
+                          Monto: {{row.monto | monedas}} &nbsp; &nbsp;
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                          <p>Modificar su cantidad </p>
+                          <span>para modificar es necesario presionar enter para guardar cambios</span>
+                          <input type="number" [value]="row.monto" [name]="row.id" [id]="row.id" #miCaja (keyup.enter)="accion({accion:'modificar', data: row, monto_caja: miCaja.value })" class="form-control form-control-sm mr-1"> &nbsp; &nbsp;
+                        </ng-template>
                       </div>
                      </div>
+                     
+                     <ng-container *ngIf="row.modificado">
+                      <div class="row alert alert-warning">
+                        
+                        <div class="col-lg-12 col-md-12 col-12 col-12">
+                          modificado: {{row.modificado  | formateHora:true}}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 col-12">
+                          habilitado_por_usuario: {{row.habilitado_por_usuario  | capitalizarUno}}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 col-12">
+                          habilitado_por_rol: {{row.habilitado_por_rol  | capitalizarUno}}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 col-12">
+                          inhabilitado_por_usuario: {{row.inhabilitado_por_usuario  | capitalizarUno}}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 col-12">
+                          inhabilitado_por_rol: {{row.inhabilitado_por_rol  | capitalizarUno}}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 col-12">
+                          modificado_por_usuario: {{row.modificado_por_usuario  | capitalizarUno}}
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 col-12">
+                          modificado_por_rol: {{row.modificado_por_rol  | capitalizarUno}}
+                        </div>
+
+                      </div>
+                     </ng-container>
                 </div>
               </td>
             </ng-container>
@@ -243,8 +296,8 @@
               class="pointer form-control" 
               [formGroup]="rangeAdministracion"
               [rangePicker]="pickerAdministracion">
-                <input matStartDate class="mr-2" formControlName="start" readonly (dateChange)="cambiosFechas('admin')" placeholder="Inicio">
-                <input matEndDate formControlName="end" readonly (dateChange)="cambiosFechas('admin')" placeholder="Final">
+                <input matStartDate class="mr-2" formControlName="start" readonly  placeholder="Inicio">
+                <input matEndDate formControlName="end" readonly  placeholder="Final">
               </mat-date-range-input>
               <div class="input-group-append">
                 <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerAdministracion.open()">

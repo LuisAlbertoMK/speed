@@ -9,6 +9,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
 import { ServiciosService } from 'src/app/services/servicios.service';
+import { ReporteGastosService } from 'src/app/services/reporte-gastos.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -22,7 +23,7 @@ export class GastoComponent implements OnInit {
 
   
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService,
-    private _campos: CamposSystemService, private _servicios: ServiciosService,
+    private _campos: CamposSystemService, private _servicios: ServiciosService, private _reporte_gastos: ReporteGastosService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private dateAdapter: DateAdapter<Date>) {
       this.showGastoHide = new EventEmitter()
       this.dateAdapter.getFirstDayOfWeek = () => 0;
@@ -124,6 +125,8 @@ export class GastoComponent implements OnInit {
     this.muestraLista = (tipo === 'orden') ? true : false
     if (tipo === 'orden' && sucursal) {
         this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
+        console.log(this.claves_ordenes);
+        
     }else{
       this.claves_ordenes = []
     }
@@ -141,7 +144,6 @@ export class GastoComponent implements OnInit {
     const campos_operacion = [
       'concepto',
       'facturaRemision',
-      'fecha_recibido',
       'metodo',
       'monto',
       'referencia',
@@ -155,8 +157,7 @@ export class GastoComponent implements OnInit {
     ]
 
     const cuales_ = (info_get.tipo === 'orden') ? campos_orden : campos_operacion
-    const fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: new Date().toString()}).toString_completa
-    info_get.fecha_recibido = (info_get.fecha_recibido) ? info_get.fecha_recibido : fecha_recibido
+    
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get, cuales_)
     this.faltante_s = faltante_s
 
@@ -164,17 +165,38 @@ export class GastoComponent implements OnInit {
     const recuperada = this._publicos.nuevaRecuperacionData(info_get, cuales_)
     const {sucursal, numero_os, fecha_recibido: fech_} = recuperada
     const data_orden =  this.claves_ordenes.find(f=>f.key === numero_os)
-    if (info_get.tipo === 'orden') recuperada.no_os = data_orden.no_os
-    const fecha_muestra = this.transform_fecha(fech_, true)
+    if (info_get.tipo === 'orden'){
+      recuperada.no_os = data_orden.no_os
+      recuperada.status_orden = data_orden.status_orden
+      recuperada.cliente = data_orden.cliente
+      recuperada.vehiculo = data_orden.vehiculo
+      recuperada.descripcion = data_orden.descripcion
+    } 
+   
+    // console.log(data_orden);
+    
+    // return
+
+    const nueva_fecha:string = (info_get.fecha_recibido) 
+    ? info_get.fecha_recibido 
+    : this._publicos.retorna_fechas_hora({fechaString: new Date().toString()}).toString_completa
+
+    const fecha_muestra = this.transform_fecha(nueva_fecha, true)
     // console.log(recuperada);
     
     this._publicos.mensaje_pregunta('Realizar deposito de fecha '+ fecha_muestra).then(({respuesta})=>{
       if (respuesta) {
+
         const clave_ = this._publicos.generaClave()
+
+        const solo_numeros_fecha_hoy = this._reporte_gastos.fecha_numeros_sin_Espacions(new Date(nueva_fecha))
+
         let ruta = (info_get.tipo === 'orden') ?
-        `historial_gastos_orden/${sucursal}/${data_orden.key}/${clave_}` : 
-        `historial_gastos_operacion/${sucursal}/${clave_}`
+        `historial_gastos_orden/${sucursal}/${solo_numeros_fecha_hoy}/${clave_}` : 
+        `historial_gastos_operacion/${sucursal}/${solo_numeros_fecha_hoy}/${clave_}`
         recuperada.status = true
+        // console.log(ruta);
+        recuperada.fecha_recibido = nueva_fecha
         
         const updates = {[ruta]: recuperada }
         update(ref(db), updates).then(()=>{

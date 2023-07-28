@@ -2047,6 +2047,22 @@ export class VehiculosService {
     });
   }
 
+  consulta_vehiculo(data): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const {sucursal, cliente, vehiculo} = data
+      const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}/${vehiculo}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      },{
+        onlyOnce: true
+      });
+    });
+  }
+
 
 
   async existenPlacas(placas:string){
