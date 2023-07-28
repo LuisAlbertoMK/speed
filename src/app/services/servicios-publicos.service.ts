@@ -546,7 +546,7 @@ export class ServiciosPublicosService {
           break;
       }
       //position  : ['top-end','center']
-      const position = (position_get) ? position_get : 'top-end'
+      const position = (position_get) ? position_get : 'top-start'
         const Toast = Swal.mixin({
             toast: true,
             position,
@@ -577,7 +577,7 @@ export class ServiciosPublicosService {
         
         const  { elementos,  iva, formaPago, descuento, servicios, margen } = data
 
-        const ocupados = (servicios) ?  servicios: elementos
+        const ocupados = (servicios) ?  [...servicios]: [...elementos]
         const margen1_0 = (margen) ?   margen : 25
         
         const margenOcupado = 1 + (margen1_0 / 100)

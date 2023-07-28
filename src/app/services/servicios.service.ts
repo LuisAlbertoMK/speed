@@ -158,6 +158,22 @@ export class ServiciosService {
           fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: '', descuento:0
         }  
 //TODO aqui las nuevas funciones
+
+consulta_recepcion_sucursal(busqueda_ruta): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const {ruta} = busqueda_ruta
+    const starCountRef = ref(db, `${ruta}`);
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        resolve(snapshot.val());
+      } else {
+        resolve({});
+      }
+    },{
+      onlyOnce: true
+    });
+  });
+}
 consulta_recepcion_new(busqueda_ruta): Promise<any> {
   return new Promise((resolve, reject) => {
     const starCountRef = ref(db, `${busqueda_ruta}`);

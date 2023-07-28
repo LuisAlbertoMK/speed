@@ -394,7 +394,7 @@ export class ExporterService {
       'Tipo':'',
       'Status orden':'',
     };
-    console.log(arreglo);
+    // console.log(arreglo);
     
     arreglo.forEach(r=>{
       const {
@@ -521,18 +521,35 @@ export class ExporterService {
     lineas_blancas(3)
 
     
-    const nuevos_ = [['deposito','subtotal'], ['operacion','iva'], ['orden','total'],['sobrante','']]
+    const nuevos_ = [['deposito','subtotal'],['sobrante','iva'], ['operacion','total'], ['orden',''],['restante','']]
 
-    nuevos_.forEach(g=>{
-      
-      colocada.push({ ...lieneaBlanca, 
-        'Fecha registro': `${g[0]}`, 
-        'Referencia': this.transform_monedas(data_reporte_general[g[0]]),
-        'Marca': `${g[1]} facturas`,
-        'Modelo': this.transform_monedas(data_reporte_facturas[g[1]]),
-        'nota / factura': `${g[1]} notas`,
-        'metodo pago': this.transform_monedas(data_reporte_notas[g[1]]),
-        });
+    // console.log(data_reporte_general['sobrante']);
+    // data_reporte_general.sobrante = -2000.445675756
+    nuevos_.forEach((g, index)=>{
+      const [campo, valor] = g
+
+      const campo_v = this.transform_monedas(data_reporte_general[campo])
+      const valor_  = this.transform_monedas(data_reporte_facturas[valor])
+      let mu = {
+        ...lieneaBlanca,
+        'Marca': `${valor} facturas`,
+        'Modelo': `${valor_}`,
+        'nota / factura': `${valor} notas`,
+        'metodo pago': `${valor_}`,
+        'Fecha registro': `${campo}`, 
+        'Referencia': campo_v,
+      }
+      if (campo === 'orden' || campo === 'restante') {
+        mu = {
+            ...mu,
+            'Marca': ``,
+            'Modelo': ``,
+            'nota / factura': ``,
+            'metodo pago': ``,
+          }
+      }
+      colocada.push(mu);
+
     })
 
     lineas_blancas(3)
@@ -746,10 +763,8 @@ export class ExporterService {
     
       return fechaFormateada;
   }
-  transform_monedas(value: number): number {
-    if (!value || isNaN(value)) {
-      return 0;
-    }
+  transform_monedas(value: number): string {
+    if (!value || isNaN(value)) return '0'; 
     
     const isNegative = value < 0;
     const [integerPart, decimalPart = '00'] = Math.abs(value).toFixed(2).split('.');
@@ -761,8 +776,9 @@ export class ExporterService {
         return `${digit}${isThousands ? '' : ''}${result}`;
       }, '');
   
-    const formattedValue = `${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
-    return parseFloat(formattedValue);
+    const formattedValue = `${isNegative ? '-' : ''}${formattedIntegerPart}.${decimalPart}`;
+    
+    return formattedValue
   }
   
 }

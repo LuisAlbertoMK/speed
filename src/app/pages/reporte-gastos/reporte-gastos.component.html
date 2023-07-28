@@ -60,7 +60,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 offset-4">
                       <button class="btn btn-sm btn-success" (click)="realizarBarrido()">Realiza barrido hasta la fecha actual</button>
                     </div>
                   </div>
@@ -185,8 +185,8 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','fechaCompara'); fechas_reporte = !fechas_reporte">&nbsp; Fecha recibido &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'fechaCompara'">
+              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','fecha_recibido'); fechas_reporte = !fechas_reporte">&nbsp; Fecha recibido &nbsp;
+                <ng-container *ngIf="ordenamientoCampo_reporte === 'fecha_recibido'">
                   <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
                 </ng-container>
               </th>
