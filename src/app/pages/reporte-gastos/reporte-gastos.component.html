@@ -32,577 +32,264 @@
     >Registra pago</button>
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-      <mat-tab label="Reporte de gastos">
-        <ng-container *ngIf="SUCURSAL === 'Todas'">
-              <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                      <h3>Obtener el sobrante de sucursal y dia especifico</h3>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                      <select class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value;">
-                        <option value="">Selecciona</option>
-                        <option [value]="s.id"  *ngFor="let s of sucursales_array" >{{s.sucursal}}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                      <div class="input-group mb-3 ">
-                        <form  [formGroup]="rangeBarrido">
-                          <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
-                        </form>
-                        <mat-datepicker #pickerBarrido></mat-datepicker>
-                        <div class="input-group-append">
-                          <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
-                            <i class="fa fa-calendar-alt"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-12 offset-4">
-                      <button class="btn btn-sm btn-success" (click)="realizarBarrido()">Realiza barrido hasta la fecha actual</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </ng-container>
-        <div class="row m-1">
-          <div class="card col-lg-6 col-md-6 col-sm-12 col-12 text-center">
-            <div class="card-body text-success ">
-              <div class="row">
-                <ng-container *ngFor="let item of camposReporte">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item.show}}</div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
-                </ng-container>
-              </div>
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1">
+              <h3>Obtener el sobrante de sucursal y dia especifico</h3>
             </div>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start">
-            <div class="input-group mb-3 ">
-              <mat-date-range-picker #picker></mat-date-range-picker>
-              <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
-                <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio">
-                <input matEndDate formControlName="end" readonly placeholder="Final">
-              </mat-date-range-input>
-              <div class="input-group-append">
-                <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
-                  <i class="fa fa-calendar-alt"></i>
-                </button>
-              </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+              <select class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value;">
+                <option value="">Selecciona</option>
+                <option [value]="s.id"  *ngFor="let s of sucursales_array" >{{s.sucursal}}</option>
+              </select>
             </div>
-            <button class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
-            matTooltip="filtro Tipo"><i class="fa fa-filter"></i></button>
-            <mat-menu #filtroTipo="matMenu">
-              <button mat-menu-item (click)="filtro_tipo = tipo; filtra_informacion()" *ngFor="let tipo of tipos_muestra">{{tipo | capitalizarUno}}</button>
-            </mat-menu>
-            <ng-container *ngIf="SUCURSAL === 'Todas'">
-              <button class="btn btn-sm btn-danger m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
-              matTooltip="filtro sucursal"><i class="fa fa-filter"></i></button>
-              <mat-menu #filtroSucursal="matMenu">
-                <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
-                <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
-              </mat-menu>
-            </ng-container>
-            <button class="btn btn-sm btn-success m-1" (click)="generaReporteExcelReporteGastos()">Genera excel</button>
-          </div>
-        </div>
-        <div class="mat-elevation-z8 table-responsive">
-          <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('reporte','index'); fechas_reporte = !fechas_reporte" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"> # 
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'index'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" class="text-center" >
-                {{row.index + 1 }}
-            </td>
-            </ng-container>
-            <ng-container matColumnDef="sucursalShow">
-              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','sucursalShow'); fechas_reporte = !fechas_reporte">
-                Sucursal &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'sucursalShow'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"   class="text-start pointer" (click)="ordenamiento('reporte','sucursalShow'); fechas_reporte = !fechas_reporte">
-                {{row.sucursalShow | capitalizarUno}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="no_os">
-              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','no_os'); fechas_reporte = !fechas_reporte">&nbsp; # O.S &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'no_os'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.4+'px'}"  class="text-uppercase text-start">
-                {{ row.no_os }} 
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="metodoShow">
-              <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('reporte','metodoShow'); fechas_reporte = !fechas_reporte">&nbsp; Metodo &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'metodoShow'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-center"> 
-                {{row.metodoShow | capitalizarUno}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','status'); fechas_reporte = !fechas_reporte">
-                &nbsp; Status &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'status'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*.8+'px'}"  class="text-start">
-                <strong class="text-success" [ngClass]="{'text-danger': !row.status}">
-                  {{(row.status)? 'Aprobado':'No Aprobado'}}
-                </strong>
-              </td>
-            </ng-container>
-            
-            <ng-container matColumnDef="monto">
-              <th mat-header-cell *matHeaderCellDef class="text-end  pointer" (click)="ordenamiento('reporte','monto'); fechas_reporte = !fechas_reporte">&nbsp; Monto &nbsp; 
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'monto'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" class="text-end" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-end"> 
-                {{row.monto | monedas}} &nbsp; &nbsp;
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="tipo">
-              <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('reporte','tipo'); fechas_reporte = !fechas_reporte"> &nbsp; Tipo &nbsp; 
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'tipo'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
-                  {{row.tipo  | capitalizarUno}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','fecha_recibido'); fechas_reporte = !fechas_reporte">&nbsp; Fecha recibido &nbsp;
-                <ng-container *ngIf="ordenamientoCampo_reporte === 'fecha_recibido'">
-                  <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                </ng-container>
-              </th>
-              <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.7+'px'}"  class="text-start"> 
-                  {{row.fecha_recibido | formateHora:true}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="opciones">
-              <th mat-header-cell *matHeaderCellDef> &nbsp; </th>
-              <td mat-cell *matCellDef="let row">
-                <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
-                <mat-menu #Opciones="matMenu">
-                  <ng-container *ngIf="SUCURSAL === 'Todas'">
-                    <button mat-menu-item (click)="accion({accion:'activar', data: row})"> Habilitar <i class="fa fa-check-double text-success ml-1"></i></button>
-                  </ng-container>
-                  <button mat-menu-item (click)="accion({accion:'eliminar', data: row})"> Inhabilitar <i class="fa fa-ban text-danger ml-1"></i></button>
-                  <!-- <button mat-menu-item (click)="accion({accion:'modificar', data: row})"> Modificar <i class="fa fa-trash text-primary ml-1"></i></button> -->
-                </mat-menu>
-                  
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="expand">
-              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-              <td mat-cell *matCellDef="let element" >
-                  <button mat-icon-button aria-label="expand row" 
-                  (click)="
-                  (expandedElement = expandedElement === element ? null : element); 
-                  $event.stopPropagation();">
-                    <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                    <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-1">
+              <div class="input-group mb-3 ">
+                <form  [formGroup]="rangeBarrido">
+                  <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
+                </form>
+                <mat-datepicker #pickerBarrido></mat-datepicker>
+                <div class="input-group-append">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
+                    <i class="fa fa-calendar-alt"></i>
                   </button>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
-                <div class="example-element-detail row"
-                     [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-                     <div class="row alert alert-info">
-                      <div class="col-lg-6 col-md-6 col-12 col-12">
-                        Concepto: {{row.concepto  | capitalizarUno}}
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-12 col-12">
-                        Referencia: {{row.referencia  | capitalizarUno}}
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-12 col-12">
-                        <ng-container *ngIf="SUCURSAL !== 'Todas'; else elseTemplate">
-                          Monto: {{row.monto | monedas}} &nbsp; &nbsp;
-                        </ng-container>
-                        <ng-template #elseTemplate>
-                          <p>Modificar su cantidad </p>
-                          <span>para modificar es necesario presionar enter para guardar cambios</span>
-                          <input type="number" [value]="row.monto" [name]="row.id" [id]="row.id" #miCaja (keyup.enter)="accion({accion:'modificar', data: row, monto_caja: miCaja.value })" class="form-control form-control-sm mr-1"> &nbsp; &nbsp;
-                        </ng-template>
-                      </div>
-                     </div>
-                     
-                     <ng-container *ngIf="row.modificado">
-                      <div class="row alert alert-warning">
-                        
-                        <div class="col-lg-12 col-md-12 col-12 col-12">
-                          modificado: {{row.modificado  | formateHora:true}}
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12 col-12">
-                          habilitado_por_usuario: {{row.habilitado_por_usuario  | capitalizarUno}}
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12 col-12">
-                          habilitado_por_rol: {{row.habilitado_por_rol  | capitalizarUno}}
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12 col-12">
-                          inhabilitado_por_usuario: {{row.inhabilitado_por_usuario  | capitalizarUno}}
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12 col-12">
-                          inhabilitado_por_rol: {{row.inhabilitado_por_rol  | capitalizarUno}}
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12 col-12">
-                          modificado_por_usuario: {{row.modificado_por_usuario  | capitalizarUno}}
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-12 col-12">
-                          modificado_por_rol: {{row.modificado_por_rol  | capitalizarUno}}
-                        </div>
-
-                      </div>
-                     </ng-container>
                 </div>
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" ></tr>
-            <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpand;"
-                class="example-element-row"
-                [class.example-expanded-row]="expandedElement === row"                >
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
-          </table>
-          <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-        </div>
-      </mat-tab>
-      <mat-tab label="Administracion">
-        <div class="row m-1">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info">
-            <h3>
-              Aqui solo aparecen las ordenes con status <strong>"Entregado"</strong>
-            </h3>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-            <div class="input-group mb-3 ">
-              <mat-date-range-picker #pickerAdministracion></mat-date-range-picker>
-              <mat-date-range-input 
-              (click)="pickerAdministracion.open()" 
-              class="pointer form-control" 
-              [formGroup]="rangeAdministracion"
-              [rangePicker]="pickerAdministracion">
-                <input matStartDate class="mr-2" formControlName="start" readonly  placeholder="Inicio">
-                <input matEndDate formControlName="end" readonly  placeholder="Final">
-              </mat-date-range-input>
-              <div class="input-group-append">
-                <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerAdministracion.open()">
-                  <i class="fa fa-calendar-alt"></i>
-                </button>
               </div>
             </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center alert alert-warning">
+              
+              
+                <button class="btn btn-sm btn-success" (click)="realizarBarrido()">Barrido</button>
+                Realiza barrido hasta la fecha actual
+              
+            </div>
           </div>
+        </div>
+      </div>
+</ng-container>
+<div class="row m-1">
+  <div class="card col-lg-6 col-md-6 col-sm-12 col-12 text-center">
+    <div class="card-body text-success ">
+      <div class="row">
+        <ng-container *ngFor="let item of camposReporte">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item.show}}</div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start">
+    <div class="input-group mb-3 ">
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
+        <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio">
+        <input matEndDate formControlName="end" readonly placeholder="Final">
+      </mat-date-range-input>
+      <div class="input-group-append">
+        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
+          <i class="fa fa-calendar-alt"></i>
+        </button>
+      </div>
+    </div>
+    <button class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
+    matTooltip="filtro Tipo"><i class="fa fa-filter"></i></button>
+    <mat-menu #filtroTipo="matMenu">
+      <button mat-menu-item (click)="filtro_tipo = tipo; filtra_informacion()" *ngFor="let tipo of tipos_muestra">{{tipo | capitalizarUno}}</button>
+    </mat-menu>
+    <ng-container *ngIf="SUCURSAL === 'Todas'">
+      <button class="btn btn-sm btn-danger m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
+      matTooltip="filtro sucursal"><i class="fa fa-filter"></i></button>
+      <mat-menu #filtroSucursal="matMenu">
+        <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
+        <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
+      </mat-menu>
+    </ng-container>
+    <button class="btn btn-sm btn-success m-1" (click)="generaReporteExcelReporteGastos()">Genera excel</button>
+  </div>
+</div>
+<div class="mat-elevation-z8 table-responsive">
+  <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('reporte','index'); fechas_reporte = !fechas_reporte" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"> # 
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'index'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" class="text-center" >
+        {{row.index + 1 }}
+    </td>
+    </ng-container>
+    <ng-container matColumnDef="sucursalShow">
+      <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','sucursalShow'); fechas_reporte = !fechas_reporte">
+        Sucursal &nbsp;
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'sucursalShow'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"   class="text-start pointer" (click)="ordenamiento('reporte','sucursalShow'); fechas_reporte = !fechas_reporte">
+        {{row.sucursalShow | capitalizarUno}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="no_os">
+      <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','no_os'); fechas_reporte = !fechas_reporte">&nbsp; # O.S &nbsp;
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'no_os'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.4+'px'}"  class="text-uppercase text-start">
+        {{ row.no_os }} 
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="metodoShow">
+      <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('reporte','metodoShow'); fechas_reporte = !fechas_reporte">&nbsp; Metodo &nbsp;
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'metodoShow'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-center"> 
+        {{row.metodoShow | capitalizarUno}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','status'); fechas_reporte = !fechas_reporte">
+        &nbsp; Status &nbsp;
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'status'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*.8+'px'}"  class="text-start">
+        <strong class="text-success" [ngClass]="{'text-danger': !row.status}">
+          {{(row.status)? 'Aprobado':'No Aprobado'}}
+        </strong>
+      </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="monto">
+      <th mat-header-cell *matHeaderCellDef class="text-end  pointer" (click)="ordenamiento('reporte','monto'); fechas_reporte = !fechas_reporte">&nbsp; Monto &nbsp; 
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'monto'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" class="text-end" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-end"> 
+        {{row.monto | monedas}} &nbsp; &nbsp;
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tipo">
+      <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('reporte','tipo'); fechas_reporte = !fechas_reporte"> &nbsp; Tipo &nbsp; 
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'tipo'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  class="text-start"> 
+          {{row.tipo  | capitalizarUno}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('reporte','fecha_recibido'); fechas_reporte = !fechas_reporte">&nbsp; Fecha recibido &nbsp;
+        <ng-container *ngIf="ordenamientoCampo_reporte === 'fecha_recibido'">
+          <i [ngClass]="fechas_reporte ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+        </ng-container>
+      </th>
+      <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.7+'px'}"  class="text-start"> 
+          {{row.fecha_recibido | formateHora:true}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="opciones">
+      <th mat-header-cell *matHeaderCellDef> &nbsp; </th>
+      <td mat-cell *matCellDef="let row">
+        <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
+        <mat-menu #Opciones="matMenu">
           <ng-container *ngIf="SUCURSAL === 'Todas'">
-            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-              <!-- <button mat-button [matMenuTriggerFor]="menuAdministracion">Menu</button> -->
-              <!-- <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" [matMenuTriggerFor]="menuAdministracion">
-                Filtro sucursal {{sucursalFiltroShow}}
-              </button> -->
-              <!-- <mat-menu #menuAdministracion="matMenu">
-                <button mat-menu-item class="custom-menu-item" (click)="sucursalFiltro = 'Todas'; sucursalFiltroShow ='Todas'; operacionesAdmin()">Todas</button>
-                <button mat-menu-item class="custom-menu-item" *ngFor="let s of sucursales_array" 
-                (click)="sucursalFiltro = s.id; sucursalFiltroShow = s.sucursal;  operacionesAdmin()">{{s.sucursal}}</button>
-              </mat-menu> -->
-              
-            </div>
+            <button mat-menu-item (click)="accion({accion:'activar', data: row})"> Habilitar <i class="fa fa-check-double text-success ml-1"></i></button>
           </ng-container>
+          <button mat-menu-item (click)="accion({accion:'eliminar', data: row})"> Inhabilitar <i class="fa fa-ban text-danger ml-1"></i></button>
+          <!-- <button mat-menu-item (click)="accion({accion:'modificar', data: row})"> Modificar <i class="fa fa-trash text-primary ml-1"></i></button> -->
+        </mat-menu>
           
-          
-          <div class="col-lg-6 col-md-8 col-sm-12 col-12">
-            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12"> -->
-              <div class="card border-success mb-3">
-                <div class="card-header text-center">Reporte de administrración</div>
-                <div class="card-body text-success ">
-                  <h5 class="card-title"></h5>
-                  <div class="row ">
-                    <ng-container *ngFor="let campo of camposReporteAdministracion; let i = index">
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="campo.valor !== 'cantidad' && campo.valor !== 'por_margen' ">
-                      <div class="row">
-                        <div class="col text-start">{{campo.show}}</div>
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-12 text-end"><strong>{{reporteAdministracion[campo.valor]  | monedas}}</strong></div>
-                      </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="campo.valor === 'cantidad'">
-                      <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">{{campo.show}}</div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor]}}</strong></div>
-                      </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="campo.valor === 'por_margen'">
-                      <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">{{campo.show}}</div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor] | monedas:'%'}}</strong></div>
-                      </div>
-                    </div>
-                  </ng-container>
-                    <!-- <ng-container *ngFor="let campo of camposReporteAdministracion; let i = index">
-                      <div class="col-lg-4 col-md-6 col-sm-6 col-6 text-start">{{campo.show}}</div>
-                      <div class="col-lg-4 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporteAdministracion[campo.valor]  | monedas}}</strong></div>
-                    </ng-container> -->
-                  </div>
-                </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+      <td mat-cell *matCellDef="let element" >
+          <button mat-icon-button aria-label="expand row" 
+          (click)="
+          (expandedElement = expandedElement === element ? null : element); 
+          $event.stopPropagation();">
+            <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+          </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
+        <div class="example-element-detail row"
+             [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+             <div class="row alert alert-info">
+              <div class="col-lg-6 col-md-6 col-12 col-12">
+                Concepto: {{row.concepto  | capitalizarUno}}
               </div>
-            <!-- </div> -->
-          </div>
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="mat-elevation-z8 table-responsive">
-              <table #Administracion="matSort" mat-table [dataSource]="dataSourceAdministracion" matSort multiTemplateDataRows>
-                <ng-container matColumnDef="id">
-                  <th mat-header-cell *matHeaderCellDef class="text-center pointer" (click)="ordenamiento('admin','index'); fechas_admin = !fechas_admin"> # 
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'index'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
-                    &nbsp; {{row.index + 1 }}&nbsp; 
-                </td>
+              <div class="col-lg-6 col-md-6 col-12 col-12">
+                Referencia: {{row.referencia  | capitalizarUno}}
+              </div>
+              <div class="col-lg-6 col-md-6 col-12 col-12">
+                <ng-container *ngIf="SUCURSAL !== 'Todas'; else elseTemplate">
+                  Monto: {{row.monto | monedas}} &nbsp; &nbsp;
                 </ng-container>
-                <ng-container matColumnDef="sucursalShow">
-                  <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('admin','sucursalShow'); fechas_admin = !fechas_admin">&nbsp; Sucursal 
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'sucursalShow'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start" >
-                    {{row.sucursalShow |  capitalizarUno}}
-                </td>
-                </ng-container>
-                <ng-container matColumnDef="no_os">
-                  <th mat-header-cell *matHeaderCellDef class="bg-black text-white text-center" class="text-start  pointer" (click)="ordenamiento('admin','no_os'); fechas_admin = !fechas_admin">&nbsp; # O.S &nbsp;
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'no_os'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.3+'px'}" class="text-uppercase text-start"> 
-                    &nbsp; {{row.no_os }} &nbsp;
-                  </td>
-                </ng-container>
+                <ng-template #elseTemplate>
+                  <p>Modificar su cantidad </p>
+                  <span>para modificar es necesario presionar enter para guardar cambios</span>
+                  <input type="number" [value]="row.monto" [name]="row.id" [id]="row.id" #miCaja (keyup.enter)="accion({accion:'modificar', data: row, monto_caja: miCaja.value })" class="form-control form-control-sm mr-1"> &nbsp; &nbsp;
+                </ng-template>
+              </div>
+             </div>
+             
+             <ng-container *ngIf="row.modificado">
+              <div class="row alert alert-warning">
                 
-                <ng-container matColumnDef="fecha_recibido">
-                  <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('admin','fecha_recibido_compara'); fechas_admin = !fechas_admin"> Fecha recibido 
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'fecha_recibido_compara'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" > 
-                    {{row.fecha_recibido  | capitalizarUno}}
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="fecha_entregado">
-                  <th mat-header-cell *matHeaderCellDef class="text-start pointer" (click)="ordenamiento('admin','fecha_entregado_compara'); fechas_admin = !fechas_admin"> &nbsp; Fecha entregado 
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'fecha_entregado_compara'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" > 
-                      {{row.fecha_entregado}}
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="subtotal">
-                  <th mat-header-cell *matHeaderCellDef class="text-end  pointer" (click)="ordenamiento('admin','subtotal'); fechas_admin = !fechas_admin" > &nbsp; subtotal &nbsp;
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'subtotal'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-uppercase text-end"> 
-                    {{row.subtotal | monedas}}&nbsp;
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="cliente">
-                  <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('admin','clienteShow'); fechas_admin = !fechas_admin" > &nbsp;Cliente 
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'clienteShow'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*2+'px'}" class="text-uppercase text-start"> 
-                    &nbsp; {{row.clienteShow }}
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="formaPago">
-                  <th mat-header-cell *matHeaderCellDef class="text-start  pointer" (click)="ordenamiento('admin','formaPagoShow'); fechas_admin = !fechas_admin" > Forma de pago 
-                    <ng-container *ngIf="ordenamientoCampo_admin === 'formaPagoShow'">
-                      <i [ngClass]="fechas_admin ? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
-                    </ng-container>
-                  </th>
-                  <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start"> 
-                    {{row.formaPagoShow | capitalizarUno}}
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="opciones">
-                  <th mat-header-cell *matHeaderCellDef > &nbsp; </th>
-                  <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="expand">
-                  <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-                  <td mat-cell *matCellDef="let element" >
-                      <button mat-icon-button aria-label="expand row" 
-                      (click)="
-                      (expandedElement = expandedElement === element ? null : element); 
-                      $event.stopPropagation();"
-                      >
-                        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-                      </button>
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="expandedDetail">
-                  <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpandAdministracion.length" 
-                  >
-                    <div class="example-element-detail row"
-                         [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-                         <div class="row">              
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                            Dias en sucursal: <strong class="text-uppercase"> {{row.diasSucursal}}</strong>
-                          </div>
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                            Fecha recibido: <strong class="text-uppercase"> {{row.fecha_recibido}} {{row.hora_recibido}}</strong>
-                          </div>
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                            Fecha entregado: <strong class="text-uppercase"> {{row.fecha_entregado}} {{row.hora_entregado}}</strong>
-                          </div>
-                          <div class="col-lg-12 col-md-12 col-sm-12 col-12"><hr></div>
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
-                            <div class="card border-success mb-3">
-                              <div class="card-header text-center">Desgloce
-                                <strong [ngClass]="{'text-danger': row.reporte['ub'] < 55,'text-success': row.reporte['ub'] >= 55}">
-                                  U.B: {{row.reporte['ub'] | monedas:'%'}}
-                                </strong>
-                              </div>
-                              <div class="card-body text-success ">
-                                <h5 class="card-title"></h5>
-                                <div class="row">
-                                  <ng-container *ngFor="let campo of camposDesgloce">
-                                    <ng-container *ngIf="row.reporte[campo['valor']] > 0">
-                                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{campo['show'] | capitalizarUno}}</div>
-                                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{row.reporte[campo.valor]  | monedas}}</strong></div>
-                                    </ng-container>
-                                  </ng-container>
-                                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{row.reporte['total']  | numerosLetras}}</strong></div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-12 col-md-12 col-sm-12 col-12"><hr></div>
-                          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                            <h2><strong>Historial de gastos</strong></h2>
-                            <div class="table-responsive">
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">#</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Concepto</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Referencia</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Fecha registro</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Tipo</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Metodo</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-end">Monto</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Status</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr *ngFor="let item of row.hitorial_gastos; let i = index">
-                                    <th scope="row">{{i +1 }}</th>
-                                    <td class="text-start">{{item.concepto | capitalizarUno}}</td>
-                                    <td class="text-start">{{item.referencia | capitalizarUno}}</td>
-                                    <td class="text-start">{{item.fecha_registro}}</td>
-                                    <td class="text-start">{{item.gasto_tipo | capitalizarUno}}</td>
-                                    <td class="text-start">{{item.metodoShow | capitalizarUno}}</td>
-                                    <td class="text-end">{{item.monto | monedas}}</td>
-                                    <td class="text-start fw-bold" [ngClass]="{'text-success': item.status, 'text-danger': !item.status}">
-                                      <ng-container *ngIf="item.status; else elseTemplate">
-                                        Aprobado
-                                      </ng-container>
-                                      <ng-template #elseTemplate>
-                                        Eliminado
-                                      </ng-template>
-                                      
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                            <h2><strong>Historial de pagos</strong></h2>
-                            <div class="table-responsive">
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">#</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Concepto</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Fecha registro</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Metodo</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-end">Monto</th>
-                                    <th [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="text-start">Status</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr *ngFor="let item of row.historial_pagos; let i = index">
-                                    <th scope="row">{{i +1 }}</th>
-                                    <td class="text-start">{{item.concepto | capitalizarUno}}</td>
-                                    <td class="text-start">{{item.fecha_registro}}</td>
-                                    <td class="text-start">{{item.metodoShow | capitalizarUno}}</td>
-                                    <td class="text-end">{{item.monto | monedas}}</td>
-                                    <td class="text-start fw-bold" [ngClass]="{'text-success': item.status, 'text-danger': !item.status}">
-                                      <ng-container *ngIf="item.status; else elseTemplate">
-                                        Aprobado
-                                      </ng-container>
-                                      <ng-template #elseTemplate>
-                                        Eliminado
-                                      </ng-template>
-                                      
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                         </div>
-                    </div>
-                  </td>
-                </ng-container>
-              
-            
-                <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpandAdministracion" ></tr>
-                <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpandAdministracion;"
-                    class="example-element-row"
-                    [class.example-expanded-row]="expandedElement === row"
-                    
-                    >
-                    <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
-                </tr>
-                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
-            
-                <!-- Row shown when there is no matching data. -->
-                <!-- <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                </tr> -->
-              </table>
-            
-              <mat-paginator #AdministracionPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-            </div>
-          </div>
+                <div class="col-lg-12 col-md-12 col-12 col-12">
+                  modificado: {{row.modificado  | formateHora:true}}
+                </div>
+                <div class="col-lg-6 col-md-6 col-12 col-12">
+                  habilitado_por_usuario: {{row.habilitado_por_usuario  | capitalizarUno}}
+                </div>
+                <div class="col-lg-6 col-md-6 col-12 col-12">
+                  habilitado_por_rol: {{row.habilitado_por_rol  | capitalizarUno}}
+                </div>
+                <div class="col-lg-6 col-md-6 col-12 col-12">
+                  inhabilitado_por_usuario: {{row.inhabilitado_por_usuario  | capitalizarUno}}
+                </div>
+                <div class="col-lg-6 col-md-6 col-12 col-12">
+                  inhabilitado_por_rol: {{row.inhabilitado_por_rol  | capitalizarUno}}
+                </div>
+                <div class="col-lg-6 col-md-6 col-12 col-12">
+                  modificado_por_usuario: {{row.modificado_por_usuario  | capitalizarUno}}
+                </div>
+                <div class="col-lg-6 col-md-6 col-12 col-12">
+                  modificado_por_rol: {{row.modificado_por_rol  | capitalizarUno}}
+                </div>
+
+              </div>
+             </ng-container>
         </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand" ></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpand;"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === row"                >
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
+  </table>
+  <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
+    <!-- <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+      <mat-tab label="Reporte de gastos">
+        
       </mat-tab>
-    </mat-tab-group>
+     
+    </mat-tab-group> -->
   </div>
 </div>
 

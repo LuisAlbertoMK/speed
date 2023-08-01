@@ -36,12 +36,12 @@ export class AutomaticosComponent implements OnInit {
   arr_sucursal = [...this._sucursales.lista_en_duro_sucursales]
   ngOnInit(): void {
     this.rol()
-    this.realizaOperacionesClientes()
+    // this.realizaOperacionesClientes()
   }
-  rol(){
-    const { rol, sucursal, usuario } = this._security.usuarioRol()
-  }
-  realizaOperacionesClientes(){
+    rol(){
+        const { rol, sucursal, usuario } = this._security.usuarioRol()
+    }
+    realizaOperacionesClientes(){
    
     const array_placas = []
     
@@ -3642,7 +3642,6 @@ export class AutomaticosComponent implements OnInit {
                   "cantidad": 1,
                   "cilindros": "4",
                   "costo": 3200,
-                  "desgloce": "",
                   "elementos": [
                       {
                           "IDreferencia": "-NE2JJZu_LtUYJXSBola",
@@ -3815,72 +3814,16 @@ export class AutomaticosComponent implements OnInit {
                       }
                   ],
                   "enCatalogo": true,
-                  "flotilla": 3200,
-                  "flotilla2": "$  3,200.00",
-                  "id": "",
-                  "index": 0,
+                  "id": "-NE2pvE6CS_1mdeHFL5W",
                   "marca": "Ford",
                   "modelo": "Fiesta",
                   "nombre": "SERVICIO MAYOR",
-                  "normal": "$  4,160.00",
                   "precio": 3420,
-                  "reporte": {
-                      "mo": 3420,
-                      "refacciones": 0,
-                      "refacciones_v": 0,
-                      "sobrescrito_mo": 0,
-                      "sobrescrito_refaccion": 0,
-                      "total": 3420,
-                      "ub": 100
-                  },
-                  "reporte_interno": {
-                      "mo": 3420,
-                      "refacciones": 0,
-                      "sobrescrito_mo": 0,
-                      "sobrescrito_refaccion": 0
-                  },
                   "showStatus": "Aprobado",
                   "status": "aprobado",
                   "subtotal": "",
                   "tipo": "paquete",
                   "total": 3200
-              },
-              {
-                  "UB": "",
-                  "aprobado": "",
-                  "cantidad": 1,
-                  "cilindros": "",
-                  "costo": 7800,
-                  "desgloce": "",
-                  "enCatalogo": "",
-                  "flotilla": 7800,
-                  "flotilla2": "$  7,800.00",
-                  "id": "-NQgBXpNofrC9fYVkVly",
-                  "index": 1,
-                  "marca": "",
-                  "modelo": "",
-                  "nombre": "amortiguadores delanteros",
-                  "normal": "$  10,140.00",
-                  "precio": 0,
-                  "reporte": {
-                      "mo": 0,
-                      "refacciones": 0,
-                      "refacciones_v": 0,
-                      "sobrescrito_mo": 0,
-                      "sobrescrito_refaccion": 0,
-                      "total": 0
-                  },
-                  "reporte_interno": {
-                      "mo": 0,
-                      "refacciones": 0,
-                      "sobrescrito_mo": 0,
-                      "sobrescrito_refaccion": 0
-                  },
-                  "showStatus": "No aprobado",
-                  "status": "noAprobado",
-                  "subtotal": "",
-                  "tipo": "paquete",
-                  "total": 7800
               },
               {
                   "aprobado": false,
@@ -3938,26 +3881,11 @@ export class AutomaticosComponent implements OnInit {
           "iva": true,
           "margen": 25,
           "no_os": "CU0323GE00018",
-          "reporte": {
-              "descuento": 0,
-              "iva": 0,
-              "meses": 0,
-              "mo": 0,
-              "refacciones_a": 0,
-              "refacciones_v": 0,
-              "sobrescrito": 0,
-              "sobrescrito_mo": 0,
-              "sobrescrito_paquetes": 0,
-              "sobrescrito_refaccion": 0,
-              "subtotal": 0,
-              "total": 0,
-              "ub": 0
-          },
           "servicio": 1,
           "servicios": [
               {
-                  "aprobado": false,
-                  "cantidad": 1,
+                  "aprobado": true,
+                  "cantidad": 2,
                   "cilindros": "4",
                   "costo": 3200,
                   "elementos": [
@@ -3967,7 +3895,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "ninguna",
-                          "index": 0,
                           "nombre": "CAMBIO DE ACEITE Y FILTRO",
                           "precio": 120,
                           "tipo": "MO",
@@ -3979,7 +3906,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "ninguna",
-                          "index": 1,
                           "nombre": "REEMPLAZAR FILTRO DE AIRE",
                           "precio": 300,
                           "tipo": "MO",
@@ -3991,7 +3917,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "ninguna",
-                          "index": 2,
                           "nombre": "REV. Y CORREGIR NIVELES",
                           "precio": 300,
                           "tipo": "MO",
@@ -4003,7 +3928,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "ninguna",
-                          "index": 3,
                           "nombre": "LAVAR INYECTORES",
                           "precio": 300,
                           "tipo": "MO",
@@ -4015,7 +3939,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "C",
-                          "index": 4,
                           "nombre": "LAVAR CPO DE ACELERACION",
                           "precio": 300,
                           "tipo": "MO",
@@ -4027,7 +3950,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "ninguna",
-                          "index": 5,
                           "nombre": "SCANEO POR COMPUTADORA",
                           "precio": 300,
                           "tipo": "MO",
@@ -4039,7 +3961,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "N",
-                          "index": 6,
                           "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
                           "precio": 300,
                           "tipo": "MO",
@@ -4051,7 +3972,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "N",
-                          "index": 7,
                           "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
                           "precio": 300,
                           "tipo": "MO",
@@ -4063,7 +3983,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "N",
-                          "index": 8,
                           "nombre": "ROTACION DE LLANTAS",
                           "precio": 300,
                           "tipo": "MO",
@@ -4075,7 +3994,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "N",
-                          "index": 9,
                           "nombre": "REGIMEN DE CARGA DE BATERIA",
                           "precio": 300,
                           "tipo": "MO",
@@ -4087,7 +4005,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "N",
-                          "index": 10,
                           "nombre": "LAVAR MOTOR",
                           "precio": 150,
                           "tipo": "MO",
@@ -4099,7 +4016,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "N",
-                          "index": 11,
                           "nombre": "LAVAR CARROCERIA",
                           "precio": 150,
                           "tipo": "MO",
@@ -4111,7 +4027,6 @@ export class AutomaticosComponent implements OnInit {
                           "catalogo": true,
                           "costo": 0,
                           "descripcion": "ninguna",
-                          "index": 12,
                           "nombre": "REEMPLAZAR BUJIAS",
                           "precio": 300,
                           "tipo": "MO",
@@ -4119,33 +4034,10 @@ export class AutomaticosComponent implements OnInit {
                       }
                   ],
                   "enCatalogo": true,
-                  "flotilla": 3200,
-                  "flotilla2": "$  3,200.00",
-                  "index": 0,
                   "marca": "Ford",
                   "modelo": "Fiesta",
                   "nombre": "SERVICIO MAYOR",
-                  "normal": "$  4,160.00",
-                  "precio": 3420,
-                  "reporte": {
-                      "mo": 3420,
-                      "refacciones": 0,
-                      "refacciones_v": 0,
-                      "sobrescrito_mo": 0,
-                      "sobrescrito_refaccion": 0,
-                      "total": 3420,
-                      "ub": 100
-                  },
-                  "reporte_interno": {
-                      "mo": 3420,
-                      "refacciones": 0,
-                      "sobrescrito_mo": 0,
-                      "sobrescrito_refaccion": 0
-                  },
-                  "showStatus": "No aprobado",
-                  "status": "noAprobado",
                   "tipo": "paquete",
-                  "total": 3200
               }
           ],
           "status": "terminado",
@@ -4411,985 +4303,19 @@ export class AutomaticosComponent implements OnInit {
       }
     ]
 
-    // console.log(arreglo_recepciones);
-    // let updates = {}
-    // let nuevos_ = {}
-    // arreglo_recepciones.forEach(entrada=>{
-        
-    //   const {
-    //     ckeckList,
-    //     cliente,
-    //     detalles,
-    //     diasSucursal,
-    //     fechaPromesa,
-    //     fecha_entregado,
-    //     fecha_recibido,
-    //     formaPago,
-    //     hora_entregado,
-    //     hora_recibido,
-    //     iva,
-    //     margen,
-    //     no_os,
-    //     reporte,
-    //     servicio,
-    //     servicios,
-    //     status,
-    //     sucursal,
-    //     tecnico,
-    //     vehiculo,
-    //     id} = entrada
-    //   // const claves = Object.keys(entrada)
-    //   const ruta = `recepciones/${sucursal}/${cliente}/${id}`
 
-    //   updates[ruta] = entrada
-
-    // })
-    // console.log(updates);
-    
-    // console.log(updates['recepciones/-N2glf8hot49dUJYj5WP/-NN8zq1K2QnBp7RIwtq2/-NN90yY-R5V5T-2N6SDN']);
-
-    // const data_trabajar = updates['recepciones/-N2glf8hot49dUJYj5WP/-NN8zq1K2QnBp7RIwtq2/-NN90yY-R5V5T-2N6SDN']
-
-    // const nue_data = {...data_trabajar}
-    // const {servicios} = nue_data
-    // console.log(servicios);
-    
-    const objetto_prueba = {
-      "cliente": "-NG2LstV0NhaJkHH6ro-",
-      "diasSucursal": 123,
-      "fechaPromesa": "24/3/2023",
-      "fecha_recibido": "23/3/2023",
-      "formaPago": 1,
-      "hora_recibido": "17:11:27",
-      "iva": true,
-      "margen": 25,
-      "no_os": "CU0323GE00021",
-      "reporte": {
-          "descuento": 0,
-          "iva": 1945.6000000000001,
-          "meses": 0,
-          "mo": 5360,
-          "refacciones_a": 4640,
-          "refacciones_v": 5800,
-          "sobrescrito": 1000,
-          "sobrescrito_mo": 1000,
-          "sobrescrito_paquetes": 0,
-          "sobrescrito_refaccion": 0,
-          "subtotal": 12160,
-          "total": 14105.599999999999,
-          "ub": 61.8421052631579
-      },
-      "servicio": 1,
-      "servicios": [
-          {
-              "UB": "100.00",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "6",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 100,
-                  "flotilla": 200,
-                  "mo": 200,
-                  "normal": 250,
-                  "precio": 0,
-                  "refacciones1": 0,
-                  "refacciones2": 0
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "index": 0,
-                      "nombre": "FRENOSSSS",
-                      "precio": 200,
-                      "tipo": "MO",
-                      "total": 200
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 200,
-              "id": "-NE2pvE6CS_1mdeHFL5W",
-              "index": 0,
-              "marca": "Ford",
-              "modelo": "F-350",
-              "nombre": "x",
-              "precio": 200,
-              "reporte": {
-                  "mo": 200,
-                  "refacciones": 0,
-                  "refacciones_v": 0,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 200,
-                  "ub": 100
-              },
-              "reporte_interno": {
-                  "mo": 200,
-                  "refacciones": 0,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 200,
-              "tipo": "paquete",
-              "total": 200
-          },
-          {
-              "UB": "73.02",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "6",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 73.02504816955684,
-                  "flotilla": 2595,
-                  "mo": 1720,
-                  "normal": 3243.75,
-                  "precio": 0,
-                  "refacciones1": 700,
-                  "refacciones2": 875
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "index": 0,
-                      "nombre": "nueva",
-                      "precio": 100,
-                      "tipo": "MO",
-                      "total": 100
-                  },
-                  {
-                      "IDreferencia": "-NI8Qx6S-SUBqjhU_z2k",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "index": 1,
-                      "marca": "BMW",
-                      "nombre": "prueba 2000 mo",
-                      "precio": 700,
-                      "tipo": "refaccion",
-                      "total": 875
-                  },
-                  {
-                      "IDreferencia": "-NE2JJZu_LtUYJXSBola",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "index": 2,
-                      "nombre": "nueva",
-                      "precio": 120,
-                      "tipo": "MO",
-                      "total": 120
-                  },
-                  {
-                      "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "index": 3,
-                      "marca": "BMW",
-                      "nombre": "prueba 2000 mo",
-                      "precio": 700,
-                      "tipo": "MO",
-                      "total": 700
-                  },
-                  {
-                      "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "index": 4,
-                      "nombre": "prueba 500",
-                      "precio": 800,
-                      "tipo": "MO",
-                      "total": 800
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 2595,
-              "id": "-NE430_ohL7xCijFnR3i",
-              "index": 1,
-              "marca": "GMC",
-              "modelo": "Canyon",
-              "nombre": "paquete z",
-              "precio": 2595,
-              "reporte": {
-                  "mo": 1720,
-                  "refacciones": 700,
-                  "refacciones_v": 875,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 2595,
-                  "ub": 66.28131021194605
-              },
-              "reporte_interno": {
-                  "mo": 1720,
-                  "refacciones": 700,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 2595,
-              "tipo": "paquete",
-              "total": 2595
-          },
-          {
-              "UB": "58.62",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "6",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 58.62068965517241,
-                  "flotilla": 1450,
-                  "mo": 700,
-                  "normal": 1812.5,
-                  "precio": 0,
-                  "refacciones1": 600,
-                  "refacciones2": 750
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NEH_QLEjBw7m2y3OBGJ",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "XD",
-                      "flotilla": 750,
-                      "index": 0,
-                      "marca": "BMW",
-                      "nombre": "exprimi",
-                      "normal": 975,
-                      "precio": 600,
-                      "subtotal": 750,
-                      "tipo": "refaccion",
-                      "total": 750
-                  },
-                  {
-                      "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 700,
-                      "index": 1,
-                      "marca": "BMW",
-                      "nombre": "prueba 2000 mo",
-                      "normal": 910,
-                      "precio": 700,
-                      "subtotal": 700,
-                      "tipo": "MO",
-                      "total": 700
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 1450,
-              "id": "-NEH_O1qK7I5z8sWdOQz",
-              "index": 2,
-              "marca": "BMW",
-              "modelo": "iX M60",
-              "nombre": "paquete bmw",
-              "precio": 1450,
-              "reporte": {
-                  "mo": 700,
-                  "refacciones": 600,
-                  "refacciones_v": 750,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 1450,
-                  "ub": 48.275862068965516
-              },
-              "reporte_interno": {
-                  "mo": 700,
-                  "refacciones": 600,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 1450,
-              "tipo": "paquete",
-              "total": 1450
-          },
-          {
-              "UB": "20.00",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "4",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 20,
-                  "flotilla": 375,
-                  "mo": 0,
-                  "normal": 468.75,
-                  "precio": 0,
-                  "refacciones1": 300,
-                  "refacciones2": 375
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 375,
-                      "index": 0,
-                      "marca": "Audi",
-                      "nombre": "BALATAS",
-                      "normal": 487.5,
-                      "precio": 300,
-                      "subtotal": 375,
-                      "tipo": "refaccion",
-                      "total": 375
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 375,
-              "id": "-NFng8NXTiO7yySaUCtQ",
-              "index": 3,
-              "marca": "BMW",
-              "modelo": "Serie 1",
-              "nombre": "nuevo",
-              "precio": 375,
-              "reporte": {
-                  "mo": 0,
-                  "refacciones": 300,
-                  "refacciones_v": 375,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 375,
-                  "ub": 0
-              },
-              "reporte_interno": {
-                  "mo": 0,
-                  "refacciones": 300,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 375,
-              "tipo": "paquete",
-              "total": 375
-          },
-          {
-              "UB": "20.00",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "6",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 20,
-                  "flotilla": 375,
-                  "mo": 0,
-                  "normal": 468.75,
-                  "precio": 0,
-                  "refacciones1": 300,
-                  "refacciones2": 375
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 375,
-                      "index": 0,
-                      "marca": "Audi",
-                      "nombre": "BALATAS",
-                      "normal": 487.5,
-                      "precio": 300,
-                      "subtotal": 375,
-                      "tipo": "refaccion",
-                      "total": 375
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 375,
-              "id": "-NFyFt2ltBZt-CMx0way",
-              "index": 4,
-              "marca": "Bentley",
-              "modelo": "Continental ",
-              "nombre": "aqui",
-              "precio": 375,
-              "reporte": {
-                  "mo": 0,
-                  "refacciones": 300,
-                  "refacciones_v": 375,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 375,
-                  "ub": 0
-              },
-              "reporte_interno": {
-                  "mo": 0,
-                  "refacciones": 300,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 375,
-              "tipo": "paquete",
-              "total": 375
-          },
-          {
-              "UB": "47.82",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "6",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 47.82608695652174,
-                  "flotilla": 1437.5,
-                  "mo": 500,
-                  "normal": 1796.875,
-                  "precio": 0,
-                  "refacciones1": 750,
-                  "refacciones2": 937.5
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 375,
-                      "index": 0,
-                      "marca": "Audi",
-                      "nombre": "BALATAS",
-                      "normal": 487.5,
-                      "precio": 300,
-                      "subtotal": 375,
-                      "tipo": "refaccion",
-                      "total": 375
-                  },
-                  {
-                      "IDreferencia": "-NE3tnQLGfFd7HK7wRJq",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 562.5,
-                      "index": 1,
-                      "marca": "GMC",
-                      "nombre": "XD",
-                      "normal": 731.25,
-                      "precio": 450,
-                      "subtotal": 562.5,
-                      "tipo": "refaccion",
-                      "total": 562.5
-                  },
-                  {
-                      "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 500,
-                      "index": 2,
-                      "marca": "ninguna",
-                      "nombre": "Mandk",
-                      "normal": 650,
-                      "precio": 500,
-                      "subtotal": 500,
-                      "tipo": "MO",
-                      "total": 500
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 1437.5,
-              "id": "-NG386DKUmKAlxvapTIK",
-              "index": 5,
-              "marca": "Jeep",
-              "modelo": "Wrangler",
-              "nombre": "nuevo",
-              "precio": 1437.5,
-              "reporte": {
-                  "mo": 500,
-                  "refacciones": 750,
-                  "refacciones_v": 937.5,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 1437.5,
-                  "ub": 34.78260869565217
-              },
-              "reporte_interno": {
-                  "mo": 500,
-                  "refacciones": 750,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 1437.5,
-              "tipo": "paquete",
-              "total": 1437.5
-          },
-          {
-              "UB": "74.68",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "6",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 74.68354430379746,
-                  "flotilla": 1185,
-                  "mo": 810,
-                  "normal": 1481.25,
-                  "precio": 0,
-                  "refacciones1": 300,
-                  "refacciones2": 375
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 500,
-                      "index": 0,
-                      "marca": "ninguna",
-                      "nombre": "Mandk",
-                      "normal": 650,
-                      "precio": 500,
-                      "subtotal": 500,
-                      "tipo": "MO",
-                      "total": 500
-                  },
-                  {
-                      "IDreferencia": "-NFUnd1JQ-3Se-7QyIvc",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 375,
-                      "index": 1,
-                      "marca": "Audi",
-                      "nombre": "BALATAS",
-                      "normal": 487.5,
-                      "precio": 300,
-                      "subtotal": 375,
-                      "tipo": "refaccion",
-                      "total": 375
-                  },
-                  {
-                      "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 230,
-                      "index": 2,
-                      "marca": "ninguna",
-                      "nombre": "new mo",
-                      "normal": 299,
-                      "precio": 230,
-                      "subtotal": 230,
-                      "tipo": "MO",
-                      "total": 230
-                  },
-                  {
-                      "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 80,
-                      "index": 3,
-                      "marca": "Aston Martín",
-                      "nombre": "mano de obra cara",
-                      "normal": 104,
-                      "precio": 80,
-                      "subtotal": 80,
-                      "tipo": "MO",
-                      "total": 80
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 1185,
-              "id": "-NG38XM-ZEqoNxvurYl0",
-              "index": 6,
-              "marca": "Jeep",
-              "modelo": "Wrangler",
-              "nombre": "personalizado 1",
-              "precio": 1185,
-              "reporte": {
-                  "mo": 810,
-                  "refacciones": 300,
-                  "refacciones_v": 375,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 1185,
-                  "ub": 68.35443037974683
-              },
-              "reporte_interno": {
-                  "mo": 810,
-                  "refacciones": 300,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 1185,
-              "tipo": "paquete",
-              "total": 1185
-          },
-          {
-              "UB": "57.33",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "6",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 57.333333333333336,
-                  "flotilla": 1500,
-                  "mo": 700,
-                  "normal": 1875,
-                  "precio": 0,
-                  "refacciones1": 640,
-                  "refacciones2": 800
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NFof935I4yJ0ulZ945p",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 250,
-                      "index": 0,
-                      "marca": "ninguna",
-                      "nombre": "refa refa",
-                      "normal": 325,
-                      "precio": 200,
-                      "subtotal": 250,
-                      "tipo": "refaccion",
-                      "total": 250
-                  },
-                  {
-                      "IDreferencia": "-NFof935I4yJ0ulZ945p",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 250,
-                      "index": 1,
-                      "marca": "ninguna",
-                      "nombre": "refa refa",
-                      "normal": 325,
-                      "precio": 200,
-                      "subtotal": 250,
-                      "tipo": "refaccion",
-                      "total": 250
-                  },
-                  {
-                      "IDreferencia": "-NFovlw3fDzGbVMa-mg4",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 300,
-                      "index": 2,
-                      "marca": "-NFiyBdjmZFfdpSoyWNU",
-                      "nombre": "nueva refac 45",
-                      "normal": 390,
-                      "precio": 240,
-                      "subtotal": 300,
-                      "tipo": "refaccion",
-                      "total": 300
-                  },
-                  {
-                      "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 700,
-                      "index": 3,
-                      "marca": "BMW",
-                      "nombre": "prueba 2000 mo",
-                      "normal": 910,
-                      "precio": 700,
-                      "subtotal": 700,
-                      "tipo": "MO",
-                      "total": 700
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 1500,
-              "id": "-NG38nZre8RkONgpHMEY",
-              "index": 7,
-              "marca": "Jeep",
-              "modelo": "Wrangler",
-              "nombre": "personalizado 2",
-              "precio": 1500,
-              "reporte": {
-                  "mo": 700,
-                  "refacciones": 640,
-                  "refacciones_v": 800,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 1500,
-                  "ub": 46.666666666666664
-              },
-              "reporte_interno": {
-                  "mo": 700,
-                  "refacciones": 640,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 1500,
-              "tipo": "paquete",
-              "total": 1500
-          },
-          {
-              "UB": "42.12",
-              "aprobado": true,
-              "cantidad": 1,
-              "cilindros": "4",
-              "costo": 0,
-              "desgloce": {
-                  "UB": 42.12218649517685,
-                  "flotilla": 1555,
-                  "mo": 430,
-                  "normal": 1943.75,
-                  "precio": 0,
-                  "refacciones1": 900,
-                  "refacciones2": 1125
-              },
-              "elementos": [
-                  {
-                      "IDreferencia": "-NG3I_ejiuh3KiL9EdAp",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 350,
-                      "index": 0,
-                      "marca": "ninguna",
-                      "nombre": "600",
-                      "normal": 455,
-                      "precio": 350,
-                      "subtotal": 350,
-                      "tipo": "MO",
-                      "total": 350
-                  },
-                  {
-                      "IDreferencia": "-NG3IXnZpd88mlXrpK4C",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 500,
-                      "index": 1,
-                      "marca": "-NFyYn5eKO2EuaZhukGs",
-                      "nombre": "BALATAS CERÁMICA",
-                      "normal": 650,
-                      "precio": 400,
-                      "subtotal": 500,
-                      "tipo": "refaccion",
-                      "total": 500
-                  },
-                  {
-                      "IDreferencia": "-NFUnmWOMfHeLuqvqDni",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 625,
-                      "index": 2,
-                      "marca": "BMW",
-                      "nombre": "SEGURO BALASTASSSS",
-                      "normal": 812.5,
-                      "precio": 500,
-                      "subtotal": 625,
-                      "tipo": "refaccion",
-                      "total": 625
-                  },
-                  {
-                      "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-                      "cantidad": 1,
-                      "catalogo": true,
-                      "costo": 0,
-                      "descripcion": "ninguna",
-                      "flotilla": 80,
-                      "index": 3,
-                      "marca": "Aston Martín",
-                      "nombre": "mano de obra cara",
-                      "normal": 104,
-                      "precio": 80,
-                      "subtotal": 80,
-                      "tipo": "MO",
-                      "total": 80
-                  }
-              ],
-              "enCatalogo": true,
-              "flotilla": 1555,
-              "id": "-NG3sNo5jlk1a0qoBMjL",
-              "index": 8,
-              "marca": "Chevrolet",
-              "modelo": "Equinox",
-              "nombre": "paquetePruebaWEB",
-              "precio": 1555,
-              "reporte": {
-                  "mo": 430,
-                  "refacciones": 900,
-                  "refacciones_v": 1125,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0,
-                  "total": 1555,
-                  "ub": 27.652733118971057
-              },
-              "reporte_interno": {
-                  "mo": 430,
-                  "refacciones": 900,
-                  "sobrescrito_mo": 0,
-                  "sobrescrito_refaccion": 0
-              },
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 1555,
-              "tipo": "paquete",
-              "total": 1555
-          },
-          {
-              "aprobada": false,
-              "aprobado": true,
-              "cantidad": 2,
-              "costo": 500,
-              "descripcion": "ninguna",
-              "enCatalogo": true,
-              "flotilla": 500,
-              "id": "-NG3I_ejiuh3KiL9EdAp",
-              "index": 9,
-              "nombre": "600",
-              "precio": 100,
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 1000,
-              "tipo": "MO",
-              "total": 1000
-          },
-          {
-              "aprobada": false,
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "enCatalogo": true,
-              "flotilla": 150,
-              "id": "-NI8Qx6S-SUBqjhU_z2k",
-              "index": 10,
-              "marca": "-NFyYn5eKO2EuaZhukGs",
-              "nombre": "BALATAS CERÁMICA",
-              "precio": 150,
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 150,
-              "tipo": "refaccion",
-              "total": 187.5
-          },
-          {
-              "aprobada": false,
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "enCatalogo": true,
-              "flotilla": 300,
-              "id": "-NFGEgUK6OVe2fEDvCgS",
-              "index": 11,
-              "marca": "Aston Martín",
-              "nombre": "LAVAR CPO DE ACELERACION",
-              "precio": 300,
-              "showStatus": "Aprobado",
-              "status": "aprobado",
-              "subtotal": 300,
-              "tipo": "MO",
-              "total": 300
-          }
-      ],
-      "status": "entregado",
-      "sucursal": "-N2glF34lV3Gj0bQyEWK",
-      "vehiculo": "-NG2MESh7vZpmKP_Rpso",
-      "id": "-NRFjRowgFS_D7porrDF"
-    }
-    const campos_mo = [
-        'aprobado',
-        'cantidad',
-        'costo',
-        'descripcion',
-        'enCatalogo',
-        'id',
-        'nombre',
-        'precio',
-        'status"',
-        'subtotal',
-        'tipo',
-        'total',
-      ]
-      const campos_refaccion = [
-        ...campos_mo,
-        'marca',
-      ]
-      const campos_paquete = [
-        'aprobado',
-        'cantidad',
-        'cilindros',
-        'costo',
-        'elementos',
-        'enCatalogo',
-        'id',
-        'marca',
-        'modelo',
-        'nombre',
-        'precio',
-        'status',
-        'subtotal',
-        'tipo',
-      ]
-    const save__ = [
-        'cliente',
-        'diasSucursal',
-        'fecha_promesa',
-        'fecha_recibido',
-        'formaPago',
-        'id',
-        'iva',
-        'margen',
-        'no_os',
-        'servicio',
-        'servicios',
-        'status',
-        'sucursal',
-        'vehiculo',
-    ]
+    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status"','subtotal','tipo','total']
+    const campos_refaccion = [ ...campos_mo, 'marca']
+    const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo' ]
+    const save__ = ['cliente','diasSucursal','fecha_promesa','fecha_recibido','formaPago','id','iva','margen','no_os','servicio','servicios','status','sucursal','vehiculo' ]
 
     const updates = {}
     console.log(arreglo_recepciones.length);
     
     Object.entries(arreglo_recepciones).forEach(([key, entri])=>{
 
+        // console.log(key);
+        
         let entrie_:any = {...entri}
         const {servicios, margen, fechaPromesa, fecha_recibido, hora_recibido} = entrie_
     
@@ -5423,35 +4349,36 @@ export class AutomaticosComponent implements OnInit {
               case 'paquete':
                 const nueva = this._publicos.nuevaRecuperacionData({...element}, campos_paquete)
                 const info_paquete = this.operaciones_paquete({nueva,campos_mo, campos_refaccion, margen: n_margen})
-               
-                // const reporte = 
-
                 info_paquete.reporte = this.reporte_paquete(info_paquete)
                 nuevos_servicios_reemplzar.push(info_paquete)
-                // nuevos_servicios_reemplzar.push(nueva)
               break;
             }
         });
 
-        // console.log([...servicios]);
-        // console.log([...nuevos_servicios_reemplzar]);
         entrie_.servicios = [...nuevos_servicios_reemplzar]
         entrie_.fecha_recibido = _fecha_recibido
         entrie_.fecha_promesa = _fecha_promesa
 
-        const save_ = this._publicos.nuevaRecuperacionData(entrie_, save__)
+        let save_:any = this._publicos.nuevaRecuperacionData(entrie_, save__)
         const nnn = {...save_}
         const {sucursal, cliente, id} = nnn
-        // const repor_ = 
+
         save_.reporte = this.reporte_general(save_)
+
         updates[`recepciones/${sucursal}/${cliente}/${id}`] = save_
         })
-        console.log(updates);
-        
+       
+        // console.log(updates);
+        // update(ref(db), updates).then(()=>{
+        //     console.log('finalizo');
+        //   })
+        //   .catch(err=>{
+        //     console.log(err);
+        //   })
 
-  }
-  operaciones_mo_refaccion(data){
-    const {cantidad , precio, tipo, costo, margen } = data
+    }
+    operaciones_mo_refaccion(data){
+    const {cantidad , precio, tipo, costo, margen , nombre} = data
     const new_ = (costo> 0) ? costo : precio
     switch (tipo) {
       case 'MO':
@@ -5466,107 +4393,109 @@ export class AutomaticosComponent implements OnInit {
         break;
     }
     data.tipo = String(tipo).toLowerCase()
+    data.nombre = String(nombre).toLowerCase()
     delete data.margen
     return data
-}
-operaciones_paquete(data){
-    const {nueva,campos_mo, campos_refaccion, margen} = data
-    let data_ = {...nueva}
-    const {nombre, cantidad, elementos, id} = data_
-
-    const elementos_ = (elementos) ?  [...elementos] : []
-    data_.elementos = elementos_.map(element=>{
-        let nuevo_elemento = {...element}
-        const {tipo, aprobado} = nuevo_elemento
-        if (typeof aprobado !== 'boolean') {
-            nuevo_elemento.aprobado = true
-        }
-        nuevo_elemento.id = nuevo_elemento.IDreferencia
-        const nueva_data = this._publicos.nuevaRecuperacionData(nuevo_elemento, (tipo ==='refaccion') ? campos_refaccion :campos_mo)
-        nueva_data.margen = margen
-        let kkk = this.operaciones_mo_refaccion(nueva_data)
-        return kkk
-    })
-    data.nombre = String(nombre).toLowerCase()
-    return data_
-}
-reporte_paquete(data){
-    const {elementos} = data
-    const elementos_ = [...elementos] || []
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0}
-    elementos_.map(element=>{
-        const {tipo, costo, precio, aprobado, total, cantidad } = element
-        if (aprobado) {
-            let mul
-            switch (tipo) {
-                case 'MO':
-                case 'mo':
-                    reporte.mo +=  total 
-                    if (costo>0 ) {
-                        reporte.sobrescrito_mo += total
-                    }
-                break;
-                case 'refaccion':
-                    reporte.refacciones +=  precio
-                    reporte.refacciones_v +=  total
-                    if (costo>0 ) { reporte.sobrescrito_refacciones += total }
-                break;
+    }
+    operaciones_paquete(data){
+        const {nueva,campos_mo, campos_refaccion, margen} = data
+        let data_ = {...nueva}
+        const {nombre, cantidad, elementos, id} = data_
+    
+        const elementos_ = (elementos) ?  [...elementos] : []
+        data_.elementos = elementos_.map(element=>{
+            let nuevo_elemento = {...element}
+            const {tipo, aprobado} = nuevo_elemento
+            if (typeof aprobado !== 'boolean') {
+                nuevo_elemento.aprobado = true
             }
-        }
-    })
-    const {mo,  refacciones_v, precio} = reporte
-    reporte.precio = mo + refacciones_v
-    reporte.ub = 100 - ((refacciones_v * 100) / ( mo + refacciones_v))
-    return reporte
-}
-reporte_general(data){
-    const {servicios} = data
-    const elementos_ = [...servicios] || []
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0, paquetes:0, paquetes_sobresrito:0}
-    elementos_.map(element=>{
-        const {tipo, costo, precio, aprobado, total, cantidad } = element
-        if (aprobado) {
-            let mul
-            switch (tipo) {
-                case 'MO':
-                case 'mo':
-                    reporte.mo +=  total 
-                    if (costo>0 ) {
-                        reporte.sobrescrito_mo += total
-                    }
-                break;
-                case 'refaccion':
-                    reporte.refacciones +=  precio
-                    reporte.refacciones_v +=  total
-                    if (costo>0 ) { reporte.sobrescrito_refacciones += total }
-                break;
-                case 'paquete':
-                    const { reporte:reporte_interno } = element
-                    reporte.paquetes += reporte_interno.precio
-                    if (costo>0 ) { reporte.paquetes_sobresrito += total }
-                    const ca = [
-                        'mo',
-                        'precio',
-                        'refacciones',
-                        'refacciones_v',
-                        'sobrescrito_mo',
-                        'sobrescrito_refacciones',
-                    ]
-                    
-                    ca.forEach(c=>{
-                        reporte[c] +=  reporte_interno[c]
-                    })
-
-                break;
+            nuevo_elemento.id = nuevo_elemento.IDreferencia
+            const nueva_data = this._publicos.nuevaRecuperacionData(nuevo_elemento, (tipo ==='refaccion') ? campos_refaccion :campos_mo)
+            nueva_data.margen = margen
+            let kkk = this.operaciones_mo_refaccion(nueva_data)
+            return kkk
+        })
+        data_.nombre = String(nombre).toLowerCase()
+        return data_
+    }
+    reporte_paquete(data){
+        const {elementos, cantidad} = data
+        const elementos_ = [...elementos] || []
+        const reporte = {mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0}
+        elementos_.map(element=>{
+            const {tipo, costo, precio, aprobado, total, cantidad } = element
+            if (aprobado) {
+                let mul
+                switch (tipo) {
+                    case 'MO':
+                    case 'mo':
+                        reporte.mo +=  total 
+                        if (costo>0 ) {
+                            reporte.sobrescrito_mo += total
+                        }
+                    break;
+                    case 'refaccion':
+                        reporte.refacciones +=  precio
+                        reporte.refacciones_v +=  total
+                        if (costo>0 ) { reporte.sobrescrito_refacciones += total }
+                    break;
+                }
             }
-        }
-    })
-    const {mo,  refacciones_v, paquetes} = reporte
-    const precio__ = mo + refacciones_v + paquetes
-    reporte.precio = precio__
-    reporte.ub = 100 - ((refacciones_v * 100) / precio__ )
-    return reporte
-}
+        })
+        const {mo, refacciones_v } = reporte
+        const operacion = mo + refacciones_v
+        reporte.precio = operacion * cantidad
+        reporte.ub = 100 - ((refacciones_v * 100) / operacion)
+        return reporte
+    }
+    reporte_general(data){
+        const {servicios} = data
+        const elementos_ = [...servicios] || []
+        const reporte = {mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0, paquetes:0, paquetes_sobresrito:0}
+        elementos_.map(element=>{
+            const {tipo, costo, precio, aprobado, total, cantidad } = element
+            if (aprobado) {
+                let mul
+                switch (tipo) {
+                    case 'MO':
+                    case 'mo':
+                        reporte.mo +=  total 
+                        if (costo>0 ) {
+                            reporte.sobrescrito_mo += total
+                        }
+                    break;
+                    case 'refaccion':
+                        reporte.refacciones +=  precio
+                        reporte.refacciones_v +=  total
+                        if (costo>0 ) { reporte.sobrescrito_refacciones += total }
+                    break;
+                    case 'paquete':
+                        const { reporte:reporte_interno } = element
+                        reporte.paquetes += reporte_interno.precio
+                        if (costo>0 ) { reporte.paquetes_sobresrito += reporte_interno.precio }
+                        const ca = [
+                            'mo',
+                            'precio',
+                            'refacciones',
+                            'refacciones_v',
+                            'sobrescrito_mo',
+                            'sobrescrito_refacciones',
+                        ]
+                        
+                        ca.forEach(c=>{
+                            reporte[c] +=  reporte_interno[c]
+                        })
+    
+                    break;
+                }
+            }
+        })
+        const {mo,  refacciones_v, paquetes} = reporte
+        const precio__ = mo + refacciones_v + paquetes
+        reporte.precio = precio__
+        reporte.ub = 100 - ((refacciones_v * 100) / precio__ )
+        return reporte
+    }
   
     
 }

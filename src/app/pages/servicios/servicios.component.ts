@@ -24,6 +24,8 @@ import { ServiciosService } from 'src/app/services/servicios.service';
 import { CamposSystemService } from '../../services/campos-system.service';
 import { Router } from '@angular/router';
 
+
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 @Component({
@@ -64,7 +66,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      recepciones_arr=[]
      // tabla
      dataSource = new MatTableDataSource(); //elementos
-     elementos = ['id','no_os','searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
+     elementos = ['sucursalShow','no_os','placas','clienteShow','status','fecha_recibido','fecha_entregado'] //,'searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
      columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
      expandedElement: any | null; //elementos
      @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
@@ -93,8 +95,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      busquedaSucursalStringShow: string = 'Todas'
      
      fechas_filtro = new FormGroup({
-       start: new FormControl(Date),
-       end: new FormControl(Date),
+      start: new FormControl(new Date()),
+      end: new FormControl(new Date()),
      });
    
      fechas_get = {start: this._publicos.resetearHoras(new Date()), end: this._publicos.resetearHoras(new Date())}
@@ -121,15 +123,24 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      reporteEstancias = {  ...this._servicios.reporteEstancias}
      camposEstancia = [ ...this._servicios.camposEstancia]
     
+
+     fecha_formateadas = {start:new Date(), end:new Date() }
+     hora_start = '00:00:01';
+     hora_end = '23:59:59';
+
+     array_recepciones = []
+
+     filtro_sucursal:string = 'Todas'
+     filtro_tipo: string = 'Todos'
      ngOnDestroy(){
-      
-      // this.consultaSucursales()
-      this.verificaServiciosPendientesEmail()
      
      }
     ngOnInit(): void {
       // this.consultaSucursales()
       this.rol()
+      this.resetea_horas_admin()
+      this.vigila()
+      this.llamado_multiple()
     }
 
   
@@ -139,342 +150,210 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     this.ROL = rol
     this.SUCURSAL = sucursal 
-
-    if (this.SUCURSAL !=='Todas') {
-      this.busquedaSucursalString = this.SUCURSAL
-      const {sucursal} = this.sucursales_array.find(s=>s.id === this.SUCURSAL)
-      this.busquedaSucursalStringShow = sucursal
-    }    
-    this.acciones()
-    
-    if(localStorage.getItem('busquedaServicios')){
-      this.busquedaServicios = localStorage.getItem('busquedaServicios')
-    }
+    this.filtro_sucursal =  this.SUCURSAL 
   }
-  cargaIndexPadre(data){
-    this.dataOcupadaOS = {...data}
-  }
-  acciones(){
-    const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, async (snapshot) => {
-      this.fechas_get.start.setHours(0,0,0,0)
-      this.fechas_get.end.setHours(0,0,0,0)
-      const recepcionesNew = await this._servicios.consulta_recepciones_new()
-      const comparaOrdenes = (this.busquedaSucursalString === 'Todas') ? recepcionesNew :  recepcionesNew.filter(os=>os.sucursal.id === this.busquedaSucursalString)
-      if (!this.recepciones_arr.length) {
-        this.recepciones_arr = comparaOrdenes
-      }else{
-        const camposRecupera = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva','hitorial_gastos','historial_pagos', 'margen','sucursal','notificar','reporte','servicio','servicios','status','vehiculo','fecha_entregado','hora_entregado','tecnico','showNameTecnico']
-        this.recepciones_arr =  this._publicos. actualizarArregloExistente(this.recepciones_arr, comparaOrdenes,camposRecupera);
-      } 
-      setTimeout(()=>{
-              this.nuevasBusquedas()
-        },500)
+  vigila(){
+    this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
+      if (start_ && start_['_d'] && end_ && end_['_d'] ) {
+        // this.resetea_horas_admin({start: start_, end: end_})
+        this.resetea_horas_admin()
+        this.filtra_informacion()
+      }        
     })
-    
   }
-  accionServicio(padre, hijo, statusGet){
-    const  aprobado = (statusGet === 'aprobado' || statusGet === 'terminar') ? true:  false
-    const showStatus1 =  (statusGet === 'terminar') ? 'Terminado' : 'En espera'
-    const servicios = [...padre.servicios]
-    servicios.map((s,index)=>{
-      if(s.index === hijo.index){
-        s.status = statusGet
-        s.aprobado = aprobado
-        s.showStatus = showStatus1
-      }
-    })
-    if (statusGet === 'eliminado') {
-      this._publicos.mensaje_pregunta('Eliminar servicio de la orden').then(({respuesta})=>{
-        if (respuesta) {
-          servicios.splice(hijo.index, 1);
-          const { reporte } = this._publicos.realizarOperaciones_2(padre)
-          const updates = {
-            [`recepciones/${padre.id}/servicios`]: servicios,
-            [`recepciones/${padre.id}/reporte`]: reporte,
-          };
-          update(ref(db), updates)
+  llamado_multiple(){
+    const arreglo = ['recepciones']
+    // const arreglo = ['historial_gastos_orden','recepciones','historial_gastos_operacion']
+    arreglo.forEach(donde=>{
+      const starCountRef = ref(db, `${donde}`)
+      onValue(starCountRef, async (snapshot) => {
+        if (snapshot.exists()) {
+          console.log(donde);
+          // this.ordenes_realizadas_entregado()
+          if (donde === 'recepciones') {
+            this.consulta_ordenes()
+          }
         }
       })
-    }else{
-      const { reporte } = this._publicos.realizarOperaciones_2(padre)
-      const updates = {
-        [`recepciones/${padre.id}/servicios`]: servicios,
-        [`recepciones/${padre.id}/reporte`]: reporte,
-      };
-      update(ref(db), updates)
-    }
-    
+    })
   }
-  actualizarReporteIVA(data){
-    setTimeout(()=>{
-        const reporte = this._publicos.realizarOperaciones_2(data).reporte
-        const { id, iva } = data;
-        const updates = {
-          [`recepciones/${id}/reporte`]: reporte,
-          [`recepciones/${id}/iva`]: iva,
-          [`recepciones/${id}/notificar`]: true
-        };
-        update(ref(db), updates)
-    },200)
+  resetea_horas_admin(){
+    const {start, end} = this.fechas_filtro.value
+    this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
+    this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end),this.hora_end) 
   }
-  statusServicio(padre, status){
-    const padreID = padre.id;
-    const servicios = [...padre.servicios];
-    const { fecha, hora } = this._publicos.getFechaHora();
-    
-    
-    const updates = {};
-    servicios.forEach(servicio => {
-      if(status === 'terminado' || status === 'entregado') {
-        servicio.status = 'terminar';
-        servicio.showStatus = 'Terminado';
-        updates[`recepciones/${padreID}/fecha_entregado`] = fecha;
-        updates[`recepciones/${padreID}/hora_entregado`] = hora;
-      } else {
-        servicio.status = 'Aprobado';
-        servicio.showStatus = 'En espera';
-        updates[`recepciones/${padreID}/fecha_entregado`] = null;
-        updates[`recepciones/${padreID}/hora_entregado`] = null;
-        updates[`recepciones/${padreID}/fecha_recibido`] = fecha;
-        updates[`recepciones/${padreID}/hora_recibido`] = hora;
-      }
-    });
-    updates[`recepciones/${padreID}/status`] = status;
-    updates[`recepciones/${padreID}/notificar`] = true;
-    updates[`recepciones/${padreID}/servicios`] = servicios;
-    
-    setTimeout(() => {
-      update(ref(db), updates).then(()=>{
-        this.nuevasBusquedas()
-      })
-    }, 500);
-    
+  async consulta_ordenes(){
+    const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
+    // console.log(arreglo_sucursal);
+    const arreglo_rutas = this.crea_ordenes_sucursal({arreglo_sucursal})
+    // console.log(arreglo_rutas);
+    const promesas = arreglo_rutas.map(async (ruta)=>{
+        
+      // const cliente = await this._clientes.consulta_cliente_new({sucursal:''})
+      const respuesta = await  this._servicios.consulta_recepcion_sucursal({ruta})
       
+        return this.regresa_servicios_por_cada_ruta({answer: respuesta}) 
+    })
+    const promesas_resueltas = await Promise.all(promesas);
+    const finales = promesas_resueltas.flat() 
+    // console.log(finales);
+
+    const rutas_clientes = this.rutas_cliente(finales)
+
+    console.log(rutas_clientes);
+    
+    
+    const campos = [
+      'cliente','clienteShow','data_cliente','data_sucursal','data_vehiculo','diasSucursal','fecha_promesa','fecha_recibido','formaPago','id','iva','margen','no_os','placas','reporte','servicio','servicios','status','subtotal','sucursal','sucursalShow','vehiculo'
+    ]
+
+    const nueva  = (!this.array_recepciones.length) ?  rutas_clientes :  this._publicos.actualizarArregloExistente(this.array_recepciones, rutas_clientes,campos);
+
+    this.array_recepciones = nueva
+    this.filtra_informacion()
     
   }
-  //para actualizar el tecnico de la orden de servicio
-  infoTecnico(event){
-    if (!event) {
-      this._publicos.swalToast('intenta de nuevo',0)
-    }else{
-      this._publicos.mensaje_pregunta('Seguro que es el tecnico de la o.s?').then(({respuesta})=>{
-        if (respuesta) {
-          // console.log(this.dataRecepcionEditar);
-          const updates = {
-            [`recepciones/${this.dataRecepcionEditar}/tecnico`]: event.id,
-            [`recepciones/${this.dataRecepcionEditar}/showNameTecnico`]: event.usuario
-          };
-          update(ref(db), updates)
-            .then(() => {
-              this._publicos.swalToast('Tecnico actualizado correctamente!!', 1)
-            });
-        }
-      })
-    }
-  }
- 
-  nuevasBusquedas(){
-    const {valor, dias} = this.rangoBusqueda;
-    const hoy = new Date()
-    let start= hoy, end = hoy
-    switch (valor) {
-      case 'hoy':
-      case 'ayer':
-      case 'ult7dias':
-      case 'ult30dias':
-        start = this._publicos.sumarRestarDiasFecha(hoy, dias);
-        end = hoy;
-        break;
-        case 'esteMes':
-          const valores = this._publicos.getFirstAndLastDayOfCurrentMonth(hoy)
-          start = valores.inicio
-          end = valores.final
-          break;
-        case 'ultMes':
-          const mesAnterior = this._publicos.sumarRestarMesesFecha(hoy,-1)
-          let {inicio, final} = this._publicos.getFirstAndLastDayOfCurrentMonth(mesAnterior)
-          start = inicio
-          end = final 
-          break;
-        case 'esteAnio':
-          const {primerDia, ultimoDia} = this._publicos.obtenerPrimerUltimoDiaAnio(hoy.getFullYear())
-          start = primerDia
-          end = ultimoDia
-          break;
-        case 'ultAnio':
-          const ultimoAnio = this._publicos.sumarRestarAniosFecha(hoy,-1)
-          const nuevosv = this._publicos.obtenerPrimerUltimoDiaAnio(ultimoAnio.getFullYear())
-          start = nuevosv.primerDia
-          end = nuevosv.ultimoDia
-          break;
-          case 'personalizado':
-            const calendar = this.fechas_filtro.value
-            if (calendar.start?.['_d'] && calendar.end?.['_d']) {
-              start = calendar.start['_d']
-              end = calendar.end['_d']
-            }
-            break;
-      default:
-        break;
-    }
-    
-    this.fechas_get = {start: this._publicos.resetearHoras( start ),end: this._publicos.resetearHoras( end )}
-    this.dataSource.data = this.filtrarRecepciones(this.recepciones_arr,this.busquedaStatus,this.busquedaSucursalString,this.BusquedaTo, this.fechas_get)
+  filtra_informacion(){
+
+    const {start, end}= this.fecha_formateadas
+
+    let resultados_1 = (this.filtro_tipo === 'Todos') ? this.array_recepciones : this.array_recepciones.filter(c=>c.status === this.filtro_tipo)
+
+    const resultados =  (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
+
+    const filtro = resultados.filter(r=>new Date(r.fecha_recibido) >= start && new Date(r.fecha_recibido) <= end )
+
+    this.dataSource.data = filtro
     this.newPagination()
   }
-  filtrarRecepciones(recepciones, busquedaStatus, busquedaSucursalString, BusquedaTo, fechas_get) {
-    let filtrados = recepciones;
-  
-    if (busquedaStatus !== 'todos') {
-      filtrados = filtrados.filter(os => os.status === busquedaStatus);
-    }
-  
-    if (busquedaSucursalString !== 'Todas') {
-      filtrados = filtrados.filter(os => os.sucursal.id === busquedaSucursalString);
-    }
-  
-    const dondeBuscar = (BusquedaTo === 'fecha_recibido') ? 'fecha_recibido_compara' : 'fecha_entrega_compara';
-    
-    const start = new Date(fechas_get.start).getTime();
-    const end = new Date(fechas_get.end).getTime();
-  
-    const gastosFechas = filtrados.filter(a => {
-      const fecha = new Date(a[dondeBuscar]).getTime();
-      return fecha >= start && fecha <= end;
-    });
-    const reporte = {ticket:0, diasSucursal:0, horas_totales:0}
-    gastosFechas.forEach((element,index) => {
-      element.index = index + 1
-      reporte.ticket += element.reporte.total
-      if(element.diasSucursal) reporte.diasSucursal += element.diasSucursal
-      if(element.fecha_entrega_compara ){
-        reporte.horas_totales += this._publicos.obtenerHorasEntreFechas(element.fecha_recibido_compara, element.fecha_entrega_compara)
-      }else{
-        reporte.horas_totales += this._publicos.obtenerHorasEntreFechas(element.fecha_recibido_compara, new Date())
-      }
-    });
-    let ticketPromedio = 0, diasSucursal= 0, horas_totales=0
-    if (gastosFechas.length) {
-      ticketPromedio = reporte.ticket / gastosFechas.length
-      diasSucursal = reporte.diasSucursal / gastosFechas.length
-      horas_totales = reporte.horas_totales / gastosFechas.length
-    }
-    
-    this.reporteEstancias = 
-    {
-      servicios_totales: gastosFechas.length,
-      ticket_total: reporte.ticket,
-      ticketPromedio,
-      diasSucursal_total: reporte.diasSucursal,
-      diasSucursal,
-      horas_totales_totales: reporte.horas_totales,
-      horas_totales
-    }
-    
-    return gastosFechas;
-  }
-  
-  EliminaPago(padre:string, idPG:string, donde:string){
-    const dondeUpdate = (donde === 'pago') ?  'HistorialPagos': 'HistorialGastos'
-    const updates = {[`recepciones/${padre}/${dondeUpdate}/${idPG}/status`]: false}
 
-    this._publicos.mensaje_pregunta('Eliminar '+ donde + '?').then(({respuesta})=>{
-      if (respuesta) {
-        update(ref(db), updates).then(()=>{
-          this._publicos.swalToast('Se elimino '+  donde, 1)
-        })
-        .catch(error=>{
-          this._publicos.swalToast('Error al eliminar '+  donde, 0)
-        })
-      }
-    })    
-  }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-    localStorage.setItem('busquedaServicios',filterValue.trim().toLowerCase())
-  }
   newPagination(){
+   
     setTimeout(() => {
-    // if (data==='elementos') {
-      if(this.busquedaServicios){
-        this.dataSource.filter = this.busquedaServicios
-        if (this.dataSource.paginator) {
-          this.dataSource.paginator.firstPage();
-        }
-      }
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort
-    // }
-    }, 300)
+      this.dataSource.sort = this.sort;
+    }, 500);
   }
 
+  crea_ordenes_sucursal(data){
+    const {arreglo_sucursal, } = data
+    let Rutas_retorna = []
+    arreglo_sucursal.forEach(sucursal=>{
+      Rutas_retorna.push(`recepciones/${sucursal}`)
+    })
+    return Rutas_retorna
+  }
+  regresa_servicios_por_cada_ruta(data){
+    const {answer } = data
+    const obtenidos = []
+    const nueva = {...answer}
 
-  //cuando quiera abandonar la apgina pregutar si desea enviar los email
-  verificaServiciosPendientesEmail(){
-    const enviarEmail = this.recepciones_arr.filter(recepcion=>recepcion.notificar)
-    // console.log(enviarEmail);
-    if (enviarEmail.length) {
-      this._publicos.mensaje_pregunta('notificar a clientes de cambios?').then(({respuesta})=>{
-        if (respuesta) {
-          enviarEmail.forEach(recepcion=>{
+    Object.entries(nueva).forEach(([key, entrie])=>{
+      const nuevas_entries = this._publicos.crearArreglo2(entrie)
+      nuevas_entries.forEach(entri_=>{
+        // console.log(entri_);
+        const reporte = this.reporte_general(entri_)
+        const nueva = {...entri_, reporte}
+        obtenidos.push(nueva)
+      })
+    })
+    return obtenidos
+  }
+  rutas_cliente(data){
+    const arreglo = [...data]
+    arreglo.map(async(r)=>{
+      const {sucursal, cliente, vehiculo} = r
+      const data_cliente:any =  await this._clientes.consulta_cliente_new({sucursal, cliente})
+      const data_vehiculo =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+      const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      
+      
+      r.clienteShow = String(data_cliente.fullname).toLowerCase()
+      r.placas = data_vehiculo.placas
+      r.sucursalShow = data_sucursal.sucursal
+      r.servicios =  this.caso_paquete({servicios: r.servicios, id: r.id})
+      r.data_cliente = data_cliente
+      r.data_vehiculo = data_vehiculo
+      r.data_sucursal = data_sucursal
+      // const reporte = this.reporte_general(r)
+      // r.reporte = reporte
+      // const {mo, refacciones_v,} = reporte
+      // r.subtotal = mo + refacciones_v
 
-            const { sucursal, cliente, servicios, reporte, no_os, vehiculo,id, index} = recepcion;
+      return r
+    })    
+    return arreglo
+  }
+  caso_paquete(data_paquete){
+    const {servicios:servicios_, id} = data_paquete
+    let servicios = [...servicios_]
+    servicios.map(e=>{
+      // console.log(e);
       
-            const correos = this._publicos.dataCorreo(sucursal,cliente)
-            
-            const info = servicios.map(({ nombre, aprobado }) => {
-              const status = aprobado ? 'aprobado' : 'no aprobado';
-              return `Servicio ${nombre.toLowerCase()}: ${status}`;
-            }).join(', ');
-      
-            const clavesReporte = Object.keys(reporte);
-            const infoReporte = ['Anexo el desglose de O.S:<br>'];
-            clavesReporte.forEach((c) => {
-              if (reporte[c] > 0 && c !== 'refacciones_a' && c !== 'ub') {
-                const nombre = c === 'refacciones_v' ? 'refacciones' : c;
-                infoReporte.push(`${nombre}: ${this._publicos.redondeado2(reporte[c], true)}<br>`);
-              }
-            });
-            
-            const infoCorreo = {
-              subject: 'Le informamos que se han realizado cambios en su información de la O.S #' + recepcion.no_os,
-              correos,
-              cliente,
-              vehiculo,
-              no_os,
-              resumen: info,
-              desgloce: infoReporte.join(' ')
+      const  {tipo, reporte, cantidad, costo} = e
+      if (tipo === 'paquete') {
+        const nuevo_r = {...reporte}
+        const {precio} = nuevo_r
+        e.precio = precio
+        e.costo = costo
+        const mul = (costo> 0) ? costo : precio
+        e.subtotal = mul * cantidad
+        e.total = mul * cantidad
+      }
+      return e
+    })
+    // console.log(elementos);
+    
+    return servicios
+  }
+  reporte_general(data){
+    const {servicios} = data
+    const elementos_ = [...servicios] || []
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0, paquetes:0, paquetes_sobresrito:0}
+    elementos_.map(element=>{
+        const {tipo, costo, precio, aprobado, total, cantidad } = element
+        if (aprobado) {
+            let mul
+            switch (tipo) {
+                case 'MO':
+                case 'mo':
+                    reporte.mo +=  total 
+                    if (costo>0 ) {
+                        reporte.sobrescrito_mo += total
+                    }
+                break;
+                case 'refaccion':
+                    reporte.refacciones +=  precio
+                    reporte.refacciones_v +=  total
+                    if (costo>0 ) { reporte.sobrescrito_refacciones += total }
+                break;
+                case 'paquete':
+                    const { reporte:reporte_interno } = element
+                    reporte.paquetes += reporte_interno.precio
+                    if (costo>0 ) { reporte.paquetes_sobresrito += reporte_interno.precio }
+                    const ca = [
+                        'mo',
+                        'precio',
+                        'refacciones',
+                        'refacciones_v',
+                        'sobrescrito_mo',
+                        'sobrescrito_refacciones',
+                    ]
+                    
+                    ca.forEach(c=>{
+                        reporte[c] +=  reporte_interno[c]
+                    })
+
+                break;
             }
-            // console.log(infoCorreo);
-      
-            this._email.cambioInformacionOS(infoCorreo)
-            const updates = {
-              [`recepciones/${id}/notificar`] : false
-            };
-            
-            update(ref(db), updates).then(()=>{
-              // this.recepciones_arr[index].notificar = false 
-            });
-          })
         }
-      }) 
-    }
-  }
-  generaReporteExcel(){
-    if(this.dataSource.data.length){
-      this._export_excel.exportExcelServicios(this.dataSource.data)
-    }else{
-      this._publicos.swalToast('no hay ningun dato para generar excel!!', 0)
-    }
-  }
-  irPagina(pagina){
-    const queryParams = { anterior: 'servicios', tipo: 'nueva' }
-    this.router.navigate([`/${pagina}`], { queryParams });
-  }
+    })
+    const {mo,  refacciones_v, paquetes} = reporte
+    const precio__ = mo + refacciones_v
+    reporte.precio = precio__
+    reporte.ub = 100 - ((refacciones_v * 100) / precio__ )
+    return reporte
+}
+  
   
 }

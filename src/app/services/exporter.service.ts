@@ -46,7 +46,7 @@ export class ExporterService {
 
   
   async exportToExcelCotizaciones(data:any[], excelFileName: string){
-    console.log(data);
+    // console.log(data);
     
     let cotizacionPush = []
     const cotizacionPushIndivuduales =[]
@@ -106,7 +106,7 @@ export class ExporterService {
         }
       });
     })
-    console.log(cotizacionPush);
+    // console.log(cotizacionPush);
     
     // setTimeout(()=>{
       

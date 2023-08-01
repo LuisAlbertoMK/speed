@@ -143,6 +143,7 @@ import { FacturacionComponent } from './pages/facturacion/facturacion.component'
 import { EditaElementoComponent } from './components/edita-elemento/edita-elemento.component';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { FormateHoraPipe } from './pipes/formate-hora.pipe';
+import { AdministracionComponent } from './pages/administracion/administracion.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -214,7 +215,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FacturacionComponent,
     EditaElementoComponent,
     UpdateUserComponent,
-    FormateHoraPipe
+    FormateHoraPipe,
+    AdministracionComponent
   ],
   imports: [
     BrowserModule,
