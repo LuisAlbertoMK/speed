@@ -165,7 +165,30 @@ consulta_recepcion_sucursal(busqueda_ruta): Promise<any> {
     const starCountRef = ref(db, `${ruta}`);
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        resolve(snapshot.val());
+        const principal = snapshot.val()
+          // snapshot.forEach((childSnapshot) => {
+          //   const childKey = childSnapshot.key;
+          //   const childData = childSnapshot.val();
+          //   // console.log(childKey);
+          //   // console.log(childData);
+
+          //   Object.entries(childData).forEach(async ([key, entri_])=>{
+          //     const reporte = this.reporte_general(entri_)
+          //     childData[key].reporte = reporte
+          //     const nueva:any = entri_
+          //     const {sucursal, cliente, vehiculo} = nueva
+          //     const data_cliente:any =  await this._clientes.consulta_cliente_new({sucursal, cliente})
+          //     const data_vehiculo =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+          //     const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+          //     childData[key].data_cliente = data_cliente
+          //     childData[key].data_vehiculo = data_vehiculo
+          //     childData[key].data_sucursal = data_sucursal
+          //   })
+
+          //   principal[childKey] = {...childData}
+            
+          // })
+          resolve(snapshot.val());
       } else {
         resolve({});
       }
@@ -544,57 +567,55 @@ obtenerTotalesHistoriales(pagos, gastos){
     return dataReturn
   }
 
-  getRecepciones(cliente:string,vehiculo:string){
-    return this.http.get(`${urlServer}/recepcion/${cliente}/${vehiculo}.json`)
-    .pipe(
-       map(this.crearArreglo2)
-    )
-  }
-  getRecepcion(cliente:string,vehiculo:string,recepcion:string){
-    return this.http.get(`${urlServer}/recepcion/${cliente}/${vehiculo}/${recepcion}.json`)
-  }
-  getStatusRecepcion(cliente:string,vehiculo:string, recepcion:string,recepcionStatus:string){
-    return this.http.get(`${urlServer}/recepcionStatus/${cliente}/${vehiculo}/${recepcion}/${recepcionStatus}.json`)
-  }
-  actualizaStatus(sucursal:string,cliente:string,vehiculo:string, recepcion:string,dataRecepcion:any){
-    const temp = {
-      ...dataRecepcion
-    }
-    return this.http.put(`${urlServer}/recepcionStatus/${sucursal}/${cliente}/${vehiculo}/${recepcion}.json`,temp)
-  }
-  getRecepcionSucursalUnica(sucursal:string,cliente:string){
-    return this.http.get(`${urlServer}/recepcion/${sucursal}/${cliente}.json`)
-    .pipe(
-       map(this.crearArreglo2)
-    )
-  }
-  getRecepcionesSucursalUnica(sucursal:string,cliente:string, vehiculo:string){
-    return this.http.get(`${urlServer}/recepcionStatus/${sucursal}/${cliente}/${vehiculo}.json`)
-    .pipe(
-       map(this.crearArreglo2)
-    )
-  }
+  reporte_general(data){
+    const {servicios} = data
+    const elementos_ = [...servicios] || []
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0, paquetes:0, paquetes_sobresrito:0}
+    elementos_.map(element=>{
+        const {tipo, costo, precio, aprobado, total, cantidad } = element
+        if (aprobado) {
+            let mul
+            switch (tipo) {
+                case 'MO':
+                case 'mo':
+                    reporte.mo +=  total 
+                    if (costo>0 ) {
+                        reporte.sobrescrito_mo += total
+                    }
+                break;
+                case 'refaccion':
+                    reporte.refacciones +=  precio
+                    reporte.refacciones_v +=  total
+                    if (costo>0 ) { reporte.sobrescrito_refacciones += total }
+                break;
+                case 'paquete':
+                    const { reporte:reporte_interno } = element
+                    reporte.paquetes += reporte_interno.precio
+                    if (costo>0 ) { reporte.paquetes_sobresrito += reporte_interno.precio }
+                    const ca = [
+                        'mo',
+                        'precio',
+                        'refacciones',
+                        'refacciones_v',
+                        'sobrescrito_mo',
+                        'sobrescrito_refacciones',
+                    ]
+                    
+                    ca.forEach(c=>{
+                        reporte[c] +=  reporte_interno[c]
+                    })
 
-
-
-  private crearArreglo(arrayObj:object){
-    const arrayGet:any[]=[]
-    if (arrayObj===null) { return [] }
-    Object.keys(arrayObj).forEach(key=>{
-    const arraypush: any = arrayObj[key]
-    //arraypush.id=key
-    arrayGet.push(arraypush)
+                break;
+            }
+        }
     })
-    return arrayGet
+    const {mo,  refacciones_v, paquetes} = reporte
+    const precio__ = mo + refacciones_v
+    reporte.precio = precio__
+    reporte.ub = 100 - ((refacciones_v * 100) / precio__ )
+    return reporte
   }
-  private crearArreglo2(arrayObj:object){
-    const arrayGet:any[]=[]
-    if (arrayObj===null) { return [] }
-    Object.keys(arrayObj).forEach(key=>{
-    const arraypush: any = arrayObj[key]
-    arraypush.id=key
-    arrayGet.push(arraypush)
-    })
-    return arrayGet
-  }
+  
+
+
 }

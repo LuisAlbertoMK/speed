@@ -133,12 +133,12 @@ export class ClientesService {
   formatea_info_cliente(data_cliente){
     const {nombre, apellidos, sucursal} = data_cliente
     data_cliente.fullname = `${nombre} ${apellidos}`
+    data_cliente.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     return data_cliente
   }
   formatea_info_cliente_2(data_cliente){
     const {nombre, apellidos, sucursal} = data_cliente
     data_cliente.fullname = `${nombre} ${apellidos}`
-    data_cliente.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     return data_cliente
   }
   consulta_cliente_new(data): Promise<object> {
@@ -148,6 +148,8 @@ export class ClientesService {
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
           resolve(this.formatea_info_cliente_2(snapshot.val()));
+          
+          // resolve(snapshot.val())
         } else {
           resolve({});
         }

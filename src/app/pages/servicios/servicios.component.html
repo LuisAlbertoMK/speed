@@ -46,44 +46,46 @@
     <div class="mat-elevation-z8 table-responsive">
     <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
         <ng-container matColumnDef="sucursalShow">
-          <th mat-header-cell *matHeaderCellDef class="text-center pointer" > Sucursal
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="text-start pointer" > Sucursal
           </th>
-          <td mat-cell *matCellDef="let row" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{row.sucursalShow}} </td>
+          <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"> {{row.sucursalShow}} </td>
         </ng-container>
         <ng-container matColumnDef="no_os">
-          <th mat-header-cell *matHeaderCellDef class="text-start pointer" > # O.S
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="text-start pointer" > # O.S
           </th>
-          <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{row.no_os | uppercase}} </td>
+          <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"> {{row.no_os | uppercase}} </td>
         </ng-container>
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef class="text-start pointer" > Status
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="text-start pointer" > Status
           </th>
           <td mat-cell *matCellDef="let row" class="text-start" [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}"> {{row.status | uppercase}} </td>
         </ng-container>
         <ng-container matColumnDef="fecha_recibido">
-          <th mat-header-cell *matHeaderCellDef class="text-center pointer" > Fecha recibido
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="text-center pointer" > Fecha recibido
           </th>
           <td mat-cell *matCellDef="let row" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"> {{ row.fecha_recibido | formateHora:true}} </td>
         </ng-container>
         <ng-container matColumnDef="fecha_entregado">
-          <th mat-header-cell *matHeaderCellDef class="text-center pointer" > Fecha entregado
+          <th mat-header-cell mat-sort-header *matHeaderCellDef class="text-center pointer" > Fecha entregado
           </th>
           <td mat-cell *matCellDef="let row" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"> {{ row.fecha_entregado | formateHora:true}} </td>
         </ng-container>
         <ng-container matColumnDef="placas">
-          <th mat-header-cell *matHeaderCellDef class="text-center pointer" > Placas
+          <th mat-header-cell  mat-sort-header *matHeaderCellDef class="text-start pointer" > Placas
           </th>
-          <td mat-cell *matCellDef="let row" class="text-center text-uppercase" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{ row.placas }} </td>
+          <td mat-cell *matCellDef="let row" class="text-start text-uppercase" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{ row.placas }} </td>
         </ng-container>
         <ng-container matColumnDef="clienteShow">
-          <th mat-header-cell *matHeaderCellDef class="text-center pointer " >Cliente
+          <th mat-header-cell  mat-sort-header *matHeaderCellDef class="text-start pointer " >Cliente
           </th>
-          <td mat-cell *matCellDef="let row" class="text-center text-capitalize " [ngStyle]="{'min-width':(miniColumnas)*2.5+'px'}"> {{ row.clienteShow }} </td>
+          <td mat-cell *matCellDef="let row" class="text-start text-capitalize " [ngStyle]="{'min-width':(miniColumnas)*2.5+'px'}"> {{ row.clienteShow }} </td>
         </ng-container>
         <ng-container matColumnDef="opciones" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef class="text-center pointer" > &nbsp;
+          <th mat-header-cell  *matHeaderCellDef class="text-center pointer" > &nbsp;
           </th>
           <td mat-cell *matCellDef="let row" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}">
+              <i class="fa fa-edit text-primary pointer" (click)="asigna_servicio(row); nuevaffff()" data-bs-toggle="modal" data-bs-target="#modal-servicio-editar" ></i>
+             
 
           </td>
         </ng-container>
@@ -107,98 +109,94 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="expandedDetail">
-            <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length - 2">
+            <td mat-cell *matCellDef="let row" [attr.colspan]="5">
               <div class="example-element-detail row" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-                <div class="row m-1">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-2 ">
-                    <mat-tab-group animationDuration="0ms">
-                      <mat-tab label="Desgloce">
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 m-1" *ngIf="row.reporte">
-                          <div class="card border-success mb-3">
-                            <div class="card-header text-center">Flotilla</div>
-                            <div class="card-body text-success ">
-                              <h5 class="card-title"></h5>
-                              <div class="row">
-                                <ng-container *ngFor="let campo of camposDesgloce">
-                                  <ng-container *ngIf="row.reporte[campo['valor']] > 0">
-                                    <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-tart text-capitalize">{{campo['show']}}</div>
-                                    <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{row.reporte[campo.valor]  | monedas}}</strong></div>
-                                  </ng-container>
-                                </ng-container>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{row.reporte.precio | numerosLetras}}</strong></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-2 text-start" *ngIf="row.servicios">
-                          <h3>Elementos de O.S</h3>
-                          <div class="table-responsive">
-                            <table class="table table-sm">
-                              <thead>
-                                <tr>
-                                  <th scope="text-start">Nombre</th>
-                                  <th scope="text-center">Cantidad</th>
-                                  <th scope="text-end">Precio</th>
-                                  <th scope="text-end">Costo</th>
-                                  <th scope="text-end">Subtotal</th>
-                                  <th scope="text-end">Total</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <ng-container *ngFor="let item of row.servicios">
-                                  <tr [ngClass]="'tipo-'+item.tipo" >
-                                    <td class="text-start">{{item.nombre}} {{item.aprobado}}</td>
-                                    <td class="text-center">{{item.cantidad}}</td>
-                                    <td class="text-end">{{item.precio | monedas}}</td>
-                                    <td class="text-end">{{item.costo | monedas}}</td>
-                                    <td class="text-end">{{item.subtotal | monedas}}</td>
-                                    <td class="text-end">{{item.total | monedas}}</td>
-                                  </tr>
-                                </ng-container>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </mat-tab>
-                      <mat-tab label="Cliente">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                          <div class="card">
-                          <div class="card-body">
-                            <div class="row" *ngIf="row.data_cliente">
-                              <ng-container *ngFor="let item of camposCliente">
-                                <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase text-start" *ngIf="row.data_cliente[item.valor]">
-                                  <strong >{{item.show}} </strong>: {{row.data_cliente[item.valor]}}
-                                </div>
+            
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
+                  <mat-tab label="Desgloce" class="m-1">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
+                      <div class="card border-success mb-3">
+                        <div class="card-header text-center">Flotilla</div>
+                        <div class="card-body text-success ">
+                          <h5 class="card-title"></h5>
+                          <div class="row">
+                            <ng-container *ngFor="let campo of camposDesgloce">
+                              <ng-container *ngIf="row.reporte[campo['valor']] > 0">
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-tart text-capitalize">{{campo['show']}}</div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{row.reporte[campo.valor]  | monedas}}</strong></div>
                               </ng-container>
-                            </div>
+                            </ng-container>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{row.reporte.precio | numerosLetras}}</strong></div>
                           </div>
                         </div>
-                       </div>
-                      </mat-tab>
-                      <mat-tab label="Vehiculo">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                          <div class="card">
-                            <div class="card-body">
-                              <div class="row" *ngIf="row.data_vehiculo">
-                                <ng-container *ngFor="let item of camposVehiculo">
-                                  <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase text-start" *ngIf="row.data_vehiculo[item.valor]">
-                                    <strong >{{item.show}} </strong>: {{row.data_vehiculo[item.valor]}}
-                                  </div>
-                                </ng-container>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="row.servicios">
+                      <h3>Elementos de O.S</h3>
+                      <div class="table-responsive">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th scope="text-start">Nombre</th>
+                              <th scope="text-center">Cantidad</th>
+                              <th scope="text-end">Precio</th>
+                              <th scope="text-end">Costo</th>
+                              <th scope="text-end">Subtotal</th>
+                              <th scope="text-end">Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <ng-container *ngFor="let item of row.servicios">
+                              <tr [ngClass]="'tipo-'+item.tipo" >
+                                <td class="text-start">{{item.nombre}} &nbsp;
+                                  <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
+                                  <span class="badge badge-info m-1">{{item.status}}</span>
+                                </td>
+                                <td class="text-center">{{item.cantidad}}</td>
+                                <td class="text-end">{{item.precio | monedas}}</td>
+                                <td class="text-end">{{item.costo | monedas}}</td>
+                                <td class="text-end">{{item.subtotal | monedas}}</td>
+                                <td class="text-end">{{item.total | monedas}}</td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="Cliente" class="m-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                      <div class="card">
+                      <div class="card-body">
+                        <div class="row" *ngIf="row.data_cliente">
+                          <ng-container *ngFor="let item of camposCliente">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase text-start" *ngIf="row.data_cliente[item.valor]">
+                              <strong >{{item.show}} </strong>: {{row.data_cliente[item.valor]}}
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                   </div>
+                  </mat-tab>
+                  <mat-tab label="Vehiculo">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="row" *ngIf="row.data_vehiculo">
+                            <ng-container *ngFor="let item of camposVehiculo">
+                              <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase text-start" *ngIf="row.data_vehiculo[item.valor]">
+                                <strong >{{item.show}} </strong>: {{row.data_vehiculo[item.valor]}}
                               </div>
-                            </div>
+                            </ng-container>
                           </div>
                         </div>
-                      </mat-tab>
-                      
-                    </mat-tab-group>
-                  </div>
-                </div>
-                
-                
-                
-               
-                
+                      </div>
+                    </div>
+                  </mat-tab>
+                  
+                </mat-tab-group>
+            
               </div>
             </td>
           </ng-container>
@@ -220,4 +218,173 @@
   <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>
 </div>
+</div>
+
+
+
+<div class="modal fade" id="modal-servicio-editar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Informacion  O.S {{ servicio_editar.no_os}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modal-servicio-editar-btn"></button>
+      </div>
+      <div class="modal-body">
+        <!-- <pre>
+          {{servicio_editar | json }}
+        </pre> -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="row">
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase"># O.S {{ servicio_editar.no_os}}</div> -->
+              <button (click)="nuevaffff()">nuevaffff</button>
+            my_control_1
+
+            <form [formGroup]="my_control_1">
+                <select formControlName="formaPago">
+                  <option [selected]="item.id === servicio_editar.formaPago" [value]="item.id" *ngFor="let item of formasPAgo">{{item.pago}}</option>
+                </select>
+                <input [value]="servicio_editar.margen"  type="number" formControlName="margen" min="25" max="100">
+                <!-- <input [value]="servicio_editar.margen"  type="number" formControlName="margen" min="25" max="100"> -->
+            </form>
+
+            <pre>
+              {{my_control_1.value | json}}
+            </pre>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">Forma pago: {{ servicio_editar.formaPago}}</div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">IVA: {{ (servicio_editar.iva) ? 'SI': 'NO'}}</div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">Margen: {{ servicio_editar.margen}}</div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">Servicio: {{ servicio_editar.servicio}}</div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                  <label for="listatecnicos">Status: {{ servicio_editar.status }}</label>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                  <select class="form-select form-select-sm mb-1" aria-label="Small select example" [formControl]="myControl_status">
+                    <option selected value="">Seleccionar</option>
+                    <option [selected]="item.valor === servicio_editar.status" [value]="item.valor" *ngFor="let item of statusOS">
+                      {{item.show}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+              <app-lista-tecnicos [sucursal]="servicio_editar.sucursal"  (dataTecnico)="tecnico_os ( $event )"></app-lista-tecnicos>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <div class="card">
+          <div class="card-body">
+            <div class="row" *ngIf="servicio_editar['data_cliente']">
+              
+              <ng-container *ngFor="let item of camposCliente">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase text-start" *ngIf="servicio_editar.data_cliente[item.valor]">
+                  <strong >{{item.show}} </strong>: {{servicio_editar.data_cliente[item.valor]}}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+       </div>
+       <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row" *ngIf="servicio_editar['data_vehiculo']">
+              <ng-container *ngFor="let item of camposVehiculo">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase text-start" *ngIf="servicio_editar.data_vehiculo[item.valor]">
+                  <strong >{{item.show}} </strong>: {{servicio_editar.data_vehiculo[item.valor]}}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="servicio_editar.reporte">
+        <div class="card border-success mb-3">
+          <div class="card-header text-center">Flotilla</div>
+          <div class="card-body text-success ">
+            <h5 class="card-title"></h5>
+            <div class="row">
+              <ng-container *ngFor="let campo of camposDesgloce">
+                <ng-container *ngIf="servicio_editar.reporte[campo['valor']] > 0">
+                  <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-tart text-capitalize">{{campo['show']}}</div>
+                  <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{servicio_editar.reporte[campo.valor]  | monedas}}</strong></div>
+                </ng-container>
+              </ng-container>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{servicio_editar.reporte.precio | numerosLetras}}</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="servicio_editar.servicios">
+        <button class="btn btn-primary" data-bs-target="#modal-elemento" data-bs-toggle="modal">Agregar elemento</button>
+        
+        
+        <h3>Elementos de O.S</h3>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th scope="text-start">Nombre</th>
+                <th scope="text-center">Cantidad</th>
+                <th scope="text-end">Precio</th>
+                <th scope="text-end">Costo</th>
+                <th scope="text-end">Subtotal</th>
+                <th scope="text-end">Total</th>
+                <th scope="text-end">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of servicio_editar.servicios">
+                <tr [ngClass]="'tipo-'+item.tipo" >
+                  <td class="text-start">
+                    {{item.nombre}} &nbsp;
+                    <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
+                    <span class="badge badge-info m-1">{{item.status}}</span>
+                  </td>
+                  <td class="text-center">{{item.cantidad}}</td>
+                  <td class="text-end">{{item.precio | monedas}}</td>
+                  <td class="text-end">{{item.costo | monedas}}</td>
+                  <td class="text-end">{{item.subtotal | monedas}}</td>
+                  <td class="text-end">{{item.total | monedas}}</td>
+                  <td class="text-end">
+                    <ng-container *ngIf="servicio_editar.status !== 'cancelado' && servicio_editar.status !== 'entregado'">
+                      <i class="fa fa-check-double text-primary pointer m-1"  *ngIf="!item.aprobado" (click)="actualiza_servicio_unico({servicio: item, aprobado: true})"></i>
+                      <i class="fa fa-trash text-danger pointer m-1"  *ngIf="item.aprobado" (click)="actualiza_servicio_unico({servicio: item, aprobado: false, status:'eliminado'})"></i>
+                      <i class="fa fa-pause text-danger pointer m-1"  *ngIf="item.aprobado" (click)="actualiza_servicio_unico({servicio: item, status: 'espera'})"></i>
+                      <i class="fa fa-check-square text-danger pointer m-1"  *ngIf="item.aprobado" (click)="actualiza_servicio_unico({servicio: item, status: 'terminado'})"></i>
+                      <i class="fa fa-ban text-danger pointer m-1"  *ngIf="item.aprobado" (click)="actualiza_servicio_unico({servicio: item, status: 'cancelado', aprobado: false})"></i>
+                    </ng-container>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrar_modal_servicio_editar()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="Actualiza_data_os()">
+          <i class="fa fa-save"></i> Actualizar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-elemento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-mo-refacciones [registro]="true" (dataElemento)="agregar_servicio( $event )"></app-mo-refacciones>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="regresa-primero-editar" data-bs-target="#modal-servicio-editar" data-bs-toggle="modal">Back to first</button>
+      </div>
+    </div>
+  </div>
 </div>

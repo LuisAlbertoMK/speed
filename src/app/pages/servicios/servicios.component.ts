@@ -24,10 +24,44 @@ import { ServiciosService } from 'src/app/services/servicios.service';
 import { CamposSystemService } from '../../services/campos-system.service';
 import { Router } from '@angular/router';
 
-
+interface ServicioEditar {
+  cliente: any;
+  data_cliente: any;
+  vehiculo: any;
+  data_vehiculo: any;
+  sucursal: any;
+  data_sucursal: any;
+  reporte: any;
+  no_os: any;
+  dataFacturacion: any;
+  observaciones: any;
+  id: any;
+  checkList: any[];
+  vehiculos: any[];
+  servicios: any[];
+  iva: boolean;
+  formaPago: string;
+  margen: number;
+  personalizados: any[];
+  detalles: any[];
+  diasEntrega: number;
+  fecha_promesa: string;
+  firma_cliente: any;
+  pathPDF: any;
+  status: any;
+  diasSucursal: number;
+  fecha_recibido: any;
+  notifico: boolean;
+  servicio: string;
+  tecnico: any;
+  showNameTecnico: string;
+  descuento: number;
+}
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
+
+import { CitaComponent } from '../cita/cita.component';
 @Component({
   selector: 'app-servicios',
   templateUrl: './servicios.component.html',
@@ -57,7 +91,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     private _vehiculos: VehiculosService,
     private _servicios: ServiciosService,
     private _campos: CamposSystemService,
-    private router: Router
+    private router: Router,
+
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
@@ -66,7 +101,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      recepciones_arr=[]
      // tabla
      dataSource = new MatTableDataSource(); //elementos
-     elementos = ['sucursalShow','no_os','placas','clienteShow','status','fecha_recibido','fecha_entregado'] //,'searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
+    //  'clienteShow'
+     elementos = ['sucursalShow','no_os','placas','status','fecha_recibido','fecha_entregado'] //,'searchCliente','searchPlacas','fechaRecibido','fechaEntregado']; //elementos
      columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
      expandedElement: any | null; //elementos
      @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
@@ -132,6 +168,68 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
      filtro_sucursal:string = 'Todas'
      filtro_tipo: string = 'Todos'
+
+     servicio_editar = {
+        cliente:null, data_cliente:null, vehiculo:null, data_vehiculo:null,sucursal:null, data_sucursal:null, reporte:null, no_os:null, 
+        dataFacturacion: {},observaciones:null, id:null,
+        checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
+        detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:null, status:null, diasSucursal:0,
+        fecha_recibido:null, notifico:true,servicio:'1', tecnico:null, showNameTecnico: '', descuento:0
+      }
+     servicio_editar_copia = {
+        cliente:null, data_cliente:null, vehiculo:null, data_vehiculo:null,sucursal:null, data_sucursal:null, reporte:null, no_os:null, 
+        dataFacturacion: {},observaciones:null, id:null,
+        checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
+        detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:null, status:null, diasSucursal:0,
+        fecha_recibido:null, notifico:true,servicio:'1', tecnico:null, showNameTecnico: '', descuento:0
+      }
+    myControl_status= new FormControl('');
+
+    my_control_1 = new FormGroup({
+      formaPago: new FormControl('1'),
+      iva: new FormControl(true),
+      margen: new FormControl(25),
+      servicios: new FormControl(),
+    });
+
+    formasPAgo = [
+      {
+          id: '1',
+          pago: 'contado',
+          interes: 0,
+          numero: 0
+      }, {
+          id: '2',
+          pago: '3 meses',
+          interes: 4.49,
+          numero: 3
+      }, {
+          id: '3',
+          pago: '6 meses',
+          interes: 6.99,
+          numero: 6
+      }, {
+          id: '4',
+          pago: '9 meses',
+          interes: 9.90,
+          numero: 9
+      }, {
+          id: '5',
+          pago: '12 meses',
+          interes: 11.95,
+          numero: 12
+      }, {
+          id: '6',
+          pago: '18 meses',
+          interes: 17.70,
+          numero: 18
+      }, {
+          id: '7',
+          pago: '24 meses',
+          interes: 24.,
+          numero: 24
+      }
+    ]
      ngOnDestroy(){
      
      }
@@ -141,9 +239,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.resetea_horas_admin()
       this.vigila()
       this.llamado_multiple()
+      
     }
 
-  
   rol(){
     
     const { rol, sucursal } = this._security.usuarioRol()
@@ -152,6 +250,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.SUCURSAL = sucursal 
     this.filtro_sucursal =  this.SUCURSAL 
   }
+
   vigila(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
       if (start_ && start_['_d'] && end_ && end_['_d'] ) {
@@ -160,6 +259,28 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         this.filtra_informacion()
       }        
     })
+    this.myControl_status.valueChanges.subscribe(status=>{
+      if (this.servicio_editar.id && status) {
+        // this.servicio_editar.status = status
+        this.actualiza_Servicios(status)
+      }
+    })
+    const vigila = ['margen','iva','formaPago']
+    
+      this.my_control_1.get('margen').valueChanges.subscribe(margen=>{
+        this.servicio_editar.margen = margen
+        // this.servicio_editar.reporte =  this.reporte_general(this.servicio_editar)
+      })
+      this.my_control_1.get('iva').valueChanges.subscribe(iva=>{
+        this.servicio_editar['iva'] = iva
+        // this.servicio_editar.reporte =  this.reporte_general(this.servicio_editar)
+      })
+      this.my_control_1.get('formaPago').valueChanges.subscribe(formaPago=>{
+        this.servicio_editar['formaPago'] = formaPago
+        // this.servicio_editar.reporte =  this.reporte_general(this.servicio_editar)
+      })
+    
+    
   }
   llamado_multiple(){
     const arreglo = ['recepciones']
@@ -179,35 +300,58 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
   resetea_horas_admin(){
     const {start, end} = this.fechas_filtro.value
+    const simula_fecha =  new Date('03-23-2023')
+    // console.log(simula_fecha);
     this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
     this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end),this.hora_end) 
   }
   async consulta_ordenes(){
     const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
-    // console.log(arreglo_sucursal);
+
     const arreglo_rutas = this.crea_ordenes_sucursal({arreglo_sucursal})
-    // console.log(arreglo_rutas);
-    const promesas = arreglo_rutas.map(async (ruta)=>{
-        
-      // const cliente = await this._clientes.consulta_cliente_new({sucursal:''})
-      const respuesta = await  this._servicios.consulta_recepcion_sucursal({ruta})
+   
+    const promesasConsultas = arreglo_rutas.map(async (f_search) => {
+
+    const respuesta = await  this._servicios.consulta_recepcion_sucursal({ruta: f_search})
       
-        return this.regresa_servicios_por_cada_ruta({answer: respuesta}) 
-    })
-    const promesas_resueltas = await Promise.all(promesas);
-    const finales = promesas_resueltas.flat() 
+    const gastos_hoy_array = await this.regresa_servicios_por_cada_ruta({respuesta}) 
+     
+      
+      const promesasVehiculos = gastos_hoy_array
+        
+        .map(async (g) => {
+          const { sucursal, cliente, vehiculo } = g;
+          // g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+          const data_cliente:any =  await this._clientes.consulta_cliente_new({sucursal, cliente})
+          g.data_cliente = data_cliente
+          g.clienteShow = data_cliente.fullname
+          const data_vehiculo:any =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+          g.data_vehiculo = data_vehiculo
+          g.placas = data_vehiculo.placas
+          const data_sucursal =  this.sucursales_array.find(s=>s.id === sucursal)
+          g.data_sucursal =  data_sucursal
+          g.sucursalShow = data_sucursal.sucursal
+          // const reporte  = this.reporte_general(g)
+          // g.reporte = reporte
+          g.servicios = this.caso_paquete(g)
+          return g
+        });
+      await Promise.all(promesasVehiculos);
+      return gastos_hoy_array;
+    });
+    
+    const promesas = await Promise.all(promesasConsultas);
+    // console.log(promesas);
+    const finales = promesas.flat() 
     // console.log(finales);
 
-    const rutas_clientes = this.rutas_cliente(finales)
-
-    console.log(rutas_clientes);
-    
+    const ordenada = this._publicos.ordernarPorCampo(finales,'fecha_recibido')
     
     const campos = [
       'cliente','clienteShow','data_cliente','data_sucursal','data_vehiculo','diasSucursal','fecha_promesa','fecha_recibido','formaPago','id','iva','margen','no_os','placas','reporte','servicio','servicios','status','subtotal','sucursal','sucursalShow','vehiculo'
     ]
 
-    const nueva  = (!this.array_recepciones.length) ?  rutas_clientes :  this._publicos.actualizarArregloExistente(this.array_recepciones, rutas_clientes,campos);
+    const nueva  = (!this.array_recepciones.length) ?  ordenada :  this._publicos.actualizarArregloExistente(this.array_recepciones, ordenada,campos);
 
     this.array_recepciones = nueva
     this.filtra_informacion()
@@ -222,7 +366,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const resultados =  (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
 
     const filtro = resultados.filter(r=>new Date(r.fecha_recibido) >= start && new Date(r.fecha_recibido) <= end )
-
+    console.log(filtro);
+    
     this.dataSource.data = filtro
     this.newPagination()
   }
@@ -244,46 +389,17 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     return Rutas_retorna
   }
   regresa_servicios_por_cada_ruta(data){
-    const {answer } = data
-    const obtenidos = []
-    const nueva = {...answer}
-
-    Object.entries(nueva).forEach(([key, entrie])=>{
-      const nuevas_entries = this._publicos.crearArreglo2(entrie)
-      nuevas_entries.forEach(entri_=>{
-        // console.log(entri_);
-        const reporte = this.reporte_general(entri_)
-        const nueva = {...entri_, reporte}
-        obtenidos.push(nueva)
-      })
-    })
-    return obtenidos
+    const { respuesta } = data;
+    let  obtenidos = [];
+    
+      Object.values(respuesta).forEach((entrie) => {
+        const nuevas_entries = this._publicos.crearArreglo2(entrie);
+        obtenidos.push(...nuevas_entries);
+      });
+    
+    return obtenidos;
   }
-  rutas_cliente(data){
-    const arreglo = [...data]
-    arreglo.map(async(r)=>{
-      const {sucursal, cliente, vehiculo} = r
-      const data_cliente:any =  await this._clientes.consulta_cliente_new({sucursal, cliente})
-      const data_vehiculo =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
-      const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      
-      
-      r.clienteShow = String(data_cliente.fullname).toLowerCase()
-      r.placas = data_vehiculo.placas
-      r.sucursalShow = data_sucursal.sucursal
-      r.servicios =  this.caso_paquete({servicios: r.servicios, id: r.id})
-      r.data_cliente = data_cliente
-      r.data_vehiculo = data_vehiculo
-      r.data_sucursal = data_sucursal
-      // const reporte = this.reporte_general(r)
-      // r.reporte = reporte
-      // const {mo, refacciones_v,} = reporte
-      // r.subtotal = mo + refacciones_v
 
-      return r
-    })    
-    return arreglo
-  }
   caso_paquete(data_paquete){
     const {servicios:servicios_, id} = data_paquete
     let servicios = [...servicios_]
@@ -307,31 +423,40 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     return servicios
   }
   reporte_general(data){
-    const {servicios} = data
+    const {servicios, descuento, formaPago, margen} = data
+    console.log(data);
+    const new_margen = (1+ (margen / 100))
+    
     const elementos_ = [...servicios] || []
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0, paquetes:0, paquetes_sobresrito:0}
+    const reporte = {descuento:0,mo:0, refacciones:0, refacciones_v:0, sobrescrito_mo:0, sobrescrito_refacciones:0,precio:0, ub:0, paquetes:0, paquetes_sobresrito:0, meses: 0}
     elementos_.map(element=>{
-        const {tipo, costo, precio, aprobado, total, cantidad } = element
+        const {tipo,aprobado} = element
         if (aprobado) {
             let mul
             switch (tipo) {
                 case 'MO':
                 case 'mo':
-                    reporte.mo +=  total 
-                    if (costo>0 ) {
-                        reporte.sobrescrito_mo += total
-                    }
+                  const equipado_ = this.operaciones_mo_refaccion({...element, margen: new_margen})
+                  reporte.mo +=  equipado_.total
+                  element = equipado_
                 break;
                 case 'refaccion':
-                    reporte.refacciones +=  precio
-                    reporte.refacciones_v +=  total
-                    if (costo>0 ) { reporte.sobrescrito_refacciones += total }
+                  const equipado = this.operaciones_mo_refaccion({...element, margen: new_margen})
+                  reporte.refacciones +=  equipado.subtotal
+                  reporte.refacciones_v +=   equipado.total
+                  element = equipado
+                  // if (costo>0 ) { reporte.sobrescrito_refacciones += con_margen }
                 break;
                 case 'paquete':
-                    const { reporte:reporte_interno } = element
+                  const {elementos, id} = element
+                  // if (id === '-NEH_O1qK7I5z8sWdOQz') {
+
+                    const reporte_interno  = this.operaciones_paquete({elementos: elementos, margen: new_margen})
+
+                    element.reporte = reporte_interno
                     reporte.paquetes += reporte_interno.precio
-                    if (costo>0 ) { reporte.paquetes_sobresrito += reporte_interno.precio }
-                    const ca = [
+                    // if (costo>0 ) { reporte.paquetes_sobresrito += reporte_interno.precio }
+                     const ca = [
                         'mo',
                         'precio',
                         'refacciones',
@@ -339,21 +464,302 @@ export class ServiciosComponent implements OnInit, OnDestroy {
                         'sobrescrito_mo',
                         'sobrescrito_refacciones',
                     ]
-                    
                     ca.forEach(c=>{
-                        reporte[c] +=  reporte_interno[c]
+                      reporte[c] +=  reporte_interno[c]
                     })
-
                 break;
             }
         }
+        return element
     })
-    const {mo,  refacciones_v, paquetes} = reporte
+    const {mo,  refacciones_v} = reporte
     const precio__ = mo + refacciones_v
-    reporte.precio = precio__
-    reporte.ub = 100 - ((refacciones_v * 100) / precio__ )
+    let _precio = precio__
+    reporte.ub = 100 - ((refacciones_v * 100) / _precio )
+    let new_descuento = (!descuento) ? 0 : parseFloat(descuento)
+    const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
+    if (enCaso_meses.id === '1') {
+      _precio -= new_descuento
+    }else{
+      new_descuento = 0
+      reporte.meses = _precio * (1 + (enCaso_meses['interes'] / 100));
+    }
+    reporte.precio = _precio
+
+    // console.log(elementos_);
+    // if (this.servicio_editar.id) {
+    //   this.servicio_editar.servicios = []
+    //   this.servicio_editar.servicios = elementos_
+    //   console.log('asigno');
+      
+    // }
+
+    console.log(this.servicio_editar);
+    
+    
+    
+    return reporte
+  }
+  operaciones_mo_refaccion(data){
+    const {cantidad , precio, tipo, costo, margen , nombre} = data
+    const new_ = (costo> 0) ? costo : precio
+    switch (tipo) {
+      case 'MO':
+      case 'mo':
+        data.total = cantidad * new_
+        data.subtotal = cantidad * new_
+        break;
+        case 'refaccion':
+          console.log(margen);
+          
+            const can = cantidad * new_
+            data.subtotal = can
+            data.total = can * margen
+        break;
+    }
+    data.tipo = String(tipo).toLowerCase()
+    data.nombre = String(nombre).toLowerCase()
+    delete data.margen
+    return data
+  }
+  operaciones_paquete(data){
+    const {elementos, margen} = data
+    const reporte = {mo: 0,precio: 0,refacciones: 0,refacciones_v: 0}
+    elementos.forEach(element => {
+      const equipa = this.operaciones_mo_refaccion({...element, margen})
+      if (element.tipo === 'mo') {
+        reporte.mo = equipa.total
+      }else{
+        reporte.refacciones = equipa.subtotal
+        reporte.refacciones_v = equipa.total
+      }
+      reporte.precio = equipa.total
+    });
     return reporte
 }
+  ///acciones_modal_
+  asigna_servicio(data){
+  this.servicio_editar = {...data}
+  this.servicio_editar_copia = {...data}
+
+  }
+  Actualiza_data_os(){
+    
+    const {sonIguales,diferencias}  = this.compararObjetos(this.servicio_editar, this.servicio_editar_copia)
+    console.log({sonIguales,diferencias});
+
+    if (sonIguales){
+      this._publicos.cerrar_modal('modal-servicio-editar-btn')
+      this._publicos.swalToast('Cambios realizados',1)
+    }else{
+      console.log('comprobar los cambios ');
+      const updates= {}
+
+      const campos_update = [
+        'servicios',
+        'iva',
+        'formaPago',
+        'margen',
+        'status',
+        'servicio',
+        'tecnico',
+      ]
+      const {sucursal, cliente, id} = this.servicio_editar
+
+
+      campos_update.forEach(campo=>{
+        if (this.servicio_editar[campo] ) {
+          updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = this.servicio_editar[campo] 
+        }
+      })
+      console.log(updates);
+
+
+      update(ref(db), updates).then(()=>{
+        // this._publicos.cerrar_modal('modal-servicio-editar-btn')
+        this._publicos.swalToast('Cambios realizados',1)
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    }
+    
+  }
+  async actualiza_Servicios(status){
+    const {respuesta } = await this._publicos.mensaje_pregunta(`Cambiar status de orden ${status}`,true, `Este cambio de status general afecta a los servicios de la orden`)
+    if (!respuesta) return
+    console.log(status);
+    const servicios = [...this.servicio_editar.servicios]
+
+    let new_status 
+    switch (status) {
+      case 'espera':
+      case 'recibido':
+      case 'autorizado':
+        new_status = 'espera'
+        break;
+      case 'terminado':
+      case 'entregado':
+        new_status = status
+        break;
+
+      case 'cancelado':
+        new_status = status
+        break;
+    }
+    servicios.forEach(s => {
+          if (s.aprobado) {
+            s.status = new_status
+          }
+        });
+
+    this.servicio_editar.servicios = servicios
+    this.servicio_editar.status = status
+    this.servicio_editar.reporte =  this.reporte_general(this.servicio_editar)
+    
+  }
+  actualiza_servicio_unico(data){
+    const {servicio, aprobado,status} = data
+    const servicios = [...this.servicio_editar.servicios]
+    servicios
+    .map(s=>{
+      if (s.id === servicio.id && typeof aprobado === 'boolean') {
+        s.aprobado = aprobado
+        if (!aprobado) s.status = 'espera' 
+      }
+      if (s.id === servicio.id && status) s.status = status
+      return s 
+    })
+
+    const filtrado = servicios .filter(s=>s.status !== 'eliminado')
+
+    this.servicio_editar.servicios = filtrado
+    this.servicio_editar.reporte =  this.reporte_general(this.servicio_editar)
+  }
+  agregar_servicio(event){
+    const {id} = event
+    if (id) {
+      const nueva = {...this.operaciones_mo_refaccion(event), margen: this.servicio_editar.margen, status: 'espera'}
+      this.servicio_editar.servicios.push(nueva)
+      this.servicio_editar.reporte =  this.reporte_general(this.servicio_editar)
+    }
+  }
+  tecnico_os(event){
+    console.log(event);
+    if (event instanceof Object) {
+      const {id} = event
+      this.servicio_editar.tecnico = id
+      // this.servicio_editar.tecnicoShow = id
+    }
+  }
+  compararObjetos(obj1: ServicioEditar, obj2: ServicioEditar): { sonIguales: boolean; diferencias: string } {
+    const keys = Object.keys(obj1);
+    const diferencias: string[] = [];
   
+    let sonIguales = true;
+    for (const key of keys) {
+      if (obj1[key] !== obj2[key]) {
+        sonIguales = false;
+        diferencias.push(key);
+      }
+    }
+    const otras_ = diferencias.join(', ')
+    return { sonIguales, diferencias: otras_ };
+  }
+  async cerrar_modal_servicio_editar(){
+    const {sonIguales,diferencias} = this.compararObjetos(this.servicio_editar, this.servicio_editar_copia)
+    if (!sonIguales) {
+      const {respuesta } = await this._publicos.mensaje_pregunta(`hubo cambios en la O.S`,true, `los cambios son en: ${diferencias} `)
+      if (respuesta) {
+        this.Actualiza_data_os() 
+      }else{
+        this._publicos.cerrar_modal('modal-servicio-editar-btn')
+        this._publicos.swalToast('se cancelo la actualizacion',0)
+      }
+    }else{
+      this._publicos.cerrar_modal('modal-servicio-editar-btn')
+    }
+  }
+  nuevaffff(){
+    // this.servicio_editar.margen = 100
+    const paqueteConTotales = this.calcularTotales(this.servicio_editar, this.formasPAgo);
+    console.log(paqueteConTotales);
+  }
+
+ 
+  calcularTotales(data, formasPago) {
+    const {margen: new_margen, formaPago, servicios, iva} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, total:0}
+    const servicios_ = [...servicios] 
+    const margen = 1 + (new_margen / 100)
+    servicios_.map(ele=>{
+      
+      
+      if (ele.tipo === 'paquete') {
+        // console.log(ele.id);
+        // console.log(ele.tipo);
+        // console.log(ele.elementos);
+        
+        const report = this.total_paquete(ele)
+        // console.log(report);
+        
+        const {mo, refacciones} = report
+        reporte.mo += mo
+        reporte.refacciones += refacciones
+        console.log(refacciones * margen);
+        
+        reporte.refacciones_v += refacciones * margen
+      }else if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+        ele.subtotal = operacion
+        ele.total = operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+        reporte.refacciones_v += operacion * margen
+        ele.subtotal = operacion
+        ele.total = operacion * margen
+      }
+      return ele
+    })
+    console.log(servicios_);
+    
+    
+    return reporte
+    
+  }
+  mano_refaccion(ele){
+    const {costo, precio, cantidad} = ele
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete(data){
+    const {elementos} = data
+    const reporte = {mo:0, refacciones:0}
+    elementos.forEach(ele=>{
+      if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+      }
+    })
+    return reporte
+  }
   
 }
+
+
+
+
+// for paquete in data["servicios"]:
+//     reporte_paquete = calcular_totales(paquete["elementos"], paquete["margen"], data["formaPago"])
+//     paquete["reporte"] = reporte_paquete
+
+
+  
+  
+  
+

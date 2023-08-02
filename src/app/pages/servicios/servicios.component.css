@@ -66,6 +66,11 @@ tr.example-element-row:not(.example-expanded-row):active {
   border-right: 1px solid #e0e0e0;
 }
 
+.pointer{
+  text-decoration: none;
+  cursor: pointer;
+}
+
 mat-paginator{
   width: vw(100%);
 }
@@ -82,4 +87,8 @@ mat-paginator{
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+::ng-deep .cdk-overlay-container mat-menu-item {
+  /* background-color: red; */
+  z-index: 1000 !important;
 }
