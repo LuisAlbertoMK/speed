@@ -1,11 +1,13 @@
-import { Component, OnInit, Input, Output,EventEmitter} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, Output,EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { SucursalesService } from '../../services/sucursales.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { ServiciosService } from 'src/app/services/servicios.service';
+import { ReporteGastosService } from 'src/app/services/reporte-gastos.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -15,10 +17,13 @@ const dbRef = ref(getDatabase());
   templateUrl: './pago.component.html',
   styleUrls: ['./pago.component.css']
 })
-export class PagoComponent implements OnInit {
+export class PagoComponent implements OnInit, OnChanges {
 
   @Input() dataRecepcion:any = null
   @Output() showPagoHide : EventEmitter<any>
+
+  @Input() id_os:any
+
 
   minDate: Date;
   maxDate: Date;
@@ -26,9 +31,9 @@ export class PagoComponent implements OnInit {
   miniColumnas:number=100
   formPago:FormGroup
   selected: Date | null;
-  informacionFaltante:string
-  constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, 
-    private _security:EncriptadoService, private _sucursales: SucursalesService) {
+  faltante_s:string
+  constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, private _servicios: ServiciosService,
+    private _security:EncriptadoService, private _sucursales: SucursalesService, private _reporte_gastos: ReporteGastosService) {
       this.showPagoHide = new EventEmitter()
       const currentYear = new Date().getFullYear();
       this.minDate = new Date(currentYear , 0, 1);
@@ -66,6 +71,12 @@ export class PagoComponent implements OnInit {
     ordenes = []
     tiempoReal:boolean = true
 
+
+    claves_ordenes= []
+
+    fecha_recibido = new FormGroup({
+      start: new FormControl(new Date())
+    });
     myFilter = (d: Date | null): boolean => {
       const fecha = new Date(d)
       const day = fecha.getDay()
@@ -75,47 +86,37 @@ export class PagoComponent implements OnInit {
     this.rol()
     this.crearFormPago()    
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['id_os']) {
+      const nuevoValor = changes['id_os'].currentValue;
+      const valorAnterior = changes['id_os'].previousValue;
+      // console.log({nuevoValor, valorAnterior});
+      const {id} = nuevoValor
+      if (nuevoValor && id) {
+        this.carga_data_gasto(nuevoValor)
+      }else if(nuevoValor === valorAnterior && id){
+        this.carga_data_gasto(nuevoValor)
+      }
+    }
+  }
+  carga_data_gasto(data){
+    const {id, sucursal} = data
+    this.formPago.reset({
+      no_os: id,
+      monto: 0,
+      metodo: '1',
+      concepto: '',
+      sucursal,
+      rol: this.ROL,
+    })
+  }
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
 
     this.ROL = rol
     this.SUCURSAL = sucursal
-    // this.listaOrdenes()
   }
-  listaOrdenes(){
-    const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-
-        const recepciones = this._publicos.crearArreglo2(snapshot.val())        
-        function filtrarOrdenes(recepciones, sucursal) {
-          const rcp = recepciones
-            .filter(recep => {
-              const status = recep.status;
-              // return (status !== 'cancelado' && status !== 'espera');
-              return (status !== 'cancelado');
-            })
-            .map(recep => {
-              return {
-                id: recep.id,
-                no_os: recep.no_os,
-                fecha: recep.fecha_recibido,
-                hora: recep.hora_recibido,
-                sucursal: recep.sucursal.id,
-                status: recep.status
-              };
-            });
-            
-            return (sucursal === 'Todas') ? rcp : rcp.filter(os => os.sucursal === sucursal);
-        }
-        this.ordenes = filtrarOrdenes(recepciones, this.SUCURSAL);
-
-      }
-      
-    })
-  }
-
-
+  
   crearFormPago(){
     let sucursal = '';
     (this.SUCURSAL ==='Todas') ? sucursal = '': sucursal= this.SUCURSAL
@@ -124,88 +125,95 @@ export class PagoComponent implements OnInit {
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
-      fecha:[null,[Validators.required]],
+      fecha_recibido:[null,[Validators.required]],
       sucursal: [sucursal,[Validators.required]],
       rol: [this.ROL, [Validators.required]],
     })
+    this.vigila()
+  }
+  vigila(){
+    // if (this.SUCURSAL !== 'Todas')  this.formPago.get('sucursal').disable()
+
+    if (this.SUCURSAL !== 'Todas')  this.muestra_claves_recepciones()
+
+    this.formPago.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
+      if (sucursal) {
+        this.muestra_claves_recepciones()
+      }
+    })
+    this.fecha_recibido.get('start').valueChanges.subscribe((start:Date)=>{
+      if (start) {
+        const fecha_re = this._publicos.retorna_fechas_hora({fechaString: start['_d']}).toString_completa
+        this.formPago.get('fecha_recibido').setValue(fecha_re)
+      }
+    })
+  }
+  
+  async muestra_claves_recepciones(){
+    const {tipo, sucursal} = this._publicos.recuperaDatos(this.formPago)
+    this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
   }
   validaCampo(campo: string){
     return this.formPago.get(campo).invalid && this.formPago.get(campo).touched
   }
 
-  validaInformacion(){
-    const camposNecesarios = ['no_os','monto','metodo','concepto','fecha','sucursal']
-    if (this.SUCURSAL !=='Todas') {
-      const fecha = this._publicos.retorna_fechas_hora({fechaString: new Date().toString()}).fecha_hora_actual
-      this.formPago.controls['fecha'].setValue(fecha)
-    }
-    const info_pago = this._publicos.recuperaDatos(this.formPago)
-    
-    const {ok, faltante_s}= this._publicos.realizavalidaciones_new(info_pago,camposNecesarios)
-    return {ok, faltante_s}
-  }
-  registroPago(){
-    const {ok, faltante_s} = this.validaInformacion()
-    this.informacionFaltante = faltante_s
+  async registroPago(){
+    const info_get = this._publicos.recuperaDatos(this.formPago)
+    const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get, ['no_os','monto','metodo','concepto','sucursal'])
+    this.faltante_s = faltante_s
     if(!ok) {this._publicos.swalToast('Llenar datos de formulario',0); return} 
-    this.informacionFaltante = null
-    // const info = this.formPago.value
-    const info = this._publicos.recuperaDatos(this.formPago)
 
-    const dataSave = {
-        concepto:        info.concepto,
-        fecha_registro:  info.fecha,
-        metodo:          info.metodo,
-        monto:           info.monto,
-        status:          true,
-        sucursal:        info.sucursal,
-        tipo:            'pago'
-      }
-    const updates = { [`recepciones/${info.no_os}/HistorialPagos/${this._publicos.generaClave()}`]: dataSave };
-    // console.log(dataSave.hora_registro);
-    // console.table(dataSave);
-    this._publicos.mensaje_pregunta(`Registrar pago?`).then(({respuesta})=>{
-      if (respuesta) {
-        update(ref(db), updates).then(()=>{
-          this._publicos.swalToast('Registro de gasto correcto',1,'top-start')
-          this.formPago.reset()
-        })
-        .catch(error=>{
-          this._publicos.swalToast('Error al regisrar gasto',0,'top-start')
-        })
-      }
-    })
-    
+    const {sucursal, cliente, key:id, no_os} = this.claves_ordenes.find(os=>os.key === info_get.no_os)
    
-    
+    const nueva_fecha:string = (info_get.fecha_recibido) 
+    ? info_get.fecha_recibido 
+    : this._publicos.retorna_fechas_hora({fechaString: new Date().toString()}).toString_completa
+
+    const fecha_muestra = this.transform_fecha(nueva_fecha, true)
+
+    const {respuesta} = await this._publicos.mensaje_pregunta(`Realizar pago de orden ${no_os}`,true,`Fecha ${fecha_muestra}` )
+
+    if (!respuesta) return
+
+    const clave_ = this._publicos.generaClave()
+
+   const ruta =  `historial_pagos_orden/${sucursal}/${cliente}/${id}/${clave_}` 
+  
+   info_get.fecha_recibido = nueva_fecha
+   info_get.cliente = cliente
+   info_get.numero_os = id
+
+   const updates = {[ruta]: info_get }
+
+    update(ref(db), updates).then(()=>{
+      this._publicos.swalToast(`Registro de pago correcto!!`, 1)
+      this.reseteaForm()
+    })
+    .catch(err=>{
+      console.log(err);
+    })  
   }
-  changeInfo(id: any){
-    if(!id) {
-      this.formPago.controls['sucursal'].setValue('')
-    }else{
-      const data = this.ordenes.find(os=>os['id'] === id)
-      this.formPago.controls['sucursal'].setValue(data.sucursal)
-    } 
+  reseteaForm(){
+    const sucursal = (this.SUCURSAL ==='Todas') ? '' : this.SUCURSAL
+    this.formPago.reset({sucursal})
   }
-  addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-      const date = new Date(event.value)
-      // if (date instanceof Date) {
-      //   const fechaSave = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
-      //   this.formPago.controls['fecha'].setValue( fechaSave)
-      // }else{
-      //   this.formPago.controls['fecha'].setValue('')
-      // }
-      if (date > this.minDate && date <=this.maxDate) {
-        // console.log('valida');
-        const fecha_formato = this._publicos.retorna_fechas_hora({fechaString:date.toString()})
-        this.formPago.controls['fecha'].setValue( fecha_formato.toString_completa )
-      }else{
-        // console.log('verificar');
-        this.formPago.controls['fecha'].setValue( null )
-        // this.fecha_new = null
-      }
-  }
+
   cancela(){
     this.showPagoHide.emit( {show: false})
+  }
+  transform_fecha(fecha: string, incluirHora: boolean = false, ...args: unknown[]): string {
+    if(!fecha) return ''
+    const fechaObj = new Date(fecha);
+    const dia = fechaObj.getDate();
+    const mes = fechaObj.getMonth() + 1; // Los meses en JavaScript son base 0, por eso se suma 1
+    const anio = fechaObj.getFullYear();
+    const hora = fechaObj.getHours();
+    const minutos = fechaObj.getMinutes();
+    let fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
+
+    if (incluirHora) {
+      fechaFormateada += ` ${hora.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+    }
+    return fechaFormateada;
   }
 }

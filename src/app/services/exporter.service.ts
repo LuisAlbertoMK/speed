@@ -273,7 +273,7 @@ export class ExporterService {
     let suma_total = 0, subtotal =0, iva = 0, mo=0, refacciones=0,descuento=0,sobrescrito=0
       const nueva = data.map(os => {
         const { cliente,servicios, reporte, sucursal, vehiculo, servicio, no_os, fecha_recibido, hora_recibido, fecha_entregado, hora_entregado, status } = os;
-        const { nombre } = servicios_arr.find(s => s.valor === Number(servicio));
+        const { nombre } = servicios_arr.find(s => s.valor === servicio);
         const empreShow = (cliente.tipo === 'flotilla') ? empresas.find(e=>e.id === cliente.empresa) : ''
         servicios.forEach(element => {
           if (element.aprobado) {

@@ -139,13 +139,13 @@ export class ServiciosService {
       
     ]
     servicios=[
-      {valor:1,nombre:'servicio'},
-      {valor:2,nombre:'garantia'},
-      {valor:3,nombre:'retorno'},
-      {valor:4,nombre:'venta'},
-      {valor:5,nombre:'preventivo'},
-      {valor:6,nombre:'correctivo'},
-      {valor:7,nombre:'rescate vial'}
+      {valor:'1',nombre:'servicio'},
+      {valor:'2',nombre:'garantia'},
+      {valor:'3',nombre:'retorno'},
+      {valor:'4',nombre:'venta'},
+      {valor:'5',nombre:'preventivo'},
+      {valor:'6',nombre:'correctivo'},
+      {valor:'7',nombre:'rescate vial'}
     ]
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
     camposGuardar = [ 'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados']
@@ -156,7 +156,14 @@ export class ServiciosService {
           checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
           detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
           fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: '', descuento:0
-        }  
+        }
+        servicio_editar = {
+          cliente:null, data_cliente:null, vehiculo:null, data_vehiculo:null,sucursal:null, data_sucursal:null, reporte:null, no_os:null, 
+          dataFacturacion: {},observaciones:null, id:null,
+          checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
+          detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:null, status:null, diasSucursal:0,
+          fecha_recibido:null, notifico:true,servicio:'1', tecnico:null, showNameTecnico: '', descuento:0, historial_pagos:[], historial_gastos:[]
+        }
 //TODO aqui las nuevas funciones
 
 consulta_recepcion_sucursal(busqueda_ruta): Promise<any> {
@@ -262,8 +269,8 @@ claves_recepciones(busqueda): Promise<any[]> {
               return String(nombres_.join(', ')).toLowerCase()
             }
             const servicios_a = (entrie_['servicios'] ) ? entrie_['servicios'] : []
-            
-            claves.push({key, descripcion: ubicar(servicios_a) ,no_os: entrie_['no_os'], cliente: entrie_['cliente'], status_orden: entrie_['status'], vehiculo: entrie_['vehiculo']})
+            const sucursal = entrie_['sucursal']
+            claves.push({key, sucursal ,descripcion: ubicar(servicios_a) ,no_os: entrie_['no_os'], cliente: entrie_['cliente'], status_orden: entrie_['status'], vehiculo: entrie_['vehiculo']})
           })
         })
         resolve(claves);
@@ -273,7 +280,19 @@ claves_recepciones(busqueda): Promise<any[]> {
     })
   });
 }
-
+historial_pagos(data): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    const { sucursal, cliente, id } = data
+    const starCountRef = ref(db, `historial_pagos_orden/${sucursal}/${cliente}/${id}`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        resolve(this._publicos.crearArreglo2(snapshot.val()));
+      } else {
+        resolve([]);
+      }
+    })
+  });
+}
 
 consulta_recepciones_new(): Promise<any[]> {
   return new Promise((resolve, reject) => {

@@ -31,6 +31,8 @@ onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
 [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
 
 onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+onkeypress="soloNumeros(event)"
+onkeypress="validarLetras(event)"
 
 modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down modal-dialog-scrollable
 col-lg-12 col-md-12 col-sm-12 col-12
@@ -127,6 +129,11 @@ let timerInterval
 clearInterval(timerInterval)
        
 
+asiganar objecto sin relacion
+JSON.parse(JSON.stringify(data));
+
+
+if (JSON.stringify(obj1[key]) !== JSON.stringify(obj2[key])) {}
 
        getUserMedia({
   audio: true,

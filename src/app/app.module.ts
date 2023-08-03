@@ -144,6 +144,13 @@ import { EditaElementoComponent } from './components/edita-elemento/edita-elemen
 import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { FormateHoraPipe } from './pipes/formate-hora.pipe';
 import { AdministracionComponent } from './pages/administracion/administracion.component';
+
+import { ClienteTarjetaComponent } from './components/cliente-tarjeta/cliente-tarjeta.component';
+import { VehiculoTarjetaComponent } from './components/vehiculo-tarjeta/vehiculo-tarjeta.component';
+import { ReporteDesgloceTarjetaComponent } from './components/reporte-desgloce-tarjeta/reporte-desgloce-tarjeta.component';
+import { TarjetaFaltantesComponent } from './components/tarjeta-faltantes/tarjeta-faltantes.component';
+import { TarjetaHistorialPagosComponent } from './components/tarjeta-historial-pagos/tarjeta-historial-pagos.component';
+import { TarjetaHistorialGastosComponent } from './components/tarjeta-historial-gastos/tarjeta-historial-gastos.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -216,7 +223,13 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     EditaElementoComponent,
     UpdateUserComponent,
     FormateHoraPipe,
-    AdministracionComponent
+    AdministracionComponent,
+    ClienteTarjetaComponent,
+    VehiculoTarjetaComponent,
+    ReporteDesgloceTarjetaComponent,
+    TarjetaFaltantesComponent,
+    TarjetaHistorialPagosComponent,
+    TarjetaHistorialGastosComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,12 @@
+
+    <div class="card">
+    <div class="card-body">
+      <div class="row" *ngIf="cliente">
+        <ng-container *ngFor="let item of camposCliente">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-uppercase text-start" *ngIf="cliente[item.valor]">
+            <strong >{{item.show}} </strong>: {{cliente[item.valor]}}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>

@@ -10,23 +10,35 @@
     <div class="col text-center">
       <h2 class="text-primary"><strong>Registro de Pago</strong></h2>
     </div>
-    <!-- <pre>
-      {{formPago.value | json}}
-    </pre> -->
     <form (ngSubmit)="registroPago()" [formGroup]="formPago" class="m-2">
       <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-center">
-          <div class="row">
+
+            <ng-container *ngIf="SUCURSAL ==='Todas' && !id_os">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+                <div class="mb-1 row text-start">
+                  <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
+                    for="sucursal" class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Sucursal</label>
+                  <div class="col-sm-6 col-md-6 col-lg-6 col-12">
+                    <select id="sucursal" class="form-select form-select-sm" formControlName="sucursal">
+                      <option value="">Selecciona</option>
+                      <option [value]="s.id" *ngFor="let s of sucursales_array">
+                        {{s.sucursal}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
             
-            <ng-container *ngIf="!dataRecepcion; else elseTemplate">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12" >
+            <ng-container *ngIf="!id_os">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
                 <div class="mb-1 row text-start">
                   <label [ngClass]="{'text-danger': validaCampo('no_os'),'text-success': !validaCampo('no_os')}" for="no_os"
-                    class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label"># O.S  [ ordenes: {{ ordenes.length }} ]</label>
+                    class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label"># O.S  [ ordenes: {{ claves_ordenes.length }} ]</label>
                   <div class="col-sm-6 col-md-6 col-lg-6 col-12">
-                    <select id="sucursal" class="form-select form-select-sm" formControlName="no_os" #indoRecep (change)="changeInfo(indoRecep.value)">
+                    <select id="sucursal" class="form-select form-select-sm" formControlName="no_os">
                       <option value="">Selecciona</option>
-                      <option [value]="s.id" *ngFor="let s of ordenes">
+                      <option [value]="s.key" *ngFor="let s of claves_ordenes">
                         {{s['no_os']}}
                       </option>
                     </select>
@@ -34,13 +46,7 @@
                 </div>
               </div>
             </ng-container>
-            <ng-template #elseTemplate>
-              
-            </ng-template>
-            
-            
-            
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
               <div class="mb-1 row text-start">
                 <label [ngClass]="{'text-danger': validaCampo('metodo'),'text-success': !validaCampo('metodo')}"
                   for="metodo" class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Formas de pago </label>
@@ -54,7 +60,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
               <div class="mb-1 row text-start">
                 <label [ngClass]="{'text-danger': validaCampo('monto'),'text-success': !validaCampo('monto')}" for="monto"
                   class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label">Monto de pago </label>
@@ -64,7 +70,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
               <div class="mb-1 row text-start">
                 <label [ngClass]="{'text-danger': validaCampo('concepto'),'text-success': !validaCampo('concepto')}"
                   for="concepto" class="col-sm-3 col-md-3 col-lg-3 col-form-label">Concepto </label>
@@ -73,12 +79,13 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-center" *ngIf="SUCURSAL === 'Todas'">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" *ngIf="SUCURSAL === 'Todas'">
           <div class="input-group mb-3 ">
-            <input (click)="pickerBarrido.open()" [min]="minDate"  [max]="maxDate" [matDatepickerFilter]="myFilter"  
-            class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)">
+            <form  [formGroup]="fecha_recibido">
+              <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
+            </form>
+            <!-- <input (click)="pickerBarrido.open()" [min]="minDate"  [max]="maxDate" [matDatepickerFilter]="myFilter"  
+            class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)"> -->
             <mat-datepicker #pickerBarrido class="mat-datepicker-overlay"></mat-datepicker>
             <div class="input-group-append">
               <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
@@ -87,24 +94,6 @@
             </div>
           </div>
         </div>
-        <!-- <pre>
-          {{ formPago.controls['fecha'].value | json }}
-        </pre> -->
-        <!-- <ng-container *ngIf="SUCURSAL === 'Todas'">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
-            <div class="mb-1 row text-start">
-              <label [ngClass]="{'text-danger': validaCampo('fecha'),'text-success': !validaCampo('fecha')}"
-                class="col-sm-3 col-md-4 col-lg-3 col-form-label">Fecha </label>
-              <div class="col-sm-9 col-md-8 col-lg-9">
-                  <div class="input-group mb-3">
-                      <mat-card class="demo-inline-calendar-card">
-                        <mat-calendar [(selected)]="selected" ></mat-calendar>
-                      </mat-card>
-                    </div>
-              </div> 
-            </div>
-          </div>
-        </ng-container> -->
         
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
           <button type="submit" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"
@@ -115,11 +104,7 @@
       </div>
       
     </form>
-    <ng-container *ngIf="informacionFaltante">
-      <div class="col text-center">
-        <p>Falta información: <strong class="text-danger">{{informacionFaltante}}</strong></p>
-      </div>
+    <ng-container *ngIf="faltante_s">
+      <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
     </ng-container>
-    <!-- <pre>Formulario valido: {{formPago.valid }}</pre>-->
-    <!-- <pre>{{formPago.value |json}}</pre>  -->
   </div>

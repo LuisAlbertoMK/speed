@@ -25,36 +25,38 @@
               </ng-container>
               <ng-template #elseData>
                 <!-- no hay data de recepcion -->
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                  <div class="mb-1 row">
-                    <label [ngClass]="{'text-danger': validaCampo('tipo'),'text-success': !validaCampo('tipo')}" for="tipo"
-                      class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Tipo</label>
-                    <div class="col-sm-8 col-md-6 col-lg-6 col-12">
-                      <select id="sucursal" class="form-select form-select-sm" formControlName="tipo" #tipoGasto >
-                        <option value="operacion">Gasto de operación</option>
-                        <option value="orden">Gatos de O.S</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                
-                <ng-container *ngIf="SUCURSAL ==='Todas'">
-                  <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+                <ng-container *ngIf="!id_os">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <div class="mb-1 row">
-                      <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
-                        for="sucursal" class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Sucursal</label>
+                      <label [ngClass]="{'text-danger': validaCampo('tipo'),'text-success': !validaCampo('tipo')}" for="tipo"
+                        class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Tipo</label>
                       <div class="col-sm-8 col-md-6 col-lg-6 col-12">
-                        <select id="sucursal" class="form-select form-select-sm" formControlName="sucursal">
-                          <option value="">Selecciona</option>
-                          <option [value]="s.id" *ngFor="let s of sucursales_array">
-                            {{s.sucursal}}
-                          </option>
+                        <select id="sucursal" class="form-select form-select-sm" formControlName="tipo" #tipoGasto >
+                          <option value="operacion">Gasto de operación</option>
+                          <option value="orden">Gatos de O.S</option>
                         </select>
                       </div>
                     </div>
                   </div>
-                </ng-container>
-                  <ng-container *ngIf="muestraLista">
+              </ng-container>
+              <ng-container *ngIf="!id_os && SUCURSAL ==='Todas'">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+                  <div class="mb-1 row">
+                    <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
+                      for="sucursal" class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Sucursal</label>
+                    <div class="col-sm-8 col-md-6 col-lg-6 col-12">
+                      <select id="sucursal" class="form-select form-select-sm" formControlName="sucursal">
+                        <option value="">Selecciona</option>
+                        <option [value]="s.id" *ngFor="let s of sucursales_array">
+                          {{s.sucursal}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+          
+                  <ng-container *ngIf="muestraLista && !id_os">
                     <div class="col-lg-6 col-md-6  col-sm-12 col-12 text-start" >
                       <div class="mb-1 row">
                         <label [ngClass]="{'text-danger': validaCampo('numero_os'),'text-success': !validaCampo('numero_os')}" for="numero_os"
@@ -70,6 +72,9 @@
                       </div>
                     </div>
                   </ng-container>
+                  
+                  
+
                 
               </ng-template>
               <ng-container *ngIf="muestraLista">
@@ -191,11 +196,7 @@
 
       <!-- <pre>{{formGasto.value |json}}</pre> -->
       <ng-container *ngIf="faltante_s">
-        <div class="row mt-2">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
-            Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
-          </div>
-        </div>
+        <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
       </ng-container>
     </div>
 

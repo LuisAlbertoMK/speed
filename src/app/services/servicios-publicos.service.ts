@@ -62,7 +62,7 @@ export class ServiciosPublicosService {
       }, {
           id: '7',
           pago: '24 meses',
-          interes: 24.,
+          interes: 24,
           numero: 24
       }
     ]

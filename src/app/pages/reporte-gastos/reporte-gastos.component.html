@@ -23,12 +23,9 @@
       >Nuevo deposito</button>
     </ng-container>
     
-    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  (click)="realizaGasto = 'gasto'"
-      data-bs-toggle="modal"  data-bs-target="#modalGasto">Nuevo gasto</button>
+    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  (click)="realizaGasto = 'gasto'" data-bs-toggle="modal"  data-bs-target="#modalGasto">Nuevo gasto</button>
 
-    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
-    
-    data-bs-toggle="modal"  data-bs-target="#modalGasto"
+    <button class="btn btn-sm btn-success m-1" (click)="realizaGasto = 'pago'" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-toggle="modal"  data-bs-target="#modalGasto"
     >Registra pago</button>
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">

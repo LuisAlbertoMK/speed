@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
@@ -18,7 +18,7 @@ const dbRef = ref(getDatabase());
   templateUrl: './gasto.component.html',
   styleUrls: ['./gasto.component.css']
 })
-export class GastoComponent implements OnInit {
+export class GastoComponent implements OnInit, OnChanges {
 
 
   
@@ -37,6 +37,7 @@ export class GastoComponent implements OnInit {
 
     @Input() dataRecepcion:any = null
     @Output() showGastoHide : EventEmitter<any>
+    @Input() id_os:any
   
     ROL:string; SUCURSAL:string
     
@@ -67,6 +68,8 @@ export class GastoComponent implements OnInit {
     minDate: Date;
     maxDate: Date;
 
+   
+
     dateClass = (date: Date): string => {
       const day = new Date(date).getDay()
       // const day = fecha.getDay()
@@ -81,6 +84,32 @@ export class GastoComponent implements OnInit {
   ngOnInit(): void {
     this.rol()
     this.crearFormGasto()
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['id_os']) {
+      const nuevoValor = changes['id_os'].currentValue;
+      const valorAnterior = changes['id_os'].previousValue;
+      // console.log({nuevoValor, valorAnterior});
+      const {id} = nuevoValor
+      if (nuevoValor && id) {
+        this.carga_data_gasto(nuevoValor)
+      }else if(nuevoValor === valorAnterior && id){
+        this.carga_data_gasto(nuevoValor)
+      }
+    }
+  }
+  carga_data_gasto(data){
+    const {id, sucursal} = data
+    this.formGasto.reset({
+      tipo: 'orden',
+      numero_os: id,
+      monto:0,
+      metodo: '1',
+      concepto:'',
+      referencia:'',
+      sucursal,
+      gasto_tipo:'',
+    })
   }
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
@@ -125,8 +154,6 @@ export class GastoComponent implements OnInit {
     this.muestraLista = (tipo === 'orden') ? true : false
     if (tipo === 'orden' && sucursal) {
         this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
-        console.log(this.claves_ordenes);
-        
     }else{
       this.claves_ordenes = []
     }
@@ -217,9 +244,15 @@ export class GastoComponent implements OnInit {
         this.formGasto.get('fecha_recibido').setValue(fecha_recibido)
       }
   }
-  reseteaForm(){
-    const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
-    this.formGasto.reset({sucursal, tipo:'operacion'})
+  async reseteaForm(){
+    if (this.id_os['id']) {
+      this.formGasto.get('sucursal').setValue(this.id_os['sucursal'])
+      await this.muestra_claves_recepciones()
+      this.carga_data_gasto(this.id_os)
+    }else{
+      const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+      this.formGasto.reset({sucursal, tipo:'operacion'})
+    }
   }
   cancela(){
     this.reseteaForm()
