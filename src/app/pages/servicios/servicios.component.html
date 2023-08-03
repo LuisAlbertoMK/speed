@@ -296,10 +296,10 @@
       </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="servicio_editar.servicios">
         <!-- <button (click)="variable_modal = 'paquete'" class="btn btn-primary btn-sm m-1" data-bs-target="#modal-paquetes" data-bs-toggle="modal">Agregar paquete</button> -->
-        <button (click)="variable_modal = 'paquete'" class="btn btn-primary btn-sm m-1" data-bs-target="#modal-accion" data-bs-toggle="modal">Agregar paquete</button>
-        <button (click)="variable_modal = 'elemento'" class="btn btn-primary btn-sm m-1" data-bs-target="#modal-accion" data-bs-toggle="modal">Agregar elemento</button>
-        <button (click)="variable_modal = 'gasto'" class="btn btn-primary btn-sm m-1" data-bs-target="#modal-accion" data-bs-toggle="modal">Nuevo gasto</button>
-        <button (click)="variable_modal = 'pago'" class="btn btn-primary btn-sm m-1" data-bs-target="#modal-accion" data-bs-toggle="modal">Nuevo pago</button>
+        <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-paquetes" data-bs-toggle="modal">Agregar paquete</button>
+        <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-elementos" data-bs-toggle="modal">Agregar elemento</button>
+        <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-gastos" data-bs-toggle="modal">Nuevo gasto</button>
+        <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-pagos" data-bs-toggle="modal">Nuevo pago</button>
         
         
         <h3>Elementos de O.S</h3>
@@ -365,32 +365,8 @@
   </div>
 </div>
 
-<div class="modal fade" id="modal-accion" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
-    <div class="modal-content">
-      <div class="modal-body">
-        <ng-container *ngIf="variable_modal === 'paquete'">
-          <app-paquetes  (infoPaquete)="agregar_paquete( $event)" ></app-paquetes>
-        </ng-container>
-        <ng-container *ngIf="variable_modal === 'elemento'">
-          <app-mo-refacciones [registro]="true" (dataElemento)="agregar_servicio( $event )"></app-mo-refacciones>
-        </ng-container>
-        <ng-container *ngIf="variable_modal === 'gasto'">
-          <app-gasto [id_os]="servicio_editar"></app-gasto>
-        </ng-container>
-        <ng-container *ngIf="variable_modal === 'pago'">
-          <app-pago [id_os]="servicio_editar"></app-pago>
-        </ng-container>
-        
-        <app-mo-refacciones [registro]="true" (dataElemento)="agregar_servicio( $event )"></app-mo-refacciones>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" id="regresa-primero-editar" data-bs-target="#modal-servicio-editar" data-bs-toggle="modal">Regresar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="modal-elemento" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+
+<div class="modal fade" id="modal-elementos" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body">
@@ -415,7 +391,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="modal-gasto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-gastos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body m-2">
@@ -427,7 +403,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="modal-pago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-pagos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body m-2">

@@ -208,7 +208,6 @@ export class ReporteGastosComponent implements OnInit {
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
         // console.log(`cambio: ${donde}`);
-        let arreglo_resultados = []
         
         let fecha_start :Date = new Date()
         const simular_fecha = this._publicos.sumarRestarDiasFecha(fecha_start, -1)
@@ -229,22 +228,17 @@ export class ReporteGastosComponent implements OnInit {
                     return gastos_hoy_array;
             });
           const promesas = await Promise.all(promesasConsultas);
-
-          promesas.forEach(c=>{
-            const arreglo_inter:any[] = c
-            arreglo_inter.forEach(f=>{
-              arreglo_resultados.push(f)
-            })
-          })
+          const finales = promesas.flat() 
+          
           switch (donde) {
             case 'historial_gastos_diarios':
-              this.historial_gastos_diarios =  arreglo_resultados
+              this.historial_gastos_diarios =  finales
               break;
             case 'historial_gastos_orden':
-              this.historial_gastos_orden =  arreglo_resultados
+              this.historial_gastos_orden =  finales
               break;
             case 'historial_gastos_operacion':
-              this.historial_gastos_operacion =  arreglo_resultados
+              this.historial_gastos_operacion =  finales
               break;
           }
 
