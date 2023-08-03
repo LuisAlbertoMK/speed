@@ -369,16 +369,16 @@
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body">
-        <ng-container *ngIf="variable_modal ==== 'paquete'">
+        <ng-container *ngIf="variable_modal === 'paquete'">
           <app-paquetes  (infoPaquete)="agregar_paquete( $event)" ></app-paquetes>
         </ng-container>
-        <ng-container *ngIf="variable_modal ==== 'elemento'">
+        <ng-container *ngIf="variable_modal === 'elemento'">
           <app-mo-refacciones [registro]="true" (dataElemento)="agregar_servicio( $event )"></app-mo-refacciones>
         </ng-container>
-        <ng-container *ngIf="variable_modal ==== 'gasto'">
+        <ng-container *ngIf="variable_modal === 'gasto'">
           <app-gasto [id_os]="servicio_editar"></app-gasto>
         </ng-container>
-        <ng-container *ngIf="variable_modal ==== 'pago'">
+        <ng-container *ngIf="variable_modal === 'pago'">
           <app-pago [id_os]="servicio_editar"></app-pago>
         </ng-container>
         
