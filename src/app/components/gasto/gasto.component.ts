@@ -245,7 +245,9 @@ export class GastoComponent implements OnInit, OnChanges {
       }
   }
   async reseteaForm(){
-    if (this.id_os['id']) {
+    if (this.id_os && this.id_os['id']) {
+      
+
       this.formGasto.get('sucursal').setValue(this.id_os['sucursal'])
       await this.muestra_claves_recepciones()
       this.carga_data_gasto(this.id_os)

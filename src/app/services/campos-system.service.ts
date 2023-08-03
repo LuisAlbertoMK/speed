@@ -114,4 +114,43 @@ export class CamposSystemService {
     {campos:'fecha_recibido', reemplaza:'Fecha registro'},
     {campos:'numero_os', reemplaza:'No. OS'},
   ]
+
+  formasPago = [
+    {
+        id: '1',
+        pago: 'contado',
+        interes: 0,
+        numero: 0
+    }, {
+        id: '2',
+        pago: '3 meses',
+        interes: 4.49,
+        numero: 3
+    }, {
+        id: '3',
+        pago: '6 meses',
+        interes: 6.99,
+        numero: 6
+    }, {
+        id: '4',
+        pago: '9 meses',
+        interes: 9.90,
+        numero: 9
+    }, {
+        id: '5',
+        pago: '12 meses',
+        interes: 11.95,
+        numero: 12
+    }, {
+        id: '6',
+        pago: '18 meses',
+        interes: 17.70,
+        numero: 18
+    }, {
+        id: '7',
+        pago: '24 meses',
+        interes: 24.,
+        numero: 24
+    }
+    ]
 }

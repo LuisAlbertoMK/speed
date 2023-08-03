@@ -1,14 +1,3 @@
-.tipo-paquete {
-  color: #5ca04a !important;
-}
-
-.tipo-refaccion {
-  color: #FF8623 !important;
-}
-
-.tipo-mo {
-  color: #3574FA;
-}
 table {
     width: 100%;
   }
@@ -57,22 +46,16 @@ table {
     opacity: 0.5;
   }
 
-  mat-paginator{
-    width: vw(100%);
+  .tipo-paquete {
+    color: #5ca04a !important;
   }
   
-
-  ::ng-deep .mat-tooltip {
-    font-size: 1em;
-    min-width: 200px;
+  .tipo-refaccion {
+    color: #FF8623 !important;
   }
   
-    
-    
-  ::ng-deep .cdk-overlay-container .mat-menu-item {
-    /* background-color: red; */
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .tipo-mo {
+    color: #3574FA;
   }
+  
+  

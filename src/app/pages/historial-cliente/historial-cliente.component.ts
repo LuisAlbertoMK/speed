@@ -89,6 +89,7 @@ export class HistorialClienteComponent implements OnInit {
     enrutamiento = {cliente:'', anterior:'',sucursal:''}
 
     data_cliente
+    cotizaciones_arr:any = []
   async ngOnInit() {
     this.rol()
   }
@@ -118,36 +119,49 @@ export class HistorialClienteComponent implements OnInit {
     const { cliente, sucursal }  = this.enrutamiento
     // console.log(this.enrutamiento);
     // const ruta_buqueda_vehiculos = `vehiculos/${sucursal}/${cliente}`
-    const ruta_buqueda_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
-    const ruta_buqueda_recepciones = `recepciones/${sucursal}/${cliente}`
-    
-    
+    // const ruta_buqueda_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
+    // const ruta_buqueda_recepciones = `recepciones/${sucursal}/${cliente}`
     const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    const cotizaciones = await this._cotizaciones.consulta_cotizaciones({ruta: ruta_buqueda_cotizaciones, data_cliente, vehiculos})
-    const recepciones = await this._servicios.consulta_recepciones({ruta: ruta_buqueda_recepciones, data_cliente, vehiculos})
-    // console.log(recepciones);
-
+    
     this.data_cliente = data_cliente
+
+    const ruta_cotizaciones   =  `cotizacionesRealizadas/${sucursal}/${cliente}`
+    const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
+
+    const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
+    const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
+    
+    console.log(todas_cotizaciones);
+    console.log(todas_recepciones);
+    
+    // this.cotizaciones_arr = todas_cotizaciones
+
+    
+    // const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    // const cotizaciones = await this._cotizaciones.consulta_cotizaciones({ruta: ruta_buqueda_cotizaciones, data_cliente, vehiculos})
+    // const recepciones = await this._servicios.consulta_recepciones({ruta: ruta_buqueda_recepciones, data_cliente, vehiculos})
+    // // console.log(recepciones);
+
+    // this.data_cliente = data_cliente
     
 
-    this.dataSource.data = vehiculos
-    this.ordenamiento('vehiculos','placas')
+    // this.dataSource.data = vehiculos
+    // this.ordenamiento('vehiculos','placas')
 
-    this.dataSourceCotizaciones.data = cotizaciones
-    this.ordenamiento('cotizaciones','fecha_recibido')
+    // this.dataSourceCotizaciones.data = cotizaciones
+    // this.ordenamiento('cotizaciones','fecha_recibido')
 
-    this.dataSourceRecepciones.data = recepciones
-    this.ordenamiento('recepciones','fecha_recibido')
+    // this.dataSourceRecepciones.data = recepciones
+    // this.ordenamiento('recepciones','fecha_recibido')
 
     // console.log(recepciones);
     
 
-    const {ticketGeneral: cotizaciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(cotizaciones)
-    const {ticketGeneral: recepciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(recepciones)
+    // const {ticketGeneral: cotizaciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(cotizaciones)
+    // const {ticketGeneral: recepciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(recepciones)
 
-    this.reporteHistorial.reporteCotizaciones = cotizaciones_ticketGeneral
-    this.reporteHistorial.reporteRecepciones = recepciones_ticketGeneral
+    // this.reporteHistorial.reporteCotizaciones = cotizaciones_ticketGeneral
+    // this.reporteHistorial.reporteRecepciones = recepciones_ticketGeneral
 
     
   }

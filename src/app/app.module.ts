@@ -151,6 +151,8 @@ import { ReporteDesgloceTarjetaComponent } from './components/reporte-desgloce-t
 import { TarjetaFaltantesComponent } from './components/tarjeta-faltantes/tarjeta-faltantes.component';
 import { TarjetaHistorialPagosComponent } from './components/tarjeta-historial-pagos/tarjeta-historial-pagos.component';
 import { TarjetaHistorialGastosComponent } from './components/tarjeta-historial-gastos/tarjeta-historial-gastos.component';
+import { TemplateTablaCotizacionesComponent } from './components/template-tabla-cotizaciones/template-tabla-cotizaciones.component';
+import { TemplateTablaRecepcionesComponent } from './components/template-tabla-recepciones/template-tabla-recepciones.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -229,7 +231,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ReporteDesgloceTarjetaComponent,
     TarjetaFaltantesComponent,
     TarjetaHistorialPagosComponent,
-    TarjetaHistorialGastosComponent
+    TarjetaHistorialGastosComponent,
+    TemplateTablaCotizacionesComponent,
+    TemplateTablaRecepcionesComponent
   ],
   imports: [
     BrowserModule,

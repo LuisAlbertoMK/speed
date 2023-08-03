@@ -56,11 +56,8 @@
               </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center alert alert-warning">
-              
-              
                 <button class="btn btn-sm btn-success" (click)="realizarBarrido()">Barrido</button>
                 Realiza barrido hasta la fecha actual
-              
             </div>
           </div>
         </div>
@@ -80,9 +77,9 @@
   <div class="col-lg-4 col-md-4 col-sm-12 col-12 text-start">
     <div class="input-group mb-3 ">
       <mat-date-range-picker #picker></mat-date-range-picker>
-      <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
-        <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio">
-        <input matEndDate formControlName="end" readonly placeholder="Final">
+      <mat-date-range-input (click)="picker.open()" [min]="minDate" [max]="maxDate"   class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
+        <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio"   >
+        <input matEndDate formControlName="end" readonly placeholder="Final"       >
       </mat-date-range-input>
       <div class="input-group-append">
         <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
@@ -199,10 +196,8 @@
         <ng-container *ngIf="SUCURSAL === 'Todas'; else elseDisabled">
           <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
           <mat-menu #Opciones="matMenu">
-
             <button mat-menu-item *ngIf="row.status" (click)="accion({accion:'eliminar', data: row})"> Inhabilitar <i class="fa fa-ban text-danger ml-1"></i></button>
             <button mat-menu-item *ngIf="!row.status" (click)="accion({accion:'activar', data: row})"> Habilitar <i class="fa fa-check-double text-success ml-1"></i></button>
-
           </mat-menu>
         </ng-container>
         <ng-template #elseDisabled>
@@ -212,22 +207,7 @@
           <mat-menu #Opciones="matMenu">
             <button mat-menu-item *ngIf="row.status" (click)="accion({accion:'eliminar', data: row})"> Inhabilitar <i class="fa fa-ban text-danger ml-1"></i></button>
           </mat-menu>
-          
         </ng-template>
-        
-        
-          
-          <!-- <ng-container *ngIf="row.status; else elseDisabled">
-            <button mat-menu-item *ngIf="row.status" (click)="accion({accion:'eliminar', data: row})"> Inhabilitar <i class="fa fa-ban text-danger ml-1"></i></button>
-          </ng-container>
-          <ng-template #elseDisabled>
-            <ng-container *ngIf="SUCURSAL === 'Todas'">
-              <button mat-menu-item (click)="accion({accion:'activar', data: row})"> Habilitar <i class="fa fa-check-double text-success ml-1"></i></button>
-            </ng-container>
-          </ng-template>
-          
-        </mat-menu> -->
-          
       </td>
     </ng-container>
     <ng-container matColumnDef="expand">
@@ -304,12 +284,6 @@
   </table>
   <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>
-    <!-- <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-      <mat-tab label="Reporte de gastos">
-        
-      </mat-tab>
-     
-    </mat-tab-group> -->
   </div>
 </div>
 
@@ -323,6 +297,11 @@
   <div
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <div class="modal-body m-2">
         <ng-container *ngIf="realizaGasto === 'gasto'; else elseTemplate">
           <app-gasto ></app-gasto>
@@ -340,6 +319,11 @@
   <div
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <div class="modal-body m-2">
         <app-realiza-deposito (data_deposito)="data_deposito( $event )"></app-realiza-deposito>
       </div>

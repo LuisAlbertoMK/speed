@@ -13,6 +13,7 @@ export class ReporteDesgloceTarjetaComponent implements OnInit {
   camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
 
   @Input() reporte:any = null
+  @Input() title:string 
 
   ngOnInit(): void {
   }

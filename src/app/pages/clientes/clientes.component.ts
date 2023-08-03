@@ -102,17 +102,75 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        // console.time('Execution Time');
-        const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
-        const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
-        const camposRecu = [...this._clientes.camposCliente,'fullname']
-        const nueva  = (!this.clientes_arr.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes_arr, clientes,camposRecu);
+        console.time('Execution Time');
+    
+        const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
+        // console.log(arreglo_sucursal);
+        const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({arreglo_sucursal})
+        // console.log(arreglo_rutas_clientes);
+        const promesasClientes = arreglo_rutas_clientes.map(async (f_search) => {
+          const clientes = await this._clientes.consulta_clientes__busqueda({ruta: f_search})
+          const nueva_data_Clientes =  this.transformaData_cliente(clientes)
+          return nueva_data_Clientes
+        })
+
+        const promesasResueltasClientes = await Promise.all(promesasClientes);
+        // console.log(promesasResueltasClientes);
+        const finales_clientes = promesasResueltasClientes.flat()
+        // console.log(finales_clientes);
+        const campos_cliente = [
+          'apellidos',
+          'correo',
+          'id',
+          'no_cliente',
+          'nombre',
+          'sucursal',
+          'telefono_movil',
+          'tipo',
+          'sucursalShow',
+          'fullname',
+        ]
+
+        const ordenada = this._publicos.ordenarData(finales_clientes,'fullname',true)
+
+        const nueva  = (!this.clientes_arr.length) ?  ordenada :  this._publicos.actualizarArregloExistente(this.clientes_arr, ordenada,campos_cliente);
+
         this.clientes_arr = nueva
         this.dataSourceClientes.data = nueva
         this.newPagination('clientes')
+        
+
+        console.timeEnd('Execution Time');
+        // console.time('Execution Time');
+        // const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
+        // const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
+        // const camposRecu = [...this._clientes.camposCliente,'fullname']
+        // const nueva  = (!this.clientes_arr.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes_arr, clientes,camposRecu);
+        // this.clientes_arr = nueva
+        
         // console.timeEnd('Execution Time');
       }
     })
+  }
+  transformaData_cliente(data){
+    const nuevos = [...data]
+    // console.log(nuevos);
+    const retornados = nuevos.map(cli=>{
+      const {sucursal, nombre, apellidos } = cli
+      cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+      cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+      return cli
+    })
+    return retornados
+    
+  }
+  crea_lista_rutas_por_sucursal(data){
+    const {arreglo_sucursal, } = data
+    let Rutas_retorna = []
+    arreglo_sucursal.forEach(sucursal=>{
+      Rutas_retorna.push(`clientes/${sucursal}`)
+    })
+    return Rutas_retorna
   }
   
 
@@ -125,35 +183,12 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       } , 200);
     }
   }
-  clientesInfo(info:any){
-    // this.myModal.nativeElement.classList.remove('show');
-    // this.myModal.nativeElement.classList.add('hide');
-
-    
-    
-    
-    const {cliente, status} = info
-    if(!info.CerrarModal){
-      if (status) {
-        const closeButton = document.querySelector('[data-bs-dismiss="modal"]');
-        if (closeButton) {
-          closeButton.dispatchEvent(new Event('click'));
-        }
-        this._publicos.mensajeCorrecto('registro de cliente correcto',1)
-      }else{
-        this._publicos.mensajeSwal('Ocurrio un error', 0)
-      }
-    }else{
-
-    }
+  clientesInfo(info:any){   
+    console.log(info);
     
   }
   vehiculoInfo(info:any){
-    if (info) {
-      this._publicos.mensajeCorrecto('Accion correcra',1)
-    }else{
-      this._publicos.mensajeCorrecto('Accion no realizada', 0)
-    }
+    console.log(info);
   }
  
  

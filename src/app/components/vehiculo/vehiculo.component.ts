@@ -91,13 +91,13 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
         // console.time('Execution Time');
-        const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
-        const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
-        const camposRecu = [...this._clientes.camposCliente,'fullname']
-        const nueva  = (!this.clientes.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes, clientes,camposRecu);
+        // const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
+        // const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
+        // const camposRecu = [...this._clientes.camposCliente,'fullname']
+        // const nueva  = (!this.clientes.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes, clientes,camposRecu);
         
         // console.timeEnd('Execution Time');
-        this.clientes = nueva
+        // this.clientes = nueva
       }
     },{
       onlyOnce: true

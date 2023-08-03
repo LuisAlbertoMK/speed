@@ -76,23 +76,6 @@ const starCountRef = ref(db, `clientes`)
         </div>
       </ng-container>
 
-    private _clientes:ClientesService, private _vehiculos: VehiculosService, 
-    private _cotizaciones: CotizacionesService,
-    private _sucursales: SucursalesService,
-    private _campos: CamposSystemService,
-
-
-    camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
-    camposCliente    =  [ ...this._clientes.camposCliente_show ]
-    camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
-    formasPago       =  [ ...this._cotizaciones.formasPago ]
-    metodospago      =  [ ...this._cotizaciones.metodospago ]
-    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
-
-    paquete: string     =  this._campos.paquete
-  refaccion: string   =  this._campos.refaccion
-  mo: string          =  this._campos.mo
-  miniColumnas:number =  this._campos.miniColumnas
 
 get(child(dbRef, `users/${userId}`)).then((snapshot) => {
   if (snapshot.exists()) {
@@ -104,6 +87,13 @@ get(child(dbRef, `users/${userId}`)).then((snapshot) => {
   console.error(error);
 });
 
+
+<div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Informacion  O.S {{ servicio_editar.no_os}}</h1>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 	//generar nueva key y poder utilizarla para almacenar informacion
  	const newPostKey = push(child(ref(db), 'posts')).key
 
@@ -147,26 +137,6 @@ getUserMedia({
   }
 })
 
-if (valida) {
-  this._publicos.mensaje_pregunta('Seguro de registrar usuario').then(({respuesta})=>{
-    if (respuesta) {
-      const recupera = ['usuario','correo','password','sucursal','rol']
-      const recuperada = this._publicos.nuevaRecuperacionData(this.formUsuario.value, recupera)
-      console.log(recuperada);
-      const updates = {
-        [`usuarios/${this._publicos.generaClave()}`]: recuperada
-      };
-      update(ref(db), updates)
-      .then(a=>{this._publicos.swalToast('Se registro usuario')})
-      .catch(err=>{
-        this._publicos.swalToastError('Error al registrar usuario')
-      })
-    }
-  })
-}else{
-  this._publicos.swalToastError('LLenar datos de formulario')
-}
-
 
 //para remover validaciones
     this.form_cliente.controls['nombre'].clearValidators()
@@ -182,48 +152,6 @@ if (valida) {
     console.timeEnd('Execution Time');
 
 
-    <button
-    class="btn btn-sm btn-outline-primary m-5"
-    (click)="generaPdfRemision()">Genera</button>
-
-<div class="card text-left">
-    <div class="card-body">
-        <div class="col text-center">
-            <h2 class="text-primary">
-                <strong>Forlulario de complementos</strong>
-            </h2>
-        </div>
-        <form (ngSubmit)="registroGasto()" [formGroup]="FormComplementos" class="m-2">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
-                    <div class="row">
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
-                            <div class="mb-1 row">
-                                <label
-                                    [ngClass]="{'text-danger': validaCampo('kilometraje'),'text-success': !validaCampo('kilometraje')}"
-                                    for="kilometraje"
-                                    class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Kilometraje
-                                </label>
-                                <div class="col-sm-8 col-md-6 col-lg-6 col-12">
-                                    <input
-                                        id="kilometraje"
-                                        type="number"
-                                        min="0"
-                                        max="10000000"
-                                        class="form-control form-control-sm"
-                                        formControlName="kilometraje"></div>
-                                </div>
-                            </div>
-                        
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div>
-
-        </div>
 
 
         [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}"

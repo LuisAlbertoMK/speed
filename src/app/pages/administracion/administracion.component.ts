@@ -95,6 +95,45 @@ export class AdministracionComponent implements OnInit {
     iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,
     margen:0, por_margen:0
   }
+
+  formasPAgo = [
+    {
+        id: '1',
+        pago: 'contado',
+        interes: 0,
+        numero: 0
+    }, {
+        id: '2',
+        pago: '3 meses',
+        interes: 4.49,
+        numero: 3
+    }, {
+        id: '3',
+        pago: '6 meses',
+        interes: 6.99,
+        numero: 6
+    }, {
+        id: '4',
+        pago: '9 meses',
+        interes: 9.90,
+        numero: 9
+    }, {
+        id: '5',
+        pago: '12 meses',
+        interes: 11.95,
+        numero: 12
+    }, {
+        id: '6',
+        pago: '18 meses',
+        interes: 17.70,
+        numero: 18
+    }, {
+        id: '7',
+        pago: '24 meses',
+        interes: 24.,
+        numero: 24
+    }
+  ]
   ngOnInit(): void {
     this.rol()
   }
@@ -110,7 +149,6 @@ export class AdministracionComponent implements OnInit {
     // this.primeraVez_fechas_default()
     this.resetea_horas_admin(this.rangeAdministracion.value)
     this.vigila()
-    this.ordenes_realizadas_entregado()
     this.llamada_multiple()
   }
   vigila(){
@@ -134,72 +172,129 @@ export class AdministracionComponent implements OnInit {
       onValue(starCountRef, async (snapshot) => {
         if (snapshot.exists()) {
           // console.log(donde);
-          this.ordenes_realizadas_entregado()
+          // this.ordenes_realizadas_entregado()
+          this.consulta_ordenes()
         }
       })
       
     })
   }
-  async ordenes_realizadas_entregado(){
-    // console.time('Execution Time');
 
+  async consulta_ordenes(){
     const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
-    // const arreglo_fechas_busca = this.obtenerArregloFechas_gastos_diarios({ruta: donde, arreglo_sucursal})
-    const arreglo_rutas = this.crea_ordenes_sucursal({arreglo_sucursal})
-    const promesas = arreglo_rutas.map(async (ruta)=>{
-        
-        // const cliente = await this._clientes.consulta_cliente_new({sucursal:''})
-        const respuesta = await  this._servicios.consulta_recepcion_sucursal({ruta})
-        
-        return this.regresa_servicios_por_cada_ruta({answer: respuesta}) 
-    })
 
-    const promesas_resueltas = await Promise.all(promesas);
-    const finales = promesas_resueltas.flat() //.filter(s=>s.status === 'entregado');
+    const arreglo_rutas = this.crea_ordenes_sucursal({arreglo_sucursal})
+   
+    const arreglo_fechas_busca = this.obtenerArregloFechas_gastos_diarios({ruta: 'historial_gastos_orden', arreglo_sucursal})
+
+    const promesasConsultas_gastos_orden = arreglo_fechas_busca.map(async (f_search) => {
+      const gastos_hoy_array: any[] = await this._reporte_gastos.gastos_hoy({ ruta: f_search});
+      const promesasVehiculos = gastos_hoy_array
+        .filter(g => g.tipo === 'orden')
+        .map(async (g) => {
+          const { sucursal, cliente, vehiculo } = g;
+          g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+        });
+      await Promise.all(promesasVehiculos);
+              return gastos_hoy_array;
+      });
+    const promesas_gastos_orden = await Promise.all(promesasConsultas_gastos_orden);
+
+    // console.log(promesas_gastos_orden);
+    // console.log( promesas_gastos_orden.flat() );
+    const muestra_gastos_ordenes = promesas_gastos_orden.flat()
+    // console.log(arreglo_rutas);
+    
+    const promesasConsultas = arreglo_rutas.map(async (f_search) => {
+
+      const respuesta = await  this._servicios.consulta_recepcion_sucursal({ruta: f_search})
+      // console.log(respuesta)
+      const gastos_hoy_array = await this.regresa_servicios_por_cada_ruta({respuesta}) 
+      // console.log(gastos_hoy_array);
+      
+        const promesasVehiculos = gastos_hoy_array
+          
+          .map(async (g) => {
+            const { sucursal, cliente, vehiculo , id} = g;
+            // console.log(id);
+            
+            // g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+            const data_cliente:any =  await this._clientes.consulta_cliente_new({sucursal, cliente})
+            g.data_cliente = data_cliente
+            g.clienteShow = data_cliente.fullname
+            const data_vehiculo:any =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+            const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id });
+            // console.log(historial_pagos);
+            
+            const historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === id)
+            g.historial_pagos = historial_pagos
+            g.historial_gastos = historial_gastos
+            g.data_vehiculo = data_vehiculo
+            g.placas = data_vehiculo.placas
+            const data_sucursal =  this.sucursales_array.find(s=>s.id === sucursal)
+  
+            g.data_sucursal =  data_sucursal
+            g.sucursalShow = data_sucursal.sucursal
+            const {reporte, servicios} = this.calcularTotales(g);
+            g.reporte = reporte
+            g.subtotal = reporte.subtotal
+            g.servicios = servicios
+            return g
+          });
+        await Promise.all(promesasVehiculos);
+        return gastos_hoy_array;
+    });
+    
+    const promesas = await Promise.all(promesasConsultas);
+    // console.log(promesas);
+    const finales = promesas.flat() 
     // console.log(finales);
 
-    const rutas_clientes = this.rutas_cliente(finales)
-    // console.log(rutas_clientes);
+    const ordenada = this._publicos.ordernarPorCampo(finales,'fecha_recibido')
     
-    this.array_recepciones  = rutas_clientes
-    // console.timeEnd('Execution Time');
+    const campos = [
+      'cliente','clienteShow','data_cliente','data_sucursal','data_vehiculo','showNameTecnico','diasSucursal','fecha_promesa','fecha_recibido','formaPago','id','iva','margen','no_os','placas','reporte','servicio','servicios','status','subtotal','sucursal','sucursalShow','vehiculo','historial_pagos','historial_gastos'
+    ]
+
+    const filtro_entregado = ordenada.filter(o=>o.status === 'entregado')
+    // console.log(filtro_entregado);
+    
+    const nueva  = (!this.array_recepciones.length) ?  filtro_entregado :  this._publicos.actualizarArregloExistente(this.array_recepciones, filtro_entregado,campos);
+    // console.log(nueva);
+    
+    this.array_recepciones = nueva
     this.filtra_informacion()
+    
   }
   filtra_informacion(){
 
-    const {start, end} = this.fechas_get_formateado_admin
+    const {start, end}= this.fechas_get_formateado_admin
 
-    const filtro_sucursal = (this.sucursalFiltroReporte === 'Todas') ? this.array_recepciones : this.array_recepciones.filter(r=>r.sucursal === this.sucursalFiltroReporte)
-
-    const informacion_filtrada = filtro_sucursal.filter(recep=>recep.status === 'entregado' && new Date(recep[this.filtro_entregado_recibido]) >= start && new Date(recep[this.filtro_entregado_recibido]) <= end)
-    // console.log(informacion_filtrada);
-
-    // console.log('realizar las operaciones de administracion');
-    this.camposReporteAdministracion
-    this.reporteAdministracion
-
-    this.obtenerAdmin(informacion_filtrada)
+    const filtro_fecha = 
+      (this.filtro_entregado_recibido === 'fecha_recibido') 
+      ? this.array_recepciones.filter(c=>new Date(c[this.filtro_entregado_recibido]) >= start && new Date(c[this.filtro_entregado_recibido]) <= end )
+      : this.array_recepciones.filter(c=>new Date(c[this.filtro_entregado_recibido]) >= start && new Date(c[this.filtro_entregado_recibido]) <= end )
     
+    let filtro_sucursal = (this.sucursalFiltroReporte === 'Todas') ? filtro_fecha : filtro_fecha.filter(c=>c.sucursal === this.sucursalFiltroReporte)
     
-    this.dataSourceAdministracion.data = informacion_filtrada
+    this.reporteAdministracion.cantidad = filtro_sucursal.length
+    this.obtener_Admin(filtro_sucursal)
+    
+    this.dataSourceAdministracion.data = filtro_sucursal
     this.newPagination()
   }
-  async obtenerAdmin(data){
-    // console.log(data);
+  obtener_Admin(data){
     const reporte_admin = { iva:0,refacciones:0,total:0,subtotal:0,operacion:0,cantidad:0,margen:0,por_margen:0 }
-
     const arreglo = [...data]
     arreglo.forEach(r=>{
       const {reporte} = r
       const new_r = {...reporte}
-      const {mo, refacciones, refacciones_v} = new_r
+      const {mo, refacciones} = new_r
       const subtotal = mo + refacciones
       reporte_admin.refacciones += refacciones
       reporte_admin.subtotal += subtotal
     })
-    
-    const arreglo_ = ['historial_gastos_orden','historial_gastos_operacion']
-
+    const arreglo_ = ['historial_gastos_operacion']
     const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
     arreglo_.forEach(async(donde)=>{
 
@@ -210,78 +305,29 @@ export class AdministracionComponent implements OnInit {
         return gastos_hoy_array;
       })
       const promesas = await Promise.all(promesasConsultas);
-      promesas.forEach(c=>{
-        const arreglo_inter:any[] = c
-        arreglo_inter.forEach(f=>{
-          if (f.status) {
-          if (f.tipo === 'orden' && f.gasto_tipo === 'refaccion') {
-            reporte_admin.refacciones += f.monto
-          }
-          if (f.tipo === 'operacion') {
-            reporte_admin.operacion += f.monto
-          }
-          }
-        })
+      const finales = promesas.flat()
+
+      
+      const {start, end}= this.fechas_get_formateado_admin
+      const _filtro_finales_fechas =  finales.filter(c=>new Date(c.fecha_recibido) >= start && new Date(c.fecha_recibido) <= end )
+
+      
+      _filtro_finales_fechas.forEach(op=>{
+        reporte_admin.operacion += op.monto
       })
     })
-    
-    reporte_admin.cantidad = arreglo.length
-
     if (reporte_admin.subtotal >0 ) {
       reporte_admin.margen = reporte_admin.subtotal - reporte_admin.refacciones
       reporte_admin.por_margen = (reporte_admin.margen / reporte_admin.subtotal) * 100
     }
+    reporte_admin.cantidad = arreglo.length
 
     this.reporteAdministracion = reporte_admin
   }
-  crea_ordenes_sucursal(data){
-    const {arreglo_sucursal, } = data
-    let Rutas_retorna = []
-    arreglo_sucursal.forEach(sucursal=>{
-      Rutas_retorna.push(`recepciones/${sucursal}`)
-    })
-    return Rutas_retorna
-  }
-  regresa_servicios_por_cada_ruta(data){
-    const {answer } = data
-    const obtenidos = []
-    const nueva = {...answer}
-
-    Object.entries(nueva).forEach(([key, entrie])=>{
-      const nuevas_entries = this._publicos.crearArreglo2(entrie)
-      nuevas_entries.forEach(entri_=>{
-        obtenidos.push(entri_)
-      })
-    })
-    
-    return obtenidos
-  }
-  rutas_cliente(data){
-    const arreglo = [...data]
-    arreglo.map(async(r)=>{
-      const {sucursal, cliente, vehiculo, reporte} = r
-      const data_cliente:any =  await this._clientes.consulta_cliente_new({sucursal, cliente})
-      const data_vehiculo =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
-      const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      
-      const {mo, refacciones_v} = reporte
-
-      r.clienteShow = data_cliente.fullname
-      r.placas = data_vehiculo.placas
-      r.sucursalShow = data_sucursal.sucursal
-      r.subtotal = mo + refacciones_v
-
-      r.data_cliente = data_cliente
-      r.data_vehiculo = data_vehiculo
-      r.data_sucursal = data_sucursal
-      return r
-    })
-    return arreglo
-  }
   obtenerArregloFechas_gastos_diarios(data){
     const {ruta, arreglo_sucursal} = data
-    const fecha_start = this.fechas_get_formateado_admin.start
-    const fecha_end = this.fechas_get_formateado_admin.end
+    const fecha_start = new Date('08-02-2023')
+    const fecha_end = this.fechas_getAdministracion.end
     const diffTiempo = fecha_end.getTime() - fecha_start.getTime();
     const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
     let arreglo = []
@@ -301,15 +347,112 @@ export class AdministracionComponent implements OnInit {
     })
     return Rutas
   }
-
-  newPagination(){
-    // const dataSource = donde === 'admin' ? this.dataSourceAdministracion : this.dataSource;
-    // const paginator = donde === 'admin' ? this.paginatorAdministracion : this.paginator;
-    // const sort = donde === 'admin' ? this.sortAdministracion : this.sort;
+  regresa_servicios_por_cada_ruta(data){
+    const { respuesta } = data;
+    let  obtenidos = [];
     
+      Object.values(respuesta).forEach((entrie) => {
+        const nuevas_entries = this._publicos.crearArreglo2(entrie);
+        obtenidos.push(...nuevas_entries);
+      });
+    
+    return obtenidos;
+  }
+
+  crea_ordenes_sucursal(data){
+    const {arreglo_sucursal, } = data
+    let Rutas_retorna = []
+    arreglo_sucursal.forEach(sucursal=>{
+      Rutas_retorna.push(`recepciones/${sucursal}`)
+    })
+    return Rutas_retorna
+  }
+  newPagination(){
     setTimeout(() => {
       this.dataSourceAdministracion.paginator = this.paginatorAdministracion;
       this.dataSourceAdministracion.sort = this.sortAdministracion;
     }, 500);
+  }
+
+
+  calcularTotales(data) {
+    const {margen: new_margen, formaPago, servicios: servicios_, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+    const servicios = [...servicios_] 
+    const margen = 1 + (new_margen / 100)
+    servicios.map(ele=>{
+      const {cantidad, costo} = ele
+      if (ele.tipo === 'paquete') {
+        const report = this.total_paquete(ele)
+        const {mo, refacciones} = report
+        if (ele.aprobado) {
+          reporte.mo += mo
+          reporte.refacciones += refacciones
+          reporte.refacciones_v += refacciones * margen
+        }
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad 
+      }else if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.mo += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.refacciones += operacion
+          reporte.refacciones_v += operacion * margen
+        }
+        ele.subtotal = operacion
+        ele.total = operacion * margen
+      }
+      return ele
+    })
+    let descuento = parseFloat(descuento_) || 0
+    const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
+    const {mo, refacciones_v, refacciones} = reporte
+
+    let nuevo_total = mo + refacciones_v
+
+    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
+
+    let iva =  _iva ? nuevo_total * .16 : 0;
+
+    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
+    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
+    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
+
+    reporte.descuento = descuentoshow
+    reporte.iva = iva
+    reporte.subtotal = nuevo_total
+    reporte.total = newTotal
+    reporte.meses = total_meses
+    // console.log(reporte);
+    // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
+    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
+    return {reporte, servicios}
+    
+  }
+  mano_refaccion(ele){
+    const {costo, precio, cantidad} = ele
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete(data){
+    const {elementos} = data
+    const reporte = {mo:0, refacciones:0}
+    elementos.forEach(ele=>{
+      if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+      }
+    })
+    return reporte
   }
 }

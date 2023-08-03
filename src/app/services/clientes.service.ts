@@ -65,22 +65,13 @@ export class ClientesService {
 
 
   //TODO
-  consulta_clientes__busqueda(busqueda, sucursal): Promise<any[]> {
+  consulta_clientes__busqueda(data): Promise<any[]> {
     return new Promise((resolve, reject) => {
-      const starCountRef = ref(db, busqueda);
+      const {ruta} = data
+      const starCountRef = ref(db, ruta);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          // console.log(sucursal);
-          let clientes = []
-          if (sucursal !== 'Todas') {
-            clientes = this.crearArreglo2(snapshot.val()).map(c => this.formato_informacion_cliente(c));
-          } else {
-            clientes = Object.values(snapshot.val()).flatMap(value => {
-              const clientes_new = this.crearArreglo2(Object(value));
-              return clientes_new.map(c => this.formato_informacion_cliente(c));
-            });
-          }
-          resolve(clientes);
+          resolve(this._publicos.crearArreglo2(snapshot.val()));
         } else {
           resolve([]);
         }
@@ -137,8 +128,9 @@ export class ClientesService {
     return data_cliente
   }
   formatea_info_cliente_2(data_cliente){
-    const {nombre, apellidos, sucursal} = data_cliente
-    data_cliente.fullname = `${nombre} ${apellidos}`
+    const {sucursal, nombre, apellidos } = data_cliente
+    data_cliente.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+    data_cliente.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
     return data_cliente
   }
   consulta_cliente_new(data): Promise<object> {
@@ -148,8 +140,6 @@ export class ClientesService {
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
           resolve(this.formatea_info_cliente_2(snapshot.val()));
-          
-          // resolve(snapshot.val())
         } else {
           resolve({});
         }

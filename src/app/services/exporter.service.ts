@@ -6,6 +6,7 @@ import { ServiciosPublicosService } from './servicios-publicos.service';
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { ServiciosService } from './servicios.service';
+import { CamposSystemService } from './campos-system.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -16,15 +17,11 @@ const EXCEL_EXT ='.xlsx'
   providedIn: 'root'
 })
 export class ExporterService {
-  formasPAgo=[
-    {id:1,pago:'contado',interes:0,numero:0},
-    {id:2,pago:'3 meses',interes:4.49,numero:3},
-    {id:3,pago:'6 meses',interes:6.99,numero:6},
-    {id:4,pago:'9 meses',interes:9.90,numero:9},
-    {id:5,pago:'12 meses',interes:11.95,numero:12},
-    {id:6,pago:'18 meses',interes:17.70,numero:18},
-    {id:7,pago:'24 meses',interes:24.,numero:24}
-  ]
+ 
+  
+
+  constructor(private _publicos:ServiciosPublicosService, private _servicios: ServiciosService, private _campos: CamposSystemService) { }
+  formasPago = [...this._campos.formasPago]
   servicios=[
     {valor:'1',nombre:'servicio'},
     {valor:'2',nombre:'garantia'},
@@ -40,10 +37,6 @@ export class ExporterService {
     {metodo:3, muestra:'Tarjeta'},
     {metodo:4, muestra:'Transferencia'},
   ]
-  
-
-  constructor(private _publicos:ServiciosPublicosService, private _servicios: ServiciosService) { }
-
   
   async exportToExcelCotizaciones(data:any[], excelFileName: string){
     // console.log(data);
@@ -229,7 +222,7 @@ export class ExporterService {
     desgloce.UB = ((desgloce.total - desgloce.refacciones_1)*100)/desgloce.total
     // console.log(desgloce);
     // console.log(this.formaPago);
-    this.formasPAgo.map(f=>{
+    this.formasPago.map(f=>{
       if (f.id != data['formaPago']) return
         const operacion = desgloce.total * (1 + (f['interes'] / 100))
         desgloce['meses'] = operacion;
@@ -591,7 +584,7 @@ export class ExporterService {
     data.map(element => {
       // console.log(Object.keys(element).join(`','`));
       if (element['formaPago']) {
-        const pago = this.formasPAgo.find(f=>f['id'] == element['formaPago'])
+        const pago = this.formasPago.find(f=>f['id'] == element['formaPago'])
         // element['formaPago'] = pago['pago']
       }
       // if (!element['servicios']) element['servicios'] = []

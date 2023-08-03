@@ -165,44 +165,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       servicio: new FormControl(1),
     });
 
-    formasPAgo = [
-      {
-          id: '1',
-          pago: 'contado',
-          interes: 0,
-          numero: 0
-      }, {
-          id: '2',
-          pago: '3 meses',
-          interes: 4.49,
-          numero: 3
-      }, {
-          id: '3',
-          pago: '6 meses',
-          interes: 6.99,
-          numero: 6
-      }, {
-          id: '4',
-          pago: '9 meses',
-          interes: 9.90,
-          numero: 9
-      }, {
-          id: '5',
-          pago: '12 meses',
-          interes: 11.95,
-          numero: 12
-      }, {
-          id: '6',
-          pago: '18 meses',
-          interes: 17.70,
-          numero: 18
-      }, {
-          id: '7',
-          pago: '24 meses',
-          interes: 24.,
-          numero: 24
-      }
-    ]
+    
 
     variable_modal:string = 'gasto'
      ngOnDestroy(){
@@ -478,7 +441,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
 
       update(ref(db), updates).then(()=>{
-        this._publicos.cerrar_modal('modal-servicio-editar-btn')
+        this._publicos.cerrar_modal('cerrar-modal')
         this._publicos.swalToast('Cambios realizados',1)
         this.asigna_servicio(this.servicio_editar)
       })
@@ -581,12 +544,12 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         this.Actualiza_data_os() 
       }else{
         this.asigna_servicio(this.servicio_editar_copia)
-        this._publicos.cerrar_modal('modal-servicio-editar-btn')
+        this._publicos.cerrar_modal('cerrar-modal')
         this._publicos.swalToast('se cancelo la actualizacion',0)
       }
     }else{
       this.asigna_servicio(this.servicio_editar_copia)
-      this._publicos.cerrar_modal('modal-servicio-editar-btn')
+      this._publicos.cerrar_modal('cerrar-modal')
     }
   }
   asigna_resultados_servicio_editar(){
@@ -600,7 +563,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const servicios = [...servicios_] 
     const margen = 1 + (new_margen / 100)
     servicios.map(ele=>{
-
+      const {cantidad, costo} = ele
       if (ele.tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
@@ -609,6 +572,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           reporte.refacciones += refacciones
           reporte.refacciones_v += refacciones * margen
         }
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad 
       }else if (ele.tipo === 'mo') {
         const operacion = this.mano_refaccion(ele)
         if (ele.aprobado) {
@@ -628,7 +594,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       return ele
     })
     let descuento = parseFloat(descuento_) || 0
-    const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
+    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
     const {mo, refacciones_v, refacciones} = reporte
 
     let nuevo_total = mo + refacciones_v

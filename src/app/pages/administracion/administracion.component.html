@@ -28,7 +28,7 @@
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
         <ng-container *ngIf="SUCURSAL === 'Todas'">
-            <button class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
+            <button class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
             matTooltip="Filtro sucursal"><i class="fa fa-filter"></i></button>
             <mat-menu #filtroSucursal="matMenu">
                 <button mat-menu-item (click)="sucursalFiltroReporte = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
@@ -111,7 +111,7 @@
 
               </td>
             </ng-container>
-            <ng-container matColumnDef="expand">
+            <ng-container matColumnDef="expand" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
                 <td mat-cell *matCellDef="let element" >
                     <button mat-icon-button aria-label="expand row" 
@@ -125,26 +125,66 @@
                 </td>
               </ng-container>
               <ng-container matColumnDef="expandedDetail">
-                <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpandAdministracion.length">
-                  <div class="example-element-detail row"
-                       [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+                <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpandAdministracion.length - 1">
+                  <div class="example-element-detail row" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+
+                    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
+                        <mat-tab label="Servicios">
+                          <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-1 mt-1" *ngIf="row.reporte">
+                            <app-reporte-desgloce-tarjeta [reporte]="row.reporte" ></app-reporte-desgloce-tarjeta>
+                          </div>
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="row.servicios">
+                            <h3>Elementos de O.S</h3>
+                            <div class="table-responsive">
+                              <table class="table table-sm">
+                                <thead>
+                                  <tr>
+                                    <th scope="text-start">Nombre</th>
+                                    <th scope="text-center">Cantidad</th>
+                                    <th scope="text-end">Precio</th>
+                                    <th scope="text-end">Costo</th>
+                                    <th scope="text-end">Subtotal</th>
+                                    <th scope="text-end">Total</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <ng-container *ngFor="let item of row.servicios">
+                                    <tr [ngClass]="'tipo-'+item.tipo" >
+                                      <td class="text-start">
+                                        {{item.nombre}} &nbsp;
+                                        <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
+                                        <span class="badge badge-info m-1">{{item.status}}</span>
+                                      </td>
+                                      <td class="text-center">{{item.cantidad}}</td>
+                                      <!-- <td class="text-end">{{(item.tipo === 'paquete') ? item.reporte.precio : item.precio | monedas}}</td> -->
+                                      <td class="text-end">{{ item.precio | monedas}}</td>
+                                      <td class="text-end">{{item.costo | monedas}}</td>
+                                      <td class="text-end">{{item.subtotal | monedas}}</td>
+                                      <td class="text-end">{{item.total | monedas}}</td>
+                                    </tr>
+                                  </ng-container>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </mat-tab>
+                        <mat-tab label="Cliente">
+                          <app-cliente-tarjeta [cliente]="row.data_cliente"></app-cliente-tarjeta>
+                        </mat-tab>
+                        <mat-tab label="vehiculo">
+                          <app-vehiculo-tarjeta [vehiculo]="row.data_vehiculo"></app-vehiculo-tarjeta>
+                        </mat-tab>
+                      </mat-tab-group>
                   </div>
                 </td>
               </ng-container>
             <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpandAdministracion" ></tr>
             <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpandAdministracion;"
                 class="example-element-row"
-                [class.example-expanded-row]="expandedElement === row"
-                
-                >
+                [class.example-expanded-row]="expandedElement === row">
                 <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
             </tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
-        
-            <!-- Row shown when there is no matching data. -->
-            <!-- <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-            </tr> -->
       </table>
       <mat-paginator #AdministracionPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>

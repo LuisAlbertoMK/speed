@@ -979,13 +979,24 @@ export class ServiciosPublicosService {
     }
     ordenarData(data, campo, ascendente) {
       return data.sort((a, b) => {
-        if (a[campo] < b[campo]) {
-          return ascendente ? -1 : 1;
+        if (campo === 'fecha_recibido') {
+          if (new Date(a[campo]) < new Date(b[campo])) {
+            return ascendente ? -1 : 1;
+          }
+          if (new Date(a[campo]) > new Date(b[campo])) {
+            return ascendente ? 1 : -1;
+          }
+          return 0;
+        }else{
+          if (a[campo] < b[campo]) {
+            return ascendente ? -1 : 1;
+          }
+          if (a[campo] > b[campo]) {
+            return ascendente ? 1 : -1;
+          }
+          return 0;
         }
-        if (a[campo] > b[campo]) {
-          return ascendente ? 1 : -1;
-        }
-        return 0;
+        
       });
     }
     actualizarArregloExistente(arregloExistente, nuevaInformacion, camposRecupera) {

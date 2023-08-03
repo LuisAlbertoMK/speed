@@ -166,6 +166,22 @@ export class ServiciosService {
         }
 //TODO aqui las nuevas funciones
 
+conslta_recepciones_cliente(data): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    const {ruta} = data
+    const starCountRef = ref(db, ruta)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        resolve(this._publicos.crearArreglo2(snapshot.val()));
+      } else {
+        resolve([]);
+      }
+    }, {
+        onlyOnce: true
+      })
+  })
+}
+
 consulta_recepcion_sucursal(busqueda_ruta): Promise<any> {
   return new Promise((resolve, reject) => {
     const {ruta} = busqueda_ruta

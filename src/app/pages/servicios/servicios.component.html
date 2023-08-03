@@ -192,9 +192,12 @@
 <div class="modal fade" id="modal-servicio-editar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Informacion  O.S {{ servicio_editar.no_os}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modal-servicio-editar-btn"></button>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
       <div class="modal-body">
         <!-- <pre>
@@ -255,7 +258,7 @@
                 </div>
                 <div class="col-auto">
                   <select id="formaPago" formControlName="formaPago" class="form-select form-select-sm text-capitalize">
-                    <option [selected]="item.id === servicio_editar.formaPago" [value]="item.id" *ngFor="let item of formasPAgo" >{{item.pago}}</option>
+                    <option [selected]="item.id === servicio_editar.formaPago" [value]="item.id" *ngFor="let item of formasPago" >{{item.pago}}</option>
                   </select>
                 </div>
               </div>

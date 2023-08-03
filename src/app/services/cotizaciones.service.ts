@@ -121,6 +121,22 @@ export class CotizacionesService {
     private _sucursales: SucursalesService, private _servicios:ServiciosService
   ) { }
 
+
+  conslta_cotizaciones_cliente(data): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      const {ruta} = data
+      const starCountRef = ref(db, ruta)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(this._publicos.crearArreglo2(snapshot.val()));
+        } else {
+          resolve([]);
+        }
+      }, {
+          onlyOnce: true
+        })
+    })
+  }
   consulta_cotizaciones_new(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       get(child(dbRef, `cotizacionesRealizadas`)).then((snapshot) => {

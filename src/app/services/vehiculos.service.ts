@@ -2014,7 +2014,7 @@ export class VehiculosService {
         }
     ]}
 
-  consulta_vehiculo_new(data): Promise<any[]> {
+  consulta_vehiculo_new(data): Promise<any> {
     return new Promise((resolve, reject) => {
     const {cliente, sucursal, vehiculo} = data
       const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}/${vehiculo}`);
@@ -2023,7 +2023,7 @@ export class VehiculosService {
           const vehiculo = snapshot.val()
           resolve(vehiculo);
         } else {
-          resolve([]);
+          resolve({});
         }
       },{
         onlyOnce: true

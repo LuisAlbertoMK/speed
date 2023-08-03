@@ -49,7 +49,11 @@ export class ReporteGastosComponent implements OnInit {
   };
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService,private _export: ExporterService,
      private _sucursales: SucursalesService, private _cotizaciones: CotizacionesService, private _vehiculos: VehiculosService,
-      private _campos: CamposSystemService,private _reporte_gastos: ReporteGastosService, private _servicios: ServiciosService) { }
+      private _campos: CamposSystemService,private _reporte_gastos: ReporteGastosService, private _servicios: ServiciosService) { 
+        const currentYear = new Date().getFullYear();
+        this.minDate = new Date(currentYear , 0, 1);
+        this.maxDate = new Date(currentYear , 11, 31);
+      }
   ROL:string; SUCURSAL:string
   USUARIO:string 
   camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce  ]
@@ -150,7 +154,7 @@ export class ReporteGastosComponent implements OnInit {
 
   realizaGasto:string = 'gasto'
   
-  private _arreglo_fechas_busca: any[];
+
 
   filtro_sucursal:string = 'Todas'
   filtro_tipo:string = 'Todos'
@@ -158,10 +162,13 @@ export class ReporteGastosComponent implements OnInit {
 
   fecha_barrido = {start:null, end:null} 
 
+  minDate: Date;
+  maxDate: Date;
+
   ngOnInit(): void {
     this.rol()
   }
-
+  
   rol(){
     const { rol, sucursal, usuario} = this._security.usuarioRol()
     this.USUARIO = usuario
@@ -398,7 +405,7 @@ export class ReporteGastosComponent implements OnInit {
     const data_reporte_notas = this._reporte_gastos.totales_arreglo_({arreglo: filtro_notas, facturaRemision:'nota'})
    
     // console.log(data_reporte_general);
-    const ordenados = this._publicos.ordenarData(arreglado,'fecha_recibido',true)
+    const ordenados = this._publicos.ordenarData(arreglado,'fecha_recibido',false)
     
     if (resultados.length) {
       this._publicos.mensajeSwal('Espere ....',3,false,`generando Excel`)
