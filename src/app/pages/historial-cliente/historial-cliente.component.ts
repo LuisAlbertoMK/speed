@@ -90,6 +90,9 @@ export class HistorialClienteComponent implements OnInit {
 
     data_cliente
     cotizaciones_arr:any = []
+    recepciones_arr:any[] =[]
+    vehiculos_arr:any[] =[]
+
   async ngOnInit() {
     this.rol()
   }
@@ -97,6 +100,8 @@ export class HistorialClienteComponent implements OnInit {
     const { cliente, sucursal }  = this.enrutamiento
     const  queryParams = {  cliente, anterior:'historial-cliente',sucursal, vehiculo } 
 
+    // console.log(queryParams);
+    
     this.router.navigate(['/historial-vehiculo'], { 
       queryParams
     });
@@ -128,13 +133,39 @@ export class HistorialClienteComponent implements OnInit {
     const ruta_cotizaciones   =  `cotizacionesRealizadas/${sucursal}/${cliente}`
     const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
 
+    const vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+
+    this.vehiculos_arr = vehiculos_arr
+    
     const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
     const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
     
-    console.log(todas_cotizaciones);
-    console.log(todas_recepciones);
-    
-    // this.cotizaciones_arr = todas_cotizaciones
+
+
+    const filtro_cotizaciones = todas_cotizaciones.map(cot=>{
+      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
+      cot.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      
+      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
+      cot.data_vehiculo = data_vehiculo
+      const {placas}= data_vehiculo
+      cot.placas = placas || '------'
+      return cot
+    })
+    // console.log(filtro_cotizaciones);
+    const filtro_recepciones = todas_recepciones.map(cot=>{
+      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
+      cot.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      
+      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
+      cot.data_vehiculo = data_vehiculo
+      const {placas}= data_vehiculo
+      cot.placas = placas || '------'
+      return cot
+    })
+
+    this.cotizaciones_arr = filtro_cotizaciones
+    this.recepciones_arr = filtro_recepciones
 
     
     // const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})

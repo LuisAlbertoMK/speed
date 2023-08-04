@@ -137,6 +137,21 @@ export class CotizacionesService {
         })
     })
   }
+  consulta_cotizacion_unica(data): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const {ruta} = data
+      const starCountRef = ref(db, `${ruta}`);
+      onValue(starCountRef, async (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      },{
+        onlyOnce: true
+      });
+    });
+  }
   consulta_cotizaciones_new(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       get(child(dbRef, `cotizacionesRealizadas`)).then((snapshot) => {

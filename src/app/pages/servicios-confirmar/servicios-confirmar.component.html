@@ -14,74 +14,35 @@
 </div>
 
 <app-clientes-list (dataCliente)="infoCliente ( $event )"></app-clientes-list>
-<div class="card border-dark" >
-  <div class="card-body">
-    <h1>Informacion de cliente 
-      <ng-container *ngIf="infoConfirmar.cliente">
-        <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion"
-         data-bs-toggle="modal" data-bs-target="#modalNewUser"
-        ></i>
-      </ng-container>
-    </h1>
 
-    <div class="row">
-      <ng-container *ngFor="let item of camposCliente">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoConfirmar.data_cliente[item.valor]">
-          <strong class="">{{item.show}} </strong>: {{infoConfirmar.data_cliente[item.valor]}}
-        </div>
-      </ng-container>
-      
-    </div>
-    <ng-container *ngIf="infoConfirmar.cliente">
-      <div class="row">
-        <div class="text-end">
-          <ng-container *ngIf="infoConfirmar.dataFacturacion; else elseFacturacion">
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                <h4 class="card-title">Datos de facturacion</h4>
-                <p class="card-text">Razon social: <strong class="text-danger">{{infoConfirmar.dataFacturacion['razon']}}</strong></p>
-                <p class="card-text">RFC: <strong class="text-danger">{{infoConfirmar.dataFacturacion['rfc']}}</strong></p>
-              </div>
-            </div>
-          </ng-container>
-          <ng-template #elseFacturacion>
-            <button class="btn btn-sm btn-warning" (click)="clienteId =  infoConfirmar.cliente"
-                data-bs-toggle="modal" data-bs-target="#modalFacturacion"  #tooltip="matTooltip" matTooltip="editar informacion de facturacion" >
-                <i class="fa fa-edit"></i></button>
-          </ng-template>
-        </div>
-      </div>
-    </ng-container>
-  </div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+  <app-cliente-tarjeta [cliente]="infoConfirmar.data_cliente"></app-cliente-tarjeta>
 </div>
+
+
+
+
+
+
 <div class="card border-dark">
   <div class="card-body">
     <ng-container *ngIf="infoConfirmar.cliente">
-      <label for="exampleInputEmail1">Placas de vehiculos disponibles 
-        <i class="fa fa-sync pointer m-1 fs-3 text-primary" (click)="consulta_vehiculos()"></i>
-      </label>
-      
-      <!-- (click)="verificarInfoVehiculos()" de arriba -->
+      <label for="exampleInputEmail1">Placas de vehiculos disponibles </label>
       <div class="input-group mb-3">
-        <!-- abajo  "-->
         <select class=" form-select  form-select-sm text-uppercase" [ngModel]="extra" #valV  (change)="vehiculo( valV.value )">
           <option [selected]="extra" value="" >Seleccionar vehiculo</option>
           <option [value]="v.id" *ngFor="let v of infoConfirmar.vehiculos">{{v.placas}}</option>
         </select>
-        <!-- <button class="btn btn-sm btn-warning" 
-          data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="cargaDataVehiculo(infoConfirmar.cliente,'vehiculo')" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo" >
+        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
           <i class="fa fa-car"></i>
-        </button> -->
+          </button>
       </div>
     </ng-container>
     <h1>Informacion de vehiculo</h1>
-    <div class="row" *ngIf="infoConfirmar.vehiculo">
-      <ng-container *ngFor="let item of camposVehiculo">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoConfirmar.data_vehiculo[item.valor]">
-          <strong class="text-uppercase">{{item.show}} </strong>: {{infoConfirmar.data_vehiculo[item.valor]}}
-        </div>
-      </ng-container>
-    </div>
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1"> -->
+      <app-vehiculo-tarjeta [vehiculo]="infoConfirmar.data_vehiculo"></app-vehiculo-tarjeta>
+    <!-- </div> -->
   </div>
 </div>
 
@@ -182,19 +143,19 @@
                       </td>
                       <td class="text-center">
                         <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="soloNumeros(event)" class="smallInput"
-                                (change)="editarSubelemento('cantidad',row,item, cantidadSub.value)" #cantidadSub>
+                                (change)="editar_subelemento_paquete('cantidad',row,item, cantidadSub.value)" #cantidadSub>
                         <!-- {{item.cantidad}} -->
                       </td>
                       <td class="text-end">
                         <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="validarDecimal(event)" class="smallInput"
-                                (change)="editarSubelemento('costo',row,item, cantidadCosto.value)" #cantidadCosto>
+                                (change)="editar_subelemento_paquete('costo',row,item, cantidadCosto.value)" #cantidadCosto>
                               <!-- {{item.costo | monedas}} -->
                       </td>
                       <td class="text-end">{{item.precio | monedas}}</td>
                       <td class="text-end">{{item.total | monedas}}</td>
                       <td class="text-end">
                         <!-- (click)="eliminaElemento(row)" -->
-                        <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaSubElemento(row,item)" ></i>
+                        <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminar_subelemento_paquete(row,item)" ></i>
                       </td>
                     </tr>
                   </tbody>
@@ -489,11 +450,14 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div
   class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
   <div class="modal-content">
-    <!-- <div class="modal-header ml-3">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div> -->
-    <div class="modal-body m-2" *ngIf="infoConfirmar.vehiculo">
-      <app-paquetes [modelo]="infoConfirmar.vehiculo['modelo']" (infoPaquete)="infopaquete( $event)" ></app-paquetes>
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar paquete</h1>
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body m-2">
+      <app-paquetes [modelo]="modeloVehiculo" (infoPaquete)="agrega_principal( $event)" ></app-paquetes>
     </div>
   </div>
 </div>
@@ -507,7 +471,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body m-2">
-      <app-mo-refacciones [registro]="true" (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
+      <app-mo-refacciones [registro]="true" (dataElemento)="agrega_principal( $event )"></app-mo-refacciones>
     </div>
   </div>
 </div>
@@ -540,31 +504,9 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-body m-2">
-        <!-- <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-        </div> -->
-        <ng-container *ngIf="cliente; else elseVehiculo">
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <!-- <app-vehiculo [cliente]="cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo> -->
-            </div>
-          </div>
-        </ng-container>
-        <ng-template #elseVehiculo>
-          <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-              <!-- <ng-container *ngIf="vehiculoData; else elseIDvehiculo">
-               <app-vehiculo  (dataVehiculo)="vehiculoInfo( $event )" [cliente]="vehiculoData['id']"></app-vehiculo>
-              </ng-container>
-              <ng-template #elseIDvehiculo>
-                no tiene cliente
-                registra  vehiculo desde 0
-              </ng-template> -->
-            </div>
-          </div>
-        </ng-template>
+
+        <app-vehiculo [data_cliente]="infoConfirmar.data_cliente" (dataVehiculo)="vehiculo_registrado( $event )" ></app-vehiculo>
+        
       </div>
     </div>
   </div>

@@ -1,10 +1,10 @@
 
 git add .
-git commit -m "Arreglar historial de cliente (en proceso)"
+git commit -m "terminar de arreglar cotizacion-new y ServiciosConfirmar  (en proceso)"
 git push -u origin 
+
 
 shutdown -s -t 300 -c 'XD'
 
 
-
-///TODO todo desde entri_ para evitar problemas de carga de informacion
+ls

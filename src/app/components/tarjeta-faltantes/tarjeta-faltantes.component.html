@@ -1,6 +1,9 @@
 
-<div class="row mt-2">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
-    Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
+<ng-container *ngIf="faltante_s">
+  <div class="row mt-2">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
+      Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
+    </div>
   </div>
-</div>
+</ng-container>
+

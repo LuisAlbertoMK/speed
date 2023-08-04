@@ -148,10 +148,22 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   clienteId:string = null
   observaciones:string = null
   //TODO: aqui la informacion que es nueva
-  enrutamiento = {vehiculo:'', cliente:'', anterior:'',sucursal:'', tipo:'', recepcion:'', cotizacion:''}
+  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
   ParamsGet:any = {}
   
   faltante_s
+
+  reporte_totales = {
+    mo:0,
+    refacciones:0,
+    refacciones_v:0,
+    subtotal:0,
+    iva:0,
+    descuento:0,
+    total:0,
+    meses:0,
+    ub:0,
+  }
   ngOnInit(): void {
     this.rol()
   }
@@ -161,7 +173,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   
   regresar(){
     this.router.navigate([`/${this.enrutamiento.anterior}`], { 
-      queryParams: { }
+      queryParams: this.enrutamiento
     });
   }
   async rol(){
@@ -173,74 +185,69 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.detalles = this.detalles_rayar
     this.rutaActiva.queryParams.subscribe((params:any) => {
      this.enrutamiento = params 
+     console.log(params);
+     
      this.acciones()
     });
   }
   async acciones(){
-    const {vehiculo, cliente,sucursal, tipo, recepcion, cotizacion} = this.enrutamiento
+    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
 
-    let  cliente_info = {}, info_elementos = [], info_servicio = '1', info_margen =25, info_iva= true
-    let info_vehiculo_ = vehiculo, info_descuento =0 
-    let info_formaPago = '1'
+    let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
 
-    if (tipo === 'cliente' || tipo === 'vehiculo') {
-      cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    } else if (tipo === 'recepcion') {
-      const busqueda_ruta = `recepciones/${sucursal}/${cliente}/${recepcion}`
-      const info_recepcion = await  this._servicios.consulta_recepcion_new(busqueda_ruta)
+    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
-      const {data_cliente, servicios, servicio, margen, iva, formaPago, vehiculo: vv_, descuento} = info_recepcion
-
-      cliente_info = data_cliente
-      info_elementos = servicios
-      info_servicio = servicio
-      info_margen = margen
-      info_iva = iva
-      info_formaPago = String(formaPago)
-      info_vehiculo_ = vv_
-      info_descuento = descuento
-    } else if (tipo === 'cotizacion') {
-      const busqueda_ruta = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
-      const info_cotizacion = await  this._cotizaciones.consulta_cotizacion_new(busqueda_ruta)
-      
-      const {data_cliente, elementos, servicio, margen, iva, formaPago, vehiculo: vv_, descuento} = info_cotizacion
-
-      cliente_info = data_cliente
-      info_elementos = elementos
-      info_servicio = servicio
-      info_margen = margen
-      info_iva = iva
-      info_formaPago = String(formaPago)
-      info_vehiculo_ = vv_
-      info_descuento = descuento
-
-    }
-    this.extra = info_vehiculo_
-    this.infoConfirmar.servicios = info_elementos
-    this.infoConfirmar.margen = info_margen
-    this.infoConfirmar.iva = info_iva
-    this.infoConfirmar.servicio = info_servicio
-    this.infoConfirmar.formaPago = info_formaPago
-    this.infoConfirmar.descuento = info_descuento
-
-    this.infoConfirmar.data_cliente = cliente_info
-    this.infoConfirmar.cliente = cliente
-    this.infoConfirmar.sucursal = sucursal
-    this.infoConfirmar.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     
-    this.infoConfirmar.vehiculo = info_vehiculo_
-    this.infoConfirmar.data_vehiculo = {}
+    if (recepcion){
+      const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
+      const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
+      // data_recepcion.elementos = data_recepcion.servicios
+      const campos = ['formaPago','iva','margen','servicio','servicios','nota']
+      data_recepcion.nota = data_recepcion.nota || ''
+      campos.forEach(campo=>{
+        this.infoConfirmar[campo] = data_recepcion[campo]
+      })
+    }
+    if (cotizacion){
+      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
+      
+      const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
+      
+      const campos = ['formaPago','iva','margen','servicio','servicios','nota']
+      data_cotizacion.nota = data_cotizacion.nota || ''
+      campos.forEach(campo=>{
+        this.infoConfirmar[campo] = data_cotizacion[campo]
+      })
+    }
+
+    this.infoConfirmar.vehiculos = vehiculos_arr
+
+    this.extra = vehiculo
+
+    this.infoConfirmar.cliente = cliente
+    this.infoConfirmar.data_sucursal = data_sucursal
+    this.infoConfirmar.vehiculo = vehiculo
+    this.infoConfirmar.data_cliente = data_cliente
+    this.infoConfirmar.data_vehiculo = data_vehiculo
+    this.infoConfirmar.sucursal = sucursal
 
     this.realizaOperaciones()
-    this.consulta_vehiculos()
+    this.vigila_vehiculos_cliente({cliente, sucursal})
+
   }
-  async consulta_vehiculos(){
-    const {sucursal, cliente} = this.infoConfirmar
-    this.infoConfirmar.vehiculos = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
-    if (cliente && this.extra ) {
-      this.verificarInfoVehiculos()
-    }
+  async vigila_vehiculos_cliente({cliente, sucursal}){
+    const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        this.infoConfirmar.vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+        this.infoConfirmar.data_vehiculo =  this.infoConfirmar.vehiculos.find(v=>v.id === this.extra)
+      }
+    })
   }
+
   verificarInfoVehiculos(){
       this.infoConfirmar.vehiculo = this.extra
       const info = this.infoConfirmar.vehiculos.find(v=>v.id === this.extra)
@@ -259,6 +266,70 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }
   } 
 
+  vehiculo_registrado(event){
+    if (event) {
+     this.extra = event
+     const { cliente, sucursal } = this.enrutamiento
+
+     this.vigila_vehiculos_cliente({ cliente, sucursal } )
+   }
+  }
+  agrega_principal(event){
+    let nuevos = [...this.infoConfirmar.servicios]
+    const {id} = event
+    if (id) {
+      nuevos.push(event)
+      this.asignar_nuevos_elementos(nuevos)
+    }
+  }
+  eliminaElemento(data){
+    const { index:index_elimina } = data
+    let nuevos = [...this.infoConfirmar.servicios]
+    nuevos = nuevos.filter((elemento, index) => index !== index_elimina);
+    this.asignar_nuevos_elementos(nuevos)
+  }
+  editar(donde:string , data , cantidad){
+    const nueva_cantidad = parseFloat(cantidad)
+    const { index:index_editar } = data
+
+    let nuevos = [...this.infoConfirmar.servicios]
+    nuevos[index_editar][donde] = nueva_cantidad
+    this.asignar_nuevos_elementos(nuevos)
+  }
+  editar_subelemento_paquete(donde:string ,data , item ,cantidad){
+    const nueva_cantidad = parseFloat(cantidad)
+    const { index:index_editar } = data
+    const { index:index_editar_subelemento } = item
+   
+    let nuevos = [...this.infoConfirmar.servicios]
+    let nuevos_internos = nuevos[index_editar].elementos
+
+    nuevos_internos[index_editar_subelemento][donde] = nueva_cantidad
+
+    nuevos[index_editar].elementos = nuevos_internos
+
+    this.asignar_nuevos_elementos(nuevos)
+  }
+
+  eliminar_subelemento_paquete(data,item){
+
+    const { index:index_editar } = data
+    const { index:index_editar_subelemento } = item
+
+    let nuevos = [...this.infoConfirmar.servicios]
+    let nuevos_internos = nuevos[index_editar].elementos
+
+    nuevos_internos = nuevos_internos.filter((elemento, index) => index !== index_editar_subelemento);
+
+    nuevos[index_editar].elementos = nuevos_internos
+
+    this.asignar_nuevos_elementos(nuevos)
+  }
+
+  asignar_nuevos_elementos(nuevos:any[]){
+    this.infoConfirmar.servicios = nuevos
+    this.realizaOperaciones()
+  }
   cambiaAprobado(index, aprobado){
     setTimeout(() => {
       this.infoConfirmar.servicios[index].aprobado = aprobado
@@ -290,56 +361,33 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.fecha_promesa = this._publicos.retorna_fechas_hora({fechaString: sumaDias}).toString_completa
   }
 
-  infopaquete( event ){
-    const originalArray = event.elementos;
-    const copiedArray = originalArray.slice();
-    const tempDate =  {...event, elementos: copiedArray }    
-    this.infoConfirmar.servicios.push(tempDate)
-    this.realizaOperaciones()
-  }
-  elementoInfo( event ){
-    this.infoConfirmar.servicios.push( event)
-    this.realizaOperaciones()
-  }
-  editar(donde:string ,data,cantidad){
-    if (donde === 'cantidad' && cantidad <= 0) cantidad = 1
-    if (donde === 'costo' && cantidad <= 0) cantidad = 0
+ 
 
-    this.infoConfirmar.servicios[data.index][donde] = Number(cantidad)
-   
-    this.realizaOperaciones()
-  }
-  eliminaElemento(data){
-    this.infoConfirmar.servicios = this.infoConfirmar.servicios.filter((_, index) => index !== data.index);
-    this.realizaOperaciones()
-  }
-  editarSubelemento(donde:string ,data,item,cantidad){
 
-    const elementos = [...data.elementos]
+ 
 
-    if (donde === 'cantidad' && cantidad <= 0) cantidad = 1
-    if (donde === 'costo' && cantidad <= 0) cantidad = 0
-    elementos[item.index][donde] = Number(cantidad)
-
-    this.infoConfirmar.servicios[data.index].elementos = elementos
-
-    this.realizaOperaciones()
-  }
-  eliminaSubElemento(data,item){
-    const elementos = data.elementos.slice();
-    elementos.splice(item.index, 1);
-    this.infoConfirmar.servicios[data.index].elementos = elementos;
-    this.realizaOperaciones()
-  }
 
   realizaOperaciones(){
-    setTimeout(() => {
-      const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoConfirmar)
-      this.dataSource.data = ocupados
-      this.infoConfirmar.servicios = ocupados
-      this.infoConfirmar.reporte = reporte    
-      this.newPagination()
-    }, 100);
+    const reporte_totales = {
+      mo:0,
+      refacciones:0,
+    }
+
+    const  {reporte, servicios} = this.calcularTotales(this.infoConfirmar)
+      Object.keys(reporte_totales).forEach(campo=>{
+        reporte_totales[campo] += reporte[campo]
+      })
+    this.reporte_totales = reporte
+    servicios.map((s, index)=>{
+      s.index = index
+      s.aprobado = true
+    })
+    this.infoConfirmar.reporte = reporte
+
+    this.infoConfirmar.servicios = servicios
+    this.dataSource.data = servicios
+    this.newPagination()
+
   }
   newPagination(){
     setTimeout(() => {
@@ -803,7 +851,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.infoConfirmar.sucursal = cliente.sucursal
       this.infoConfirmar.data_sucursal = cliente.data_sucursal
       this.infoConfirmar.vehiculo = ''
-      this.consulta_vehiculos()
+      // this.consulta_vehiculos()
     }
   }
   continuar(){
@@ -934,5 +982,126 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         })
       })
     })
+  }
+
+  calcularTotales(data) {
+    const {margen: new_margen, formaPago, servicios: servicios_, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+
+    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status"','subtotal','tipo','total']
+    const campos_refaccion = [ ...campos_mo, 'marca']
+    const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
+    // let refacciones_new = 0
+    const servicios = [...servicios_] 
+    let new_ele
+    const margen = 1 + (new_margen / 100)
+    servicios.map(ele=>{
+      const {cantidad, costo} = ele
+      if (ele.tipo === 'paquete') {
+        const report = this.total_paquete(ele)
+        const {mo, refacciones} = report
+        if (ele.aprobado) {
+          reporte.mo += mo
+          reporte.refacciones += refacciones
+        }
+        ele.costo = costo || 0
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad
+        ele.reporte = report
+        const serviciosConIndices = ele.elementos.map((s, index) => {
+          const servicioConIndice = { ...s };
+          servicioConIndice.index = index;
+          return servicioConIndice;
+        })
+        const nuevos_subelementos = this.remplaza_informacion_subelementos(serviciosConIndices, margen)
+        ele.elementos = nuevos_subelementos
+
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_paquete)
+      }else if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.mo += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion
+        ele.costo = costo || 0
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_mo)
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          // refacciones_new += operacion
+          reporte.refacciones += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion * margen
+        ele.costo = costo || 0
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_refaccion)
+      }
+      return new_ele
+    })
+    let descuento = parseFloat(descuento_) || 0
+
+    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
+
+    const {mo, refacciones} = reporte
+
+    reporte.refacciones_v = reporte.refacciones * margen
+
+    let nuevo_total = mo + reporte.refacciones_v
+    
+    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
+
+    let iva =  _iva ? nuevo_total * .16 : 0;
+
+    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
+    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
+    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
+
+    reporte.descuento = descuentoshow
+    reporte.iva = iva
+    reporte.subtotal = nuevo_total
+    reporte.total = newTotal
+    reporte.meses = total_meses
+
+    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
+    return {reporte, servicios}
+    
+  }
+  mano_refaccion(ele){
+    const {costo, precio, cantidad} = ele
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete(data){
+    const {elementos} = data
+    const reporte = {mo:0, refacciones:0}
+    const nuevos_elementos = [...elementos]
+    nuevos_elementos.forEach(ele=>{
+      if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+      }
+    })
+    return reporte
+  }
+  remplaza_informacion_subelementos(arreglo:any[], margen){
+    const nuevos_subelementos = arreglo.map(elemento=>{
+      const {tipo} = elemento
+      let operacion = this.mano_refaccion(elemento)
+      let subtotal = operacion, total = operacion
+      const all = JSON.parse(JSON.stringify(elemento));
+      
+      if (tipo === 'refaccion') total = total * margen 
+      const nueva_info = {...all,
+        subtotal,
+        total
+      }     
+      return nueva_info
+    })
+    return nuevos_subelementos
   }
 }

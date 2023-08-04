@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+
 import { Router } from '@angular/router';
 import { CamposSystemService } from '../../services/campos-system.service';
 
@@ -77,17 +78,17 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   }
   irPagina(pagina, data){
     console.log(data);
-    const {cliente, sucursal, id: idCotizacion, tipo } = data
+    const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
     // console.log(this.enrutamiento);
     let queryParams = {}
     if (pagina === 'cotizacionNueva' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
     }else if (pagina === 'cotizacionNueva' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo} 
+      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
     }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
     }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo}
+      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
     }
     console.log(queryParams);
     
@@ -110,7 +111,6 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       })
       g.servicios = servicios
       g.reporte = reporte
-      // nueva_utilidad_suma += reporte.ub
     })
     this.recepciones_arr = nuevas
     this.dataSource.data = nuevas

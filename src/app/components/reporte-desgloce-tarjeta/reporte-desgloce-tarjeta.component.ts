@@ -14,6 +14,7 @@ export class ReporteDesgloceTarjetaComponent implements OnInit {
 
   @Input() reporte:any = null
   @Input() title:string 
+  @Input() muestra_normal:boolean = false
 
   ngOnInit(): void {
   }

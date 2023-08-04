@@ -1,0 +1,83 @@
+ 
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+    <input type="text" class="form-control form-control-sm" placeholder="Buscar en recepciones" (keyup)="applyFilter($event)">
+  </div>
+  
+  <div class="mat-elevation-z8 table-responsive">
+         <table #vehiculos="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+         <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+              <td mat-cell *matCellDef="let row">
+              <strong>{{ row.index +1  }}</strong>  
+              </td>
+          </ng-container>
+          <ng-container matColumnDef="placas">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Placas </th>
+              <td mat-cell *matCellDef="let row" class="text-uppercase" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+                {{ row.placas }}
+              </td>
+          </ng-container>
+          <ng-container matColumnDef="marca">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
+              <td mat-cell *matCellDef="let row" class="text-uppercase" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> 
+              {{ row.marca }} 
+              </td>
+          </ng-container>
+          <ng-container matColumnDef="modelo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
+          <td mat-cell *matCellDef="let row" class="text-uppercase" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+              {{ row.modelo }}
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="anio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Año </th>
+          <td mat-cell *matCellDef="let row" class="text-uppercase" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+              {{ row.anio }}
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="categoria">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+          <td mat-cell *matCellDef="let row" class="text-uppercase" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+              {{ row.categoria }}
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="opciones" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
+              <td mat-cell *matCellDef="let row"> 
+                 <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
+                  <mat-menu #Opciones="matMenu">
+                  <button mat-menu-item (click)="irPagina('cotizacionNueva',row)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
+                  <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
+                  <button mat-menu-item (click)="irPagina('historial-vehiculo',row )"> Historial vehiculo <i class="fa fa-book text-danger ml-1"></i></button>
+                  </mat-menu>
+              </td>
+            </ng-container>
+          <ng-container matColumnDef="expand" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+              <td mat-cell *matCellDef="let element">
+              <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                  <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                  <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+              </button>
+              </td>
+          </ng-container>
+  
+          <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+          <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail row" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+                      
+                  </div>
+              </td>
+          </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      </table>
+      <mat-paginator #vehiculosPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>

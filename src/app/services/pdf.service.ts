@@ -22,9 +22,11 @@ export class PdfService {
     {id:'7',pago:'24 meses',interes:24.,numero:24}
   ]
   constructor(public _publicos:ServiciosPublicosService) { }
-  async pdf(data:any,detalles:boolean){
+  async pdf(data:any){
 
-    const {data_cliente, data_sucursal, data_vehiculo, fecha_recibido, vencimiento} = data
+    const {data_cliente, data_sucursal, data_vehiculo, fecha_recibido, vencimiento, reporte, formaPago, iva, showDetalles: detalles} = data
+
+
     const empresaShow = (data_cliente.empresaShow ) ? data_cliente.empresaShow : ''
     function table(data, columns, witdhsDef, showHeaders, headers, layoutDef) {
       return {
@@ -605,11 +607,11 @@ export class PdfService {
 
     
       
-      if(data.formaPago === '1') {
+      if(String(formaPago) === '1') {
         const contenido =documentDefinition.content
         //preguntar si se incluira iva
-        if(data.iva ){
-          if (data['reporte'].descuento>0) {
+        if(iva ){
+          if (reporte.descuento>0) {
             documentDefinition.content = [...contenido,
               {
                 layout: 'noBorders',
@@ -626,22 +628,23 @@ export class PdfService {
                     [
                       { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
                       { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      // { text: `${transform(reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
-                      { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
+                      { text: `${letras(reporte.total)}`, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `Descuento: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].descuento)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.descuento)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                      { text: `${transform(reporte.total)}`, bold: true, alignment: 'right', style:'sucursal'}
                     ]
                   ]
                 }
@@ -664,17 +667,18 @@ export class PdfService {
                     [
                       { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
                       { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      // { text: `${transform(reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
-                      { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
+                      { text: `${letras(reporte.total)}`, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `IVA: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                      { text: `${transform(reporte.total)}`, bold: true, alignment: 'right', style:'sucursal'}
                     ]
                   ]
                 }
@@ -682,7 +686,7 @@ export class PdfService {
             ]
           }
         }else{
-          if (data['reporte'].descuento>0) {
+          if (reporte.descuento>0) {
             documentDefinition.content = [...contenido,
               {
                 layout: 'noBorders',
@@ -702,19 +706,19 @@ export class PdfService {
                       { text: ``, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
-                      { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
+                      { text: `${letras(reporte.total)}`, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `Descuento: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].descuento)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.descuento)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                      { text: `${transform(reporte.total)}`, bold: true, alignment: 'right', style:'sucursal'}
                     ]
                   ]
                 }
@@ -740,14 +744,14 @@ export class PdfService {
                       { text: ``, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
-                      { text: `${letras(data['reporte'].total)}`, bold: true, alignment: 'center', style:'sucursal' },
+                      { text: `${letras(reporte.total)}`, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                      { text: `${transform(reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                     ],
                     [
                       { text: ``, bold: true, alignment: 'center', style:'sucursal' },
                       { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                      { text: `${transform(data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                      { text: `${transform(reporte.total)}`, bold: true, alignment: 'right', style:'sucursal'}
                     ]
                   ]
                 }
@@ -758,9 +762,9 @@ export class PdfService {
         
         
       }else{
-        const dataformaPago = this.formasPago.find(p=>p.id === data.formaPago)
+        const dataformaPago = this.formasPago.find(p=>p.id === String(formaPago)).pago
         const contenido =documentDefinition.content
-        if(data.iva ){
+        if(iva ){
           documentDefinition.content = [...contenido,
             {
               layout: 'noBorders',
@@ -772,26 +776,26 @@ export class PdfService {
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' }, '', '' ],
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                     { text: `Forma de pago:`, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${dataformaPago.numero} meses`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${dataformaPago} meses`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                     { text: `Subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform( data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform( reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
-                    { text: `${letras(data['reporte'].meses)}`, bold: true, alignment: 'center', style:'sucursal' },
+                    { text: `${letras(reporte.meses)}`, bold: true, alignment: 'center', style:'sucursal' },
                     { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform( data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                    { text: `${transform( reporte.total)}`, bold: true, alignment: 'right', style:'sucursal'}
                   ],
                   [
                     { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
                     { text: `Iva: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform( data['reporte'].iva)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform( reporte.iva)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [
                     { text: ``, bold: true, alignment: 'center', style:'sucursal' },
-                    { text: `Total a ${dataformaPago.numero} meses: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform( data['reporte'].meses)}`, bold: true, alignment: 'right', style:'sucursal'}
+                    { text: `Total a ${dataformaPago} meses: `, bold: true, alignment: 'right', style:'sucursal' },
+                    { text: `${transform( reporte.meses)}`, bold: true, alignment: 'right', style:'sucursal'}
                   ],
                   [
                     { text: `${''}`, bold: true, alignment: 'center', style:'sucursal' },
@@ -816,17 +820,17 @@ export class PdfService {
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' }, '', '' ],
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                     { text: `Forma de pago:`, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${dataformaPago.numero} meses`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${dataformaPago} meses`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   [ { text: '', bold: true, alignment: 'center', style:'terminos' },
                     { text: `Subtotal: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform( data['reporte'].subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
+                    { text: `${transform( reporte.subtotal)}`, bold: true, alignment: 'right', style:'sucursal' }
                   ],
                   
                   [
-                    { text: `${letras(data['reporte'].meses)}`, bold: true, alignment: 'center', style:'sucursal' },
+                    { text: `${letras(reporte.meses)}`, bold: true, alignment: 'center', style:'sucursal' },
                     { text: `Total contado: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform( data['reporte'].total)}`, bold: true, alignment: 'right', style:'sucursal'}
+                    { text: `${transform( reporte.total)}`, bold: true, alignment: 'right', style:'sucursal'}
                   ],
                   [
                     { text: 'Importe con letra', bold: true, alignment: 'center', style:'sucursal' },
@@ -835,8 +839,8 @@ export class PdfService {
                   ],
                   [
                     { text: ``, bold: true, alignment: 'center', style:'sucursal' },
-                    { text: `Total a ${dataformaPago.numero} meses: `, bold: true, alignment: 'right', style:'sucursal' },
-                    { text: `${transform( data['reporte'].meses)}`, bold: true, alignment: 'right', style:'sucursal'}
+                    { text: `Total a ${dataformaPago} meses: `, bold: true, alignment: 'right', style:'sucursal' },
+                    { text: `${transform( reporte.meses)}`, bold: true, alignment: 'right', style:'sucursal'}
                   ],
                   [
                     { text: `${''}`, bold: true, alignment: 'center', style:'sucursal' },

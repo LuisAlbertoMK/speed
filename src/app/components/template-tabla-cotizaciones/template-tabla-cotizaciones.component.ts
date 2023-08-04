@@ -74,21 +74,17 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
   }
 
   irPagina(pagina, data){
-    console.log(data);
-    const {cliente, sucursal, id: idCotizacion, tipo } = data
-    // console.log(this.enrutamiento);
+    const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
     let queryParams = {}
     if (pagina === 'cotizacionNueva' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
     }else if (pagina === 'cotizacionNueva' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo} 
+      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
     }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
     }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo}
+      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
     }
-    console.log(queryParams);
-    
     this.router.navigate([`/${pagina}`], { queryParams });
   }
   obtener_total_cotizaciones(){
@@ -118,8 +114,6 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
 
     let subtotal = reporte_totales.mo + reporte_totales.refacciones
     const margen = 1 + (nuevo_margen / 100)
-    
-    
     
     let nueva_utilidad_operacion = (subtotal - reporte_totales.refacciones) * (100 / subtotal)
 

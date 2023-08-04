@@ -220,15 +220,13 @@ consulta_recepcion_sucursal(busqueda_ruta): Promise<any> {
     });
   });
 }
-consulta_recepcion_new(busqueda_ruta): Promise<any> {
+consulta_recepcion_new(data): Promise<any> {
   return new Promise((resolve, reject) => {
-    const starCountRef = ref(db, `${busqueda_ruta}`);
+    const {ruta} = data
+    const starCountRef = ref(db, `${ruta}`);
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        const data_cotizcion = snapshot.val()
-        data_cotizcion.data_cliente = await this.getInfo_cliente(data_cotizcion)
-        data_cotizcion.data_vehiculo = await this.getInfo_vehiculo(data_cotizcion)
-        resolve(data_cotizcion);
+        resolve(snapshot.val());
       } else {
         resolve({});
       }

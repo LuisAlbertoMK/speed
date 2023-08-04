@@ -43,12 +43,14 @@
     </div>
   </div>
 </div>
+
+
+
 <div class="card border-dark">
   <div class="card-body">
     <!-- <pre>{{ infoCotizacion.vehiculos | json}}</pre> -->
     <ng-container *ngIf="infoCotizacion.cliente">
       <label for="exampleInputEmail1">Placas de vehiculos disponibles</label>
-      <i class="fa fa-sync pointer btn btn-sm btn-outline-primary m-1 btn-flat" (click)="consulta_vehiculos()" *ngIf="infoCotizacion.cliente" ></i>
       <div class="input-group mb-3">
         <select class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
           <option  value="">Selecciona placas</option>
@@ -60,12 +62,8 @@
       </div>
     </ng-container>
     <h1>Informacion de vehiculo</h1>
-    <div class="row" *ngIf="infoCotizacion.data_vehiculo">
-      <ng-container *ngFor="let item of camposVehiculo">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoCotizacion.data_vehiculo[item.valor]">
-          <strong class="text-uppercase">{{item.show}} </strong>: {{infoCotizacion.data_vehiculo[item.valor]}}
-        </div>
-      </ng-container>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+      <app-vehiculo-tarjeta [vehiculo]="infoCotizacion.data_vehiculo"></app-vehiculo-tarjeta>
     </div>
   </div>
 </div>
@@ -78,7 +76,7 @@
         <div class="col-sm-9 col-md-8 col-lg-9 ">
           <select class=" form-select  form-select-sm" formControlName="servicio" 
             [class.is-invalid]="validaCampo('servicio')" id="servicio">
-            <option *ngFor="let servicio of servicios" [value]="servicio.valor">{{servicio.nombre}}</option>
+            <option [selected]="servicio.valor  === infoCotizacion.servicio" *ngFor="let servicio of servicios" [value]="servicio.valor">{{servicio.nombre}}</option>
           </select>
           <small *ngIf="validaCampo('servicio')" class="text-danger">Seleccionar servicio</small>
         </div>
@@ -88,8 +86,7 @@
       <div class="mb-1 row">
         <label for="margen" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Margen</label>
         <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <input type="number" min="25" onkeypress="soloNumeros(event)" class="form-control form-control-sm" formControlName="margen" [value]="infoCotizacion.margen" [class.is-invalid]="validaCampo('margen')" id="margen"
-          #margen (change)="accionesExtra('margen', margen.value)" >
+          <input type="number" min="25" onkeypress="soloNumeros(event)" class="form-control form-control-sm" formControlName="margen" [value]="infoCotizacion.margen" [class.is-invalid]="validaCampo('margen')" id="margen" >
           <small *ngIf="validaCampo('margen')" class="text-danger">Seleccionar margen menor a 100 y mayor a 24</small>
         </div>
       </div>
@@ -123,10 +120,7 @@
       <div class="mb-1 row">
         <label for="descuento" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Descuento</label>
         <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <!-- <select class=" form-select  form-select-sm" formControlName="descuento" 
-            [class.is-invalid]="validaCampo('descuento')" id="descuento">
-          </select> -->
-          <input type="number" min="0" onkeypress="validarDecimal(event)" class="form-control form-control-sm" formControlName="descuento" #desc (change)="accionesExtra('descuento', desc.value)" (keyup)="accionesExtra('descuento', desc.value)"  [class.is-invalid]="validaCampo('descuento')" id="descuento" class="smallInput">
+          <input type="number" min="0" onkeypress="validarDecimal(event)" class="form-control form-control-sm" formControlName="descuento"   id="descuento" class="smallInput">
           <small *ngIf="validaCampo('descuento')" class="text-danger">Introduce descuento valido</small>
         </div>
       </div>
@@ -140,7 +134,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">La nota es la única que aparece en el PDF</div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">La nota se muestra en el PDF para el cliente</div>
   </div>
 </form>
 <div class="card border-dark">
@@ -154,7 +148,7 @@
 <div class="row">
   <div class="col text-end">
     <section class="example-section " [formGroup]="checksBox"  >
-      <mat-checkbox class="m-1" formControlName="iva" checked="true" (ngModelChange)="realizaOperaciones()">IVA</mat-checkbox>
+      <mat-checkbox class="m-1" formControlName="iva" checked="true" >IVA</mat-checkbox>
       <mat-checkbox class="m-1" formControlName="detalles" >Detalles PDF</mat-checkbox>
     </section>
   </div>
@@ -257,19 +251,17 @@
                   </td>
                   <td class="text-center">
                     <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="soloNumeros(event)" class="smallInput"
-                            (change)="editarSubelemento('cantidad',row,item, cantidadSub.value)" #cantidadSub>
-                    <!-- {{item.cantidad}} -->
+                            (change)="editar_subelemento_paquete('cantidad',row,item, cantidadSub.value)" #cantidadSub>
                   </td>
                   <td class="text-end">
                     <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="validarDecimal(event)" class="smallInput"
-                            (change)="editarSubelemento('costo',row,item, cantidadCosto.value)" #cantidadCosto>
-                          <!-- {{item.costo | monedas}} -->
+                            (change)="editar_subelemento_paquete('costo',row,item, cantidadCosto.value)" #cantidadCosto>
                   </td>
                   <td class="text-end">{{item.precio | monedas}}</td>
                   <td class="text-end">{{item.total | monedas}}</td>
                   <td class="text-end">
                     <!-- (click)="eliminaElemento(row)" -->
-                    <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaSubElemento(row,item)" ></i>
+                    <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminar_subelemento_paquete(row,item)" ></i>
                   </td>
                 </tr>
               </tbody>
@@ -289,105 +281,26 @@
         <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-
-    <!-- Row shown when there is no matching data. -->
-    <!-- <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-    </tr> -->
   </table>
 
   <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>
 
-<div class="row m-2 mt-2">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-    <h3>
-      <strong class="text-success" [ngClass]="{'text-danger': infoCotizacion.reporte['ub'] <55}">
-        U.B estimada {{infoCotizacion.reporte['ub'] | monedas: '%'}}
-      </strong>
-    </h3>
-  </div>
-</div>
 <div class="row mt-2">
 
-<div class="col-lg-6 col-md-6 col-sm-12 col-12">
-  <div class="card border-danger mb-3">
-    <div class="card-header text-center">Normal</div>
-    <div class="card-body text-danger ">
-      <h5 class="card-title"></h5>
-      <div class="row">
-        <ng-container *ngFor="let campo of camposDesgloce">
-          <ng-container *ngIf="infoCotizacion.reporte[campo.valor] > 0">
-            <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoCotizacion.reporte[campo.valor] * 1.30 | monedas}}</strong></div>
-          </ng-container>
-        </ng-container>
-        <ng-container *ngIf="infoCotizacion.reporte['meses'] > 0">
-          <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
-          <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoCotizacion.reporte['meses'] * 1.30 | monedas}}</strong></div>
-        </ng-container>
-        
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{infoCotizacion.reporte['total'] * 1.30  | numerosLetras}}</strong></div>
-      </div>
-    </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="reporte_totales">
+    <app-reporte-desgloce-tarjeta [reporte]="reporte_totales" [title]="'Desgloce'" [muestra_normal]="true"></app-reporte-desgloce-tarjeta>
   </div>
-</div>
-<div class="col-lg-6 col-md-6 col-sm-12 col-12">
-  <div class="card border-success mb-3">
-    <div class="card-header text-center">Flotilla</div>
-    <div class="card-body text-success ">
-      <h5 class="card-title"></h5>
-      <div class="row">
-        <ng-container *ngFor="let campo of camposDesgloce">
-          <ng-container *ngIf="infoCotizacion.reporte[campo['valor']] > 0">
-            <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show']}}</div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoCotizacion.reporte[campo.valor]  | monedas}}</strong></div>
-          </ng-container>
-          
-        </ng-container>
-        <ng-container *ngIf="infoCotizacion.reporte['meses'] > 0">
-          <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
-          <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoCotizacion.reporte['meses'] | monedas}}</strong></div>
-        </ng-container>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{infoCotizacion.reporte['total']  | numerosLetras}}</strong></div>
-      </div>
-    </div>
-  </div>
-</div>
 </div>
 
 <div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-    <button class="btn btn-sm btn-success" (click)="continuarCotizacion()">Realizar cotizacion</button>
-  </div>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center " *ngIf="faltante_s">
-    Falta la siguiente informacion: <strong class="text-danger">{{faltante_s}}</strong> 
-  </div>
-  <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center " *ngIf="opcionales">
-    Informacion opcional faltante: <strong class="text-warning">{{opcionales}}</strong>
-  </div> -->
-</div>
-<div class="row mt-5">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-    <!-- <button class="btn btn-sm btn-success" (click)="validaciones()">Realizar cotizacion</button> -->
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1 text-center">
+    <button class="btn btn-sm btn-primary" (click)="continuarCotizacion()"> Realizar cotizacion</button>
   </div>
 </div>
 
+<app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
 
-
-<!-- <div class="row">
-  <ng-container *ngFor="let item of camposDesgloce">
-
-    <div class="card col-6 col-sm-6 col-md-6 col-lg-6">
-      <div class="card-title">
-        {{item.show}}
-      </div>
-      <div class="card-body">
-        {{infoCotizacion.reporte[item.valor]}}
-      </div>
-    </div>
-  </ng-container>
-</div> -->
 
 
 <div class="modal fade" id="modalPaquetes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -395,11 +308,14 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div
   class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
   <div class="modal-content">
-    <!-- <div class="modal-header ml-3">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div> -->
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar paquete</h1>
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
     <div class="modal-body m-2">
-      <app-paquetes [modelo]="modeloVehiculo" (infoPaquete)="infopaquete( $event)" ></app-paquetes>
+      <app-paquetes [modelo]="modeloVehiculo" (infoPaquete)="agrega_principal( $event)" ></app-paquetes>
     </div>
   </div>
 </div>
@@ -413,7 +329,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body m-2">
-      <app-mo-refacciones [registro]="true" (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
+      <app-mo-refacciones [registro]="true" (dataElemento)="agrega_principal( $event )"></app-mo-refacciones>
     </div>
   </div>
 </div>
@@ -443,7 +359,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-content">
       <div class="modal-body m-2">
 
-        <app-vehiculo [data_cliente]="infoCotizacion.data_cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
+        <app-vehiculo [data_cliente]="infoCotizacion.data_cliente" (dataVehiculo)="vehiculo_registrado( $event )" ></app-vehiculo>
         
       </div>
     </div>

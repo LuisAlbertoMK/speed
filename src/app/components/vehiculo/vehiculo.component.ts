@@ -56,7 +56,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     this.rol()
     this.crearFormularioLlenadoManual()
     this.automaticos()
-    this.vigila()
+    
     this.consultaPlacas()
     this.ListadoClientes()
   }
@@ -139,6 +139,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
         sucursal:['',[]],
         transmision:['',[]]
       })
+      this.vigila()
   }
 
   vigila(){
@@ -160,10 +161,9 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       this.form_vehiculo.controls['categoria'].setValue(modelo_)
     })
     this.form_vehiculo.get('placas').valueChanges.subscribe(async (placas: string) => {
-      if (placas) {
-        const existe = this.listaPlacas.find(c=>String(c).toLowerCase() === String(placas).toLowerCase())
+      if (placas) {        
+        const existe = this.listaPlacas.find(c=>String(c).trim().toLowerCase() === String(placas).trim().toLowerCase())
         this.existenPlacas = (existe) ? true: false
-
         let engomado_ = (placas.length>=6) ? await this._vehiculos.engomado(placas) : ''         
         this.form_vehiculo.controls['engomado'].setValue(engomado_)
       }

@@ -32,8 +32,8 @@ export class CotizacionService {
    sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
 
    infoCotizacion = {
-    cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:{}, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',
-    fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}
+    cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',
+    fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false
   }
   consulta_cotizaciones_new(): Promise<any[]> {
     return new Promise((resolve, reject) => {

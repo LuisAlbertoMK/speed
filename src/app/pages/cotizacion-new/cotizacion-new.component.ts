@@ -101,21 +101,31 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   elementosPrueba = []
 
-  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:''}
+  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
   faltante_s:string
 
 
   data_cliente = {}
+
+  reporte_totales = {
+    mo:0,
+    refacciones:0,
+    refacciones_v:0,
+    subtotal:0,
+    iva:0,
+    descuento:0,
+    total:0,
+    meses:0,
+    ub:0,
+  }
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
-    // this.verificaCmabiis()
-    // this.infoCotizacion.elementos = this.elementosPrueba
-    this.realizaOperaciones()
   }
   ngAfterViewInit(): void {
     // this.crearFormPlus()
   }
+  
   rol(){
     
     const { rol, sucursal } = this._security.usuarioRol()
@@ -125,88 +135,74 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
+      console.log(params);
+      
       this.cargaDataCliente_new()
     });
   }
   async cargaDataCliente_new(){
-    // Swal.fire('Cargando ...','','info',)
-    // this._publicos.mensajeSwal('Cargando..',3,false)
-    Swal.fire({
-      position: 'center', icon:'info', title: 'Espere', showConfirmButton: false,
-      allowOutsideClick:false,
-      html:''
-      // timer: 1500
-  })
-    Swal.isLoading()
 
-    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo } = this.enrutamiento
+    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
+    
+    let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
 
-    let  cliente_info = {},  vehiculos_cliente = [], info_vehiculo = {}, info_elementos = [], info_servicio = '1', info_margen =25, info_iva= true
-    let info_vehiculo_ = vehiculo, info_descuento =0 
-    let info_formaPago = '1'
     this.infoCotizacion = this._cotizacion.infoCotizacion
-    if (tipo === 'cliente' || tipo === 'vehiculo') {
-      cliente_info  = await this._clientes.consulta_cliente_new({sucursal, cliente})
 
-    } else if (tipo === 'nueva') {
-      // console.log('muestra todo');
-    } else if (tipo === 'cotizacion') {
-      const busqueda_ruta = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
-      const info_cotizacion = await  this._cotizaciones.consulta_cotizacion_new(busqueda_ruta)
-      const {data_cliente, data_vehiculo, elementos, servicio, margen, iva, formaPago, vehiculo: vv_, descuento} = info_cotizacion
+    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
-      cliente_info = data_cliente
-      info_vehiculo = data_vehiculo
-      info_elementos = elementos
-      info_servicio = servicio
-      info_margen = margen
-      info_iva = iva
-      info_formaPago = String(formaPago)
-      info_vehiculo_ = vv_
-      info_descuento = descuento
+    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
 
+    if (recepcion){
+      const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
+      const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
+      data_recepcion.elementos = data_recepcion.servicios
+      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
+      data_recepcion.nota = data_recepcion.nota || ''
+      campos.forEach(campo=>{
+        this.infoCotizacion[campo] = data_recepcion[campo]
+      })
     }
-   
+    if (cotizacion){
+      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
+      
+      const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
+      
+      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
+      data_cotizacion.nota = data_cotizacion.nota || ''
+      campos.forEach(campo=>{
+        this.infoCotizacion[campo] = data_cotizacion[campo]
+      })
+    }
     
-    this.extra = info_vehiculo_
-    this.infoCotizacion.data_cliente = cliente_info
+    this.infoCotizacion.vehiculos = vehiculos_arr
+
+    this.extra = vehiculo
+
     this.infoCotizacion.cliente = cliente
-    this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    this.infoCotizacion.data_sucursal = data_sucursal
+    this.infoCotizacion.vehiculo = vehiculo
+    this.infoCotizacion.data_cliente = data_cliente
+    this.infoCotizacion.data_vehiculo = data_vehiculo
     this.infoCotizacion.sucursal = sucursal
-    this.infoCotizacion.elementos = info_elementos
-    this.infoCotizacion.margen = info_margen
-    this.infoCotizacion.iva = info_iva
-    this.infoCotizacion.servicio = info_servicio
-    this.infoCotizacion.formaPago = info_formaPago
-    this.infoCotizacion.descuento = info_descuento
-    this.infoCotizacion.vehiculo = info_vehiculo_
-    this.infoCotizacion.data_vehiculo = {}
-    this.consulta_vehiculos()
     this.realizaOperaciones()
-    
-    // if (this.extra) {
-    //   setTimeout(()=>{
-    //     this.verificarInfoVehiculos()
-    //   },400)
-    // }
-    
+    this.vigila_vehiculos_cliente({cliente, sucursal})
+
+    // console.log(this.infoCotizacion);
+ 
   }
-  async consulta_vehiculos(){
-    const {sucursal, cliente} = this.infoCotizacion
-    this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
-    Swal.close()
-    if (this.infoCotizacion.cliente && this.extra ) {
-      this.verificarInfoVehiculos()
-    }
+  async vigila_vehiculos_cliente({cliente, sucursal}){
+    const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+        this.infoCotizacion.data_vehiculo =  this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
+      }
+    })
   }
-  verificarInfoVehiculos(){
-    if (this.infoCotizacion.cliente && this.extra ) {
-      this.infoCotizacion.data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
-      this.infoCotizacion.vehiculo = this.extra
-      this._publicos.cerrar_modal('modal-vehiculo')
-    }
-    
-  }
+
+  
   ///mensaje para poder agregar un paquete que no esta en el catalogo
   async mensajePaquete(){
     // this.mostrarPaquetes = false
@@ -252,6 +248,36 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       descuento:['',[Validators.min(0)]],
       nota:['',[]]
     })
+    this.vigila()
+  }
+  vigila(){
+    this.checksBox.get('iva').valueChanges.subscribe((iva: boolean) => {
+      this.infoCotizacion.iva = iva
+      this.realizaOperaciones()
+    })
+    this.checksBox.get('detalles').valueChanges.subscribe((detalles: boolean) => {
+      this.infoCotizacion.showDetalles = detalles
+    })
+    this.formPlus.get('descuento').valueChanges.subscribe((descuento: number) => {
+      const nuevo_descuento = descuento < 0 ? 0 : descuento
+      this.infoCotizacion.descuento = nuevo_descuento
+      this.realizaOperaciones()
+    })
+    this.formPlus.get('margen').valueChanges.subscribe((margen: number) => {
+      const nuevo_margen = (margen < 25) ? 25 : margen
+      this.infoCotizacion.margen = nuevo_margen
+      this.realizaOperaciones()
+    })
+    this.formPlus.get('formaPago').valueChanges.subscribe((formaPago: string) => {
+      this.infoCotizacion.formaPago = formaPago
+      this.realizaOperaciones()
+    })
+    this.formPlus.get('promocion').valueChanges.subscribe((promocion: string) => {
+      this.infoCotizacion.promocion = promocion
+    })
+    this.formPlus.get('servicio').valueChanges.subscribe((servicio: string) => {
+      this.infoCotizacion.servicio = servicio
+    })
   }
   validaCampo(campo: string){
     return this.formPlus.get(campo).invalid && this.formPlus.get(campo).touched
@@ -260,7 +286,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   
   regresar(){
     this.router.navigate([`/${this.enrutamiento.anterior}`], { 
-      queryParams: {}
+      queryParams: this.enrutamiento
     });
   }
   
@@ -342,94 +368,94 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
   }
   
-  vehiculoInfo(nuevo_id:any){
-    if (nuevo_id) {
-      this.consulta_vehiculos()
-      this.extra =  nuevo_id
-      setTimeout(()=>{ this.verificarInfoVehiculos() }, 500)
-    }else{
-      this._publicos.mensajeCorrecto('Accion no realizada', 0)
+  vehiculo_registrado(event){
+     if (event) {
+      this.extra = event
+      const { cliente, sucursal } = this.enrutamiento
+
+      this.vigila_vehiculos_cliente({ cliente, sucursal } )
     }
   }
-  // aqui agregamos la informacion del elemento que se agrega mediante el evento que se emite el evento trae toda la informacion
-  // del elemento en cuestion lo colaocamos y realizamos operaciones
-  elementoInfo( event){
-    if (this.idPaqueteEditarBoolean) {
-      this.infoCotizacion.elementos[this.idPaqueteEditar]['elementos'].push(event)
-    }else{
-      this.infoCotizacion.elementos.push(event)
+
+  agrega_principal(event){
+    let nuevos = [...this.infoCotizacion.elementos]
+    const {id} = event
+    if (id) {
+      nuevos.push(event)
+      this.asignar_nuevos_elementos(nuevos)
     }
-    this.realizaOperaciones()
   }
-  //de la misma manera que elemento asiganamos la informacion del evento paquetes y realizamos operaciones
-  infopaquete( event ){
-    const originalArray = event.elementos;
-    const copiedArray = originalArray.slice();
-    const tempDate =  {...event, elementos: copiedArray }    
-    this.infoCotizacion.elementos.push(tempDate)
-    this.realizaOperaciones()
-  }
-  //para elelimianr un elemento primario solo ocupamos la data y se elimina mediente su index se hace la asiganacion a elemento null
-  //  y posterirormente se hace el filtrado para su nueva asigancion de elementos de la cotizacion y realizamos operaciones
   eliminaElemento(data){
-      let antiguos = []
-      antiguos = [...this.infoCotizacion.elementos]
-      antiguos[data.index] = null
-      const filtrados = antiguos.filter(e=>e !==null)
-      this.infoCotizacion.elementos = filtrados
-      this.realizaOperaciones()
+    const { index:index_elimina } = data
+    let nuevos = [...this.infoCotizacion.elementos]
+    nuevos = nuevos.filter((elemento, index) => index !== index_elimina);
+    this.asignar_nuevos_elementos(nuevos)
   }
-  // para elelimianr un subelemento de paquete y solo paquete solo ocupamos la data y se elimina mediente su index del subelemento
-  //  se hace la asiganacion a elemento null y posterirormente se hace el filtrado para su nueva asigancion de elementos de la cotizacion 
-  // y realizamos operaciones
-  eliminaSubElemento(data,item){
-      let antiguos = []
-      antiguos = [...this.infoCotizacion.elementos]
-      antiguos[data.index].elementos[item.index] = null
-      const filtradosInternos = antiguos[data.index].elementos.filter(e=>e !==null)
-      antiguos[data.index].elementos = filtradosInternos
-      this.infoCotizacion.elementos = antiguos
-      this.realizaOperaciones()
+  editar(donde:string , data , cantidad){
+    const nueva_cantidad = parseFloat(cantidad)
+    const { index:index_editar } = data
+
+    let nuevos = [...this.infoCotizacion.elementos]
+    nuevos[index_editar][donde] = nueva_cantidad
+    this.asignar_nuevos_elementos(nuevos)
   }
-  // aqui editamos la informacion de elemento primario (cantidad, costo) de igual manera se basa en el index del elemento y realizamos operaciones
-  editar(donde:string ,data,cantidad){
-    
-    if (donde ==='cantidad') {
-      let nuevaCnatidad = Number(cantidad)
-      if (nuevaCnatidad<0) nuevaCnatidad = 1
-      this.infoCotizacion.elementos[data.index].cantidad = nuevaCnatidad
-    }else if (donde ==='costo') {
-      let nuevaCnatidad2 = Number(cantidad)
-      if (nuevaCnatidad2<0) nuevaCnatidad2 = 0
-      this.infoCotizacion.elementos[data.index].costo = nuevaCnatidad2
-    }
+  asignar_nuevos_elementos(nuevos:any[]){
+    this.infoCotizacion.elementos = nuevos
     this.realizaOperaciones()
   }
-  // aqui editamos la informacion de subelemento por index (cantidad, costo) de igual manera se basa en el index del elemento y subelemento
-  //  y realizamos operaciones
-  editarSubelemento(donde:string ,data,item,cantidad){
-    if (donde ==='cantidad') {
-      if (cantidad<=0) cantidad = 1
-      this.infoCotizacion.elementos[data.index].elementos[item.index].cantidad = Number(cantidad)
-    }else if (donde ==='costo') {
-      if (cantidad<=0) cantidad = 0
-      this.infoCotizacion.elementos[data.index].elementos[item.index].costo = Number(cantidad)
-    }
-    this.realizaOperaciones()
+
+  editar_subelemento_paquete(donde:string ,data , item ,cantidad){
+    const nueva_cantidad = parseFloat(cantidad)
+    const { index:index_editar } = data
+    const { index:index_editar_subelemento } = item
+   
+    let nuevos = [...this.infoCotizacion.elementos]
+    let nuevos_internos = nuevos[index_editar].elementos
+
+    nuevos_internos[index_editar_subelemento][donde] = nueva_cantidad
+
+    nuevos[index_editar].elementos = nuevos_internos
+
+    this.asignar_nuevos_elementos(nuevos)
   }
-  // aqui se realizan todas las operaciones mediante los elementos de la cotizacion obtenemos el reporte de cada elemento
-  // y asiganamos a la informacion de reporte en infoCotizacion
-  //ya que tenemos los elementos nuevos con caracteristicas nuevas los reemplzamos por los que se tenia anteriormente
-  // realizamos la paginacion y asigancaion de resultados
+
+  eliminar_subelemento_paquete(data,item){
+
+    const { index:index_editar } = data
+    const { index:index_editar_subelemento } = item
+
+    let nuevos = [...this.infoCotizacion.elementos]
+    let nuevos_internos = nuevos[index_editar].elementos
+
+    nuevos_internos = nuevos_internos.filter((elemento, index) => index !== index_editar_subelemento);
+
+    nuevos[index_editar].elementos = nuevos_internos
+
+    this.asignar_nuevos_elementos(nuevos)
+  }
+
   realizaOperaciones(){
-    
-    this.infoCotizacion.formaPago  = (this.formPlus) ? this.formPlus.controls['formaPago'].value : '1'
-    this.infoCotizacion.iva = this.checksBox.controls['iva'].value
-    const {reporte,ocupados} = this._publicos.realizarOperaciones_2(this.infoCotizacion)
-    this.infoCotizacion.elementos = ocupados
+
+    const reporte_totales = {
+      mo:0,
+      refacciones:0,
+    }
+
+    const  {reporte, servicios} = this.calcularTotales(this.infoCotizacion)
+      Object.keys(reporte_totales).forEach(campo=>{
+        reporte_totales[campo] += reporte[campo]
+      })
+    this.reporte_totales = reporte
+    servicios.map((s, index)=>{
+      s.index = index
+      s.aprobado = true
+    })
     this.infoCotizacion.reporte = reporte
-    this.dataSource.data = ocupados
+
+    this.infoCotizacion.elementos = servicios
+    this.dataSource.data = servicios
     this.newPagination()
+
   }
   //verificamos que existe el vehiculo seleccionado y que este tenga un id de lo contrario colocamos la informacion en null
   vehiculo(IDVehiculo){
@@ -506,7 +532,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
 
     //hacemos el llamdo de la funcion para la creaciion del pdf    
-    this._pdf.pdf(this.infoCotizacion,this.checksBox.controls['detalles'].value).then((ansPDF)=>{
+    this._pdf.pdf(this.infoCotizacion).then((ansPDF)=>{
       //cuando obtengamos la respuesta asignamos la misma a una variable para su uso de PDF
       const pdfDocGenerator = pdfMake.createPdf(ansPDF);
       //realizamos la pregnta previsualizar o guardar y enviar
@@ -579,22 +605,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       })
     })
   }
-  accionesExtra(campo:string, valor){
-   
-    const acciones = {
-      descuento: (valor) => {
-        this.infoCotizacion.descuento = valor;
-      },
-      margen: (valor) => {
-        this.infoCotizacion.margen = (Number(valor) < 25 || Number(valor) > 100) ? 25 : Number(valor);
-        this.formPlus.controls['margen'].setValue(this.infoCotizacion.margen);
-      }
-    };
-    if (campo in acciones) {
-      acciones[campo](valor);
-    }
-    this.realizaOperaciones()
-  }
+  
   newPagination(){
     setTimeout(() => {
     // if (data==='elementos') {
@@ -602,6 +613,128 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.dataSource.sort = this.sort
     // }
     }, 500)
+  }
+
+
+  calcularTotales(data) {
+    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+
+    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status"','subtotal','tipo','total']
+    const campos_refaccion = [ ...campos_mo, 'marca']
+    const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
+    // let refacciones_new = 0
+    const servicios = [...servicios_] 
+    let new_ele
+    const margen = 1 + (new_margen / 100)
+    servicios.map(ele=>{
+      const {cantidad, costo} = ele
+      if (ele.tipo === 'paquete') {
+        const report = this.total_paquete(ele)
+        const {mo, refacciones} = report
+        if (ele.aprobado) {
+          reporte.mo += mo
+          reporte.refacciones += refacciones
+        }
+        ele.costo = costo || 0
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad
+        ele.reporte = report
+        const serviciosConIndices = ele.elementos.map((s, index) => {
+          const servicioConIndice = { ...s };
+          servicioConIndice.index = index;
+          return servicioConIndice;
+        })
+        const nuevos_subelementos = this.remplaza_informacion_subelementos(serviciosConIndices, margen)
+        ele.elementos = nuevos_subelementos
+
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_paquete)
+      }else if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.mo += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion
+        ele.costo = costo || 0
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_mo)
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          // refacciones_new += operacion
+          reporte.refacciones += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion * margen
+        ele.costo = costo || 0
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_refaccion)
+      }
+      return new_ele
+    })
+    let descuento = parseFloat(descuento_) || 0
+
+    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
+
+    const {mo, refacciones} = reporte
+
+    reporte.refacciones_v = reporte.refacciones * margen
+
+    let nuevo_total = mo + reporte.refacciones_v
+    
+    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
+
+    let iva =  _iva ? nuevo_total * .16 : 0;
+
+    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
+    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
+    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
+
+    reporte.descuento = descuentoshow
+    reporte.iva = iva
+    reporte.subtotal = nuevo_total
+    reporte.total = newTotal
+    reporte.meses = total_meses
+
+    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
+    return {reporte, servicios}
+    
+  }
+  mano_refaccion(ele){
+    const {costo, precio, cantidad} = ele
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete(data){
+    const {elementos} = data
+    const reporte = {mo:0, refacciones:0}
+    const nuevos_elementos = [...elementos]
+    nuevos_elementos.forEach(ele=>{
+      if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+      }
+    })
+    return reporte
+  }
+  remplaza_informacion_subelementos(arreglo:any[], margen){
+    const nuevos_subelementos = arreglo.map(elemento=>{
+      const {tipo} = elemento
+      let operacion = this.mano_refaccion(elemento)
+      let subtotal = operacion, total = operacion
+      const all = JSON.parse(JSON.stringify(elemento));
+      
+      if (tipo === 'refaccion') total = total * margen 
+      const nueva_info = {...all,
+        subtotal,
+        total
+      }     
+      return nueva_info
+    })
+    return nuevos_subelementos
   }
 
 }

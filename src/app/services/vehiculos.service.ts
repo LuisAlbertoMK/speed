@@ -2036,8 +2036,7 @@ export class VehiculosService {
       const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          const vehiculo = this._publicos.crearArreglo2(snapshot.val())
-          resolve(vehiculo);
+          resolve(this._publicos.crearArreglo2(snapshot.val()));
         } else {
           resolve([]);
         }

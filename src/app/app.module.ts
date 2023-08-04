@@ -153,6 +153,7 @@ import { TarjetaHistorialPagosComponent } from './components/tarjeta-historial-p
 import { TarjetaHistorialGastosComponent } from './components/tarjeta-historial-gastos/tarjeta-historial-gastos.component';
 import { TemplateTablaCotizacionesComponent } from './components/template-tabla-cotizaciones/template-tabla-cotizaciones.component';
 import { TemplateTablaRecepcionesComponent } from './components/template-tabla-recepciones/template-tabla-recepciones.component';
+import { TemplateTablaVehiculosComponent } from './components/template-tabla-vehiculos/template-tabla-vehiculos.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -233,7 +234,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TarjetaHistorialPagosComponent,
     TarjetaHistorialGastosComponent,
     TemplateTablaCotizacionesComponent,
-    TemplateTablaRecepcionesComponent
+    TemplateTablaRecepcionesComponent,
+    TemplateTablaVehiculosComponent
   ],
   imports: [
     BrowserModule,
