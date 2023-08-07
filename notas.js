@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "terminar de arreglar cotizacion-new y ServiciosConfirmar  (en proceso)"
+git commit -m "finalizo la depuracion fase 1"
 git push -u origin 
 
 

@@ -122,6 +122,30 @@ export class CotizacionesService {
   ) { }
 
 
+  conslta_cotizaciones_sucursal(data): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const {ruta} = data
+      const starCountRef = ref(db, ruta)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          let nuevas_ = []
+          snapshot.forEach((childSnapshot) => {
+            const childKey = childSnapshot.key;
+            const childData = childSnapshot.val();
+            // console.log(childKey);
+            // console.log(childData);
+            // nuevas_ = this._publicos.crearArreglo2(childData)
+            nuevas_.push(childKey)
+          })
+          resolve(nuevas_);
+        } else {
+          resolve({});
+        }
+      }, {
+          onlyOnce: true
+        })
+    })
+  }
   conslta_cotizaciones_cliente(data): Promise<any[]> {
     return new Promise((resolve, reject) => {
       const {ruta} = data

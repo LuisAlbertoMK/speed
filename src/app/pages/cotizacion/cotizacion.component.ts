@@ -132,18 +132,87 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   async accion(){
     this.cargandoInformacion = true
     console.time('Execution Time');
+    const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
+
+    const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+
+    const promesasClientes = arreglo_rutas_clientes.map(async (f_search) => {
+      const clientes = await this._clientes.consulta_clientes__busqueda({ ruta: f_search });
+
+      const promesas_internas = clientes.map(async (cli) => {
+        const { sucursal, id: cliente } = cli;
+        const ruta_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`;
+        const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ ruta: ruta_cotizaciones });
+        const vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
     
-    const busqueda = (this.SUCURSAL === 'Todas') ? 'cotizacionesRealizadas': `cotizacionesRealizadas/${this.SUCURSAL}`
-    // console.log(busqueda);
-    // const clientes = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
-    const cotizaciones = await this._cotizaciones.consulta_cotizaciones_({ruta: busqueda, sucursal: this.SUCURSAL})
+        const cotizaciones_new = todas_cotizaciones.map((cotizacion) => {
+          const data_vehiculo =vehiculos_arr.find(v=>v.id === cotizacion.vehiculo)
+          const {reporte, servicios} = this.calcularTotales(cotizacion);
+          cotizacion.reporte = reporte
+          cotizacion.servicios = servicios
+          // console.log(cotizacion);
+          
+          const pagoName = this.formasPago.find(d=>d.id === String(cotizacion.formaPago)).pago
+          return { ...cotizacion, 
+            data_cliente: cli, 
+            data_vehiculo,
+            fullname: `${cli.nombre} ${cli.apellidos}`,
+            placas: data_vehiculo.placas,
+            pagoName
+          };
+        });
     
-    this.cotizacionesList = cotizaciones
+        return cotizaciones_new;
+      });
+    
+      const promesas_r = await Promise.all(promesas_internas);
+      
+      return promesas_r.flat();
+    });
+
+    
+    
+    const cotizacionesPorCliente = await Promise.all(promesasClientes);
+    
+    const finales = cotizacionesPorCliente.flat()
+    // console.log(finales);
+    
+    
+    
+    this.cotizacionesList = finales
     // this.newPagination()
     this.filtra_informacion()
 
     console.timeEnd('Execution Time');
 
+  }
+  crea_cotizaciones_sucursal(data){
+    const {arreglo_sucursal, } = data
+    let Rutas_retorna = []
+    arreglo_sucursal.forEach(sucursal=>{
+      Rutas_retorna.push(`cotizacionesRealizadas/${sucursal}`)
+    })
+    return Rutas_retorna
+  }
+  transformaData_cliente(data){
+    const nuevos = [...data]
+    // console.log(nuevos);
+    const retornados = nuevos.map(cli=>{
+      const {sucursal, nombre, apellidos } = cli
+      cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+      cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+      return cli
+    })
+    return retornados
+    
+  }
+  crea_lista_rutas_por_sucursal(data){
+    const {arreglo_sucursal, } = data
+    let Rutas_retorna = []
+    arreglo_sucursal.forEach(sucursal=>{
+      Rutas_retorna.push(`clientes/${sucursal}`)
+    })
+    return Rutas_retorna
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -180,6 +249,184 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     }else{
       this._publicos.swalToast('ningun dato ...',0, 'top-start')
     }
+  }
+
+  calcularTotales(data) {
+    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+
+    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status"','subtotal','tipo','total']
+    const campos_refaccion = [ ...campos_mo, 'marca']
+    const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
+    // let refacciones_new = 0
+    const nuevos_elementos = (servicios_) ? servicios_ : []
+    const servicios = [...nuevos_elementos] 
+    let new_ele
+    const margen = 1 + (new_margen / 100)
+    servicios.map(ele=>{
+      const {cantidad, costo} = ele
+      if (ele.tipo === 'paquete') {
+        ele.elementos = (ele.elementos) ? ele.elementos : []
+        const report = this.total_paquete(ele)
+        const {mo, refacciones} = report
+        if (ele.aprobado) {
+          reporte.mo += mo
+          reporte.refacciones += refacciones
+        }
+        ele.costo = costo || 0
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad
+        ele.reporte = report
+        const serviciosConIndices = ele.elementos.map((s, index) => {
+          const servicioConIndice = { ...s };
+          servicioConIndice.index = index;
+          return servicioConIndice;
+        })
+        const nuevos_subelementos = this.remplaza_informacion_subelementos(serviciosConIndices, margen)
+        ele.elementos = nuevos_subelementos
+
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_paquete)
+      }else if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.mo += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion
+        ele.costo = costo || 0
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_mo)
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          // refacciones_new += operacion
+          reporte.refacciones += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion * margen
+        ele.costo = costo || 0
+        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_refaccion)
+      }
+      return new_ele
+    })
+    let descuento = parseFloat(descuento_) || 0
+
+    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
+
+    const {mo, refacciones} = reporte
+
+    reporte.refacciones_v = reporte.refacciones * margen
+
+    let nuevo_total = mo + reporte.refacciones_v
+    
+    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
+
+    let iva =  _iva ? nuevo_total * .16 : 0;
+
+    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
+    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
+    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
+
+    reporte.descuento = descuentoshow
+    reporte.iva = iva
+    reporte.subtotal = nuevo_total
+    reporte.total = newTotal
+    reporte.meses = total_meses
+
+    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
+    return {reporte, servicios}
+    
+  }
+  mano_refaccion(ele){
+    const {costo, precio, cantidad} = ele
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete(data){    
+    const {elementos} = data
+    const reporte = {mo:0, refacciones:0}
+    const nuevos_elementos = [...elementos]
+    nuevos_elementos.forEach(ele=>{
+      if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+      }
+    })
+    return reporte
+  }
+  remplaza_informacion_subelementos(arreglo:any[], margen){
+    const nuevos_subelementos = arreglo.map(elemento=>{
+      const {tipo} = elemento
+      let operacion = this.mano_refaccion(elemento)
+      let subtotal = operacion, total = operacion
+      const all = JSON.parse(JSON.stringify(elemento));
+      
+      if (tipo === 'refaccion') total = total * margen 
+      const nueva_info = {...all,
+        subtotal,
+        total
+      }     
+      return nueva_info
+    })
+    return nuevos_subelementos
+  }
+  purifica_informacion(data){
+    const nueva_ = JSON.parse(JSON.stringify(data));
+    const {elementos} = nueva_
+    const _elementos_purifica = (elementos) ? elementos : []
+    const registra = _elementos_purifica.map(element => {
+      const {tipo } = element
+      const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+      const campos_refaccion = [ ...campos_mo, 'marca']
+      const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo' ]
+      let nueva 
+      switch (tipo) {
+        case 'paquete':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_paquete)
+          const info_su = this.purifica_informacion_interna(nueva.elementos)
+          // console.log(info_su);
+          nueva.elementos = info_su
+          
+          break;
+        case 'mo':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_mo)
+          break;
+        case 'refaccion':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_refaccion)
+          break;
+      }
+
+      //primera recuperacion 
+      // console.log(nueva);
+      return nueva
+    });
+    // console.log(registra);
+    return registra
+  }
+  purifica_informacion_interna(elementos:any[]){
+    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+    const campos_refaccion = [ ...campos_mo, 'marca']
+
+    const nuevos_elementos = elementos.map(e=>{
+      const {tipo} = e
+      e.nombre = String(e.nombre).toLowerCase()
+      switch (tipo) {
+        case 'mo':
+        case 'MO':
+          e.id = e.IDreferencia
+          e.tipo = String(tipo).toLowerCase()
+          
+          return this._publicos.nuevaRecuperacionData(e,campos_mo)
+        case 'refaccion':
+          return this._publicos.nuevaRecuperacionData(e,campos_refaccion)
+      }
+    })
+
+    return nuevos_elementos 
+
   }
   
 }

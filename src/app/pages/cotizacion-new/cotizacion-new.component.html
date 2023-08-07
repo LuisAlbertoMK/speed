@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div class="floating-btn" data-bs-toggle="modal" data-bs-target="#modalNewUser" #tooltip="matTooltip" matTooltip="Registra nuevo cliente" (click)="data_cliente = {}">
+<div class="floating-btn" data-bs-toggle="modal" data-bs-target="#modalNewUser" #tooltip="matTooltip" matTooltip="Registra nuevo cliente" (click)="editar_cliente = false">
   <span class="icon fa fa-user fa-2x"></span>
 </div>
 
@@ -30,8 +30,7 @@
     <h1>Informacion de cliente 
 
       <ng-container *ngIf="infoCotizacion.cliente">
-        <i class="fa fa-edit text-primary m-1 pointer" #tooltip="matTooltip" matTooltip="Editar informacion" 
-        (click)="data_cliente = infoCotizacion.data_cliente" data-bs-toggle="modal" data-bs-target="#modalNewUser"></i>
+        <i class="fa fa-edit text-primary m-1 pointer" (click)="editar_cliente = true" #tooltip="matTooltip" matTooltip="Editar informacion"  data-bs-toggle="modal" data-bs-target="#modalNewUser"></i>
       </ng-container>
     </h1>
     <div class="row">
@@ -341,12 +340,19 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+      
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="staticBackdropLabel">fhgj</h1>
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
       <div class="modal-body">
-        <ng-container *ngIf="data_cliente['id']; else elseTemplateRegistroCLiente">
-          <app-cliente [data_cliente]="data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>
+        <ng-container *ngIf="editar_cliente; else elseTemplateRegistroCLiente">
+          <app-cliente [data_cliente]="infoCotizacion.data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>
         </ng-container>
-        <ng-template #elseTemplateRegistroCLiente>
-          <app-cliente (heroeSlec)="clientesInfo( $event )"></app-cliente>
+        <ng-template #elseTemplateRegistroCLiente>     
+          <app-cliente [data_cliente]="{}" (heroeSlec)="clientesInfo( $event )"></app-cliente>
         </ng-template>
       </div>
     </div>

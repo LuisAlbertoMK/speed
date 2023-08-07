@@ -50,10 +50,6 @@
             
           </div>
         </ng-container>
-  
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end fs-5">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center fs-5">
           <ng-container *ngIf="!form_cliente.controls['uid'].value; else elseCliente">
             <h1 class="text-primary"> Registro cliente</h1>
@@ -177,7 +173,7 @@
               <label for="nombre" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nombre <span class="text-danger">*</span> </label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
-                  [class.is-invalid]="validarCampo('nombre')"  onkeypress="validarLetras(event)">
+                  [class.is-invalid]="validarCampo('nombre')"  onkeypress="validarLetras(event)" > 
                 <small *ngIf="validarCampo('nombre')" class="text-danger">
                   campo requerido
                 </small>
@@ -262,13 +258,14 @@
           </div>
         </div>
       </form>
-      <ng-container *ngIf="faltante_s">
+      <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+      <!-- <ng-container *ngIf="faltante_s">
         <div class="row mt-2">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">
             Información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
           </div>
         </div>
-      </ng-container>
+      </ng-container> -->
       
     </div>
   </div>

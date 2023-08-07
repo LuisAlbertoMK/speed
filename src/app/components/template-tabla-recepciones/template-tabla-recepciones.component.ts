@@ -75,9 +75,8 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       // console.log({nuevoValor, valorAnterior});
         this.obtener_total_cotizaciones()
     }
-  }
+  }   
   irPagina(pagina, data){
-    console.log(data);
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
     // console.log(this.enrutamiento);
     let queryParams = {}
@@ -90,7 +89,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     }else if (pagina === 'ServiciosConfirmar' && tipo) {
       queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
     }
-    console.log(queryParams);
+    // console.log(queryParams);
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }

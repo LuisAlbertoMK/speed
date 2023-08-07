@@ -184,9 +184,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.checkList = this.checkList
     this.infoConfirmar.detalles = this.detalles_rayar
     this.rutaActiva.queryParams.subscribe((params:any) => {
-     this.enrutamiento = params 
-     console.log(params);
-     
+     this.enrutamiento = params
      this.acciones()
     });
   }
@@ -992,12 +990,14 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const campos_refaccion = [ ...campos_mo, 'marca']
     const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
     // let refacciones_new = 0
-    const servicios = [...servicios_] 
+    const nuevos_elementos = (servicios_) ? servicios_ : []
+    const servicios = [...nuevos_elementos] 
     let new_ele
     const margen = 1 + (new_margen / 100)
     servicios.map(ele=>{
       const {cantidad, costo} = ele
       if (ele.tipo === 'paquete') {
+        ele.elementos = (ele.elementos) ? ele.elementos : []
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {

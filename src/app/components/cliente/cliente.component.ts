@@ -1,5 +1,5 @@
 import { map, startWith } from 'rxjs/operators';
-import { Component, OnInit, Input, Output,EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter, SimpleChanges, OnChanges, SimpleChange} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SucursalesService } from '../../services/sucursales.service';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
@@ -34,6 +34,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     }
 
     @Input() data_cliente
+    
   
     @Output() heroeSlec : EventEmitter<any>
     
@@ -71,6 +72,10 @@ export class ClienteComponent implements OnInit, OnChanges {
     faltante_s:string
 
     correos_existentes = []
+
+    formularioCreado = false;
+    cambiosPendientes: any;
+
   ngOnInit(): void {
     this.roles()
     this.crearFormularioClientes()
@@ -84,34 +89,43 @@ export class ClienteComponent implements OnInit, OnChanges {
       const nuevoValor = changes['data_cliente'].currentValue;
       const valorAnterior = changes['data_cliente'].previousValue;
       // console.log({nuevoValor, valorAnterior});
-
-      setTimeout(()=>{
-        if (nuevoValor && nuevoValor['id']) {
-         this.cargaDataForm(nuevoValor)
-        } else  if (nuevoValor === valorAnterior) {
-          this.cargaDataForm(valorAnterior)
-        } else if(!nuevoValor && !valorAnterior){
-          const sucursal = (this.SUCURSAL === 'Todas') ? '': this.SUCURSAL 
-          this.form_cliente.reset(sucursal)
-        }
-      },500)
+      // console.log(nuevoValor);
       
-
-    }
-  }
-  cargaDataForm(cliente){
-    if (cliente['id']) {
-      const data_recuperada = this._publicos.nuevaRecuperacionData(cliente, this._clientes.camposCliente )
-
-      data_recuperada.no_cliente = String(data_recuperada.no_cliente).toUpperCase()
-      this.form_cliente.reset(Object({...data_recuperada, uid: data_recuperada.id}))
-      // console.log(data_recuperada);
-      if (data_recuperada.usuario) {
-        this.form_cliente.controls['correo'].disable();
-      }else{
-        this.form_cliente.controls['correo'].enable();
+      if (nuevoValor !== valorAnterior) {
+        if (!this.formularioCreado) {
+          this.crearFormularioClientes()
+          this.cambiosPendientes = nuevoValor
+        } else {
+          this.cargaDataForm(nuevoValor)
+        }
       }
     }
+  }
+  async cargaDataForm(cliente){
+
+    const nueva_data = JSON.parse(JSON.stringify(cliente));
+    const campos  = [
+      'apellidos',
+      'correo',
+      'correo_sec',
+      // 'empresa',
+      'no_cliente',
+      'nombre',
+      'sucursal',
+      'telefono_movil',
+      'telefono_fijo',
+      'tipo',
+    ]
+
+    campos.forEach(campo=>{
+      this.form_cliente.get(campo)?.setValue(nueva_data[campo]);
+    })
+    this.form_cliente.get('uid').setValue(nueva_data['id'])
+    this.empresasSucursal = await this._empresas.consulta_empresas(nueva_data.sucursal)
+    
+    this.form_cliente.get('empresa').setValue(nueva_data.empresa)
+    
+    
   }
 
   automaticos_empresa(){
@@ -147,7 +161,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     this.telefonoExistente = false
     if (info) this.telefonoExistente = true
   }
-  crearFormularioClientes(){
+  crearFormularioClientes(){    
     let sucursal = (this.SUCURSAL === 'Todas') ? '' : this.SUCURSAL 
     this.form_cliente = this.fb.group({
       uid:['',[]],
@@ -163,8 +177,13 @@ export class ClienteComponent implements OnInit, OnChanges {
       empresa:['',[]]
     })    
     this.vigila()
+    this.formularioCreado= true
+    if (this.cambiosPendientes) {
+      this.cargaDataForm(this.cambiosPendientes)
+      this.cambiosPendientes = null
+    }
   }
-  vigila(){
+  vigila(){    
     this.form_cliente.get('tipo').valueChanges.subscribe(async (tipo: string) => {
       if (tipo === 'flotilla') {
         this.form_cliente.get('empresa').enable();
@@ -172,6 +191,8 @@ export class ClienteComponent implements OnInit, OnChanges {
         const sucursal =  this.form_cliente.get('sucursal').value
         if (sucursal) {
           this.empresasSucursal = await this._empresas.consulta_empresas(sucursal)
+          // console.log(this.empresasSucursal);
+          
         }
       } else {
         this.form_cliente.get('empresa').disable();
@@ -183,13 +204,13 @@ export class ClienteComponent implements OnInit, OnChanges {
       if (sucursal) {
         this.empresasSucursal = await this._empresas.consulta_empresas(sucursal)
       }
-      this.actualizaNoCliente()
+        if (!this.data_cliente) this.actualizaNoCliente()
     })
     this.form_cliente.get('nombre').valueChanges.subscribe((nombre: string) => {
-        this.actualizaNoCliente()
+        if (!this.data_cliente) this.actualizaNoCliente()
     })
     this.form_cliente.get('apellidos').valueChanges.subscribe((apellidos: string) => {
-        this.actualizaNoCliente()
+        if (!this.data_cliente) this.actualizaNoCliente()
     })
     this.form_cliente.get('correo').valueChanges.subscribe((correo: string) => {
       if (correo) {
@@ -314,6 +335,8 @@ export class ClienteComponent implements OnInit, OnChanges {
     if (ok && !faltante_s) {
       const updates = {};
       const mensaje = (info_get.uid) ? 'Actualización de cliente correcto!!': 'Registro de cliente correcto!!'
+
+      let nueva_clave_generada = info_get.uid
       if (info_get.uid) {
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_Actualizar);
         campos_permitidos_Actualizar.forEach(campo=>{
@@ -324,7 +347,7 @@ export class ClienteComponent implements OnInit, OnChanges {
         })
       }else{
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_new_register);
-        const nueva_clave_generada = this._publicos.generaClave()
+        nueva_clave_generada = this._publicos.generaClave()
 
         campos_permitidos_new_register.forEach(campo=>{
           if (informacion_recuperada [campo]) {
@@ -341,8 +364,7 @@ export class ClienteComponent implements OnInit, OnChanges {
         try {
           await update(ref(db), updates);
           this._publicos.mensajeSwal(`${mensaje}`,1, true, `...`);
-          this.resetForm();
-          this.heroeSlec.emit({ cliente: '', status: true });
+          this.heroeSlec.emit(info_get);
         } catch (err) {
           this.heroeSlec.emit(Object({ cliente: null, status: false }));
           this._publicos.mensajeSwal(`Ocurrió un error`,0, true, `...`);
@@ -356,7 +378,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     this.heroeSlec.emit( Object({CerrarModal: false}) )
   }
   resetForm(){
-    this.form_cliente.reset()
+    // this.form_cliente.reset()
   }
   listadoEmpresas(sucursal){
     const starCountRef = ref(db, `empresas/${sucursal}`)

@@ -118,6 +118,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     meses:0,
     ub:0,
   }
+
+  editar_cliente:boolean = false
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -135,7 +137,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
-      console.log(params);
+      // console.log(params);
       
       this.cargaDataCliente_new()
     });
@@ -168,6 +170,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       const busqueda_ruta_recepcion = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
       
       const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
+      // console.log(data_cotizacion);
       
       const campos = ['formaPago','iva','margen','servicio','elementos','nota']
       data_cotizacion.nota = data_cotizacion.nota || ''
@@ -324,31 +327,12 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
   }
   //recibir la nueva data y consukta extra de info cliente
-  async clientesInfo(info:any){
-    
-    const {cliente, status} = info
-    if(!info.CerrarModal){
-      if (status) {
-        const infonew:any= await this._clientes.consulta_cliente_new(cliente.id)
-          this.infoCotizacion.cliente = infonew
-          this.infoCotizacion.vehiculos = infonew.vehiculos
-          this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s['id'] === infonew.sucursal)
-          
-        // }
-        if (this.extra && cliente.vehiculos) {
-          this.infoCotizacion.vehiculo = cliente.vehiculos.find(v=>v.id === this.extra)
-        }else{
-          this.infoCotizacion.vehiculo = null
-        }
-        this.realizaOperaciones()
-        this._publicos.swalToast('Se registro cliente', 1)
-      }else{
-        this._publicos.mensaje('Intenta nuevamente',0)
-      }
-    }else{
-      
+  async clientesInfo(event){
+    // console.log(event);
+    const {uid} = event
+    if (uid) {
+      this.infoCotizacion.data_cliente = event
     }
-    
   }
   cargaDataVehiculo(data: any, quien: string) {
     this.cliente = null;
@@ -562,17 +546,17 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                   clearInterval(intervalo)
                   const updates = {};
                   const campos = ['cliente','elementos','fecha_recibido','formaPago','iva','margen','no_cotizacion',
-                                  'nota','reporte','servicio','sucursal','vehiculo','vencimiento','pdf'
+                                  'nota','servicio','sucursal','vehiculo','vencimiento','pdf'
                 ]
                 //asigamos solo los campos que queremos recuperaer
                 
+
                   const infoSave = this._publicos.nuevaRecuperacionData(this.infoCotizacion,campos)
-                  const {sucursal, cliente} = this.infoCotizacion
-                  updates[`cotizacionesRealizadas/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = infoSave;
                   // console.log(infoSave);
-                  // console.log(updates);
-                  
-                  // hacemos la llamada al registro de la cotizacion
+                  const {sucursal, cliente} = this.infoCotizacion
+                  infoSave['elementos'] = this.purifica_informacion(infoSave)
+                  updates[`cotizacionesRealizadas/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = infoSave;
+                
                   update(ref(db), updates)
                   .then(() => {
                     // realizamos la descarga del pdf
@@ -590,11 +574,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                       margen: 25,
                       formaPago: '1'
                     })
-                    //redireccionamos a cotizaciones disponibles
                     this.router.navigateByUrl('/cotizacion')
                   })
                   .catch((error) => {
-                    // The write failed...
                     this._publicos.swalToast('Error al guardar la cotizacion', 0, 'top-start')
                   });
                 }
@@ -624,12 +606,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const campos_refaccion = [ ...campos_mo, 'marca']
     const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
     // let refacciones_new = 0
-    const servicios = [...servicios_] 
+    const nuevos_elementos = (servicios_) ? servicios_ : []
+    const servicios = [...nuevos_elementos] 
     let new_ele
     const margen = 1 + (new_margen / 100)
     servicios.map(ele=>{
       const {cantidad, costo} = ele
       if (ele.tipo === 'paquete') {
+        ele.elementos = (ele.elementos) ? ele.elementos : []
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
@@ -705,7 +689,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const mul = (costo > 0 ) ? costo : precio
     return cantidad * mul
   }
-  total_paquete(data){
+  total_paquete(data){    
     const {elementos} = data
     const reporte = {mo:0, refacciones:0}
     const nuevos_elementos = [...elementos]
@@ -736,5 +720,59 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     })
     return nuevos_subelementos
   }
+  purifica_informacion(data){
+    const nueva_ = JSON.parse(JSON.stringify(data));
+    const {elementos} = nueva_
+    const _elementos_purifica = (elementos) ? elementos : []
+    const registra = _elementos_purifica.map(element => {
+      const {tipo } = element
+      const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+      const campos_refaccion = [ ...campos_mo, 'marca']
+      const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo' ]
+      let nueva 
+      switch (tipo) {
+        case 'paquete':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_paquete)
+          const info_su = this.purifica_informacion_interna(nueva.elementos)
+          // console.log(info_su);
+          nueva.elementos = info_su
+          
+          break;
+        case 'mo':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_mo)
+          break;
+        case 'refaccion':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_refaccion)
+          break;
+      }
 
+      //primera recuperacion 
+      // console.log(nueva);
+      return nueva
+    });
+    // console.log(registra);
+    return registra
+  }
+  purifica_informacion_interna(elementos:any[]){
+    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+    const campos_refaccion = [ ...campos_mo, 'marca']
+
+    const nuevos_elementos = elementos.map(e=>{
+      const {tipo} = e
+      e.nombre = String(e.nombre).toLowerCase()
+      switch (tipo) {
+        case 'mo':
+        case 'MO':
+          e.id = e.IDreferencia
+          e.tipo = String(tipo).toLowerCase()
+          
+          return this._publicos.nuevaRecuperacionData(e,campos_mo)
+        case 'refaccion':
+          return this._publicos.nuevaRecuperacionData(e,campos_refaccion)
+      }
+    })
+
+    return nuevos_elementos 
+
+  }
 }

@@ -90,7 +90,7 @@ export class HistorialVehiculoComponent implements OnInit {
     const {vehiculo, cliente, anterior, sucursal} = this.enrutamiento
   
     const queryParams = {vehiculo, cliente, sucursal}
-    this.router.navigate([`/${anterior}`], { 
+    this.router.navigate([`/historial-cliente`], { 
       queryParams
     });
   }
