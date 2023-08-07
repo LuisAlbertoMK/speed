@@ -123,8 +123,6 @@
   </table>
   <mat-paginator #clientesPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>
-
-
 <!-- aqui las ventanas modal para el registro de nuevo cliente o vehiculo -->
 
   <div class="modal fade" id="modalNewUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -132,6 +130,11 @@
   <div
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
     <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <div class="modal-body">
 
         <ng-container *ngIf="data_cliente['id']; else elseTemplateRegistroCLiente">
@@ -140,30 +143,6 @@
         <ng-template #elseTemplateRegistroCLiente>
           <app-cliente (heroeSlec)="clientesInfo( $event )"></app-cliente>
         </ng-template>
-
-        <!-- <app-cliente [data_cliente]="data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente> -->
-        <!-- <ng-container *ngIf="data_cliente['id']; else elseRegistroCliente">
-          'actualiza data cliente'
-          <app-cliente [data_cliente]="data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>
-        </ng-container>
-        <ng-template #elseRegistroCliente>
-          'registra nuevo cliente'
-          
-        </ng-template> -->
-        
-        <!-- <pre>
-          {{datCliente | json}}
-        </pre> -->
-        <!-- <ng-container *ngIf="datCliente; else elseNewCliente">
-          <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
-        </ng-container>
-        <ng-template #elseNewCliente>
-          <div class="row">
-            <div class="col text-center">
-              <app-cliente (heroeSlec)="clientesInfo( $event )" [sucursal]="SUCURSAL"></app-cliente>
-            </div>
-          </div>
-        </ng-template> -->
       </div>
     </div>
   </div>

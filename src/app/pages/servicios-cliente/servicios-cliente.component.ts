@@ -54,40 +54,54 @@ export class ServiciosClienteComponent implements OnInit {
   @ViewChild('recepcionesPaginator') paginator: MatPaginator //elementos
   @ViewChild('recepciones') sort: MatSort //elementos
 
-  recepciones_clinete = []
+  
+
+  recepciones_arr= []
+  SUCURSAL:string
 
   ngOnInit(): void {
     this.rol()
   }
   rol(){
     const { rol, sucursal, uid} = this._security.usuarioRol()
+    this.SUCURSAL = sucursal
 
     if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
   }
-  obtenerInformacion_cliente(cliente:string){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, async (snapshot) => {
-      const servicios = await this._servicios.consulta_recepciones_new()
-      // console.log(servicios);
-      const servicios_filter = servicios.filter(s=>s.cliente.id === cliente)
-      // console.log(servicios_filter);
-      servicios_filter.forEach((s,index)=>{
-        s['index'] = index + 1
-      })
+  async obtenerInformacion_cliente(id:string){
+    const sucursal = this.SUCURSAL
+    const cliente = id
 
-      //
-      if (!this.recepciones_clinete.length) {
-        this.recepciones_clinete = servicios_filter;
-        // this.cargandoInformacion = false
-      } else {
-        this.recepciones_clinete = this._publicos.actualizarArregloExistente(this.recepciones_clinete,servicios_filter,[...this._servicios.campos_servicios_hard])
-        // this.cargandoInformacion = false
-      }
-      this.dataSource.data = this.recepciones_clinete
-      this.newPagination()
+
+    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
+
+    const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
+
+    const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
+
+    const filtro_recepciones = todas_recepciones.map(cot=>{
+      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
+      // cot.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
       
+      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
+      cot.data_vehiculo = data_vehiculo
+      const {placas}= data_vehiculo
+      cot.placas = placas || '------'
+      return cot
     })
+
+    
+    if (!this.recepciones_arr.length) {
+      this.recepciones_arr = filtro_recepciones;
+      // this.cargandoInformacion = false
+    } else {
+      this.recepciones_arr = this._publicos.actualizarArregloExistente(this.recepciones_arr,filtro_recepciones,[...this._cotizaciones.camposCotizaciones])
+      // this.cargandoInformacion = false
+    }
   }
+
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

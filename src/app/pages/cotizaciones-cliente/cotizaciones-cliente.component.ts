@@ -53,7 +53,7 @@ export class CotizacionesClienteComponent implements OnInit {
   miniColumnas:number =   this._campos.miniColumnas
 
   dataSource = new MatTableDataSource(); //elementos
-  elementos = ['index','no_cotizacion','searchName','searchPlacas']; //elementos
+  elementos = ['index','no_cotizacion','fullname','placas']; //elementos
   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
   expandedElement: any | null; //elementos
   @ViewChild('cotizacionesPaginator') paginator: MatPaginator //elementos
@@ -99,77 +99,78 @@ export class CotizacionesClienteComponent implements OnInit {
     {valor:'arreglo_minimo', show:'cotizaciones minimas'},
   ]
   valores_tabla_minimos = { minimo: 0,contadorMinimo: 0, no_minimo: '',arreglo_minimo: '' }
+  SUCURSAL:string
+  cotizaciones_arr= []
   ngOnInit(): void {
     this.rol()
   }
   rol(){
 
-    const { rol,  uid } = this._security.usuarioRol()
-
+    // const { rol,  uid } = this._security.usuarioRol()
+    const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
+    this.SUCURSAL = sucursal
     if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
+    
   }
 
-  obtenerInformacion_cliente(cliente:string){
-    // console.log('obtener las cotizaciones del cliente');
-    const starCountRef = ref(db, `cotizacionesRealizadas`)
-    onValue(starCountRef, async (snapshot) => {
-        const cotizaciones = await this._cotizaciones.consulta_cotizaciones_new()
-        // console.log(cotizaciones);
-        const cotizaiones_filter = cotizaciones.filter(c=>c.cliente.id === cliente)
-        cotizaiones_filter.map((c,index)=>{
-          c['index'] = index + 1
-        })
-        if (!this.cotizaciones_Existentes.length) {
-          this.cotizaciones_Existentes = cotizaiones_filter;
-          // this.cargandoInformacion = false
-        } else {
-          this.cotizaciones_Existentes = this._publicos.actualizarArregloExistente(this.cotizaciones_Existentes,cotizaciones,[...this._cotizaciones.camposCotizaciones])
-          // this.cargandoInformacion = false
-        }
-        // console.log(this._publicos.obtener_ticketPromedioFinal(this.cotizaciones_Existentes))
-        // clonar.push(Object({name: ' '+String(data_vehiculo.placas).toUpperCase(), value: ocupado, contador, arreglo, servicios_totales: servicios}))
-        // let clonar = []
-        // clonar.push(Object({name: '', value:7}))
-        // this.single = [...clonar]
-        const aqui = this._publicos.obtener_ticketPromedioFinal(this.cotizaciones_Existentes)
-        const tickets = this._publicos.obtenerValorMaximoMinimo(this.cotizaciones_Existentes)
-        
-        Object.keys(aqui).forEach(c=>{
-          this.valores_promedios[c] = aqui[c]
-        })
-        Object.keys(tickets).forEach(c=>{
-          const maxKeys = Object.keys(this.valores_tabla_maximos);
-          const minKeys = Object.keys(this.valores_tabla_minimos);
+  async obtenerInformacion_cliente(id:string){
 
-          if (maxKeys.includes(c)) {
-            this.valores_tabla_maximos[c] = c !== 'arreglo_maximo' ? tickets[c] : tickets[c].join(', ');
-          }
-          if (minKeys.includes(c)) {
-            this.valores_tabla_minimos[c] = c !== 'arreglo_minimo' ? tickets[c] : tickets[c].join(', ');
-          }
-        })
+    const sucursal = this.SUCURSAL
+    const cliente = id
 
-        // console.table(this.valores_tabla_maximos)
-        // console.table(this.valores_tabla_minimos)
-        // console.table(this.valores_promedios)
-        
 
-        // this.cotizaciones_count[0].value_number = aqui.servicios_totales
-        // this.cotizaciones_count[1].value_number = aqui.ticketGeneral
-        // this.cotizaciones_count[2].value_number = aqui.ticketPromedio
-        // this.cotizaciones_count[3].value_number = maximo
-        // this.cotizaciones_count[4].value_string = no_maximo
-        // this.cotizaciones_count[5].value_number = contadorMaximo
-        // this.cotizaciones_count[6].value_string = arreglo_maximo.join(', ')
-        // this.cotizaciones_count[7].value_number = minimo
-        // this.cotizaciones_count[8].value_string = no_minimo
-        // this.cotizaciones_count[9].value_number = contadorMinimo
-        // this.cotizaciones_count[10].value_string = arreglo_minimo.join(', ')
+    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
 
-        this.dataSource.data = this.cotizaciones_Existentes
-        this.newPagination()
-        
+    const ruta_cotizaciones   =  `cotizacionesRealizadas/${sucursal}/${cliente}`
+    
+    const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
+
+    const filtro_cotizaciones = todas_cotizaciones.map(cot=>{
+      const data_cliente_formateada = this._clientes.formatea_info_cliente_2(data_cliente)
+      // cot.data_sucursal = this.sucursales_arr.find(s=>s.id === sucursal)
+      cot.data_cliente = data_cliente_formateada
+      cot.fullname = data_cliente_formateada.fullname
+      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
+      cot.data_vehiculo = data_vehiculo
+      const {placas}= data_vehiculo
+      cot.placas = placas || '------'
+      const {reporte, elementos} = this.calcularTotales(cot);
+      cot.reporte = reporte
+      cot.elementos = elementos
+      return cot
     })
+    
+
+    if (!this.cotizaciones_arr.length) {
+      this.cotizaciones_arr = filtro_cotizaciones;
+      // this.cargandoInformacion = false
+    } else {
+      this.cotizaciones_arr = this._publicos.actualizarArregloExistente(this.cotizaciones_arr,filtro_cotizaciones,[...this._cotizaciones.camposCotizaciones])
+      // this.cargandoInformacion = false
+    }
+
+    const aqui = this._publicos.obtener_ticketPromedioFinal(this.cotizaciones_arr)
+    const tickets = this._publicos.obtenerValorMaximoMinimo(this.cotizaciones_arr)
+
+    Object.keys(aqui).forEach(c=>{
+      this.valores_promedios[c] = aqui[c]
+    })
+    Object.keys(tickets).forEach(c=>{
+      const maxKeys = Object.keys(this.valores_tabla_maximos);
+      const minKeys = Object.keys(this.valores_tabla_minimos);
+
+      if (maxKeys.includes(c)) {
+        this.valores_tabla_maximos[c] = c !== 'arreglo_maximo' ? tickets[c] : tickets[c].join(', ');
+      }
+      if (minKeys.includes(c)) {
+        this.valores_tabla_minimos[c] = c !== 'arreglo_minimo' ? tickets[c] : tickets[c].join(', ');
+      }
+    })
+
+      
+    this.dataSource.data = this.cotizaciones_arr
+    this.newPagination()
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -182,6 +183,87 @@ export class CotizacionesClienteComponent implements OnInit {
       this.dataSource.sort = this.sort
     // }
     }, 500)
+  }
+
+  calcularTotales(data) {
+    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+    const elementos = (servicios_) ? [...servicios_] : []
+    const margen = 1 + (new_margen / 100)
+    elementos.map(ele=>{
+      const {cantidad, costo} = ele
+      if (ele.tipo === 'paquete') {
+        const report = this.total_paquete(ele)
+        const {mo, refacciones} = report
+        if (ele.aprobado) {
+          reporte.mo += mo
+          reporte.refacciones += refacciones
+          reporte.refacciones_v += refacciones * margen
+        }
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad 
+      }else if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.mo += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.refacciones += operacion
+          reporte.refacciones_v += operacion * margen
+        }
+        ele.subtotal = operacion
+        ele.total = operacion * margen
+      }
+      return ele
+    })
+    let descuento = parseFloat(descuento_) || 0
+    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
+    const {mo, refacciones_v, refacciones} = reporte
+
+    let nuevo_total = mo + refacciones_v
+
+    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
+
+    let iva =  _iva ? nuevo_total * .16 : 0;
+
+    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
+    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
+    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
+
+    reporte.descuento = descuentoshow
+    reporte.iva = iva
+    reporte.subtotal = nuevo_total
+    reporte.total = newTotal
+    reporte.meses = total_meses
+    // console.log(reporte);
+    // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
+    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
+    return {reporte, elementos}
+    
+  }
+  mano_refaccion(ele){
+    const {costo, precio, cantidad} = ele
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete(data){
+    const {elementos} = data
+    const reporte = {mo:0, refacciones:0}
+    elementos.forEach(ele=>{
+      if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+      }
+    })
+    return reporte
   }
 
 }

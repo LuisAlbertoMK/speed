@@ -153,14 +153,14 @@ export class ServiciosService {
     infoConfirmar=
         {
           cliente:'', data_cliente:{}, vehiculo:'', data_vehiculo:{},sucursal:'', data_sucursal:{}, reporte:{}, no_os:'', dataFacturacion: {},observaciones:'',
-          checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
+          checkList:[], vehiculos:[], elementos:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
           detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
           fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: '', descuento:0
         }
         servicio_editar = {
           cliente:null, data_cliente:null, vehiculo:null, data_vehiculo:null,sucursal:null, data_sucursal:null, reporte:null, no_os:null, 
           dataFacturacion: {},observaciones:null, id:null,
-          checkList:[], vehiculos:[], servicios:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
+          checkList:[], vehiculos:[], elementos:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
           detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:null, status:null, diasSucursal:0,
           fecha_recibido:null, notifico:true,servicio:'1', tecnico:null, showNameTecnico: '', descuento:0, historial_pagos:[], historial_gastos:[]
         }

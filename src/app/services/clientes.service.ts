@@ -131,6 +131,7 @@ export class ClientesService {
     const {sucursal, nombre, apellidos } = data_cliente
     data_cliente.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
     data_cliente.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+  
     return data_cliente
   }
   consulta_cliente_new(data): Promise<object> {
@@ -139,7 +140,9 @@ export class ClientesService {
       const starCountRef = ref(db, `clientes/${sucursal}/${cliente}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          resolve(this.formatea_info_cliente_2(snapshot.val()));
+          const data_cliente = snapshot.val()
+          data_cliente.id = cliente
+          resolve(this.formatea_info_cliente_2(data_cliente));
         } else {
           resolve({});
         }

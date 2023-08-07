@@ -297,7 +297,7 @@
       <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-1 mt-1" *ngIf="servicio_editar.reporte">
         <app-reporte-desgloce-tarjeta [reporte]="servicio_editar.reporte" ></app-reporte-desgloce-tarjeta>
       </div>
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="servicio_editar.servicios">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="servicio_editar.elementos">
         <!-- <button (click)="variable_modal = 'paquete'" class="btn btn-primary btn-sm m-1" data-bs-target="#modal-paquetes" data-bs-toggle="modal">Agregar paquete</button> -->
         <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-paquetes" data-bs-toggle="modal">Agregar paquete</button>
         <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-elementos" data-bs-toggle="modal">Agregar elemento</button>
@@ -320,7 +320,7 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let item of servicio_editar.servicios">
+              <ng-container *ngFor="let item of servicio_editar.elementos">
                 <tr [ngClass]="'tipo-'+item.tipo" >
                   <td class="text-start">
                     {{item.nombre}} &nbsp;

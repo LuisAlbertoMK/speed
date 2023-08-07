@@ -27,7 +27,7 @@ import { Router } from '@angular/router';
 interface ServicioEditar {
   reporte: any;
   observaciones: any;
-  servicios: any[];
+  elementos: any[];
   iva: boolean;
   formaPago: string;
   margen: number;
@@ -304,9 +304,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   
             g.data_sucursal =  data_sucursal
             g.sucursalShow = data_sucursal.sucursal
-            const {reporte, servicios} = this.calcularTotales(g);
+            const {reporte, elementos} = this.calcularTotales(g);
             g.reporte = reporte
-            g.servicios = servicios
+            g.elementos = elementos
             return g
           });
         await Promise.all(promesasVehiculos);
@@ -420,7 +420,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       const updates= {}
 
       const campos_update = [
-        'servicios',
+        'elementos',
         'iva',
         'formaPago',
         'margen',
@@ -455,7 +455,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const {respuesta } = await this._publicos.mensaje_pregunta(`Cambiar status de orden ${status}`,true, `Este cambio de status general afecta a los servicios de la orden`)
     if (!respuesta) return
     console.log(status);
-    const servicios = [...this.servicio_editar.servicios]
+    const elementos = [...this.servicio_editar.elementos]
 
     let new_status 
     switch (status) {
@@ -473,20 +473,20 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         new_status = status
         break;
     }
-    servicios.forEach(s => {
+    elementos.forEach(s => {
           if (s.aprobado) {
             s.status = new_status
           }
         });
 
-    this.servicio_editar.servicios = servicios
+    this.servicio_editar.elementos = elementos
     this.servicio_editar.status = status
     this.asigna_resultados_servicio_editar()
   }
   actualiza_servicio_unico(data){
     const {servicio, aprobado,status} = data
-    const servicios = [...this.servicio_editar.servicios]
-    servicios
+    const elementos = [...this.servicio_editar.elementos]
+    elementos
     .map(s=>{
       if (s.id === servicio.id && typeof aprobado === 'boolean') {
         s.aprobado = aprobado
@@ -496,21 +496,21 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       return s 
     })
 
-    const filtrado = servicios .filter(s=>s.status !== 'eliminado')
-    this.servicio_editar.servicios = filtrado
+    const filtrado = elementos .filter(s=>s.status !== 'eliminado')
+    this.servicio_editar.elementos = filtrado
     this.asigna_resultados_servicio_editar()
   }
   agregar_servicio(event){
     const {id} = event
     if (id) {
-      this.servicio_editar.servicios.push( {...event,status: 'espera'})
+      this.servicio_editar.elementos.push( {...event,status: 'espera'})
       this.asigna_resultados_servicio_editar()
     }
   }
   agregar_paquete(event){
     const {id} = event
     if (id) {
-      this.servicio_editar.servicios.push( {...event,status: 'espera'})
+      this.servicio_editar.elementos.push( {...event,status: 'espera'})
       this.asigna_resultados_servicio_editar()
     }
   }
@@ -523,7 +523,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     }
   }
   compararObjetos(obj1: ServicioEditar, obj2: ServicioEditar): { sonIguales: boolean; diferencias: string } {
-    const campos_comparar = ['servicios','reporte','servicio','margen','iva','descuento','status','tecnico','formaPago']
+    const campos_comparar = ['elementos','reporte','servicio','margen','iva','descuento','status','tecnico','formaPago']
 
     const diferencias: string[] = [];
     let sonIguales = true;
@@ -553,16 +553,16 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     }
   }
   asigna_resultados_servicio_editar(){
-    const {reporte, servicios} = this.calcularTotales(this.servicio_editar);
+    const {reporte, elementos} = this.calcularTotales(this.servicio_editar);
     this.servicio_editar.reporte = reporte
-    this.servicio_editar.servicios = servicios
+    this.servicio_editar.elementos = elementos
   }
   calcularTotales(data) {
-    const {margen: new_margen, formaPago, servicios: servicios_, iva:_iva, descuento:descuento_} = data
+    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    const servicios = [...servicios_] 
+    const elementos = (servicios_) ? [...servicios_] : []
     const margen = 1 + (new_margen / 100)
-    servicios.map(ele=>{
+    elementos.map(ele=>{
       const {cantidad, costo} = ele
       if (ele.tipo === 'paquete') {
         const report = this.total_paquete(ele)
@@ -615,7 +615,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     // console.log(reporte);
     // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
     reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, servicios}
+    return {reporte, elementos}
     
   }
   mano_refaccion(ele){

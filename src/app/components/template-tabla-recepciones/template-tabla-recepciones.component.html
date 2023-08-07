@@ -1,6 +1,6 @@
 
 
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="reporte_totales">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="reporte_totales && muestra_desgloce">
     <app-reporte-desgloce-tarjeta [reporte]="reporte_totales" [title]="'Desgloce  total de recepciones'" ></app-reporte-desgloce-tarjeta>
   </div>
   
@@ -63,8 +63,8 @@
                   <div class="example-element-detail row" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
                       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
                           <mat-tab label="Elementos">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="row.reporte">
-                              <app-reporte-desgloce-tarjeta [reporte]="row.reporte"  [title]="'Flotilla'"></app-reporte-desgloce-tarjeta>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1 mt-1  offset-1" *ngIf="row.reporte">
+                              <app-reporte-desgloce-tarjeta [reporte]="row.reporte" [title]="'Flotilla'"></app-reporte-desgloce-tarjeta>
                             </div>
                             <div class="table-responsive">
                               <table class="table table-sm">

@@ -273,7 +273,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
    }
   }
   agrega_principal(event){
-    let nuevos = [...this.infoConfirmar.servicios]
+    let nuevos = [...this.infoConfirmar.elementos]
     const {id} = event
     if (id) {
       nuevos.push(event)
@@ -282,7 +282,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   eliminaElemento(data){
     const { index:index_elimina } = data
-    let nuevos = [...this.infoConfirmar.servicios]
+    let nuevos = [...this.infoConfirmar.elementos]
     nuevos = nuevos.filter((elemento, index) => index !== index_elimina);
     this.asignar_nuevos_elementos(nuevos)
   }
@@ -290,7 +290,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const nueva_cantidad = parseFloat(cantidad)
     const { index:index_editar } = data
 
-    let nuevos = [...this.infoConfirmar.servicios]
+    let nuevos = [...this.infoConfirmar.elementos]
     nuevos[index_editar][donde] = nueva_cantidad
     this.asignar_nuevos_elementos(nuevos)
   }
@@ -299,7 +299,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const { index:index_editar } = data
     const { index:index_editar_subelemento } = item
    
-    let nuevos = [...this.infoConfirmar.servicios]
+    let nuevos = [...this.infoConfirmar.elementos]
     let nuevos_internos = nuevos[index_editar].elementos
 
     nuevos_internos[index_editar_subelemento][donde] = nueva_cantidad
@@ -314,7 +314,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const { index:index_editar } = data
     const { index:index_editar_subelemento } = item
 
-    let nuevos = [...this.infoConfirmar.servicios]
+    let nuevos = [...this.infoConfirmar.elementos]
     let nuevos_internos = nuevos[index_editar].elementos
 
     nuevos_internos = nuevos_internos.filter((elemento, index) => index !== index_editar_subelemento);
@@ -325,12 +325,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   asignar_nuevos_elementos(nuevos:any[]){
-    this.infoConfirmar.servicios = nuevos
+    this.infoConfirmar.elementos = nuevos
     this.realizaOperaciones()
   }
   cambiaAprobado(index, aprobado){
     setTimeout(() => {
-      this.infoConfirmar.servicios[index].aprobado = aprobado
+      this.infoConfirmar.elementos[index].aprobado = aprobado
       this.infoConfirmar.reporte = this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte
     }, 100);
   }
@@ -371,19 +371,19 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       refacciones:0,
     }
 
-    const  {reporte, servicios} = this.calcularTotales(this.infoConfirmar)
+    const  {reporte, elementos} = this.calcularTotales(this.infoConfirmar)
       Object.keys(reporte_totales).forEach(campo=>{
         reporte_totales[campo] += reporte[campo]
       })
     this.reporte_totales = reporte
-    servicios.map((s, index)=>{
+    elementos.map((s, index)=>{
       s.index = index
       s.aprobado = true
     })
     this.infoConfirmar.reporte = reporte
 
-    this.infoConfirmar.servicios = servicios
-    this.dataSource.data = servicios
+    this.infoConfirmar.elementos = elementos
+    this.dataSource.data = elementos
     this.newPagination()
 
   }
@@ -891,7 +891,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this._pdfRecepcion.obtenerImege(this.infoConfirmar).then((pdfReturn:any) => {
       const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
 
-      const {sucursal, cliente,vehiculo, servicios, reporte, data_sucursal, data_cliente, data_vehiculo} = this.infoConfirmar
+      const {sucursal, cliente,vehiculo, elementos, reporte, data_sucursal, data_cliente, data_vehiculo} = this.infoConfirmar
 
       const nueva = {
         mo: reporte['mo'],
@@ -909,7 +909,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           filename : `${no_os}.pdf`,
           cliente: data_cliente,
           vehiculo:data_vehiculo,
-          arregloString: this._publicos.obtenerNombresElementos(servicios),
+          arregloString: this._publicos.obtenerNombresElementos(elementos),
           desgloce: this._publicos.construyeDesgloceEmail(nueva)
         }
         this.infoConfirmar.no_os = no_os
@@ -991,10 +991,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
     // let refacciones_new = 0
     const nuevos_elementos = (servicios_) ? servicios_ : []
-    const servicios = [...nuevos_elementos] 
+    const elementos = [...nuevos_elementos] 
     let new_ele
     const margen = 1 + (new_margen / 100)
-    servicios.map(ele=>{
+    elementos.map(ele=>{
       const {cantidad, costo} = ele
       if (ele.tipo === 'paquete') {
         ele.elementos = (ele.elementos) ? ele.elementos : []
@@ -1065,7 +1065,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     reporte.meses = total_meses
 
     reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, servicios}
+    return {reporte, elementos}
     
   }
   mano_refaccion(ele){

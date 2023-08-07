@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "finalizo la depuracion fase 1"
+git commit -m "correccion de sesion de cliente (en proceso)"
 git push -u origin 
 
 

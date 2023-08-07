@@ -64,7 +64,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     if (changes['data_cliente']) {
       const nuevoValor = changes['data_cliente'].currentValue;
       const valorAnterior = changes['data_cliente'].previousValue;
-      // console.log({nuevoValor, valorAnterior});
+      console.log({nuevoValor, valorAnterior});
       
         setTimeout(()=>{
           if (nuevoValor['id']) {
@@ -181,6 +181,9 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     const camposRecupera = [ 'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','sucursal','transmision','marcaMotor','vinChasis','no_motor','id']
     const info_get = this._publicos.recuperaDatos(this.form_vehiculo);
     const saveInfo:any = this._publicos.nuevaRecuperacionData(info_get, camposRecupera)
+
+    console.log(info_get);
+    
 
     const {ok, faltante_s}  =this._publicos.realizavalidaciones_new(saveInfo, this._vehiculos.obligatorios)
     this.faltante_s = faltante_s

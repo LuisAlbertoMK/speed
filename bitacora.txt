@@ -1,0 +1,2 @@
+07 de agosto de 2023
+olvide añadir boton de cerrar modal en nuevo cliente o editar informacion

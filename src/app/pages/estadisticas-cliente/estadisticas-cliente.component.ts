@@ -24,6 +24,7 @@ import localeEs from '@angular/common/locales/es';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { ViewEncapsulation, LOCALE_ID } from '@angular/core';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 @Component({
   selector: 'app-estadisticas-cliente',
@@ -41,7 +42,7 @@ import { ViewEncapsulation, LOCALE_ID } from '@angular/core';
 export class EstadisticasClienteComponent implements OnInit{
   
   constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
-  private _campos: CamposSystemService,
+  private _campos: CamposSystemService, private _vehiculos: VehiculosService,
   private _cotizaciones: CotizacionesService,private _servicios: ServiciosService, private _clientes: ClientesService,
   private router: Router) { registerLocaleData(localeEs) }
   
@@ -50,6 +51,7 @@ export class EstadisticasClienteComponent implements OnInit{
   camposReporte        = [  ...this._cotizaciones.camposReporte  ]
   camposReporte_show   = [  ...this._cotizaciones.camposReporte_show  ]
   camposReporte_show2  = {  ...this._cotizaciones.camposReporte_show2  }
+  formasPago       =  [ ...this._cotizaciones.formasPago ]
 
   miniColumnas:number  = this._campos.miniColumnas
 
@@ -58,7 +60,7 @@ export class EstadisticasClienteComponent implements OnInit{
     {valor: 'ticketPromedioFinal', show:'Ticket promedio servicios', symbol:'$'},
     {valor: 'gasto_gen', show:'Gasto total', symbol:'$'},
   ]
-  campos_estadisticas = { ticketPromedioFinal:0 ,servicios_gen:0,gasto_gen:0 }
+  campos_estadisticas = { ticketPromedioFinal:0 ,servicios_totales:0,ticketGeneral:0 }
 
   clavesVehiculos = []
   calves_vehiculos_new = []
@@ -135,7 +137,7 @@ export class EstadisticasClienteComponent implements OnInit{
 
   fechas_busqueda = {inicio: this._publicos.resetearHoras(new Date()), final: this._publicos.resetearHoras(new Date())}
 
-
+  SUCURSAL:string
 
   ngOnInit(): void {
     this.rol()
@@ -146,95 +148,119 @@ export class EstadisticasClienteComponent implements OnInit{
   }
   rol(){
   
-    const { rol,uid } = this._security.usuarioRol()
-    
+    const { rol, sucursal, uid } = this._security.usuarioRol()
+    this.SUCURSAL = sucursal
     if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
   }
-  async obtenerInformacion_cliente(cliente:string){
+  async obtenerInformacion_cliente(id:string){
+    const sucursal = this.SUCURSAL
+    const cliente = id
+    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
 
-    const starCountRef_recepciones = ref(db, `recepciones`);
-    onValue(starCountRef_recepciones, async (snapshot) => {
-      const vehiculos = await this._clientes.consulta_cliente_vehiculos(cliente)
-      const vehiculos_ids:any[] = vehiculos.map(c=> { return c.id })
-      this.calves_vehiculos_new = vehiculos_ids
-      this.vehiculos_new = vehiculos
-      const recepciones = await this._servicios.consulta_recepciones_new();
-      const recepciones_filter = recepciones.filter((c) => c.cliente.id === cliente);
-      this.recepciones_generales = recepciones_filter
-      let ticketGeneral = 0
-      
-      const servicios_gen = recepciones_filter.length, info = {};
-      vehiculos_ids.forEach((v) => {
+    const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
+    const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
 
-        const servicios_totales = recepciones_filter.filter((ser) => ser.vehiculo.id === v);
-        const data = vehiculos.find((ve) => ve.id === v);
-        const reporteSum = {...this.camposReporte_show2};
-        recepciones_filter.forEach((coti) => {
-          const { reporte } = coti;
-          if (v === coti.vehiculo.id) {
-            this.camposReporte.forEach((c) => {
-              reporteSum[c] += Number(reporte[c]);
-            });
-            info[v] = { data, servicios_totales: servicios_totales.length,ticketPromedio:0, reporte: { ...reporteSum } };
-            info[v].ticketPromedio = info[v].reporte['total'] / info[v].servicios_totales
-          }
-        });
-      });
+
+    const filtro_recepciones = todas_recepciones.map(cot=>{
+      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
+      // cot.data_sucursal = this.sucursales_arr.find(s=>s.id === sucursal)
+      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
+      cot.data_vehiculo = data_vehiculo
+      const {placas}= data_vehiculo
+      cot.placas = placas || '------'
+      const {reporte, elementos} = this.calcularTotales(cot);
+      cot.reporte = reporte
+      cot.elementos = elementos
+      return cot
+    })
+
+    const info = {};
+
+    const arra_vehiculo = vehiculos_arr.map(v=>v.id)
+
+    arra_vehiculo.forEach(vehiculo=>{
+      console.log(vehiculo);
       
-      this.clavesVehiculos = this._publicos.crearArreglo2(info)
-      this.clavesVehiculos.map(coti=>{
-        const  {data} = coti
-        coti['searchPlacas'] = data.placas
-        coti['searchMarca'] = data.marca
-        coti['searchModelo'] = data.modelo
-        coti['searchCategoria'] = data.categoria
-        coti['searchAnio'] = data.anio
-        ticketGeneral += Number(coti.reporte['total'])
+      let ticketPromedio = 0, servicios_totales =0, mo=0, refacciones=0, ticketGeneral=0
+      const totales = filtro_recepciones.filter(f=>f.vehiculo === vehiculo)
+      // console.log(totales);
+    
+      // reporte.servicios_totales =  totales.length
+      totales.forEach((cotiza)=>{
+        const {reporte: reporteCotiza} = cotiza
+
+        let total = reporteCotiza.refacciones + reporteCotiza.mo
+        ticketPromedio = total / totales.length
+        ticketGeneral += total + reporteCotiza.iva
+        
+        mo += reporteCotiza.mo
+        refacciones += reporteCotiza.refacciones
       })
-      // console.log(this.clavesVehiculos);
+      servicios_totales = totales.length
+
+      info[vehiculo] = {
+        data_vehiculo: vehiculos_arr.find(v=>v.id === vehiculo),
+        servicios_totales, ticketPromedio
+      } 
+      const 
+      { 
+        
+        maximo,no_maximo, contadorMaximo,arreglo_maximo, 
+        minimo, no_minimo,contadorMinimo,arreglo_minimo
+
+      } = this._publicos.obtenerValorMaximoMinimo(totales)
       
-
-      const { maximo,no_maximo, contadorMaximo,arreglo_maximo, minimo, no_minimo,contadorMinimo,arreglo_minimo} = this._publicos.obtenerValorMaximoMinimo(recepciones_filter)
-     
-      this.dataSource.data = this.clavesVehiculos
-      this.newPagination()
-
       this.campos_estadisticas = { 
-        ticketPromedioFinal: ticketGeneral / servicios_gen, 
-        servicios_gen, 
-        gasto_gen: ticketGeneral }
+        ticketPromedioFinal: ticketGeneral / servicios_totales, 
+        servicios_totales, 
+        ticketGeneral }
+        this.clonado = [
+          {
+            name: "Monto total invertido",
+            value: ticketGeneral,
+            contador: 0,
+            arreglo:[]
+          },
+          {
+            name: "Monto mas grande en una orden",
+            value: maximo,
+            no_os: no_maximo,
+            contador: contadorMaximo,
+            arreglo: arreglo_maximo
+          },
+          {
+            name: "Ticket promedio servicios",
+            value: ticketGeneral / servicios_totales,
+            contador: 0,
+            arreglo:[]
+          },
+          {
+            name: "Monto mas pequeño en en servicios",
+            value: minimo,
+            no_os: no_minimo,
+            contador: contadorMinimo,
+            arreglo: arreglo_minimo
+          },
+        ]
       
-      this.clonado = [
-        {
-          name: "Monto total invertido",
-          value: ticketGeneral,
-          contador: 0,
-          arreglo:[]
-        },
-        {
-          name: "Monto mas grande en una orden",
-          value: maximo,
-          no_os: no_maximo,
-          contador: contadorMaximo,
-          arreglo: arreglo_maximo
-        },
-        {
-          name: "Ticket promedio servicios",
-          value: ticketGeneral / servicios_gen,
-          contador: 0,
-          arreglo:[]
-        },
-        {
-          name: "Monto mas pequeño en en servicios",
-          value: minimo,
-          no_os: no_minimo,
-          contador: contadorMinimo,
-          arreglo: arreglo_minimo
-        },
-      ]
-      this.single_generales = [ ...this.clonado]
-      setTimeout(()=>{ this.applyDimensions() },800)
-    });
+        this.single_generales = [ ...this.clonado]
+        setTimeout(()=>{ this.applyDimensions() },800)
+      
+      
+    })
+
+    // console.log(info);
+    
+
+    this.clavesVehiculos = this._publicos.crearArreglo2(info)
+
+
+    this.dataSource.data = this.clavesVehiculos
+      this.newPagination()
+   
+
+      
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -462,5 +488,85 @@ export class EstadisticasClienteComponent implements OnInit{
     }
   }
 
+  calcularTotales(data) {
+    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+    const elementos = (servicios_) ? [...servicios_] : []
+    const margen = 1 + (new_margen / 100)
+    elementos.map(ele=>{
+      const {cantidad, costo} = ele
+      if (ele.tipo === 'paquete') {
+        const report = this.total_paquete(ele)
+        const {mo, refacciones} = report
+        if (ele.aprobado) {
+          reporte.mo += mo
+          reporte.refacciones += refacciones
+          reporte.refacciones_v += refacciones * margen
+        }
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad 
+      }else if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.mo += operacion
+        }
+        ele.subtotal = operacion
+        ele.total = operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        if (ele.aprobado) {
+          reporte.refacciones += operacion
+          reporte.refacciones_v += operacion * margen
+        }
+        ele.subtotal = operacion
+        ele.total = operacion * margen
+      }
+      return ele
+    })
+    let descuento = parseFloat(descuento_) || 0
+    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
+    const {mo, refacciones_v, refacciones} = reporte
+
+    let nuevo_total = mo + refacciones_v
+
+    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
+
+    let iva =  _iva ? nuevo_total * .16 : 0;
+
+    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
+    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
+    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
+
+    reporte.descuento = descuentoshow
+    reporte.iva = iva
+    reporte.subtotal = nuevo_total
+    reporte.total = newTotal
+    reporte.meses = total_meses
+    // console.log(reporte);
+    // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
+    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
+    return {reporte, elementos}
+    
+  }
+  mano_refaccion(ele){
+    const {costo, precio, cantidad} = ele
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete(data){
+    const {elementos} = data
+    const reporte = {mo:0, refacciones:0}
+    elementos.forEach(ele=>{
+      if (ele.tipo === 'mo') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.mo += operacion
+      }else if (ele.tipo === 'refaccion') {
+        const operacion = this.mano_refaccion(ele)
+        reporte.refacciones += operacion
+      }
+    })
+    return reporte
+  }
 
 }
