@@ -168,9 +168,7 @@ export class EditarOsComponent implements OnInit, OnDestroy {
 
     this.rutaActiva.queryParams.subscribe((params:any) => {
      this.enrutamiento = params
-     console.log(params);
-      
-     
+    //  console.log(params);
     //  this.acciones()
     this.nuevas()
      this.vigila()
@@ -428,14 +426,17 @@ export class EditarOsComponent implements OnInit, OnDestroy {
         let updates = {}
         const {sucursal, cliente, vehiculo, id} = this.data_editar
         
-        
-        
         const nueva_data = JSON.parse(JSON.stringify(this.data_editar));
-        // console.log(nueva_data);
-        
-        const data_purifica = this.purifica_informacion(nueva_data)
-        // console.log(data_purifica);
-        nueva_data.elementos = data_purifica
+
+        const otros = this.purifica_informacion(nueva_data)
+        const filtrados = otros.filter((element) => {
+          if (element.tipo === "paquete") {
+            return element.elementos.length > 0;
+          }
+          return true;
+        });
+
+        nueva_data.elementos = filtrados
 
 
         campos_update.forEach(campo=>{

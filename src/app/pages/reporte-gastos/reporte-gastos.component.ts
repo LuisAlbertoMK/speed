@@ -316,29 +316,32 @@ export class ReporteGastosComponent implements OnInit {
           fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: simular_fecha}).toString_completa
         }
         
-        let Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(simular_fecha)
-        // console.log('Registro normal');
-        if (this._publicos.esDomingo(simular_fecha)) {
-          // console.log('NO es domingo registra para el lunes');
-          const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
-          save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
-          Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_lunes)
+        if(reporte.restante !== 0){
+          let Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(simular_fecha)
+          // console.log('Registro normal');
+          if (this._publicos.esDomingo(simular_fecha)) {
+            // console.log('NO es domingo registra para el lunes');
+            const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
+            save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
+            Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_lunes)
+          }
+          const ruta_maniana = `historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`
+          const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
+          // console.log(existe_sobrante_anterior);
+          
+          if (!existe_sobrante_anterior) {
+            updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`] = save
+          }else{
+            updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior/monto`] = reporte.restante
+          }
+          update(ref(db), updates).then(()=>{
+            // console.log('finalizo');
+          })
+          .catch(err=>{
+            console.log(err);
+          })
         }
-        const ruta_maniana = `historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`
-        const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
-        // console.log(existe_sobrante_anterior);
         
-        if (!existe_sobrante_anterior) {
-          updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`] = save
-        }else{
-          updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior/monto`] = reporte.restante
-        }
-        update(ref(db), updates).then(()=>{
-          // console.log('finalizo');
-        })
-        .catch(err=>{
-          console.log(err);
-        })
        }  
     }
     
@@ -498,6 +501,7 @@ export class ReporteGastosComponent implements OnInit {
           title: 'Realizando calculos en gastos diarios',
           html: 'espere porfavor ... ',
           allowOutsideClick: false,
+          showConfirmButton:false
         })
         const donde = ['historial_gastos_orden','historial_gastos_diarios','historial_gastos_operacion']
         for (let i = 0; i <= diffDias; i++) {       
@@ -505,7 +509,7 @@ export class ReporteGastosComponent implements OnInit {
           if (!this._publicos.esDomingo(fecha_retorna)) {
             const Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_retorna)
             // arreglo.push(Fecha_formateada)
-            console.log(Fecha_formateada);
+            // console.log(Fecha_formateada);
             
             let arreglo = []
             donde.forEach(donde_=>{
@@ -537,25 +541,27 @@ export class ReporteGastosComponent implements OnInit {
               tipo:      'sobrante',
               fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: simular_fecha}).toString_completa
             }
-            let Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(simular_fecha)
-            
-            if (this._publicos.esDomingo(simular_fecha)) {
-              // console.log('NO es domingo registra para el lunes');
-              const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
-              save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
-              Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_lunes)
-            }
-            const ruta_maniana = `historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`
-            const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
 
-            if (!existe_sobrante_anterior) {
-              updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`] = save
-            }else{
-              updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior/monto`] = reporte.restante
-            }
-            const actualizo = await this._reporte_gastos.registra_sobrante(updates); 
-            console.log(actualizo);
+            if(reporte.restante !==0){
+              let Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(simular_fecha)
             
+              if (this._publicos.esDomingo(simular_fecha)) {
+                // console.log('NO es domingo registra para el lunes');
+                const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
+                save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
+                Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_lunes)
+              }
+              const ruta_maniana = `historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`
+              const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
+  
+              if (!existe_sobrante_anterior) {
+                updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`] = save
+              }else{
+                updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior/monto`] = reporte.restante
+              }
+              const actualizo = await this._reporte_gastos.registra_sobrante(updates); 
+              // console.log(actualizo);
+            }
           }
         }
         Swal.close()

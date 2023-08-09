@@ -1,11 +1,463 @@
 {
-  "apellidos": "mendoza",
-  "correo": "mkkaos28@gmail.com",
-  "empresa": "-NOzlxBGOFJ0A28PZhDu",
-  "no_cliente": "TOORTO10220004",
-  "nombre": "Tomasa",
-  "sucursal": "-N2glF34lV3Gj0bQyEWK",
-  "telefono_movil": "5523232222",
-  "tipo": "flotilla",
-  "usuario": false 
+  "-NXpvKAAGvHgD31bk8oQ": {
+      "cilindros": "4",
+      "elementos": [
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 0,
+              "id": "-NXpufTa9W5CBZXq5Vp6",
+              "nombre": "computadora chasis",
+              "precio": 3000,
+              "status": true,
+              "tipo": "refaccion"
+          }
+      ],
+      "enCatalogo": true,
+      "marca": "Audi",
+      "modelo": "A3",
+      "nombre": "computadora chasis",
+      "status": true,
+      "tipo": "paquete",
+      "id": "-NXpvKAAGvHgD31bk8oQ"
+  },
+  "-NXq3BcKzlcRXzFp46DT": {
+      "cilindros": "8",
+      "elementos": [
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 0,
+              "id": "-NXpyKfCYJ5fNTd8TO5R",
+              "nombre": "cambio de cadena distribucion",
+              "precio": 2500,
+              "status": true,
+              "tipo": "mo"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 6400,
+              "id": "-NXpyYexFpD1LjMYuDy4",
+              "nombre": "kit cadena distribucion",
+              "precio": 6500,
+              "status": true,
+              "tipo": "refaccion"
+          }
+      ],
+      "enCatalogo": true,
+      "marca": "BMW",
+      "modelo": "Serie 7",
+      "nombre": "cambio cadena distribucion",
+      "status": true,
+      "tipo": "paquete",
+      "id": "-NXq3BcKzlcRXzFp46DT"
+  },
+  "-NXqIwcwRkg1Szsrbjjz": {
+      "cilindros": "4",
+      "elementos": [
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 0,
+              "id": "-NXqI8eB8kyjlmNKADzk",
+              "nombre": "mano de obra",
+              "precio": 6500,
+              "status": true,
+              "tipo": "mo"
+          }
+      ],
+      "enCatalogo": true,
+      "marca": "Honda",
+      "modelo": "Civic",
+      "nombre": "cambio juntas de motor",
+      "status": true,
+      "tipo": "paquete",
+      "id": "-NXqIwcwRkg1Szsrbjjz"
+  },
+  "-NXqKcSDU7B4iYIGdzlV": {
+      "cilindros": "4",
+      "elementos": [
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 0,
+              "id": "-NXqI8eB8kyjlmNKADzk",
+              "nombre": "mano de obra",
+              "precio": 6500,
+              "status": true,
+              "tipo": "mo"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 0,
+              "id": "-NQbJyuAvZOQ6NRf2HCW",
+              "nombre": "soportes de motor",
+              "precio": 7450,
+              "status": true,
+              "tipo": "refaccion"
+          }
+      ],
+      "enCatalogo": true,
+      "marca": "Honda",
+      "modelo": "Civic",
+      "nombre": "cambio juntas de motor",
+      "status": true,
+      "tipo": "paquete",
+      "id": "-NXqKcSDU7B4iYIGdzlV"
+  },
+  "-N_4oFIgb0RSeHpuHYYz": {
+      "cilindros": "4",
+      "elementos": [
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 1300,
+              "id": "-N_4mvJyu-chz3GhIrAv",
+              "nombre": "cambio de aceite y filtro",
+              "precio": 900,
+              "status": true,
+              "tipo": "refaccion"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 600,
+              "descripcion": "ninguna",
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "nombre": "reemplazar filtro de aire",
+              "precio": 300,
+              "status": true,
+              "tipo": "mo"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 350,
+              "descripcion": "ninguna",
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "nombre": "rev. y corregir niveles",
+              "precio": 300,
+              "status": true,
+              "tipo": "mo"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 600,
+              "id": "-NQBYCB5Eojp02pxdHdl",
+              "nombre": "revision puntos de seguridad",
+              "precio": 550,
+              "status": true,
+              "tipo": "mo"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 120,
+              "id": "-NWoPCGvjvv_Ehi8TSwS",
+              "nombre": "revision de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 180,
+              "descripcion": "N",
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "nombre": "lavar motor",
+              "precio": 150,
+              "status": true,
+              "tipo": "mo"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 180,
+              "descripcion": "N",
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "nombre": "lavar carroceria",
+              "precio": 150,
+              "status": true,
+              "tipo": "mo"
+          }
+      ],
+      "marca": "Fiat",
+      "modelo": "Ducato",
+      "nombre": "servicio menor diesel",
+      "status": true,
+      "id": "-N_4oFIgb0RSeHpuHYYz"
+  },
+  "-N__00FKRVgZyykKEDqv": {
+      "cilindros": "4",
+      "elementos": [
+          {
+              "aprobado": true,
+              "cantidad": 2,
+              "costo": 0,
+              "descripcion": "ford focus año 2017 sedan",
+              "id": "-N_ZyfLEXZJL-r5DhJTK",
+              "nombre": "amortiguadores delanteros",
+              "precio": 2250,
+              "status": true,
+              "tipo": "refaccion"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 2,
+              "costo": 0,
+              "descripcion": "ford focus año 2017 sedan",
+              "id": "-N_ZyxwWB9dVKsBehEts",
+              "nombre": "rotulas delanteras",
+              "precio": 450,
+              "status": true,
+              "tipo": "refaccion"
+          },
+          {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 0,
+              "id": "-N_ZzbdsHOnE8znAxR-8",
+              "nombre": "mano de obra",
+              "precio": 2000,
+              "status": true,
+              "tipo": "mo"
+          }
+      ],
+      "enCatalogo": true,
+      "marca": "Audi",
+      "modelo": "A3",
+      "nombre": "amortiguadores y rotulas focus",
+      "status": true,
+      "tipo": "paquete",
+      "id": "-N__00FKRVgZyykKEDqv"
+  },
+  "-NaICs6mEz_D2MvWldRE": {
+      "cilindros": "",
+      "elementos": [
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "cambio de aceite y filtro",
+              "precio": 120,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "reemplazar filtro de aire",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "rev. y corregir niveles",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "lavar inyectores",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "C",
+              "nombre": "lavar cpo de aceleracion",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "scaneo por computadora",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "rev. 25 puntos de seguridad",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "cambio de focos fundidos convencionales",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "rotacion de llantas",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "regimen de carga de bateria",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "lavar motor",
+              "precio": 150,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "lavar carroceria",
+              "precio": 150,
+              "tipo": "mo"
+          }
+      ],
+      "enCatalogo": true,
+      "marca": "Mazda",
+      "modelo": "3",
+      "nombre": "servicio mayor",
+      "status": true,
+      "tipo": "paquete",
+      "id": "-NaICs6mEz_D2MvWldRE"
+  },
+
+  "-NbFbXehy1ft8gN1g2CS": {
+      "cilindros": "",
+      "elementos": [
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "cambio de aceite y filtro",
+              "precio": 120,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "reemplazar filtro de aire",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "rev. y corregir niveles",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "lavar inyectores",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "C",
+              "nombre": "lavar cpo de aceleracion",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "scaneo por computadora",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "rev. 25 puntos de seguridad",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "cambio de focos fundidos convencionales",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "rotacion de llantas",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "regimen de carga de bateria",
+              "precio": 300,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "lavar motor",
+              "precio": 150,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "N",
+              "nombre": "lavar carroceria",
+              "precio": 150,
+              "tipo": "mo"
+          },
+          {
+              "cantidad": 1,
+              "costo": 0,
+              "descripcion": "ninguna",
+              "nombre": "reemplazar bujias",
+              "precio": 300,
+              "tipo": "mo"
+          }
+      ],
+      "enCatalogo": true,
+      "marca": "Ford",
+      "modelo": "Edge",
+      "nombre": "servicio mayor",
+      "status": true,
+      "tipo": "paquete",
+      "id": "-NbFbXehy1ft8gN1g2CS"
+  }
 }

@@ -19,14 +19,10 @@ export class EmpresasService {
       const starCountRef = ref(db, `empresas/${sucursal}`);
       onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
-          const empresas = this._publicos.crearArreglo2(snapshot.val())
-          const empre = empresas.map(emp => ({
-            empresa: String(emp['empresa']).toLowerCase(),
-            id: emp['id'],
-            sucursal: sucursal
-          }));
+          const empresas = snapshot.val()
           
-          resolve(this._publicos.ordenarData(empre,'empresa',true));
+          
+          resolve(this._publicos.ordenarData(empresas,'empresa',true));
         } else {
           resolve([]);
         }

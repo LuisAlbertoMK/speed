@@ -30,9 +30,9 @@
       <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label text-end">Empresa a eliminar</label>
       <div class="col-sm-9 col-md-8 col-lg-9 ">
         <input type="text" class="form-control form-control-sm text-uppercase" [formControl]="myControl_elimina" [matAutocomplete]="auto_elimina">
-          <mat-autocomplete #auto_elimina="matAutocomplete" [displayWith]="displayFn">
+          <mat-autocomplete #auto_elimina="matAutocomplete" >
             <mat-option *ngFor="let option of filteredOptions_elimina | async" [value]="option">
-              {{option['empresa']}}
+              {{option}}
             </mat-option>
           </mat-autocomplete>
       </div>
@@ -41,9 +41,9 @@
       <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label text-end">Empresa reemplazo</label>
       <div class="col-sm-9 col-md-8 col-lg-9 ">
         <input type="text" class="form-control form-control-sm text-uppercase" [formControl]="myControl_reemplaza" [matAutocomplete]="auto_reemplaza">
-          <mat-autocomplete #auto_reemplaza="matAutocomplete" [displayWith]="displayFn">
+          <mat-autocomplete #auto_reemplaza="matAutocomplete">
             <mat-option *ngFor="let option of filteredOptions_reemplaza | async" [value]="option">
-              {{option['empresa']}}
+              {{option}}
             </mat-option>
           </mat-autocomplete>
       </div>

@@ -4,6 +4,7 @@ import { Form } from '@angular/forms';
 import { child, get, set, getDatabase, ref, onValue, onChildAdded, onChildChanged, onChildRemoved, push } from "firebase/database";
 import Swal from 'sweetalert2';
 import { CamposSystemService } from './campos-system.service';
+import { map } from 'rxjs/operators';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -1048,8 +1049,9 @@ export class ServiciosPublicosService {
         diaFinal: dias2[DiaFinal],
       };
     }
-    obtenerDiferencias(array1, array2) {
-      return array1.filter(elemento => !array2.includes(elemento))
+    obtenerDiferencias(array1, elimina) {
+      // const nuevo = 
+      return array1.filter(element => element !== elimina);
     }
     obtenerDiferenciaHoras(fechaHora, fechaHora2) {
       const fecha1 = new Date(fechaHora);

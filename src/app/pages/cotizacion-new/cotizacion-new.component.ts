@@ -94,8 +94,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   cliente:string = null
 
   vehiculoData:string = null
-  idPaqueteEditar: number
-  idPaqueteEditarBoolean: boolean = false
+  idPaqueteEditar: number = -1
+  
 
   modeloVehiculo:string = null
 
@@ -137,7 +137,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
-      // console.log(params);
+      console.log(params);
       
       this.cargaDataCliente_new()
     });
@@ -154,46 +154,60 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
     data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
+    // console.log(vehiculos_arr);
+
     const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
 
+    const campos = [
+      'cliente',
+      'descuento',
+      'elementos',
+      'formaPago',
+      'iva',
+      'margen',
+      'nota',
+      'servicio',
+      'sucursal',
+      'vehiculo',
+    ]
+
     if (recepcion){
+
       const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
       const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
-      data_recepcion.elementos = data_recepcion.servicios
-      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
-      data_recepcion.nota = data_recepcion.nota || ''
+      
+      data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
+      data_recepcion.nota = (data_recepcion.nota) ? data_recepcion.nota : ''
+
       campos.forEach(campo=>{
         this.infoCotizacion[campo] = data_recepcion[campo]
       })
+      
     }
     if (cotizacion){
       const busqueda_ruta_recepcion = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
       
       const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
-      // console.log(data_cotizacion);
-      
-      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
-      data_cotizacion.nota = data_cotizacion.nota || ''
+
+      data_cotizacion.descuento = (data_cotizacion.descuento) ? data_cotizacion.descuento : 0
+      data_cotizacion.nota = (data_cotizacion.nota) ? data_cotizacion.nota : ''
+
       campos.forEach(campo=>{
         this.infoCotizacion[campo] = data_cotizacion[campo]
       })
+      
     }
-    
-    this.infoCotizacion.vehiculos = vehiculos_arr
 
     this.extra = vehiculo
+    this.infoCotizacion.vehiculos = vehiculos_arr
 
-    this.infoCotizacion.cliente = cliente
-    this.infoCotizacion.data_sucursal = data_sucursal
-    this.infoCotizacion.vehiculo = vehiculo
     this.infoCotizacion.data_cliente = data_cliente
     this.infoCotizacion.data_vehiculo = data_vehiculo
-    this.infoCotizacion.sucursal = sucursal
+    this.infoCotizacion.data_sucursal = data_sucursal
+
     this.realizaOperaciones()
     this.vigila_vehiculos_cliente({cliente, sucursal})
 
-    // console.log(this.infoCotizacion);
- 
   }
   async vigila_vehiculos_cliente({cliente, sucursal}){
     const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
@@ -205,7 +219,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     })
   }
 
-  
   ///mensaje para poder agregar un paquete que no esta en el catalogo
   async mensajePaquete(){
     // this.mostrarPaquetes = false
@@ -267,7 +280,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.realizaOperaciones()
     })
     this.formPlus.get('margen').valueChanges.subscribe((margen: number) => {
-      const nuevo_margen = (margen < 25) ? 25 : margen
+      const nuevo_margen = Math.min(Math.max(margen, 25), 100);
       this.infoCotizacion.margen = nuevo_margen
       this.realizaOperaciones()
     })
@@ -331,8 +344,16 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     // console.log(event);
     const {uid} = event
     if (uid) {
-      this.infoCotizacion.data_cliente = event
+      // this.infoCotizacion.data_cliente = event
+      // console.log(event);
+      const {sucursal, uid: cliente} = event
+      
+      this.infoCotizacion.data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+      // if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+      this.vigila_vehiculos_cliente({cliente, sucursal})
+      // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
     }
+    
   }
   cargaDataVehiculo(data: any, quien: string) {
     this.cliente = null;
@@ -365,8 +386,13 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     let nuevos = [...this.infoCotizacion.elementos]
     const {id} = event
     if (id) {
-      nuevos.push(event)
-      this.asignar_nuevos_elementos(nuevos)
+      if (this.idPaqueteEditar >=0 ) {
+          nuevos[this.idPaqueteEditar].elementos.push(event)
+          this.asignar_nuevos_elementos(nuevos)
+      }else{
+          nuevos.push(event)
+          this.asignar_nuevos_elementos(nuevos)
+      }
     }
   }
   eliminaElemento(data){
@@ -394,11 +420,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const { index:index_editar_subelemento } = item
    
     let nuevos = [...this.infoCotizacion.elementos]
+    
     let nuevos_internos = nuevos[index_editar].elementos
-
-    nuevos_internos[index_editar_subelemento][donde] = nueva_cantidad
-
-    nuevos[index_editar].elementos = nuevos_internos
+    
+    const internos_n = [...nuevos_internos]
+  
+    internos_n[index_editar_subelemento][donde] = nueva_cantidad
+    
+    nuevos[index_editar].elementos = internos_n
 
     this.asignar_nuevos_elementos(nuevos)
   }
@@ -411,9 +440,13 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     let nuevos = [...this.infoCotizacion.elementos]
     let nuevos_internos = nuevos[index_editar].elementos
 
-    nuevos_internos = nuevos_internos.filter((elemento, index) => index !== index_editar_subelemento);
+    const internos_n = [...nuevos_internos]
 
-    nuevos[index_editar].elementos = nuevos_internos
+    const nuevos_ = internos_n.filter(elemento => elemento.index !== index_editar_subelemento);
+
+    nuevos[index_editar].elementos = nuevos_
+    
+    // nuevos[index_editar].elementos = nuevos_
 
     this.asignar_nuevos_elementos(nuevos)
   }
@@ -425,19 +458,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       refacciones:0,
     }
 
-    const  {reporte, servicios} = this.calcularTotales(this.infoCotizacion)
+    const  {reporte, _servicios} = this.calcularTotales(this.infoCotizacion)
       Object.keys(reporte_totales).forEach(campo=>{
         reporte_totales[campo] += reporte[campo]
       })
-    this.reporte_totales = reporte
-    servicios.map((s, index)=>{
-      s.index = index
-      s.aprobado = true
-    })
-    this.infoCotizacion.reporte = reporte
 
-    this.infoCotizacion.elementos = servicios
-    this.dataSource.data = servicios
+    this.infoCotizacion.reporte = reporte
+    this.infoCotizacion.elementos = _servicios
+    this.dataSource.data = _servicios
     this.newPagination()
 
   }
@@ -549,12 +577,19 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                                   'nota','servicio','sucursal','vehiculo','vencimiento','pdf'
                 ]
                 //asigamos solo los campos que queremos recuperaer
-                
-
                   const infoSave = this._publicos.nuevaRecuperacionData(this.infoCotizacion,campos)
                   // console.log(infoSave);
                   const {sucursal, cliente} = this.infoCotizacion
-                  infoSave['elementos'] = this.purifica_informacion(infoSave)
+                  const otros = this.purifica_informacion(infoSave)
+                  const filtrados = otros.filter((element) => {
+                    if (element.tipo === "paquete") {
+                      return element.elementos.length > 0;
+                    }
+                    return true;
+                  });
+
+                  infoSave['elementos'] = filtrados
+                  
                   updates[`cotizacionesRealizadas/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = infoSave;
                 
                   update(ref(db), updates)
@@ -587,7 +622,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       })
     })
   }
-  
   newPagination(){
     setTimeout(() => {
     // if (data==='elementos') {
@@ -599,62 +633,50 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
 
   calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+    const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0, costos:0}
+    
+    // const servicios_ = (elementos) ? elementos 
 
-    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status"','subtotal','tipo','total']
-    const campos_refaccion = [ ...campos_mo, 'marca']
-    const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
-    // let refacciones_new = 0
-    const nuevos_elementos = (servicios_) ? servicios_ : []
-    const servicios = [...nuevos_elementos] 
-    let new_ele
+
+    const _servicios = [...elementos] 
+    
     const margen = 1 + (new_margen / 100)
-    servicios.map(ele=>{
-      const {cantidad, costo} = ele
-      if (ele.tipo === 'paquete') {
-        ele.elementos = (ele.elementos) ? ele.elementos : []
+    _servicios.map((ele, index) =>{
+      const {cantidad, costo, tipo, precio} = ele
+      ele.index = index
+      if (tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
-          reporte.mo += mo
-          reporte.refacciones += refacciones
+          ele.precio = mo + (refacciones * margen)
+          ele.total = (mo + (refacciones * margen)) * cantidad
+          if (costo > 0 ){
+            ele.total = costo * cantidad
+            reporte.costos += costo * cantidad
+          }else{
+            reporte.mo += mo
+            reporte.refacciones += refacciones
+          }
         }
-        ele.costo = costo || 0
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad
-        ele.reporte = report
-        const serviciosConIndices = ele.elementos.map((s, index) => {
-          const servicioConIndice = { ...s };
-          servicioConIndice.index = index;
-          return servicioConIndice;
-        })
-        const nuevos_subelementos = this.remplaza_informacion_subelementos(serviciosConIndices, margen)
-        ele.elementos = nuevos_subelementos
+      }else if (tipo === 'mo' || tipo === 'refaccion') {
 
-        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_paquete)
-      }else if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.mo += operacion
-        }
+        // const operacion = this.mano_refaccion(ele)
+        const operacion = (costo>0) ? cantidad * costo : cantidad * precio 
+
         ele.subtotal = operacion
-        ele.total = operacion
-        ele.costo = costo || 0
-        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_mo)
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          // refacciones_new += operacion
-          reporte.refacciones += operacion
+        
+        if (ele.aprobado){
+          if (costo > 0 ){
+            reporte.costos += (tipo === 'refaccion') ? operacion * margen : operacion
+          }else{
+            const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+            reporte[donde] += operacion
+          }
+          ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
         }
-        ele.subtotal = operacion
-        ele.total = operacion * margen
-        ele.costo = costo || 0
-        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_refaccion)
       }
-      return new_ele
+      return ele
     })
     let descuento = parseFloat(descuento_) || 0
 
@@ -662,9 +684,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     const {mo, refacciones} = reporte
 
-    reporte.refacciones_v = reporte.refacciones * margen
+    reporte.refacciones_v = refacciones * margen
 
-    let nuevo_total = mo + reporte.refacciones_v
+    let nuevo_total = mo + reporte.refacciones_v + reporte.costos
     
     let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
 
@@ -681,45 +703,28 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     reporte.meses = total_meses
 
     reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, servicios}
+    return {reporte, _servicios}
     
   }
-  mano_refaccion(ele){
-    const {costo, precio, cantidad} = ele
+  mano_refaccion({costo, precio, cantidad}){
     const mul = (costo > 0 ) ? costo : precio
     return cantidad * mul
   }
-  total_paquete(data){    
-    const {elementos} = data
+  total_paquete({elementos}){
     const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos]
+    const nuevos_elementos = [...elementos] 
+
+    if (!nuevos_elementos.length) return reporte
+
     nuevos_elementos.forEach(ele=>{
-      if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.mo += operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.refacciones += operacion
-      }
+      const {tipo} = ele
+      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+      const operacion = this.mano_refaccion(ele)
+      reporte[donde] += operacion
     })
     return reporte
   }
-  remplaza_informacion_subelementos(arreglo:any[], margen){
-    const nuevos_subelementos = arreglo.map(elemento=>{
-      const {tipo} = elemento
-      let operacion = this.mano_refaccion(elemento)
-      let subtotal = operacion, total = operacion
-      const all = JSON.parse(JSON.stringify(elemento));
-      
-      if (tipo === 'refaccion') total = total * margen 
-      const nueva_info = {...all,
-        subtotal,
-        total
-      }     
-      return nueva_info
-    })
-    return nuevos_subelementos
-  }
+
   purifica_informacion(data){
     const nueva_ = JSON.parse(JSON.stringify(data));
     const {elementos} = nueva_

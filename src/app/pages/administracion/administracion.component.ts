@@ -235,10 +235,10 @@ export class AdministracionComponent implements OnInit {
   
             g.data_sucursal =  data_sucursal
             g.sucursalShow = data_sucursal.sucursal
-            const {reporte, servicios} = this.calcularTotales(g);
+            const {reporte, _servicios} = this.calcularTotales(g);
             g.reporte = reporte
             g.subtotal = reporte.subtotal
-            g.servicios = servicios
+            g.servicios = _servicios
             return g
           });
         await Promise.all(promesasVehiculos);
@@ -376,11 +376,12 @@ export class AdministracionComponent implements OnInit {
 
 
   calcularTotales(data) {
-    const {margen: new_margen, formaPago, servicios: servicios_, iva:_iva, descuento:descuento_} = data
+    const {margen: new_margen, formaPago, servicios, elementos, iva:_iva, descuento:descuento_} = data
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    const servicios = [...servicios_] 
+    const servicios_ = (elementos) ? elementos : servicios
+    const _servicios = [...servicios_] 
     const margen = 1 + (new_margen / 100)
-    servicios.map(ele=>{
+    _servicios.map(ele=>{
       const {cantidad, costo} = ele
       if (ele.tipo === 'paquete') {
         const report = this.total_paquete(ele)
@@ -433,7 +434,7 @@ export class AdministracionComponent implements OnInit {
     // console.log(reporte);
     // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
     reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, servicios}
+    return {reporte, _servicios}
     
   }
   mano_refaccion(ele){

@@ -113,15 +113,15 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
   irPagina(pagina, data){
     // console.log(data);
-    const {cliente, sucursal, id: idCotizacion, tipo } = data
+    const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
     // console.log(this.enrutamiento);
     let queryParams = {}
     if (pagina === 'cotizacionNueva' && !tipo) {
-      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
     }else if (pagina === 'cotizacionNueva' && tipo) {
       queryParams = { anterior:'cotizacion', tipo} 
     }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion'} 
+      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
     }else if (pagina === 'ServiciosConfirmar' && tipo) {
       queryParams = { anterior:'cotizacion', tipo}
     }

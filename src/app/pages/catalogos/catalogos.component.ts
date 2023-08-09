@@ -37,7 +37,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   camposDesgloce        =  [  ...this._cotizaciones.camposDesgloce    ]
   lista_cilindros_arr   =  [  ...this._vehiculos.lista_cilindros_arr  ]
 
-  reporteGeneral        =  {  ...this._cotizaciones.reporteGeneral  }
+  reporteGeneral        =  {  ub:0,mo: 0, refacciones: 0, subtotal:0,  total: 0 }
 
   miniColumnas:number   =  this._campos.miniColumnas
   
@@ -90,11 +90,21 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   ///nuevas
   @Output() datosSeleccionados: EventEmitter<any> = new EventEmitter<any>();
   elemento_get
+
+  anios:any=                [...this._vehiculos.anios];
+  marcas_vehiculos:any=     this._vehiculos.marcas_vehiculos
+  marcas_vehiculos_id = []
+  array_modelos = []
+  
+
   ngOnInit() {
-    this.consultaMarcas()
     // this.consultaMO()
     this.construyeFirmularioPaquete()
     this.nuevas_consultas()
+    const n = this._publicos.crearArreglo2(this._vehiculos.marcas_vehiculos)
+    this.marcas_vehiculos_id = n.map(c=>{
+      return c.id
+    })
   }
   ngOnDestroy(): void {
     
@@ -135,47 +145,42 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     //consultamos los paquetes y asiganamos para la paginacion de los resultados
     const starCountRef_paquetes = ref(db, `paquetes`)
     onValue(starCountRef_paquetes, async (snapshot) => {
+      if (snapshot.exists()) {
+        // console.log(snapshot.val());
+        // this.listaPaquetes_arr =  this._publicos.crearArreglo2(snapshot.val())
+        const paquetes =  this._publicos.crearArreglo2(snapshot.val())
+        const nuevos__ = paquetes.map((g, index)=>{
+          const {reporte, nuevos_elementos} = this.total_paquete(g)
 
-      const paquetes = await this._catalogos.consulta_paquetes_new([...this.listaRefacciones, ...this.listaMO])
+          const reporte_  =  {  ub:0,mo: reporte.mo, refacciones: reporte.refacciones, subtotal:0,  total: 0 }
 
-      //filtramos los paquetes solo aquellos que tengan elementos 
-      const filtro_paquetes =  paquetes.filter((p) => p.elementos.length);
+          reporte_.subtotal = reporte_.refacciones + reporte_.mo
+          reporte_.ub = ((reporte_.refacciones + reporte_.mo) - reporte_.refacciones ) * (100 / (reporte_.refacciones + reporte_.mo) )
+          
+          reporte_.total = (reporte_.refacciones + reporte_.mo) * 1.25
 
-      const nuevos  = (!this.listaPaquetes_arr.length) ?  filtro_paquetes :  this._publicos. actualizarArregloExistente(this.listaPaquetes_arr, filtro_paquetes,[...this._campos.campos_elemento_paquetes])
-  
+          g.reporte = reporte_
+          g.precio = reporte_.total
+
+          g.elementos = nuevos_elementos
+          g.index = index
+          return g
+        })
+        // console.log(nuevos__);
+        
+        this.dataSourcePaquetes.data = nuevos__
+        this.newPagination('paquetes')
+        
+      } else {
+        console.log("No data available");
+      }
       
-      this.listaPaquetes_arr =  nuevos
-      this.dataSourcePaquetes.data = nuevos
-      this.newPagination('paquetes')
+
+      
     })
     
   }
-  consultaMarcas(){
-    // marcas_autos
-    const dbRef = ref(db, `marcas_autos`)
-    onValue(dbRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const marcas =  snapshot.val()
-        const nuevasMarcas = Object.keys(marcas).map((m: any) => {
-          const arreglo = marcas[m] || [];
-          return arreglo.map((a: any) => {
-            const { modelo, categoria, anios } = a;
-            return { marca: m, modelo, categoria, anios };
-          });
-        });
-        this.lista_marcas_arr = Object.keys(marcas)
-        
-        let aquiAlls: any[] = [];
-        nuevasMarcas.forEach((aqui: any[]) => {
-          aquiAlls = [...aquiAlls, ...aqui];
-        });
-        this.lista_todos_arr = aquiAlls
-      }
-    }, {
-        onlyOnce: true
-      })
-	
-  }
+  
  
 
   construyeFirmularioPaquete(){
@@ -186,16 +191,28 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       modelo: ['', Validators.required],
       elementos: [[], Validators.required],
     });
+    this.vigila()
+  }
+  vigila(){
     this.paqueteForm.get('marca').valueChanges.subscribe((marca: string) => {
-      this.lista_modelos_arr = this.lista_todos_arr.filter(m=>m.marca === marca)
+      this.array_modelos = []
+      if (marca) {
+        this.array_modelos = this.marcas_vehiculos[marca]
+      }
+    })
+    this.paqueteForm.get('modelo').valueChanges.subscribe((modelo: string) => {
+      let modelo_ = ''
+      if (modelo) {
+         modelo_ = this.array_modelos.find(m=>m.modelo === modelo).categoria
+      }
+      // this.paqueteForm.controls['categoria'].setValue(modelo_)
     })
   }
   elementoInfo(event){
     if (event.id) {
       this.elementosDePaqueteNuevo.push(event)
       this.infoAdicional.elementos = this.elementosDePaqueteNuevo
-      this.reporteGeneral = this._publicos.realizarOperaciones_2(this.infoAdicional).reporte
-      this.elementosDePaqueteNuevo = this._publicos.realizarOperaciones_2(this.infoAdicional).ocupados
+     this.operaciones()
     }
   }
   eliminaElemento(index){
@@ -205,7 +222,21 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       const filtrados = antiguos.filter(e=>e !==null)
       this.elementosDePaqueteNuevo = filtrados
       this.infoAdicional.elementos = this.elementosDePaqueteNuevo
-      this.reporteGeneral = this._publicos.realizarOperaciones_2(this.infoAdicional).reporte
+    this.operaciones()
+      // this.reporteGeneral = this._publicos.realizarOperaciones_2(this.infoAdicional).reporte
+  }
+  operaciones(){
+    const {reporte, nuevos_elementos} = this.total_paquete({elementos: this.elementosDePaqueteNuevo})
+
+      this.reporteGeneral.mo = reporte.mo
+      this.reporteGeneral.refacciones = reporte.refacciones
+      this.reporteGeneral.subtotal = reporte.refacciones + reporte.mo
+      this.reporteGeneral.ub = ((reporte.refacciones + reporte.mo) - reporte.refacciones ) * (100 / (reporte.refacciones + reporte.mo) )
+
+
+      this.reporteGeneral.total = (reporte.refacciones + reporte.mo) * 1.25
+      
+      this.infoAdicional.elementos = nuevos_elementos
   }
   validacionesPaquete(){
     
@@ -234,14 +265,17 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       this._publicos.mensaje_pregunta('Guardar paquete').then(({respuesta})=>{
         if (respuesta) {
           const tempData = {
-            nombre: this.paqueteForm.get('nombre').value,
+            nombre: reemplaza_string_paquete(this.paqueteForm.get('nombre').value),
             marca: this.paqueteForm.get('marca').value,
             modelo: this.paqueteForm.get('modelo').value,
             cilindros: this.paqueteForm.get('cilindros').value,
-            elementos: this.elementosDePaqueteNuevo,
+            elementos: [],
             status: true,
           }
+          tempData.elementos = this.purifica_informacion_interna(this.elementosDePaqueteNuevo)
           const updates = { [`paquetes/${this._publicos.generaClave()}`]:tempData };
+          // console.log(updates);
+          
           update(ref(db), updates).then(()=>{
             this._publicos.swalToast('Se registro paquete!!', 1)
             this.reseteaInfo_paqueteForm()
@@ -252,6 +286,13 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       this._publicos.swalToast('Llenar todos los datos necesario', 0)
     }
     this.infoFaltente_paquete = faltantes_string
+
+    function reemplaza_string_paquete(nombre){
+      const nuevo = nombre.replace(/paquete de|paquete/gi, '').trim();
+      // const otro = String(nuevo).replace('paquete', '').trim();
+      const nuevo_ = nuevo.replace(/\s+/g, ' ').trim(); // Reemplaza dobles espacios por un solo espacio
+      return String(nuevo_).trim();
+    }
   }
   reseteaInfo_paqueteForm(){
     this.elementosDePaqueteNuevo = []
@@ -331,5 +372,82 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       }
     }, 500);
     
+  }
+
+ 
+  mano_refaccion({costo, precio, cantidad}){
+    const mul = (costo > 0 ) ? costo : precio
+    return cantidad * mul
+  }
+  total_paquete({elementos}){
+    const reporte = {mo:0, refacciones:0}
+    const nuevos_elementos = [...elementos] 
+
+    if (!nuevos_elementos.length) return {reporte, nuevos_elementos}
+
+    nuevos_elementos.map((ele, index)=>{
+      ele.index = index
+      const {tipo} = ele
+      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+      const operacion = this.mano_refaccion(ele)
+      reporte[donde] += operacion
+      ele.total = operacion
+      return ele
+    })
+    return {reporte, nuevos_elementos}
+  }
+
+  purifica_informacion(data){
+    const nueva_ = JSON.parse(JSON.stringify(data));
+    const {elementos} = nueva_
+    const _elementos_purifica = (elementos) ? elementos : []
+    const registra = _elementos_purifica.map(element => {
+      const {tipo } = element
+      const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+      const campos_refaccion = [ ...campos_mo, 'marca']
+      const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo' ]
+      let nueva 
+      switch (tipo) {
+        case 'paquete':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_paquete)
+          const info_su = this.purifica_informacion_interna(nueva.elementos)
+          // console.log(info_su);
+          nueva.elementos = info_su
+          
+          break;
+        case 'mo':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_mo)
+          break;
+        case 'refaccion':
+          nueva = this._publicos.nuevaRecuperacionData(element,campos_refaccion)
+          break;
+      }
+
+      //primera recuperacion 
+      // console.log(nueva);
+      return nueva
+    });
+    // console.log(registra);
+    return registra
+  }
+  purifica_informacion_interna(elementos:any[]){
+    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+    const campos_refaccion = [ ...campos_mo, 'marca']
+
+    const nuevos_elementos = elementos.map(e=>{
+      const {tipo} = e
+      e.nombre = String(e.nombre).toLowerCase()
+      switch (tipo) {
+        case 'mo':
+        case 'MO':
+          e.tipo = String(tipo).toLowerCase()
+          return this._publicos.nuevaRecuperacionData(e,campos_mo)
+        case 'refaccion':
+          return this._publicos.nuevaRecuperacionData(e,campos_refaccion)
+      }
+    })
+
+    return nuevos_elementos 
+
   }
 }

@@ -78,11 +78,10 @@ export class EliminarEmpresaComponent implements OnInit {
 
       const elimina = this.myControl_elimina.value
 
-      let data = elimina instanceof Object ? this._publicos.obtenerDiferencias(this.empresas_arr, [elimina]) : this.empresas_arr;
-
-      return data.filter(option => option.empresa.toLowerCase().includes(filterValue));
+      return this.empresas_arr.filter(element => element !== elimina)
     }else{
-      return this.empresas_arr.filter(option => option.empresa.toLowerCase().includes(filterValue));
+      const reemplaza = this.myControl_reemplaza.value
+      return this.empresas_arr.filter(element => element !== reemplaza)
     }
   }
 

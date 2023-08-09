@@ -36,7 +36,7 @@
         </mat-menu>
     </ng-container>
     
-    <button class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
+    <button class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
     matTooltip="Filtro tipo"><i class="fa fa-filter"></i></button>
     <mat-menu #filtroTipo="matMenu">
         <button mat-menu-item (click)="filtro_tipo = 'Todos'; filtra_informacion()" >{{'Todos' | capitalizarUno}}</button>

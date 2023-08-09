@@ -25,23 +25,19 @@
   </div>
 </div> -->
 <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
-<div class="card border-dark" >
-  <div class="card-body">
-    <h1>Informacion de cliente 
 
-      <ng-container *ngIf="infoCotizacion.cliente">
-        <i class="fa fa-edit text-primary m-1 pointer" (click)="editar_cliente = true" #tooltip="matTooltip" matTooltip="Editar informacion"  data-bs-toggle="modal" data-bs-target="#modalNewUser"></i>
-      </ng-container>
-    </h1>
-    <div class="row">
-      <ng-container *ngFor="let item of camposCliente">
-        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="infoCotizacion.data_cliente[item.valor]">
-          <strong >{{item.show}} </strong>: {{infoCotizacion.data_cliente[item.valor]}}
-        </div>
-      </ng-container>
+<ng-container *ngIf="infoCotizacion.data_cliente['id']">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end m-1">
+      <button class="btn btn-sm btn-primary" (click)="editar_cliente = true" data-bs-toggle="modal" data-bs-target="#modalNewUser">Editar información</button>
     </div>
   </div>
-</div>
+</ng-container>
+
+
+<app-cliente-tarjeta [cliente]="infoCotizacion.data_cliente" ></app-cliente-tarjeta>
+
+<!-- <app-vehiculo-tarjeta [vehiculo]="infoCotizacion.data_vehiculo"></app-vehiculo-tarjeta> -->
 
 
 
@@ -85,8 +81,11 @@
       <div class="mb-1 row">
         <label for="margen" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Margen</label>
         <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <input type="number" min="25" onkeypress="soloNumeros(event)" class="form-control form-control-sm" formControlName="margen" [value]="infoCotizacion.margen" [class.is-invalid]="validaCampo('margen')" id="margen" >
+          <input type="number" min="25" onkeypress="soloNumeros(event)" class="form-control form-control-sm" formControlName="margen" [class.is-invalid]="validaCampo('margen')" id="margen" >
           <small *ngIf="validaCampo('margen')" class="text-danger">Seleccionar margen menor a 100 y mayor a 24</small>
+          <span>
+            Margen aplicado: {{infoCotizacion.margen}}
+          </span>
         </div>
       </div>
     </div>
@@ -136,10 +135,11 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">La nota se muestra en el PDF para el cliente</div>
   </div>
 </form>
+<!-- {{idPaqueteEditar}} -->
 <div class="card border-dark">
   <div class="card-body text-end">
-    <button  data-bs-toggle="modal" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Agregar paquete</button>
-    <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="idPaqueteEditar = null; idPaqueteEditarBoolean = false">Agregar elemento</button>
+    <button  data-bs-toggle="modal" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="idPaqueteEditar = -1">Agregar paquete</button>
+    <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="idPaqueteEditar = -1; ">Agregar elemento</button>
     <button   class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="mensajePaquete()">Nuevo paquete</button>
     <!-- <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary">Elemento</button> -->
   </div>
@@ -176,7 +176,7 @@
     <!-- Name Column -->
     <ng-container matColumnDef="sobrescrito">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo sobrescrito </th>
-      <td mat-cell *matCellDef="let row"> 
+      <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.1+'px'}"> 
 
         <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" 
       (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
@@ -186,31 +186,31 @@
   <!-- Fruit Column -->
   <ng-container matColumnDef="precio">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo </th>
-    <td mat-cell *matCellDef="let row">
+    <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.1+'px'}">
       {{row.precio | monedas}}
     </td>
   </ng-container>
   <ng-container matColumnDef="total">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-    <td mat-cell *matCellDef="let row">
+    <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.1+'px'}">
       {{row.total | monedas}}
     </td>
   </ng-container>
     <!-- Fruit Column -->
-    <ng-container matColumnDef="opciones">
+    <ng-container matColumnDef="opciones" stickyEnd>
       <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
       <td mat-cell *matCellDef="let row"> 
       <!-- aqui el btn para eliminar -->
       <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaElemento(row)"></i>
       <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" 
-              (click)="idPaqueteEditar = row.index; idPaqueteEditarBoolean = true" *ngIf="row.tipo === paquete">
+              (click)="idPaqueteEditar = row.index; " *ngIf="row.tipo === paquete">
               <i class="fa fa-plus"></i>
             </button>
       </td>
     </ng-container>
    
 
-    <ng-container matColumnDef="expand">
+    <ng-container matColumnDef="expand" stickyEnd>
       <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
       <td mat-cell *matCellDef="let element">
         <ng-container *ngIf="element.tipo === paquete">
@@ -287,8 +287,8 @@
 
 <div class="row mt-2">
 
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="reporte_totales">
-    <app-reporte-desgloce-tarjeta [reporte]="reporte_totales" [title]="'Desgloce'" [muestra_normal]="true"></app-reporte-desgloce-tarjeta>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="infoCotizacion.reporte">
+    <app-reporte-desgloce-tarjeta [reporte]="infoCotizacion.reporte" [title]="'Desgloce'" [muestra_normal]="true"></app-reporte-desgloce-tarjeta>
   </div>
 </div>
 
@@ -342,7 +342,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-content">
       
     <div class="modal-header">
-      <h1 class="modal-title fs-5" id="staticBackdropLabel">fhgj</h1>
+      <!-- <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1> -->
       <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
         <i class="fas fa-times"></i>
       </button>
@@ -351,9 +351,9 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
         <ng-container *ngIf="editar_cliente; else elseTemplateRegistroCLiente">
           <app-cliente [data_cliente]="infoCotizacion.data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>
         </ng-container>
-        <ng-template #elseTemplateRegistroCLiente>     
-          <app-cliente [data_cliente]="{}" (heroeSlec)="clientesInfo( $event )"></app-cliente>
-        </ng-template>
+         <ng-template #elseTemplateRegistroCLiente>     
+          <app-cliente  (heroeSlec)="clientesInfo( $event )"></app-cliente>
+        </ng-template> 
       </div>
     </div>
   </div>
