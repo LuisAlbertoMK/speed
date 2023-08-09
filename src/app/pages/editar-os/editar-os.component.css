@@ -76,3 +76,6 @@ table {
   .status-aprobado{
     color: #3574FA;
   }
+  .card{
+    border-radius: 15px;
+  }
