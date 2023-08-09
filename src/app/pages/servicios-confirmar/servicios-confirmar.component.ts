@@ -148,7 +148,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   clienteId:string = null
   observaciones:string = null
   //TODO: aqui la informacion que es nueva
-  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
+  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:'', nueva:true}
   ParamsGet:any = {}
   
   faltante_s
@@ -185,6 +185,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.detalles = this.detalles_rayar
     this.rutaActiva.queryParams.subscribe((params:any) => {
      this.enrutamiento = params
+     console.log(params);
+     
      this.acciones()
     });
   }

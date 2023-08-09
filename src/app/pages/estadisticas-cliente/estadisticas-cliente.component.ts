@@ -170,6 +170,8 @@ export class EstadisticasClienteComponent implements OnInit{
       const {placas}= data_vehiculo
       cot.placas = placas || '------'
       const {reporte, elementos} = this.calcularTotales(cot);
+      console.log(reporte);
+      
       cot.reporte = reporte
       cot.elementos = elementos
       return cot
@@ -198,11 +200,12 @@ export class EstadisticasClienteComponent implements OnInit{
         refacciones += reporteCotiza.refacciones
       })
       servicios_totales = totales.length
-
+      const  data_vehiculo = vehiculos_arr.find(v=>v.id === vehiculo)
       info[vehiculo] = {
-        data_vehiculo: vehiculos_arr.find(v=>v.id === vehiculo),
+        data_vehiculo,
+        placas: data_vehiculo.placas,
         servicios_totales, ticketPromedio
-      } 
+      }
       const 
       { 
         
@@ -215,7 +218,7 @@ export class EstadisticasClienteComponent implements OnInit{
         ticketPromedioFinal: ticketGeneral / servicios_totales, 
         servicios_totales, 
         ticketGeneral }
-        this.clonado = [
+      this.clonado = [
           {
             name: "Monto total invertido",
             value: ticketGeneral,
@@ -245,22 +248,19 @@ export class EstadisticasClienteComponent implements OnInit{
         ]
       
         this.single_generales = [ ...this.clonado]
+
         setTimeout(()=>{ this.applyDimensions() },800)
-      
       
     })
 
-    // console.log(info);
-    
 
-    this.clavesVehiculos = this._publicos.crearArreglo2(info)
-
-
-    this.dataSource.data = this.clavesVehiculos
-      this.newPagination()
-   
-
-      
+  this.single = this._publicos.crearArreglo2(info).map(es=>{ 
+    return {
+      name: String(es.placas).toUpperCase(),
+      value: es.ticketPromedio
+    }
+  })
+  
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -494,8 +494,8 @@ export class EstadisticasClienteComponent implements OnInit{
     const elementos = (servicios_) ? [...servicios_] : []
     const margen = 1 + (new_margen / 100)
     elementos.map(ele=>{
-      const {cantidad, costo} = ele
-      if (ele.tipo === 'paquete') {
+      const {cantidad, costo, tipo} = ele
+      if (tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
@@ -506,22 +506,36 @@ export class EstadisticasClienteComponent implements OnInit{
         ele.precio = mo + (refacciones * margen)
         ele.total = (mo + (refacciones * margen)) * cantidad
         if (costo > 0 ) ele.total = costo * cantidad 
-      }else if (ele.tipo === 'mo') {
+      }else if (tipo === 'mo' || tipo === 'refaccion') {
+
         const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.mo += operacion
+
+        if (ele.aprobado) reporte[tipo] += operacion
+
+        ele.subtotal = operacion;
+        ele.total = operacion;
+        if (tipo === 'refaccion') {
+          // reporte.refacciones += operacion;
+          reporte.refacciones_v += operacion * margen;
+          ele.total = operacion * margen;
         }
-        ele.subtotal = operacion
-        ele.total = operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.refacciones += operacion
-          reporte.refacciones_v += operacion * margen
-        }
-        ele.subtotal = operacion
-        ele.total = operacion * margen
+
+        
+        // if (ele.aprobado) {
+        //   reporte.mo += operacion
+        // }
+        // ele.subtotal = operacion
+        // ele.total = operacion
       }
+      // else if (ele.tipo === 'refaccion') {
+      //   const operacion = this.mano_refaccion(ele)
+      //   if (ele.aprobado) {
+      //     reporte.refacciones += operacion
+      //     reporte.refacciones_v += operacion * margen
+      //   }
+      //   ele.subtotal = operacion
+      //   ele.total = operacion * margen
+      // }
       return ele
     })
     let descuento = parseFloat(descuento_) || 0

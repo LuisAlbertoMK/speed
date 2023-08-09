@@ -31,11 +31,12 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   constructor(private router: Router, private _campos: CamposSystemService) { }
   @Input() recepciones_arr:any[] = []
   @Input() muestra_desgloce:boolean = false
+  @Input() muestra_cliente:boolean = false
   
 
   dataSource = new MatTableDataSource(); //elementos
   //  'clienteShow'
-   cotizaciones = ['no_cotizacion','fullname','placas']; //cotizaciones
+   cotizaciones = ['no_cotizacion','fullname','placas','fecha_recibido','fecha_entregado']; //cotizaciones
    columnsToDisplayWithExpand = [...this.cotizaciones, 'opciones', 'expand']; //cotizaciones
    expandedElement: any | null; //cotizaciones
    @ViewChild('recepcionesPaginator') paginator: MatPaginator //cotizaciones
@@ -66,6 +67,9 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   ]
   miniColumnas:number = 100
 
+
+  servicio_editar
+
   ngOnInit(): void {
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -73,23 +77,50 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       const nuevoValor = changes['recepciones_arr'].currentValue;
       const valorAnterior = changes['recepciones_arr'].previousValue;
       // console.log({nuevoValor, valorAnterior});
+      // console.log(this.recepciones_arr);
+      
         this.obtener_total_cotizaciones()
     }
+  
+    
+    
   }   
-  irPagina(pagina, data){
+  irPagina(pagina, data, nueva?){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
-    // console.log(this.enrutamiento);
+ 
     let queryParams = {}
-    if (pagina === 'cotizacionNueva' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
-    }else if (pagina === 'cotizacionNueva' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
-    }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
-    }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
+    
+    if (pagina ==='cotizacionNueva') {
+      queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+    } else if(pagina === 'ServiciosConfirmar'){
+      queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+    } else if(pagina === 'editar-os'){
+      queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
     }
-    // console.log(queryParams);
+
+    // console.log(this.enrutamiento);
+    // if (pagina === 'cotizacionNueva' && !tipo) {
+    //   queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+    // }else if (pagina === 'cotizacionNueva' && tipo) {
+    //   queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
+    // }else if (pagina === 'ServiciosConfirmar' && !tipo) {
+    //   console.log('aqui');
+      
+    //   queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+    // }else if (pagina === 'ServiciosConfirmar' && tipo) {
+    //   console.log('aqui');
+      
+    //   queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
+    // }
+    // console.log(this.router.url);
+    const ruta_Actual= this.router.url
+
+    const ruta = ruta_Actual.split('/')
+
+    const ruta_anterior = ruta[1].split('?')
+
+    queryParams['anterior'] = ruta_anterior[0]
+    console.log(queryParams);
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }
@@ -104,11 +135,11 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     const nuevas = [...this.recepciones_arr]
     nuevas.map(g=>{
       margen_ += g.margen
-      const  {reporte, servicios} = this.calcularTotales(g)
+      const  {reporte, _servicios} = this.calcularTotales(g)
       Object.keys(reporte_totales).forEach(campo=>{
         reporte_totales[campo] += reporte[campo]
       })
-      g.servicios = servicios
+      g.servicios = _servicios
       g.reporte = reporte
     })
     this.recepciones_arr = nuevas
@@ -118,9 +149,8 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     const nuevo_margen = margen_ / nuevas.length
 
     let subtotal = reporte_totales.mo + reporte_totales.refacciones
+
     const margen = 1 + (nuevo_margen / 100)
-    
-    
     
     let nueva_utilidad_operacion = (subtotal - reporte_totales.refacciones) * (100 / subtotal)
 
@@ -148,16 +178,22 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     }
   }
 
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, servicios: servicios_, iva:_iva, descuento:descuento_} = data
+
+
+
+  calcularTotales({margen: new_margen, formaPago, elementos, servicios, iva:_iva, descuento:descuento_}) {
+    
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    // let refacciones_new = 0
-    const servicios = [...servicios_] 
+    
+    const servicios_ = (elementos) ? elementos : servicios
+
+
+    const _servicios = [...servicios_] 
     
     const margen = 1 + (new_margen / 100)
-    servicios.map(ele=>{
-      const {cantidad, costo} = ele
-      if (ele.tipo === 'paquete') {
+    _servicios.map(ele=>{
+      const {cantidad, costo, tipo} = ele
+      if (tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
@@ -167,21 +203,18 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
         ele.precio = mo + (refacciones * margen)
         ele.total = (mo + (refacciones * margen)) * cantidad
         if (costo > 0 ) ele.total = costo * cantidad 
-      }else if (ele.tipo === 'mo') {
+        
+      }else if (tipo === 'mo' || tipo === 'refaccion') {
+
         const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.mo += operacion
-        }
+
         ele.subtotal = operacion
-        ele.total = operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          // refacciones_new += operacion
-          reporte.refacciones += operacion
-        }
-        ele.subtotal = operacion
-        ele.total = operacion * margen
+        ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
+        
+        const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+
+        if (ele.aprobado) reporte[donde] += operacion
+
       }
       return ele
     })
@@ -191,7 +224,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
     const {mo, refacciones} = reporte
 
-    reporte.refacciones_v = reporte.refacciones * margen
+    reporte.refacciones_v = refacciones * margen
 
     let nuevo_total = mo + reporte.refacciones_v
     
@@ -210,26 +243,24 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     reporte.meses = total_meses
 
     reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, servicios}
+    return {reporte, _servicios}
     
   }
-  mano_refaccion(ele){
-    const {costo, precio, cantidad} = ele
+  mano_refaccion({costo, precio, cantidad}){
     const mul = (costo > 0 ) ? costo : precio
     return cantidad * mul
   }
-  total_paquete(data){
-    const {elementos} = data
+  total_paquete({elementos}){
     const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos]
+    const nuevos_elementos = [...elementos] 
+
+    if (!nuevos_elementos.length) return reporte
+
     nuevos_elementos.forEach(ele=>{
-      if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.mo += operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.refacciones += operacion
-      }
+      const {tipo} = ele
+      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+      const operacion = this.mano_refaccion(ele)
+      reporte[donde] += operacion
     })
     return reporte
   }

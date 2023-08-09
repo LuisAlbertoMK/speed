@@ -64,7 +64,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     if (changes['data_cliente']) {
       const nuevoValor = changes['data_cliente'].currentValue;
       const valorAnterior = changes['data_cliente'].previousValue;
-      console.log({nuevoValor, valorAnterior});
+      // console.log({nuevoValor, valorAnterior});
       
         setTimeout(()=>{
           if (nuevoValor['id']) {

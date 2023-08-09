@@ -1,0 +1,223 @@
+
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+            <li class="breadcrumb-item"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li>
+            <li class="breadcrumb-item active">Editar O.S</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+    <app-cliente-tarjeta [cliente]="data_editar.data_cliente"></app-cliente-tarjeta>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+    <app-vehiculo-tarjeta [vehiculo]="data_editar.data_vehiculo"></app-vehiculo-tarjeta>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1" [formGroup]="checksBox">
+    <section class="example-section text-end">
+        <mat-checkbox class="m-1" formControlName="iva" checked="true" >IVA</mat-checkbox>
+        <mat-checkbox class="m-1" formControlName="detalles" >Detalles PDF</mat-checkbox>
+    </section>
+  <div class="row text-start">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="descuento" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Descuento</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <input type="number" formControlName="descuento" [value]="data_editar.descuento" class="form-control form-control-sm">
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="margen" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Margen</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <input type="number" min="25" max="100" formControlName="margen" class="form-control form-control-sm">
+        </div>
+        <span>
+          Margen aplicado: {{data_editar.margen}}
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="formaPago" class="col-sm-3 col-md-4 col-lg-3 col-form-label">formaPago</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <select class=" form-select  form-select-sm" formControlName="formaPago">
+            <option *ngFor="let val of formasPago" [value]="val.id" class="text-capitalize" >
+              {{val.pago | capitalizarUno}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="status" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Status orden</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <select class=" form-select  form-select-sm" formControlName="status">
+            <option [selected]="val.valor === data_editar.status" *ngFor="let val of statusOS" [value]="val.valor" class="text-capitalize" >
+              {{val.show | capitalizarUno}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="tecnico" class="col-sm-12 col-md-4 col-lg-3 col-form-label">Tecnico</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+          <label for="tecnico" class="col-sm-12 col-md-8 col-lg-9 col-form-label">{{data_editar.tecnicoShow | capitalizarUno}}</label>
+            
+        </div>
+      </div>
+    </div>
+
+    <app-lista-tecnicos [sucursal]="data_editar.sucursal" (dataTecnico)="dataTecnico($event)"></app-lista-tecnicos>
+  </div>
+  
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1 mt-1  offset-1" *ngIf="data_editar.reporte">
+    <app-reporte-desgloce-tarjeta [reporte]="data_editar.reporte"></app-reporte-desgloce-tarjeta>
+</div>
+
+<button  data-bs-toggle="modal" (click)="idPaqueteEditar = -1;" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Agregar paquete</button>
+<button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" 
+(click)="idPaqueteEditar = -1">Agregar elemento</button>
+
+<div class="mat-elevation-z8 table-responsive">
+    <table mat-table #elementos="matSort" matSort
+    [dataSource]="dataSource" multiTemplateDataRows
+    class="mat-elevation-z8">
+    <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let row" [ngClass]="'tipo-'+ row.tipo" [ngStyle]="{'min-width':(miniColumnas)*2+'px'}">
+           {{ row.nombre}} 
+          </td>
+    </ng-container>
+    <ng-container matColumnDef="aprobado">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprobado / Status </th>
+        <td mat-cell *matCellDef="let row" [ngClass]="'tipo-'+ row.tipo" [ngStyle]="{'min-width':(miniColumnas)*2+'px'}">
+          <span class="" [ngClass]="row.aprobado ? 'text-success': 'text-danger'">
+            {{row.aprobado ? 'Aprobado': 'No aprobado'}}
+          </span>
+          /
+          <span class="text text-black">
+            {{row.status }}
+          </span>
+          </td>
+    </ng-container>
+    <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
+        <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
+            <input  type="number" min="1" [value]="row.cantidad" maxlength="5" onkeypress="validarDecimal(event)" (change)="editar('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput">
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="precio">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+        <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{ row.precio | monedas}}   </td>
+    </ng-container>
+    <ng-container matColumnDef="costo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo </th>
+        <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> 
+            <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+        <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{ row.total | monedas}}   </td>
+    </ng-container>
+    <ng-container matColumnDef="opciones" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
+        <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> 
+            <i class="fa fa-trash pointer btn btn-sm btn-danger m-1" (click)="eliminaElemento(row)"></i>    
+            <i class="fa fa-plus pointer btn btn-sm btn-primary m-1" (click)="idPaqueteEditar = row.index" data-bs-toggle="modal" data-bs-target="#modalElemento"></i>    
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="expand" stickyEnd>
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+    <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+    </button>
+    </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+    <div class="example-element-detail"
+            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="example-element-diagram">
+        <div class="example-element-position"> {{element.position}} </div>
+        <div class="example-element-symbol"> {{element.symbol}} </div>
+        <div class="example-element-name"> {{element.name}} </div>
+        <div class="example-element-weight"> {{element.weight}} </div>
+        </div>
+        <div class="example-element-description">
+        {{element.description}}
+        <span class="example-element-description-attribution"> -- Wikipedia </span>
+        </div>
+    </div>
+    </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+    class="example-element-row"
+    [class.example-expanded-row]="expandedElement === element" >
+    <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+
+    <mat-paginator #elementosPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
+
+<div class="row ">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mb-2 mt-2">
+        <button class="btn btn-sm btn-primary" (click)="guardar_cambios()">Guardar cambios</button>
+    </div>
+</div>
+
+<app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+
+<div class="modal fade" id="modalPaquetes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar paquete</h1>
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body m-2">
+      <app-paquetes  (infoPaquete)="agrega_principal( $event)" ></app-paquetes>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal fade" id="modalElemento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <div class="modal-header ml-3">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body m-2">
+      <app-mo-refacciones [registro]="true" (dataElemento)="agrega_principal( $event )"></app-mo-refacciones>
+    </div>
+  </div>
+</div>
+</div>
+
+

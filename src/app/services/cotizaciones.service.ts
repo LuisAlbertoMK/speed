@@ -51,6 +51,7 @@ export class CotizacionesService {
     {valor:'mo', show:'mo'},
     // {valor:'refacciones_a', show:'refacciones a'},
     {valor:'refacciones_v', show:'refacciones'},
+    {valor:'costos', show:'Costos'},
     // {valor:'sobrescrito_mo', show:'sobrescrito mo'},
     // {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
     // {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},

@@ -97,8 +97,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      formasPago       =  [ ...this._cotizaciones.formasPago ]
      metodospago      =  [ ...this._cotizaciones.metodospago ]
      sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
-     servicios =  [ ...this._servicios.servicios ]
-
+    servicios =  [ ...this._servicios.servicios ]
+    
      paquete: string     = this._campos.paquete
      refaccion: string   = this._campos.refaccion
      mo: string          = this._campos.mo
@@ -304,9 +304,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   
             g.data_sucursal =  data_sucursal
             g.sucursalShow = data_sucursal.sucursal
-            const {reporte, elementos} = this.calcularTotales(g);
-            g.reporte = reporte
-            g.elementos = elementos
+            // const {reporte, elementos} = this.calcularTotales(g);
+            // g.reporte = reporte
+            // g.elementos = elementos
             return g
           });
         await Promise.all(promesasVehiculos);
@@ -341,6 +341,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const filtro = resultados.filter(r=>new Date(r.fecha_recibido) >= start && new Date(r.fecha_recibido) <= end )
     // console.log(filtro);
     
+    this.recepciones_arr = filtro
+
     this.dataSource.data = filtro
     this.newPagination()
   }
@@ -563,8 +565,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const elementos = (servicios_) ? [...servicios_] : []
     const margen = 1 + (new_margen / 100)
     elementos.map(ele=>{
-      const {cantidad, costo} = ele
-      if (ele.tipo === 'paquete') {
+      const {cantidad, costo, tipo} = ele
+      if (tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
@@ -575,21 +577,17 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         ele.precio = mo + (refacciones * margen)
         ele.total = (mo + (refacciones * margen)) * cantidad
         if (costo > 0 ) ele.total = costo * cantidad 
-      }else if (ele.tipo === 'mo') {
+      }else if (tipo === 'mo' || tipo === 'refaccion') {
+
         const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.mo += operacion
-        }
+
         ele.subtotal = operacion
-        ele.total = operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.refacciones += operacion
-          reporte.refacciones_v += operacion * margen
-        }
-        ele.subtotal = operacion
-        ele.total = operacion * margen
+        ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
+        
+        const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+
+        if (ele.aprobado) reporte[donde] += operacion
+
       }
       return ele
     })
@@ -618,22 +616,21 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     return {reporte, elementos}
     
   }
-  mano_refaccion(ele){
-    const {costo, precio, cantidad} = ele
+  mano_refaccion({costo, precio, cantidad}){
     const mul = (costo > 0 ) ? costo : precio
     return cantidad * mul
   }
-  total_paquete(data){
-    const {elementos} = data
+  total_paquete({elementos}){
     const reporte = {mo:0, refacciones:0}
-    elementos.forEach(ele=>{
-      if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.mo += operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.refacciones += operacion
-      }
+    const nuevos_elementos = [...elementos] 
+
+    if (!nuevos_elementos.length) return reporte
+
+    nuevos_elementos.forEach(ele=>{
+      const {tipo} = ele
+      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+      const operacion = this.mano_refaccion(ele)
+      reporte[donde] += operacion
     })
     return reporte
   }

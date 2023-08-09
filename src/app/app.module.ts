@@ -154,6 +154,8 @@ import { TarjetaHistorialGastosComponent } from './components/tarjeta-historial-
 import { TemplateTablaCotizacionesComponent } from './components/template-tabla-cotizaciones/template-tabla-cotizaciones.component';
 import { TemplateTablaRecepcionesComponent } from './components/template-tabla-recepciones/template-tabla-recepciones.component';
 import { TemplateTablaVehiculosComponent } from './components/template-tabla-vehiculos/template-tabla-vehiculos.component';
+import { EditarOsComponent } from './pages/editar-os/editar-os.component';
+import { TablaElementosComponent } from './components/tabla-elementos/tabla-elementos.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -235,7 +237,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TarjetaHistorialGastosComponent,
     TemplateTablaCotizacionesComponent,
     TemplateTablaRecepcionesComponent,
-    TemplateTablaVehiculosComponent
+    TemplateTablaVehiculosComponent,
+    EditarOsComponent,
+    TablaElementosComponent
   ],
   imports: [
     BrowserModule,

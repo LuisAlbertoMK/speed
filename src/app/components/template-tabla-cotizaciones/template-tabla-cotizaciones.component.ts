@@ -99,6 +99,7 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
     nuevas.map(g=>{
       margen_ += g.margen
       const  {reporte, servicios} = this.calcularTotales(g)
+      
       Object.keys(reporte_totales).forEach(campo=>{
         reporte_totales[campo] += reporte[campo]
       })
@@ -141,16 +142,16 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
       this.dataSource.paginator.firstPage();
     }
   }
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
+  calcularTotales({margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_}) {
+    // const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
     // let refacciones_new = 0
     const servicios = [...servicios_] 
     
     const margen = 1 + (new_margen / 100)
     servicios.map(ele=>{
-      const {cantidad, costo} = ele
-      if (ele.tipo === 'paquete') {
+      const {cantidad, costo, tipo} = ele
+      if (tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
@@ -161,21 +162,17 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
         ele.total = (mo + (refacciones * margen)) * cantidad
         if (costo > 0 ) ele.total = costo * cantidad 
         
-      }else if (ele.tipo === 'mo') {
+      }else if (tipo === 'mo' || tipo === 'refaccion') {
+
         const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.mo += operacion
-        }
+
         ele.subtotal = operacion
-        ele.total = operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          // refacciones_new += operacion
-          reporte.refacciones += operacion
-        }
-        ele.subtotal = operacion
-        ele.total = operacion * margen
+        ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
+        
+        const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+
+        if (ele.aprobado) reporte[donde] += operacion
+
       }
       return ele
     })
@@ -185,7 +182,7 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
 
     const {mo, refacciones} = reporte
 
-    reporte.refacciones_v = reporte.refacciones * margen
+    reporte.refacciones_v = refacciones * margen
 
     let nuevo_total = mo + reporte.refacciones_v
     
@@ -207,23 +204,21 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
     return {reporte, servicios}
     
   }
-  mano_refaccion(ele){
-    const {costo, precio, cantidad} = ele
+  mano_refaccion({costo, precio, cantidad}){
     const mul = (costo > 0 ) ? costo : precio
     return cantidad * mul
   }
-  total_paquete(data){
-    const {elementos} = data
+  total_paquete({elementos}){
     const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos]
+    const nuevos_elementos = [...elementos] 
+
+    if (!nuevos_elementos.length) return reporte
+
     nuevos_elementos.forEach(ele=>{
-      if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.mo += operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.refacciones += operacion
-      }
+      const {tipo} = ele
+      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+      const operacion = this.mano_refaccion(ele)
+      reporte[donde] += operacion
     })
     return reporte
   }

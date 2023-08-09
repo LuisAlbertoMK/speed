@@ -50,6 +50,21 @@ export class UsuariosService {
       });
     });
   }
+  consulta_tecnico(data): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const {ruta} = data
+      const starCountRef = ref(db, `usuarios/${ruta}/usuario`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve(null);
+        }
+      }, {
+        onlyOnce: true
+      });
+    });
+  }
   update_data_usuario(usuario) {
     let token = localStorage.getItem('tokenTemporal')
     const dataReset={

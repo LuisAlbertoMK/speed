@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "correccion de sesion de cliente (en proceso)"
+git commit -m "falta correcion en cotizacion new (en proceso)"
 git push -u origin 
 
 
