@@ -181,40 +181,51 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
 
 
-  calcularTotales({margen: new_margen, formaPago, elementos, servicios, iva:_iva, descuento:descuento_}) {
+  calcularTotales(data) {
     
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
+    const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0, costos:0}
     
-    const servicios_ = (elementos) ? elementos : servicios
+    // const servicios_ = (elementos) ? elementos 
 
 
-    const _servicios = [...servicios_] 
+    const _servicios = [...elementos] 
     
     const margen = 1 + (new_margen / 100)
-    _servicios.map(ele=>{
-      const {cantidad, costo, tipo} = ele
+    _servicios.map((ele, index) =>{
+      const {cantidad, costo, tipo, precio} = ele
+      ele.index = index
       if (tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
-          reporte.mo += mo
-          reporte.refacciones += refacciones
+          ele.precio = mo + (refacciones * margen)
+          ele.subtotal = mo + (refacciones * margen) * cantidad
+          ele.total = (mo + (refacciones * margen)) * cantidad
+          if (costo > 0 ){
+            ele.total = costo * cantidad
+            reporte.costos += costo * cantidad
+          }else{
+            reporte.mo += mo
+            reporte.refacciones += refacciones
+          }
         }
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad 
-        
       }else if (tipo === 'mo' || tipo === 'refaccion') {
 
-        const operacion = this.mano_refaccion(ele)
+        // const operacion = this.mano_refaccion(ele)
+        const operacion = (costo>0) ? cantidad * costo : cantidad * precio 
 
         ele.subtotal = operacion
-        ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
         
-        const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-
-        if (ele.aprobado) reporte[donde] += operacion
-
+        if (ele.aprobado){
+          if (costo > 0 ){
+            reporte.costos += (tipo === 'refaccion') ? operacion * margen : operacion
+          }else{
+            const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+            reporte[donde] += operacion
+          }
+          ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
+        }
       }
       return ele
     })
@@ -226,7 +237,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
     reporte.refacciones_v = refacciones * margen
 
-    let nuevo_total = mo + reporte.refacciones_v
+    let nuevo_total = mo + reporte.refacciones_v + reporte.costos
     
     let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
 

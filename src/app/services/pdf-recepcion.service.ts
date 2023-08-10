@@ -137,6 +137,7 @@ export class PdfRecepcionService {
             fullpath = 'combustibleFull'
             break;
         default:
+          fullpath = 'combustiblevacio'
           break;
       }
       return fullpath
@@ -265,6 +266,24 @@ export class PdfRecepcionService {
           body.push(dataRow);
       })
       return body;
+    }
+    function monedas(value: number, symbol = '$'): string {
+      if (!value || isNaN(value)) {
+        return `${symbol} 0.00`;
+      }
+      
+      const isNegative = value < 0;
+      const [integerPart, decimalPart = '00'] = Math.abs(value).toFixed(2).split('.');
+      const formattedIntegerPart = integerPart
+        .split('')
+        .reverse()
+        .reduce((result, digit, index) => {
+          const isThousands = index % 3 === 0 && index !== 0;
+          return `${digit}${isThousands ? ',' : ''}${result}`;
+        }, '');
+    
+      const formattedValue = `${symbol} ${isNegative ? '-' : ''}${formattedIntegerPart}.${decimalPart}`;
+      return formattedValue;
     }
     const muliva = (data.iva) ? .16 : 0
     let documentDefinition = {

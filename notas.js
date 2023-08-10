@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "generar pdf de entrega  (en proceso) 1"
+git commit -m "Esperando a notas de ingeniero guadarrama  (en proceso)"
 git push -u origin 
 
 

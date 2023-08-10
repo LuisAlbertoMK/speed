@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
@@ -19,6 +19,15 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onChildChanged, onChildRemoved, query, orderByChild, startAt, equalTo} from "firebase/database";
 import Swal from 'sweetalert2';
 
+import SignaturePad from 'signature_pad';
+import { PdfRecepcionService } from 'src/app/services/pdf-recepcion.service';
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts.js";
+import { PdfEntregaService } from 'src/app/services/pdf-entrega.service';
+import { UploadMetadata } from 'firebase/storage';
+import { UploadPDFService } from 'src/app/services/upload-pdf.service';
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -48,13 +57,14 @@ interface ServicioEditar {
     ]),
   ],
 })
-export class EditarOsComponent implements OnInit, OnDestroy {
+export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
   constructor(
     private rutaActiva: ActivatedRoute, private _security:EncriptadoService, private _servicios: ServiciosService,
     private _clientes: ClientesService, private _vehiculos: VehiculosService, private _sucursales: SucursalesService,
     private _cotizaciones: CotizacionesService, private _formBuilder: FormBuilder, private _publicos: ServiciosPublicosService,
-    private _usuarios: UsuariosService, private router: Router
+    private _usuarios: UsuariosService, private router: Router, private _pdfRecepcion: PdfRecepcionService,
+    private _pdf_entrega: PdfEntregaService, private _uploadPDF: UploadPDFService
     ) { }
 
   enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
@@ -63,6 +73,9 @@ export class EditarOsComponent implements OnInit, OnDestroy {
   @ViewChild('firmaDigital',{static:true}) signatureElement:any; SignaturePad:any;
   ngOnInit(): void {
     this.rol()
+  }
+  ngAfterViewInit() {
+    this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
   }
   async ngOnDestroy(){
     const { sonIguales, diferencias } = this.compararObjetos(this.data_editar, this.temporal)
@@ -107,7 +120,7 @@ export class EditarOsComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource(); //elementos
   //  'clienteShow'
-   cotizaciones = ['nombre','aprobado','cantidad','precio','costo','total']; 
+   cotizaciones = ['nombre','aprobado','cantidad','precio','costo','subtotal','total']; 
    columnsToDisplayWithExpand = [...this.cotizaciones, 'opciones', 'expand']; 
    expandedElement: any | null; 
    @ViewChild('elementos') sort: MatSort 
@@ -135,7 +148,9 @@ export class EditarOsComponent implements OnInit, OnDestroy {
     fecha_promesa:'',
     fecha_recibido:'',
     fecha_entregado:'',
+    firma_cliente:'',
     formaPago:'1',
+    observaciones:'',
     id:'',
     iva:true,
     margen:25,
@@ -149,7 +164,10 @@ export class EditarOsComponent implements OnInit, OnDestroy {
     data_vehiculo:{},
     data_sucursal:{},
     tecnicoShow: '',
-    reporte:{}
+    reporte:{},
+    pdf_entrega:'',
+    nivel_gasolina:'',
+    showDetalles:false,
   }
   temporal 
 
@@ -159,11 +177,19 @@ export class EditarOsComponent implements OnInit, OnDestroy {
     descuento:0,
     margen:25,
     formaPago:'1',
-    status:''
+    status:'',
+    nivel_gasolina:'vacio',
+    observaciones: ''
   });
 
   faltante_s:string 
 
+  campos_ocupados_editar = [
+    'cliente','sucursal','vehiculo','elementos','servicio','margen','status','tecnico','formaPago'
+  ]
+  nivel_gasolina = [
+    "vacio","1/4","1/2", "3/4", "lleno"
+  ]
  
   async rol(){
     const { rol, sucursal } = this._security.usuarioRol()
@@ -196,7 +222,8 @@ export class EditarOsComponent implements OnInit, OnDestroy {
     Swal.fire({
       icon: 'info',
       html:'cargando',
-      allowOutsideClick:false
+      allowOutsideClick:false,
+      showConfirmButton:false
     } )
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
 
@@ -222,7 +249,7 @@ export class EditarOsComponent implements OnInit, OnDestroy {
         // console.log(data_tecnico);
         this.data_editar.tecnicoShow = data_tecnico
       }
-
+      
       // data_recepcion.elementos = temp.map(e=>e.aprobado = true)
       const campos = [
         'cliente',
@@ -230,6 +257,7 @@ export class EditarOsComponent implements OnInit, OnDestroy {
         'elementos',
         'fecha_promesa',
         'fecha_recibido',
+        'observaciones',
         'formaPago',
         'id',
         'iva',
@@ -240,6 +268,7 @@ export class EditarOsComponent implements OnInit, OnDestroy {
         'tecnico',
         'sucursal',
         'vehiculo',
+        'pdf_entrega'
       ]
       campos.forEach(campo=>{
         this.data_editar[campo] = data_recepcion[campo]
@@ -254,6 +283,8 @@ export class EditarOsComponent implements OnInit, OnDestroy {
     this.data_editar.reporte = reporte
     this.data_editar.elementos = _servicios
     this.checksBox.get('margen').setValue(this.data_editar.margen)
+
+    // console.log(this.data_editar);
     
     this.temporal = JSON.parse(JSON.stringify(this.data_editar));
   
@@ -264,9 +295,17 @@ export class EditarOsComponent implements OnInit, OnDestroy {
       this.data_editar.iva = iva
       this.realizaOperaciones()
     })
-    // this.checksBox.get('detalles').valueChanges.subscribe((detalles: boolean) => {
-    //   this.data_editar.showDetalles = detalles
-    // })
+    this.checksBox.get('nivel_gasolina').valueChanges.subscribe((nivel_gasolina: string) => {
+      this.data_editar.nivel_gasolina = nivel_gasolina
+      this.realizaOperaciones()
+    })
+    this.checksBox.get('observaciones').valueChanges.subscribe((observaciones: string) => {
+      this.data_editar.observaciones = observaciones
+      this.realizaOperaciones()
+    })
+    this.checksBox.get('detalles').valueChanges.subscribe((detalles: boolean) => {
+      this.data_editar.showDetalles = detalles
+    })
     this.checksBox.get('descuento').valueChanges.subscribe((descuento: number) => {
       const nuevo_descuento = descuento < 0 ? 0 : descuento
       this.data_editar.descuento = nuevo_descuento
@@ -282,15 +321,21 @@ export class EditarOsComponent implements OnInit, OnDestroy {
       this.realizaOperaciones()
     })
     this.checksBox.get('status').valueChanges.subscribe((status: string) => {
-      this.data_editar.status = status
-      this.actualiza_Servicios(status)
+      if (status  !== this.data_editar.status) {
+        this.data_editar.status = status
+        this.actualiza_Servicios(status)
+      }
+      if (status !== 'entregado') {
+        this.limpiarFirma()
+      }
     })
     // this.checksBox.get('servicio').valueChanges.subscribe((servicio: string) => {
     //   this.infoCotizacion.servicio = servicio
     // })
   }
   async actualiza_Servicios(status){
-    const {respuesta } = await this._publicos.mensaje_pregunta(`Cambiar status de orden ${status}`,true, `Este cambio de status general afecta a los servicios de la orden`)
+    let mensaje_coplemento = (status !== 'entregado') ? ', ademas eliminara el pdf antes creado; lo cual permite hacer aun cambios a la orden' : null
+    const {respuesta } = await this._publicos.mensaje_pregunta(`Cambiar status de orden a ${status}`,true, `Este cambio de status general afecta a los servicios de la orden${mensaje_coplemento}`)
     if (!respuesta) return
     // console.log(status);
     const elementos = [...this.data_editar.elementos]
@@ -310,9 +355,7 @@ export class EditarOsComponent implements OnInit, OnDestroy {
           new_status = status
       break;
       case 'entregado':
-       
         new_status = status
-        
         break;
     }
     elementos.forEach(s => {
@@ -321,26 +364,36 @@ export class EditarOsComponent implements OnInit, OnDestroy {
         }
     });
 
-
-
     this.data_editar.elementos = elementos
     this.data_editar.status = status
+
+    if (status !== 'entregado') {
+      const updates = {};
+      const {sucursal, cliente, id} = this.data_editar
+      if (sucursal && cliente && id) {
+        const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+        // this.data_editar.fecha_recibido = actual
+        updates[`recepciones/${sucursal}/${cliente}/${id}/status`] = status;
+        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_recibido`] = actual;
+        updates[`recepciones/${sucursal}/${cliente}/${id}/elementos`] = this.data_editar.elementos
+        updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = null
+        update(ref(db), updates).then(()=>{
+          // console.log('finalizo');
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+      }
+    }
+   
     this.realizaOperaciones()
 
-    if (status === 'entregado') {
-      // const actual_entregado_terminado  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
-      // this.data_editar.fecha_entregado = actual_entregado_terminado
-      this.pedir_firmaCliente()
-    }
   }
-  pedir_firmaCliente(){
-    console.log('generar pdf de entrega');
-    
-  }
+
   async dataTecnico(event){
     // console.log(event);
     const {id, usuario} = event
-    if (id) {
+    if (id && id !== this.data_editar.tecnico) {
       const { respuesta} = await this._publicos.mensaje_pregunta(`Cambiar tecnico?`,true,`El tecnico de la orden sera reemplazado`)
       // console.log(respuesta);
       if (respuesta) {
@@ -403,8 +456,10 @@ export class EditarOsComponent implements OnInit, OnDestroy {
   }
 
   compararObjetos(obj1: ServicioEditar, obj2: ServicioEditar): { sonIguales: boolean; diferencias: string } {
-    const campos_comparar = ['elementos','reporte','servicio','margen','iva','descuento','status','tecnico','formaPago']
-
+    const campos_comparar = ['elementos','reporte','servicio','margen','iva','descuento','status','tecnico','formaPago','observaciones']
+    if (this.data_editar.status === 'entregado' && !this.data_editar.pdf_entrega) {
+      campos_comparar.push('firma_cliente')
+    }
     const diferencias: string[] = [];
     let sonIguales = true;
     for (const key of campos_comparar) {
@@ -418,61 +473,141 @@ export class EditarOsComponent implements OnInit, OnDestroy {
   }
 
   async guardar_cambios(){
-    const campos = [
-      'cliente','sucursal','vehiculo','elementos','servicio','margen','status','tecnico','formaPago'
-    ]
-    const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.data_editar, campos)
 
-    this.faltante_s = faltante_s
-    if (!ok) return
-
-    // console.log(this.data_editar); 
-
-    const { sonIguales, diferencias } = this.compararObjetos(this.data_editar, this.temporal)
-    // console.log({ sonIguales, diferencias });
-
-    if (!sonIguales) {
-      const { respuesta } = await this._publicos.mensaje_pregunta(`Remplazar información?`,true,`${diferencias}`)
-      if (respuesta) {
-        const campos_update = ['elementos','margen','status','tecnico','formaPago', 'fecha_recibido','fecha_entregado']
-        let updates = {}
-        const {sucursal, cliente, vehiculo, id} = this.data_editar
-        
-        const nueva_data = JSON.parse(JSON.stringify(this.data_editar));
-
-        const otros = this.purifica_informacion(nueva_data)
-        const filtrados = otros.filter((element) => {
-          if (element.tipo === "paquete") {
-            return element.elementos.length > 0;
-          }
-          return true;
-        });
-
-        nueva_data.elementos = filtrados
-
-
-        campos_update.forEach(campo=>{
-          updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
-        })
-        // console.log(updates);
-
-        update(ref(db), updates).then(()=>{
-          // console.log('finalizo');
-          this._publicos.swalToast(`Actualización correcta!!`,1)
-        })
-        .catch(err=>{
-          console.log(err);
-        })
-        
-        
-        
+    if (!this.data_editar.pdf_entrega) {
+      let campos = [...this.campos_ocupados_editar]
+      let campos_update = ['elementos','margen','status','tecnico','formaPago', 'fecha_recibido','fecha_entregado','observaciones']
+      if (this.data_editar.status === 'entregado' && !this.data_editar.pdf_entrega) {
+        campos.push('firma_cliente')
+        // campos_update.push('firma_cliente')
       }else{
-        this._publicos.swalToast(`Se cancelo`,0)
+        this.limpiarFirma()
       }
+      const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.data_editar, campos)
+  
+      this.faltante_s = faltante_s
+      
+      if (!ok) return
+  
+      // console.log(this.data_editar); 
+  
+      const { sonIguales, diferencias } = this.compararObjetos(this.data_editar, this.temporal)
+      // console.log({ sonIguales, diferencias });
+  
+      if (!sonIguales) {
+        const { respuesta } = await this._publicos.mensaje_pregunta(`Remplazar información?`,true,`${diferencias}`)
+        if (respuesta) {
+  
+          
+          
+          let updates = {}
+          const {sucursal, cliente, vehiculo, id} = this.data_editar
+          
+          const nueva_data = JSON.parse(JSON.stringify(this.data_editar));
+  
+          const otros = this.purifica_informacion(nueva_data)
+          const filtrados = otros.filter((element) => {
+            if (element.tipo === "paquete") {
+              return element.elementos.length > 0;
+            }
+            return true;
+          });
+  
+          nueva_data.elementos = filtrados
+  
+  
+          campos_update.forEach(campo=>{
+            updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
+          })
+          // console.log(updates);
+  
+          if (this.data_editar.status === 'entregado' ) {
+            //esperar a generar el pdf
+      
+            const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+              this.data_editar.fecha_entregado = actual
+              this._pdf_entrega.pdf(this.data_editar).then((pdfReturn:any) => {
+  
+              const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
+  
+  
+              Swal.fire({
+                title: 'Opciones de cotización',
+                html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Previsualizar PDF cotizacion',
+                denyButtonText: `Guardar y enviar correo`,
+                cancelButtonText:`cancelar`
+        
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  pdfDocGenerator.open()
+                } else if (result.isDenied) {
+                  pdfDocGenerator.getBlob(async (blob) => {
+                   
+                    // async function tuFuncionPrincipal() {
+                      try {
+                       
+                    
+                        const resultado = await this._uploadPDF.upload_pdf_entrega(blob,this.data_editar.no_os)
+                    
+                        // Esperar hasta que se tenga la ruta del archivo
+                        while (!resultado.ruta) {
+                          await new Promise(resolve => setTimeout(resolve, 100)); // Esperar 100ms antes de verificar nuevamente
+                        }
+                    
+                        // Aquí puedes continuar con el código después de que se tenga la ruta
+                        console.log('Ruta del archivo:', resultado.ruta);
+                        // this.data_editar.pdf_entrega = resultado.ruta
+                        updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = resultado.ruta
+                        update(ref(db), updates).then(()=>{
+                          // console.log('finalizo');
+                          this._publicos.swalToast(`Actualización correcta!!`,1)
+                        })
+                        .catch(err=>{
+                          console.log(err);
+                        })
+                      } catch (error) {
+                        console.error('Ocurrió un error:', error);
+                      }
+                    // }
+                    
+                    // Llamar la función principal
+                    // tuFuncionPrincipal();
+                    
+                  })
+                }
+              })
+  
+  
+            })
+          }else{
+            updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = null
+            update(ref(db), updates).then(()=>{
+              // console.log('finalizo');
+              this._publicos.swalToast(`Actualización correcta!!`,1)
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+          }
+  
+          
+          
+          
+          
+        }else{
+          this._publicos.swalToast(`Se cancelo`,0)
+        }
+      }else{
+        this._publicos.swalToast(`No hubo cambios encontrados`,1)
+      }
+        
     }else{
-      this._publicos.swalToast(`No hubo cambios encontrados`,1)
+      this._publicos.swalToast(`Ninguna accion realizada`,0, `Documento ya firmado para guardar los cambios cambia el status de la orden, se notificara con email a cliente`)
+      console.log('existe firma no puede guarda ninguna modificacion');
     }
-    
   }
 
   newPagination(){
@@ -487,14 +622,16 @@ export class EditarOsComponent implements OnInit, OnDestroy {
 
   limpiarFirma(){
     this.SignaturePad.clear()
-    // this.infoConfirmar.firma_cliente = null
+    this.data_editar.firma_cliente = null
   }
   firmar(){
     const u = this.SignaturePad.toDataURL()
     if (!this.SignaturePad.isEmpty()) {
-      // this.infoConfirmar.firma_cliente = u
+      this.data_editar.firma_cliente = u
+      console.log(this.data_editar);
+      
     }else{
-      // this.infoConfirmar.firma_cliente = null
+      this.data_editar.firma_cliente = null
       this._publicos.swalToast('La firma no puede estar vacia',0)
     }
   }
@@ -516,6 +653,7 @@ export class EditarOsComponent implements OnInit, OnDestroy {
         const {mo, refacciones} = report
         if (ele.aprobado) {
           ele.precio = mo + (refacciones * margen)
+          ele.subtotal = mo + (refacciones * margen) * cantidad
           ele.total = (mo + (refacciones * margen)) * cantidad
           if (costo > 0 ){
             ele.total = costo * cantidad

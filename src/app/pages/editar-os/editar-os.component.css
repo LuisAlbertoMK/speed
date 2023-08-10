@@ -78,4 +78,20 @@ table {
   }
   .card{
     border-radius: 15px;
+    margin: 1px;
+  }
+  canvas {
+    background-color: lavender;
+    touch-action: none;
+  }
+  canvas#main-canvas{
+    background-color: rgb(255, 255, 255,1);
+    border:1px solid black
+  }
+
+  .ocultar{
+    display: none;
+  }
+  .mostrar{
+    display: block;
   }
