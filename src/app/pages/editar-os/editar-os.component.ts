@@ -59,6 +59,8 @@ export class EditarOsComponent implements OnInit, OnDestroy {
 
   enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
   
+
+  @ViewChild('firmaDigital',{static:true}) signatureElement:any; SignaturePad:any;
   ngOnInit(): void {
     this.rol()
   }
@@ -308,9 +310,9 @@ export class EditarOsComponent implements OnInit, OnDestroy {
           new_status = status
       break;
       case 'entregado':
-        const actual_entregado_terminado  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
-        this.data_editar.fecha_entregado = actual_entregado_terminado
+       
         new_status = status
+        
         break;
     }
     elementos.forEach(s => {
@@ -324,6 +326,16 @@ export class EditarOsComponent implements OnInit, OnDestroy {
     this.data_editar.elementos = elementos
     this.data_editar.status = status
     this.realizaOperaciones()
+
+    if (status === 'entregado') {
+      // const actual_entregado_terminado  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+      // this.data_editar.fecha_entregado = actual_entregado_terminado
+      this.pedir_firmaCliente()
+    }
+  }
+  pedir_firmaCliente(){
+    console.log('generar pdf de entrega');
+    
   }
   async dataTecnico(event){
     // console.log(event);
@@ -471,6 +483,21 @@ export class EditarOsComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
+  ///acciones con la firma
+
+  limpiarFirma(){
+    this.SignaturePad.clear()
+    // this.infoConfirmar.firma_cliente = null
+  }
+  firmar(){
+    const u = this.SignaturePad.toDataURL()
+    if (!this.SignaturePad.isEmpty()) {
+      // this.infoConfirmar.firma_cliente = u
+    }else{
+      // this.infoConfirmar.firma_cliente = null
+      this._publicos.swalToast('La firma no puede estar vacia',0)
+    }
+  }
   calcularTotales(data) {
     const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0, costos:0}

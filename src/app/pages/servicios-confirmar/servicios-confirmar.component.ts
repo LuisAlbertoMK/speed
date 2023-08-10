@@ -60,7 +60,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     private _pdf: UploadPDFService, private _cotizacion: CotizacionService) { }
 
 
-    @HostListener('dragover',['$event'])
+  @HostListener('dragover',['$event'])
   @Output() mouseSobre: EventEmitter<boolean> = new EventEmitter()
   
   numeroDias: number = null

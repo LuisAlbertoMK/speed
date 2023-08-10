@@ -26,63 +26,61 @@
         <mat-checkbox class="m-1" formControlName="detalles" >Detalles PDF</mat-checkbox>
     </section>
   <div class="row text-start">
+    
+    
+    <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-primary mb-3">
+      <div class="card-header">Forma pago</div>
+      <div class="card-body text-primary">
+        <select class=" form-select  form-select-sm" formControlName="formaPago">
+          <option *ngFor="let val of formasPago" [value]="val.id" class="text-capitalize" >
+            {{val.pago | capitalizarUno}}</option>
+        </select>
+      </div>
+    </div>
     <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-primary mb-3">
       <div class="card-header">Descuento</div>
       <div class="card-body text-primary">
         <input type="number" formControlName="descuento" [value]="data_editar.descuento" class="form-control form-control-sm">
       </div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-danger mb-3">
-        <div class="card-body text-primary">
-          <div class="mb-1 row">
-            <label for="margen" >Margen</label>
-            <div class="col-sm-9 col-md-8 col-lg-9 ">
-                <input type="number" min="25" max="100" formControlName="margen" class="form-control form-control-sm">
-            </div>
-            <span>
-              Margen aplicado: {{data_editar.margen}}
-            </span>
-          </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-success mb-3">
-      <div class="form-group">
-        <label for="formaPago" >Forma pago</label>
-        <select class=" form-select  form-select-sm" formControlName="formaPago">
-          <option *ngFor="let val of formasPago" [value]="val.id" class="text-capitalize" >
-            {{val.pago | capitalizarUno}}</option>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-primary mb-3">
+      <div class="card-header">Status orden</div>
+      <div class="card-body text-primary">
+        <select class=" form-select  form-select-sm" formControlName="status">
+          <option [selected]="val.valor === data_editar.status" *ngFor="let val of statusOS" [value]="val.valor" class="text-capitalize" >
+            {{val.show | capitalizarUno}}</option>
         </select>
-        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-      </div>
- 
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-      <div class="mb-1 row">
-        <label for="status" mb-1 >Status orden</label>
-        <div class="col-sm-9 col-md-8 col-lg-9 ">
-            <select class=" form-select  form-select-sm" formControlName="status">
-            <option [selected]="val.valor === data_editar.status" *ngFor="let val of statusOS" [value]="val.valor" class="text-capitalize" >
-              {{val.show | capitalizarUno}}</option>
-          </select>
-        </div>
       </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
-      <div class="mb-1 row">
-        <label for="tecnico" class="col-sm-12 col-md-4 col-lg-3 col-form-label">Tecnico</label>
-        <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <label for="tecnico" class="col-sm-12 col-md-8 col-lg-9 col-form-label">{{data_editar.tecnicoShow | capitalizarUno}}</label>
-            
-        </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-primary mb-3">
+      <div class="card-header">Margen</div>
+      <div class="card-body text-primary">
+        <input type="number" min="25" max="100" formControlName="margen" class="form-control form-control-sm">
+        <small>
+          Margen aplicado: {{data_editar.margen}}
+        </small>
       </div>
+      
     </div>
-
-    <app-lista-tecnicos [sucursal]="data_editar.sucursal" (dataTecnico)="dataTecnico($event)"></app-lista-tecnicos>
+    <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-primary mb-3">
+      <div class="card-header">Tecnico asignado</div>
+      <div class="card-body text-primary">
+        <label for="tecnico" class="col-sm-12 col-md-8 col-lg-9 col-form-label"></label>
+        
+      </div>
+    </div>  -->
+    <div class="col-lg-4 col-md-4 col-sm-6 col-6 card border-primary mb-3">
+      <div class="card-header">Cambiar tecnico</div>
+      <div class="card-body text-primary">
+        <app-lista-tecnicos [sucursal]="data_editar.sucursal" (dataTecnico)="dataTecnico($event)"></app-lista-tecnicos>
+        <small>Tecnico actual: {{data_editar.tecnicoShow | capitalizarUno}}</small>
+      </div>
+    </div> 
   </div>
   
 </div>
 
-<div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1 mt-1  offset-1" *ngIf="data_editar.reporte">
+<div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-1 mt-1 m-2" *ngIf="data_editar.reporte">
     <app-reporte-desgloce-tarjeta [reporte]="data_editar.reporte"></app-reporte-desgloce-tarjeta>
 </div>
 

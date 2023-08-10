@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "en espera de revision ing genarp (en proceso)"
+git commit -m "generar pdf de entrega  (en proceso) 1"
 git push -u origin 
 
 
