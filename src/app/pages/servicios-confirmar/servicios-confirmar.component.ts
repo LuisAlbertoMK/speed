@@ -205,7 +205,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
       const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
       // data_recepcion.elementos = data_recepcion.servicios
-      const campos = ['formaPago','iva','margen','servicio','servicios','nota']
+      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
       data_recepcion.nota = data_recepcion.nota || ''
       campos.forEach(campo=>{
         this.infoConfirmar[campo] = data_recepcion[campo]
@@ -216,7 +216,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       
       const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
       
-      const campos = ['formaPago','iva','margen','servicio','servicios','nota']
+      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
       data_cotizacion.nota = data_cotizacion.nota || ''
       campos.forEach(campo=>{
         this.infoConfirmar[campo] = data_cotizacion[campo]
@@ -855,7 +855,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }
   }
   continuar(){
-    const obligatorios = ['cliente','sucursal','servicios','vehiculo','margen','formaPago','firma_cliente','fecha_promesa','servicio']
+    const obligatorios = ['cliente','sucursal','elementos','vehiculo','margen','formaPago','firma_cliente','fecha_promesa','servicio']
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoConfirmar, obligatorios)
     
     this.faltante_s = faltante_s
@@ -958,7 +958,11 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
                     
                     this.infoConfirmar.notifico = true
 
-                    updates[`recepciones/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
+                    const clave =this._publicos.generaClave()
+                    let guardar_ = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
+                    guardar_.id = clave
+                    
+                    updates[`recepciones/${sucursal}/${cliente}/${clave}`] = guardar_
 
                     this._mail.EmailRecepcion(dataMail)
                     // if (this.ParamsGet.tipo === 'cita') {
@@ -985,7 +989,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   calcularTotales(data) {
-    const {margen: new_margen, formaPago, servicios: servicios_, iva:_iva, descuento:descuento_} = data
+    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
 
     const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status"','subtotal','tipo','total']

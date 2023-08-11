@@ -103,6 +103,8 @@
 <button  data-bs-toggle="modal" (click)="idPaqueteEditar = -1;" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Agregar paquete</button>
 <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" 
 (click)="idPaqueteEditar = -1">Agregar elemento</button>
+<button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-gastos" data-bs-toggle="modal">Nuevo gasto</button>
+<button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-pagos" data-bs-toggle="modal">Nuevo pago</button>
 
 <div class="mat-elevation-z8 table-responsive">
     <table mat-table #elementos="matSort" matSort
@@ -281,3 +283,27 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
 
 
 
+<div class="modal fade" id="modal-gastos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <app-gasto [id_os]="data_editar.id"></app-gasto>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="regresa-primero-editar" data-bs-target="#modal-servicio-editar" data-bs-toggle="modal">Regresar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modal-pagos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+        <app-pago [id_os]="data_editar.id"></app-pago>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="regresa-primero-editar" data-bs-target="#modal-servicio-editar" data-bs-toggle="modal">Regresar</button>
+      </div>
+    </div>
+  </div>
+</div>

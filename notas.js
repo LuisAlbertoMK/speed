@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "Esperando a notas de ingeniero guadarrama  (en proceso)"
+git commit -m "vigilar cambio en estadisticas de cliente (en proceso)"
 git push -u origin 
 
 

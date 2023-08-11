@@ -334,7 +334,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     // })
   }
   async actualiza_Servicios(status){
-    let mensaje_coplemento = (status !== 'entregado') ? ', ademas eliminara el pdf antes creado; lo cual permite hacer aun cambios a la orden' : null
+    let mensaje_coplemento = (status !== 'entregado') ? ', ademas eliminara el pdf antes creado; lo cual permite hacer aun cambios a la orden' : ''
     const {respuesta } = await this._publicos.mensaje_pregunta(`Cambiar status de orden a ${status}`,true, `Este cambio de status general afecta a los servicios de la orden${mensaje_coplemento}`)
     if (!respuesta) return
     // console.log(status);
@@ -375,6 +375,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         // this.data_editar.fecha_recibido = actual
         updates[`recepciones/${sucursal}/${cliente}/${id}/status`] = status;
         updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_recibido`] = actual;
+        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_entregado`] = '';
         updates[`recepciones/${sucursal}/${cliente}/${id}/elementos`] = this.data_editar.elementos
         updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = null
         update(ref(db), updates).then(()=>{
@@ -498,8 +499,6 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         const { respuesta } = await this._publicos.mensaje_pregunta(`Remplazar información?`,true,`${diferencias}`)
         if (respuesta) {
   
-          
-          
           let updates = {}
           const {sucursal, cliente, vehiculo, id} = this.data_editar
           
@@ -515,11 +514,9 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   
           nueva_data.elementos = filtrados
   
-  
           campos_update.forEach(campo=>{
             updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
           })
-          // console.log(updates);
   
           if (this.data_editar.status === 'entregado' ) {
             //esperar a generar el pdf
@@ -529,8 +526,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
               this._pdf_entrega.pdf(this.data_editar).then((pdfReturn:any) => {
   
               const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
-  
-  
+
               Swal.fire({
                 title: 'Opciones de cotización',
                 html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
@@ -549,7 +545,6 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
                     // async function tuFuncionPrincipal() {
                       try {
                        
-                    
                         const resultado = await this._uploadPDF.upload_pdf_entrega(blob,this.data_editar.no_os)
                     
                         // Esperar hasta que se tenga la ruta del archivo
@@ -558,9 +553,12 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
                         }
                     
                         // Aquí puedes continuar con el código después de que se tenga la ruta
-                        console.log('Ruta del archivo:', resultado.ruta);
+                        // console.log('Ruta del archivo:', resultado.ruta);
                         // this.data_editar.pdf_entrega = resultado.ruta
+                        const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+
                         updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = resultado.ruta
+                        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_entregado`] = actual
                         update(ref(db), updates).then(()=>{
                           // console.log('finalizo');
                           this._publicos.swalToast(`Actualización correcta!!`,1)
@@ -570,17 +568,10 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
                         })
                       } catch (error) {
                         console.error('Ocurrió un error:', error);
-                      }
-                    // }
-                    
-                    // Llamar la función principal
-                    // tuFuncionPrincipal();
-                    
+                      }                    
                   })
                 }
               })
-  
-  
             })
           }else{
             updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = null
@@ -592,11 +583,6 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
               console.log(err);
             })
           }
-  
-          
-          
-          
-          
         }else{
           this._publicos.swalToast(`Se cancelo`,0)
         }

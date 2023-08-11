@@ -148,7 +148,7 @@ export class ServiciosService {
       {valor:'7',nombre:'rescate vial'}
     ]
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
-    camposGuardar = [ 'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','servicios','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados']
+    camposGuardar = [ 'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','elementos','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados']
 
     infoConfirmar=
         {

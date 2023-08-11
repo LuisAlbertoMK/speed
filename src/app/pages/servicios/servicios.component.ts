@@ -231,18 +231,26 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   llamado_multiple(){
     const arreglo = ['recepciones','historial_gastos_orden','historial_pagos_orden']
     // const arreglo = ['historial_gastos_orden','recepciones','historial_gastos_operacion']
-    arreglo.forEach(donde=>{
-      const starCountRef = ref(db, `${donde}`)
-      onValue(starCountRef, async (snapshot) => {
+    const recepciones = ref(db, `recepciones`)
+      onValue(recepciones, async (snapshot) => {
         if (snapshot.exists()) {
-          // console.log(donde);
-          // this.ordenes_realizadas_entregado()
-          // if (donde === 'recepciones') {
+          console.log('llamado');
+          
             this.consulta_ordenes()
-          // }
         }
       })
-    })
+    const historial_gastos_orden = ref(db, `historial_gastos_orden`)
+      onValue(historial_gastos_orden, async (snapshot) => {
+        if (snapshot.exists()) {
+            this.consulta_ordenes()
+        }
+      })
+    const historial_pagos_orden = ref(db, `historial_pagos_orden`)
+      onValue(historial_pagos_orden, async (snapshot) => {
+        if (snapshot.exists()) {
+            this.consulta_ordenes()
+        }
+      })
   }
   resetea_horas_admin(){
     const {start, end} = this.fechas_filtro.value
@@ -284,7 +292,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         const promesasVehiculos = gastos_hoy_array
           
           .map(async (g) => {
-            const { sucursal, cliente, vehiculo , id} = g;
+            const { sucursal, cliente, vehiculo , id, fecha_recibido} = g;
             // console.log(id);
             
             // g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
@@ -301,12 +309,16 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             g.data_vehiculo = data_vehiculo
             g.placas = data_vehiculo.placas
             const data_sucursal =  this.sucursales_array.find(s=>s.id === sucursal)
+
+            const dias =this._publicos.dias_transcurridos_en_sucursal(fecha_recibido)
+            // console.log(dias);
+
+            const updates = {[`recepciones/${sucursal}/${cliente}/${id}/diasSucursal`]: dias};
+            update(ref(db), updates).then(()=>{})
   
             g.data_sucursal =  data_sucursal
             g.sucursalShow = data_sucursal.sucursal
-            // const {reporte, elementos} = this.calcularTotales(g);
-            // g.reporte = reporte
-            // g.elementos = elementos
+
             return g
           });
         await Promise.all(promesasVehiculos);
@@ -320,13 +332,11 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     const ordenada = this._publicos.ordernarPorCampo(finales,'fecha_recibido')
     
-    const campos = [
-      'cliente','clienteShow','data_cliente','data_sucursal','data_vehiculo','showNameTecnico','diasSucursal','fecha_promesa','fecha_recibido','formaPago','id','iva','margen','no_os','placas','reporte','servicio','servicios','status','subtotal','sucursal','sucursalShow','vehiculo','historial_pagos','historial_gastos'
-    ]
+    
 
-    const nueva  = (!this.array_recepciones.length) ?  ordenada :  this._publicos.actualizarArregloExistente(this.array_recepciones, ordenada,campos);
+    
 
-    this.array_recepciones = nueva
+    this.array_recepciones = ordenada
     this.filtra_informacion()
     
   }
@@ -340,10 +350,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     const filtro = resultados.filter(r=>new Date(r.fecha_recibido) >= start && new Date(r.fecha_recibido) <= end )
     // console.log(filtro);
+    const campos = [
+      'cliente','clienteShow','data_cliente','data_sucursal','data_vehiculo',
+      'showNameTecnico','diasSucursal','fecha_promesa','fecha_recibido','formaPago','id',
+      'iva','margen','no_os','placas','reporte','servicio','elementos','status','subtotal',
+      'sucursal','sucursalShow','vehiculo','historial_pagos','historial_gastos','status','fecha_entregado',
+      'pdf_entrega'
+    ]
+    this.recepciones_arr = (!this.recepciones_arr.length) ?  filtro :  this._publicos.actualizarArregloExistente(this.recepciones_arr, filtro,campos);
     
-    this.recepciones_arr = filtro
+    //  = filtro
 
-    this.dataSource.data = filtro
+    this.dataSource.data = this.recepciones_arr
     this.newPagination()
   }
   obtenerArregloFechas_gastos_diarios(data){

@@ -535,7 +535,7 @@ export class PdfRecepcionService {
           [ { text: `Servicios solicitados`,alignment: 'left', style:'info2' }, { text: `Autorización`,alignment: 'center', style:'info2' }],
           [ 
             table(
-              data.servicios,
+              data.elementos,
               ['tipo', 'nombre','total'],
               ['15%', '65%', '20%'],
               true,

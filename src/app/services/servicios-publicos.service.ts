@@ -1259,6 +1259,15 @@ export class ServiciosPublicosService {
       return aqui
     }
 
+    dias_transcurridos_en_sucursal(fecha){
+
+      const inicial = new Date(fecha)
+      const final = new Date()
+
+      const diffTiempo = final.getTime() - inicial.getTime();
+      const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
+      return diffDias
+    }
     
 
     

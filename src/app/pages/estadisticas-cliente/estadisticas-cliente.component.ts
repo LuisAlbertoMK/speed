@@ -153,12 +153,25 @@ export class EstadisticasClienteComponent implements OnInit{
     if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
   }
   async obtenerInformacion_cliente(id:string){
+
+    
+
+
     const sucursal = this.SUCURSAL
     const cliente = id
     const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
     const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
 
     const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
+
+    // const starCountRef = ref(db, `recepciones/${sucursal}/${cliente}`)
+    // onValue(starCountRef, (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // })
     const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
 
 
@@ -176,6 +189,11 @@ export class EstadisticasClienteComponent implements OnInit{
       cot.elementos = elementos
       return cot
     })
+
+    this.recepciones_generales = filtro_recepciones
+
+    console.log(this.recepciones_generales);
+    
 
     const info = {};
 
@@ -491,7 +509,7 @@ export class EstadisticasClienteComponent implements OnInit{
   calcularTotales(data) {
     const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    const elementos = (servicios_) ? [...servicios_] : []
+    const elementos =  [...servicios_]
     const margen = 1 + (new_margen / 100)
     elementos.map(ele=>{
       const {cantidad, costo, tipo} = ele
