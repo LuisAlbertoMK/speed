@@ -300,8 +300,9 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             g.data_cliente = data_cliente
             g.clienteShow = data_cliente.fullname
             const data_vehiculo:any =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+            
             const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id });
-            // console.log(historial_pagos);
+
             
             const historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === id)
             g.historial_pagos = historial_pagos
@@ -329,13 +330,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     // console.log(promesas);
     const finales = promesas.flat() 
     // console.log(finales);
-
     const ordenada = this._publicos.ordernarPorCampo(finales,'fecha_recibido')
     
-    
-
-    
-
     this.array_recepciones = ordenada
     this.filtra_informacion()
     

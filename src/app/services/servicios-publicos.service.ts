@@ -1014,7 +1014,19 @@ export class ServiciosPublicosService {
             return elemento;
           });
         } else if (nuevaInformacion.length > arregloExistente.length) {
-          return [...arregloExistente, ...nuevaInformacion.slice(arregloExistente.length)];
+          const arregloActualizado = arregloExistente.map((elemento, index) => {
+            const nuevoElemento = nuevaInformacion[index];
+            camposRecupera.forEach(campo => {
+              if (nuevoElemento[campo] !== elemento[campo]) {
+                elemento[campo] = nuevoElemento[campo];
+              }
+            });
+            return elemento;
+          });
+        
+          return [...arregloActualizado, ...nuevaInformacion.slice(arregloExistente.length)];
+        } else if (nuevaInformacion.length < arregloExistente.length) {
+          return nuevaInformacion;
         } else {
           return arregloExistente.slice(0, nuevaInformacion.length);
         }

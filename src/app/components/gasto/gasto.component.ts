@@ -80,26 +80,40 @@ export class GastoComponent implements OnInit, OnChanges {
     };
  
     claves_ordenes = []
-  
+  data_pendiente
   ngOnInit(): void {
     this.rol()
     this.crearFormGasto()
   }
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     if (changes['id_os']) {
       const nuevoValor = changes['id_os'].currentValue;
       const valorAnterior = changes['id_os'].previousValue;
       // console.log({nuevoValor, valorAnterior});
       const {id} = nuevoValor
+
+  
       if (nuevoValor && id) {
-        this.carga_data_gasto(nuevoValor)
+        if (!this.formGasto) {
+          const temp = {
+            ...nuevoValor,
+            tipo: 'orden'
+          }
+          this.data_pendiente = temp
+        }
       }else if(nuevoValor === valorAnterior && id){
-        this.carga_data_gasto(nuevoValor)
+        const temp = {
+          ...nuevoValor,
+          tipo: 'orden'
+        }
+        this.data_pendiente = temp
       }
     }
   }
   carga_data_gasto(data){
+    
     const {id, sucursal} = data
+
     this.formGasto.reset({
       tipo: 'orden',
       numero_os: id,
@@ -109,7 +123,7 @@ export class GastoComponent implements OnInit, OnChanges {
       referencia:'',
       sucursal,
       gasto_tipo:'',
-    })
+    })  
   }
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
@@ -131,6 +145,7 @@ export class GastoComponent implements OnInit, OnChanges {
       facturaRemision:['',[]],
     })
     // this.resetea()
+   
     this.vigila()
   }
   validaCampo(campo: string){
@@ -147,6 +162,15 @@ export class GastoComponent implements OnInit, OnChanges {
         this.muestra_claves_recepciones()
       }
     })
+    this.formGasto.get('tipo').valueChanges.subscribe(async (tipo: string) => {
+      if (tipo) {
+        // this.muestra_claves_recepciones()
+      }
+    })
+    if (this.data_pendiente) {
+      this.carga_data_gasto(this.data_pendiente)
+      this.data_pendiente = null
+    }
   }
   
   async muestra_claves_recepciones(){
@@ -192,6 +216,7 @@ export class GastoComponent implements OnInit, OnChanges {
     const recuperada = this._publicos.nuevaRecuperacionData(info_get, cuales_)
     const {sucursal, numero_os, fecha_recibido: fech_} = recuperada
     const data_orden =  this.claves_ordenes.find(f=>f.key === numero_os)
+    
     if (info_get.tipo === 'orden'){
       recuperada.no_os = data_orden.no_os
       recuperada.status_orden = data_orden.status_orden
@@ -199,10 +224,6 @@ export class GastoComponent implements OnInit, OnChanges {
       recuperada.vehiculo = data_orden.vehiculo
       recuperada.descripcion = data_orden.descripcion
     } 
-   
-    // console.log(data_orden);
-    
-    // return
 
     const nueva_fecha:string = (info_get.fecha_recibido) 
     ? info_get.fecha_recibido 
@@ -246,8 +267,6 @@ export class GastoComponent implements OnInit, OnChanges {
   }
   async reseteaForm(){
     if (this.id_os && this.id_os['id']) {
-      
-
       this.formGasto.get('sucursal').setValue(this.id_os['sucursal'])
       await this.muestra_claves_recepciones()
       this.carga_data_gasto(this.id_os)

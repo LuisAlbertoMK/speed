@@ -75,8 +75,6 @@ export class ClientesService {
         } else {
           resolve([]);
         }
-      }, {
-        onlyOnce: true
       });
     });
   }
@@ -115,8 +113,6 @@ export class ClientesService {
         } else {
           resolve([]);
         }
-      },{
-        onlyOnce: true
       });
     });
   }

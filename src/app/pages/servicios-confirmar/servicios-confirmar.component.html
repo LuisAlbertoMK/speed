@@ -13,12 +13,14 @@
   </div>
 </div>
 
-<app-clientes-list (dataCliente)="infoCliente ( $event )"></app-clientes-list>
+<app-clientes-list (dataCliente)="infoCliente ( $event )" ></app-clientes-list>
 
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
-  <app-cliente-tarjeta [cliente]="infoConfirmar.data_cliente"></app-cliente-tarjeta>
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1" >
+  <app-cliente-tarjeta [cliente]="infoConfirmar.data_cliente" [editar]="editar_cliente"></app-cliente-tarjeta>
 </div>
+
+
 
 
 

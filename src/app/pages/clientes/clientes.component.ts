@@ -117,7 +117,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
         const promesasResueltasClientes = await Promise.all(promesasClientes);
         // console.log(promesasResueltasClientes);
         const finales_clientes = promesasResueltasClientes.flat()
-        // console.log(finales_clientes);
+        
         const campos_cliente = [
           'apellidos',
           'correo',
@@ -131,12 +131,10 @@ export class ClientesComponent implements AfterViewInit, OnInit {
           'fullname',
         ]
 
-        const ordenada = this._publicos.ordenarData(finales_clientes,'fullname',true)
-
-        const nueva  = (!this.clientes_arr.length) ?  ordenada :  this._publicos.actualizarArregloExistente(this.clientes_arr, ordenada,campos_cliente);
-
-        this.clientes_arr = nueva
-        this.dataSourceClientes.data = nueva
+        
+        this.clientes_arr  = (!this.clientes_arr.length) ?  finales_clientes :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
+        
+        this.dataSourceClientes.data = this.clientes_arr
         this.newPagination('clientes')
         
 
@@ -184,11 +182,11 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     }
   }
   clientesInfo(info:any){   
-    console.log(info);
+    // console.log(info);
     
   }
   vehiculoInfo(info:any){
-    console.log(info);
+    // console.log(info);
   }
  
  

@@ -85,6 +85,14 @@
           </div>
         </div>
       </div>
+      <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+        <div class="card border-primary">
+          <div class="card-body">
+            <h5 class="card-title">kilometraje</h5>
+            <input type="number" min="0" max="900000000" formControlName="kilometraje" class="form-control form-control-sm">
+          </div>
+        </div>
+      </div>
       <div class="col-sm-12">
         <div class="card ">
           <div class="card-body">
@@ -286,11 +294,18 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal fade" id="modal-gastos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <div class="modal-body m-2">
-        <app-gasto [id_os]="data_editar.id"></app-gasto>
+        <ng-container *ngIf="informacionLista">
+          <app-gasto [id_os]="data_editar"></app-gasto>
+        </ng-container>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" id="regresa-primero-editar" data-bs-target="#modal-servicio-editar" data-bs-toggle="modal">Regresar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
       </div>
     </div>
   </div>
@@ -298,11 +313,18 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal fade" id="modal-pagos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <div class="modal-body m-2">
-        <app-pago [id_os]="data_editar.id"></app-pago>
+        <ng-container *ngIf="informacionLista">
+          <app-pago [id_os]="data_editar"></app-pago>
+        </ng-container>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" id="regresa-primero-editar" data-bs-target="#modal-servicio-editar" data-bs-toggle="modal">Regresar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" >Cerrar</button>
       </div>
     </div>
   </div>

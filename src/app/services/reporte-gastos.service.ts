@@ -156,10 +156,13 @@ export class ReporteGastosService {
       const {status, monto} = element
       if (status) _total += monto 
     });
+    console.log(_total);
+    
     if(facturaRemision === 'factura'){
+      data_.iva = _total * .16
+      data_.subtotal = _total - data_.iva
       data_.total = _total
-      data_.iva = _total / 1.16
-      data_.subtotal = _total - (_total / 1.16)
+
     }else if(facturaRemision === 'nota'){
       data_.total = _total
       data_.iva = 0

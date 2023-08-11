@@ -164,6 +164,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     meses:0,
     ub:0,
   }
+  editar_cliente:boolean = true
   ngOnInit(): void {
     this.rol()
   }
@@ -190,13 +191,30 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
      this.acciones()
     });
   }
+  vigila_informacion_cliente({sucursal, cliente}){
+    const starCountRef = ref(db, `clientes/${sucursal}/${cliente}`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.infoConfirmar.data_cliente = snapshot.val()
+        this.editar_cliente = true
+      } else {
+        console.log("No data available");
+      }
+    })
+  }
+
   async acciones(){
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
 
     let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
 
-    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    if (cliente){
+      this.vigila_informacion_cliente({sucursal, cliente})
+      data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+      vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+
+    }
+
     data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
     const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
@@ -855,6 +873,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }
   }
   continuar(){
+
+
+    if (!this.infoConfirmar.data_cliente['correo']) {
+      this._publicos.swalToast(`El cliente debe tener correo para poder crear la O.S`, 0)
+      return
+    }
     const obligatorios = ['cliente','sucursal','elementos','vehiculo','margen','formaPago','firma_cliente','fecha_promesa','servicio']
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoConfirmar, obligatorios)
     

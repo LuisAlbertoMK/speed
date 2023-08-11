@@ -77,6 +77,8 @@ export class PagoComponent implements OnInit, OnChanges {
     fecha_recibido = new FormGroup({
       start: new FormControl(new Date())
     });
+
+    data_pendiente
     myFilter = (d: Date | null): boolean => {
       const fecha = new Date(d)
       const day = fecha.getDay()
@@ -92,10 +94,21 @@ export class PagoComponent implements OnInit, OnChanges {
       const valorAnterior = changes['id_os'].previousValue;
       // console.log({nuevoValor, valorAnterior});
       const {id} = nuevoValor
+
       if (nuevoValor && id) {
-        this.carga_data_gasto(nuevoValor)
+        if (!this.formPago) {
+          const temp = {
+            ...nuevoValor,
+            tipo: 'orden'
+          }
+          this.data_pendiente = temp
+        }
       }else if(nuevoValor === valorAnterior && id){
-        this.carga_data_gasto(nuevoValor)
+        const temp = {
+          ...nuevoValor,
+          tipo: 'orden'
+        }
+        this.data_pendiente = temp
       }
     }
   }
@@ -130,6 +143,7 @@ export class PagoComponent implements OnInit, OnChanges {
       rol: [this.ROL, [Validators.required]],
     })
     this.vigila()
+    
   }
   vigila(){
     // if (this.SUCURSAL !== 'Todas')  this.formPago.get('sucursal').disable()
@@ -147,6 +161,11 @@ export class PagoComponent implements OnInit, OnChanges {
         this.formPago.get('fecha_recibido').setValue(fecha_re)
       }
     })
+
+    if (this.data_pendiente) {
+      this.carga_data_gasto(this.data_pendiente)
+      this.data_pendiente = null
+    }
   }
   
   async muestra_claves_recepciones(){
@@ -193,9 +212,13 @@ export class PagoComponent implements OnInit, OnChanges {
       console.log(err);
     })  
   }
-  reseteaForm(){
-    const sucursal = (this.SUCURSAL ==='Todas') ? '' : this.SUCURSAL
-    this.formPago.reset({sucursal})
+  async reseteaForm(){
+    if (this.id_os && this.id_os['id']) {
+      this.carga_data_gasto(this.id_os)
+    }else{
+      const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+      this.formPago.reset({sucursal, tipo:'operacion'})
+    }
   }
 
   cancela(){

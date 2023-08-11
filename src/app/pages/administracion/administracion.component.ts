@@ -286,12 +286,13 @@ export class AdministracionComponent implements OnInit {
   obtener_Admin(data){
     const reporte_admin = { iva:0,refacciones:0,total:0,subtotal:0,operacion:0,cantidad:0,margen:0,por_margen:0 }
     const arreglo = [...data]
+    
     arreglo.forEach(r=>{
       const {reporte} = r
       const new_r = {...reporte}
-      const {mo, refacciones} = new_r
-      const subtotal = mo + refacciones
-      reporte_admin.refacciones += refacciones
+      const {mo, refacciones_v} = new_r
+      const subtotal = mo + refacciones_v
+      reporte_admin.refacciones += refacciones_v
       reporte_admin.subtotal += subtotal
     })
     const arreglo_ = ['historial_gastos_operacion']
@@ -311,7 +312,6 @@ export class AdministracionComponent implements OnInit {
       const {start, end}= this.fechas_get_formateado_admin
       const _filtro_finales_fechas =  finales.filter(c=>new Date(c.fecha_recibido) >= start && new Date(c.fecha_recibido) <= end )
 
-      
       _filtro_finales_fechas.forEach(op=>{
         reporte_admin.operacion += op.monto
       })

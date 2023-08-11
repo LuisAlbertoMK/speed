@@ -132,6 +132,13 @@
                               <app-vehiculo-tarjeta [vehiculo]="row.data_vehiculo"></app-vehiculo-tarjeta>
                             </div>
                           </mat-tab>
+                          
+                            <mat-tab label="Historial gastos">
+                              <app-tarjeta-historial-gastos [historial_gastos]="row.historial_gastos"></app-tarjeta-historial-gastos>
+                            </mat-tab>
+                            <mat-tab label="Historial pagos">
+                              <app-tarjeta-historial-pagos [historial_pagos]="row.historial_pagos"></app-tarjeta-historial-pagos>
+                            </mat-tab>
                       </mat-tab-group>
                   </div>
               </td>

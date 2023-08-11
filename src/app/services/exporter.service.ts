@@ -518,17 +518,23 @@ export class ExporterService {
 
     // console.log(data_reporte_general['sobrante']);
     // data_reporte_general.sobrante = -2000.445675756
+
+    console.log(data_reporte_general);
+    
+    console.log(data_reporte_facturas);
+    
     nuevos_.forEach((g, index)=>{
       const [campo, valor] = g
 
       const campo_v = this.transform_monedas(data_reporte_general[campo])
       const valor_  = this.transform_monedas(data_reporte_facturas[valor])
+      const valor_notas  = this.transform_monedas(data_reporte_notas[valor])
       let mu = {
         ...lieneaBlanca,
         'Marca': `${valor} facturas`,
         'Modelo': `${valor_}`,
         'nota / factura': `${valor} notas`,
-        'metodo pago': `${valor_}`,
+        'metodo pago': `${valor_notas}`,
         'Fecha registro': `${campo}`, 
         'Referencia': campo_v,
       }

@@ -282,7 +282,7 @@ claves_recepciones(busqueda): Promise<any[]> {
               let nombres_ = arreglo?.map(({nombre})=>{return nombre})
               return String(nombres_.join(', ')).toLowerCase()
             }
-            const servicios_a = (entrie_['servicios'] ) ? entrie_['servicios'] : []
+            const servicios_a = (entrie_['elementos'] ) ? entrie_['elementos'] : []
             const sucursal = entrie_['sucursal']
             claves.push({key, sucursal ,descripcion: ubicar(servicios_a) ,no_os: entrie_['no_os'], cliente: entrie_['cliente'], status_orden: entrie_['status'], vehiculo: entrie_['vehiculo']})
           })

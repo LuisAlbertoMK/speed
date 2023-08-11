@@ -117,6 +117,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   sucursales_array  =   [ ...this._sucursales.lista_en_duro_sucursales]
   formasPago        =   [ ...this._cotizaciones.formasPago ]
   statusOS             = [ ...this._servicios.statusOS ]
+  servicios_             = [ ...this._servicios.servicios ]
 
   dataSource = new MatTableDataSource(); //elementos
   //  'clienteShow'
@@ -168,6 +169,9 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     pdf_entrega:'',
     nivel_gasolina:'',
     showDetalles:false,
+    formaPago_show:'',
+    servicio_show:'',
+    kilometraje:0
   }
   temporal 
 
@@ -179,7 +183,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     formaPago:'1',
     status:'',
     nivel_gasolina:'vacio',
-    observaciones: ''
+    observaciones: '',
+    kilometraje:0
   });
 
   faltante_s:string 
@@ -190,6 +195,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   nivel_gasolina = [
     "vacio","1/4","1/2", "3/4", "lleno"
   ]
+
+  informacionLista:boolean = false
  
   async rol(){
     const { rol, sucursal } = this._security.usuarioRol()
@@ -273,6 +280,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       campos.forEach(campo=>{
         this.data_editar[campo] = data_recepcion[campo]
       })
+      this.data_editar.formaPago_show = this.formasPago.find(f=>f.id === String(data_recepcion['formaPago'])).pago
+      this.data_editar.servicio_show = this.servicios_.find(f=>f.valor === String(data_recepcion['servicio'])).nombre
     }
     Swal.close()
     this.data_editar.data_cliente = data_cliente
@@ -285,7 +294,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     this.checksBox.get('margen').setValue(this.data_editar.margen)
 
     // console.log(this.data_editar);
-    
+    this.informacionLista = true;
     this.temporal = JSON.parse(JSON.stringify(this.data_editar));
   
     this.realizaOperaciones()
@@ -316,8 +325,13 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       this.data_editar.margen = nuevo_margen;
       this.realizaOperaciones();
     })
+    this.checksBox.get('kilometraje').valueChanges.subscribe((kilometraje: number) => {
+      const nuevo_kilometraje = Math.min(Math.max(kilometraje, 0), 900000000);
+      this.data_editar.kilometraje = nuevo_kilometraje;
+    })
     this.checksBox.get('formaPago').valueChanges.subscribe((formaPago: string) => {
       this.data_editar.formaPago = formaPago
+      this.data_editar.formaPago_show = this.formasPago.find(f=>f.id === String(formaPago)).pago
       this.realizaOperaciones()
     })
     this.checksBox.get('status').valueChanges.subscribe((status: string) => {

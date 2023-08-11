@@ -151,8 +151,8 @@ export class ClienteComponent implements OnInit, OnChanges {
   coloca(val:string){
     // console.log(this.data_cliente);
     
-    if(val) this.form_cliente.controls['correo'].setValue('patito@gmail.com')
-    else  this.form_cliente.controls['correo'].setValue(val)
+    if(val) this.form_cliente.controls['correo'].setValue('')
+    else  this.form_cliente.controls['correo'].setValue('')
   }
  
   verificarTelefono(){
@@ -192,7 +192,6 @@ export class ClienteComponent implements OnInit, OnChanges {
         if (sucursal) {
           this.empresasSucursal = await this._empresas.consulta_empresas(sucursal)
           // console.log(this.empresasSucursal);
-          
         }
       } else {
         this.form_cliente.get('empresa').disable();
@@ -306,7 +305,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     
     const info_get = this._publicos.recuperaDatos(this.form_cliente);
 
-    const campos_cliente                 = [ ...this._clientes.campos_cliente ]
+    let campos_cliente                 = [ ...this._clientes.campos_cliente ]
     const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]
     const campos_opcionales              = [ ...this._clientes.campos_opcionales ]
     const campos_permitidos_new_register = [ ...campos_cliente,...campos_opcionales ]
@@ -326,6 +325,15 @@ export class ClienteComponent implements OnInit, OnChanges {
       campos_permitidos_Actualizar.push('empresa');
       campos_permitidos_new_register.push('empresa');
     }
+
+    // console.log(this.correo_utilizado);
+
+    if (this.correo_utilizado === 'sucursal') {
+      campos_cliente = campos_cliente.filter(c=>c !=='correo')
+    }
+    // console.log(campos_cliente);
+    
+    
 
     const { ok, faltante_s } = this._publicos.realizavalidaciones_new(info_get,campos_cliente)
     
@@ -349,14 +357,19 @@ export class ClienteComponent implements OnInit, OnChanges {
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_new_register);
         nueva_clave_generada = this._publicos.generaClave()
 
+        
+
         campos_permitidos_new_register.forEach(campo=>{
           if (informacion_recuperada [campo]) {
             updates[`clientes/${info_get.sucursal}/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
           }
         })
         updates[`clientes/${info_get.sucursal}/${ nueva_clave_generada }/status`] = true
-        this.correos_existentes.push(informacion_recuperada.correo)
-        updates[`correos`] = this.correos_existentes
+        if (this.correo_utilizado === 'personal') {
+          this.correos_existentes.push(informacion_recuperada.correo)
+          updates[`correos`] = this.correos_existentes
+        }
+       
       }
       
       const existen_campos_update = Object.keys(updates)
@@ -365,7 +378,10 @@ export class ClienteComponent implements OnInit, OnChanges {
           await update(ref(db), updates);
           this._publicos.mensajeSwal(`${mensaje}`,1, true, `...`);
           this.heroeSlec.emit(info_get);
+          this.resetForm()
         } catch (err) {
+          console.log(err);
+          
           this.heroeSlec.emit(Object({ cliente: null, status: false }));
           this._publicos.mensajeSwal(`Ocurrió un error`,0, true, `...`);
         }
@@ -378,7 +394,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     this.heroeSlec.emit( Object({CerrarModal: false}) )
   }
   resetForm(){
-    // this.form_cliente.reset()
+    this.form_cliente.reset()
   }
   listadoEmpresas(sucursal){
     const starCountRef = ref(db, `empresas/${sucursal}`)

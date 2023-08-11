@@ -2,11 +2,123 @@
     <div class="card">
     <div class="card-body">
       <div class="row" *ngIf="cliente">
+        <!-- {{cliente | json}} -->
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-uppercase text-end" >
+            <i class="fa fa-edit text-primary pointer" data-bs-target="#modal-editar-info" data-bs-toggle="modal"></i>
+          </div>
         <ng-container *ngFor="let item of camposCliente">
           <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-uppercase text-start" *ngIf="cliente[item.valor]">
             <strong >{{item.show}} </strong>: {{cliente[item.valor]}}
           </div>
         </ng-container>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modal-editar-info" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body m-2">
+          <form (ngSubmit)="actualiza_cliente()" [formGroup]="form_cliente">
+            <div class="row text-start">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-1 row">
+                  <label for="tipo_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Tipo <span class="text-danger">*</span> </label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <select class=" form-select  form-select-sm" formControlName="tipo"
+                      [class.is-invalid]="validarCampo('tipo')" id="tipo_cliente">
+                      <option [selected]="cliente['tipo'] === 'particular'" value="particular">Particular</option>
+                      <option [selected]="cliente['tipo'] === 'flotilla'" value="flotilla">Flotilla</option>
+                    </select>
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-1 row">
+                  <label for="no_cliente" class="col-sm-3 col-md-4 col-lg-3 col-form-label"># cliente <span class="text-danger">*</span> </label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="text" class="form-control form-control-sm" id="no_cliente" formControlName="no_cliente"
+                  [class.is-invalid]="validarCampo('no_cliente')"  onkeypress="validarLetras(event)" > 
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">campo requerido</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-1 row">
+                  <label for="nombre" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nombre <span class="text-danger">*</span> </label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="text" class="form-control form-control-sm" id="nombre" formControlName="nombre"
+                  [class.is-invalid]="validarCampo('nombre')"  onkeypress="validarLetras(event)" > 
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">campo requerido</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-1 row">
+                  <label for="apellidos" class="col-sm-3 col-md-4 col-lg-3 col-form-label">apellidos <span class="text-danger">*</span> </label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="text" class="form-control form-control-sm" id="apellidos" formControlName="apellidos"
+                  [class.is-invalid]="validarCampo('apellidos')"  onkeypress="validarLetras(event)" > 
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">campo requerido</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-1 row">
+                  <label for="correo" class="col-sm-3 col-md-4 col-lg-3 col-form-label">correo <span class="text-danger">*</span> </label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="email" class="form-control form-control-sm" id="correo" formControlName="correo"
+                  [class.is-invalid]="validarCampo('correo')"  > 
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">campo requerido</small>
+                    <small *ngIf="correo_invalido" class="text-danger">El correo ingresado esta en uso</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-1 row">
+                  <label for="telefono_movil" class="col-sm-3 col-md-4 col-lg-3 col-form-label">tel. movil <span class="text-danger">*</span> </label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <input type="text" class="form-control form-control-sm" id="telefono_movil" formControlName="telefono_movil"
+                  [class.is-invalid]="validarCampo('telefono_movil')"  onkeypress="soloNumeros(event)" > 
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">campo requerido</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="mb-1 row">
+                  <label for="empresa" class="col-sm-3 col-md-4 col-lg-3 col-form-label">empresa <span class="text-danger">*</span> </label>
+                  <div class="col-sm-9 col-md-8 col-lg-9 ">
+                    <select name="empresa" id="empresa" formControlName="empresa" class="form-control form-control-sm">
+                      <option value="">selecciona empresa</option>
+                      <option [value]="empresa" *ngFor="let empresa of empresasSucursal">{{ empresa | capitalizarUno}}</option>
+                    </select>
+                    <small *ngIf="validarCampo('tipo')" class="text-danger">campo requerido</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row text-center">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                <!--  -->
+                <button  type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1">
+                  <i class="fa fa-save"></i> Guardar
+                </button>
+                <button type="button"  class="btn btn-sm btn-danger col-lg-4 col-md-4 col-sm-6 col-6 m-1"
+                  >Limpiar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" >Cerrar</button>
+        </div>
       </div>
     </div>
   </div>

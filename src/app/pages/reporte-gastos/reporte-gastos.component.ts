@@ -280,6 +280,7 @@ export class ReporteGastosComponent implements OnInit {
 
   unirResultados_new(){
     const ultimate = [...this.historial_gastos_diarios, ...this.historial_gastos_operacion, ...this.historial_gastos_orden]
+
     const ordenados = this._publicos.ordenarData(ultimate,'fecha_recibido',false)
 
     this.todos_ultimate = ordenados
@@ -410,6 +411,7 @@ export class ReporteGastosComponent implements OnInit {
     // console.log(data_reporte_general);
     const ordenados = this._publicos.ordenarData(arreglado,'fecha_recibido',false)
     
+
     if (resultados.length) {
       this._publicos.mensajeSwal('Espere ....',3,false,`generando Excel`)
       this._export.generaReporteGastosExcel({

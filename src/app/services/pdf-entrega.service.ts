@@ -16,7 +16,14 @@ export class PdfEntregaService {
 
   async pdf(data:any){
     const colorTextoPDF: string = '#1215F4';
-    const {data_cliente, elementos, data_sucursal,nivel_gasolina, data_vehiculo, fecha_recibido, fecha_entregado, firma_cliente, reporte, tecnicoShow, status, observaciones, showDetalles, margen:new_margen   } = data
+    const {
+      data_cliente, elementos, data_sucursal,nivel_gasolina, data_vehiculo, fecha_recibido, 
+      fecha_entregado, firma_cliente, reporte, tecnicoShow, status, observaciones, showDetalles, 
+      margen:new_margen, formaPago_show, servicio_show, kilometraje 
+    } = data
+
+    // console.log(formaPago_show);
+    
 
     const margen = 1 + (new_margen / 100)
 
@@ -127,7 +134,7 @@ export class PdfEntregaService {
       return body;
     }
     function retornbody(iva){
-
+      
       let FACTURA = 
         [ 
           { text: ``,alignment: 'right', style:'info2' },
@@ -158,6 +165,12 @@ export class PdfEntregaService {
         { text: ``,alignment: 'right', style:'info2' },
         { text: ``,alignment: 'right', style:'info2' },
       ]
+      let FORMA_PAGO = 
+      [
+        { text: ``,alignment: 'right', style:'info2'},
+        { text: `Forma pago`,alignment: 'right', style:'info2' },
+        { text: `${formaPago_show}`,alignment: 'right', style:'info2' },
+      ]
       let rb = []
 
       
@@ -167,6 +180,7 @@ export class PdfEntregaService {
           SUBTOTAL,                   
           IVA,                      
           TOTAL,
+          FORMA_PAGO,
           LETRAS 
         ]
       }else{
@@ -174,6 +188,7 @@ export class PdfEntregaService {
           FACTURA,
           SUBTOTAL,                  
           TOTAL,
+          FORMA_PAGO,
           LETRAS    
         ]
       }
@@ -515,7 +530,7 @@ export class PdfEntregaService {
                     { text: `Placas:`,alignment: 'left', style:'info' },
                     { text: `${data_vehiculo.placas.toUpperCase()}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' },
                     { text: `KMs:`,alignment: 'left', style:'info' },
-                    { text: `123434234`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
+                    { text: `${kilometraje}`,fillColor: '#EAE7E6', color:'#111110',alignment: 'left', style:'info2' } 
                   ],
                   [ 
                     { text: `Marca:`,alignment: 'left', style:'info' },
@@ -544,13 +559,13 @@ export class PdfEntregaService {
         // headers are automatically repeated if the table spans over multiple pages
         // you can declare how many rows should be treated as headers
         headerRows: 1,
-        widths: [ '33%','33%','*' ],
-
+        widths: [ '25%','25%','25%', '25%' ],
         body: [
             [ 
               {text: `Tecnico de la orden`,bold: true, alignment: 'left', style:'info'},
               {text: `${tecnicoShow}`,bold: true, alignment: 'left', style:'info'},
-              {text: `Estado actual REPARADO y ${String(status).toUpperCase()} `,bold: true, alignment: 'left', style:'info'},
+              {text: `Tipo servicio: ${servicio_show}`,bold: true, alignment: 'left', style:'info'},
+              {text: `Estado actual ${String(status).toUpperCase()} `,bold: true, alignment: 'left', style:'info'},
             ],
         ]
       }
@@ -609,6 +624,7 @@ export class PdfEntregaService {
         ]
       }
     },
+    { columns: [ { width: '100%', text: `Cantidad con letra`, } ], columnGap: 10 },
     { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },
     {
       layout: 'noBorders', // optional
@@ -619,9 +635,9 @@ export class PdfEntregaService {
         widths: [ '70%', '30%' ],
 
         body: [
-            [ { text: `Cantidad con letra `,alignment: 'center', style:'info2' } , { text: `Nombre y Firma.`,alignment: 'center', style:'info3' } ],
+            [ { text: `La prestacion del servicio de repracion y/o mantenimiento del vehiculo otorga con garantia por un plazo de 30 dias en mano de obra de contado apartir del dia de entrega del vehiculo. En partes electricas no hay garantia`,alignment: 'center', style:'info2' } , { text: `Nombre y Firma.`,alignment: 'center', style:'info3' } ],
             [ 
-              { text: `La prestacion del servicio de repracion y/o mantenimiento del vehiculo otorga con garantia por un plazo de 30 dias en mano de obra de contado apartir del dia de entrega del vehiculo. En partes electricas no hay garantia`,alignment: 'justify', style:'terminos2' },
+              { text: ``,alignment: 'justify', style:'terminos2' },
               {
                 image: `firma_cliente`,
                 height: 50,
@@ -629,7 +645,6 @@ export class PdfEntregaService {
                 aling: 'center',
                 valing: 'center'
               } ],
-            [ { text: ` `,alignment: 'center', style:'info2' }, { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 } ],
             [ { text: ` `,alignment: 'center', style:'info2' }, { text: `______________________________`,alignment: 'center', style:'info3' } ],
             [ { text: ` `,alignment: 'center', style:'info2' }, { text: `Recibió`,alignment: 'center', style:'info3' } ],
         ]
