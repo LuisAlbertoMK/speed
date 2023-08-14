@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "correciones despues de la revision con el ingeniero gabriel (en proceso)"
+git commit -m "esperando correcciones en produccion(en proceso)"
 git push -u origin 
 
 

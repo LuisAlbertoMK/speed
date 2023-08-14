@@ -139,6 +139,7 @@ export class EmailsService {
     
     const dataMail = await this.template(null,null,dataEmail)
     console.log(dataMail);
+     // return this.http.post(url,dataMail).subscribe()
   }
   template(cliente?:any,vehiculo?:any,dataEmail?:any){
     let filename = dataEmail.filename

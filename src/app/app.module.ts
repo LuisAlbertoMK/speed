@@ -81,9 +81,6 @@ import { HeaderComponent } from './components/header/header.component';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 
-
-
-
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin  from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -120,13 +117,11 @@ import { ClientesListComponent } from './components/clientes-list/clientes-list.
 import { ListaTecnicosComponent } from './components/lista-tecnicos/lista-tecnicos.component';
 import { ListaProblemasComponent } from './pages/lista-problemas/lista-problemas.component';
 import { UppercasePipe } from './pipes/uppercase.pipe';
-import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
+
 import { RegistraCitaComponent } from './components/registra-cita/registra-cita.component';
 
 // import { getDutchPaginatorIntl } from "../app/models/tras";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
-
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -156,6 +151,7 @@ import { TemplateTablaRecepcionesComponent } from './components/template-tabla-r
 import { TemplateTablaVehiculosComponent } from './components/template-tabla-vehiculos/template-tabla-vehiculos.component';
 import { EditarOsComponent } from './pages/editar-os/editar-os.component';
 import { TablaElementosComponent } from './components/tabla-elementos/tabla-elementos.component';
+import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,

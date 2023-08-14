@@ -1,4 +1,5 @@
-export const BD = {
+export const BD = 
+{
   "Citas": {
     "NaN": {
       "NaN": {
@@ -1849,6 +1850,38 @@ export const BD = {
           "placas": "LF51906",
           "transmision": "Estandar",
           "vinChasis": "LF51906"
+        },
+        "-Nax1SJtXSxr5XNd1nrD": {
+          "anio": "2016",
+          "categoria": "PickUp",
+          "cilindros": "4",
+          "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+          "color": "Blanco",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Chevrolet",
+          "marcaMotor": "",
+          "modelo": "Tornado ",
+          "no_motor": "1.8 L",
+          "placas": "LF75464",
+          "transmision": "Automatica",
+          "vinChasis": "GB147233"
+        },
+        "-NbV3lHMrUIKScUd7Ua4": {
+          "anio": "2016",
+          "categoria": "Van",
+          "cilindros": "4",
+          "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+          "color": "Blanco",
+          "engomado": "rosa",
+          "id": "",
+          "marca": "Nissan",
+          "marcaMotor": "",
+          "modelo": "NV 2500",
+          "no_motor": "2.5L",
+          "placas": "lf14227",
+          "transmision": "Estandar",
+          "vinChasis": "G9015658"
         }
       }
     },
@@ -3403,6 +3436,22 @@ export const BD = {
           "placas": "YXG157D",
           "transmision": "Automatica",
           "vinChasis": ""
+        },
+        "-NaJ7ru1e7KIaMrPOtQZ": {
+          "anio": "2012",
+          "categoria": "Van",
+          "cilindros": "4",
+          "cliente": "-NOLscckxnpg2PrC_pkW",
+          "color": "Plata",
+          "engomado": "azul",
+          "id": "",
+          "marca": "Toyota ",
+          "marcaMotor": "",
+          "modelo": "HIace",
+          "no_motor": "",
+          "placas": "JKB5669",
+          "transmision": "Estandar",
+          "vinChasis": ""
         }
       }
     },
@@ -4692,6 +4741,22 @@ export const BD = {
           "placas": "pcx1934",
           "transmision": "Automatica",
           "vinChasis": "HK016107"
+        },
+        "-NbeKD_F5J5Q-Gc5HJYL": {
+          "anio": "2016",
+          "categoria": "SUV",
+          "cilindros": "6",
+          "cliente": "-NRZHcUIcb_VrdDmvDcg",
+          "color": "Gris",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Toyota ",
+          "marcaMotor": "",
+          "modelo": "Sienna",
+          "no_motor": "3.5 L",
+          "placas": "umh735h",
+          "transmision": "Automatica",
+          "vinChasis": ""
         }
       }
     },
@@ -5663,6 +5728,22 @@ export const BD = {
           "no_motor": "2.4L",
           "placas": "409ymj",
           "transmision": "Automatica"
+        },
+        "-NbGo_wZK_fMGFbE5PQB": {
+          "anio": "2018",
+          "categoria": "Van",
+          "cilindros": "4",
+          "cliente": "-NUTPJ1_We4Bt2EFprND",
+          "color": "Blanco",
+          "engomado": "azul",
+          "id": "",
+          "marca": "Toyota ",
+          "marcaMotor": "",
+          "modelo": "HIace",
+          "no_motor": "2.7 L",
+          "placas": "l19anj",
+          "transmision": "Estandar",
+          "vinChasis": "j0075657"
         }
       }
     },
@@ -6417,6 +6498,22 @@ export const BD = {
           "placas": "ntp7921",
           "transmision": "Automatica",
           "vinChasis": "eb806797"
+        },
+        "-NahCIl0SxjnsdqiQpua": {
+          "anio": "2016",
+          "categoria": "SUV lujo",
+          "cilindros": "4",
+          "cliente": "-NWTH_FDvjOcrQtq7jjJ",
+          "color": "Plata",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Mazda",
+          "marcaMotor": "",
+          "modelo": "CX-5",
+          "no_motor": "2.5 L",
+          "placas": "PCR9915",
+          "transmision": "Automatica",
+          "vinChasis": "G0756736"
         }
       }
     },
@@ -6545,6 +6642,22 @@ export const BD = {
           "placas": "P57AWW",
           "transmision": "Automatica",
           "vinChasis": "FT585468"
+        },
+        "-NaNOugFkGTKCNzd_18f": {
+          "anio": "2004",
+          "categoria": "Sedán lujo",
+          "cilindros": "6",
+          "cliente": "-NWi_q0BV_mnEwB1eACX",
+          "color": "Rojo intenso",
+          "engomado": "verde",
+          "id": "",
+          "marca": "Audi",
+          "marcaMotor": "",
+          "modelo": "A4",
+          "no_motor": "3.2 L",
+          "placas": "NWF8431",
+          "transmision": "Estandar",
+          "vinChasis": "4A110457"
         }
       }
     },
@@ -8402,7 +8515,25 @@ export const BD = {
       "nombre": "JOEL",
       "sucursal": "-N2gkzuYrS4XDFgYciId",
       "telefono_movil": "5524971004",
-      "tipo": "particular"
+      "tipo": "particular",
+      "vehiculos": {
+        "-NbVha8zw75tYqbOMAFj": {
+          "anio": "2018",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NZRYSKlJOYzdrQGlinK",
+          "color": "Rojo intenso",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Mitsubishi",
+          "marcaMotor": "",
+          "modelo": "Mirage",
+          "no_motor": "1.6 L",
+          "placas": "sinp116",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
     },
     "-NZSe1IM1qphMVDwk-cu": {
       "apellidos": "BERESTAIN",
@@ -9506,6 +9637,819 @@ export const BD = {
           "vinChasis": "DN415372"
         }
       }
+    },
+    "-NaDEObucm2uHXHbN_pr": {
+      "apellidos": "SANCHEZ ZARZA",
+      "correo": "miguelsanzz@prodigy.net",
+      "fullname": "MIGUEL SANCHEZ ZARZA",
+      "id": "-NaDEObucm2uHXHbN_pr",
+      "no_cliente": "MISATO07230352",
+      "nombre": "MIGUEL",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5520907754",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NaDEYR8_ZbvNbvLKPKv": {
+          "anio": "2013",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaDEObucm2uHXHbN_pr",
+          "color": "Blanco",
+          "engomado": "azul",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Jetta",
+          "no_motor": "2.0 L",
+          "placas": "sinp109",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NaEYa1me0c2AfTXJChD": {
+      "apellidos": "CRUZ GARCIA",
+      "correo": "fcruz@foodpak.mx",
+      "fullname": "SAMUEL CRUZ GARCIA",
+      "id": "-NaEYa1me0c2AfTXJChD",
+      "no_cliente": "SACRTO07230353",
+      "nombre": "SAMUEL",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "8120222998",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NaEYqQQZvm47Px3_9cm": {
+          "anio": "2022",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaEYa1me0c2AfTXJChD",
+          "color": "Blanco",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Vento",
+          "no_motor": "1.6 L",
+          "placas": "szf374a",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NaIG4HLSgfNJgHj_mbw": {
+      "apellidos": "NAVA ROJAS",
+      "correo": "marianavarojas@gmail.com",
+      "fullname": "MARIA NATIVIDAD NAVA ROJAS",
+      "id": "-NaIG4HLSgfNJgHj_mbw",
+      "no_cliente": "MANATO07230354",
+      "nombre": "MARIA NATIVIDAD",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5521049487",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NaIGEsRfC_i87XGFfnV": {
+          "anio": "2007",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaIG4HLSgfNJgHj_mbw",
+          "color": "Gris",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Jetta",
+          "no_motor": "2.0 L",
+          "placas": "nph1216",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NaNJxfbSdzaF_djoffo": {
+      "apellidos": "VELEZ",
+      "correo": "adriana.velez@fantasykids.com.mx",
+      "fullname": "ADRIANA VELEZ",
+      "id": "-NaNJxfbSdzaF_djoffo",
+      "no_cliente": "ADVETO07230355",
+      "nombre": "ADRIANA",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5580379763",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NaNK95smN4R9pJOrBew": {
+          "anio": "2017",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaNJxfbSdzaF_djoffo",
+          "color": "Azul oscuro",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Jetta",
+          "no_motor": "2.5L",
+          "placas": "N13AWV",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NaNxUqgXHFjp9XQvIHL": {
+      "apellidos": "JUAREZ",
+      "correo": "silvano.juarez@gmail.com",
+      "fullname": "SILVANO  JUAREZ",
+      "id": "-NaNxUqgXHFjp9XQvIHL",
+      "no_cliente": "SIJUTO07230356",
+      "nombre": "SILVANO",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5512342937",
+      "tipo": "particular"
+    },
+    "-NaOEx4nllp-kxQAmXK3": {
+      "apellidos": "VELASCO RODRIGUEZ",
+      "correo": "inocencio.velasquesr@terra.com",
+      "fullname": "INOCENCIO VELASCO RODRIGUEZ",
+      "id": "-NaOEx4nllp-kxQAmXK3",
+      "no_cliente": "INVETO07230357",
+      "nombre": "INOCENCIO",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "7299488522",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NaOFAFkEuDDh5Z7L-cy": {
+          "anio": "1999",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaOEx4nllp-kxQAmXK3",
+          "color": "Azul oscuro",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Chevrolet",
+          "marcaMotor": "",
+          "modelo": "Chevy",
+          "no_motor": "1.6L",
+          "placas": "nvb3105",
+          "transmision": "Estandar",
+          "vinChasis": "xs145487"
+        }
+      }
+    },
+    "-NaRvYwoQaPDzJiKkZDC": {
+      "apellidos": "MARTINEZ",
+      "correo": "david.martinez@hotmail.com",
+      "fullname": "DAVID MARTINEZ",
+      "id": "-NaRvYwoQaPDzJiKkZDC",
+      "no_cliente": "DAMATO07230358",
+      "nombre": "DAVID",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5523068959",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NaRvuakdIFPlK_-zn1x": {
+          "anio": "2016",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaRvYwoQaPDzJiKkZDC",
+          "color": "Blanco",
+          "engomado": "azul",
+          "id": "",
+          "marca": "Ford",
+          "marcaMotor": "",
+          "modelo": "Fiesta",
+          "no_motor": "1.5 L",
+          "placas": "sinp110",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NaXTKF5gJGIVxMIg-td": {
+      "apellidos": "CHARLY G",
+      "correo": "charly.g@gmail.com",
+      "fullname": "CARLOS CHARLY G",
+      "id": "-NaXTKF5gJGIVxMIg-td",
+      "no_cliente": "CACHTO07230359",
+      "nombre": "CARLOS",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5614723862",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NaXU4v82VUOQ9uOyed0": {
+          "anio": "2015",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaXTKF5gJGIVxMIg-td",
+          "color": "Rojo intenso",
+          "engomado": "verde",
+          "id": "",
+          "marca": "KIA",
+          "marcaMotor": "",
+          "modelo": "Forte",
+          "no_motor": "2.0 L",
+          "placas": "sinp111",
+          "transmision": "Automatica",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-Nah81czgpA6F7jQNRwM": {
+      "apellidos": "BENAVIDES DELGADO",
+      "correo": "lilianapvenabides@hotmail.com",
+      "fullname": "LILIANA PATRICIA BENAVIDES DELGADO",
+      "id": "-Nah81czgpA6F7jQNRwM",
+      "no_cliente": "LIBETO07230360",
+      "nombre": "LILIANA PATRICIA",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5518264742",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nah8IaRgHL6woS5HrIq": {
+          "anio": "2020",
+          "categoria": "SUV",
+          "cilindros": "4",
+          "cliente": "-Nah81czgpA6F7jQNRwM",
+          "color": "Blanco",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Tiguan",
+          "no_motor": "2.0 L",
+          "placas": "pwv6806",
+          "transmision": "Automatica",
+          "vinChasis": "LM152532"
+        }
+      }
+    },
+    "-Nai5G7NGoSjhWgS-of9": {
+      "apellidos": "SANTIAGO SANTIAGO",
+      "correo": "manuel.santiago.santiago@hotmail.com",
+      "fullname": "MANUEL SANTIAGO SANTIAGO",
+      "id": "-Nai5G7NGoSjhWgS-of9",
+      "no_cliente": "MASATO07230361",
+      "nombre": "MANUEL",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5526846527",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nai5UGdzLjQesmOebdv": {
+          "anio": "2001",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-Nai5G7NGoSjhWgS-of9",
+          "color": "Rojo intenso",
+          "engomado": "azul",
+          "id": "",
+          "marca": "Chevrolet",
+          "marcaMotor": "",
+          "modelo": "Chevy",
+          "no_motor": "1.6 L",
+          "placas": "njs1719",
+          "transmision": "Estandar",
+          "vinChasis": "1S238813"
+        }
+      }
+    },
+    "-NaiaLqfq_3h3SqeHVKd": {
+      "apellidos": "GUEVARA DIEZ",
+      "correo": "carlos.guevaradiez@gmail.com",
+      "fullname": "CARLOS GUEVARA DIEZ",
+      "id": "-NaiaLqfq_3h3SqeHVKd",
+      "no_cliente": "CAGUTO07230362",
+      "nombre": "CARLOS",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5528597594",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Naia_7BWHgiIWmHlIT5": {
+          "anio": "2017",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NaiaLqfq_3h3SqeHVKd",
+          "color": "Rojo intenso",
+          "engomado": "verde",
+          "id": "",
+          "marca": "Ford",
+          "marcaMotor": "",
+          "modelo": "Fusión",
+          "no_motor": "2.0L",
+          "placas": "pww821b",
+          "transmision": "Automatica",
+          "vinChasis": "HR210793"
+        }
+      }
+    },
+    "-NamCopHUZBzif-300fC": {
+      "apellidos": "GUZMAN",
+      "correo": "miguelangel.cuzman10@gmail.com",
+      "fullname": "MIGUEL ANGEL GUZMAN",
+      "id": "-NamCopHUZBzif-300fC",
+      "no_cliente": "MIGUTO08230363",
+      "nombre": "MIGUEL ANGEL",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5572009160",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NamDOPmA3YIGLoYQomp": {
+          "anio": "2011",
+          "categoria": "Hatchback",
+          "cilindros": "4",
+          "cliente": "-NamCopHUZBzif-300fC",
+          "color": "Negro",
+          "engomado": "verde",
+          "id": "",
+          "marca": "Honda",
+          "marcaMotor": "",
+          "modelo": "Fit",
+          "no_motor": "1.5 L",
+          "placas": "sinp112",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NamJ2vx8GCmo-f4QGAW": {
+      "apellidos": "TORRES",
+      "correo": "manueltorres@outlook.com",
+      "fullname": "MANUEL  TORRES",
+      "id": "-NamJ2vx8GCmo-f4QGAW",
+      "no_cliente": "MATOTO08230364",
+      "nombre": "MANUEL",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5539015926",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NamJaYmsErYtJhWcfv5": {
+          "anio": "2017",
+          "categoria": "Sedán lujo",
+          "cilindros": "4",
+          "cliente": "-NamJ2vx8GCmo-f4QGAW",
+          "color": "Azul oscuro",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Audi",
+          "marcaMotor": "",
+          "modelo": "A4",
+          "no_motor": "2.0L",
+          "placas": "rav415c",
+          "transmision": "Automatica",
+          "vinChasis": "8HA147002"
+        }
+      }
+    },
+    "-NarLzZzwKQsdQKnmGCS": {
+      "apellidos": "CRUZ FLORES",
+      "correo": "salvador.cruzf@gmail.com",
+      "fullname": "SALVADOR CRUZ FLORES",
+      "id": "-NarLzZzwKQsdQKnmGCS",
+      "no_cliente": "SACRTO08230365",
+      "nombre": "SALVADOR",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5578722255",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NarMOAyAlFNq3_TdktH": {
+          "anio": "2014",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NarLzZzwKQsdQKnmGCS",
+          "color": "Plata",
+          "engomado": "rosa",
+          "id": "",
+          "marca": "Ford",
+          "marcaMotor": "",
+          "modelo": "Fiesta",
+          "no_motor": "1.6 L",
+          "placas": "nuv4007",
+          "transmision": "Estandar",
+          "vinChasis": "em164466"
+        }
+      }
+    },
+    "-NasbJIkOtmGIOwwdiU9": {
+      "apellidos": "MARTINEZ PEREZ",
+      "correo": "brendamtzp@gmail.com",
+      "fullname": "BRENDA MARTINEZ PEREZ",
+      "id": "-NasbJIkOtmGIOwwdiU9",
+      "no_cliente": "BRMATO08230366",
+      "nombre": "BRENDA",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5523209430",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NasbV08TQs6QzoYfQjF": {
+          "anio": "2016",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NasbJIkOtmGIOwwdiU9",
+          "color": "Blanco",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Golf",
+          "no_motor": "1.2T",
+          "placas": "sinp113",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NawxjuZLb50IG4fX5Qu": {
+      "apellidos": "MONSIVAIS",
+      "correo": "nadres.monsavais@agmcontrucciones.com",
+      "fullname": "ANDRES MONSIVAIS",
+      "id": "-NawxjuZLb50IG4fX5Qu",
+      "no_cliente": "ANMOTO08230367",
+      "nombre": "ANDRES",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5540846838",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NawxvHRzjaQ30FtbYA5": {
+          "anio": "2001",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NawxjuZLb50IG4fX5Qu",
+          "color": "Plata",
+          "engomado": "azul",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Golf",
+          "no_motor": "2.0 L",
+          "placas": "850vfu",
+          "transmision": "Estandar",
+          "vinChasis": "1W188702"
+        }
+      }
+    },
+    "-Nb0-Ralq2-qNR9BqoLG": {
+      "apellidos": "AMAYA BARBOSA",
+      "correo": "magdiel.amaya.barbosa@gmail.com",
+      "fullname": "MAGDIEL AMAYA BARBOSA",
+      "id": "-Nb0-Ralq2-qNR9BqoLG",
+      "no_cliente": "MAAMTO08230368",
+      "nombre": "MAGDIEL",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5520068748",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nb00SXYotla3QbMeL3w": {
+          "anio": "2016",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-Nb0-Ralq2-qNR9BqoLG",
+          "color": "Plata",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Chevrolet",
+          "marcaMotor": "",
+          "modelo": "Cruze",
+          "no_motor": "1.4 TURBO",
+          "placas": "pbc2985",
+          "transmision": "Estandar",
+          "vinChasis": "GS599193"
+        }
+      }
+    },
+    "-Nb0e6VeHbADNz9STKwN": {
+      "apellidos": "VPN SAPI DE CV",
+      "correo": "lalopaguirre@gmail.com",
+      "fullname": "RESTAURANTES VPN SAPI DE CV",
+      "id": "-Nb0e6VeHbADNz9STKwN",
+      "no_cliente": "REVPTO08230369",
+      "nombre": "RESTAURANTES",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "7295453605",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nb0eJ7fPRz_nWqTdihs": {
+          "anio": "2010",
+          "categoria": "Van",
+          "cilindros": "8",
+          "cliente": "-Nb0e6VeHbADNz9STKwN",
+          "color": "Blanco",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Chevrolet",
+          "marcaMotor": "",
+          "modelo": "Express ",
+          "no_motor": "4.8 L",
+          "placas": "LF11643",
+          "transmision": "Automatica",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-Nb0jaH9il5dcwmJ1rc_": {
+      "apellidos": "MARTINEZ BAUTISTA",
+      "correo": "fher_mb@hotmail.com",
+      "fullname": "FERNANDO MARTINEZ BAUTISTA",
+      "id": "-Nb0jaH9il5dcwmJ1rc_",
+      "no_cliente": "FEMATO08230370",
+      "nombre": "FERNANDO",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5541855035",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nb0jswVzxZ1L-TGqW98": {
+          "anio": "2017",
+          "categoria": "SUV",
+          "cilindros": "4",
+          "cliente": "-Nb0jaH9il5dcwmJ1rc_",
+          "color": "Rojo intenso",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Honda",
+          "marcaMotor": "",
+          "modelo": "CR-V",
+          "no_motor": "1.4 TURBO",
+          "placas": "sinp114",
+          "transmision": "Automatica",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NbUqc8m-eD3q1UYUh4S": {
+      "apellidos": "MERA",
+      "correo": "luis.mera@hotmail.com",
+      "fullname": "LUIS MERA",
+      "id": "-NbUqc8m-eD3q1UYUh4S",
+      "no_cliente": "LUMETO08230371",
+      "nombre": "LUIS",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5527125993",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NbUqoKO92xLmcCAiBMK": {
+          "anio": "2013",
+          "categoria": "SUV",
+          "cilindros": "4",
+          "cliente": "-NbUqc8m-eD3q1UYUh4S",
+          "color": "Plata",
+          "engomado": "amarillo",
+          "id": "",
+          "marca": "Chevrolet",
+          "marcaMotor": "",
+          "modelo": "Trax",
+          "no_motor": "1.6 L",
+          "placas": "sinp115",
+          "transmision": "Automatica",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NbVhLVXzmDtWzS8W2fI": {
+      "apellidos": "VERNAL",
+      "correo": "johandavid.venal@hotmail.com",
+      "fullname": "JOHAN DAVID VERNAL",
+      "id": "-NbVhLVXzmDtWzS8W2fI",
+      "no_cliente": "JOVETO08230372",
+      "nombre": "JOHAN DAVID",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5561017058",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NbVi1c0U9m0aduRFWgm": {
+          "anio": "2018",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NbVhLVXzmDtWzS8W2fI",
+          "color": "Gris",
+          "engomado": "amarillo",
+          "marca": "Mitsubishi",
+          "modelo": "Mirage",
+          "no_motor": "1.6 L",
+          "placas": "sinp116",
+          "transmision": "Estandar"
+        }
+      }
+    },
+    "-NbVkMac6hZvSZqPM2dF": {
+      "apellidos": "PETER",
+      "correo": "peter@peter.com",
+      "fullname": "PETER PETER",
+      "id": "-NbVkMac6hZvSZqPM2dF",
+      "no_cliente": "PEPETO08230373",
+      "nombre": "PETER",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5579403289",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NbVq4qDlWOO74I0bi0c": {
+          "anio": "2020",
+          "categoria": "SUV lujo",
+          "cilindros": "4",
+          "cliente": "-NbVkMac6hZvSZqPM2dF",
+          "color": "Negro",
+          "engomado": "rosa",
+          "id": "",
+          "marca": "Audi",
+          "marcaMotor": "",
+          "modelo": "Q2",
+          "no_motor": "GASOLINA",
+          "placas": "sinp117",
+          "transmision": "Automatica",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NbVrKPxqkOPFL3QZAJW": {
+      "apellidos": "MARTINEZ ALVAREZgus",
+      "correo": "gusz2309@gmail.com",
+      "fullname": "GUSTAVO MARTINEZ ALVAREZgus",
+      "id": "-NbVrKPxqkOPFL3QZAJW",
+      "no_cliente": "GUMATO08230374",
+      "nombre": "GUSTAVO",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5534559264",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NbVs7aBnARQvguSCo7y": {
+          "anio": "2017",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NbVrKPxqkOPFL3QZAJW",
+          "color": "Blanco",
+          "engomado": "rosa",
+          "id": "",
+          "marca": "Hyundai",
+          "marcaMotor": "",
+          "modelo": "i10",
+          "no_motor": "1.2 L",
+          "placas": "sinp118",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NbW5xG6w6J_T0iIouZT": {
+      "apellidos": "ANDRADE",
+      "correo": "paty.andrade@gmail.com",
+      "fullname": "PATRICIA  ANDRADE",
+      "id": "-NbW5xG6w6J_T0iIouZT",
+      "no_cliente": "PAANTO08230375",
+      "nombre": "PATRICIA",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5552524674",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NbW6DrfjssyMzXkFIB8": {
+          "anio": "2008",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NbW5xG6w6J_T0iIouZT",
+          "color": "Plata",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Volkswagen",
+          "marcaMotor": "",
+          "modelo": "Jetta",
+          "no_motor": "2.0 L",
+          "placas": "NLP6573",
+          "transmision": "Automatica",
+          "vinChasis": "8M603761"
+        }
+      }
+    },
+    "-Nb_6aUDeL0SsGdO22kC": {
+      "apellidos": "ANDRADE",
+      "correo": "jesus.andrade@hotmail.com",
+      "fullname": "JESUS ANDRADE",
+      "id": "-Nb_6aUDeL0SsGdO22kC",
+      "no_cliente": "JEANTO08230376",
+      "nombre": "JESUS",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5554008684",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nb_7V45cjUCJjYo9mbt": {
+          "anio": "2010",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-Nb_6aUDeL0SsGdO22kC",
+          "color": "Amarillo oro",
+          "engomado": "rojo",
+          "id": "",
+          "marca": "Nissan",
+          "marcaMotor": "",
+          "modelo": "Sentra",
+          "no_motor": "1.8 L",
+          "placas": "nlr6564",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-Nb_UMl1bW3qtZyKdMP-": {
+      "apellidos": "CONSUELO",
+      "correo": "guillermo.consuelo@gmail.com",
+      "fullname": "GUILLERMO CONSUELO",
+      "id": "-Nb_UMl1bW3qtZyKdMP-",
+      "no_cliente": "GUCOTO08230377",
+      "nombre": "GUILLERMO",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5570305501",
+      "tipo": "particular"
+    },
+    "-Nb_ne6hEXKCYVcKb752": {
+      "apellidos": "ESPARZA",
+      "correo": "fernanda.esparza@odelnorte.com",
+      "fullname": "FERNANDA  ESPARZA",
+      "id": "-Nb_ne6hEXKCYVcKb752",
+      "no_cliente": "FEESTO08230378",
+      "nombre": "FERNANDA",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5593032214",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nb_o58dRPfbkkpOodyl": {
+          "anio": "2016",
+          "categoria": "PickUp",
+          "cilindros": "4",
+          "cliente": "-Nb_ne6hEXKCYVcKb752",
+          "color": "Blanco",
+          "engomado": "azul",
+          "id": "",
+          "marca": "Nissan",
+          "marcaMotor": "",
+          "modelo": "NP300",
+          "no_motor": "2.5 L",
+          "placas": "sinp119",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-Nb_yIYHmkLMNyD1NatW": {
+      "apellidos": "MORALES FONSECA",
+      "correo": "iraidesmoralesfonseca@yahoo.com",
+      "fullname": "IRAIDES  MORALES FONSECA",
+      "id": "-Nb_yIYHmkLMNyD1NatW",
+      "no_cliente": "IRMOTO08230379",
+      "nombre": "IRAIDES",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5510729536",
+      "tipo": "particular",
+      "vehiculos": {
+        "-Nb_zGS6v5qa3eL60p8H": {
+          "anio": "2009",
+          "categoria": "SUV",
+          "cilindros": "4",
+          "cliente": "-Nb_yIYHmkLMNyD1NatW",
+          "color": "Plata",
+          "engomado": "rosa",
+          "id": "",
+          "marca": "Toyota ",
+          "marcaMotor": "",
+          "modelo": "Matrix",
+          "no_motor": "1.8 L",
+          "placas": "nmu127",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NbaWw93aswng67aU92_": {
+      "apellidos": "COUTIÑO",
+      "correo": "itzelita.coutino@gmail.com",
+      "fullname": "ITZEL  COUTIÑO",
+      "id": "-NbaWw93aswng67aU92_",
+      "no_cliente": "ITCOTO08230380",
+      "nombre": "ITZEL",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5561418547",
+      "tipo": "particular",
+      "vehiculos": {
+        "-NbaX6TrzmnRYKoxqBlS": {
+          "anio": "2018",
+          "categoria": "Sedán",
+          "cilindros": "4",
+          "cliente": "-NbaWw93aswng67aU92_",
+          "color": "Negro",
+          "engomado": "azul",
+          "id": "",
+          "marca": "KIA",
+          "marcaMotor": "",
+          "modelo": "Rio",
+          "no_motor": "1.6 L",
+          "placas": "sinp220",
+          "transmision": "Estandar",
+          "vinChasis": ""
+        }
+      }
+    },
+    "-NbofBHoB3tdmLRLTVcf": {
+      "apellidos": "AZTECA A.C.",
+      "correo": "oscar.garciat@elektra.com.mx",
+      "fullname": "FUNDACION AZTECA A.C.",
+      "id": "-NbofBHoB3tdmLRLTVcf",
+      "no_cliente": "FUAZTO08230381",
+      "nombre": "FUNDACION",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "telefono_movil": "5530294542",
+      "tipo": "particular"
     }
   },
   "colores_autos": [
@@ -9530,88 +10474,7 @@ export const BD = {
     "Otros"
   ],
   "cotizacionesRealizadas": {
-    "-NJGisLIdW6mwZO_a-Zq": {
-      "cliente": {
-        "apellidos": "CRUZ",
-        "correo": "andromeda_3d@hotmail.com",
-        "empresa": "",
-        "id": "-NJGOM0kuATAqPGHQhTp",
-        "no_cliente": "MACRTo09220023",
-        "nombre": "MARIA ELENA",
-        "sucursal": "-N2gkzuYrS4XDFgYciId",
-        "telefono_movil": "5513181724",
-        "tipo": "particular"
-      },
-      "descuento": 0,
-      "elementos": [
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 1450,
-          "descripcion": "",
-          "enCatalogo": true,
-          "index": 0,
-          "nombre": "REEMPLAZAR BANDA DE ACCESORIOS",
-          "precio": 1,
-          "tipo": "MO",
-          "total": 1450
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 5480,
-          "descripcion": "INCLUYE AMORTIGUADORES DE GAS ",
-          "enCatalogo": true,
-          "index": 1,
-          "nombre": "REEMPLAZAR AMROTIGUADORES DELANTEROS",
-          "precio": 1,
-          "tipo": "MO",
-          "total": 5480
-        }
-      ],
-      "fecha": "14/12/2022",
-      "formaPago": 1,
-      "hora": "11:42:59",
-      "iva": true,
-      "margen": 25,
-      "no_cotizacion": "TO1222GE00029",
-      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO1222GE00029?alt=media&token=beda0a28-09bf-4b25-baed-4610b87433c9",
-      "recordatorio3dias": true,
-      "reporte": {
-        "descuento": 0,
-        "iva": 1108.8,
-        "meses": 0,
-        "mo": 0,
-        "refacciones_a": 0,
-        "refacciones_v": 0,
-        "sobrescrito": 6930,
-        "sobrescrito_mo": 6930,
-        "sobrescrito_paquetes": 0,
-        "sobrescrito_refaccion": 0,
-        "subtotal": 6930,
-        "total": 8038.799999999999,
-        "ub": 0
-      },
-      "servicio": 1,
-      "sucursal": "-N2gkzuYrS4XDFgYciId",
-      "vehiculo": {
-        "anio": "2019",
-        "categoria": "Sedán",
-        "cilindros": "4",
-        "cliente": "-NJGOM0kuATAqPGHQhTp",
-        "color": "Blanco",
-        "engomado": "verde",
-        "id": "-NJGOd9V6BKc0gEV9p6j",
-        "marca": "Ford",
-        "marcaMotor": "1.6 L",
-        "modelo": "Figo",
-        "no_motor": "",
-        "placas": "NUN7052",
-        "transmision": "Automatica",
-        "vinChasis": "MAJHPAPA7KA195018"
-      },
-      "vencimiento": "3/1/2023"
-    },
+    
     "-NJLMAS4eRg5KbnObs_k": {
       "cliente": {
         "apellidos": "SIN",
@@ -9640,7 +10503,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -9651,7 +10514,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9662,7 +10525,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9673,7 +10536,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9684,7 +10547,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9695,7 +10558,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9706,7 +10569,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9717,7 +10580,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9728,7 +10591,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9739,7 +10602,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -9750,7 +10613,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -9761,7 +10624,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 0,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 0
             }
           ],
@@ -9809,6 +10672,7 @@ export const BD = {
         "total": 3445.2,
         "ub": 0
       },
+      "nota":"",
       "servicio": 1,
       "sucursal": "-N2gkzuYrS4XDFgYciId",
       "vehiculo": {
@@ -9852,7 +10716,7 @@ export const BD = {
           "index": 0,
           "nombre": "REEMPLAZAR AMROTIGUADORES DELANTEROS",
           "precio": 4280,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 8560
         }
       ],
@@ -10064,7 +10928,7 @@ export const BD = {
           "nombre": "NEW ELEMENT VISUAL",
           "normal": "$ 1040.00",
           "precio": 800,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         },
         {
@@ -10079,7 +10943,7 @@ export const BD = {
           "nombre": "NEW ELEMENT VISUAL",
           "normal": "$ 1040.00",
           "precio": 800,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         },
         {
@@ -10131,7 +10995,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -10145,7 +11009,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10159,7 +11023,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10173,7 +11037,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10187,7 +11051,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10201,7 +11065,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10215,7 +11079,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10229,7 +11093,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10243,7 +11107,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10257,7 +11121,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10271,7 +11135,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -10285,7 +11149,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -10381,7 +11245,7 @@ export const BD = {
           "nombre": "NEW ELEMENT VISUAL",
           "normal": "$ 1040.00",
           "precio": 800,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         },
         {
@@ -10396,7 +11260,7 @@ export const BD = {
           "nombre": "NEW ELEMENT VISUAL",
           "normal": "$ 1040.00",
           "precio": 800,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         },
         {
@@ -10448,7 +11312,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -10462,7 +11326,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10476,7 +11340,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10490,7 +11354,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10504,7 +11368,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10518,7 +11382,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10532,7 +11396,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10546,7 +11410,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10560,7 +11424,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10574,7 +11438,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10588,7 +11452,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -10602,7 +11466,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -10698,7 +11562,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMOrTIGUADORES DELANTEROS - MO",
           "normal": "$ 11245.00",
           "precio": 4320,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 8650
         },
         {
@@ -10713,7 +11577,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMORTIGUADORES TRASEROS - ",
           "normal": "$ 5980.00",
           "precio": 2300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4600
         },
         {
@@ -10728,7 +11592,7 @@ export const BD = {
           "nombre": "reemplazar gomas de barra estabilizadora - ",
           "normal": "$ 1560.00",
           "precio": 400,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1200
         },
         {
@@ -10743,7 +11607,7 @@ export const BD = {
           "nombre": "reemplazar bujes de horquillas ",
           "normal": "$ 3380.00",
           "precio": 1400,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2600
         },
         {
@@ -10758,7 +11622,7 @@ export const BD = {
           "nombre": "alineaciony balanceo ",
           "normal": "$ 845.00",
           "precio": 450,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         }
       ],
@@ -10878,7 +11742,7 @@ export const BD = {
           "nombre": "LAVAR CARROCERIA",
           "normal": "$ 195.00",
           "precio": 150,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 150
         }
       ],
@@ -10957,7 +11821,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -10971,7 +11835,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10985,7 +11849,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -10999,7 +11863,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11013,7 +11877,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11027,7 +11891,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11041,7 +11905,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11055,7 +11919,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11069,7 +11933,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11083,7 +11947,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11097,7 +11961,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -11111,7 +11975,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -11212,7 +12076,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -11226,7 +12090,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11240,7 +12104,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11254,7 +12118,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11268,7 +12132,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11282,7 +12146,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11296,7 +12160,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11310,7 +12174,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11324,7 +12188,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11338,7 +12202,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11352,7 +12216,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -11366,7 +12230,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -11405,7 +12269,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -11500,7 +12364,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS DELANTEROS",
           "normal": "$ 2340.00",
           "precio": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -11515,7 +12379,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMOrTIGUADORES DELANTEROS - MO",
           "normal": "$ 6760.00",
           "precio": 2380,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5200
         },
         {
@@ -11530,7 +12394,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMORTIGUADORES TRASEROS - ",
           "normal": "$ 5460.00",
           "precio": 2300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4200
         }
       ],
@@ -11609,7 +12473,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -11623,7 +12487,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11637,7 +12501,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11651,7 +12515,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11665,7 +12529,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11679,7 +12543,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11693,7 +12557,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11707,7 +12571,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11721,7 +12585,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11735,7 +12599,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -11749,7 +12613,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -11763,7 +12627,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -11800,7 +12664,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS DELANTEROS",
           "normal": "$ 2210.00",
           "precio": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -11815,7 +12679,7 @@ export const BD = {
           "nombre": "REEMPLAZAR BANDA DE ACCESORIOS",
           "normal": "$ 1274.00",
           "precio": 1,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 980
         }
       ],
@@ -11888,7 +12752,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS DELANTEROS",
           "normal": "$ 1820.00",
           "precio": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         },
         {
@@ -11903,7 +12767,7 @@ export const BD = {
           "nombre": "REEMPLAZAR SENSOR DE TEMPERATURA",
           "normal": "$ 1820.00",
           "precio": 600,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         }
       ],
@@ -11977,7 +12841,7 @@ export const BD = {
           "nombre": "reemplazar maza trasera izquierda",
           "normal": "$ 6890.00",
           "precio": 2700,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5300
         },
         {
@@ -11992,7 +12856,7 @@ export const BD = {
           "nombre": "rectificar rotores traseros",
           "normal": "$ 780.00",
           "precio": 200,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         },
         {
@@ -12007,7 +12871,7 @@ export const BD = {
           "nombre": "reemplazar cilindro maestro",
           "normal": "$ 3510.00",
           "precio": 1200,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2700
         }
       ],
@@ -12081,7 +12945,7 @@ export const BD = {
           "nombre": "reemplazar maza trasera izquierda",
           "normal": "$ 7020.00",
           "precio": 2700,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5400
         },
         {
@@ -12096,7 +12960,7 @@ export const BD = {
           "nombre": "rectificar rotores traseros",
           "normal": "$ 780.00",
           "precio": 200,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         },
         {
@@ -12111,7 +12975,7 @@ export const BD = {
           "nombre": "reemplazar cilindro maestro",
           "normal": "$ 6500.00",
           "precio": 1200,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5000
         }
       ],
@@ -12185,7 +13049,7 @@ export const BD = {
           "nombre": "pago de multa por verificacion extemporanea",
           "normal": "$ 2353.00",
           "precio": 1357,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1810
         },
         {
@@ -12200,7 +13064,7 @@ export const BD = {
           "nombre": "verificacion vehicular del edo de morelos",
           "normal": "$ 3770.00",
           "precio": 1900,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2900
         }
       ],
@@ -12279,7 +13143,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -12293,7 +13157,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12307,7 +13171,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12321,7 +13185,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12335,7 +13199,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12349,7 +13213,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12363,7 +13227,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12377,7 +13241,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12391,7 +13255,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12405,7 +13269,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12419,7 +13283,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -12433,7 +13297,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -12470,7 +13334,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS DELANTEROS",
           "normal": "$ 2210.00",
           "precio": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -12485,7 +13349,7 @@ export const BD = {
           "nombre": "descontaminar cristales y pintura",
           "normal": "$ 2340.00",
           "precio": 1200,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -12500,7 +13364,7 @@ export const BD = {
           "nombre": "pulir y encerar carroceria",
           "normal": "$ 1950.00",
           "precio": 900,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1500
         }
       ],
@@ -12574,7 +13438,7 @@ export const BD = {
           "nombre": "reemplazar rodamiento trasero derecho",
           "normal": "$ 1820.00",
           "precio": 340,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         },
         {
@@ -12589,7 +13453,7 @@ export const BD = {
           "nombre": "reemplazar rodamiento trasero izquierdo",
           "normal": "$ 1820.00",
           "precio": 340,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         }
       ],
@@ -12668,7 +13532,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -12682,7 +13546,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12696,7 +13560,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12710,7 +13574,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12724,7 +13588,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12738,7 +13602,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12752,7 +13616,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12766,7 +13630,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12780,7 +13644,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12794,7 +13658,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12808,7 +13672,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -12822,7 +13686,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -12859,7 +13723,7 @@ export const BD = {
           "nombre": "600",
           "normal": "$ 455.00",
           "precio": 350,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 350
         }
       ],
@@ -12938,7 +13802,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -12952,7 +13816,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12966,7 +13830,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12980,7 +13844,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -12994,7 +13858,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13008,7 +13872,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13022,7 +13886,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13036,7 +13900,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13050,7 +13914,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13064,7 +13928,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13078,7 +13942,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -13092,7 +13956,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -13132,7 +13996,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13156,7 +14020,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13168,7 +14032,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -13269,7 +14133,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -13283,7 +14147,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13297,7 +14161,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13311,7 +14175,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13325,7 +14189,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13339,7 +14203,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13353,7 +14217,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13367,7 +14231,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13381,7 +14245,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13395,7 +14259,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13409,7 +14273,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -13423,7 +14287,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -13524,7 +14388,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -13538,7 +14402,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13552,7 +14416,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13566,7 +14430,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13580,7 +14444,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13594,7 +14458,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13608,7 +14472,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13622,7 +14486,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13636,7 +14500,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13650,7 +14514,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13664,7 +14528,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -13678,7 +14542,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -13779,7 +14643,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -13793,7 +14657,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13807,7 +14671,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13821,7 +14685,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13835,7 +14699,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13849,7 +14713,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13863,7 +14727,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13877,7 +14741,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13891,7 +14755,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13905,7 +14769,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13919,7 +14783,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -13933,7 +14797,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -13973,7 +14837,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -13997,7 +14861,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14009,7 +14873,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -14046,7 +14910,7 @@ export const BD = {
           "nombre": "CAMBIO DE ACEITE Y FILTRO",
           "normal": "$ 156.00",
           "precio": 120,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 120
         }
       ],
@@ -14120,7 +14984,7 @@ export const BD = {
           "nombre": "rEFUERZO DE PLATAFORMA Y REDILAS",
           "normal": "$ 8060.00",
           "precio": 6200,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6200
         }
       ],
@@ -14199,7 +15063,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -14213,7 +15077,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14227,7 +15091,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14241,7 +15105,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14255,7 +15119,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14269,7 +15133,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14283,7 +15147,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14297,7 +15161,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14311,7 +15175,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14325,7 +15189,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14339,7 +15203,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -14353,7 +15217,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -14389,7 +15253,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS DELANTEROS",
           "normal": "$ 2210.00",
           "precio": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -14404,7 +15268,7 @@ export const BD = {
           "nombre": "REEMPLAZAR CUBRE POLVOS DE CALIPER´S DELANTEROS",
           "normal": "$ 1365.00",
           "precio": 450,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1050
         }
       ],
@@ -14478,7 +15342,7 @@ export const BD = {
           "nombre": "LAVADO Y ENGRASADO",
           "normal": "$ 1885.00",
           "precio": 1450,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1450
         },
         {
@@ -14573,7 +15437,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -14587,7 +15451,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14601,7 +15465,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14615,7 +15479,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14629,7 +15493,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14643,7 +15507,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14657,7 +15521,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14671,7 +15535,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14685,7 +15549,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14699,7 +15563,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -14713,7 +15577,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -14727,7 +15591,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -14823,7 +15687,7 @@ export const BD = {
           "nombre": "Servicio frenos delanteros",
           "normal": "$ 2,533.70",
           "precio": 1949,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1949
         },
         {
@@ -14838,7 +15702,7 @@ export const BD = {
           "nombre": "REPARACIÓN DE CLAXON",
           "normal": "$ 455.00",
           "precio": 350,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 350
         }
       ],
@@ -14912,7 +15776,7 @@ export const BD = {
           "nombre": "REEMPLAZAR MOTOR DE ARRANQUE NUEVO",
           "normal": "$ 6240.00",
           "precio": 2100,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4800
         }
       ],
@@ -14987,7 +15851,7 @@ export const BD = {
           "nombre": "servicio de frenos delanteros",
           "normal": "$ 2,533.70",
           "precio": 1949,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1949
         },
         {
@@ -15002,7 +15866,7 @@ export const BD = {
           "nombre": "REPARACIÓN DE CLAXON",
           "normal": "$ 455.00",
           "precio": 350,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 350
         }
       ],
@@ -15076,7 +15940,7 @@ export const BD = {
           "nombre": "servicio de frenos delanteros",
           "normal": "$ 2,533.70",
           "precio": 1949,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1949
         },
         {
@@ -15091,7 +15955,7 @@ export const BD = {
           "nombre": "REPARACIÓN DE CLAXON",
           "normal": "$ 455.00",
           "precio": 350,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 350
         }
       ],
@@ -15272,7 +16136,7 @@ export const BD = {
           "nombre": "Refuerzo plataforma y redillas (soldadura )",
           "normal": "$ 10790.00",
           "precio": 8300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 8300
         }
       ],
@@ -15346,7 +16210,7 @@ export const BD = {
           "nombre": "REEMPLAZAR RADIADOR",
           "normal": "$ 6214.00",
           "precio": 2100,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4780
         }
       ],
@@ -15425,7 +16289,7 @@ export const BD = {
               "normal": 156,
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -15439,7 +16303,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15453,7 +16317,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15467,7 +16331,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15481,7 +16345,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15495,7 +16359,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15509,7 +16373,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15523,7 +16387,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15537,7 +16401,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15551,7 +16415,7 @@ export const BD = {
               "normal": 390,
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15565,7 +16429,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -15579,7 +16443,7 @@ export const BD = {
               "normal": 390,
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -15767,7 +16631,7 @@ export const BD = {
           "nombre": "reparar lineas de arnes de sensor de cigueñal",
           "normal": "$ 780.00",
           "precio": 200,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         },
         {
@@ -15782,7 +16646,7 @@ export const BD = {
           "nombre": "reemplazar sensor de sigueñal",
           "normal": "$ 1469.00",
           "precio": 565,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1130
         },
         {
@@ -15797,7 +16661,7 @@ export const BD = {
           "nombre": "afinacion de motor",
           "normal": "$ 2535.00",
           "precio": 920,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1950
         },
         {
@@ -15812,7 +16676,7 @@ export const BD = {
           "nombre": "REEMPLAZAR CABLES DE BUJIAS",
           "normal": "$ 1,206.40",
           "precio": 464,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 928
         },
         {
@@ -15827,7 +16691,7 @@ export const BD = {
           "nombre": "reemplazar retenes de distribucion",
           "normal": "$ 2340.00",
           "precio": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -15842,7 +16706,7 @@ export const BD = {
           "nombre": "reemplazar junta de tapa de punterias",
           "normal": "$ 1287.00",
           "precio": 450,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 990
         },
         {
@@ -15857,7 +16721,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMOrTIGUADORES DELANTEROS - MO",
           "normal": "$ 7384.00",
           "precio": 2840,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5680
         },
         {
@@ -15872,7 +16736,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMORTIGUADORES TRASEROS",
           "normal": "$ 3848.00",
           "precio": 1480,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2960
         },
         {
@@ -15887,7 +16751,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FOCOS",
           "normal": "$ 390.00",
           "precio": 100,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 300
         }
       ],
@@ -15964,7 +16828,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -15976,7 +16840,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -15988,7 +16852,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16000,7 +16864,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16012,7 +16876,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16024,7 +16888,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16036,7 +16900,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16048,7 +16912,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16060,7 +16924,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16072,7 +16936,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16084,7 +16948,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16096,7 +16960,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16108,7 +16972,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -16207,7 +17071,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -16219,7 +17083,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16231,7 +17095,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16243,7 +17107,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16255,7 +17119,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16267,7 +17131,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16279,7 +17143,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16291,7 +17155,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16303,7 +17167,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16315,7 +17179,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16327,7 +17191,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16339,7 +17203,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16351,7 +17215,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -16450,7 +17314,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -16462,7 +17326,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16474,7 +17338,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16486,7 +17350,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16498,7 +17362,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16510,7 +17374,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16522,7 +17386,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16534,7 +17398,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16546,7 +17410,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16558,7 +17422,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16570,7 +17434,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16582,7 +17446,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16594,7 +17458,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -16693,7 +17557,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -16705,7 +17569,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16717,7 +17581,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16729,7 +17593,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16741,7 +17605,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16753,7 +17617,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16765,7 +17629,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16777,7 +17641,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16789,7 +17653,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -16888,7 +17752,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -16900,7 +17764,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16912,7 +17776,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16924,7 +17788,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16936,7 +17800,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16948,7 +17812,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16960,7 +17824,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -16972,7 +17836,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -16984,7 +17848,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -17083,7 +17947,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -17095,7 +17959,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17107,7 +17971,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17119,7 +17983,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17131,7 +17995,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17143,7 +18007,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17155,7 +18019,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17167,7 +18031,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -17179,7 +18043,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -17324,7 +18188,7 @@ export const BD = {
               "index": 4,
               "nombre": "Revisión general",
               "precio": 250,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 250
             }
           ],
@@ -17435,7 +18299,7 @@ export const BD = {
           "nombre": "REPARACIÓN FUGA DE ESCAPE",
           "normal": "$ 1040.00",
           "precio": 800,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         }
       ],
@@ -17512,7 +18376,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE DIESEL Y FILTRO",
               "precio": 1800,
               "subtotal": 1800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1800
             },
             {
@@ -17524,7 +18388,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17536,7 +18400,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE COMBUSTIBLE",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -17548,7 +18412,7 @@ export const BD = {
               "nombre": "REEMPLAZAR  FILTRO SEPARADOR DE AGUA (SI APLICA)",
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             },
             {
@@ -17560,7 +18424,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO SECUNDARIO (SI APLICA)",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -17572,7 +18436,7 @@ export const BD = {
               "nombre": "REV. PRE CALENTADORES",
               "precio": 600,
               "subtotal": 1200,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1200
             },
             {
@@ -17584,7 +18448,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17596,7 +18460,7 @@ export const BD = {
               "nombre": "ESCANEO POR COMPUTAODRA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -17608,7 +18472,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17620,7 +18484,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17632,7 +18496,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17644,7 +18508,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17656,7 +18520,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -17668,7 +18532,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -17680,7 +18544,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -17717,7 +18581,7 @@ export const BD = {
           "nombre": "REEMPLAZAR SOPORTE DE ESCAPE",
           "normal": "$ 1040.00",
           "precio": 700,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         }
       ],
@@ -17840,7 +18704,7 @@ export const BD = {
               "index": 4,
               "nombre": "Revisión general",
               "precio": 250,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 250
             }
           ],
@@ -18045,7 +18909,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -18057,7 +18921,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18069,7 +18933,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18081,7 +18945,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18093,7 +18957,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18105,7 +18969,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18117,7 +18981,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18129,7 +18993,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18141,7 +19005,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18153,7 +19017,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18165,7 +19029,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -18177,7 +19041,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -18189,7 +19053,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -18226,7 +19090,7 @@ export const BD = {
           "nombre": "VERIFICACION VEHICULAR",
           "normal": "$  2,405.00",
           "precio": 1370,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1850
         }
       ],
@@ -18301,7 +19165,7 @@ export const BD = {
           "nombre": "reemplazar base de modulo pcm",
           "normal": "$  1,781.00",
           "precio": 600,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1370
         }
       ],
@@ -18377,7 +19241,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -18389,7 +19253,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18401,7 +19265,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18413,7 +19277,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18425,7 +19289,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18437,7 +19301,7 @@ export const BD = {
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -18449,7 +19313,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18461,7 +19325,7 @@ export const BD = {
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
               "subtotal": 4110,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -18473,7 +19337,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -18485,7 +19349,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -18584,7 +19448,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -18596,7 +19460,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18608,7 +19472,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18620,7 +19484,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18632,7 +19496,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18644,7 +19508,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18656,7 +19520,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18668,7 +19532,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18680,7 +19544,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18692,7 +19556,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18704,7 +19568,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -18716,7 +19580,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -18728,7 +19592,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -18826,7 +19690,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18838,7 +19702,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -18946,7 +19810,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMORTIGUADORES  DELANTEROS",
           "normal": "$  59,020.00",
           "precio": 27220,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 45400
         }
       ],
@@ -19024,7 +19888,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -19036,7 +19900,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19048,7 +19912,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19060,7 +19924,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19072,7 +19936,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19084,7 +19948,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19096,7 +19960,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19108,7 +19972,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19120,7 +19984,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19132,7 +19996,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -19144,7 +20008,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -19156,7 +20020,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -19168,7 +20032,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -19205,7 +20069,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS TRASEROS",
           "normal": "$  2,210.00",
           "precio": 1700,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -19220,7 +20084,7 @@ export const BD = {
           "nombre": "REEMPLAZR CILINDORS DE RUEDAS TRASERAS",
           "normal": "$  1,560.00",
           "precio": 600,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1200
         },
         {
@@ -19235,7 +20099,7 @@ export const BD = {
           "nombre": "REEMPLAZAR TUBO CONDUCTOR DE CUERPO DE ACELERACION",
           "normal": "$  2,509.00",
           "precio": 990,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1930
         },
         {
@@ -19250,7 +20114,7 @@ export const BD = {
           "nombre": "REEMPLAZAR MAZA CON ABS TRASERA DERECHA",
           "normal": "$  5,289.70",
           "precio": 1790,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4069
         },
         {
@@ -19265,7 +20129,7 @@ export const BD = {
           "nombre": "REEMPLAZAR MAZA CON ABS TRASERA IZQUIEDA",
           "normal": "$  5,289.70",
           "precio": 1790,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4069
         }
       ],
@@ -19355,7 +20219,7 @@ export const BD = {
               "nombre": "Revisión general",
               "precio": 250,
               "subtotal": 250,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 250
             },
             {
@@ -19563,7 +20427,7 @@ export const BD = {
               "index": 5,
               "nombre": "Revisión general",
               "precio": 250,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 250
             }
           ],
@@ -19725,7 +20589,7 @@ export const BD = {
               "nombre": "Revisión general",
               "precio": 250,
               "subtotal": 250,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 250
             }
           ],
@@ -19962,7 +20826,7 @@ export const BD = {
               "nombre": "Revisión general",
               "precio": 250,
               "subtotal": 250,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 250
             }
           ],
@@ -20060,7 +20924,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -20072,7 +20936,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20084,7 +20948,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20096,7 +20960,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20108,7 +20972,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20120,7 +20984,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20132,7 +20996,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20144,7 +21008,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20156,7 +21020,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20168,7 +21032,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20180,7 +21044,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -20192,7 +21056,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -20204,7 +21068,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -20241,7 +21105,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS DELANTEROS",
           "normal": "$  2,340.00",
           "precio": 700,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -20256,7 +21120,7 @@ export const BD = {
           "nombre": "REEMPLAZAR ROTORES DELANTEROS",
           "normal": "$  5,980.00",
           "precio": 2000,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4600
         },
         {
@@ -20271,7 +21135,7 @@ export const BD = {
           "nombre": "reemplazar gomas de barra estabilizadora - ",
           "normal": "$  1,690.00",
           "precio": 400,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1300
         }
       ],
@@ -20620,7 +21484,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -20632,7 +21496,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20644,7 +21508,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20656,7 +21520,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20668,7 +21532,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20680,7 +21544,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20692,7 +21556,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20704,7 +21568,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20716,7 +21580,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20728,7 +21592,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20740,7 +21604,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -20752,7 +21616,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -20764,7 +21628,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -20862,7 +21726,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -20874,7 +21738,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20886,7 +21750,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20898,7 +21762,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20910,7 +21774,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20922,7 +21786,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20934,7 +21798,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20946,7 +21810,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20958,7 +21822,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20970,7 +21834,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -20982,7 +21846,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -20994,7 +21858,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -21006,7 +21870,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -21210,7 +22074,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -21222,7 +22086,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21234,7 +22098,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21246,7 +22110,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21258,7 +22122,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21270,7 +22134,7 @@ export const BD = {
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -21282,7 +22146,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21294,7 +22158,7 @@ export const BD = {
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
               "subtotal": 4110,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -21306,7 +22170,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -21318,7 +22182,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -21417,7 +22281,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -21429,7 +22293,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21441,7 +22305,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21453,7 +22317,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21465,7 +22329,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21477,7 +22341,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21489,7 +22353,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21501,7 +22365,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21513,7 +22377,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21525,7 +22389,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21537,7 +22401,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -21549,7 +22413,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -21561,7 +22425,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -21750,7 +22614,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -21762,7 +22626,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21774,7 +22638,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21786,7 +22650,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21798,7 +22662,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21810,7 +22674,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21822,7 +22686,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21834,7 +22698,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21846,7 +22710,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21858,7 +22722,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -21870,7 +22734,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -21882,7 +22746,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -21894,7 +22758,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -22274,7 +23138,7 @@ export const BD = {
           "nombre": "afinación ",
           "normal": "$  2,663.70",
           "precio": 2049,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2049
         },
         {
@@ -22289,7 +23153,7 @@ export const BD = {
           "nombre": "Carga de gas",
           "normal": "$  845.00",
           "precio": 650,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         },
         {
@@ -22381,7 +23245,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -22393,7 +23257,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22405,7 +23269,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22417,7 +23281,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22429,7 +23293,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22441,7 +23305,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22453,7 +23317,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22465,7 +23329,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22477,7 +23341,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22489,7 +23353,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22501,7 +23365,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -22513,7 +23377,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -22525,7 +23389,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -22624,7 +23488,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -22636,7 +23500,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22648,7 +23512,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22660,7 +23524,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22672,7 +23536,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22684,7 +23548,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22696,7 +23560,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22708,7 +23572,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22720,7 +23584,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22732,7 +23596,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -22744,7 +23608,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -22756,7 +23620,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -22768,7 +23632,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -22864,7 +23728,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMORTIGUADORES  DELANTEROS",
           "normal": "$  11,440.00",
           "precio": 4400,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 8800
         },
         {
@@ -22879,7 +23743,7 @@ export const BD = {
           "nombre": "REEMPLAZAR AMORTIGUADORES TRASEROS - ",
           "normal": "$  6,240.00",
           "precio": 2400,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4800
         },
         {
@@ -22894,7 +23758,7 @@ export const BD = {
           "nombre": "alineaciony balanceo ",
           "normal": "$  845.00",
           "precio": 450,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         }
       ],
@@ -22968,7 +23832,7 @@ export const BD = {
           "nombre": "REEMPLAZAR SENSOR DE CIGUEÑAL",
           "normal": "$  3,640.00",
           "precio": 1400,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2800
         },
         {
@@ -22983,7 +23847,7 @@ export const BD = {
           "nombre": "LAVORATORIO DE INYECTORES",
           "normal": "$  2,080.00",
           "precio": 800,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         },
         {
@@ -22998,7 +23862,7 @@ export const BD = {
           "nombre": "CODIFICAR FALLAS",
           "normal": "$  780.00",
           "precio": 100,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         },
         {
@@ -23013,7 +23877,7 @@ export const BD = {
           "nombre": "REEMPLAZAR BATERIA Y REGIMEN DE CARGA",
           "normal": "$  3,380.00",
           "precio": 1900,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2600
         }
       ],
@@ -23086,7 +23950,7 @@ export const BD = {
           "nombre": "AFINACIÓN",
           "normal": "$  3,846.70",
           "precio": 2959,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2959
         },
         {
@@ -23223,7 +24087,7 @@ export const BD = {
           "nombre": "afinacion de motor",
           "normal": "$  3,196.70",
           "precio": 2459,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2459
         }
       ],
@@ -23297,7 +24161,7 @@ export const BD = {
           "nombre": "SERVICIO MAYOR ",
           "normal": "$  4,223.70",
           "precio": 3249,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3249
         },
         {
@@ -23328,7 +24192,7 @@ export const BD = {
           "nombre": "LAVADO Y ENGRASADO",
           "normal": "$  975.00",
           "precio": 750,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 750
         }
       ],
@@ -23403,7 +24267,7 @@ export const BD = {
           "nombre": "AFINACIÓN",
           "normal": "$  2,600.00",
           "precio": 2959,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2000
         }
       ],
@@ -23662,7 +24526,7 @@ export const BD = {
           "nombre": "servicio de afinación ",
           "normal": "$  3,638.70",
           "precio": 2799,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2799
         },
         {
@@ -23818,7 +24682,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -23830,7 +24694,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23842,7 +24706,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23854,7 +24718,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23866,7 +24730,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23878,7 +24742,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23890,7 +24754,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23902,7 +24766,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23914,7 +24778,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23926,7 +24790,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -23938,7 +24802,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -23950,7 +24814,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -23962,7 +24826,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -24000,7 +24864,7 @@ export const BD = {
           "nombre": "REEMPLAZAR FRENOS DELANTEROS",
           "normal": "$  2,470.00",
           "precio": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1900
         }
       ],
@@ -24075,7 +24939,7 @@ export const BD = {
           "nombre": "AFINACIÓN",
           "normal": "$  2,600.00",
           "precio": 2959,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2000
         }
       ],
@@ -24150,7 +25014,7 @@ export const BD = {
           "nombre": "REPARACIÓN CINTURONES DE SEGURIDAD",
           "normal": "$  6,240.00",
           "precio": 4800,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4800
         }
       ],
@@ -24227,7 +25091,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -24239,7 +25103,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24251,7 +25115,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24263,7 +25127,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24275,7 +25139,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24287,7 +25151,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24299,7 +25163,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24311,7 +25175,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24323,7 +25187,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24335,7 +25199,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24347,7 +25211,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -24359,7 +25223,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -24371,7 +25235,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -24467,7 +25331,7 @@ export const BD = {
           "nombre": "FABRICACIÓN E INSTALACIÓN DE REDILAS",
           "normal": "$  29,250.00",
           "precio": 22500,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 22500
         }
       ],
@@ -24542,7 +25406,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -24555,7 +25419,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24568,7 +25432,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24581,7 +25445,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24594,7 +25458,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24607,7 +25471,7 @@ export const BD = {
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -24620,7 +25484,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -24633,7 +25497,7 @@ export const BD = {
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
               "subtotal": 4110,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -24646,7 +25510,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -24659,7 +25523,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -24801,7 +25665,7 @@ export const BD = {
           "nombre": "HOJALATERÍA Y PINTURA",
           "normal": "$  6,370.00",
           "precio": 4900,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4900
         }
       ],
@@ -24875,7 +25739,7 @@ export const BD = {
           "nombre": "desmontar, montar, encasqullar y tapón de carter",
           "normal": "$  2,080.00",
           "precio": 1600,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         }
       ],
@@ -25022,7 +25886,7 @@ export const BD = {
           "normal": "$  390.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 300
         },
         {
@@ -25256,7 +26120,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -25269,7 +26133,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25282,7 +26146,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25295,7 +26159,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25308,7 +26172,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25321,7 +26185,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25334,7 +26198,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25347,7 +26211,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25360,7 +26224,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25373,7 +26237,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25386,7 +26250,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -25399,7 +26263,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -25412,7 +26276,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -25598,7 +26462,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE DIESEL Y FILTRO",
               "precio": 1800,
               "subtotal": 1800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1800
             },
             {
@@ -25611,7 +26475,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25624,7 +26488,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE COMBUSTIBLE",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -25637,7 +26501,7 @@ export const BD = {
               "nombre": "REEMPLAZAR  FILTRO SEPARADOR DE AGUA (SI APLICA)",
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             },
             {
@@ -25650,7 +26514,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO SECUNDARIO (SI APLICA)",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -25663,7 +26527,7 @@ export const BD = {
               "nombre": "REV. PRE CALENTADORES",
               "precio": 600,
               "subtotal": 1200,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1200
             },
             {
@@ -25676,7 +26540,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25689,7 +26553,7 @@ export const BD = {
               "nombre": "ESCANEO POR COMPUTAODRA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -25702,7 +26566,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25715,7 +26579,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25728,7 +26592,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25741,7 +26605,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25754,7 +26618,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25767,7 +26631,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -25780,7 +26644,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -25874,7 +26738,7 @@ export const BD = {
           "normal": "$  3,120.00",
           "precio": 1800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2400
         }
       ],
@@ -25948,7 +26812,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE DIESEL Y FILTRO",
               "precio": 1800,
               "subtotal": 1800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1800
             },
             {
@@ -25961,7 +26825,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -25974,7 +26838,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE COMBUSTIBLE",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -25987,7 +26851,7 @@ export const BD = {
               "nombre": "REEMPLAZAR  FILTRO SEPARADOR DE AGUA (SI APLICA)",
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             },
             {
@@ -26000,7 +26864,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO SECUNDARIO (SI APLICA)",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -26013,7 +26877,7 @@ export const BD = {
               "nombre": "REV. PRE CALENTADORES",
               "precio": 600,
               "subtotal": 1200,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1200
             },
             {
@@ -26026,7 +26890,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26039,7 +26903,7 @@ export const BD = {
               "nombre": "ESCANEO POR COMPUTAODRA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -26052,7 +26916,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26065,7 +26929,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26078,7 +26942,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26091,7 +26955,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26104,7 +26968,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26117,7 +26981,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -26130,7 +26994,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -26170,7 +27034,7 @@ export const BD = {
           "normal": "$  2,730.00",
           "precio": 1700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2100
         },
         {
@@ -26188,7 +27052,7 @@ export const BD = {
           "normal": "$  1,144.00",
           "precio": 400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 880
         },
         {
@@ -26206,7 +27070,7 @@ export const BD = {
           "normal": "$  1,820.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         },
         {
@@ -26224,7 +27088,7 @@ export const BD = {
           "normal": "$  3,770.00",
           "precio": 1720,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2900
         },
         {
@@ -26241,7 +27105,7 @@ export const BD = {
           "normal": "$  1,560.00",
           "precio": 400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1200
         },
         {
@@ -26259,7 +27123,7 @@ export const BD = {
           "normal": "$  2,067.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1590
         }
       ],
@@ -26335,7 +27199,7 @@ export const BD = {
               "precio": 1800,
               "status": true,
               "subtotal": 1800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1800
             },
             {
@@ -26349,7 +27213,7 @@ export const BD = {
               "precio": 600,
               "status": true,
               "subtotal": 600,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 600
             },
             {
@@ -26363,7 +27227,7 @@ export const BD = {
               "precio": 500,
               "status": true,
               "subtotal": 500,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 500
             },
             {
@@ -26377,7 +27241,7 @@ export const BD = {
               "precio": 300,
               "status": true,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26391,7 +27255,7 @@ export const BD = {
               "precio": 800,
               "status": true,
               "subtotal": 800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 800
             },
             {
@@ -26405,7 +27269,7 @@ export const BD = {
               "precio": 300,
               "status": true,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26419,7 +27283,7 @@ export const BD = {
               "precio": 150,
               "status": true,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -26516,7 +27380,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -26529,7 +27393,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26542,7 +27406,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26555,7 +27419,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26568,7 +27432,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26581,7 +27445,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26594,7 +27458,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26607,7 +27471,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26620,7 +27484,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26633,7 +27497,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26646,7 +27510,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -26659,7 +27523,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -26672,7 +27536,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -26712,7 +27576,7 @@ export const BD = {
           "normal": "$  1,430.00",
           "precio": 1,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1100
         }
       ],
@@ -26785,7 +27649,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -26798,7 +27662,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26811,7 +27675,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26824,7 +27688,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26837,7 +27701,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26850,7 +27714,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26863,7 +27727,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26876,7 +27740,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26889,7 +27753,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26902,7 +27766,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -26915,7 +27779,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -26928,7 +27792,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -26941,7 +27805,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -27037,7 +27901,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -27050,7 +27914,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27063,7 +27927,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27076,7 +27940,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27089,7 +27953,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27102,7 +27966,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27115,7 +27979,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27128,7 +27992,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27141,7 +28005,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27154,7 +28018,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27167,7 +28031,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -27180,7 +28044,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -27193,7 +28057,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -27288,7 +28152,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -27301,7 +28165,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27314,7 +28178,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27327,7 +28191,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27340,7 +28204,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27353,7 +28217,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27366,7 +28230,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27379,7 +28243,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27392,7 +28256,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27405,7 +28269,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27418,7 +28282,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -27431,7 +28295,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -27444,7 +28308,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -27776,7 +28640,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE DIESEL Y FILTRO",
               "precio": 1800,
               "subtotal": 1800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1800
             },
             {
@@ -27789,7 +28653,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27802,7 +28666,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE COMBUSTIBLE",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -27815,7 +28679,7 @@ export const BD = {
               "nombre": "REEMPLAZAR  FILTRO SEPARADOR DE AGUA (SI APLICA)",
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             },
             {
@@ -27828,7 +28692,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO SECUNDARIO (SI APLICA)",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -27841,7 +28705,7 @@ export const BD = {
               "nombre": "REV. PRE CALENTADORES",
               "precio": 600,
               "subtotal": 1200,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1200
             },
             {
@@ -27854,7 +28718,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27867,7 +28731,7 @@ export const BD = {
               "nombre": "ESCANEO POR COMPUTAODRA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -27880,7 +28744,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27893,7 +28757,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27906,7 +28770,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27919,7 +28783,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27932,7 +28796,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -27945,7 +28809,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -27958,7 +28822,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -28053,7 +28917,7 @@ export const BD = {
           "normal": "$  2,730.00",
           "precio": 1100,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2100
         }
       ],
@@ -28128,7 +28992,7 @@ export const BD = {
           "normal": "$  2,730.00",
           "precio": 1100,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2100
         }
       ],
@@ -28203,7 +29067,7 @@ export const BD = {
           "normal": "$  2,730.00",
           "precio": 1100,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2100
         }
       ],
@@ -28280,7 +29144,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -28293,7 +29157,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28306,7 +29170,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28319,7 +29183,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28332,7 +29196,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28345,7 +29209,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28358,7 +29222,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28371,7 +29235,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28384,7 +29248,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28397,7 +29261,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28410,7 +29274,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -28423,7 +29287,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -28436,7 +29300,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -28476,7 +29340,7 @@ export const BD = {
           "normal": "$  2,210.00",
           "precio": 500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         }
       ],
@@ -28550,7 +29414,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -28563,7 +29427,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28576,7 +29440,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28589,7 +29453,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28602,7 +29466,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28615,7 +29479,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28628,7 +29492,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28641,7 +29505,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28654,7 +29518,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28667,7 +29531,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28680,7 +29544,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -28693,7 +29557,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -28706,7 +29570,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -28803,7 +29667,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -28816,7 +29680,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28829,7 +29693,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28842,7 +29706,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28855,7 +29719,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28868,7 +29732,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28881,7 +29745,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -28894,7 +29758,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -28907,7 +29771,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -29002,7 +29866,7 @@ export const BD = {
           "normal": "$  3,770.00",
           "precio": 1600,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2900
         },
         {
@@ -29020,7 +29884,7 @@ export const BD = {
           "normal": "$  5,980.00",
           "precio": 2800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4600
         },
         {
@@ -29037,7 +29901,7 @@ export const BD = {
           "normal": "$  3,380.00",
           "precio": 1700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2600
         },
         {
@@ -29055,7 +29919,7 @@ export const BD = {
           "normal": "$  1,300.00",
           "precio": 500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1000
         }
       ],
@@ -29130,7 +29994,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -29143,7 +30007,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29156,7 +30020,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29169,7 +30033,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29182,7 +30046,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29195,7 +30059,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29208,7 +30072,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29221,7 +30085,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29234,7 +30098,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29247,7 +30111,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29260,7 +30124,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -29273,7 +30137,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -29286,7 +30150,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -29383,7 +30247,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -29396,7 +30260,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29409,7 +30273,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29422,7 +30286,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29435,7 +30299,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29448,7 +30312,7 @@ export const BD = {
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
               "subtotal": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -29461,7 +30325,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29474,7 +30338,7 @@ export const BD = {
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
               "subtotal": 4110,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -29487,7 +30351,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -29500,7 +30364,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -29597,7 +30461,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -29610,7 +30474,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29623,7 +30487,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29636,7 +30500,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29649,7 +30513,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29662,7 +30526,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29675,7 +30539,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29688,7 +30552,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29701,7 +30565,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29714,7 +30578,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -29727,7 +30591,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -29740,7 +30604,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -29753,7 +30617,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -30012,7 +30876,7 @@ export const BD = {
           "normal": "$  7,930.00",
           "precio": 3000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6100
         },
         {
@@ -30029,7 +30893,7 @@ export const BD = {
           "normal": "$  5,460.00",
           "precio": 1900,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4200
         },
         {
@@ -30046,7 +30910,7 @@ export const BD = {
           "normal": "$  975.00",
           "precio": 450,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 750
         }
       ],
@@ -30121,7 +30985,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -30134,7 +30998,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30147,7 +31011,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30160,7 +31024,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30173,7 +31037,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30186,7 +31050,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30199,7 +31063,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30212,7 +31076,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30225,7 +31089,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30238,7 +31102,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30251,7 +31115,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -30264,7 +31128,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -30277,7 +31141,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -30371,7 +31235,7 @@ export const BD = {
           "normal": "$  3,510.00",
           "precio": 1400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2700
         }
       ],
@@ -30443,7 +31307,7 @@ export const BD = {
           "normal": "$  3,250.00",
           "precio": 1400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2500
         }
       ],
@@ -30607,7 +31471,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -30620,7 +31484,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30633,7 +31497,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30646,7 +31510,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30659,7 +31523,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30672,7 +31536,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30685,7 +31549,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30698,7 +31562,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30711,7 +31575,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30724,7 +31588,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30737,7 +31601,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -30750,7 +31614,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -30763,7 +31627,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -30860,7 +31724,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -30873,7 +31737,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30886,7 +31750,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30899,7 +31763,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30912,7 +31776,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30925,7 +31789,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30938,7 +31802,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30951,7 +31815,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30964,7 +31828,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30977,7 +31841,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -30990,7 +31854,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -31003,7 +31867,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -31016,7 +31880,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -31220,7 +32084,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -31233,7 +32097,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31246,7 +32110,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31259,7 +32123,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31272,7 +32136,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31285,7 +32149,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31298,7 +32162,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -31311,7 +32175,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -31407,7 +32271,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -31420,7 +32284,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31433,7 +32297,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31446,7 +32310,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31459,7 +32323,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31472,7 +32336,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -31485,7 +32349,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -31498,7 +32362,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -31594,7 +32458,7 @@ export const BD = {
           "normal": "$  1,157.00",
           "precio": 350,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 890
         },
         {
@@ -31612,7 +32476,7 @@ export const BD = {
           "normal": "$  468.00",
           "precio": 200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 360
         }
       ],
@@ -31938,7 +32802,7 @@ export const BD = {
           "normal": "$  1,820.00",
           "precio": 1400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         }
       ],
@@ -32099,7 +32963,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -32111,7 +32975,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32123,7 +32987,7 @@ export const BD = {
               "index": 2,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32135,7 +32999,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32147,7 +33011,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32159,7 +33023,7 @@ export const BD = {
               "index": 5,
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -32171,7 +33035,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32183,7 +33047,7 @@ export const BD = {
               "index": 7,
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -32195,7 +33059,7 @@ export const BD = {
               "index": 8,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -32207,7 +33071,7 @@ export const BD = {
               "index": 9,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -32381,7 +33245,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -32393,7 +33257,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32405,7 +33269,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32417,7 +33281,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32429,7 +33293,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32441,7 +33305,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32453,7 +33317,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32465,7 +33329,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32477,7 +33341,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32489,7 +33353,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32501,7 +33365,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -32513,7 +33377,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -32525,7 +33389,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -32565,7 +33429,7 @@ export const BD = {
           "normal": "$  5,460.00",
           "precio": 1900,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4200
         }
       ],
@@ -32640,7 +33504,7 @@ export const BD = {
           "normal": "$  6,435.00",
           "precio": 2300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4950
         },
         {
@@ -32657,7 +33521,7 @@ export const BD = {
           "normal": "$  1,040.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         }
       ],
@@ -32731,7 +33595,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -32743,7 +33607,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32755,7 +33619,7 @@ export const BD = {
               "index": 2,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32767,7 +33631,7 @@ export const BD = {
               "index": 3,
               "nombre": "REEMPLAZAR FILTRO DE GASOLINA",
               "precio": 100,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 100
             },
             {
@@ -32779,7 +33643,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32791,7 +33655,7 @@ export const BD = {
               "index": 5,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32803,7 +33667,7 @@ export const BD = {
               "index": 6,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32815,7 +33679,7 @@ export const BD = {
               "index": 7,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32827,7 +33691,7 @@ export const BD = {
               "index": 8,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -32839,7 +33703,7 @@ export const BD = {
               "index": 9,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -32934,7 +33798,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -32946,7 +33810,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32958,7 +33822,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32970,7 +33834,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32982,7 +33846,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -32994,7 +33858,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33006,7 +33870,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33018,7 +33882,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33030,7 +33894,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33042,7 +33906,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33054,7 +33918,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -33066,7 +33930,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -33078,7 +33942,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -33191,7 +34055,7 @@ export const BD = {
           "normal": "$  715.00",
           "precio": 550,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 550
         }
       ],
@@ -33623,7 +34487,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -33635,7 +34499,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33647,7 +34511,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33659,7 +34523,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33671,7 +34535,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33683,7 +34547,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33695,7 +34559,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33707,7 +34571,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33719,7 +34583,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33731,7 +34595,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33743,7 +34607,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -33755,7 +34619,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -33767,7 +34631,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -33807,7 +34671,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         }
       ],
@@ -33881,7 +34745,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -33893,7 +34757,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33905,7 +34769,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33917,7 +34781,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33929,7 +34793,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33941,7 +34805,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33953,7 +34817,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33965,7 +34829,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33977,7 +34841,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -33989,7 +34853,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -34001,7 +34865,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -34013,7 +34877,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -34025,7 +34889,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -34066,7 +34930,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -34083,7 +34947,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         }
       ],
@@ -34193,7 +35057,7 @@ export const BD = {
           "normal": "$  845.00",
           "precio": 650,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         },
         {
@@ -34774,7 +35638,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -34786,7 +35650,7 @@ export const BD = {
               "index": 1,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -34798,7 +35662,7 @@ export const BD = {
               "index": 2,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -34810,7 +35674,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -34822,7 +35686,7 @@ export const BD = {
               "index": 4,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -34834,7 +35698,7 @@ export const BD = {
               "index": 5,
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -34846,7 +35710,7 @@ export const BD = {
               "index": 6,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -34858,7 +35722,7 @@ export const BD = {
               "index": 7,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -34870,7 +35734,7 @@ export const BD = {
               "index": 8,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -34963,7 +35827,7 @@ export const BD = {
           "normal": "$  2,730.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2100
         }
       ],
@@ -35035,7 +35899,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -35047,7 +35911,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35059,7 +35923,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35071,7 +35935,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35083,7 +35947,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35095,7 +35959,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35107,7 +35971,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35119,7 +35983,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35131,7 +35995,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35143,7 +36007,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35155,7 +36019,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -35167,7 +36031,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -35179,7 +36043,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -35220,7 +36084,7 @@ export const BD = {
           "normal": "$  3,120.00",
           "precio": 600,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2400
         },
         {
@@ -35238,7 +36102,7 @@ export const BD = {
           "normal": "$  4,940.00",
           "precio": 1900,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3800
         },
         {
@@ -35255,7 +36119,7 @@ export const BD = {
           "normal": "$  18,590.00",
           "precio": 3400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 14300
         },
         {
@@ -35273,7 +36137,7 @@ export const BD = {
           "normal": "$  17,810.00",
           "precio": 6500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 13700
         },
         {
@@ -35291,7 +36155,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         },
         {
@@ -35308,7 +36172,7 @@ export const BD = {
           "normal": "$  1,105.00",
           "precio": 500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 850
         }
       ],
@@ -35454,7 +36318,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -35466,7 +36330,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35478,7 +36342,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35490,7 +36354,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35502,7 +36366,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35514,7 +36378,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35526,7 +36390,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35538,7 +36402,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35550,7 +36414,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35562,7 +36426,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35574,7 +36438,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -35586,7 +36450,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -35598,7 +36462,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -35870,7 +36734,7 @@ export const BD = {
           "normal": "$  585.00",
           "precio": 450,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 450
         },
         {
@@ -35888,7 +36752,7 @@ export const BD = {
           "normal": "$  325.00",
           "precio": 250,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 250
         }
       ],
@@ -35961,7 +36825,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -35973,7 +36837,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35985,7 +36849,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -35997,7 +36861,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36009,7 +36873,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36021,7 +36885,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36033,7 +36897,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36045,7 +36909,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36057,7 +36921,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36069,7 +36933,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36081,7 +36945,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -36093,7 +36957,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -36105,7 +36969,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -36200,7 +37064,7 @@ export const BD = {
           "normal": "$  10,296.00",
           "precio": 3960,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 7920
         },
         {
@@ -36218,7 +37082,7 @@ export const BD = {
           "normal": "$  780.00",
           "precio": 280,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         }
       ],
@@ -36291,7 +37155,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -36303,7 +37167,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36315,7 +37179,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36327,7 +37191,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36339,7 +37203,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36351,7 +37215,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36363,7 +37227,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36375,7 +37239,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36387,7 +37251,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36399,7 +37263,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36411,7 +37275,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -36423,7 +37287,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -36435,7 +37299,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -36528,7 +37392,7 @@ export const BD = {
           "normal": "$  8,944.00",
           "precio": 27220,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6880
         },
         {
@@ -36545,7 +37409,7 @@ export const BD = {
           "normal": "$  3,900.00",
           "precio": 3960,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3000
         },
         {
@@ -36562,7 +37426,7 @@ export const BD = {
           "normal": "$  650.00",
           "precio": 280,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 500
         },
         {
@@ -36580,7 +37444,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         }
       ],
@@ -36651,7 +37515,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -36663,7 +37527,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36675,7 +37539,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36687,7 +37551,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36699,7 +37563,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36711,7 +37575,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36723,7 +37587,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36735,7 +37599,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36747,7 +37611,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36759,7 +37623,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -36771,7 +37635,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -36783,7 +37647,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -36795,7 +37659,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -36948,7 +37812,7 @@ export const BD = {
           "normal": "$  780.00",
           "precio": 100,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         }
       ],
@@ -37021,7 +37885,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -37034,7 +37898,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37047,7 +37911,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37060,7 +37924,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37073,7 +37937,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37086,7 +37950,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37099,7 +37963,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37112,7 +37976,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37125,7 +37989,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37138,7 +38002,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37151,7 +38015,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37164,7 +38028,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37177,7 +38041,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -37217,7 +38081,7 @@ export const BD = {
           "normal": "$  6,240.00",
           "precio": 27220,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4800
         },
         {
@@ -37234,7 +38098,7 @@ export const BD = {
           "normal": "$  4,290.00",
           "precio": 2040,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3300
         },
         {
@@ -37251,7 +38115,7 @@ export const BD = {
           "normal": "$  780.00",
           "precio": 280,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         }
       ],
@@ -37325,7 +38189,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -37338,7 +38202,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37351,7 +38215,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37364,7 +38228,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37377,7 +38241,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37390,7 +38254,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37403,7 +38267,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37416,7 +38280,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37429,7 +38293,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37442,7 +38306,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37455,7 +38319,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37468,7 +38332,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37481,7 +38345,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -37578,7 +38442,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -37591,7 +38455,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37604,7 +38468,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37617,7 +38481,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37630,7 +38494,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37643,7 +38507,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37656,7 +38520,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37669,7 +38533,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37682,7 +38546,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37695,7 +38559,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37708,7 +38572,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37721,7 +38585,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -37734,7 +38598,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -37831,7 +38695,7 @@ export const BD = {
           "normal": "$  5,135.00",
           "precio": 1700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3950
         },
         {
@@ -37848,7 +38712,7 @@ export const BD = {
           "normal": "$  6,812.00",
           "precio": 27220,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5240
         },
         {
@@ -37865,7 +38729,7 @@ export const BD = {
           "normal": "$  4,784.00",
           "precio": 2040,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3680
         },
         {
@@ -37882,7 +38746,7 @@ export const BD = {
           "normal": "$  1,625.00",
           "precio": 1,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1250
         }
       ],
@@ -37957,7 +38821,7 @@ export const BD = {
           "normal": "$  5,135.00",
           "precio": 1700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3950
         },
         {
@@ -37974,7 +38838,7 @@ export const BD = {
           "normal": "$  6,812.00",
           "precio": 27220,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5240
         },
         {
@@ -37991,7 +38855,7 @@ export const BD = {
           "normal": "$  4,784.00",
           "precio": 2040,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3680
         },
         {
@@ -38008,7 +38872,7 @@ export const BD = {
           "normal": "$  1,625.00",
           "precio": 1,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1250
         },
         {
@@ -38025,7 +38889,7 @@ export const BD = {
           "normal": "$  2,457.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1890
         }
       ],
@@ -38099,7 +38963,7 @@ export const BD = {
           "normal": "$  8,840.00",
           "precio": 3300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6800
         }
       ],
@@ -38145,256 +39009,7 @@ export const BD = {
       },
       "vencimiento": "11/4/2023"
     },
-    "-NR9gorRiBRfgCkVNCkp": {
-      "cliente": {
-        "apellidos": "ORTIZ",
-        "correo": "mario.ortiz94@gmail.com",
-        "id": "-NR9es11RSd7_SXx0RmA",
-        "no_cliente": "MAORTO03230152",
-        "nombre": "MARIO",
-        "sucursal": "-N2gkzuYrS4XDFgYciId",
-        "telefono_movil": "5571124653",
-        "tipo": "particular"
-      },
-      "elementos": [
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "cilindros": "4",
-          "costo": 2950,
-          "elementos": [
-            {
-              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 0,
-              "precio": 120,
-              "tipo": "MO",
-              "total": 120
-            },
-            {
-              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 1,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 2,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 3,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 4,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 5,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 6,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 7,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 8,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 9,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 10,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 11,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 12,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            }
-          ],
-          "enCatalogo": true,
-          "flotilla": 2950,
-          "flotilla2": "$  2,950.00",
-          "index": 0,
-          "marca": "Ford",
-          "modelo": "Fiesta",
-          "nombre": "SERVICIO MAYOR",
-          "normal": "$  3,835.00",
-          "precio": 3720,
-          "reporte": {
-            "mo": 3720,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 3720,
-            "ub": 100
-          },
-          "status": true,
-          "tipo": "paquete",
-          "total": 2950
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 950,
-          "descripcion": "",
-          "enCatalogo": true,
-          "flotilla": 950,
-          "flotilla2": "$  950.00",
-          "id": "-NR9f_NHwFAlUmil4ekH",
-          "index": 1,
-          "marca": "",
-          "nombre": "REEMPLAZAR TUBO DE CUERPO DE ACELERACION",
-          "normal": "$  1,235.00",
-          "precio": 400,
-          "status": true,
-          "tipo": "MO",
-          "total": 950
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 1600,
-          "descripcion": "",
-          "enCatalogo": true,
-          "flotilla": 1600,
-          "flotilla2": "$  1,600.00",
-          "id": "-NR9gly2Q1x6K_xL9iAR",
-          "index": 2,
-          "marca": "",
-          "nombre": "REEMPLAZAR JUEGO DE BALEROS RUEDAS TRASERAS",
-          "normal": "$  2,080.00",
-          "precio": 800,
-          "status": true,
-          "tipo": "MO",
-          "total": 1600
-        }
-      ],
-      "fecha": "22/3/2023",
-      "formaPago": 1,
-      "hora": "13:2:14",
-      "iva": true,
-      "margen": 25,
-      "no_cotizacion": "TO0323GE00202",
-      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0323GE00202?alt=media&token=ae57f8b3-7bfc-4182-a497-29e2ef5e2bff",
-      "recordatorio3dias": true,
-      "reporte": {
-        "descuento": 0,
-        "iva": 880,
-        "meses": 0,
-        "mo": 0,
-        "refacciones_a": 0,
-        "refacciones_v": 0,
-        "sobrescrito": 5500,
-        "sobrescrito_mo": 2550,
-        "sobrescrito_paquetes": 2950,
-        "sobrescrito_refaccion": 0,
-        "subtotal": 5500,
-        "total": 6380,
-        "ub": 0
-      },
-      "servicio": 1,
-      "sucursal": "-N2gkzuYrS4XDFgYciId",
-      "vehiculo": {
-        "anio": "2009",
-        "categoria": "Sedán",
-        "cilindros": "4",
-        "cliente": "-NR9es11RSd7_SXx0RmA",
-        "color": "Blanco",
-        "engomado": "rosa",
-        "id": "-NR9fLlEPTKxCQ9S-HUm",
-        "marca": "Chevrolet",
-        "modelo": "Chevy",
-        "no_motor": "1.6L",
-        "placas": "ncz7728",
-        "transmision": "Estandar",
-        "vinChasis": "9S141487"
-      },
-      "vencimiento": "11/4/2023"
-    },
+    
     "-NR9ppXNO4t3XtQloMkX": {
       "cliente": {
         "apellidos": "Delgado",
@@ -38586,7 +39201,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -38599,7 +39214,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38612,7 +39227,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38625,7 +39240,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38638,7 +39253,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38651,7 +39266,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38664,7 +39279,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38677,7 +39292,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38690,7 +39305,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38703,7 +39318,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38716,7 +39331,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38729,7 +39344,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -38742,7 +39357,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -38782,7 +39397,7 @@ export const BD = {
           "normal": "$  1,885.00",
           "precio": 600,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1450
         },
         {
@@ -38799,7 +39414,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         }
       ],
@@ -38920,220 +39535,7 @@ export const BD = {
       },
       "vencimiento": "12/4/2023"
     },
-    "-NRG5aFWTGv1ivll1Mwd": {
-      "cliente": {
-        "apellidos": "PEÑA",
-        "correo": "elena.peña@gmail.com",
-        "id": "-NRG3Z_KHvEF0DvWQi4u",
-        "no_cliente": "ELPETO03230154",
-        "nombre": "ELENA",
-        "sucursal": "-N2gkzuYrS4XDFgYciId",
-        "telefono_movil": "5529407055",
-        "tipo": "particular"
-      },
-      "elementos": [
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "cilindros": "4",
-          "costo": 3450,
-          "elementos": [
-            {
-              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 0,
-              "precio": 120,
-              "tipo": "MO",
-              "total": 120
-            },
-            {
-              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 1,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 2,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 3,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 4,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 5,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 6,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 7,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 8,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 9,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 10,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 11,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 12,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            }
-          ],
-          "enCatalogo": true,
-          "flotilla": 3450,
-          "flotilla2": "$  3,450.00",
-          "index": 0,
-          "marca": "Ford",
-          "modelo": "Fiesta",
-          "nombre": "SERVICIO MAYOR",
-          "normal": "$  4,485.00",
-          "precio": 3720,
-          "reporte": {
-            "mo": 3720,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 3720,
-            "ub": 100
-          },
-          "status": true,
-          "tipo": "paquete",
-          "total": 3450
-        }
-      ],
-      "fecha": "23/3/2023",
-      "formaPago": 1,
-      "hora": "18:52:33",
-      "iva": true,
-      "margen": 25,
-      "no_cotizacion": "TO0323GE00207",
-      "nota": "cambio de aceite y filtro,  cambio de filtro de aire,  cambio de bujias,  lavar inyectores y cpo de aceleracion rev. y corregir niveles,  escano por computadora,  limpieza y ajuste de frenos, rev. 25 puntos de seguridad,  regimen de carga de bateria,  rotacion de llantas, lavar motor y carroceria",
-      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0323GE00207?alt=media&token=395ac3c8-f233-45a5-bf5a-7fa9bde9b36d",
-      "recordatorio3dias": true,
-      "reporte": {
-        "descuento": 0,
-        "iva": 552,
-        "meses": 0,
-        "mo": 0,
-        "refacciones_a": 0,
-        "refacciones_v": 0,
-        "sobrescrito": 3450,
-        "sobrescrito_mo": 0,
-        "sobrescrito_paquetes": 3450,
-        "sobrescrito_refaccion": 0,
-        "subtotal": 3450,
-        "total": 4001.9999999999995,
-        "ub": 0
-      },
-      "servicio": 1,
-      "sucursal": "-N2gkzuYrS4XDFgYciId",
-      "vehiculo": {
-        "anio": "2016",
-        "categoria": "SUV",
-        "cilindros": "4",
-        "cliente": "-NRG3Z_KHvEF0DvWQi4u",
-        "color": "Negro",
-        "engomado": "azul",
-        "id": "-NRG3viJWSgsdq8yJ9mV",
-        "marca": "Chevrolet",
-        "modelo": "Trax",
-        "no_motor": "1.6L",
-        "placas": "sinpl20",
-        "transmision": "Automatica"
-      },
-      "vencimiento": "12/4/2023"
-    },
+    
     "-NRG8dWIxoX2LOPfCIUe": {
       "cliente": {
         "apellidos": "JESUS",
@@ -39162,7 +39564,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -39175,7 +39577,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -39188,7 +39590,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -39201,7 +39603,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE GASOLINA",
               "precio": 100,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 100
             },
             {
@@ -39214,7 +39616,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -39227,7 +39629,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -39240,7 +39642,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -39253,7 +39655,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -39266,7 +39668,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -39279,7 +39681,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -39348,238 +39750,7 @@ export const BD = {
       },
       "vencimiento": "12/4/2023"
     },
-    "-NRJ0iLusXpi-FEO9GxL": {
-      "cliente": {
-        "apellidos": "PEÑA",
-        "correo": "elena.peña@gmail.com",
-        "id": "-NRG3Z_KHvEF0DvWQi4u",
-        "no_cliente": "ELPETO03230154",
-        "nombre": "ELENA",
-        "sucursal": "-N2gkzuYrS4XDFgYciId",
-        "telefono_movil": "5529407055",
-        "tipo": "particular"
-      },
-      "elementos": [
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "cilindros": "4",
-          "costo": 3450,
-          "elementos": [
-            {
-              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 0,
-              "precio": 120,
-              "tipo": "MO",
-              "total": 120
-            },
-            {
-              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 1,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 2,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 3,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 4,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 5,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 6,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 7,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 8,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 9,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 10,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 11,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 12,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            }
-          ],
-          "enCatalogo": true,
-          "flotilla": 3450,
-          "flotilla2": "$  3,450.00",
-          "index": 0,
-          "marca": "Ford",
-          "modelo": "Fiesta",
-          "nombre": "SERVICIO MAYOR",
-          "normal": "$  4,485.00",
-          "precio": 3720,
-          "reporte": {
-            "mo": 3720,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 3720,
-            "ub": 100
-          },
-          "status": true,
-          "tipo": "paquete",
-          "total": 3450
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 6600,
-          "descripcion": "",
-          "enCatalogo": true,
-          "flotilla": 6600,
-          "flotilla2": "$  6,600.00",
-          "id": "-NRJ05j6_zuKHoqe_Dpk",
-          "index": 1,
-          "marca": "",
-          "nombre": "reemplazar kit de distribucion",
-          "normal": "$  8,580.00",
-          "precio": 3300,
-          "status": true,
-          "tipo": "MO",
-          "total": 6600
-        }
-      ],
-      "fecha": "24/3/2023",
-      "formaPago": 1,
-      "hora": "8:30:7",
-      "iva": true,
-      "margen": 25,
-      "no_cotizacion": "TO0323GE00209",
-      "nota": "cambio de aceite y filtro,  cambio de filtro de aire,  cambio de bujias,  lavar inyectores y cpo de aceleracion rev. y corregir niveles,  escano por computadora,  limpieza y ajuste de frenos, rev. 25 puntos de seguridad,  regimen de carga de bateria,  rotacion de llantas, lavar motor y carroceria\nkit de disribucion incluye: banda de tiempo, polea tensora, polea loca, bomba de agua, sello de bomba, refrigerante consentrado y sincronizar tiempo",
-      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0323GE00209?alt=media&token=b87f1de2-0a64-416c-b657-b1725d697eac",
-      "recordatorio3dias": true,
-      "reporte": {
-        "descuento": 0,
-        "iva": 1608,
-        "meses": 0,
-        "mo": 0,
-        "refacciones_a": 0,
-        "refacciones_v": 0,
-        "sobrescrito": 10050,
-        "sobrescrito_mo": 6600,
-        "sobrescrito_paquetes": 3450,
-        "sobrescrito_refaccion": 0,
-        "subtotal": 10050,
-        "total": 11658,
-        "ub": 0
-      },
-      "servicio": 1,
-      "sucursal": "-N2gkzuYrS4XDFgYciId",
-      "vehiculo": {
-        "anio": "2016",
-        "categoria": "SUV",
-        "cilindros": "4",
-        "cliente": "-NRG3Z_KHvEF0DvWQi4u",
-        "color": "Negro",
-        "engomado": "azul",
-        "id": "-NRG3viJWSgsdq8yJ9mV",
-        "marca": "Chevrolet",
-        "modelo": "Trax",
-        "no_motor": "1.6L",
-        "placas": "sinpl20",
-        "transmision": "Automatica"
-      },
-      "vencimiento": "13/4/2023"
-    },
+    
     "-NRJhsGHB6K1ZfjKFFGA": {
       "cliente": {
         "apellidos": "Delgado",
@@ -40453,7 +40624,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -40466,7 +40637,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40479,7 +40650,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40492,7 +40663,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40505,7 +40676,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40518,7 +40689,7 @@ export const BD = {
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -40531,7 +40702,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40544,7 +40715,7 @@ export const BD = {
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -40557,7 +40728,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -40570,7 +40741,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -40666,7 +40837,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40679,7 +40850,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40692,7 +40863,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4
             },
             {
@@ -40705,7 +40876,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40718,7 +40889,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40731,7 +40902,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40744,7 +40915,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40757,7 +40928,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40770,7 +40941,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40783,7 +40954,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40796,7 +40967,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40809,7 +40980,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -40822,7 +40993,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             }
           ],
@@ -40918,7 +41089,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -40931,7 +41102,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40944,7 +41115,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40957,7 +41128,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40970,7 +41141,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40983,7 +41154,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -40996,7 +41167,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41009,7 +41180,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41022,7 +41193,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41035,7 +41206,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41048,7 +41219,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41061,7 +41232,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41074,7 +41245,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -41168,7 +41339,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -41186,7 +41357,7 @@ export const BD = {
           "normal": "$  3,120.00",
           "precio": 1200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2400
         },
         {
@@ -41204,7 +41375,7 @@ export const BD = {
           "normal": "$  2,730.00",
           "precio": 1200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2100
         },
         {
@@ -41221,7 +41392,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         }
       ],
@@ -41295,7 +41466,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -41308,7 +41479,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41321,7 +41492,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41334,7 +41505,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41347,7 +41518,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41360,7 +41531,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41373,7 +41544,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41386,7 +41557,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41399,7 +41570,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41412,7 +41583,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41425,7 +41596,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41438,7 +41609,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41451,7 +41622,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -41536,221 +41707,7 @@ export const BD = {
       },
       "vencimiento": "2023-04-16"
     },
-    "-NR_-jBDRyCKbQd5cFDU": {
-      "cliente": {
-        "apellidos": "FLORES SANCHEZ",
-        "correo": "SANHCEZFKARLA@MONOPARK.COM",
-        "empresa": "-NRZznm2MP9D9mmcq3He",
-        "id": "-NRZztPUCC9UnUYD_9bM",
-        "no_cliente": "KAFLTO03230166",
-        "nombre": "KARLA",
-        "sucursal": "-N2gkzuYrS4XDFgYciId",
-        "telefono_movil": "56211433",
-        "tipo": "flotilla"
-      },
-      "elementos": [
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "cilindros": "4",
-          "costo": 3950,
-          "elementos": [
-            {
-              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 0,
-              "precio": 120,
-              "tipo": "MO",
-              "total": 120
-            },
-            {
-              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 1,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 2,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 3,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 4,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 5,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 6,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 7,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 8,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 9,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 10,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 11,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 12,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            }
-          ],
-          "enCatalogo": true,
-          "flotilla": 3950,
-          "flotilla2": "$  3,950.00",
-          "index": 0,
-          "marca": "Ford",
-          "modelo": "Fiesta",
-          "nombre": "SERVICIO MAYOR",
-          "normal": "$  5,135.00",
-          "precio": 3720,
-          "reporte": {
-            "mo": 3720,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 3720,
-            "ub": 100
-          },
-          "status": true,
-          "tipo": "paquete",
-          "total": 3950
-        }
-      ],
-      "fecha": "27/3/2023",
-      "formaPago": 1,
-      "hora": "15:39:22",
-      "iva": true,
-      "margen": 25,
-      "no_cotizacion": "TO0323GE00220",
-      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0323GE00220?alt=media&token=f1d696d5-3a83-4658-94f3-eeed1f8bde2b",
-      "recordatorio3dias": true,
-      "reporte": {
-        "descuento": 0,
-        "iva": 632,
-        "meses": 0,
-        "mo": 0,
-        "refacciones_a": 0,
-        "refacciones_v": 0,
-        "sobrescrito": 3950,
-        "sobrescrito_mo": 0,
-        "sobrescrito_paquetes": 3950,
-        "sobrescrito_refaccion": 0,
-        "subtotal": 3950,
-        "total": 4582,
-        "ub": 0
-      },
-      "servicio": 1,
-      "sucursal": "-N2gkzuYrS4XDFgYciId",
-      "vehiculo": {
-        "anio": "2016",
-        "categoria": "PickUp",
-        "cilindros": "4",
-        "cliente": "-NRZztPUCC9UnUYD_9bM",
-        "color": "Blanco",
-        "engomado": "azul",
-        "id": "-NR_-Y4_d31rWrLVWBks",
-        "marca": "Nissan",
-        "modelo": "NP300",
-        "no_motor": "2.5L",
-        "placas": "FL54339",
-        "transmision": "Estandar",
-        "vinChasis": "GK892027"
-      },
-      "vencimiento": "16/4/2023"
-    },
+   
     "-NR_1TVVbE7q5graIAAB": {
       "cliente": {
         "apellidos": "FLORES SANCHEZ",
@@ -41862,7 +41819,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -41875,7 +41832,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41888,7 +41845,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41901,7 +41858,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41914,7 +41871,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41927,7 +41884,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41940,7 +41897,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41953,7 +41910,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41966,7 +41923,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41979,7 +41936,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -41992,7 +41949,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42005,7 +41962,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42018,7 +41975,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -42058,7 +42015,7 @@ export const BD = {
           "normal": "$  11,635.00",
           "precio": 4200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 8950
         }
       ],
@@ -42131,7 +42088,7 @@ export const BD = {
           "normal": "$  4,940.00",
           "precio": 900,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3800
         },
         {
@@ -42148,7 +42105,7 @@ export const BD = {
           "normal": "$  6,240.00",
           "precio": 2100,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4800
         }
       ],
@@ -42459,7 +42416,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -42472,7 +42429,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42485,7 +42442,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42498,7 +42455,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE GASOLINA",
               "precio": 100,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 100
             },
             {
@@ -42511,7 +42468,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42524,7 +42481,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42537,7 +42494,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42550,7 +42507,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -42563,7 +42520,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -42576,7 +42533,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -42994,7 +42951,7 @@ export const BD = {
           "normal": "$  6,760.00",
           "precio": 2100,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5200
         },
         {
@@ -43013,7 +42970,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -43026,7 +42983,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 1
             },
             {
@@ -43039,7 +42996,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 2
             },
             {
@@ -43052,7 +43009,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 3
             },
             {
@@ -43065,7 +43022,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4
             },
             {
@@ -43078,7 +43035,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 5
             },
             {
@@ -43091,7 +43048,7 @@ export const BD = {
               "nombre": "ESCANEO POR COMPUTAODRA",
               "precio": 400,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 6
             },
             {
@@ -43104,7 +43061,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 8
             },
             {
@@ -43117,7 +43074,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 9
             },
             {
@@ -43130,7 +43087,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 10
             },
             {
@@ -43143,7 +43100,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 11
             },
             {
@@ -43156,7 +43113,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 12
             },
             {
@@ -43169,7 +43126,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -43265,7 +43222,7 @@ export const BD = {
           "normal": "$  12,805.00",
           "precio": 7000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 9850
         },
         {
@@ -43283,7 +43240,7 @@ export const BD = {
           "normal": "$  6,240.00",
           "precio": 960,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4800
         },
         {
@@ -43301,7 +43258,7 @@ export const BD = {
           "normal": "$  2,535.00",
           "precio": 1200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1950
         }
       ],
@@ -43348,289 +43305,7 @@ export const BD = {
       },
       "vencimiento": "18/4/2023"
     },
-    "-NRj37pXoriSeasBjEBW": {
-      "cliente": {
-        "apellidos": "ROMERO",
-        "correo": "alfredo.romero2002@autlook.com",
-        "id": "-NRj1lOqtqx4adskINOa",
-        "no_cliente": "ALROTO03230175",
-        "nombre": "ALFREDO",
-        "sucursal": "-N2gkzuYrS4XDFgYciId",
-        "telefono_movil": "5633565280",
-        "tipo": "particular"
-      },
-      "elementos": [
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 5800,
-          "descripcion": "INCLUYE AMORTIGUADORES DE GAS ",
-          "enCatalogo": true,
-          "flotilla": 5800,
-          "flotilla2": "$  5,800.00",
-          "id": "-NJGPN6KKMQxvg-4GYK5",
-          "index": 0,
-          "nombre": "REEMPLAZAR AMROTIGUADORES DELANTEROS",
-          "normal": "$  7,540.00",
-          "precio": 2880,
-          "status": true,
-          "tipo": "MO",
-          "total": 5800
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 600,
-          "descripcion": "",
-          "enCatalogo": true,
-          "flotilla": 600,
-          "flotilla2": "$  600.00",
-          "id": "-NQezbGgBqbKFwzgb_GR",
-          "index": 1,
-          "nombre": "reemplazar gomas de rebote delanteras",
-          "normal": "$  780.00",
-          "precio": 280,
-          "status": true,
-          "tipo": "MO",
-          "total": 600
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 3800,
-          "descripcion": "INCLUYE AMORTIGUADORES DE GAS",
-          "enCatalogo": true,
-          "flotilla": 3800,
-          "flotilla2": "$  3,800.00",
-          "id": "-NJGQtM7tnS0ePdMz7J4",
-          "index": 2,
-          "nombre": "REEMPLAZAR AMORTIGUADORES TRASEROS",
-          "normal": "$  4,940.00",
-          "precio": 1720,
-          "status": true,
-          "tipo": "MO",
-          "total": 3800
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "costo": 700,
-          "descripcion": "",
-          "enCatalogo": true,
-          "flotilla": 700,
-          "flotilla2": "$  700.00",
-          "id": "-NRj2aoAzcpc1xyblaXI",
-          "index": 3,
-          "marca": "",
-          "nombre": "reemplazar gomas de resortes traseros",
-          "normal": "$  910.00",
-          "precio": 300,
-          "status": true,
-          "tipo": "MO",
-          "total": 700
-        },
-        {
-          "aprobado": true,
-          "cantidad": 1,
-          "cilindros": "4",
-          "costo": 3405.172413,
-          "elementos": [
-            {
-              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 0,
-              "precio": 120,
-              "tipo": "MO",
-              "total": 120
-            },
-            {
-              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 1,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 2,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 3,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 4,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 5,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 6,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 7,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 8,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 9,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 10,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 11,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            },
-            {
-              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
-              "cantidad": 1,
-              "catalogo": true,
-              "costo": 0,
-              "index": 12,
-              "precio": 300,
-              "tipo": "MO",
-              "total": 300
-            }
-          ],
-          "enCatalogo": true,
-          "flotilla": 3405.172413,
-          "flotilla2": "$  3,405.17",
-          "index": 4,
-          "marca": "Ford",
-          "modelo": "Fiesta",
-          "nombre": "SERVICIO MAYOR",
-          "normal": "$  4,426.72",
-          "precio": 3720,
-          "reporte": {
-            "mo": 3720,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 3720,
-            "ub": 100
-          },
-          "status": true,
-          "tipo": "paquete",
-          "total": 3405.172413
-        }
-      ],
-      "fecha": "29/3/2023",
-      "formaPago": 1,
-      "hora": "14:30:25",
-      "iva": true,
-      "margen": 25,
-      "no_cotizacion": "TO0323GE00233",
-      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0323GE00233?alt=media&token=6e04fb13-ac73-4678-83ef-6bf334fd932c",
-      "recordatorio3dias": true,
-      "reporte": {
-        "descuento": 0,
-        "iva": 2288.82758608,
-        "meses": 0,
-        "mo": 0,
-        "refacciones_a": 0,
-        "refacciones_v": 0,
-        "sobrescrito": 14305.172413,
-        "sobrescrito_mo": 10900,
-        "sobrescrito_paquetes": 3405.172413,
-        "sobrescrito_refaccion": 0,
-        "subtotal": 14305.172413,
-        "total": 16593.99999908,
-        "ub": 0
-      },
-      "servicio": 1,
-      "sucursal": "-N2gkzuYrS4XDFgYciId",
-      "vehiculo": {
-        "anio": "2014",
-        "categoria": "Sedán",
-        "cilindros": "4",
-        "cliente": "-NRj1lOqtqx4adskINOa",
-        "color": "Azul claro",
-        "engomado": "verde",
-        "id": "-NRj26l5AARPDxrAsiw3",
-        "marca": "Ford",
-        "modelo": "Fiesta",
-        "no_motor": "1.6 L",
-        "placas": "4872fl",
-        "transmision": "Automatica",
-        "vinChasis": "em173468"
-      },
-      "vencimiento": "18/4/2023"
-    },
+    
     "-NRnPDO7LFMIg0yNIEBs": {
       "cliente": {
         "apellidos": " LOZANO",
@@ -43659,7 +43334,7 @@ export const BD = {
           "normal": "$  16,250.00",
           "precio": 5500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 12500
         }
       ],
@@ -43733,7 +43408,7 @@ export const BD = {
           "normal": "$  8,840.00",
           "precio": 3800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6800
         },
         {
@@ -43751,7 +43426,7 @@ export const BD = {
           "normal": "$  2,470.00",
           "precio": 600,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1900
         },
         {
@@ -43769,7 +43444,7 @@ export const BD = {
           "normal": "$  3,640.00",
           "precio": 800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2800
         }
       ],
@@ -43843,7 +43518,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -43856,7 +43531,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43869,7 +43544,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43882,7 +43557,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43895,7 +43570,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43908,7 +43583,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43921,7 +43596,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43934,7 +43609,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43947,7 +43622,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43960,7 +43635,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43973,7 +43648,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43986,7 +43661,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -43999,7 +43674,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -44039,7 +43714,7 @@ export const BD = {
           "normal": "$  6,370.00",
           "precio": 2300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4900
         },
         {
@@ -44056,7 +43731,7 @@ export const BD = {
           "normal": "$  5,720.00",
           "precio": 2040,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4400
         },
         {
@@ -44074,7 +43749,7 @@ export const BD = {
           "normal": "$  3,250.00",
           "precio": 1300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2500
         },
         {
@@ -44092,7 +43767,7 @@ export const BD = {
           "normal": "$  3,536.00",
           "precio": 1360,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2720
         }
       ],
@@ -44166,7 +43841,7 @@ export const BD = {
           "normal": "$  22,750.00",
           "precio": 7500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 17500
         }
       ],
@@ -44242,7 +43917,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -44255,7 +43930,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44268,7 +43943,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44281,7 +43956,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44294,7 +43969,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44307,7 +43982,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44320,7 +43995,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44333,7 +44008,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44346,7 +44021,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44359,7 +44034,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44372,7 +44047,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44385,7 +44060,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44398,7 +44073,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -44438,7 +44113,7 @@ export const BD = {
           "normal": "$  6,370.00",
           "precio": 2300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4900
         },
         {
@@ -44456,7 +44131,7 @@ export const BD = {
           "normal": "$  3,250.00",
           "precio": 1300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2500
         },
         {
@@ -44473,7 +44148,7 @@ export const BD = {
           "normal": "$  1,820.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         }
       ],
@@ -44548,7 +44223,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -44561,7 +44236,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44574,7 +44249,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44587,7 +44262,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44600,7 +44275,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44613,7 +44288,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44626,7 +44301,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44639,7 +44314,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44652,7 +44327,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44665,7 +44340,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44678,7 +44353,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44691,7 +44366,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -44704,7 +44379,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -44799,7 +44474,7 @@ export const BD = {
           "normal": "$  7,670.00",
           "precio": 2800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5900
         }
       ],
@@ -44979,7 +44654,7 @@ export const BD = {
           "normal": "$  3,120.00",
           "precio": 850,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2400
         }
       ],
@@ -45053,7 +44728,7 @@ export const BD = {
           "normal": "$  8,840.00",
           "precio": 3300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6800
         },
         {
@@ -45071,7 +44746,7 @@ export const BD = {
           "normal": "$  15,600.00",
           "precio": 4000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 12000
         }
       ],
@@ -45396,7 +45071,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -45409,7 +45084,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45422,7 +45097,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45435,7 +45110,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45448,7 +45123,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45461,7 +45136,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45474,7 +45149,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45487,7 +45162,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45500,7 +45175,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45513,7 +45188,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45526,7 +45201,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45539,7 +45214,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -45552,7 +45227,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -45719,7 +45394,7 @@ export const BD = {
           "normal": "$  2,470.00",
           "precio": 900,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1900
         }
       ],
@@ -46441,7 +46116,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -46458,7 +46133,7 @@ export const BD = {
           "normal": "$  1,885.00",
           "precio": 1,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1450
         },
         {
@@ -46475,7 +46150,7 @@ export const BD = {
           "normal": "$  3,692.00",
           "precio": 1400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2840
         }
       ],
@@ -46547,7 +46222,7 @@ export const BD = {
           "normal": "$  3,484.00",
           "precio": 950,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2680
         }
       ],
@@ -46622,7 +46297,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -46635,7 +46310,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46648,7 +46323,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46661,7 +46336,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46674,7 +46349,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46687,7 +46362,7 @@ export const BD = {
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -46700,7 +46375,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46713,7 +46388,7 @@ export const BD = {
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -46726,7 +46401,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -46739,7 +46414,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -46836,7 +46511,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -46849,7 +46524,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46862,7 +46537,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46875,7 +46550,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE GASOLINA",
               "precio": 100,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 100
             },
             {
@@ -46888,7 +46563,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46901,7 +46576,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46914,7 +46589,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46927,7 +46602,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -46940,7 +46615,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -46953,7 +46628,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -47048,7 +46723,7 @@ export const BD = {
           "normal": "$  3,887.00",
           "precio": 950,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2990
         }
       ],
@@ -47461,7 +47136,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -47474,7 +47149,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47487,7 +47162,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47500,7 +47175,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47513,7 +47188,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47526,7 +47201,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47539,7 +47214,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47552,7 +47227,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47565,7 +47240,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47578,7 +47253,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47591,7 +47266,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47604,7 +47279,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47617,7 +47292,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -47803,7 +47478,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -47816,7 +47491,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47829,7 +47504,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47842,7 +47517,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47855,7 +47530,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47868,7 +47543,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47881,7 +47556,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47894,7 +47569,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47907,7 +47582,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47920,7 +47595,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47933,7 +47608,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47946,7 +47621,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -47959,7 +47634,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -48378,7 +48053,7 @@ export const BD = {
           "normal": "$  390.00",
           "precio": 80,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 300
         },
         {
@@ -48395,7 +48070,7 @@ export const BD = {
           "normal": "$  1,235.00",
           "precio": 650,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 950
         }
       ],
@@ -48466,7 +48141,7 @@ export const BD = {
           "normal": "$  1,820.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         },
         {
@@ -48483,7 +48158,7 @@ export const BD = {
           "normal": "$  2,262.00",
           "precio": 900,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1740
         },
         {
@@ -48500,7 +48175,7 @@ export const BD = {
           "normal": "$  1,820.00",
           "precio": 600,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         },
         {
@@ -48518,7 +48193,7 @@ export const BD = {
           "normal": "$  4,992.00",
           "precio": 2000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3840
         },
         {
@@ -48535,7 +48210,7 @@ export const BD = {
           "normal": "$  2,600.00",
           "precio": 1000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2000
         },
         {
@@ -48552,7 +48227,7 @@ export const BD = {
           "normal": "$  1,820.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         },
         {
@@ -48569,7 +48244,7 @@ export const BD = {
           "normal": "$  3,900.00",
           "precio": 1500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3000
         },
         {
@@ -48586,7 +48261,7 @@ export const BD = {
           "normal": "$  2,860.00",
           "precio": 1100,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2200
         },
         {
@@ -48603,7 +48278,7 @@ export const BD = {
           "normal": "$  845.00",
           "precio": 400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         },
         {
@@ -48620,7 +48295,7 @@ export const BD = {
           "normal": "$  5,460.00",
           "precio": 2000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4200
         },
         {
@@ -48638,7 +48313,7 @@ export const BD = {
           "normal": "$  1,040.00",
           "precio": 150,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         },
         {
@@ -48655,7 +48330,7 @@ export const BD = {
           "normal": "$  1,040.00",
           "precio": 120,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 800
         },
         {
@@ -48673,7 +48348,7 @@ export const BD = {
           "normal": "$  1,560.00",
           "precio": 300,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1200
         },
         {
@@ -48691,7 +48366,7 @@ export const BD = {
           "normal": "$  2,210.00",
           "precio": 800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -48709,7 +48384,7 @@ export const BD = {
           "normal": "$  2,470.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1900
         }
       ],
@@ -48782,7 +48457,7 @@ export const BD = {
           "normal": "$  21,970.00",
           "precio": 7200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 16900
         },
         {
@@ -48799,7 +48474,7 @@ export const BD = {
           "normal": "$  6,370.00",
           "precio": 3000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 4900
         }
       ],
@@ -48871,7 +48546,7 @@ export const BD = {
           "normal": "$  9,230.00",
           "precio": 3800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 7100
         }
       ],
@@ -48943,7 +48618,7 @@ export const BD = {
           "normal": "$  4,680.00",
           "precio": 1800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3600
         },
         {
@@ -48960,7 +48635,7 @@ export const BD = {
           "normal": "$  14,170.00",
           "precio": 6000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 10900
         },
         {
@@ -48977,7 +48652,7 @@ export const BD = {
           "normal": "$  8,216.00",
           "precio": 3200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6320
         }
       ],
@@ -49050,7 +48725,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -49063,7 +48738,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49076,7 +48751,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49089,7 +48764,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49102,7 +48777,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49115,7 +48790,7 @@ export const BD = {
               "nombre": "LIMPIEZA Y AJUSTE DE FRENOS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49128,7 +48803,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49141,7 +48816,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -49154,7 +48829,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -49250,7 +48925,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -49263,7 +48938,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49276,7 +48951,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49289,7 +48964,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49302,7 +48977,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49315,7 +48990,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49328,7 +49003,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49341,7 +49016,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49354,7 +49029,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49367,7 +49042,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49380,7 +49055,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49393,7 +49068,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49406,7 +49081,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -49720,7 +49395,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -49733,7 +49408,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49746,7 +49421,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49759,7 +49434,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49772,7 +49447,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49785,7 +49460,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49798,7 +49473,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49811,7 +49486,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49824,7 +49499,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49837,7 +49512,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49850,7 +49525,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49863,7 +49538,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -49876,7 +49551,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -49971,7 +49646,7 @@ export const BD = {
           "normal": "$  11,830.00",
           "precio": 4000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 9100
         },
         {
@@ -49988,7 +49663,7 @@ export const BD = {
           "normal": "$  24,700.00",
           "precio": 8200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 19000
         },
         {
@@ -50005,7 +49680,7 @@ export const BD = {
           "normal": "$  1,560.00",
           "precio": 650,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1200
         }
       ],
@@ -50078,7 +49753,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -50091,7 +49766,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50104,7 +49779,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50117,7 +49792,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50130,7 +49805,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50143,7 +49818,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50156,7 +49831,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50169,7 +49844,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50182,7 +49857,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50195,7 +49870,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50208,7 +49883,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50221,7 +49896,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50234,7 +49909,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -50562,7 +50237,7 @@ export const BD = {
           "normal": "$  8,060.00",
           "precio": 7500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6200
         },
         {
@@ -50580,7 +50255,7 @@ export const BD = {
           "normal": "$  2,210.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -50598,7 +50273,7 @@ export const BD = {
           "normal": "$  7,020.00",
           "precio": 3800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5400
         },
         {
@@ -50690,7 +50365,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -50703,7 +50378,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50716,7 +50391,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50729,7 +50404,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50742,7 +50417,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50755,7 +50430,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50768,7 +50443,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50781,7 +50456,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50794,7 +50469,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50807,7 +50482,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50820,7 +50495,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50833,7 +50508,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -50846,7 +50521,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -51283,7 +50958,7 @@ export const BD = {
           "normal": "$  18,200.00",
           "precio": 7500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 14000
         },
         {
@@ -51301,7 +50976,7 @@ export const BD = {
           "normal": "$  2,210.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -51319,7 +50994,7 @@ export const BD = {
           "normal": "$  7,020.00",
           "precio": 3800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5400
         },
         {
@@ -51409,7 +51084,7 @@ export const BD = {
           "normal": "$  18,200.00",
           "precio": 7500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 14000
         },
         {
@@ -51427,7 +51102,7 @@ export const BD = {
           "normal": "$  2,210.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1700
         },
         {
@@ -51445,7 +51120,7 @@ export const BD = {
           "normal": "$  8,840.00",
           "precio": 3800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6800
         },
         {
@@ -51536,7 +51211,7 @@ export const BD = {
           "normal": "$  11,700.00",
           "precio": 6000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 9000
         }
       ],
@@ -51735,7 +51410,7 @@ export const BD = {
           "normal": "$  2,145.00",
           "precio": 120,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1650
         }
       ],
@@ -51808,7 +51483,7 @@ export const BD = {
           "normal": "$  9,035.00",
           "precio": 3750,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6950
         }
       ],
@@ -51882,7 +51557,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -51895,7 +51570,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -51908,7 +51583,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -51921,7 +51596,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -51934,7 +51609,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -51947,7 +51622,7 @@ export const BD = {
               "nombre": "DIAGNSOTICO POR COMPUTADORA",
               "precio": 400,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             },
             {
@@ -51960,7 +51635,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -51973,7 +51648,7 @@ export const BD = {
               "nombre": "DERECHOS Y TRASLADO DE VEHICULO A VERIFICENTRO",
               "precio": 1370,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 4110
             },
             {
@@ -51986,7 +51661,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -51999,7 +51674,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             }
           ],
@@ -52275,7 +51950,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -52288,7 +51963,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52301,7 +51976,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52314,7 +51989,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52327,7 +52002,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52340,7 +52015,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52353,7 +52028,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52366,7 +52041,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52379,7 +52054,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52392,7 +52067,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52405,7 +52080,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52418,7 +52093,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52431,7 +52106,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -52528,7 +52203,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -52541,7 +52216,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52554,7 +52229,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52567,7 +52242,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52580,7 +52255,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52593,7 +52268,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52606,7 +52281,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52619,7 +52294,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52632,7 +52307,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52645,7 +52320,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52658,7 +52333,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52671,7 +52346,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52684,7 +52359,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -52698,7 +52373,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE GASOLINA  (si aplica)",
               "precio": 300,
               "status": true,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 400
             }
           ],
@@ -52739,7 +52414,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 1600,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         },
         {
@@ -52757,7 +52432,7 @@ export const BD = {
           "normal": "$  3,068.00",
           "precio": 1180,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2360
         },
         {
@@ -52775,7 +52450,7 @@ export const BD = {
           "normal": "$  2,262.00",
           "precio": 850,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1740
         },
         {
@@ -52793,7 +52468,7 @@ export const BD = {
           "normal": "$  936.00",
           "precio": 350,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 720
         },
         {
@@ -52811,7 +52486,7 @@ export const BD = {
           "normal": "$  1,820.00",
           "precio": 707,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1400
         },
         {
@@ -52828,7 +52503,7 @@ export const BD = {
           "normal": "$  1,560.00",
           "precio": 415,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1200
         },
         {
@@ -52846,7 +52521,7 @@ export const BD = {
           "normal": "$  975.00",
           "precio": 390,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 750
         },
         {
@@ -52864,7 +52539,7 @@ export const BD = {
           "normal": "$  780.00",
           "precio": 200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 600
         },
         {
@@ -52882,7 +52557,7 @@ export const BD = {
           "normal": "$  585.00",
           "precio": 350,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 450
         },
         {
@@ -52899,7 +52574,7 @@ export const BD = {
           "normal": "$  845.00",
           "precio": 450,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         }
       ],
@@ -52970,7 +52645,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -52987,7 +52662,7 @@ export const BD = {
           "normal": "$  4,420.00",
           "precio": 1700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3400
         },
         {
@@ -53004,7 +52679,7 @@ export const BD = {
           "normal": "$  1,885.00",
           "precio": 500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1450
         },
         {
@@ -53021,7 +52696,7 @@ export const BD = {
           "normal": "$  845.00",
           "precio": 450,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         },
         {
@@ -53038,7 +52713,7 @@ export const BD = {
           "normal": "$  9,035.00",
           "precio": 3750,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6950
         },
         {
@@ -53055,7 +52730,7 @@ export const BD = {
           "normal": "$  3,250.00",
           "precio": 1200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2500
         },
         {
@@ -53072,7 +52747,7 @@ export const BD = {
           "normal": "$  1,885.00",
           "precio": 650,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1450
         },
         {
@@ -53090,7 +52765,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 650,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         },
         {
@@ -53108,7 +52783,7 @@ export const BD = {
           "normal": "$  650.00",
           "precio": 150,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 500
         },
         {
@@ -53125,7 +52800,7 @@ export const BD = {
           "normal": "$  9,880.00",
           "precio": 2800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 7600
         },
         {
@@ -53143,7 +52818,7 @@ export const BD = {
           "normal": "$  10,335.00",
           "precio": 5400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 7950
         },
         {
@@ -53161,7 +52836,7 @@ export const BD = {
           "normal": "$  24,570.00",
           "precio": 13000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 18900
         },
         {
@@ -53179,7 +52854,7 @@ export const BD = {
           "normal": "$  7,800.00",
           "precio": 4500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6000
         }
       ],
@@ -53375,7 +53050,7 @@ export const BD = {
           "normal": "$  2,535.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1950
         }
       ],
@@ -53448,7 +53123,7 @@ export const BD = {
           "normal": "$  31,850.00",
           "precio": 13500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 24500
         },
         {
@@ -53466,7 +53141,7 @@ export const BD = {
           "normal": "$  11,505.00",
           "precio": 5600,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 8850
         },
         {
@@ -53484,7 +53159,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         }
       ],
@@ -53557,7 +53232,7 @@ export const BD = {
           "normal": "$  38,467.00",
           "precio": 19950,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 29590
         },
         {
@@ -53574,7 +53249,7 @@ export const BD = {
           "normal": "$  4,160.00",
           "precio": 1500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3200
         },
         {
@@ -53592,7 +53267,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         },
         {
@@ -53610,7 +53285,7 @@ export const BD = {
           "normal": "$  7,150.00",
           "precio": 3000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 5500
         },
         {
@@ -53628,7 +53303,7 @@ export const BD = {
           "normal": "$  455.00",
           "precio": 232,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 350
         },
         {
@@ -53645,7 +53320,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 750,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         }
       ],
@@ -55774,7 +55449,7 @@ export const BD = {
           "normal": "$  2,340.00",
           "precio": 700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1800
         },
         {
@@ -55790,7 +55465,7 @@ export const BD = {
           "normal": "$  4,420.00",
           "precio": 1700,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3400
         },
         {
@@ -55806,7 +55481,7 @@ export const BD = {
           "normal": "$  1,885.00",
           "precio": 500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1450
         },
         {
@@ -55822,7 +55497,7 @@ export const BD = {
           "normal": "$  845.00",
           "precio": 450,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 650
         },
         {
@@ -55838,7 +55513,7 @@ export const BD = {
           "normal": "$  9,035.00",
           "precio": 3750,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6950
         },
         {
@@ -55854,7 +55529,7 @@ export const BD = {
           "normal": "$  3,250.00",
           "precio": 1200,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 2500
         },
         {
@@ -55870,7 +55545,7 @@ export const BD = {
           "normal": "$  1,885.00",
           "precio": 650,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1450
         },
         {
@@ -55887,7 +55562,7 @@ export const BD = {
           "normal": "$  2,080.00",
           "precio": 650,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1600
         },
         {
@@ -55904,7 +55579,7 @@ export const BD = {
           "normal": "$  650.00",
           "precio": 150,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 500
         },
         {
@@ -55920,7 +55595,7 @@ export const BD = {
           "normal": "$  9,880.00",
           "precio": 2800,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 7600
         },
         {
@@ -55937,7 +55612,7 @@ export const BD = {
           "normal": "$  10,335.00",
           "precio": 5400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 7950
         },
         {
@@ -55954,7 +55629,7 @@ export const BD = {
           "normal": "$  24,570.00",
           "precio": 13000,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 18900
         },
         {
@@ -55971,7 +55646,7 @@ export const BD = {
           "normal": "$  7,800.00",
           "precio": 4500,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 6000
         }
       ],
@@ -97770,6 +97445,10278 @@ export const BD = {
         "vinChasis": "DN415372"
       },
       "vencimiento": "13/8/2023"
+    },
+    "-NaCi8B77SKActQfFexo": {
+      "cliente": {
+        "apellidos": "S.A. de C.V.",
+        "correo": "ventas@lamamademale.com",
+        "empresa": "",
+        "fullname": "Alimentos la mamá de Male S.A. de C.V.",
+        "id": "-N_pW_Vv0mMM-mhnxDk8",
+        "no_cliente": "ALS.CU07230349",
+        "nombre": "Alimentos la mamá de Male",
+        "showSucursal": "Culhuacán",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "telefono_movil": "5624633252",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "anio": "2021",
+            "categoria": "SUV",
+            "cilindros": "4",
+            "cliente": "-N_pW_Vv0mMM-mhnxDk8",
+            "color": "Blanco",
+            "engomado": "rojo",
+            "id": "-N_pWgzBsZWDKK4-l0AM",
+            "marca": "Fiat",
+            "marcaMotor": "",
+            "modelo": "Mobi",
+            "no_motor": "",
+            "placas": "V14BBT",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  3,579.00",
+          "id": "-NaChqi-zWmV5IgTF3FW",
+          "index": 0,
+          "marca": "",
+          "nombre": "Cambio de toma de agua con termostato",
+          "normal": "$  4,652.70",
+          "precio": 3579,
+          "status": true,
+          "tipo": "mo",
+          "total": 3579
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  6,789.00",
+          "id": "-NaChuvJO2Q1o1vBHz6G",
+          "index": 1,
+          "marca": "",
+          "nombre": "Cambio de clutch",
+          "normal": "$  8,825.70",
+          "precio": 6789,
+          "status": true,
+          "tipo": "mo",
+          "total": 6789
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  3,969.00",
+          "id": "-NaCi2fkyUnc2P4_PTnr",
+          "index": 2,
+          "marca": "",
+          "nombre": "Radiador",
+          "normal": "$  5,159.70",
+          "precio": 3969,
+          "status": true,
+          "tipo": "mo",
+          "total": 3969
+        }
+      ],
+      "fecha": "25/7/2023",
+      "formaPago": "1",
+      "hora": "9:43:46",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "CU0723GE00543",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FCU0723GE00543?alt=media&token=702701e5-48d9-4c9a-b5ff-d82e459d6d45",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2293.92,
+        "meses": 0,
+        "mo": 14337,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 0,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 14337,
+        "total": 16630.92,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "ventas_culhuacan@speed-service.com.mx",
+        "direccion": "Avenida Tlahuac # 4160 Col. Santa María Tomatlan, C.P. 09870 México DF.",
+        "id": "-N2glF34lV3Gj0bQyEWK",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/trabajo%20envio%20dionicio.PNG?alt=media&token=608cf798-c28e-4a01-8ea6-987bea99baeb",
+        "serie": "8PFRT119",
+        "status": true,
+        "sucursal": "Culhuacán",
+        "telefono": "5556951051"
+      },
+      "vehiculo": {
+        "anio": "2021",
+        "categoria": "SUV",
+        "cilindros": "4",
+        "cliente": "-N_pW_Vv0mMM-mhnxDk8",
+        "color": "Blanco",
+        "engomado": "rojo",
+        "id": "-N_pWgzBsZWDKK4-l0AM",
+        "marca": "Fiat",
+        "marcaMotor": "",
+        "modelo": "Mobi",
+        "no_motor": "",
+        "placas": "V14BBT",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "14/8/2023"
+    },
+    "-NaCuCDqXKcH3OI-1qE_": {
+      "cliente": {
+        "apellidos": "YANEZ",
+        "correo": "aistente.compras@alfo.com.mx",
+        "empresa": "-NTuafWpin13GuakUtbn",
+        "fullname": "EDUARDO YANEZ",
+        "id": "-NTuazyC-MxpdUOgyAyd",
+        "no_cliente": "EDYATO04230202",
+        "nombre": "EDUARDO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5529959099",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NTubPi1tYWHcp-HsMyI",
+            "marca": "Volkswagen",
+            "modelo": "Saveiro",
+            "no_motor": "1.6 L",
+            "placas": "690zvf",
+            "transmision": "Estandar",
+            "vinChasis": "FP061124"
+          },
+          {
+            "id": "-NUgGekthIxj7WcFQwYq",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.8 L",
+            "placas": "sinpl44",
+            "transmision": "Automatica",
+            "vinChasis": "3N1BC1AD2JK195152"
+          },
+          {
+            "id": "-NV_WZx9H9t4pk7AxnfT",
+            "marca": "Toyota ",
+            "modelo": "Hilux",
+            "no_motor": "2.4 L ",
+            "placas": "B98AXX",
+            "transmision": "Estandar"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 500,
+          "descripcion": "",
+          "flotilla2": "$  500.00",
+          "id": "-NaCtgda6ZqXuHrzkFHp",
+          "index": 0,
+          "marca": "",
+          "nombre": "Montaje de llantas (4)",
+          "normal": "$  650.00",
+          "precio": 200,
+          "status": true,
+          "tipo": "mo",
+          "total": 500
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 750,
+          "descripcion": "",
+          "flotilla2": "$  750.00",
+          "id": "-NaCtmgIk-s0-7y1Jz3D",
+          "index": 1,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  975.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 750
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1,
+          "descripcion": "",
+          "flotilla2": "$  1.00",
+          "id": "-NaCtzX0pDTl5QD9K0w0",
+          "index": 2,
+          "marca": "",
+          "nombre": "Rev. de suspension",
+          "normal": "$  1.30",
+          "precio": 1,
+          "status": true,
+          "tipo": "mo",
+          "total": 1
+        }
+      ],
+      "fecha": "25/7/2023",
+      "formaPago": "1",
+      "hora": "10:36:29",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00544",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00544?alt=media&token=130d0d9e-6334-4faa-8c9a-c7a6132876aa",
+      "reporte": {
+        "descuento": 0,
+        "iva": 200.16,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 1251,
+        "sobrescrito_mo": 1251,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 1251,
+        "total": 1451.1599999999999,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NTubPi1tYWHcp-HsMyI",
+        "marca": "Volkswagen",
+        "modelo": "Saveiro",
+        "no_motor": "1.6 L",
+        "placas": "690zvf",
+        "transmision": "Estandar",
+        "vinChasis": "FP061124"
+      },
+      "vencimiento": "14/8/2023"
+    },
+    "-NaDEqjgllaLui1F-phS": {
+      "cliente": {
+        "apellidos": "SANCHEZ ZARZA",
+        "correo": "miguelsanzz@prodigy.net",
+        "empresa": "",
+        "fullname": "MIGUEL SANCHEZ ZARZA",
+        "id": "-NaDEObucm2uHXHbN_pr",
+        "no_cliente": "MISATO07230352",
+        "nombre": "MIGUEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5520907754",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 400,
+              "descripcion": "",
+              "id": "-NaDEelQzEVop6PUh3m1",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 400
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 750,
+              "descripcion": "",
+              "id": "-NaDEjO-YmmT3_FMPXQn",
+              "index": 14,
+              "marca": "",
+              "nombre": "Alineacion y balanceo",
+              "precio": 450,
+              "status": true,
+              "tipo": "mo",
+              "total": 750
+            }
+          ],
+          "flotilla2": "$  3,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  5,135.00",
+          "precio": 4870,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 1150,
+            "sobrescrito_refaccion": 0,
+            "total": 4870,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3950
+        }
+      ],
+      "fecha": "25/7/2023",
+      "formaPago": "1",
+      "hora": "12:11:6",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00545",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00545?alt=media&token=e9f5ce00-7004-4c1e-88fc-b5b7792fd408",
+      "reporte": {
+        "descuento": 0,
+        "iva": 632,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3950,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3950,
+        "total": 4582,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2013",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaDEObucm2uHXHbN_pr",
+        "color": "Blanco",
+        "engomado": "azul",
+        "id": "-NaDEYR8_ZbvNbvLKPKv",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Jetta",
+        "no_motor": "2.0 L",
+        "placas": "sinp109",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "14/8/2023"
+    },
+    "-NaEZKV9XPYz8eIJ5F8L": {
+      "cliente": {
+        "apellidos": "CRUZ GARCIA",
+        "correo": "fcruz@foodpak.mx",
+        "empresa": "",
+        "fullname": "SAMUEL CRUZ GARCIA",
+        "id": "-NaEYa1me0c2AfTXJChD",
+        "no_cliente": "SACRTO07230353",
+        "nombre": "SAMUEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "8120222998",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1950,
+          "descripcion": "",
+          "flotilla2": "$  1,950.00",
+          "id": "-NaEZ2wvasHU02ZJ71C3",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar frenos delanteros",
+          "normal": "$  2,535.00",
+          "precio": 950,
+          "status": true,
+          "tipo": "mo",
+          "total": 1950
+        }
+      ],
+      "fecha": "25/7/2023",
+      "formaPago": "1",
+      "hora": "18:20:10",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00546",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00546?alt=media&token=6e977db8-f0d9-4a17-9cb9-34ee9557d1d8",
+      "reporte": {
+        "descuento": 0,
+        "iva": 312,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 1950,
+        "sobrescrito_mo": 1950,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 1950,
+        "total": 2262,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2022",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaEYa1me0c2AfTXJChD",
+        "color": "Blanco",
+        "engomado": "rojo",
+        "id": "-NaEYqQQZvm47Px3_9cm",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Vento",
+        "no_motor": "1.6 L",
+        "placas": "szf374a",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "14/8/2023"
+    },
+    "-NaI43tJ83gGVdo8RgyS": {
+      "cliente": {
+        "apellidos": "PEREZ ESCATIN",
+        "correo": "patoperez20@gmaiol.com",
+        "empresa": "",
+        "fullname": "PATRICIO PEREZ ESCATIN",
+        "id": "-NVkSV57EShiAutn20Qm",
+        "no_cliente": "PAPETO05230240",
+        "nombre": "PATRICIO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5527457934",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "id": "-NVkSkCVJUzPn693emJG",
+            "marca": "Volkswagen",
+            "modelo": "Jetta",
+            "no_motor": "2.5 L",
+            "placas": "nya4318",
+            "transmision": "Automatica",
+            "vinChasis": "EM308780"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2400,
+          "descripcion": "",
+          "flotilla2": "$  3,000.00",
+          "id": "-NaI2kxifhPpGWRLogLX",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar  recirculador de refrigerante de t/a",
+          "normal": "$  3,900.00",
+          "precio": 1200,
+          "status": true,
+          "tipo": "refaccion",
+          "total": 3000
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 600,
+          "descripcion": "",
+          "flotilla2": "$  600.00",
+          "id": "-NaI2zenwhNEPsoGwT4e",
+          "index": 1,
+          "marca": "",
+          "nombre": "Purgar sistema de enfrimiento",
+          "normal": "$  780.00",
+          "precio": 300,
+          "status": true,
+          "tipo": "mo",
+          "total": 600
+        }
+      ],
+      "fecha": "26/7/2023",
+      "formaPago": "1",
+      "hora": "10:42:5",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00547",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00547?alt=media&token=f9d8e60e-06d9-48b3-9091-c10a56a9d89e",
+      "reporte": {
+        "descuento": 0,
+        "iva": 576,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3600,
+        "sobrescrito_mo": 600,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 3000,
+        "subtotal": 3600,
+        "total": 4176,
+        "ub": 33.333333333333336
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NVkSkCVJUzPn693emJG",
+        "marca": "Volkswagen",
+        "modelo": "Jetta",
+        "no_motor": "2.5 L",
+        "placas": "nya4318",
+        "transmision": "Automatica",
+        "vinChasis": "EM308780"
+      },
+      "vencimiento": "15/8/2023"
+    },
+    "-NaIGcZgVDsO9Mqi1CZZ": {
+      "cliente": {
+        "apellidos": "NAVA ROJAS",
+        "correo": "marianavarojas@gmail.com",
+        "empresa": "",
+        "fullname": "MARIA NATIVIDAD NAVA ROJAS",
+        "id": "-NaIG4HLSgfNJgHj_mbw",
+        "no_cliente": "MANATO07230354",
+        "nombre": "MARIA NATIVIDAD",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5521049487",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 2400,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 2,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NQAt2o5KlGO7Ut58j3K",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NQAt2o5KlGO7Ut58j3K",
+              "index": 3,
+              "nombre": "REEMPLAZAR FILTRO DE GASOLINA",
+              "precio": 100,
+              "tipo": "mo",
+              "total": 100
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 4,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 5,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 6,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 7,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 8,
+              "nombre": "LAVAR MOTOR",
+              "precio": 150,
+              "tipo": "mo",
+              "total": 150
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 9,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 150,
+              "tipo": "mo",
+              "total": 150
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 400,
+              "descripcion": "",
+              "id": "-NaIGTTE_AezWpsOe5Qh",
+              "index": 10,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 200,
+              "status": true,
+              "tipo": "mo",
+              "total": 400
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NaIGXVUFzsnG-Kob5vm",
+              "index": 11,
+              "marca": "",
+              "nombre": "Rev. de luces",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  2,400.00",
+          "id": "-NQAu6rhbPydWSDZIevz",
+          "index": 0,
+          "marca": "SEAT",
+          "modelo": "Ibiza",
+          "nombre": "Afinacion",
+          "normal": "$  3,120.00",
+          "precio": 3020,
+          "reporte": {
+            "mo": 2320,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 700,
+            "sobrescrito_refaccion": 0,
+            "total": 3020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 2400
+        }
+      ],
+      "fecha": "26/7/2023",
+      "formaPago": "1",
+      "hora": "11:36:56",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00548",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00548?alt=media&token=7f0d9f84-3571-47db-9b5a-3da6c699db8c",
+      "reporte": {
+        "descuento": 0,
+        "iva": 384,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 2400,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 2400,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 2400,
+        "total": 2784,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2007",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaIG4HLSgfNJgHj_mbw",
+        "color": "Gris",
+        "engomado": "amarillo",
+        "id": "-NaIGEsRfC_i87XGFfnV",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Jetta",
+        "no_motor": "2.0 L",
+        "placas": "nph1216",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "15/8/2023"
+    },
+    "-NaJAKSVJ9k55uXvhngr": {
+      "cliente": {
+        "apellidos": "Pablo",
+        "correo": "tesoreria@sanpablo.com.mx",
+        "empresa": "-NN2jwMbzzh7vi173YNL",
+        "fullname": "San Pablo",
+        "id": "-NOLscckxnpg2PrC_pkW",
+        "no_cliente": "SAPACU02230096",
+        "nombre": "San",
+        "showSucursal": "Culhuacán",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "telefono_movil": "5529370500",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NOLslWw78ef3B7RlWNa",
+            "marca": "Volkswagen",
+            "modelo": "Vento",
+            "placas": "J76AKU",
+            "transmision": "Automatica"
+          },
+          {
+            "id": "-NXH16jw_N3DbynQ9EDS",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Express ",
+            "no_motor": "",
+            "placas": "LF54267",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NXH4paqBrmoxjM90hh1",
+            "marca": "Suzuki",
+            "marcaMotor": "",
+            "modelo": "VItara",
+            "no_motor": "",
+            "placas": "YXG157D",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  5,349.00",
+          "id": "-NaJ80qq6RZCVDu1W1iy",
+          "index": 0,
+          "marca": "",
+          "nombre": "Baleros delanteros",
+          "normal": "$  6,953.70",
+          "precio": 5349,
+          "status": true,
+          "tipo": "mo",
+          "total": 5349
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  650.00",
+          "id": "-NaJ9_wfJgoPe2E4qZ5Z",
+          "index": 1,
+          "marca": "",
+          "nombre": "Limpieza y ajuste de frenos traseros",
+          "normal": "$  845.00",
+          "precio": 650,
+          "status": true,
+          "tipo": "mo",
+          "total": 650
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  2,869.00",
+          "id": "-NaJ9d_lE94FzLv7V7mQ",
+          "index": 2,
+          "marca": "",
+          "nombre": "Frenos delanteros",
+          "normal": "$  3,729.70",
+          "precio": 2869,
+          "status": true,
+          "tipo": "mo",
+          "total": 2869
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  3,280.00",
+          "id": "-NaJ9rSlyKAxu6-GcFni",
+          "index": 3,
+          "marca": "",
+          "nombre": "Llantas hankook 195 r15 c (pza.)",
+          "normal": "$  4,264.00",
+          "precio": 3280,
+          "status": true,
+          "tipo": "mo",
+          "total": 3280
+        }
+      ],
+      "fecha": "26/7/2023",
+      "formaPago": "1",
+      "hora": "15:49:2",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "CU0723GE00549",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FCU0723GE00549?alt=media&token=f79b765c-e07a-4bb0-88bf-e5a8f47e9865",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1943.68,
+        "meses": 0,
+        "mo": 12148,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 0,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 12148,
+        "total": 14091.679999999998,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "ventas_culhuacan@speed-service.com.mx",
+        "direccion": "Avenida Tlahuac # 4160 Col. Santa María Tomatlan, C.P. 09870 México DF.",
+        "id": "-N2glF34lV3Gj0bQyEWK",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/trabajo%20envio%20dionicio.PNG?alt=media&token=608cf798-c28e-4a01-8ea6-987bea99baeb",
+        "serie": "8PFRT119",
+        "status": true,
+        "sucursal": "Culhuacán",
+        "telefono": "5556951051"
+      },
+      "vehiculo": {
+        "anio": "2012",
+        "categoria": "Van",
+        "cilindros": "4",
+        "cliente": "-NOLscckxnpg2PrC_pkW",
+        "color": "Plata",
+        "engomado": "azul",
+        "id": "-NaJ7ru1e7KIaMrPOtQZ",
+        "marca": "Toyota ",
+        "marcaMotor": "",
+        "modelo": "HIace",
+        "no_motor": "",
+        "placas": "JKB5669",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "15/8/2023"
+    },
+    "-NaJE-vLps0QKgQ__KKU": {
+      "cliente": {
+        "apellidos": "Pablo",
+        "correo": "tesoreria@sanpablo.com.mx",
+        "empresa": "-NN2jwMbzzh7vi173YNL",
+        "fullname": "San Pablo",
+        "id": "-NOLscckxnpg2PrC_pkW",
+        "no_cliente": "SAPACU02230096",
+        "nombre": "San",
+        "showSucursal": "Culhuacán",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "telefono_movil": "5529370500",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NOLslWw78ef3B7RlWNa",
+            "marca": "Volkswagen",
+            "modelo": "Vento",
+            "placas": "J76AKU",
+            "transmision": "Automatica"
+          },
+          {
+            "id": "-NXH16jw_N3DbynQ9EDS",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Express ",
+            "no_motor": "",
+            "placas": "LF54267",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NXH4paqBrmoxjM90hh1",
+            "marca": "Suzuki",
+            "marcaMotor": "",
+            "modelo": "VItara",
+            "no_motor": "",
+            "placas": "YXG157D",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  5,349.00",
+          "id": "-NaJ80qq6RZCVDu1W1iy",
+          "index": 0,
+          "marca": "",
+          "nombre": "Baleros delanteros",
+          "normal": "$  6,953.70",
+          "precio": 5349,
+          "status": true,
+          "tipo": "mo",
+          "total": 5349
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  650.00",
+          "id": "-NaJ9_wfJgoPe2E4qZ5Z",
+          "index": 1,
+          "marca": "",
+          "nombre": "Limpieza y ajuste de frenos traseros",
+          "normal": "$  845.00",
+          "precio": 650,
+          "status": true,
+          "tipo": "mo",
+          "total": 650
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  2,869.00",
+          "id": "-NaJ9d_lE94FzLv7V7mQ",
+          "index": 2,
+          "marca": "",
+          "nombre": "Frenos delanteros",
+          "normal": "$  3,729.70",
+          "precio": 2869,
+          "status": true,
+          "tipo": "mo",
+          "total": 2869
+        }
+      ],
+      "fecha": "26/7/2023",
+      "formaPago": "1",
+      "hora": "16:5:8",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "CU0723GE00550",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FCU0723GE00550?alt=media&token=25b08228-4067-4a77-88e7-7b665637f31a",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1418.88,
+        "meses": 0,
+        "mo": 8868,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 0,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 8868,
+        "total": 10286.88,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "ventas_culhuacan@speed-service.com.mx",
+        "direccion": "Avenida Tlahuac # 4160 Col. Santa María Tomatlan, C.P. 09870 México DF.",
+        "id": "-N2glF34lV3Gj0bQyEWK",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/trabajo%20envio%20dionicio.PNG?alt=media&token=608cf798-c28e-4a01-8ea6-987bea99baeb",
+        "serie": "8PFRT119",
+        "status": true,
+        "sucursal": "Culhuacán",
+        "telefono": "5556951051"
+      },
+      "vehiculo": {
+        "anio": "2012",
+        "categoria": "Van",
+        "cilindros": "4",
+        "cliente": "-NOLscckxnpg2PrC_pkW",
+        "color": "Plata",
+        "engomado": "azul",
+        "id": "-NaJ7ru1e7KIaMrPOtQZ",
+        "marca": "Toyota ",
+        "marcaMotor": "",
+        "modelo": "HIace",
+        "no_motor": "",
+        "placas": "JKB5669",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "15/8/2023"
+    },
+    "-NaJGTVZIq7Oo7KqfCUA": {
+      "cliente": {
+        "apellidos": "Pablo",
+        "correo": "tesoreria@sanpablo.com.mx",
+        "empresa": "-NN2jwMbzzh7vi173YNL",
+        "fullname": "San Pablo",
+        "id": "-NOLscckxnpg2PrC_pkW",
+        "no_cliente": "SAPACU02230096",
+        "nombre": "San",
+        "showSucursal": "Culhuacán",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "telefono_movil": "5529370500",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NOLslWw78ef3B7RlWNa",
+            "marca": "Volkswagen",
+            "modelo": "Vento",
+            "placas": "J76AKU",
+            "transmision": "Automatica"
+          },
+          {
+            "id": "-NXH16jw_N3DbynQ9EDS",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Express ",
+            "no_motor": "",
+            "placas": "LF54267",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NXH4paqBrmoxjM90hh1",
+            "marca": "Suzuki",
+            "marcaMotor": "",
+            "modelo": "VItara",
+            "no_motor": "",
+            "placas": "YXG157D",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  5,349.00",
+          "id": "-NaJ80qq6RZCVDu1W1iy",
+          "index": 0,
+          "marca": "",
+          "nombre": "Baleros delanteros",
+          "normal": "$  6,953.70",
+          "precio": 5349,
+          "status": true,
+          "tipo": "mo",
+          "total": 5349
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  2,869.00",
+          "id": "-NaJ9d_lE94FzLv7V7mQ",
+          "index": 1,
+          "marca": "",
+          "nombre": "Frenos delanteros",
+          "normal": "$  3,729.70",
+          "precio": 2869,
+          "status": true,
+          "tipo": "mo",
+          "total": 2869
+        }
+      ],
+      "fecha": "26/7/2023",
+      "formaPago": "1",
+      "hora": "16:15:48",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "CU0723GE00551",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FCU0723GE00551?alt=media&token=bf8d559a-27fe-4cd2-9619-d2583eb7712a",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1314.88,
+        "meses": 0,
+        "mo": 8218,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 0,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 8218,
+        "total": 9532.88,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "ventas_culhuacan@speed-service.com.mx",
+        "direccion": "Avenida Tlahuac # 4160 Col. Santa María Tomatlan, C.P. 09870 México DF.",
+        "id": "-N2glF34lV3Gj0bQyEWK",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/trabajo%20envio%20dionicio.PNG?alt=media&token=608cf798-c28e-4a01-8ea6-987bea99baeb",
+        "serie": "8PFRT119",
+        "status": true,
+        "sucursal": "Culhuacán",
+        "telefono": "5556951051"
+      },
+      "vehiculo": {
+        "anio": "2012",
+        "categoria": "Van",
+        "cilindros": "4",
+        "cliente": "-NOLscckxnpg2PrC_pkW",
+        "color": "Plata",
+        "engomado": "azul",
+        "id": "-NaJ7ru1e7KIaMrPOtQZ",
+        "marca": "Toyota ",
+        "marcaMotor": "",
+        "modelo": "HIace",
+        "no_motor": "",
+        "placas": "JKB5669",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "15/8/2023"
+    },
+    "-NaMtz3rbWRO_kTU83ZB": {
+      "cliente": {
+        "apellidos": "CRUZ GARCIA",
+        "correo": "fcruz@foodpak.mx",
+        "empresa": "",
+        "fullname": "SAMUEL CRUZ GARCIA",
+        "id": "-NaEYa1me0c2AfTXJChD",
+        "no_cliente": "SACRTO07230353",
+        "nombre": "SAMUEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "8120222998",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1950,
+          "descripcion": "",
+          "flotilla2": "$  1,950.00",
+          "id": "-NaEZ2wvasHU02ZJ71C3",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar frenos delanteros",
+          "normal": "$  2,535.00",
+          "precio": 950,
+          "status": true,
+          "tipo": "mo",
+          "total": 1950
+        }
+      ],
+      "fecha": "27/7/2023",
+      "formaPago": "1",
+      "hora": "9:11:41",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00552",
+      "nota": "INCLUYE PASTILLAS DELANTERAS DE CERAMICA , RECTIFICADO DE ROTORES, LIQUIDO DE FRENOS, LIMPIEZA Y AJUSTE DE FRENOS TRASEROS",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00552?alt=media&token=d9d8fcfe-55bd-45f3-8853-716edd1401da",
+      "reporte": {
+        "descuento": 0,
+        "iva": 312,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 1950,
+        "sobrescrito_mo": 1950,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 1950,
+        "total": 2262,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2022",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaEYa1me0c2AfTXJChD",
+        "color": "Blanco",
+        "engomado": "rojo",
+        "id": "-NaEYqQQZvm47Px3_9cm",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Vento",
+        "no_motor": "1.6 L",
+        "placas": "szf374a",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "16/8/2023"
+    },
+    "-NaN8-0fS6NLoxowuDrZ": {
+      "cliente": {
+        "apellidos": "YANEZ",
+        "correo": "aistente.compras@alfo.com.mx",
+        "empresa": "-NTuafWpin13GuakUtbn",
+        "fullname": "EDUARDO YANEZ",
+        "id": "-NTuazyC-MxpdUOgyAyd",
+        "no_cliente": "EDYATO04230202",
+        "nombre": "EDUARDO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5529959099",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NTubPi1tYWHcp-HsMyI",
+            "marca": "Volkswagen",
+            "modelo": "Saveiro",
+            "no_motor": "1.6 L",
+            "placas": "690zvf",
+            "transmision": "Estandar",
+            "vinChasis": "FP061124"
+          },
+          {
+            "id": "-NUgGekthIxj7WcFQwYq",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.8 L",
+            "placas": "sinpl44",
+            "transmision": "Automatica",
+            "vinChasis": "3N1BC1AD2JK195152"
+          },
+          {
+            "id": "-NV_WZx9H9t4pk7AxnfT",
+            "marca": "Toyota ",
+            "modelo": "Hilux",
+            "no_motor": "2.4 L ",
+            "placas": "B98AXX",
+            "transmision": "Estandar"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2950,
+          "descripcion": "",
+          "flotilla2": "$  2,950.00",
+          "id": "-NaN3t90PUzK_qzAn1dm",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar horquilla derecha",
+          "normal": "$  3,835.00",
+          "precio": 1400,
+          "status": true,
+          "tipo": "mo",
+          "total": 2950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3200,
+          "descripcion": "",
+          "flotilla2": "$  3,200.00",
+          "id": "-NaN6WaCu8pbx1kufo7R",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar amortiguador derecho",
+          "normal": "$  4,160.00",
+          "precio": 1600,
+          "status": true,
+          "tipo": "mo",
+          "total": 3200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1200,
+          "descripcion": "",
+          "flotilla2": "$  1,200.00",
+          "id": "-NaN7FsVAAfeBZYCRpUM",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar base de amortiguador derecho",
+          "normal": "$  1,560.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 1200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1800,
+          "descripcion": "",
+          "flotilla2": "$  1,800.00",
+          "id": "-NaN7UlrkbI_7sG6WbwI",
+          "index": 3,
+          "marca": "",
+          "nombre": "Reemplazar cables de bujias",
+          "normal": "$  2,340.00",
+          "precio": 950,
+          "status": true,
+          "tipo": "mo",
+          "total": 1800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 800,
+          "descripcion": "",
+          "flotilla2": "$  800.00",
+          "id": "-NaN7_IjhWE7nHgjFm8J",
+          "index": 4,
+          "marca": "",
+          "nombre": "Reemplazar bujias",
+          "normal": "$  1,040.00",
+          "precio": 320,
+          "status": true,
+          "tipo": "mo",
+          "total": 800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1900,
+          "descripcion": "",
+          "flotilla2": "$  1,900.00",
+          "id": "-NaN7oLy2OhvduapsPEE",
+          "index": 5,
+          "marca": "",
+          "nombre": "Reemplazar lodera izquierda",
+          "normal": "$  2,470.00",
+          "precio": 850,
+          "status": true,
+          "tipo": "mo",
+          "total": 1900
+        }
+      ],
+      "fecha": "27/7/2023",
+      "formaPago": "1",
+      "hora": "10:17:20",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00553",
+      "nota": "DAÑO EN SUSPENSION DELANTERA DERECHA POR GOLPE",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00553?alt=media&token=7ee15393-0e64-4a28-9942-02f919de06ce",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1896,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 11850,
+        "sobrescrito_mo": 11850,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 11850,
+        "total": 13745.999999999998,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NTubPi1tYWHcp-HsMyI",
+        "marca": "Volkswagen",
+        "modelo": "Saveiro",
+        "no_motor": "1.6 L",
+        "placas": "690zvf",
+        "transmision": "Estandar",
+        "vinChasis": "FP061124"
+      },
+      "vencimiento": "16/8/2023"
+    },
+    "-NaNKRs0L-sm13cFDV69": {
+      "cliente": {
+        "apellidos": "VELEZ",
+        "correo": "adriana.velez@fantasykids.com.mx",
+        "empresa": "",
+        "fullname": "ADRIANA VELEZ",
+        "id": "-NaNJxfbSdzaF_djoffo",
+        "no_cliente": "ADVETO07230355",
+        "nombre": "ADRIANA",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5580379763",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 4002,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 400,
+              "descripcion": "",
+              "id": "-NaNKGTyjbjv9fEwddOw",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 200,
+              "status": true,
+              "tipo": "mo",
+              "total": 400
+            }
+          ],
+          "flotilla2": "$  4,002.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  5,202.60",
+          "precio": 4120,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 400,
+            "sobrescrito_refaccion": 0,
+            "total": 4120,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 4002
+        }
+      ],
+      "fecha": "27/7/2023",
+      "formaPago": "2",
+      "hora": "11:11:43",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00554",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00554?alt=media&token=c697dd99-a101-4910-8ec8-4606c499ca04",
+      "reporte": {
+        "descuento": 0,
+        "iva": 640.32,
+        "meses": 4850.760168,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4002,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 4002,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4002,
+        "total": 4642.32,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2017",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaNJxfbSdzaF_djoffo",
+        "color": "Azul oscuro",
+        "engomado": "rojo",
+        "id": "-NaNK95smN4R9pJOrBew",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Jetta",
+        "no_motor": "2.5L",
+        "placas": "N13AWV",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "16/8/2023"
+    },
+    "-NaNMDaIYIo_VvmvKead": {
+      "cliente": {
+        "apellidos": "YANEZ",
+        "correo": "aistente.compras@alfo.com.mx",
+        "empresa": "-NTuafWpin13GuakUtbn",
+        "fullname": "EDUARDO YANEZ",
+        "id": "-NTuazyC-MxpdUOgyAyd",
+        "no_cliente": "EDYATO04230202",
+        "nombre": "EDUARDO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5529959099",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NTubPi1tYWHcp-HsMyI",
+            "marca": "Volkswagen",
+            "modelo": "Saveiro",
+            "no_motor": "1.6 L",
+            "placas": "690zvf",
+            "transmision": "Estandar",
+            "vinChasis": "FP061124"
+          },
+          {
+            "id": "-NUgGekthIxj7WcFQwYq",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.8 L",
+            "placas": "sinpl44",
+            "transmision": "Automatica",
+            "vinChasis": "3N1BC1AD2JK195152"
+          },
+          {
+            "id": "-NV_WZx9H9t4pk7AxnfT",
+            "marca": "Toyota ",
+            "modelo": "Hilux",
+            "no_motor": "2.4 L ",
+            "placas": "B98AXX",
+            "transmision": "Estandar"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2950,
+          "descripcion": "",
+          "flotilla2": "$  2,950.00",
+          "id": "-NaN3t90PUzK_qzAn1dm",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar horquilla derecha",
+          "normal": "$  3,835.00",
+          "precio": 1400,
+          "status": true,
+          "tipo": "mo",
+          "total": 2950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3200,
+          "descripcion": "",
+          "flotilla2": "$  3,200.00",
+          "id": "-NaN6WaCu8pbx1kufo7R",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar amortiguador derecho",
+          "normal": "$  4,160.00",
+          "precio": 1600,
+          "status": true,
+          "tipo": "mo",
+          "total": 3200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1200,
+          "descripcion": "",
+          "flotilla2": "$  1,200.00",
+          "id": "-NaN7FsVAAfeBZYCRpUM",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar base de amortiguador derecho",
+          "normal": "$  1,560.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 1200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1800,
+          "descripcion": "",
+          "flotilla2": "$  1,800.00",
+          "id": "-NaN7UlrkbI_7sG6WbwI",
+          "index": 3,
+          "marca": "",
+          "nombre": "Reemplazar cables de bujias",
+          "normal": "$  2,340.00",
+          "precio": 950,
+          "status": true,
+          "tipo": "mo",
+          "total": 1800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 800,
+          "descripcion": "",
+          "flotilla2": "$  800.00",
+          "id": "-NaN7_IjhWE7nHgjFm8J",
+          "index": 4,
+          "marca": "",
+          "nombre": "Reemplazar bujias",
+          "normal": "$  1,040.00",
+          "precio": 320,
+          "status": true,
+          "tipo": "mo",
+          "total": 800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1900,
+          "descripcion": "",
+          "flotilla2": "$  1,900.00",
+          "id": "-NaN7oLy2OhvduapsPEE",
+          "index": 5,
+          "marca": "",
+          "nombre": "Reemplazar lodera izquierda",
+          "normal": "$  2,470.00",
+          "precio": 850,
+          "status": true,
+          "tipo": "mo",
+          "total": 1900
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 500,
+          "descripcion": "",
+          "flotilla2": "$  500.00",
+          "id": "-NaNLxxosx94SOO7v8k-",
+          "index": 6,
+          "marca": "",
+          "nombre": "Montaje de 4 llantas",
+          "normal": "$  650.00",
+          "precio": 200,
+          "status": true,
+          "tipo": "mo",
+          "total": 500
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 750,
+          "descripcion": "",
+          "flotilla2": "$  750.00",
+          "id": "-NaNM34H88giEx8rbkzE",
+          "index": 7,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  975.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 750
+        }
+      ],
+      "fecha": "27/7/2023",
+      "formaPago": "1",
+      "hora": "11:19:29",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00555",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00555?alt=media&token=cd7ea330-1842-4735-8318-b53533f93f76",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2096,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 13100,
+        "sobrescrito_mo": 13100,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 13100,
+        "total": 15195.999999999998,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NTubPi1tYWHcp-HsMyI",
+        "marca": "Volkswagen",
+        "modelo": "Saveiro",
+        "no_motor": "1.6 L",
+        "placas": "690zvf",
+        "transmision": "Estandar",
+        "vinChasis": "FP061124"
+      },
+      "vencimiento": "16/8/2023"
+    },
+    "-NaNQVgIf8-jGafk2ckU": {
+      "cliente": {
+        "apellidos": "NAVARRETE",
+        "correo": "graciela.navarrete@hotmail.com",
+        "empresa": "",
+        "fullname": "GRACIELA NAVARRETE",
+        "id": "-NWi_q0BV_mnEwB1eACX",
+        "no_cliente": "GRNATO05230254",
+        "nombre": "GRACIELA",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5554379874",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "id": "-NWia_4_euIzMmfWyyH2",
+            "marca": "Dodge",
+            "marcaMotor": "",
+            "modelo": "Journey",
+            "no_motor": "3.6 L",
+            "placas": "P57AWW",
+            "transmision": "Automatica",
+            "vinChasis": "FT585468"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3800,
+          "descripcion": "",
+          "flotilla2": "$  3,800.00",
+          "id": "-NaNPFmebkSeCLZdFk_z",
+          "index": 0,
+          "marca": "",
+          "nombre": "C/ sensor oxigeno primario banco 2",
+          "normal": "$  4,940.00",
+          "precio": 1900,
+          "status": true,
+          "tipo": "mo",
+          "total": 3800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3200,
+          "descripcion": "",
+          "flotilla2": "$  3,200.00",
+          "id": "-NaNPPiuksOtsGrrX-qb",
+          "index": 1,
+          "marca": "",
+          "nombre": "C/ sensor de oxigeno secundario banco 2",
+          "normal": "$  4,160.00",
+          "precio": 1600,
+          "status": true,
+          "tipo": "mo",
+          "total": 3200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2800,
+          "descripcion": "",
+          "flotilla2": "$  2,800.00",
+          "id": "-NaNPZP50ebBhhFG54uj",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar eslabones estabilizadores",
+          "normal": "$  3,640.00",
+          "precio": 1400,
+          "status": true,
+          "tipo": "mo",
+          "total": 2800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 4950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 400,
+              "descripcion": "",
+              "id": "-NaNPo3DbaHmHpGK4KOR",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 200,
+              "status": true,
+              "tipo": "mo",
+              "total": 400
+            }
+          ],
+          "flotilla2": "$  4,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 3,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  6,435.00",
+          "precio": 4120,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 400,
+            "sobrescrito_refaccion": 0,
+            "total": 4120,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 4950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3000,
+          "descripcion": "",
+          "flotilla2": "$  3,000.00",
+          "id": "-NaNQP__7cKqrazXs81I",
+          "index": 4,
+          "marca": "",
+          "nombre": "Reemplazar actuador solenoide admision",
+          "normal": "$  3,900.00",
+          "precio": 1500,
+          "status": true,
+          "tipo": "mo",
+          "total": 3000
+        }
+      ],
+      "fecha": "27/7/2023",
+      "formaPago": "1",
+      "hora": "11:38:11",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00556",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00556?alt=media&token=e87b1bc9-2900-48c3-9762-498150f46bc8",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2840,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 17750,
+        "sobrescrito_mo": 12800,
+        "sobrescrito_paquetes": 4950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 17750,
+        "total": 20590,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2004",
+        "categoria": "Sedán lujo",
+        "cilindros": "6",
+        "cliente": "-NWi_q0BV_mnEwB1eACX",
+        "color": "Rojo intenso",
+        "engomado": "verde",
+        "id": "-NaNOugFkGTKCNzd_18f",
+        "marca": "Audi",
+        "marcaMotor": "",
+        "modelo": "A4",
+        "no_motor": "3.2 L",
+        "placas": "NWF8431",
+        "transmision": "Estandar",
+        "vinChasis": "4A110457"
+      },
+      "vencimiento": "16/8/2023"
+    },
+    "-NaOHE-2BOfjBFSN3YDA": {
+      "cliente": {
+        "apellidos": "VELASCO RODRIGUEZ",
+        "correo": "inocencio.velasquesr@terra.com",
+        "empresa": "",
+        "fullname": "INOCENCIO VELASCO RODRIGUEZ",
+        "id": "-NaOEx4nllp-kxQAmXK3",
+        "no_cliente": "INVETO07230357",
+        "nombre": "INOCENCIO",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "7299488522",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 4400,
+          "descripcion": "",
+          "flotilla2": "$  4,400.00",
+          "id": "-NaOGbXvXOcidvKDWB4w",
+          "index": 0,
+          "marca": "",
+          "nombre": "Empacar juntas de aceite de motor",
+          "normal": "$  5,720.00",
+          "precio": 2200,
+          "status": true,
+          "tipo": "mo",
+          "total": 4400
+        }
+      ],
+      "fecha": "27/7/2023",
+      "formaPago": "1",
+      "hora": "15:37:17",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00557",
+      "nota": "INCLUYE  KIT DE DITRIBUCION, RETENES DE DISTRIBUCION, JUNTA DE CARTER DE MOTOR, SENSOR DE PRESION DE ACEITE, ACEITE Y FILTRO DE MOTOR \nNECESARIO MANTENER EN OBSERVACION RETEN DE CIGUEÑAL TRASERO.",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00557?alt=media&token=ecdf61aa-b6db-4141-b1c5-903b955888d0",
+      "reporte": {
+        "descuento": 0,
+        "iva": 704,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4400,
+        "sobrescrito_mo": 4400,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4400,
+        "total": 5104,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "1999",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaOEx4nllp-kxQAmXK3",
+        "color": "Azul oscuro",
+        "engomado": "amarillo",
+        "id": "-NaOFAFkEuDDh5Z7L-cy",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Chevy",
+        "no_motor": "1.6L",
+        "placas": "nvb3105",
+        "transmision": "Estandar",
+        "vinChasis": "xs145487"
+      },
+      "vencimiento": "16/8/2023"
+    },
+    "-NaRw8Hf_82xbbKiPcUE": {
+      "cliente": {
+        "apellidos": "MARTINEZ",
+        "correo": "david.martinez@hotmail.com",
+        "empresa": "",
+        "fullname": "DAVID MARTINEZ",
+        "id": "-NaRvYwoQaPDzJiKkZDC",
+        "no_cliente": "DAMATO07230358",
+        "nombre": "DAVID",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5523068959",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3450,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NaRw3DlhJ-aebTw6uYV",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  3,450.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  4,485.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3450
+        }
+      ],
+      "fecha": "28/7/2023",
+      "formaPago": "1",
+      "hora": "8:39:12",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00558",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00558?alt=media&token=fe515846-9350-45e9-bc8b-2dda931da137",
+      "reporte": {
+        "descuento": 0,
+        "iva": 552,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3450,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3450,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3450,
+        "total": 4001.9999999999995,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaRvYwoQaPDzJiKkZDC",
+        "color": "Blanco",
+        "engomado": "azul",
+        "id": "-NaRvuakdIFPlK_-zn1x",
+        "marca": "Ford",
+        "marcaMotor": "",
+        "modelo": "Fiesta",
+        "no_motor": "1.5 L",
+        "placas": "sinp110",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "17/8/2023"
+    },
+    "-NaXOTA2DY6tlyKqd17B": {
+      "cliente": {
+        "apellidos": "PAREDES",
+        "correo": "almacen@cinecolor.com.mx",
+        "empresa": "-NQl5EVPHVq1GZnBYEqs",
+        "fullname": "ISRAEL PAREDES",
+        "id": "-NQl5QLyDnhoCziDnGfC",
+        "no_cliente": "ISPATO03230147",
+        "nombre": "ISRAEL",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5561948781",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NQl5h4o3_0syzuUoxao",
+            "marca": "Chevrolet",
+            "modelo": "Express ",
+            "no_motor": "4.7l",
+            "placas": "158yhw",
+            "transmision": "Automatica"
+          },
+          {
+            "id": "-NRsTTjn8tuR__CU0rim",
+            "marca": "Renault",
+            "modelo": "Kangoo",
+            "no_motor": "1.6 L",
+            "placas": "N39BDX",
+            "transmision": "Estandar",
+            "vinChasis": "KL523695"
+          },
+          {
+            "id": "-NSgv2IQ8jk3ACCZURsq",
+            "marca": "Volkswagen",
+            "modelo": "Caddy",
+            "no_motor": "2.0L",
+            "placas": "L59BAA",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NT-sJRwHjF7ZdHSqAsY",
+            "marca": "KIA",
+            "modelo": "Sportage",
+            "no_motor": "2.0 L",
+            "placas": "r36bel",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NWJP3TROQ8fYqJCIcyp",
+            "marca": "Volkswagen",
+            "modelo": "Crafter",
+            "no_motor": "2.0 TDI",
+            "placas": "LF71026",
+            "transmision": "Estandar",
+            "vinChasis": "LF71026"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3600,
+          "descripcion": "",
+          "flotilla2": "$  3,600.00",
+          "id": "-NaXNMW0L6r3e0CJwD7M",
+          "index": 0,
+          "marca": "",
+          "nombre": "C/ jgo de chocotes de selector de velocidades",
+          "normal": "$  4,680.00",
+          "precio": 1900,
+          "status": true,
+          "tipo": "mo",
+          "total": 3600
+        }
+      ],
+      "fecha": "29/7/2023",
+      "formaPago": "1",
+      "hora": "10:5:29",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00559",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00559?alt=media&token=412e93df-f88c-4669-ae6e-06139161d1ab",
+      "reporte": {
+        "descuento": 0,
+        "iva": 576,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3600,
+        "sobrescrito_mo": 3600,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3600,
+        "total": 4176,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NQl5h4o3_0syzuUoxao",
+        "marca": "Chevrolet",
+        "modelo": "Express ",
+        "no_motor": "4.7l",
+        "placas": "158yhw",
+        "transmision": "Automatica"
+      },
+      "vencimiento": "18/8/2023"
+    },
+    "-NaXPOLuaHllkVAcNLon": {
+      "cliente": {
+        "apellidos": "PAREDES",
+        "correo": "almacen@cinecolor.com.mx",
+        "empresa": "-NQl5EVPHVq1GZnBYEqs",
+        "fullname": "ISRAEL PAREDES",
+        "id": "-NQl5QLyDnhoCziDnGfC",
+        "no_cliente": "ISPATO03230147",
+        "nombre": "ISRAEL",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5561948781",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NQl5h4o3_0syzuUoxao",
+            "marca": "Chevrolet",
+            "modelo": "Express ",
+            "no_motor": "4.7l",
+            "placas": "158yhw",
+            "transmision": "Automatica"
+          },
+          {
+            "id": "-NRsTTjn8tuR__CU0rim",
+            "marca": "Renault",
+            "modelo": "Kangoo",
+            "no_motor": "1.6 L",
+            "placas": "N39BDX",
+            "transmision": "Estandar",
+            "vinChasis": "KL523695"
+          },
+          {
+            "id": "-NSgv2IQ8jk3ACCZURsq",
+            "marca": "Volkswagen",
+            "modelo": "Caddy",
+            "no_motor": "2.0L",
+            "placas": "L59BAA",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NT-sJRwHjF7ZdHSqAsY",
+            "marca": "KIA",
+            "modelo": "Sportage",
+            "no_motor": "2.0 L",
+            "placas": "r36bel",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NWJP3TROQ8fYqJCIcyp",
+            "marca": "Volkswagen",
+            "modelo": "Crafter",
+            "no_motor": "2.0 TDI",
+            "placas": "LF71026",
+            "transmision": "Estandar",
+            "vinChasis": "LF71026"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 4300,
+          "descripcion": "",
+          "flotilla2": "$  4,300.00",
+          "id": "-NaXNMW0L6r3e0CJwD7M",
+          "index": 0,
+          "marca": "",
+          "nombre": "C/ jgo de chocotes de selector de velocidades",
+          "normal": "$  5,590.00",
+          "precio": 1900,
+          "status": true,
+          "tipo": "mo",
+          "total": 4300
+        }
+      ],
+      "fecha": "29/7/2023",
+      "formaPago": "1",
+      "hora": "10:9:32",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00560",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00560?alt=media&token=a5edbc75-eaae-43b6-8622-886a03502736",
+      "reporte": {
+        "descuento": 0,
+        "iva": 688,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4300,
+        "sobrescrito_mo": 4300,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4300,
+        "total": 4988,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NQl5h4o3_0syzuUoxao",
+        "marca": "Chevrolet",
+        "modelo": "Express ",
+        "no_motor": "4.7l",
+        "placas": "158yhw",
+        "transmision": "Automatica"
+      },
+      "vencimiento": "18/8/2023"
+    },
+    "-NaXUUMBtqn_mmmGilkS": {
+      "cliente": {
+        "apellidos": "CHARLY G",
+        "correo": "charly.g@gmail.com",
+        "empresa": "",
+        "fullname": "CARLOS CHARLY G",
+        "id": "-NaXTKF5gJGIVxMIg-td",
+        "no_cliente": "CACHTO07230359",
+        "nombre": "CARLOS",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5614723862",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 400,
+              "descripcion": "",
+              "id": "-NaXUB5tkadOp523aEtX",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 400
+            }
+          ],
+          "flotilla2": "$  3,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  5,135.00",
+          "precio": 4120,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 400,
+            "sobrescrito_refaccion": 0,
+            "total": 4120,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3950
+        }
+      ],
+      "fecha": "29/7/2023",
+      "formaPago": "1",
+      "hora": "10:31:48",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00561",
+      "nota": "incluye aceite sintético y bujía de platino",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00561?alt=media&token=87fa72a4-fcc5-40ce-b4da-dd018785e58a",
+      "reporte": {
+        "descuento": 0,
+        "iva": 632,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3950,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3950,
+        "total": 4582,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2015",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaXTKF5gJGIVxMIg-td",
+        "color": "Rojo intenso",
+        "engomado": "verde",
+        "id": "-NaXU4v82VUOQ9uOyed0",
+        "marca": "KIA",
+        "marcaMotor": "",
+        "modelo": "Forte",
+        "no_motor": "2.0 L",
+        "placas": "sinp111",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "18/8/2023"
+    },
+    "-Nah9LLQ_-0igbhVCBui": {
+      "cliente": {
+        "apellidos": "BENAVIDES DELGADO",
+        "correo": "lilianapvenabides@hotmail.com",
+        "empresa": "",
+        "fullname": "LILIANA PATRICIA BENAVIDES DELGADO",
+        "id": "-Nah81czgpA6F7jQNRwM",
+        "no_cliente": "LIBETO07230360",
+        "nombre": "LILIANA PATRICIA",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5518264742",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 6200,
+          "descripcion": "",
+          "flotilla2": "$  6,200.00",
+          "id": "-Nah97blYHN_KRAsldNr",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar soporte de motor derecho",
+          "normal": "$  8,060.00",
+          "precio": 3400,
+          "status": true,
+          "tipo": "mo",
+          "total": 6200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2600,
+          "descripcion": "",
+          "flotilla2": "$  2,600.00",
+          "id": "-Nah9GXcHiQpn3DjcGp4",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar soporte de motor de izquierdo",
+          "normal": "$  3,380.00",
+          "precio": 1300,
+          "status": true,
+          "tipo": "mo",
+          "total": 2600
+        }
+      ],
+      "fecha": "31/7/2023",
+      "formaPago": "1",
+      "hora": "12:15:15",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00562",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00562?alt=media&token=2226de65-e900-42d6-a0c1-7f49851ef9d7",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1408,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 8800,
+        "sobrescrito_mo": 8800,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 8800,
+        "total": 10208,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2020",
+        "categoria": "SUV",
+        "cilindros": "4",
+        "cliente": "-Nah81czgpA6F7jQNRwM",
+        "color": "Blanco",
+        "engomado": "amarillo",
+        "id": "-Nah8IaRgHL6woS5HrIq",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Tiguan",
+        "no_motor": "2.0 L",
+        "placas": "pwv6806",
+        "transmision": "Automatica",
+        "vinChasis": "LM152532"
+      },
+      "vencimiento": "20/8/2023"
+    },
+    "-NahDDii99DzV-Nubi6t": {
+      "cliente": {
+        "apellidos": "VELEZ",
+        "correo": "hugo.velez@gmail.com",
+        "empresa": "",
+        "fullname": "HUGO VELEZ",
+        "id": "-NWTH_FDvjOcrQtq7jjJ",
+        "no_cliente": "HUVETO05230246",
+        "nombre": "HUGO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5535120736",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "id": "-NWTJm7Cl1MneEew7yrf",
+            "marca": "Mazda",
+            "marcaMotor": "",
+            "modelo": "CX-5",
+            "no_motor": "2.5L",
+            "placas": "SINPL62",
+            "transmision": "Automatica",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NWhYqDDVp19rnRNGo3H",
+            "marca": "Honda",
+            "marcaMotor": "",
+            "modelo": "Odyssey",
+            "no_motor": "3.5 L",
+            "placas": "ntp7921",
+            "transmision": "Automatica",
+            "vinChasis": "eb806797"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2650,
+          "descripcion": "",
+          "flotilla2": "$  2,650.00",
+          "id": "-NahCl83P7W47O5ZEr5a",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar frenos delanteros y rectifcar rotores",
+          "normal": "$  3,445.00",
+          "precio": 1350,
+          "status": true,
+          "tipo": "mo",
+          "total": 2650
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 950,
+          "descripcion": "",
+          "flotilla2": "$  950.00",
+          "id": "-NahCtnI93Er3ldtKReh",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar banda de direccion",
+          "normal": "$  1,235.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1400,
+          "descripcion": "",
+          "flotilla2": "$  1,400.00",
+          "id": "-NahD19njTEBu3Ztd5QY",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar banda de alternador",
+          "normal": "$  1,820.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1400
+        }
+      ],
+      "fecha": "31/7/2023",
+      "formaPago": "1",
+      "hora": "12:32:11",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00563",
+      "nota": "CAMBIO DE FRENOS DELANTEROS INCLUYE PASTILLAS DE CERAMICA RECTIFICADO DE ROTORES LIQUIDO DE FRENOS Y MANO DE OBRA.",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00563?alt=media&token=423d30ea-2283-40c0-8ca4-a9d94b7d1974",
+      "reporte": {
+        "descuento": 0,
+        "iva": 800,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 5000,
+        "sobrescrito_mo": 5000,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 5000,
+        "total": 5800,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "SUV lujo",
+        "cilindros": "4",
+        "cliente": "-NWTH_FDvjOcrQtq7jjJ",
+        "color": "Plata",
+        "engomado": "amarillo",
+        "id": "-NahCIl0SxjnsdqiQpua",
+        "marca": "Mazda",
+        "marcaMotor": "",
+        "modelo": "CX-5",
+        "no_motor": "2.5 L",
+        "placas": "PCR9915",
+        "transmision": "Automatica",
+        "vinChasis": "G0756736"
+      },
+      "vencimiento": "20/8/2023"
+    },
+    "-Nai60okB4OAEK3iqTJU": {
+      "cliente": {
+        "apellidos": "SANTIAGO SANTIAGO",
+        "correo": "manuel.santiago.santiago@hotmail.com",
+        "empresa": "",
+        "fullname": "MANUEL SANTIAGO SANTIAGO",
+        "id": "-Nai5G7NGoSjhWgS-of9",
+        "no_cliente": "MASATO07230361",
+        "nombre": "MANUEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5526846527",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1200,
+          "descripcion": "",
+          "flotilla2": "$  1,200.00",
+          "id": "-Nai5yO58PP3NaE9TLNJ",
+          "index": 0,
+          "marca": "",
+          "nombre": "C/ buje de control de cambios y ajuste de palanca ",
+          "normal": "$  1,560.00",
+          "precio": 600,
+          "status": true,
+          "tipo": "mo",
+          "total": 1200
+        }
+      ],
+      "fecha": "31/7/2023",
+      "formaPago": "1",
+      "hora": "16:40:22",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00564",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00564?alt=media&token=31ea7be8-7353-44f5-9961-258874ad867f",
+      "reporte": {
+        "descuento": 0,
+        "iva": 192,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 1200,
+        "sobrescrito_mo": 1200,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 1200,
+        "total": 1392,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2001",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-Nai5G7NGoSjhWgS-of9",
+        "color": "Rojo intenso",
+        "engomado": "azul",
+        "id": "-Nai5UGdzLjQesmOebdv",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Chevy",
+        "no_motor": "1.6 L",
+        "placas": "njs1719",
+        "transmision": "Estandar",
+        "vinChasis": "1S238813"
+      },
+      "vencimiento": "20/8/2023"
+    },
+    "-Naib6onAKi19Gv225vm": {
+      "cliente": {
+        "apellidos": "GUEVARA DIEZ",
+        "correo": "carlos.guevaradiez@gmail.com",
+        "empresa": "",
+        "fullname": "CARLOS GUEVARA DIEZ",
+        "id": "-NaiaLqfq_3h3SqeHVKd",
+        "no_cliente": "CAGUTO07230362",
+        "nombre": "CARLOS",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5528597594",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 5800,
+          "descripcion": "",
+          "flotilla2": "$  5,800.00",
+          "id": "-Naiav3eTy2gtr4CQj9p",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar recuperador de refrigerante y tapon",
+          "normal": "$  7,540.00",
+          "precio": 2900,
+          "status": true,
+          "tipo": "mo",
+          "total": 5800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 800,
+          "descripcion": "",
+          "flotilla2": "$  800.00",
+          "id": "-Naib2tN3b98yaPYBAXw",
+          "index": 1,
+          "marca": "",
+          "nombre": "Lavar sistema de enfriamiento y purgar sistema",
+          "normal": "$  1,040.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 800
+        }
+      ],
+      "fecha": "31/7/2023",
+      "formaPago": "1",
+      "hora": "19:0:36",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0723GE00565",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0723GE00565?alt=media&token=3e321ed3-4347-486d-bd96-f28de9f4a5c3",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1056,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 6600,
+        "sobrescrito_mo": 6600,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 6600,
+        "total": 7655.999999999999,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2017",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NaiaLqfq_3h3SqeHVKd",
+        "color": "Rojo intenso",
+        "engomado": "verde",
+        "id": "-Naia_7BWHgiIWmHlIT5",
+        "marca": "Ford",
+        "marcaMotor": "",
+        "modelo": "Fusión",
+        "no_motor": "2.0L",
+        "placas": "pww821b",
+        "transmision": "Automatica",
+        "vinChasis": "HR210793"
+      },
+      "vencimiento": "20/8/2023"
+    },
+    "-NamD_rSLPYI4f6Fzt3u": {
+      "cliente": {
+        "apellidos": "GUZMAN",
+        "correo": "miguelangel.cuzman10@gmail.com",
+        "empresa": "",
+        "fullname": "MIGUEL ANGEL GUZMAN",
+        "id": "-NamCopHUZBzif-300fC",
+        "no_cliente": "MIGUTO08230363",
+        "nombre": "MIGUEL ANGEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5572009160",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NamDUGtQ0yULRz_G6Ek",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  3,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  5,135.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3950
+        }
+      ],
+      "fecha": "1/8/2023",
+      "formaPago": "1",
+      "hora": "11:51:51",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00566",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00566?alt=media&token=ddec3f84-8efb-4f7d-be27-b000cb902383",
+      "reporte": {
+        "descuento": 0,
+        "iva": 632,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3950,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3950,
+        "total": 4582,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2011",
+        "categoria": "Hatchback",
+        "cilindros": "4",
+        "cliente": "-NamCopHUZBzif-300fC",
+        "color": "Negro",
+        "engomado": "verde",
+        "id": "-NamDOPmA3YIGLoYQomp",
+        "marca": "Honda",
+        "marcaMotor": "",
+        "modelo": "Fit",
+        "no_motor": "1.5 L",
+        "placas": "sinp112",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "21/8/2023"
+    },
+    "-NamKO4ysvME5mAfZIO5": {
+      "cliente": {
+        "apellidos": "TORRES",
+        "correo": "manueltorres@outlook.com",
+        "empresa": "",
+        "fullname": "MANUEL TORRES",
+        "id": "-NamJ2vx8GCmo-f4QGAW",
+        "no_cliente": "MATOTO08230364",
+        "nombre": "MANUEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5539015926",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 4950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NamJlb8uPyfZLW4eVgK",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  4,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  6,435.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 4950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2300,
+          "descripcion": "",
+          "flotilla2": "$  2,300.00",
+          "id": "-NamJu5poCluvFV3OjOS",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar frenos traseros",
+          "normal": "$  2,990.00",
+          "precio": 900,
+          "status": true,
+          "tipo": "mo",
+          "total": 2300
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1600,
+          "descripcion": "",
+          "flotilla2": "$  1,600.00",
+          "id": "-NamK2OqBswv9hMQCZ8n",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reparar lineas de sensor de oxigeno banco uno",
+          "normal": "$  2,080.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 1600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 200,
+          "descripcion": "",
+          "flotilla2": "$  200.00",
+          "id": "-NamK6KcavHmfqB4MLd_",
+          "index": 3,
+          "marca": "",
+          "nombre": "Birlo",
+          "normal": "$  260.00",
+          "precio": 50,
+          "status": true,
+          "tipo": "mo",
+          "total": 200
+        }
+      ],
+      "fecha": "1/8/2023",
+      "formaPago": "1",
+      "hora": "12:21:36",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00567",
+      "nota": "CAMBIO DE FRENOS TRASEROS INCLUYE PASTILLAS DE CERAMICA RECTIFICADO DE ROTOREWS LIQUIDO DE FRENOS Y PURGAR SISTEMA",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00567?alt=media&token=ed335f92-90e6-4bd7-a259-d2c7586b406c",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1448,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 9050,
+        "sobrescrito_mo": 4100,
+        "sobrescrito_paquetes": 4950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 9050,
+        "total": 10498,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2017",
+        "categoria": "Sedán lujo",
+        "cilindros": "4",
+        "cliente": "-NamJ2vx8GCmo-f4QGAW",
+        "color": "Azul oscuro",
+        "engomado": "amarillo",
+        "id": "-NamJaYmsErYtJhWcfv5",
+        "marca": "Audi",
+        "marcaMotor": "",
+        "modelo": "A4",
+        "no_motor": "2.0L",
+        "placas": "rav415c",
+        "transmision": "Automatica",
+        "vinChasis": "8HA147002"
+      },
+      "vencimiento": "21/8/2023"
+    },
+    "-NamOhMjCZls0zydqTDb": {
+      "cliente": {
+        "apellidos": "TORRES",
+        "correo": "manueltorres@outlook.com",
+        "empresa": "",
+        "fullname": "MANUEL TORRES",
+        "id": "-NamJ2vx8GCmo-f4QGAW",
+        "no_cliente": "MATOTO08230364",
+        "nombre": "MANUEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5539015926",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 4950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NamJlb8uPyfZLW4eVgK",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  4,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  6,435.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 4950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2300,
+          "descripcion": "",
+          "flotilla2": "$  2,300.00",
+          "id": "-NamJu5poCluvFV3OjOS",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar frenos traseros",
+          "normal": "$  2,990.00",
+          "precio": 900,
+          "status": true,
+          "tipo": "mo",
+          "total": 2300
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1600,
+          "descripcion": "",
+          "flotilla2": "$  1,600.00",
+          "id": "-NamK2OqBswv9hMQCZ8n",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reparar lineas de sensor de oxigeno banco uno",
+          "normal": "$  2,080.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 1600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 200,
+          "descripcion": "",
+          "flotilla2": "$  200.00",
+          "id": "-NamK6KcavHmfqB4MLd_",
+          "index": 3,
+          "marca": "",
+          "nombre": "Birlo",
+          "normal": "$  260.00",
+          "precio": 50,
+          "status": true,
+          "tipo": "mo",
+          "total": 200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1950,
+          "descripcion": "",
+          "flotilla2": "$  1,950.00",
+          "id": "-NamOItjMo6p6lgR6hVf",
+          "index": 4,
+          "marca": "",
+          "nombre": "Reemplazar gomas de barra estabilizadora",
+          "normal": "$  2,535.00",
+          "precio": 800,
+          "status": true,
+          "tipo": "mo",
+          "total": 1950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2800,
+          "descripcion": "",
+          "flotilla2": "$  2,800.00",
+          "id": "-NamOPJfZ4PmIrX-QaiT",
+          "index": 5,
+          "marca": "",
+          "nombre": "Reemplazar eslabones estabilizadores ",
+          "normal": "$  3,640.00",
+          "precio": 1400,
+          "status": true,
+          "tipo": "mo",
+          "total": 2800
+        }
+      ],
+      "fecha": "1/8/2023",
+      "formaPago": "1",
+      "hora": "12:40:28",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00568",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00568?alt=media&token=60a295a2-4f1d-4305-adef-a15b0e965b26",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2208,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 13800,
+        "sobrescrito_mo": 8850,
+        "sobrescrito_paquetes": 4950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 13800,
+        "total": 16007.999999999998,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2017",
+        "categoria": "Sedán lujo",
+        "cilindros": "4",
+        "cliente": "-NamJ2vx8GCmo-f4QGAW",
+        "color": "Azul oscuro",
+        "engomado": "amarillo",
+        "id": "-NamJaYmsErYtJhWcfv5",
+        "marca": "Audi",
+        "marcaMotor": "",
+        "modelo": "A4",
+        "no_motor": "2.0L",
+        "placas": "rav415c",
+        "transmision": "Automatica",
+        "vinChasis": "8HA147002"
+      },
+      "vencimiento": "21/8/2023"
+    },
+    "-NambXRqP5SeJAByaeIm": {
+      "cliente": {
+        "apellidos": "AGUILAR",
+        "correo": "gestor.tesoreria@fhmex.com.mx",
+        "empresa": "FARMACEUTICA HISPANOAMERICANA",
+        "fullname": "GUILLERMO  AGUILAR",
+        "id": "-NLNVqIM3HlWwdYY4Vkj",
+        "no_cliente": "GUAGTo09230035",
+        "nombre": "GUILLERMO ",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_fijo": "",
+        "telefono_movil": "5523428053",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NLNW51bl-wREgPZlPyH",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "Versa",
+            "no_motor": "1.6 L",
+            "placas": "n01avv",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NMdb4az2koAb2TxnIUU",
+            "marca": "Toyota ",
+            "marcaMotor": "",
+            "modelo": "HIace",
+            "no_motor": "2.2 L",
+            "placas": "nodan32",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NN7GAR_jqKRQcwW_dHU",
+            "marca": "Fiat",
+            "marcaMotor": "",
+            "modelo": "Ducato",
+            "no_motor": "2.0 L",
+            "placas": "a144ac",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NNqZYuHHPF_eQ59Yrir",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "Versa",
+            "no_motor": "1.6L",
+            "placas": "sinpl03",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NOQLiMTzsar3nAPDXxS",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.6 L",
+            "placas": "A51AUF",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NQanfzrz331fj2JOh9X",
+            "marca": "Volkswagen",
+            "modelo": "Polo",
+            "no_motor": "1.6L",
+            "placas": "simpl11",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NRF7pnk3HcFqcTUkYnz",
+            "marca": "Toyota ",
+            "modelo": "HIace",
+            "no_motor": "2.4L",
+            "placas": "SINPL19",
+            "transmision": "Estandar",
+            "vinChasis": "90015170"
+          },
+          {
+            "id": "-NUbznpQnOle7BBrQ5xO",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "A57AUF",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NWI8QKz4tMprTxPGkJm",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "a06auf",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NWI9ypw_Y5JEbSnCwrb",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "A66 AUF",
+            "transmision": "Estandar",
+            "vinChasis": "JK439700"
+          },
+          {
+            "anio": "2017",
+            "categoria": "Carga",
+            "cilindros": "8",
+            "cliente": "-NLNVqIM3HlWwdYY4Vkj",
+            "color": "Blanco",
+            "engomado": "rojo",
+            "id": "-NYL0gFr1cs50B-9Byu_",
+            "marca": "Ford",
+            "marcaMotor": "",
+            "modelo": "F-350",
+            "no_motor": "6.2 L",
+            "placas": "LB74763",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "anio": "2009",
+            "categoria": "Van",
+            "cilindros": "4",
+            "cliente": "-NLNVqIM3HlWwdYY4Vkj",
+            "color": "Blanco",
+            "engomado": "rojo",
+            "id": "-NZDM0z9lj7ZjIjdqEXb",
+            "marca": "Toyota ",
+            "marcaMotor": "",
+            "modelo": "HIace",
+            "no_motor": "2.4 L ",
+            "placas": "F54ABP",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1900,
+          "descripcion": "",
+          "flotilla2": "$  1,900.00",
+          "id": "-NamXvaBZH9WU0VOEs27",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar bases de amortigaudores delanteros",
+          "normal": "$  2,470.00",
+          "precio": 1400,
+          "status": true,
+          "tipo": "mo",
+          "total": 1900
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 6500,
+          "descripcion": "",
+          "flotilla2": "$  6,500.00",
+          "id": "-NamYZQE7ZsBvjfKRrD6",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores delanteros",
+          "normal": "$  8,450.00",
+          "precio": 3600,
+          "status": true,
+          "tipo": "mo",
+          "total": 6500
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3600,
+          "descripcion": "",
+          "flotilla2": "$  3,600.00",
+          "id": "-NamZO3HZKdtwa8vrs-j",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar horquillas ",
+          "normal": "$  4,680.00",
+          "precio": 1780,
+          "status": true,
+          "tipo": "mo",
+          "total": 3600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1800,
+          "descripcion": "",
+          "flotilla2": "$  1,800.00",
+          "id": "-NamZYjNRB3Ia7jO4Shy",
+          "index": 3,
+          "marca": "",
+          "nombre": "Reemplazar tornillos estabilizadores",
+          "normal": "$  2,340.00",
+          "precio": 600,
+          "status": true,
+          "tipo": "mo",
+          "total": 1800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 750,
+          "descripcion": "",
+          "flotilla2": "$  750.00",
+          "id": "-NamZt55gUi7qK6ZflcD",
+          "index": 4,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  975.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 750
+        }
+      ],
+      "fecha": "1/8/2023",
+      "formaPago": "1",
+      "hora": "13:40:53",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00569",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00569?alt=media&token=e73f73a8-7cee-444c-b88c-4cd0e8b33957",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2328,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 14550,
+        "sobrescrito_mo": 14550,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 14550,
+        "total": 16878,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NOQLiMTzsar3nAPDXxS",
+        "marca": "Nissan",
+        "modelo": "Versa",
+        "no_motor": "1.6 L",
+        "placas": "A51AUF",
+        "transmision": "Estandar"
+      },
+      "vencimiento": "21/8/2023"
+    },
+    "-Namdwb1Z4SvzSI6o12S": {
+      "cliente": {
+        "apellidos": "BOTELLO",
+        "correo": "rocio.botello@risoul.com",
+        "correo_sec": "",
+        "empresa": "RISOUL Y CIA SA DE CV",
+        "fullname": "ROCIO BOTELLO",
+        "id": "-NMVhbvvR8NX-Ph4aaxv",
+        "no_cliente": "ROBOToNaNaN0048",
+        "nombre": "ROCIO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_fijo": "",
+        "telefono_movil": "8180205005",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NMVhm7to72zN3g6UtKi",
+            "marca": "Nissan",
+            "marcaMotor": "1.8l",
+            "modelo": "Versa",
+            "no_motor": "",
+            "placas": "k60bdr",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NNDAPNVd0zJlFuco9oL",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.6L",
+            "placas": "LF72274",
+            "transmision": "Estandar",
+            "vinChasis": "EB241066"
+          },
+          {
+            "id": "-NNDYqgZKYMw3S_VrHwX",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "NV 2500",
+            "no_motor": "2.5L",
+            "placas": "lf56367",
+            "transmision": "Estandar",
+            "vinChasis": "G9015509"
+          },
+          {
+            "id": "-NPNhyWd6r8KcbdHux2f",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "NPP6598",
+            "transmision": "Estandar",
+            "vinChasis": "HK204008"
+          },
+          {
+            "id": "-NR5hnuCn_l9BFQH8qkU",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "nhw7499",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NRESZ_Y4WLCgF2xQJKP",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "Y31ANC",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NS86HbuUjqdn1g7Byd_",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6L",
+            "placas": "Y26ASD",
+            "transmision": "Estandar",
+            "vinChasis": "JK194173"
+          },
+          {
+            "id": "-NTuee9khBG0KTMkaPwE",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "473zdg",
+            "transmision": "Estandar"
+          },
+          {
+            "anio": "2014",
+            "categoria": "PickUp",
+            "cilindros": "4",
+            "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+            "color": "Blanco",
+            "engomado": "amarillo",
+            "id": "-NYPu55aZpYVc0PthtWF",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.8 L",
+            "placas": "LF51906",
+            "transmision": "Estandar",
+            "vinChasis": "LF51906"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3000,
+          "descripcion": "",
+          "flotilla2": "$  3,000.00",
+          "id": "-Namd75bT-9i9YdlelJn",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar tambores traseros",
+          "normal": "$  3,900.00",
+          "precio": 1600,
+          "status": true,
+          "tipo": "mo",
+          "total": 3000
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1500,
+          "descripcion": "",
+          "flotilla2": "$  1,500.00",
+          "id": "-Namdde1qg3ppJYoYGlZ",
+          "index": 1,
+          "marca": "",
+          "nombre": "Cambiar jgo de resortes y ajustadores de balatas",
+          "normal": "$  1,950.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1500
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1600,
+          "descripcion": "",
+          "flotilla2": "$  1,600.00",
+          "id": "-Namdodwc83Kbz8_vLfl",
+          "index": 2,
+          "marca": "",
+          "nombre": "Cambio de balatas trasera y conformar",
+          "normal": "$  2,080.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1600
+        }
+      ],
+      "fecha": "1/8/2023",
+      "formaPago": "1",
+      "hora": "13:51:25",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00570",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00570?alt=media&token=43ff4aab-f2f9-493e-9682-5d1411b31cf2",
+      "reporte": {
+        "descuento": 0,
+        "iva": 976,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 6100,
+        "sobrescrito_mo": 6100,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 6100,
+        "total": 7075.999999999999,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NNDAPNVd0zJlFuco9oL",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Tornado ",
+        "no_motor": "1.6L",
+        "placas": "LF72274",
+        "transmision": "Estandar",
+        "vinChasis": "EB241066"
+      },
+      "vencimiento": "21/8/2023"
+    },
+    "-Name1XWD0i9yal71yZX": {
+      "cliente": {
+        "apellidos": "BOTELLO",
+        "correo": "rocio.botello@risoul.com",
+        "correo_sec": "",
+        "empresa": "RISOUL Y CIA SA DE CV",
+        "fullname": "ROCIO BOTELLO",
+        "id": "-NMVhbvvR8NX-Ph4aaxv",
+        "no_cliente": "ROBOToNaNaN0048",
+        "nombre": "ROCIO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_fijo": "",
+        "telefono_movil": "8180205005",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NMVhm7to72zN3g6UtKi",
+            "marca": "Nissan",
+            "marcaMotor": "1.8l",
+            "modelo": "Versa",
+            "no_motor": "",
+            "placas": "k60bdr",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NNDAPNVd0zJlFuco9oL",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.6L",
+            "placas": "LF72274",
+            "transmision": "Estandar",
+            "vinChasis": "EB241066"
+          },
+          {
+            "id": "-NNDYqgZKYMw3S_VrHwX",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "NV 2500",
+            "no_motor": "2.5L",
+            "placas": "lf56367",
+            "transmision": "Estandar",
+            "vinChasis": "G9015509"
+          },
+          {
+            "id": "-NPNhyWd6r8KcbdHux2f",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "NPP6598",
+            "transmision": "Estandar",
+            "vinChasis": "HK204008"
+          },
+          {
+            "id": "-NR5hnuCn_l9BFQH8qkU",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "nhw7499",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NRESZ_Y4WLCgF2xQJKP",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "Y31ANC",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NS86HbuUjqdn1g7Byd_",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6L",
+            "placas": "Y26ASD",
+            "transmision": "Estandar",
+            "vinChasis": "JK194173"
+          },
+          {
+            "id": "-NTuee9khBG0KTMkaPwE",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "473zdg",
+            "transmision": "Estandar"
+          },
+          {
+            "anio": "2014",
+            "categoria": "PickUp",
+            "cilindros": "4",
+            "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+            "color": "Blanco",
+            "engomado": "amarillo",
+            "id": "-NYPu55aZpYVc0PthtWF",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.8 L",
+            "placas": "LF51906",
+            "transmision": "Estandar",
+            "vinChasis": "LF51906"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3000,
+          "descripcion": "",
+          "flotilla2": "$  3,000.00",
+          "id": "-Namd75bT-9i9YdlelJn",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar tambores traseros",
+          "normal": "$  3,900.00",
+          "precio": 1600,
+          "status": true,
+          "tipo": "mo",
+          "total": 3000
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1500,
+          "descripcion": "",
+          "flotilla2": "$  1,500.00",
+          "id": "-Namdde1qg3ppJYoYGlZ",
+          "index": 1,
+          "marca": "",
+          "nombre": "Cambiar jgo de resortes y ajustadores de balatas",
+          "normal": "$  1,950.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1500
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1600,
+          "descripcion": "",
+          "flotilla2": "$  1,600.00",
+          "id": "-Namdodwc83Kbz8_vLfl",
+          "index": 2,
+          "marca": "",
+          "nombre": "Cambio de balatas trasera y conformar",
+          "normal": "$  2,080.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1600
+        }
+      ],
+      "fecha": "1/8/2023",
+      "formaPago": "1",
+      "hora": "13:51:49",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00571",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00571?alt=media&token=77f90a80-e320-4e98-a6e8-a748888bebd2",
+      "reporte": {
+        "descuento": 0,
+        "iva": 976,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 6100,
+        "sobrescrito_mo": 6100,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 6100,
+        "total": 7075.999999999999,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NNDAPNVd0zJlFuco9oL",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Tornado ",
+        "no_motor": "1.6L",
+        "placas": "LF72274",
+        "transmision": "Estandar",
+        "vinChasis": "EB241066"
+      },
+      "vencimiento": "21/8/2023"
+    },
+    "-NarOMYbV_E_l69i-wet": {
+      "cliente": {
+        "apellidos": "CRUZ FLORES",
+        "correo": "salvador.cruzf@gmail.com",
+        "empresa": "",
+        "fullname": "SALVADOR CRUZ FLORES",
+        "id": "-NarLzZzwKQsdQKnmGCS",
+        "no_cliente": "SACRTO08230365",
+        "nombre": "SALVADOR",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5578722255",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2600,
+          "descripcion": "",
+          "flotilla2": "$  2,600.00",
+          "id": "-NarMhgS7wd0JB6wDMPb",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar recuperador de refrigerante",
+          "normal": "$  3,380.00",
+          "precio": 1300,
+          "status": true,
+          "tipo": "mo",
+          "total": 2600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1400,
+          "descripcion": "",
+          "flotilla2": "$  1,400.00",
+          "id": "-NarOE0LWchjMtDxb30P",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplzar mangueras de calefaccion",
+          "normal": "$  1,820.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1400
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 600,
+          "descripcion": "",
+          "flotilla2": "$  600.00",
+          "id": "-NarOIPqvWog7J2LB4M_",
+          "index": 2,
+          "marca": "",
+          "nombre": "Purgar sistema de enfriamiento",
+          "normal": "$  780.00",
+          "precio": 200,
+          "status": true,
+          "tipo": "mo",
+          "total": 600
+        }
+      ],
+      "fecha": "2/8/2023",
+      "formaPago": "1",
+      "hora": "11:57:4",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00572",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00572?alt=media&token=187d99a5-e2b1-4f6b-8ef1-71b6317a1a40",
+      "reporte": {
+        "descuento": 0,
+        "iva": 736,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4600,
+        "sobrescrito_mo": 4600,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4600,
+        "total": 5336,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2014",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NarLzZzwKQsdQKnmGCS",
+        "color": "Plata",
+        "engomado": "rosa",
+        "id": "-NarMOAyAlFNq3_TdktH",
+        "marca": "Ford",
+        "marcaMotor": "",
+        "modelo": "Fiesta",
+        "no_motor": "1.6 L",
+        "placas": "nuv4007",
+        "transmision": "Estandar",
+        "vinChasis": "em164466"
+      },
+      "vencimiento": "22/8/2023"
+    },
+    "-NasdJl_d8MqEQ5p4FU6": {
+      "cliente": {
+        "apellidos": "MARTINEZ PEREZ",
+        "correo": "brendamtzp@gmail.com",
+        "empresa": "",
+        "fullname": "BRENDA MARTINEZ PEREZ",
+        "id": "-NasbJIkOtmGIOwwdiU9",
+        "no_cliente": "BRMATO08230366",
+        "nombre": "BRENDA",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5523209430",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3200,
+          "descripcion": "",
+          "flotilla2": "$  3,200.00",
+          "id": "-NasbzGmpEKYX0R5oez5",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar kit de distribucion",
+          "normal": "$  4,160.00",
+          "precio": 1600,
+          "status": true,
+          "tipo": "mo",
+          "total": 3200
+        }
+      ],
+      "fecha": "2/8/2023",
+      "formaPago": "1",
+      "hora": "17:46:24",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00573",
+      "nota": "INCLUYE BANDA DE TIEMPO, POLEA LOCA  Y POLEA TENSORA",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00573?alt=media&token=55bc4fec-837e-4299-91ee-db1e4923002b",
+      "reporte": {
+        "descuento": 0,
+        "iva": 512,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3200,
+        "sobrescrito_mo": 3200,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3200,
+        "total": 3711.9999999999995,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NasbJIkOtmGIOwwdiU9",
+        "color": "Blanco",
+        "engomado": "rojo",
+        "id": "-NasbV08TQs6QzoYfQjF",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Golf",
+        "no_motor": "1.2T",
+        "placas": "sinp113",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "22/8/2023"
+    },
+    "-Nasd_pFSOnxGgbntBMZ": {
+      "cliente": {
+        "apellidos": "MARTINEZ PEREZ",
+        "correo": "brendamtzp@gmail.com",
+        "empresa": "",
+        "fullname": "BRENDA MARTINEZ PEREZ",
+        "id": "-NasbJIkOtmGIOwwdiU9",
+        "no_cliente": "BRMATO08230366",
+        "nombre": "BRENDA",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5523209430",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3200,
+          "descripcion": "",
+          "flotilla2": "$  3,200.00",
+          "id": "-NasbzGmpEKYX0R5oez5",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar kit de distribucion",
+          "normal": "$  4,160.00",
+          "precio": 1600,
+          "status": true,
+          "tipo": "mo",
+          "total": 3200
+        }
+      ],
+      "fecha": "2/8/2023",
+      "formaPago": "1",
+      "hora": "17:47:35",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00574",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00574?alt=media&token=c7699eb8-c1ad-4ee1-999c-1df054629610",
+      "reporte": {
+        "descuento": 0,
+        "iva": 512,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3200,
+        "sobrescrito_mo": 3200,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3200,
+        "total": 3711.9999999999995,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NasbJIkOtmGIOwwdiU9",
+        "color": "Blanco",
+        "engomado": "rojo",
+        "id": "-NasbV08TQs6QzoYfQjF",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Golf",
+        "no_motor": "1.2T",
+        "placas": "sinp113",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "22/8/2023"
+    },
+    "-NawG2PAI8Ruzmm5MAg8": {
+      "cliente": {
+        "apellidos": "HANONO",
+        "correo": "tufic.hanono@hotmail.com",
+        "empresa": "",
+        "fullname": "TUFIC HANONO",
+        "id": "-NUTFSMOqnOHu4otpobx",
+        "no_cliente": "TUHATO05230209",
+        "nombre": "TUFIC",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5513537290",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "id": "-NUTGLBBEzbesZihRLj-",
+            "marca": "Jeep",
+            "modelo": "Wrangler",
+            "no_motor": "3.6 L",
+            "placas": "NSD3640",
+            "transmision": "Automatica",
+            "vinChasis": "BL592161"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1900,
+          "descripcion": "",
+          "flotilla2": "$  2,375.00",
+          "id": "-Naw1tT02qLaWXT68EnR",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar tubo de circulacion de aceite t/a",
+          "normal": "$  3,087.50",
+          "precio": 1400,
+          "status": true,
+          "tipo": "refaccion",
+          "total": 2375
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 4300,
+          "descripcion": "",
+          "flotilla2": "$  4,300.00",
+          "id": "-Naw2PBdaTrEWnSEz_QC",
+          "index": 1,
+          "marca": "",
+          "nombre": "Aceite atf+4 y coladera de t/a",
+          "normal": "$  5,590.00",
+          "precio": 2850,
+          "status": true,
+          "tipo": "mo",
+          "total": 4300
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 13100,
+          "descripcion": "",
+          "flotilla2": "$  13,100.00",
+          "id": "-NawDuSWToFbJa7r7NMO",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar convertidor de torsion",
+          "normal": "$  17,030.00",
+          "precio": 6500,
+          "status": true,
+          "tipo": "mo",
+          "total": 13100
+        }
+      ],
+      "fecha": "3/8/2023",
+      "formaPago": "1",
+      "hora": "10:38:50",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00575",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00575?alt=media&token=11ed8f8b-92c6-46da-ba0e-335f6ec409dd",
+      "reporte": {
+        "descuento": 0,
+        "iva": 3164,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 19775,
+        "sobrescrito_mo": 17400,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 2375,
+        "subtotal": 19775,
+        "total": 22939,
+        "ub": 90.39190897597977
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NUTGLBBEzbesZihRLj-",
+        "marca": "Jeep",
+        "modelo": "Wrangler",
+        "no_motor": "3.6 L",
+        "placas": "NSD3640",
+        "transmision": "Automatica",
+        "vinChasis": "BL592161"
+      },
+      "vencimiento": "23/8/2023"
+    },
+    "-NawzJ0Cf3bL19BX-Yak": {
+      "cliente": {
+        "apellidos": "MONSIVAIS",
+        "correo": "nadres.monsavais@agmcontrucciones.com",
+        "empresa": "",
+        "fullname": "ANDRES MONSIVAIS",
+        "id": "-NawxjuZLb50IG4fX5Qu",
+        "no_cliente": "ANMOTO08230367",
+        "nombre": "ANDRES",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5540846838",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1950,
+          "descripcion": "",
+          "flotilla2": "$  1,950.00",
+          "id": "-NawyTJpIotztPOuTxvL",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar maza balero derecho delantero",
+          "normal": "$  2,535.00",
+          "precio": 900,
+          "status": true,
+          "tipo": "mo",
+          "total": 1950
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2600,
+          "descripcion": "",
+          "flotilla2": "$  2,600.00",
+          "id": "-NawycI8GxR3V0SvZC1V",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar soporte de motor derecho",
+          "normal": "$  3,380.00",
+          "precio": 1300,
+          "status": true,
+          "tipo": "mo",
+          "total": 2600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1900,
+          "descripcion": "",
+          "flotilla2": "$  1,900.00",
+          "id": "-NawykAIgP8kUzJuPFW3",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar soporte de trasmision",
+          "normal": "$  2,470.00",
+          "precio": 950,
+          "status": true,
+          "tipo": "mo",
+          "total": 1900
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1500,
+          "descripcion": "",
+          "flotilla2": "$  1,500.00",
+          "id": "-NawywVDKVgLharrxGwm",
+          "index": 3,
+          "marca": "",
+          "nombre": "Reemplazar bujes flotantes de horquillas",
+          "normal": "$  1,950.00",
+          "precio": 500,
+          "status": true,
+          "tipo": "mo",
+          "total": 1500
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 800,
+          "descripcion": "",
+          "flotilla2": "$  800.00",
+          "id": "-NawzCK1JFbmt-avyH0z",
+          "index": 4,
+          "marca": "",
+          "nombre": "Reemplazar cubre polvos espiga derecha",
+          "normal": "$  1,040.00",
+          "precio": 300,
+          "status": true,
+          "tipo": "mo",
+          "total": 800
+        }
+      ],
+      "fecha": "3/8/2023",
+      "formaPago": "1",
+      "hora": "14:0:58",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00576",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00576?alt=media&token=43b95045-471c-41b1-a264-41d4d86816ea",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1400,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 8750,
+        "sobrescrito_mo": 8750,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 8750,
+        "total": 10150,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2001",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NawxjuZLb50IG4fX5Qu",
+        "color": "Plata",
+        "engomado": "azul",
+        "id": "-NawxvHRzjaQ30FtbYA5",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Golf",
+        "no_motor": "2.0 L",
+        "placas": "850vfu",
+        "transmision": "Estandar",
+        "vinChasis": "1W188702"
+      },
+      "vencimiento": "23/8/2023"
+    },
+    "-NaxFu0-vxvpVozzx3zR": {
+      "cliente": {
+        "apellidos": "BOTELLO",
+        "correo": "rocio.botello@risoul.com",
+        "correo_sec": "",
+        "empresa": "RISOUL Y CIA SA DE CV",
+        "fullname": "ROCIO BOTELLO",
+        "id": "-NMVhbvvR8NX-Ph4aaxv",
+        "no_cliente": "ROBOToNaNaN0048",
+        "nombre": "ROCIO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_fijo": "",
+        "telefono_movil": "8180205005",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NMVhm7to72zN3g6UtKi",
+            "marca": "Nissan",
+            "marcaMotor": "1.8l",
+            "modelo": "Versa",
+            "no_motor": "",
+            "placas": "k60bdr",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NNDAPNVd0zJlFuco9oL",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.6L",
+            "placas": "LF72274",
+            "transmision": "Estandar",
+            "vinChasis": "EB241066"
+          },
+          {
+            "id": "-NNDYqgZKYMw3S_VrHwX",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "NV 2500",
+            "no_motor": "2.5L",
+            "placas": "lf56367",
+            "transmision": "Estandar",
+            "vinChasis": "G9015509"
+          },
+          {
+            "id": "-NPNhyWd6r8KcbdHux2f",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "NPP6598",
+            "transmision": "Estandar",
+            "vinChasis": "HK204008"
+          },
+          {
+            "id": "-NR5hnuCn_l9BFQH8qkU",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "nhw7499",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NRESZ_Y4WLCgF2xQJKP",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "Y31ANC",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NS86HbuUjqdn1g7Byd_",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6L",
+            "placas": "Y26ASD",
+            "transmision": "Estandar",
+            "vinChasis": "JK194173"
+          },
+          {
+            "id": "-NTuee9khBG0KTMkaPwE",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "473zdg",
+            "transmision": "Estandar"
+          },
+          {
+            "anio": "2014",
+            "categoria": "PickUp",
+            "cilindros": "4",
+            "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+            "color": "Blanco",
+            "engomado": "amarillo",
+            "id": "-NYPu55aZpYVc0PthtWF",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.8 L",
+            "placas": "LF51906",
+            "transmision": "Estandar",
+            "vinChasis": "LF51906"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1600,
+          "descripcion": "",
+          "flotilla2": "$  1,600.00",
+          "id": "-Nax2YyBVSGOYIKaE2sa",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar maza balero izquierda delantera",
+          "normal": "$  2,080.00",
+          "precio": 800,
+          "status": true,
+          "tipo": "mo",
+          "total": 1600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1460,
+          "descripcion": "",
+          "flotilla2": "$  1,460.00",
+          "id": "-NaxE0kUKbjOBQkvQRh0",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar bases de amortiguadores del",
+          "normal": "$  1,898.00",
+          "precio": 720,
+          "status": true,
+          "tipo": "mo",
+          "total": 1460
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 5900,
+          "descripcion": "",
+          "flotilla2": "$  5,900.00",
+          "id": "-NaxEEhUTJzIai8_Mfyc",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores delanteros",
+          "normal": "$  7,670.00",
+          "precio": 300,
+          "status": true,
+          "tipo": "mo",
+          "total": 5900
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1200,
+          "descripcion": "",
+          "flotilla2": "$  1,200.00",
+          "id": "-NaxEWmN5nKPoDSD26C2",
+          "index": 3,
+          "marca": "",
+          "nombre": "Reemplazar gomas de barra estabilizadora",
+          "normal": "$  1,560.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 1200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1700,
+          "descripcion": "",
+          "flotilla2": "$  1,700.00",
+          "id": "-NaxElM9vwsEjK2BmsZl",
+          "index": 4,
+          "marca": "",
+          "nombre": "Reemplazar frenos delanteros y rectifcar rotores",
+          "normal": "$  2,210.00",
+          "precio": 900,
+          "status": true,
+          "tipo": "mo",
+          "total": 1700
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1400,
+          "descripcion": "",
+          "flotilla2": "$  1,400.00",
+          "id": "-NaxFJ-SPv2DaEw7jLGl",
+          "index": 5,
+          "marca": "",
+          "nombre": "Reemplazar soporte central inferior",
+          "normal": "$  1,820.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1400
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 750,
+          "descripcion": "",
+          "flotilla2": "$  750.00",
+          "id": "-NaxFPmIHSSxWp_THGJk",
+          "index": 6,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  975.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 750
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1900,
+          "descripcion": "",
+          "flotilla2": "$  1,900.00",
+          "id": "-NaxFm4DSwqyhdUQvNta",
+          "index": 7,
+          "marca": "",
+          "nombre": "Reemplazar bujes de tirantes",
+          "normal": "$  2,470.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1900
+        }
+      ],
+      "fecha": "3/8/2023",
+      "formaPago": "1",
+      "hora": "15:17:49",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00577",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00577?alt=media&token=2f7fe73e-bbde-4eed-81ff-ea0e977e42dc",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2545.6,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 15910,
+        "sobrescrito_mo": 15910,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 15910,
+        "total": 18455.6,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "PickUp",
+        "cilindros": "4",
+        "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+        "color": "Blanco",
+        "engomado": "rojo",
+        "id": "-Nax1SJtXSxr5XNd1nrD",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Tornado ",
+        "no_motor": "1.8 L",
+        "placas": "LF75464",
+        "transmision": "Automatica",
+        "vinChasis": "GB147233"
+      },
+      "vencimiento": "23/8/2023"
+    },
+    "-Nb011EpJfTyoqTuhg0k": {
+      "cliente": {
+        "apellidos": "AMAYA BARBOSA",
+        "correo": "magdiel.amaya.barbosa@gmail.com",
+        "empresa": "",
+        "fullname": "MAGDIEL AMAYA BARBOSA",
+        "id": "-Nb0-Ralq2-qNR9BqoLG",
+        "no_cliente": "MAAMTO08230368",
+        "nombre": "MAGDIEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5520068748",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 15000,
+          "descripcion": "",
+          "flotilla2": "$  15,000.00",
+          "id": "-Nb00aHhUo-KNjejZRoa",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar conjunto de embrague hidraulico",
+          "normal": "$  19,500.00",
+          "precio": 8000,
+          "status": true,
+          "tipo": "mo",
+          "total": 15000
+        }
+      ],
+      "fecha": "4/8/2023",
+      "formaPago": "1",
+      "hora": "8:51:18",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00578",
+      "nota": "INCLUYE DISCO, PLATO, COLLARIN HIDRULICO, RECTIFICADO DE VOLANTE Y FLUIDO HIDRAULICO",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00578?alt=media&token=3c8987ed-fc75-4613-96e2-49e7ecbd7318",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2400,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 15000,
+        "sobrescrito_mo": 15000,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 15000,
+        "total": 17400,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-Nb0-Ralq2-qNR9BqoLG",
+        "color": "Plata",
+        "engomado": "amarillo",
+        "id": "-Nb00SXYotla3QbMeL3w",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Cruze",
+        "no_motor": "1.4 TURBO",
+        "placas": "pbc2985",
+        "transmision": "Estandar",
+        "vinChasis": "GS599193"
+      },
+      "vencimiento": "24/8/2023"
+    },
+    "-Nb0f5z08Yn7vDMtbOJ4": {
+      "cliente": {
+        "apellidos": "VPN SAPI DE CV",
+        "correo": "lalopaguirre@gmail.com",
+        "empresa": "",
+        "fullname": "RESTAURANTES VPN SAPI DE CV",
+        "id": "-Nb0e6VeHbADNz9STKwN",
+        "no_cliente": "REVPTO08230369",
+        "nombre": "RESTAURANTES",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "7295453605",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 4350,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 400,
+              "descripcion": "",
+              "id": "-Nb0eRUBSrtpceoe0Ne2",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 400
+            }
+          ],
+          "flotilla2": "$  4,350.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  5,655.00",
+          "precio": 4120,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 400,
+            "sobrescrito_refaccion": 0,
+            "total": 4120,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 4350
+        }
+      ],
+      "fecha": "4/8/2023",
+      "formaPago": "1",
+      "hora": "11:50:47",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00579",
+      "nota": "LA INSPECCION DE PUNTOS DE SEGURIDAD INCLUYE REVISION DE  DE SUSPENSION , DIRECCION, PRESION Y VIDA DE LLANTAS, PLUMAS DE LIMPIADORES, BANDAS LUCES Y FUGAS",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00579?alt=media&token=7ca487b4-a3b7-4036-9396-cc295ac9db02",
+      "reporte": {
+        "descuento": 0,
+        "iva": 696,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4350,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 4350,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4350,
+        "total": 5046,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2010",
+        "categoria": "Van",
+        "cilindros": "8",
+        "cliente": "-Nb0e6VeHbADNz9STKwN",
+        "color": "Blanco",
+        "engomado": "rojo",
+        "id": "-Nb0eJ7fPRz_nWqTdihs",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Express ",
+        "no_motor": "4.8 L",
+        "placas": "LF11643",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "24/8/2023"
+    },
+    "-Nb0lkWbMq8L0HI8Px0Y": {
+      "cliente": {
+        "apellidos": "MARTINEZ BAUTISTA",
+        "correo": "fher_mb@hotmail.com",
+        "empresa": "",
+        "fullname": "FERNANDO MARTINEZ BAUTISTA",
+        "id": "-Nb0jaH9il5dcwmJ1rc_",
+        "no_cliente": "FEMATO08230370",
+        "nombre": "FERNANDO",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5541855035",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 9600,
+          "descripcion": "",
+          "flotilla2": "$  9,600.00",
+          "id": "-Nb0lbDq_aqZuVkAuGEx",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores delanteros",
+          "normal": "$  12,480.00",
+          "precio": 4800,
+          "status": true,
+          "tipo": "mo",
+          "total": 9600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 850,
+          "descripcion": "",
+          "flotilla2": "$  850.00",
+          "id": "-Nb0lhOpurhwQtX-Woks",
+          "index": 1,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  1,105.00",
+          "precio": 650,
+          "status": true,
+          "tipo": "mo",
+          "total": 850
+        }
+      ],
+      "fecha": "4/8/2023",
+      "formaPago": "1",
+      "hora": "12:19:50",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00580",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00580?alt=media&token=9ebac611-7115-4545-9ead-edc026d962ed",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1672,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 10450,
+        "sobrescrito_mo": 10450,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 10450,
+        "total": 12122,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2017",
+        "categoria": "SUV",
+        "cilindros": "4",
+        "cliente": "-Nb0jaH9il5dcwmJ1rc_",
+        "color": "Rojo intenso",
+        "engomado": "rojo",
+        "id": "-Nb0jswVzxZ1L-TGqW98",
+        "marca": "Honda",
+        "marcaMotor": "",
+        "modelo": "CR-V",
+        "no_motor": "1.4 TURBO",
+        "placas": "sinp114",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "24/8/2023"
+    },
+    "-Nb0oIFscHM7ST-As4PO": {
+      "cliente": {
+        "apellidos": "MARTINEZ BAUTISTA",
+        "correo": "fher_mb@hotmail.com",
+        "empresa": "",
+        "fullname": "FERNANDO MARTINEZ BAUTISTA",
+        "id": "-Nb0jaH9il5dcwmJ1rc_",
+        "no_cliente": "FEMATO08230370",
+        "nombre": "FERNANDO",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5541855035",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 12000,
+          "descripcion": "",
+          "flotilla2": "$  12,000.00",
+          "id": "-Nb0lbDq_aqZuVkAuGEx",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores delanteros",
+          "normal": "$  15,600.00",
+          "precio": 4800,
+          "status": true,
+          "tipo": "mo",
+          "total": 12000
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 850,
+          "descripcion": "",
+          "flotilla2": "$  850.00",
+          "id": "-Nb0lhOpurhwQtX-Woks",
+          "index": 1,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  1,105.00",
+          "precio": 650,
+          "status": true,
+          "tipo": "mo",
+          "total": 850
+        }
+      ],
+      "fecha": "4/8/2023",
+      "formaPago": "1",
+      "hora": "12:30:57",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00581",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00581?alt=media&token=b3ebaa35-b0f6-4d4a-8b36-5b9da336341d",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2056,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 12850,
+        "sobrescrito_mo": 12850,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 12850,
+        "total": 14905.999999999998,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2017",
+        "categoria": "SUV",
+        "cilindros": "4",
+        "cliente": "-Nb0jaH9il5dcwmJ1rc_",
+        "color": "Rojo intenso",
+        "engomado": "rojo",
+        "id": "-Nb0jswVzxZ1L-TGqW98",
+        "marca": "Honda",
+        "marcaMotor": "",
+        "modelo": "CR-V",
+        "no_motor": "1.4 TURBO",
+        "placas": "sinp114",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "24/8/2023"
+    },
+    "-NbGu7OzIWdYDxT8OwZy": {
+      "cliente": {
+        "apellidos": "RAMIREZ",
+        "correo": "leonardo.ramirez@yahoo.com",
+        "empresa": "",
+        "fullname": "LEONARDO RAMIREZ",
+        "id": "-NUTPJ1_We4Bt2EFprND",
+        "no_cliente": "LERATO05230210",
+        "nombre": "LEONARDO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5535409095",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "id": "-NUTQCDN68GoizxYerRQ",
+            "marca": "Honda",
+            "modelo": "CR-V",
+            "no_motor": "2.4L",
+            "placas": "409ymj",
+            "transmision": "Automatica"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2200,
+          "descripcion": "",
+          "flotilla2": "$  2,200.00",
+          "id": "-NbGpTVliVJWEiqiV7ls",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar frenos delanteros y rectifcar rotores",
+          "normal": "$  2,860.00",
+          "precio": 960,
+          "status": true,
+          "tipo": "mo",
+          "total": 2200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1900,
+          "descripcion": "",
+          "flotilla2": "$  1,900.00",
+          "id": "-NbGpjWJ-BDKLXstbg1m",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemnplazar frenos traseros y rectificar tambores",
+          "normal": "$  2,470.00",
+          "precio": 780,
+          "status": true,
+          "tipo": "mo",
+          "total": 1900
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3600,
+          "descripcion": "",
+          "flotilla2": "$  3,600.00",
+          "id": "-NbGtPdaHcF3m3WIkjdF",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar baleros de flechas ",
+          "normal": "$  4,680.00",
+          "precio": 1800,
+          "status": true,
+          "tipo": "mo",
+          "total": 3600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1100,
+          "descripcion": "",
+          "flotilla2": "$  1,100.00",
+          "id": "-NbGthC27p0frpr40L7h",
+          "index": 3,
+          "marca": "",
+          "nombre": "Reemplazar aceite de diferencial",
+          "normal": "$  1,430.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 1100
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3450,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  3,450.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 4,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  4,485.00",
+          "precio": 3720,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 0,
+            "sobrescrito_refaccion": 0,
+            "total": 3720,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3450
+        }
+      ],
+      "fecha": "7/8/2023",
+      "formaPago": "1",
+      "hora": "15:30:20",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00582",
+      "nota": "CAMBIO DE FRENOS INCLUYE PASTILLAS DE CERAMICA Y BALATA DE ALTA POTENCIA\nNECESARIO REEMPLAZAR 2 LLANTAS  URGENTES",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00582?alt=media&token=caa6001a-a8b4-4f5c-9c71-0e3598cd9f83",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1960,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 12250,
+        "sobrescrito_mo": 8800,
+        "sobrescrito_paquetes": 3450,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 12250,
+        "total": 14209.999999999998,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2018",
+        "categoria": "Van",
+        "cilindros": "4",
+        "cliente": "-NUTPJ1_We4Bt2EFprND",
+        "color": "Blanco",
+        "engomado": "azul",
+        "id": "-NbGo_wZK_fMGFbE5PQB",
+        "marca": "Toyota ",
+        "marcaMotor": "",
+        "modelo": "HIace",
+        "no_motor": "2.7 L",
+        "placas": "l19anj",
+        "transmision": "Estandar",
+        "vinChasis": "j0075657"
+      },
+      "vencimiento": "27/8/2023"
+    },
+    "-NbLZkl1e0eb2Oe-ZP17": {
+      "cliente": {
+        "apellidos": "Electrix",
+        "correo": "capitalhumano@electricx.com.mx",
+        "empresa": "-NN2jwMclx-WqXdNjF_w",
+        "fullname": "Margarita Electrix",
+        "id": "-NOGpV-4C-GQNXvDfYud",
+        "no_cliente": "MAELCU02230092",
+        "nombre": "Margarita",
+        "showSucursal": "Culhuacán",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "telefono_movil": "5588480887",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NOGplQDko4ckBbt6A6Y",
+            "marca": "Nissan",
+            "modelo": "March",
+            "placas": "ntz3685",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NOH-Wn4PWYqnebWo_Im",
+            "marca": "Nissan",
+            "modelo": "March",
+            "placas": "NTZ3566",
+            "transmision": "Estandar"
+          },
+          {
+            "anio": "2019",
+            "categoria": "Sedán",
+            "cilindros": "4",
+            "cliente": "-NOGpV-4C-GQNXvDfYud",
+            "color": "Otros",
+            "engomado": "azul",
+            "id": "-NZ1v016s7mSawyG3k-k",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "March",
+            "no_motor": "",
+            "placas": " M60BBl",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "anio": "2019",
+            "categoria": "Sedán",
+            "cilindros": "4",
+            "cliente": "-NOGpV-4C-GQNXvDfYud",
+            "color": "Otros",
+            "engomado": "amarillo",
+            "id": "-NZ2Rk6mwSHNjrpkSxAA",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "March",
+            "no_motor": "",
+            "placas": "NTZ9886",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  2,679.00",
+          "id": "-NbLZ2CrIUaYnk_yRoFX",
+          "index": 0,
+          "marca": "",
+          "nombre": "Cambio de maza balero",
+          "normal": "$  3,482.70",
+          "precio": 2679,
+          "status": true,
+          "tipo": "mo",
+          "total": 2679
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  6,769.00",
+          "id": "-NbLZ9ETuJQ6Nc46_13A",
+          "index": 1,
+          "marca": "",
+          "nombre": "Cambio de clutch",
+          "normal": "$  8,799.70",
+          "precio": 6769,
+          "status": true,
+          "tipo": "mo",
+          "total": 6769
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  959.00",
+          "id": "-NbLZT5_p1MrnzEZmtwj",
+          "index": 2,
+          "marca": "",
+          "nombre": "Cambio de válvula pcv",
+          "normal": "$  1,246.70",
+          "precio": 959,
+          "status": true,
+          "tipo": "mo",
+          "total": 959
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 0,
+          "descripcion": "",
+          "flotilla2": "$  1,349.00",
+          "id": "-NbLZZXlogR-qvXdw35v",
+          "index": 3,
+          "marca": "",
+          "nombre": "Cambio de banda de accesorios",
+          "normal": "$  1,753.70",
+          "precio": 1349,
+          "status": true,
+          "tipo": "mo",
+          "total": 1349
+        }
+      ],
+      "fecha": "8/8/2023",
+      "formaPago": "1",
+      "hora": "13:15:4",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "CU0823GE00583",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FCU0823GE00583?alt=media&token=e9c79f74-2268-41c8-981e-bd43376049e8",
+      "reporte": {
+        "descuento": 0,
+        "iva": 1880.96,
+        "meses": 0,
+        "mo": 11756,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 0,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 11756,
+        "total": 13636.96,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "ventas_culhuacan@speed-service.com.mx",
+        "direccion": "Avenida Tlahuac # 4160 Col. Santa María Tomatlan, C.P. 09870 México DF.",
+        "id": "-N2glF34lV3Gj0bQyEWK",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/trabajo%20envio%20dionicio.PNG?alt=media&token=608cf798-c28e-4a01-8ea6-987bea99baeb",
+        "serie": "8PFRT119",
+        "status": true,
+        "sucursal": "Culhuacán",
+        "telefono": "5556951051"
+      },
+      "vehiculo": {
+        "id": "-NOH-Wn4PWYqnebWo_Im",
+        "marca": "Nissan",
+        "modelo": "March",
+        "placas": "NTZ3566",
+        "transmision": "Estandar"
+      },
+      "vencimiento": "28/8/2023"
+    },
+    "-NbUqzVVlR53VzmK-eQu": {
+      "cliente": {
+        "apellidos": "MERA",
+        "correo": "luis.mera@hotmail.com",
+        "empresa": "",
+        "fullname": "LUIS MERA",
+        "id": "-NbUqc8m-eD3q1UYUh4S",
+        "no_cliente": "LUMETO08230371",
+        "nombre": "LUIS",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5527125993",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3450,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NbUquOJaPwxjtciZ9hW",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  3,450.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  4,485.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3450
+        }
+      ],
+      "fecha": "10/8/2023",
+      "formaPago": "1",
+      "hora": "8:31:19",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00584",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00584?alt=media&token=7bc28cb2-9b4c-4ca0-812d-29b0f309e95a",
+      "reporte": {
+        "descuento": 0,
+        "iva": 552,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3450,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3450,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3450,
+        "total": 4001.9999999999995,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2013",
+        "categoria": "SUV",
+        "cilindros": "4",
+        "cliente": "-NbUqc8m-eD3q1UYUh4S",
+        "color": "Plata",
+        "engomado": "amarillo",
+        "id": "-NbUqoKO92xLmcCAiBMK",
+        "marca": "Chevrolet",
+        "marcaMotor": "",
+        "modelo": "Trax",
+        "no_motor": "1.6 L",
+        "placas": "sinp115",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "30/8/2023"
+    },
+    "-NbV72JGQRCD6ck_e581": {
+      "cliente": {
+        "apellidos": "BOTELLO",
+        "correo": "rocio.botello@risoul.com",
+        "correo_sec": "",
+        "empresa": "RISOUL Y CIA SA DE CV",
+        "fullname": "ROCIO BOTELLO",
+        "id": "-NMVhbvvR8NX-Ph4aaxv",
+        "no_cliente": "ROBOToNaNaN0048",
+        "nombre": "ROCIO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_fijo": "",
+        "telefono_movil": "8180205005",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NMVhm7to72zN3g6UtKi",
+            "marca": "Nissan",
+            "marcaMotor": "1.8l",
+            "modelo": "Versa",
+            "no_motor": "",
+            "placas": "k60bdr",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NNDAPNVd0zJlFuco9oL",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.6L",
+            "placas": "LF72274",
+            "transmision": "Estandar",
+            "vinChasis": "EB241066"
+          },
+          {
+            "id": "-NNDYqgZKYMw3S_VrHwX",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "NV 2500",
+            "no_motor": "2.5L",
+            "placas": "lf56367",
+            "transmision": "Estandar",
+            "vinChasis": "G9015509"
+          },
+          {
+            "id": "-NPNhyWd6r8KcbdHux2f",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "NPP6598",
+            "transmision": "Estandar",
+            "vinChasis": "HK204008"
+          },
+          {
+            "id": "-NR5hnuCn_l9BFQH8qkU",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "nhw7499",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NRESZ_Y4WLCgF2xQJKP",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "Y31ANC",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NS86HbuUjqdn1g7Byd_",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6L",
+            "placas": "Y26ASD",
+            "transmision": "Estandar",
+            "vinChasis": "JK194173"
+          },
+          {
+            "id": "-NTuee9khBG0KTMkaPwE",
+            "marca": "Nissan",
+            "modelo": "Tiida",
+            "no_motor": "1.6 L",
+            "placas": "473zdg",
+            "transmision": "Estandar"
+          },
+          {
+            "anio": "2014",
+            "categoria": "PickUp",
+            "cilindros": "4",
+            "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+            "color": "Blanco",
+            "engomado": "amarillo",
+            "id": "-NYPu55aZpYVc0PthtWF",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.8 L",
+            "placas": "LF51906",
+            "transmision": "Estandar",
+            "vinChasis": "LF51906"
+          },
+          {
+            "anio": "2016",
+            "categoria": "PickUp",
+            "cilindros": "4",
+            "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+            "color": "Blanco",
+            "engomado": "rojo",
+            "id": "-Nax1SJtXSxr5XNd1nrD",
+            "marca": "Chevrolet",
+            "marcaMotor": "",
+            "modelo": "Tornado ",
+            "no_motor": "1.8 L",
+            "placas": "LF75464",
+            "transmision": "Automatica",
+            "vinChasis": "GB147233"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3450,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 200,
+              "descripcion": "",
+              "id": "-NbV41wOyvXN6dUFZe7t",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos traseros",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 200
+            }
+          ],
+          "flotilla2": "$  3,450.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  4,485.00",
+          "precio": 3920,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 200,
+            "sobrescrito_refaccion": 0,
+            "total": 3920,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3450
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1700,
+          "descripcion": "",
+          "flotilla2": "$  1,700.00",
+          "id": "-NbV48vAF6dDoew0Ub6a",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar frenos delanteros",
+          "normal": "$  2,210.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1700
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2600,
+          "descripcion": "",
+          "flotilla2": "$  2,600.00",
+          "id": "-NbV4DnXU9cuAh4IhLV4",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar discos delanteros",
+          "normal": "$  3,380.00",
+          "precio": 140,
+          "status": true,
+          "tipo": "mo",
+          "total": 2600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1600,
+          "descripcion": "",
+          "flotilla2": "$  1,600.00",
+          "id": "-NbV4IfW5gTmwaREzuyu",
+          "index": 3,
+          "marca": "",
+          "nombre": "Reemplazar banda de accesorios",
+          "normal": "$  2,080.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 800,
+          "descripcion": "",
+          "flotilla2": "$  800.00",
+          "id": "-NbV4WZ59Hf0QjAB9MMS",
+          "index": 4,
+          "marca": "",
+          "nombre": "Reponer 8 tuercas de birlos faltantes",
+          "normal": "$  1,040.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3400,
+          "descripcion": "",
+          "flotilla2": "$  3,400.00",
+          "id": "-NbV4fhs20PtB6Uuexfm",
+          "index": 5,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores delanteros",
+          "normal": "$  4,420.00",
+          "precio": 1700,
+          "status": true,
+          "tipo": "mo",
+          "total": 3400
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 750,
+          "descripcion": "",
+          "flotilla2": "$  750.00",
+          "id": "-NbV4kA1GKJ9jNi9DXuB",
+          "index": 6,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  975.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 750
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3200,
+          "descripcion": "",
+          "flotilla2": "$  3,200.00",
+          "id": "-NbV506eHktNtzcVgtuB",
+          "index": 7,
+          "marca": "",
+          "nombre": "Reemplazar bateria  y regimen de carga",
+          "normal": "$  4,160.00",
+          "precio": 2400,
+          "status": true,
+          "tipo": "mo",
+          "total": 3200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 400,
+          "descripcion": "",
+          "flotilla2": "$  400.00",
+          "id": "-NbV6x5_Nib9SJMDCkNs",
+          "index": 8,
+          "marca": "",
+          "nombre": "Reemplazar plumas de limpiadores",
+          "normal": "$  520.00",
+          "precio": 300,
+          "status": true,
+          "tipo": "mo",
+          "total": 400
+        }
+      ],
+      "fecha": "10/8/2023",
+      "formaPago": "1",
+      "hora": "9:45:50",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00585",
+      "nota": "NISSAN NV350 AÑO 2016 PLACAS LP14227 KM 345,047 COLOR BLANCO",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00585?alt=media&token=9fa89123-d4c0-4530-9597-37b5fd327136",
+      "reporte": {
+        "descuento": 0,
+        "iva": 2864,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 17900,
+        "sobrescrito_mo": 14450,
+        "sobrescrito_paquetes": 3450,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 17900,
+        "total": 20764,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "Van",
+        "cilindros": "4",
+        "cliente": "-NMVhbvvR8NX-Ph4aaxv",
+        "color": "Blanco",
+        "engomado": "rosa",
+        "id": "-NbV3lHMrUIKScUd7Ua4",
+        "marca": "Nissan",
+        "marcaMotor": "",
+        "modelo": "NV 2500",
+        "no_motor": "2.5L",
+        "placas": "lf14227",
+        "transmision": "Estandar",
+        "vinChasis": "G9015658"
+      },
+      "vencimiento": "30/8/2023"
+    },
+    "-NbVi6HC8LeXkOh4p3Bu": {
+      "cliente": {
+        "apellidos": "VERNAL",
+        "correo": "johandavid.venal@hotmail.com",
+        "empresa": "",
+        "fullname": "JOHAN DAVID VERNAL",
+        "id": "-NbVhLVXzmDtWzS8W2fI",
+        "no_cliente": "JOVETO08230372",
+        "nombre": "JOHAN DAVID",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5561017058",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3450,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NbVhh99Qp8yJJrXeK3S",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  3,450.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  4,485.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3450
+        }
+      ],
+      "fecha": "10/8/2023",
+      "formaPago": "1",
+      "hora": "12:32:10",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00586",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00586?alt=media&token=9fc2a75a-c276-4722-953d-21456d9d49b9",
+      "reporte": {
+        "descuento": 0,
+        "iva": 552,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3450,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3450,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3450,
+        "total": 4001.9999999999995,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2018",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NbVhLVXzmDtWzS8W2fI",
+        "color": "Gris",
+        "engomado": "amarillo",
+        "id": "-NbVi1c0U9m0aduRFWgm",
+        "marca": "Mitsubishi",
+        "modelo": "Mirage",
+        "no_motor": "1.6 L",
+        "placas": "sinp116",
+        "transmision": "Estandar"
+      },
+      "vencimiento": "30/8/2023"
+    },
+    "-NbVqO3qZUXORqtBczug": {
+      "cliente": {
+        "apellidos": "PETER",
+        "correo": "peter@peter.com",
+        "empresa": "",
+        "fullname": "PETER PETER",
+        "id": "-NbVkMac6hZvSZqPM2dF",
+        "no_cliente": "PEPETO08230373",
+        "nombre": "PETER",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5579403289",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 4950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 600,
+              "descripcion": "",
+              "id": "-NbVqDNBFfgVdP1rU-Ny",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 200,
+              "status": true,
+              "tipo": "mo",
+              "total": 600
+            }
+          ],
+          "flotilla2": "$  4,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  6,435.00",
+          "precio": 4320,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 600,
+            "sobrescrito_refaccion": 0,
+            "total": 4320,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 4950
+        }
+      ],
+      "fecha": "10/8/2023",
+      "formaPago": "1",
+      "hora": "13:8:19",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00587",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00587?alt=media&token=380ced82-e126-4997-9c61-ae9de86603cf",
+      "reporte": {
+        "descuento": 0,
+        "iva": 792,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4950,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 4950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4950,
+        "total": 5742,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2020",
+        "categoria": "SUV lujo",
+        "cilindros": "4",
+        "cliente": "-NbVkMac6hZvSZqPM2dF",
+        "color": "Negro",
+        "engomado": "rosa",
+        "id": "-NbVq4qDlWOO74I0bi0c",
+        "marca": "Audi",
+        "marcaMotor": "",
+        "modelo": "Q2",
+        "no_motor": "GASOLINA",
+        "placas": "sinp117",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "30/8/2023"
+    },
+    "-NbVsJxLGh8twhZE8XN9": {
+      "cliente": {
+        "apellidos": "MARTINEZ ALVAREZgus",
+        "correo": "gusz2309@gmail.com",
+        "empresa": "",
+        "fullname": "GUSTAVO MARTINEZ ALVAREZgus",
+        "id": "-NbVrKPxqkOPFL3QZAJW",
+        "no_cliente": "GUMATO08230374",
+        "nombre": "GUSTAVO",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5534559264",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3450,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NbVsGkor-jFXZY1ugd1",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  3,450.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  4,485.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3450
+        }
+      ],
+      "fecha": "10/8/2023",
+      "formaPago": "1",
+      "hora": "13:16:47",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00588",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00588?alt=media&token=84a0a0e4-1804-4669-b82f-d1edf5cdaa51",
+      "reporte": {
+        "descuento": 0,
+        "iva": 552,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3450,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3450,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3450,
+        "total": 4001.9999999999995,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2017",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NbVrKPxqkOPFL3QZAJW",
+        "color": "Blanco",
+        "engomado": "rosa",
+        "id": "-NbVs7aBnARQvguSCo7y",
+        "marca": "Hyundai",
+        "marcaMotor": "",
+        "modelo": "i10",
+        "no_motor": "1.2 L",
+        "placas": "sinp118",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "30/8/2023"
+    },
+    "-NbW8wF_o5RXMf8xDji4": {
+      "cliente": {
+        "apellidos": "ANDRADE",
+        "correo": "paty.andrade@gmail.com",
+        "empresa": "",
+        "fullname": "PATRICIA ANDRADE",
+        "id": "-NbW5xG6w6J_T0iIouZT",
+        "no_cliente": "PAANTO08230375",
+        "nombre": "PATRICIA",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5552524674",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2400,
+          "descripcion": "",
+          "flotilla2": "$  2,400.00",
+          "id": "-NbW8NYs7re5Gg_jShS1",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar bomba de aceite",
+          "normal": "$  3,120.00",
+          "precio": 690,
+          "status": true,
+          "tipo": "mo",
+          "total": 2400
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 980,
+          "descripcion": "",
+          "flotilla2": "$  980.00",
+          "id": "-NbW8_z_SzOtqeSUv8EL",
+          "index": 1,
+          "marca": "",
+          "nombre": "Cambio de aceite y filtro ",
+          "normal": "$  1,274.00",
+          "precio": 600,
+          "status": true,
+          "tipo": "mo",
+          "total": 980
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1950,
+          "descripcion": "",
+          "flotilla2": "$  1,950.00",
+          "id": "-NbW8ralP0L2NnR16K6M",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar tensor de cadena de tiempo",
+          "normal": "$  2,535.00",
+          "precio": 500,
+          "status": true,
+          "tipo": "mo",
+          "total": 1950
+        }
+      ],
+      "fecha": "10/8/2023",
+      "formaPago": "1",
+      "hora": "14:33:43",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00589",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00589?alt=media&token=ab5b4298-ee79-4095-a3f7-39201fa936c0",
+      "reporte": {
+        "descuento": 0,
+        "iva": 852.8000000000001,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 5330,
+        "sobrescrito_mo": 5330,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 5330,
+        "total": 6182.799999999999,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2008",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NbW5xG6w6J_T0iIouZT",
+        "color": "Plata",
+        "engomado": "rojo",
+        "id": "-NbW6DrfjssyMzXkFIB8",
+        "marca": "Volkswagen",
+        "marcaMotor": "",
+        "modelo": "Jetta",
+        "no_motor": "2.0 L",
+        "placas": "NLP6573",
+        "transmision": "Automatica",
+        "vinChasis": "8M603761"
+      },
+      "vencimiento": "30/8/2023"
+    },
+    "-NbZzGreSt1Gqyp_DouP": {
+      "cliente": {
+        "apellidos": "VALLEJO REYES",
+        "correo": "ana.vallejo@formex.com",
+        "empresa": "-NOKZ9_TIGd24I5Eqf5P",
+        "fullname": "ANA SILVIA VALLEJO REYES",
+        "id": "-NOK_-lIuYdZjnfwObya",
+        "no_cliente": "ANVATO02230094",
+        "nombre": "ANA SILVIA",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5574189408",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NOQ3dFScDIZVPwGW8eR",
+            "marca": "Ford",
+            "modelo": "F-350",
+            "no_motor": "5.4 L",
+            "placas": "LE40122",
+            "transmision": "Estandar",
+            "vinChasis": "1M101095"
+          },
+          {
+            "id": "-NX0mAMW24Nye6DRgo1R",
+            "marca": "Ford",
+            "marcaMotor": "",
+            "modelo": "F-350",
+            "no_motor": "",
+            "placas": "le26140",
+            "transmision": "Estandar",
+            "vinChasis": "aea49283"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2800,
+          "descripcion": "",
+          "flotilla2": "$  2,800.00",
+          "id": "-NbZw_X69wNlA8Pn0naz",
+          "index": 0,
+          "marca": "",
+          "nombre": "Repararmarcha",
+          "normal": "$  3,640.00",
+          "precio": 1400,
+          "status": true,
+          "tipo": "mo",
+          "total": 2800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 17500,
+          "descripcion": "",
+          "flotilla2": "$  17,500.00",
+          "id": "-NbZwpRtcwUE43NaBeIB",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reacondicionar  caja de velocidades",
+          "normal": "$  22,750.00",
+          "precio": 7500,
+          "status": true,
+          "tipo": "mo",
+          "total": 17500
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 900,
+          "descripcion": "",
+          "flotilla2": "$  900.00",
+          "id": "-NbZx4VOFo6zz2nmUVkO",
+          "index": 2,
+          "marca": "",
+          "nombre": "Cambio de aceite de transmision",
+          "normal": "$  1,170.00",
+          "precio": 400,
+          "status": true,
+          "tipo": "mo",
+          "total": 900
+        }
+      ],
+      "fecha": "11/8/2023",
+      "formaPago": "1",
+      "hora": "8:25:37",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00590",
+      "nota": "REPARACION DE CAJA INCLUYE: CAMBIO DE BRONCES, TREN DE ENGRANAJE, BALEROS DESMONTAR Y MONTAR CAJA DE VELOCIDADES\nTIEMPO DE REPARACION 10 DIAS HABILES\nA RESERVA DE OBSERVAR EL CLUTCH  YA CON LA CAJA DESMONTADA PORDRIA SER NECESARIO CAMBIARLO",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00590?alt=media&token=3a7c6782-c67f-4313-b31b-d128f0152fec",
+      "reporte": {
+        "descuento": 0,
+        "iva": 3392,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 21200,
+        "sobrescrito_mo": 21200,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 21200,
+        "total": 24592,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NOQ3dFScDIZVPwGW8eR",
+        "marca": "Ford",
+        "modelo": "F-350",
+        "no_motor": "5.4 L",
+        "placas": "LE40122",
+        "transmision": "Estandar",
+        "vinChasis": "1M101095"
+      },
+      "vencimiento": "31/8/2023"
+    },
+    "-Nb_8-AWiKq5ZVi5_0YO": {
+      "cliente": {
+        "apellidos": "ANDRADE",
+        "correo": "jesus.andrade@hotmail.com",
+        "empresa": "",
+        "fullname": "JESUS ANDRADE",
+        "id": "-Nb_6aUDeL0SsGdO22kC",
+        "no_cliente": "JEANTO08230376",
+        "nombre": "JESUS",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5554008684",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2200,
+          "descripcion": "",
+          "flotilla2": "$  2,200.00",
+          "id": "-Nb_7i4nYbUD7wf9n_8x",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar bujes de horuillas",
+          "normal": "$  2,860.00",
+          "precio": 900,
+          "status": true,
+          "tipo": "mo",
+          "total": 2200
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 650,
+          "descripcion": "",
+          "flotilla2": "$  650.00",
+          "id": "-Nb_7ljmlXzWtkikg9SG",
+          "index": 1,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  845.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 650
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 1500,
+          "descripcion": "",
+          "flotilla2": "$  1,500.00",
+          "id": "-Nb_7vgb8DgGNHYxYV1m",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar banda de accesorios",
+          "normal": "$  1,950.00",
+          "precio": 700,
+          "status": true,
+          "tipo": "mo",
+          "total": 1500
+        }
+      ],
+      "fecha": "11/8/2023",
+      "formaPago": "1",
+      "hora": "9:8:7",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00591",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00591?alt=media&token=0737ac67-de55-43f2-9c32-1645e9a9e6f8",
+      "reporte": {
+        "descuento": 0,
+        "iva": 696,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4350,
+        "sobrescrito_mo": 4350,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4350,
+        "total": 5046,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2010",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-Nb_6aUDeL0SsGdO22kC",
+        "color": "Amarillo oro",
+        "engomado": "rojo",
+        "id": "-Nb_7V45cjUCJjYo9mbt",
+        "marca": "Nissan",
+        "marcaMotor": "",
+        "modelo": "Sentra",
+        "no_motor": "1.8 L",
+        "placas": "nlr6564",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "31/8/2023"
+    },
+    "-Nb_kWRyJUGZyZhgYwfK": {
+      "cliente": {
+        "apellidos": "AGUILAR",
+        "correo": "gestor.tesoreria@fhmex.com.mx",
+        "empresa": "FARMACEUTICA HISPANOAMERICANA",
+        "fullname": "GUILLERMO  AGUILAR",
+        "id": "-NLNVqIM3HlWwdYY4Vkj",
+        "no_cliente": "GUAGTo09230035",
+        "nombre": "GUILLERMO ",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_fijo": "",
+        "telefono_movil": "5523428053",
+        "tipo": "flotilla",
+        "vehiculos": [
+          {
+            "id": "-NLNW51bl-wREgPZlPyH",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "Versa",
+            "no_motor": "1.6 L",
+            "placas": "n01avv",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NMdb4az2koAb2TxnIUU",
+            "marca": "Toyota ",
+            "marcaMotor": "",
+            "modelo": "HIace",
+            "no_motor": "2.2 L",
+            "placas": "nodan32",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NN7GAR_jqKRQcwW_dHU",
+            "marca": "Fiat",
+            "marcaMotor": "",
+            "modelo": "Ducato",
+            "no_motor": "2.0 L",
+            "placas": "a144ac",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NNqZYuHHPF_eQ59Yrir",
+            "marca": "Nissan",
+            "marcaMotor": "",
+            "modelo": "Versa",
+            "no_motor": "1.6L",
+            "placas": "sinpl03",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "id": "-NOQLiMTzsar3nAPDXxS",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.6 L",
+            "placas": "A51AUF",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NQanfzrz331fj2JOh9X",
+            "marca": "Volkswagen",
+            "modelo": "Polo",
+            "no_motor": "1.6L",
+            "placas": "simpl11",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NRF7pnk3HcFqcTUkYnz",
+            "marca": "Toyota ",
+            "modelo": "HIace",
+            "no_motor": "2.4L",
+            "placas": "SINPL19",
+            "transmision": "Estandar",
+            "vinChasis": "90015170"
+          },
+          {
+            "id": "-NUbznpQnOle7BBrQ5xO",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "A57AUF",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NWI8QKz4tMprTxPGkJm",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "a06auf",
+            "transmision": "Estandar"
+          },
+          {
+            "id": "-NWI9ypw_Y5JEbSnCwrb",
+            "marca": "Nissan",
+            "modelo": "Versa",
+            "no_motor": "1.8 L",
+            "placas": "A66 AUF",
+            "transmision": "Estandar",
+            "vinChasis": "JK439700"
+          },
+          {
+            "anio": "2017",
+            "categoria": "Carga",
+            "cilindros": "8",
+            "cliente": "-NLNVqIM3HlWwdYY4Vkj",
+            "color": "Blanco",
+            "engomado": "rojo",
+            "id": "-NYL0gFr1cs50B-9Byu_",
+            "marca": "Ford",
+            "marcaMotor": "",
+            "modelo": "F-350",
+            "no_motor": "6.2 L",
+            "placas": "LB74763",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          },
+          {
+            "anio": "2009",
+            "categoria": "Van",
+            "cilindros": "4",
+            "cliente": "-NLNVqIM3HlWwdYY4Vkj",
+            "color": "Blanco",
+            "engomado": "rojo",
+            "id": "-NZDM0z9lj7ZjIjdqEXb",
+            "marca": "Toyota ",
+            "marcaMotor": "",
+            "modelo": "HIace",
+            "no_motor": "2.4 L ",
+            "placas": "F54ABP",
+            "transmision": "Estandar",
+            "vinChasis": ""
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 750,
+          "descripcion": "",
+          "flotilla2": "$  750.00",
+          "id": "-Nb_kPWtkEM6cbPExSWF",
+          "index": 0,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  975.00",
+          "precio": 450,
+          "status": true,
+          "tipo": "mo",
+          "total": 750
+        }
+      ],
+      "fecha": "11/8/2023",
+      "formaPago": "1",
+      "hora": "12:0:45",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00592",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00592?alt=media&token=d07eb778-9a98-455c-a26a-8f3536ace502",
+      "reporte": {
+        "descuento": 0,
+        "iva": 120,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 750,
+        "sobrescrito_mo": 750,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 750,
+        "total": 869.9999999999999,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "id": "-NLNW51bl-wREgPZlPyH",
+        "marca": "Nissan",
+        "marcaMotor": "",
+        "modelo": "Versa",
+        "no_motor": "1.6 L",
+        "placas": "n01avv",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "31/8/2023"
+    },
+    "-Nb_oXQdqe66wzpVkbzf": {
+      "cliente": {
+        "apellidos": "ESPARZA",
+        "correo": "fernanda.esparza@odelnorte.com",
+        "empresa": "",
+        "fullname": "FERNANDA ESPARZA",
+        "id": "-Nb_ne6hEXKCYVcKb752",
+        "no_cliente": "FEESTO08230378",
+        "nombre": "FERNANDA",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5593032214",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 3950,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-Nb_oD0hRPECtaugA6io",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  3,950.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  5,135.00",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 3950
+        }
+      ],
+      "fecha": "11/8/2023",
+      "formaPago": "1",
+      "hora": "12:18:20",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00593",
+      "nota": "INCLUYE ACEITE MULTIGRADO CASTROL Y BUJIAS DE PLATINO",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00593?alt=media&token=4b557212-4a76-4d1f-9adc-2cd5a0bca4ea",
+      "reporte": {
+        "descuento": 0,
+        "iva": 632,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 3950,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 3950,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 3950,
+        "total": 4582,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "PickUp",
+        "cilindros": "4",
+        "cliente": "-Nb_ne6hEXKCYVcKb752",
+        "color": "Blanco",
+        "engomado": "azul",
+        "id": "-Nb_o58dRPfbkkpOodyl",
+        "marca": "Nissan",
+        "marcaMotor": "",
+        "modelo": "NP300",
+        "no_motor": "2.5 L",
+        "placas": "sinp119",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "31/8/2023"
+    },
+    "-Nb_zh0D9ColInbbKa86": {
+      "cliente": {
+        "apellidos": "MORALES FONSECA",
+        "correo": "iraidesmoralesfonseca@yahoo.com",
+        "empresa": "",
+        "fullname": "IRAIDES MORALES FONSECA",
+        "id": "-Nb_yIYHmkLMNyD1NatW",
+        "no_cliente": "IRMOTO08230379",
+        "nombre": "IRAIDES",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5510729536",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 2500,
+          "descripcion": "",
+          "flotilla2": "$  2,500.00",
+          "id": "-Nb_zXXwVS2cVmtAPtfG",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reacondicionar motor de arranque",
+          "normal": "$  3,250.00",
+          "precio": 600,
+          "status": true,
+          "tipo": "mo",
+          "total": 2500
+        }
+      ],
+      "fecha": "11/8/2023",
+      "formaPago": "1",
+      "hora": "13:7:6",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00594",
+      "nota": "CON GARANTIA DE 60 DIAS EN MANO DE OBRA Y REFACCIONES",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00594?alt=media&token=67b68939-9bbf-40c4-9390-d4593be2be56",
+      "reporte": {
+        "descuento": 0,
+        "iva": 400,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 2500,
+        "sobrescrito_mo": 2500,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 2500,
+        "total": 2900,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2009",
+        "categoria": "SUV",
+        "cilindros": "4",
+        "cliente": "-Nb_yIYHmkLMNyD1NatW",
+        "color": "Plata",
+        "engomado": "rosa",
+        "id": "-Nb_zGS6v5qa3eL60p8H",
+        "marca": "Toyota ",
+        "marcaMotor": "",
+        "modelo": "Matrix",
+        "no_motor": "1.8 L",
+        "placas": "nmu127",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "31/8/2023"
+    },
+    "-NbaXV7gpoWlrkxVfiV6": {
+      "cliente": {
+        "apellidos": "COUTIÑO",
+        "correo": "itzelita.coutino@gmail.com",
+        "empresa": "",
+        "fullname": "ITZEL COUTIÑO",
+        "id": "-NbaWw93aswng67aU92_",
+        "no_cliente": "ITCOTO08230380",
+        "nombre": "ITZEL",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5561418547",
+        "tipo": "particular"
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "cilindros": "4",
+          "costo": 4002,
+          "elementos": [
+            {
+              "IDreferencia": "-NE2JJZu_LtUYJXSBola",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2JJZu_LtUYJXSBola",
+              "index": 0,
+              "nombre": "CAMBIO DE ACEITE Y FILTRO",
+              "precio": 120,
+              "tipo": "mo",
+              "total": 120
+            },
+            {
+              "IDreferencia": "-NE32XkfMPHMcMXOiOio",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE32XkfMPHMcMXOiOio",
+              "index": 1,
+              "nombre": "REEMPLAZAR FILTRO DE AIRE",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE2OUuZ2lh5DhXHHeBL",
+              "index": 2,
+              "nombre": "REV. Y CORREGIR NIVELES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE78vEAujLp8QfcIAtl",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE78vEAujLp8QfcIAtl",
+              "index": 3,
+              "nombre": "LAVAR INYECTORES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFGEgUK6OVe2fEDvCgS",
+              "index": 4,
+              "nombre": "LAVAR CPO DE ACELERACION",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFUnhpeX47MLHgB4zr6",
+              "index": 5,
+              "nombre": "SCANEO POR COMPUTADORA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFyxBy74ehhZxnHrZ8Q",
+              "index": 6,
+              "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsW7Y5RzRrbI_F9dB",
+              "index": 7,
+              "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NFzjXL2niDv6QlUz8hi",
+              "index": 8,
+              "nombre": "ROTACION DE LLANTAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsMnQWQWQsj2ChYfI",
+              "index": 9,
+              "nombre": "REGIMEN DE CARGA DE BATERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsduKTIhhpSrAJKS-",
+              "index": 10,
+              "nombre": "LAVAR MOTOR",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NIXsiafAdRrmZsuD-fs",
+              "index": 11,
+              "nombre": "LAVAR CARROCERIA",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
+              "cantidad": 1,
+              "catalogo": true,
+              "costo": 0,
+              "id": "-NE3nrow7Ol7iyGtRzO3",
+              "index": 12,
+              "nombre": "REEMPLAZAR BUJIAS",
+              "precio": 300,
+              "tipo": "mo",
+              "total": 300
+            },
+            {
+              "aprobado": true,
+              "cantidad": 1,
+              "costo": 300,
+              "descripcion": "",
+              "id": "-NbaXDT_9FZZo6W4347P",
+              "index": 13,
+              "marca": "",
+              "nombre": "Limpieza y ajuste de frenos",
+              "precio": 100,
+              "status": true,
+              "tipo": "mo",
+              "total": 300
+            }
+          ],
+          "flotilla2": "$  4,002.00",
+          "id": "-NE2pvE6CS_1mdeHFL5W",
+          "index": 0,
+          "marca": "Ford",
+          "modelo": "Fiesta",
+          "nombre": "Servicio mayor",
+          "normal": "$  5,202.60",
+          "precio": 4020,
+          "reporte": {
+            "mo": 3720,
+            "refacciones": 0,
+            "refacciones_v": 0,
+            "sobrescrito_mo": 300,
+            "sobrescrito_refaccion": 0,
+            "total": 4020,
+            "ub": 100
+          },
+          "status": true,
+          "tipo": "paquete",
+          "total": 4002
+        }
+      ],
+      "fecha": "11/8/2023",
+      "formaPago": "1",
+      "hora": "15:39:9",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00595",
+      "nota": "ICLUYE ACEITE CASTROL SINTETICO Y BUJIAS DE PLATINO",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00595?alt=media&token=97d2d6ef-c8c9-4fd2-86bf-9cfcb028f0bf",
+      "reporte": {
+        "descuento": 0,
+        "iva": 640.32,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 4002,
+        "sobrescrito_mo": 0,
+        "sobrescrito_paquetes": 4002,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 4002,
+        "total": 4642.32,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2018",
+        "categoria": "Sedán",
+        "cilindros": "4",
+        "cliente": "-NbaWw93aswng67aU92_",
+        "color": "Negro",
+        "engomado": "azul",
+        "id": "-NbaX6TrzmnRYKoxqBlS",
+        "marca": "KIA",
+        "marcaMotor": "",
+        "modelo": "Rio",
+        "no_motor": "1.6 L",
+        "placas": "sinp220",
+        "transmision": "Estandar",
+        "vinChasis": ""
+      },
+      "vencimiento": "31/8/2023"
+    },
+    "-NbeKv8IwxC8at2d3Ddy": {
+      "cliente": {
+        "apellidos": "RICO RICO",
+        "correo": "gera.rico.r@gmail.com",
+        "empresa": "",
+        "fullname": "GERARDO RICO RICO",
+        "id": "-NRZHcUIcb_VrdDmvDcg",
+        "no_cliente": "GERITO03230164",
+        "nombre": "GERARDO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5514349905",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "id": "-NRZHshc1vZKqRrGO8oU",
+            "marca": "Toyota ",
+            "modelo": "Avanza",
+            "no_motor": "1.6 L",
+            "placas": "pcx1934",
+            "transmision": "Automatica",
+            "vinChasis": "HK016107"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 6800,
+          "descripcion": "",
+          "flotilla2": "$  6,800.00",
+          "id": "-NbeKRWMQPU_U7XejFIQ",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar bases de amortigaudores delanteros",
+          "normal": "$  8,840.00",
+          "precio": 3900,
+          "status": true,
+          "tipo": "mo",
+          "total": 6800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 9800,
+          "descripcion": "",
+          "flotilla2": "$  9,800.00",
+          "id": "-NbeKa7pKaYqMKeQCxfR",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores delanteros",
+          "normal": "$  12,740.00",
+          "precio": 5000,
+          "status": true,
+          "tipo": "mo",
+          "total": 9800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3600,
+          "descripcion": "",
+          "flotilla2": "$  3,600.00",
+          "id": "-NbeKi5GRlFVMUhiFL4e",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores traseros",
+          "normal": "$  4,680.00",
+          "precio": 1800,
+          "status": true,
+          "tipo": "mo",
+          "total": 3600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 850,
+          "descripcion": "",
+          "flotilla2": "$  850.00",
+          "id": "-NbeKoNH05BBt7sVl_ko",
+          "index": 3,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  1,105.00",
+          "precio": 650,
+          "status": true,
+          "tipo": "mo",
+          "total": 850
+        }
+      ],
+      "fecha": "12/8/2023",
+      "formaPago": "1",
+      "hora": "9:22:40",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00596",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00596?alt=media&token=6145763c-3573-4383-985d-9583b22d4029",
+      "reporte": {
+        "descuento": 0,
+        "iva": 3368,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 21050,
+        "sobrescrito_mo": 21050,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 21050,
+        "total": 24418,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "SUV",
+        "cilindros": "6",
+        "cliente": "-NRZHcUIcb_VrdDmvDcg",
+        "color": "Gris",
+        "engomado": "amarillo",
+        "id": "-NbeKD_F5J5Q-Gc5HJYL",
+        "marca": "Toyota ",
+        "marcaMotor": "",
+        "modelo": "Sienna",
+        "no_motor": "3.5 L",
+        "placas": "umh735h",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "1/9/2023"
+    },
+    "-NbeL8DZM7gnzY4AYYDI": {
+      "cliente": {
+        "apellidos": "RICO RICO",
+        "correo": "gera.rico.r@gmail.com",
+        "empresa": "",
+        "fullname": "GERARDO RICO RICO",
+        "id": "-NRZHcUIcb_VrdDmvDcg",
+        "no_cliente": "GERITO03230164",
+        "nombre": "GERARDO",
+        "showSucursal": "Toreo",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "telefono_movil": "5514349905",
+        "tipo": "particular",
+        "vehiculos": [
+          {
+            "id": "-NRZHshc1vZKqRrGO8oU",
+            "marca": "Toyota ",
+            "modelo": "Avanza",
+            "no_motor": "1.6 L",
+            "placas": "pcx1934",
+            "transmision": "Automatica",
+            "vinChasis": "HK016107"
+          }
+        ]
+      },
+      "elementos": [
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 6800,
+          "descripcion": "",
+          "flotilla2": "$  6,800.00",
+          "id": "-NbeKRWMQPU_U7XejFIQ",
+          "index": 0,
+          "marca": "",
+          "nombre": "Reemplazar bases de amortigaudores delanteros",
+          "normal": "$  8,840.00",
+          "precio": 3900,
+          "status": true,
+          "tipo": "mo",
+          "total": 6800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 9800,
+          "descripcion": "",
+          "flotilla2": "$  9,800.00",
+          "id": "-NbeKa7pKaYqMKeQCxfR",
+          "index": 1,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores delanteros",
+          "normal": "$  12,740.00",
+          "precio": 5000,
+          "status": true,
+          "tipo": "mo",
+          "total": 9800
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 3600,
+          "descripcion": "",
+          "flotilla2": "$  3,600.00",
+          "id": "-NbeKi5GRlFVMUhiFL4e",
+          "index": 2,
+          "marca": "",
+          "nombre": "Reemplazar amortiguadores traseros",
+          "normal": "$  4,680.00",
+          "precio": 1800,
+          "status": true,
+          "tipo": "mo",
+          "total": 3600
+        },
+        {
+          "aprobado": true,
+          "cantidad": 1,
+          "costo": 850,
+          "descripcion": "",
+          "flotilla2": "$  850.00",
+          "id": "-NbeKoNH05BBt7sVl_ko",
+          "index": 3,
+          "marca": "",
+          "nombre": "Alineacion y balanceo",
+          "normal": "$  1,105.00",
+          "precio": 650,
+          "status": true,
+          "tipo": "mo",
+          "total": 850
+        }
+      ],
+      "fecha": "12/8/2023",
+      "formaPago": "1",
+      "hora": "9:23:38",
+      "iva": true,
+      "margen": 25,
+      "no_cotizacion": "TO0823GE00597",
+      "nota": "",
+      "pdf": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/PDF%2FcotizacionesRealizadas%2FTO0823GE00597?alt=media&token=b8c6e21b-f19d-4c83-b250-db0e77fa5787",
+      "reporte": {
+        "descuento": 0,
+        "iva": 3368,
+        "meses": 0,
+        "mo": 0,
+        "refacciones_a": 0,
+        "refacciones_v": 0,
+        "sobrescrito": 21050,
+        "sobrescrito_mo": 21050,
+        "sobrescrito_paquetes": 0,
+        "sobrescrito_refaccion": 0,
+        "subtotal": 21050,
+        "total": 24418,
+        "ub": 100
+      },
+      "servicio": 1,
+      "sucursal": {
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "id": "-N2gkzuYrS4XDFgYciId",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/sucursales%2FToreo?alt=media&token=e54e6967-db1c-4a77-922d-511dac317ded",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      "vehiculo": {
+        "anio": "2016",
+        "categoria": "SUV",
+        "cilindros": "6",
+        "cliente": "-NRZHcUIcb_VrdDmvDcg",
+        "color": "Gris",
+        "engomado": "amarillo",
+        "id": "-NbeKD_F5J5Q-Gc5HJYL",
+        "marca": "Toyota ",
+        "marcaMotor": "",
+        "modelo": "Sienna",
+        "no_motor": "3.5 L",
+        "placas": "umh735h",
+        "transmision": "Automatica",
+        "vinChasis": ""
+      },
+      "vencimiento": "1/9/2023"
     }
   },
   "empresas": {
@@ -98530,7 +108477,7 @@ export const BD = {
       "id": "-NIcb0QKSXD5knxNIFr9",
       "nombre": "prs",
       "precio": 666,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NId4S27TEtxsVYQ4Si2": {
       "cantidad": "1",
@@ -98539,7 +108486,7 @@ export const BD = {
       "id": "-NId4S27TEtxsVYQ4Si2",
       "nombre": "registro prueba 6611",
       "precio": 600,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NIjl5EJKHiUhdNTlVUX": {
       "cantidad": "1",
@@ -98549,7 +108496,7 @@ export const BD = {
       "nombre": "LAVAR INYECTORES",
       "precio": 300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NJG6gBYj3cD1QBW6CSa": {
       "descripcion": "INCLUYE PASTILLAS DELANTERAS RECTIFICADO DE DISCOS LIQUIDO DE FRENOS NECESARIO Y MANO DE OBRA",
@@ -98569,7 +108516,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BANDA DE ACCESORIOS",
       "precio": 1,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NJGPN6KKMQxvg-4GYK5": {
       "cantidad": 1,
@@ -98580,7 +108527,7 @@ export const BD = {
       "nombre": "REEMPLAZAR AMROTIGUADORES DELANTEROS",
       "precio": 1,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NJGQtM7tnS0ePdMz7J4": {
       "cantidad": 1,
@@ -98591,7 +108538,7 @@ export const BD = {
       "nombre": "REEMPLAZAR AMORTIGUADORES TRASEROS",
       "precio": 2040,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKGiDgrFR-0_HedE7GP": {
       "descripcion": "Mano de obra de cosas realizadas",
@@ -98610,7 +108557,7 @@ export const BD = {
       "nombre": "NEW ELEMENT VISUAL",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKOYqjlfbtYgiUgqqxE": {
       "cantidad": 1,
@@ -98621,7 +108568,7 @@ export const BD = {
       "nombre": "REEMPLAZAR AMORTIGUADORES TRASEROS - ",
       "precio": 2300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKOZK6Kn-yfnj_naF6w": {
       "cantidad": 1,
@@ -98632,7 +108579,7 @@ export const BD = {
       "nombre": "reemplazar gomas de barra estabilizadora - ",
       "precio": 400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKOZZLivC8PC11MTWFo": {
       "cantidad": 1,
@@ -98643,7 +108590,7 @@ export const BD = {
       "nombre": "reemplazar bujes de horquillas ",
       "precio": 1400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKOkokJ9WL81WWhAWoL": {
       "cantidad": 1,
@@ -98654,7 +108601,7 @@ export const BD = {
       "nombre": "alineaciony balanceo ",
       "precio": 450,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKUMzEYtiTg4kdxfMKF": {
       "cantidad": 1,
@@ -98665,7 +108612,7 @@ export const BD = {
       "nombre": "REPARAR LINEAS DE IGNICION ORIGINALES ",
       "precio": 1,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKUNXcCNhD-X73z_QA5": {
       "cantidad": 1,
@@ -98676,7 +108623,7 @@ export const BD = {
       "nombre": "REPARAR LINEAS DE BOBMA DE GASOLINA",
       "precio": 1,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKUQTiLYSVlOYELH2h3": {
       "cantidad": 1,
@@ -98687,7 +108634,7 @@ export const BD = {
       "nombre": "REPARAR LINEAS DE BOMBA DE GASOLINA - MO",
       "precio": 1,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NKUiZwveiZrVrfIHs57": {
       "cantidad": 1,
@@ -98697,7 +108644,7 @@ export const BD = {
       "nombre": "revisión especial escaner",
       "precio": 513,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NL2Pvka_jb_fJQWHfli": {
       "cantidad": 1,
@@ -98708,7 +108655,7 @@ export const BD = {
       "nombre": "reemplazar soporte de motor derecho",
       "precio": 1900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NL2Q5pCHUhsKhjg3rkh": {
       "cantidad": 1,
@@ -98719,7 +108666,7 @@ export const BD = {
       "nombre": "reemplazar soporte de motro izquierdo",
       "precio": 1900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NL2QEqLB1ho33FNY0Q8": {
       "cantidad": 1,
@@ -98730,7 +108677,7 @@ export const BD = {
       "nombre": "reemplazar soporte de motor frontal",
       "precio": 1970,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NLSGaahBHTJd8wKfYoI": {
       "cantidad": 1,
@@ -98741,7 +108688,7 @@ export const BD = {
       "nombre": "afinación",
       "precio": 2349,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NM-9x5-_gzk6L0ML_xL": {
       "cantidad": 1,
@@ -98752,7 +108699,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CABLES DE BUJIAS",
       "precio": 550,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NM-APEzyh6qbioELbmP": {
       "cantidad": 1,
@@ -98763,7 +108710,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BANDA DE TIEMPO",
       "precio": 680,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMEgGv4buQgjptlorzd": {
       "cantidad": 1,
@@ -98774,7 +108721,7 @@ export const BD = {
       "nombre": "REEMPLAZAR SENSOR DE TEMPERATURA",
       "precio": 600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMFEqkqkCSsloHu9ur3": {
       "cantidad": 1,
@@ -98785,7 +108732,7 @@ export const BD = {
       "nombre": "reemplazar maza trasera izquierda",
       "precio": 2700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMFF045KwuGGtJa05U-": {
       "cantidad": 1,
@@ -98796,7 +108743,7 @@ export const BD = {
       "nombre": "rectificar rotores traseros",
       "precio": 200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMFHycazpHA_hGzdT7N": {
       "cantidad": 1,
@@ -98807,7 +108754,7 @@ export const BD = {
       "nombre": "reemplazar cilindro maestro",
       "precio": 1200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMG4zirY_a2N7rLHCl9": {
       "cantidad": 1,
@@ -98818,7 +108765,7 @@ export const BD = {
       "nombre": "pago de multa por verificacion extemporanea",
       "precio": 1357,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMG5B5vshrt9teB10mh": {
       "cantidad": 1,
@@ -98829,7 +108776,7 @@ export const BD = {
       "nombre": "verificacion vehicular del edo de morelos",
       "precio": 1900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMU4xxsbtgrfgLiA0PX": {
       "cantidad": 1,
@@ -98840,7 +108787,7 @@ export const BD = {
       "nombre": "descontaminar cristales y pintura",
       "precio": 1200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMU584bQy72CqKG6yQF": {
       "cantidad": 1,
@@ -98851,7 +108798,7 @@ export const BD = {
       "nombre": "pulir y encerar carroceria",
       "precio": 900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMVi4Z3RJ5XnqgxtGWp": {
       "cantidad": 1,
@@ -98862,7 +108809,7 @@ export const BD = {
       "nombre": "reemplazar rodamiento trasero izquierdo",
       "precio": 340,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMViBWYmR3Ucq1IhJYR": {
       "cantidad": 1,
@@ -98873,7 +108820,7 @@ export const BD = {
       "nombre": "reemplazar rodamiento trasero derecho",
       "precio": 340,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMZ_w5aysgzxyTFtpps": {
       "cantidad": 1,
@@ -98883,7 +108830,7 @@ export const BD = {
       "nombre": "SERVICIO MENOR DIESEL",
       "precio": 2000,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMZvRJgNW9AidayIUgV": {
       "cantidad": 1,
@@ -98894,7 +108841,7 @@ export const BD = {
       "nombre": "rEFUERZO DE PLATAFORMA Y REDILAS",
       "precio": 6200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NM_LwhXSWeMcDMv7N6r": {
       "cantidad": 1,
@@ -98905,7 +108852,7 @@ export const BD = {
       "nombre": "LAVADO Y ENGRASADO",
       "precio": 1450,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NM_M7ViiTujG6eSNXWO": {
       "cantidad": 1,
@@ -98916,7 +108863,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CUBRE POLVOS DE CALIPER´S DELANTEROS",
       "precio": 450,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NM_NQ8fRCQ0uRSFfnju": {
       "cantidad": 1,
@@ -98927,7 +108874,7 @@ export const BD = {
       "nombre": "TAPONES",
       "precio": 1750,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NM_Tg9aZQfzC0bNvzt_": {
       "cantidad": 3,
@@ -98937,7 +108884,7 @@ export const BD = {
       "nombre": "mo instalacion vieleta",
       "precio": 250,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMdasCHrukYj_aG98tP": {
       "cantidad": 1,
@@ -98948,7 +108895,7 @@ export const BD = {
       "nombre": "Servicio frenos delanteros",
       "precio": 1949,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMdb-SQxp5tpVbUZTfn": {
       "cantidad": 1,
@@ -98959,7 +108906,7 @@ export const BD = {
       "nombre": "REPARACIÓN DE CLAXON",
       "precio": 350,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMdbR0A97j3K_fAFIjk": {
       "cantidad": 1,
@@ -98970,7 +108917,7 @@ export const BD = {
       "nombre": "REEMPLAZAR MOTOR DE ARRANQUE NUEVO",
       "precio": 2100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMdcbzv6NYsZ2OpQOUI": {
       "cantidad": 1,
@@ -98981,7 +108928,7 @@ export const BD = {
       "nombre": "servicio de frenos delanteros",
       "precio": 1949,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMdvGUc9-4s5HJ-VYtj": {
       "cantidad": 1,
@@ -98992,7 +108939,7 @@ export const BD = {
       "nombre": "REEMPLAZAR RADIADOR",
       "precio": 2100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMdviJMDWMgFUwBFzO8": {
       "cantidad": 1,
@@ -99003,7 +108950,7 @@ export const BD = {
       "nombre": "Refuerzo plataforma y redillas (soldadura )",
       "precio": 8300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMieQvFUYXlpFFIYC_n": {
       "cantidad": 1,
@@ -99013,7 +108960,7 @@ export const BD = {
       "nombre": "REV. RUIDO EN SUSPENSION DELANTERA",
       "precio": 100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMjXGloAC-zou8jBDfA": {
       "cantidad": 1,
@@ -99024,7 +108971,7 @@ export const BD = {
       "nombre": "reparar lineas de arnes de sensor de cigueñal",
       "precio": 200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMjXQJ3h3BCeojpT7iT": {
       "cantidad": 1,
@@ -99035,7 +108982,7 @@ export const BD = {
       "nombre": "reemplazar sensor de sigueñal",
       "precio": 565,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMjX_d0Fbl-dIBGL72q": {
       "cantidad": 1,
@@ -99046,7 +108993,7 @@ export const BD = {
       "nombre": "afinacion de motor",
       "precio": 920,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMjYXT173BG_iG5DVnn": {
       "cantidad": 1,
@@ -99057,7 +109004,7 @@ export const BD = {
       "nombre": "reemplazar retenes de distribucion",
       "precio": 300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMja9F3YawqXREkDqrX": {
       "cantidad": 1,
@@ -99068,7 +109015,7 @@ export const BD = {
       "nombre": "REEMPLAZAR FOCOS",
       "precio": 100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMjep3VLOHcWuUszWcR": {
       "cantidad": 1,
@@ -99079,7 +109026,7 @@ export const BD = {
       "nombre": "Revision General",
       "precio": 200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMjf-rkSysJoAEM2keI": {
       "cantidad": 1,
@@ -99090,7 +109037,7 @@ export const BD = {
       "nombre": "Mano de obra",
       "precio": 900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NMt6lccI0U58IFHBV-X": {
       "cantidad": 1,
@@ -99101,7 +109048,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BUJIAS",
       "precio": 200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN2XIIZ7nwsnXD2qjUO": {
       "cantidad": 1,
@@ -99112,7 +109059,7 @@ export const BD = {
       "nombre": "Revisión general",
       "precio": 250,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN3TGW17_sNPGwax96i": {
       "cantidad": 1,
@@ -99123,7 +109070,7 @@ export const BD = {
       "nombre": "REPARACIÓN FUGA DE ESCAPE",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN7GZQ-Cb2LtPBlEeGN": {
       "cantidad": 1,
@@ -99134,7 +109081,7 @@ export const BD = {
       "nombre": "REEMPLAZAR FILTRO DE COMBUSTIBLE",
       "precio": 400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN7GgmIf9ylst_I7mUn": {
       "cantidad": 1,
@@ -99145,7 +109092,7 @@ export const BD = {
       "nombre": "REEMPLAZAR SEPARADOR DE AGUA",
       "precio": 400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN7GwXRZIFxBbeELzzn": {
       "cantidad": 1,
@@ -99156,7 +109103,7 @@ export const BD = {
       "nombre": "REV. PRE CALENTADORES",
       "precio": 200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN7J-otRj9wagt1cnrV": {
       "descripcion": "ACEITE SINTETICO DIESEL",
@@ -99207,7 +109154,7 @@ export const BD = {
       "nombre": "REEMPLAZAR SOPORTE DE ESCAPE",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN8-l4KAlgJUWiRImIQ": {
       "cantidad": 1,
@@ -99218,7 +109165,7 @@ export const BD = {
       "nombre": "Revisión general",
       "precio": 250,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN8LwZI7korwdWM6Kzl": {
       "cantidad": 1,
@@ -99229,7 +109176,7 @@ export const BD = {
       "nombre": "VERIFICACION VEHICULAR",
       "precio": 1370,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN8P2_i7gVDxu63BqP4": {
       "cantidad": 1,
@@ -99240,7 +109187,7 @@ export const BD = {
       "nombre": "reemplazar base de modulo pcm",
       "precio": 600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NN8SzBCToha5F4oc-P2": {
       "descripcion": "N",
@@ -99267,7 +109214,7 @@ export const BD = {
       "nombre": "REEMPLAZAR AMORTIGUADORES  DELANTEROS",
       "precio": 27220,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNDBdxShdac7Pn6e16b": {
       "cantidad": 1,
@@ -99278,7 +109225,7 @@ export const BD = {
       "nombre": "REEMPLAZAR FRENOS TRASEROS",
       "precio": 1700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNDBu04AERaYrwCP52E": {
       "cantidad": 1,
@@ -99289,7 +109236,7 @@ export const BD = {
       "nombre": "REEMPLAZR CILINDORS DE RUEDAS TRASERAS",
       "precio": 600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNDCqI7QERZZ3CWKkQr": {
       "cantidad": 1,
@@ -99300,7 +109247,7 @@ export const BD = {
       "nombre": "REEMPLAZAR TUBO CONDUCTOR DE CUERPO DE ACELERACION",
       "precio": 990,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNDDCsn2mIMNv8VgWLr": {
       "cantidad": 1,
@@ -99311,7 +109258,7 @@ export const BD = {
       "nombre": "REEMPLAZAR MAZA CON ABS TRASERA DERECHA",
       "precio": 1790,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNDDLFSNJRHM0l5eg8o": {
       "cantidad": 1,
@@ -99322,7 +109269,7 @@ export const BD = {
       "nombre": "REEMPLAZAR MAZA CON ABS TRASERA IZQUIEDA",
       "precio": 1790,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNDU41SPBPYIzEkwhqq": {
       "cantidad": 1,
@@ -99333,7 +109280,7 @@ export const BD = {
       "nombre": "Revisión general",
       "precio": 250,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNhDy733FkJYqV_q6hI": {
       "cantidad": 1,
@@ -99344,7 +109291,7 @@ export const BD = {
       "nombre": "afinación ",
       "precio": 2049,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNhE2fhB57X0rP3sd5e": {
       "cantidad": 1,
@@ -99355,7 +109302,7 @@ export const BD = {
       "nombre": "Carga de gas",
       "precio": 650,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNllHQ8NZMJEJ5vcQ2y": {
       "cantidad": 1,
@@ -99366,7 +109313,7 @@ export const BD = {
       "nombre": "REEMPLAZAR SENSOR DE CIGUEÑAL",
       "precio": 1400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNllRHAZl4XbbpJgQk1": {
       "cantidad": 1,
@@ -99377,7 +109324,7 @@ export const BD = {
       "nombre": "LAVORATORIO DE INYECTORES",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNllZQ5aWoSQxDJ3KWO": {
       "cantidad": 1,
@@ -99388,7 +109335,7 @@ export const BD = {
       "nombre": "CODIFICAR FALLAS",
       "precio": 100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNllkz1aRPVbon_PkeC": {
       "cantidad": 1,
@@ -99399,7 +109346,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BATERIA Y REGIMEN DE CARGA",
       "precio": 1900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNlq5NUguPPL2jc7mzS": {
       "cantidad": 1,
@@ -99410,7 +109357,7 @@ export const BD = {
       "nombre": "AFINACIÓN",
       "precio": 2959,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNlsSvqJJdIUiStymPS": {
       "cantidad": 1,
@@ -99421,7 +109368,7 @@ export const BD = {
       "nombre": "AFINACIÓN",
       "precio": 2959,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNm0s9M8Gfo_Sku77Ha": {
       "cantidad": 1,
@@ -99432,7 +109379,7 @@ export const BD = {
       "nombre": "SERVICIO MAYOR ",
       "precio": 3249,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNm133yjm0S5R4RDJ40": {
       "cantidad": 1,
@@ -99443,7 +109390,7 @@ export const BD = {
       "nombre": "LAVADO Y ENGRASADO",
       "precio": 750,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNmWYLhzfoid7faiCW-": {
       "cantidad": 1,
@@ -99454,7 +109401,7 @@ export const BD = {
       "nombre": "servicio de afinación ",
       "precio": 2799,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNnKB4vA7R8F1NLgufQ": {
       "cantidad": 1,
@@ -99465,7 +109412,7 @@ export const BD = {
       "nombre": "REPARACIÓN CINTURONES DE SEGURIDAD",
       "precio": 4800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNqq3IjCaR8vSjNN-ie": {
       "cantidad": 1,
@@ -99476,7 +109423,7 @@ export const BD = {
       "nombre": "FABRICACIÓN E INSTALACIÓN DE REDILAS",
       "precio": 22500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNwKoq9V8xDUJq9zpsk": {
       "cantidad": 1,
@@ -99487,7 +109434,7 @@ export const BD = {
       "nombre": "HOJALATERÍA Y PINTURA",
       "precio": 4900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNwN955dv2ilbmPdsWZ": {
       "cantidad": 1,
@@ -99498,7 +109445,7 @@ export const BD = {
       "nombre": "desmontar, montar, encasqullar y tapón de carter",
       "precio": 1600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNwO-klfUx6DG3bq00W": {
       "cantidad": 1,
@@ -99509,7 +109456,7 @@ export const BD = {
       "nombre": "Desmontar, montar, encasqullar y tapón de carter ",
       "precio": 1600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNwOED5I9Vl49A585JD": {
       "cantidad": 1,
@@ -99520,7 +109467,7 @@ export const BD = {
       "nombre": "Desmontar, montar, encasquIllar y tapón de carter",
       "precio": 1600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNwOWGZJq8MT4gfDMrF": {
       "cantidad": 1,
@@ -99531,7 +109478,7 @@ export const BD = {
       "nombre": "Desmontar, montar, encasquIllar y tapón de carter",
       "precio": 1600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NNwPvF1M8mCf4QmJaK5": {
       "cantidad": 1,
@@ -99542,7 +109489,7 @@ export const BD = {
       "nombre": "DESMONTAR, MONTAR, ENCASQUILLAR Y TAPÓN DE CÁRTER",
       "precio": 1600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NO1KhueoVH3LvhF0ez_": {
       "cantidad": 1,
@@ -99553,7 +109500,7 @@ export const BD = {
       "nombre": "Revisión general",
       "precio": 250,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOAHP_waoYGtaI-9_zG": {
       "cantidad": 1,
@@ -99564,7 +109511,7 @@ export const BD = {
       "nombre": "reemplazar recuperador  de refrigerante",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOPS-KyHXsB3ajNP0eq": {
       "cantidad": 1,
@@ -99575,7 +109522,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CUBRE POLVOS DE CALIPERS TRASEROS",
       "precio": 400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOPSG1kkoSGW9RAfvA6": {
       "cantidad": 1,
@@ -99586,7 +109533,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BANDA DE DIRECCION",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOPSV5AzieklOwfKVdV": {
       "cantidad": 1,
@@ -99597,7 +109544,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BASE DE FILTRO DE ACEITE",
       "precio": 1720,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOPTHVNCkX6IcHSJ6NT": {
       "cantidad": 1,
@@ -99608,7 +109555,7 @@ export const BD = {
       "nombre": "REEMPLAZAR ESLABONES ESTABILIZADORES",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOpPf4xuuXlTY7e__sw": {
       "cantidad": 1,
@@ -99619,7 +109566,7 @@ export const BD = {
       "nombre": "MANO DE OBRA",
       "precio": 900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOulWHurYk31XWBBs_x": {
       "cantidad": 1,
@@ -99630,7 +109577,7 @@ export const BD = {
       "nombre": "reemplazar bomba de gasolina",
       "precio": 1100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOvA5I9182QbU7xiPr7": {
       "cantidad": 1,
@@ -99641,7 +109588,7 @@ export const BD = {
       "nombre": "BRIO Y MANO DE OBRA",
       "precio": 3500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOznHh-wK1wLmEB9xB6": {
       "cantidad": 1,
@@ -99652,7 +109599,7 @@ export const BD = {
       "nombre": "reemplazar rotores delanteros",
       "precio": 2800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NOzoF1Bi1jUwZE77Nhu": {
       "cantidad": 1,
@@ -99663,7 +109610,7 @@ export const BD = {
       "nombre": "REEMPLAZAR SENSORES DE DESGASTE DE FRENOS",
       "precio": 500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNmyGY9F0-B8HUT_ja": {
       "cantidad": 1,
@@ -99674,7 +109621,7 @@ export const BD = {
       "nombre": "Cambio de bieletas con terminal",
       "precio": 500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNn3Afxg1VdaRqU0df": {
       "cantidad": 1,
@@ -99685,7 +109632,7 @@ export const BD = {
       "nombre": "Cambio de amortiguadores traseros",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNn7DL7ABUujIN6FlV": {
       "cantidad": 1,
@@ -99696,7 +109643,7 @@ export const BD = {
       "nombre": "Cambio de amortiguadores delanteros",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNnESSvNAsDWyIBXGE": {
       "cantidad": 1,
@@ -99707,7 +109654,7 @@ export const BD = {
       "nombre": "cambio de tornillos estabilizadores",
       "precio": 450,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNnO5up62sEgDcKHM4": {
       "cantidad": 1,
@@ -99718,7 +109665,7 @@ export const BD = {
       "nombre": "cambio de horquillas superiores",
       "precio": 900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNnRf2F_sCmO7xOZdO": {
       "cantidad": 1,
@@ -99729,7 +109676,7 @@ export const BD = {
       "nombre": "Cambio de horquillas inferiores",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNnWPluerKvBraCwwe": {
       "cantidad": 1,
@@ -99740,7 +109687,7 @@ export const BD = {
       "nombre": "Cambio de horquillas superiores",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNnbMnwjnjhTY8tcYO": {
       "cantidad": 1,
@@ -99751,7 +109698,7 @@ export const BD = {
       "nombre": "Cambio de batería",
       "precio": 150,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNngvpkq4-UFDFEQwd": {
       "cantidad": 1,
@@ -99762,7 +109709,7 @@ export const BD = {
       "nombre": "Cambio de junta de tapa de punterías",
       "precio": 450,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPNnmfR4XoAH0ydCQxT": {
       "cantidad": 1,
@@ -99773,7 +109720,7 @@ export const BD = {
       "nombre": "Cambio de banda de accesorios",
       "precio": 280,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPU4vRoFSuo_efCGRSW": {
       "cantidad": 1,
@@ -99784,7 +109731,7 @@ export const BD = {
       "nombre": "cuadrar salpicadera",
       "precio": 350,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPcYsHCCWRGrDU9OsMT": {
       "cantidad": 1,
@@ -99795,7 +109742,7 @@ export const BD = {
       "nombre": "reemplazar valvula pcv",
       "precio": 350,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPcZ4LLNzL52uyTeqqI": {
       "cantidad": 1,
@@ -99806,7 +109753,7 @@ export const BD = {
       "nombre": "remplazar manguera de circulacion de valvula pccv",
       "precio": 200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPe0xtZW33l5JBE39YL": {
       "cantidad": 1,
@@ -99817,7 +109764,7 @@ export const BD = {
       "nombre": "VERIFICACION VEHICULAR ",
       "precio": 1400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPt-MZtvppODuO7NryK": {
       "cantidad": 1,
@@ -99828,7 +109775,7 @@ export const BD = {
       "nombre": "Amortiguadores delanteros con bases",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPt-Rh7Obe8I5kEP_Qd": {
       "cantidad": 1,
@@ -99839,7 +109786,7 @@ export const BD = {
       "nombre": "cambio de horquillas",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NPt-Ylg2ellu9mfNkLQ": {
       "cantidad": 1,
@@ -99850,7 +109797,7 @@ export const BD = {
       "nombre": "cambio de tornillos estabilizadores",
       "precio": 400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQ2Ih1hHjXmV3hWsDSl": {
       "cantidad": 1,
@@ -99861,7 +109808,7 @@ export const BD = {
       "nombre": "REEMPLAZAR SOPORTE DE MOTOR TRASERO",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQ2IrGg7iakKpI3-zMz": {
       "cantidad": 1,
@@ -99872,7 +109819,7 @@ export const BD = {
       "nombre": "REEMPLAZAR FLECHA IZQ. LADO RUEDA",
       "precio": 2800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQ2IyWGa5Z3jCq8vGB1": {
       "cantidad": 1,
@@ -99883,7 +109830,7 @@ export const BD = {
       "nombre": "REEMPLAZAR TUERCAS DE RINES",
       "precio": 600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQ79JZxcFIg6C_xbosF": {
       "cantidad": 1,
@@ -99894,7 +109841,7 @@ export const BD = {
       "nombre": "reemplazar flotador de combustible",
       "precio": 2300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQAt2o5KlGO7Ut58j3K": {
       "cantidad": 1,
@@ -99905,7 +109852,7 @@ export const BD = {
       "nombre": "REEMPLAZAR FILTRO DE GASOLINA",
       "precio": 100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQBYCB5Eojp02pxdHdl": {
       "cantidad": 1,
@@ -99916,7 +109863,7 @@ export const BD = {
       "nombre": "REVISION PUNTOS DE SEGURIDAD",
       "precio": 550,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQQm3PNKalajbI0ySe7": {
       "cantidad": 1,
@@ -99927,7 +109874,7 @@ export const BD = {
       "nombre": "reemplazar chicotes de control de cambios",
       "precio": 400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQR9nyO2eIOlKpTNG1o": {
       "cantidad": 1,
@@ -99938,7 +109885,7 @@ export const BD = {
       "nombre": "cambio bieletas con terminal",
       "precio": 500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQR_9cpE0mBZOnRI612": {
       "cantidad": 1,
@@ -99949,7 +109896,7 @@ export const BD = {
       "nombre": "alineacion y balanceo - refaccion",
       "precio": 650,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQa9N0-7PCSRcIPN0Uf": {
       "cantidad": 1,
@@ -99960,7 +109907,7 @@ export const BD = {
       "nombre": "Cambio bieletas con terminal",
       "precio": 500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQa9aicAKUlaVbcuZDW": {
       "cantidad": 1,
@@ -99971,7 +109918,7 @@ export const BD = {
       "nombre": "Cambio de tornillos estabilizadores",
       "precio": 450,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQa9oZJZe9RZaxc8hQo": {
       "cantidad": 1,
@@ -99982,7 +109929,7 @@ export const BD = {
       "nombre": "Cambio de banda de accesorios",
       "precio": 280,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQa9ugb-dRmRqVg3g2M": {
       "cantidad": 1,
@@ -99993,7 +109940,7 @@ export const BD = {
       "nombre": "Cambio de horquillas superiores",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQa9ztyLa4RXhnip9O9": {
       "cantidad": 1,
@@ -100004,7 +109951,7 @@ export const BD = {
       "nombre": "Cambio de horquillas inferiores",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQaUdgjAls0mdPELJRx": {
       "cantidad": 1,
@@ -100015,7 +109962,7 @@ export const BD = {
       "nombre": "MANTENIMIENTO AL SISTEMA DE A/A",
       "precio": 600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQaVab2CrUKBV7Gt8Ie": {
       "cantidad": 1,
@@ -100026,7 +109973,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BUJES FLOTANTES DE HORQUILLAS",
       "precio": 1900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQaWP4U8N51OHvRlxxl": {
       "cantidad": 1,
@@ -100037,7 +109984,7 @@ export const BD = {
       "nombre": "REEMPLAZAR  COLUMNA DE DIRECCION",
       "precio": 6500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQaW__qHgtdQ326714G": {
       "cantidad": 1,
@@ -100048,7 +109995,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BIELETAS",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQb_kl3rYm7EqEAQ0hG": {
       "cantidad": 1,
@@ -100059,7 +110006,7 @@ export const BD = {
       "nombre": "Rotación de llantas",
       "precio": 250,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQez3pAkxkq4j3ftZ42": {
       "cantidad": 1,
@@ -100070,7 +110017,7 @@ export const BD = {
       "nombre": "reemplazar bases de amortiguadores",
       "precio": 3960,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQezbGgBqbKFwzgb_GR": {
       "cantidad": 1,
@@ -100081,7 +110028,7 @@ export const BD = {
       "nombre": "reemplazar gomas de rebote delanteras",
       "precio": 280,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQfpULJCCqsmK0FsugB": {
       "cantidad": 1,
@@ -100092,7 +110039,7 @@ export const BD = {
       "nombre": "reemplazar reten de flecha derecha lado caja",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NQl7mhyrKeES7Wb-uFd": {
       "cantidad": 1,
@@ -100103,7 +110050,7 @@ export const BD = {
       "nombre": "diagnsotico de falla ",
       "precio": 100,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NR8koDt0mfmWKa5L3Ov": {
       "cantidad": 1,
@@ -100114,7 +110061,7 @@ export const BD = {
       "nombre": "reemplazar horquillas delanteras",
       "precio": 1700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NR9Ez4osnFEWJ872E7U": {
       "cantidad": 1,
@@ -100125,7 +110072,7 @@ export const BD = {
       "nombre": "reemplazar booster",
       "precio": 3300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NR9f_NHwFAlUmil4ekH": {
       "cantidad": 1,
@@ -100136,7 +110083,7 @@ export const BD = {
       "nombre": "REEMPLAZAR TUBO DE CUERPO DE ACELERACION",
       "precio": 400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NR9gly2Q1x6K_xL9iAR": {
       "cantidad": 1,
@@ -100147,7 +110094,7 @@ export const BD = {
       "nombre": "REEMPLAZAR JUEGO DE BALEROS RUEDAS TRASERAS",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRJ05j6_zuKHoqe_Dpk": {
       "cantidad": 1,
@@ -100158,7 +110105,7 @@ export const BD = {
       "nombre": "reemplazar kit de distribucion",
       "precio": 3300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRZIFR0SAavlHgF8LWH": {
       "cantidad": 1,
@@ -100169,7 +110116,7 @@ export const BD = {
       "nombre": "REEMPLAZAR DISCOS DELANTEROS",
       "precio": 1200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRZIXNf4u_gIg38DbHU": {
       "cantidad": 1,
@@ -100180,7 +110127,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BALEROS CON CON LECTOR ABS  DELANTEROS",
       "precio": 1200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRcaBNAjbqa14Q7BprW": {
       "cantidad": 1,
@@ -100191,7 +110138,7 @@ export const BD = {
       "nombre": "reemplazar bomba de agua",
       "precio": 900,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRiyVBS9R56JSrkeH7v": {
       "cantidad": 1,
@@ -100202,7 +110149,7 @@ export const BD = {
       "nombre": "REEMPLAZAR ENFRIADOR DE ACEITE DE MOTOR",
       "precio": 7000,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRizLTzjpaq7n9tAotJ": {
       "cantidad": 1,
@@ -100213,7 +110160,7 @@ export const BD = {
       "nombre": "REEMPLAZAR TERMOSTATO CON BASE",
       "precio": 960,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRiz_PFsNDbdVtOlw20": {
       "cantidad": 1,
@@ -100224,7 +110171,7 @@ export const BD = {
       "nombre": "REEMPLAZAR JUNTAS DE MULTIPLE DE ADMISION",
       "precio": 1200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRj2aoAzcpc1xyblaXI": {
       "cantidad": 1,
@@ -100235,7 +110182,7 @@ export const BD = {
       "nombre": "reemplazar gomas de resortes traseros",
       "precio": 300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRnOtdWv35P34FhoGpZ": {
       "cantidad": 1,
@@ -100246,7 +110193,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CHAPA ELECTRICA PTA DEL IZQ.",
       "precio": 5500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRnw65ZHRRv_npDWcCT": {
       "cantidad": 1,
@@ -100257,7 +110204,7 @@ export const BD = {
       "nombre": "REEMPLAZAR BOMBA DE DIRECCION",
       "precio": 3800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRnwES6kbSWf5S9-2Mc": {
       "cantidad": 1,
@@ -100268,7 +110215,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CUBRE POLVOS DE DIRECCION",
       "precio": 600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRnwVF4aFoaepmer3sK": {
       "cantidad": 1,
@@ -100279,7 +110226,7 @@ export const BD = {
       "nombre": "EMPACAR FUGA POR TAPA Y BASE DE ACEITE",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRsUkQXJb7ihAdr-PaS": {
       "cantidad": 1,
@@ -100290,7 +110237,7 @@ export const BD = {
       "nombre": "REEMLAZAR BASES DE AMORTIGUADORES DELS",
       "precio": 1300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRsUzjVI5ok7L2zWGRA": {
       "cantidad": 1,
@@ -100301,7 +110248,7 @@ export const BD = {
       "nombre": "REEMPLAZAR GOMAS DE REBOTE DEL Y TRAS",
       "precio": 1360,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NRsXPsz3gA-Vp99QsZ5": {
       "cantidad": 1,
@@ -100312,7 +110259,7 @@ export const BD = {
       "nombre": "reemplazar coNJUNTO DE EMBRAGUE",
       "precio": 7500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NS7J8gaa9_5dqZZMtyw": {
       "cantidad": 1,
@@ -100323,7 +110270,7 @@ export const BD = {
       "nombre": "REEMPLAZAR MODULO A.B.S.",
       "precio": 4000,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NT-seCsqRE8kVGUs9Xt": {
       "cantidad": 2,
@@ -100334,7 +110281,7 @@ export const BD = {
       "nombre": "desmontar y montar llanta",
       "precio": 80,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTFI2zdASQAA6R5UQ4R": {
       "cantidad": 1,
@@ -100345,7 +110292,7 @@ export const BD = {
       "nombre": "reemplazar tambores",
       "precio": 2000,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTFJdsGn40SzUXTM_1L": {
       "cantidad": 1,
@@ -100356,7 +110303,7 @@ export const BD = {
       "nombre": "reemplazar junta de carter de motor",
       "precio": 150,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTFJwSuPUEWzFPOhTKB": {
       "cantidad": 1,
@@ -100367,7 +110314,7 @@ export const BD = {
       "nombre": "reemplazar reten de cigueñal delantero",
       "precio": 300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTFKHQ97LqD2moYIni9": {
       "cantidad": 1,
@@ -100378,7 +110325,7 @@ export const BD = {
       "nombre": "reemplazar reten de cigueñal trasero",
       "precio": 800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTFKYw_8I4qherc-zo1": {
       "cantidad": 1,
@@ -100389,7 +110336,7 @@ export const BD = {
       "nombre": "reemplazar manguera de retorno de direccion",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTFhCXkj6-r_-gH850Z": {
       "cantidad": 1,
@@ -100400,7 +110347,7 @@ export const BD = {
       "nombre": "reemplazar alternador",
       "precio": 7200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTQfimGoQHQc6wXRrAY": {
       "cantidad": 1,
@@ -100411,7 +110358,7 @@ export const BD = {
       "nombre": "DESMNOTAR Y MONTAR LLANTAS",
       "precio": 250,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTZtVF0rjKX2PozxQJd": {
       "cantidad": 1,
@@ -100422,7 +110369,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CILINDRO HIDRAULICO",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTZzJaC56bVcUwgLJp4": {
       "cantidad": 1,
@@ -100433,7 +110380,7 @@ export const BD = {
       "nombre": "REEMPLAZAR VOLANTE MOTRIZ",
       "precio": 3800,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NT_5GDkLWFUQYUqG1om": {
       "descripcion": "INCLUYE MANO DE OBRA",
@@ -100453,7 +110400,7 @@ export const BD = {
       "nombre": "remplazar junta de cabeza",
       "precio": 6000,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTugBP70-5pb8aUFe8A": {
       "cantidad": 1,
@@ -100464,7 +110411,7 @@ export const BD = {
       "nombre": "REEMPLAZAR FILTRO DE GASOLINA  (si aplica)",
       "precio": 300,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTug_RAv57ByIeGOL3o": {
       "cantidad": 1,
@@ -100475,7 +110422,7 @@ export const BD = {
       "nombre": "ajustar columna de direccion",
       "precio": 1600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTugwugD3giBJgEoZmi": {
       "cantidad": 1,
@@ -100486,7 +110433,7 @@ export const BD = {
       "nombre": "reemplazar amortiguador lenatero izquierdo",
       "precio": 1180,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTuhYLUCPzwhGutnp_V": {
       "cantidad": 1,
@@ -100497,7 +110444,7 @@ export const BD = {
       "nombre": "REEMPLAZAR base de amortig. delantero izq.",
       "precio": 850,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTuiEBSLqjGujIrJvd3": {
       "cantidad": 1,
@@ -100508,7 +110455,7 @@ export const BD = {
       "nombre": "CAMBIAR SOPORTE DE MOTOR DER. SUPERIOR",
       "precio": 350,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTulSdxQXonobdscoRZ": {
       "cantidad": 1,
@@ -100519,7 +110466,7 @@ export const BD = {
       "nombre": "CAMBIAR SOPORTE DE MOTOR DER. INFERIOR",
       "precio": 707,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTum0GnoBQvLV61b3lb": {
       "cantidad": 1,
@@ -100530,7 +110477,7 @@ export const BD = {
       "nombre": "REEMPLAZAR SENSOR DE REVERSA",
       "precio": 390,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTumBbK-dtxabcY8VWK": {
       "cantidad": 1,
@@ -100541,7 +110488,7 @@ export const BD = {
       "nombre": "AJUSTER MORDAZAS DE FRENOS DELANTEROS",
       "precio": 200,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTumWvh6IfbiRm1Vx1o": {
       "cantidad": 1,
@@ -100552,7 +110499,7 @@ export const BD = {
       "nombre": "REEMPLAZAR PLUMAS DE LIMPIADORES",
       "precio": 350,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTuuL8-Z_QzLjD02EOv": {
       "cantidad": 1,
@@ -100563,7 +110510,7 @@ export const BD = {
       "nombre": "reemplazar soporte de transmision",
       "precio": 650,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTuu_nWt495heS8UNaI": {
       "cantidad": 2,
@@ -100574,7 +110521,7 @@ export const BD = {
       "nombre": "reemplazar focos de baja de faros",
       "precio": 150,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTuvkR6SrTLz0UzCRou": {
       "cantidad": 1,
@@ -100585,7 +110532,7 @@ export const BD = {
       "nombre": "reemplazar fascia delantera y pintar ",
       "precio": 5400,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTuw0yR_0fK9E7PKg_V": {
       "cantidad": 1,
@@ -100596,7 +110543,7 @@ export const BD = {
       "nombre": "reparar y pintar carroceria en general",
       "precio": 13000,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NTuyAleu-paZArRReEv": {
       "cantidad": 1,
@@ -100607,7 +110554,7 @@ export const BD = {
       "nombre": "REEMPLAZAR FARO IZQUIERDO",
       "precio": 4500,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NU38jlg8MUlBXyryGKp": {
       "cantidad": 1,
@@ -100618,7 +110565,7 @@ export const BD = {
       "nombre": "REEMPLAZAR VOLANTE MOTRIZ",
       "precio": 5600,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NU39QD9JF6mCRlb2jM9": {
       "cantidad": 1,
@@ -100629,7 +110576,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CILINDRO HIDRULICO D EMBRAGUE",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NU4AtoVm8H_llidmkGO": {
       "cantidad": 1,
@@ -100640,7 +110587,7 @@ export const BD = {
       "nombre": "REEMPLAZAR ACEITE DE TRANMISION MANUAL",
       "precio": 700,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NU4BUzKpm91mvPJ3edY": {
       "cantidad": 1,
@@ -100651,7 +110598,7 @@ export const BD = {
       "nombre": "REEMPLAZAR CHICOTES SELECTORES DE VELOCIDADES",
       "precio": 3000,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NU4BfROO1R2gjtufspN": {
       "cantidad": 1,
@@ -100662,7 +110609,7 @@ export const BD = {
       "nombre": "REEMPLAZAR TAPON DE RECUPERADOR DE REFRIGERANTE",
       "precio": 232,
       "status": true,
-      "tipo": "MO"
+      "tipo": "mo"
     },
     "-NWTJyf5X5XtUZ5HOqf5": {
       "aprobado": true,
@@ -105559,6 +115506,1494 @@ export const BD = {
       "marca": "",
       "nombre": "Alineacion y balanceo",
       "precio": 550,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaChqi-zWmV5IgTF3FW": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NaChqi-zWmV5IgTF3FW",
+      "marca": "",
+      "nombre": "Cambio de toma de agua con termostato",
+      "precio": 3579,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaChuvJO2Q1o1vBHz6G": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NaChuvJO2Q1o1vBHz6G",
+      "marca": "",
+      "nombre": "Cambio de clutch",
+      "precio": 6789,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaCi2fkyUnc2P4_PTnr": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NaCi2fkyUnc2P4_PTnr",
+      "marca": "",
+      "nombre": "Radiador",
+      "precio": 3969,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaCtgda6ZqXuHrzkFHp": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NaCtgda6ZqXuHrzkFHp",
+      "marca": "",
+      "nombre": "Montaje de llantas (4)",
+      "precio": 200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaCtmgIk-s0-7y1Jz3D": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 750,
+      "descripcion": "",
+      "id": "-NaCtmgIk-s0-7y1Jz3D",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaCtzX0pDTl5QD9K0w0": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1,
+      "descripcion": "",
+      "id": "-NaCtzX0pDTl5QD9K0w0",
+      "marca": "",
+      "nombre": "Rev. de suspension",
+      "precio": 1,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaDEelQzEVop6PUh3m1": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NaDEelQzEVop6PUh3m1",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaDEjO-YmmT3_FMPXQn": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 750,
+      "descripcion": "",
+      "id": "-NaDEjO-YmmT3_FMPXQn",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaEZ2wvasHU02ZJ71C3": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1950,
+      "descripcion": "",
+      "id": "-NaEZ2wvasHU02ZJ71C3",
+      "marca": "",
+      "nombre": "Reemplazar frenos delanteros",
+      "precio": 950,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaI2qBD24LBhd7f-tyc": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 600,
+      "descripcion": "",
+      "id": "-NaI2qBD24LBhd7f-tyc",
+      "marca": "",
+      "nombre": "Purgar sistema de enfriamiento",
+      "precio": 300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaI2zenwhNEPsoGwT4e": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 600,
+      "descripcion": "",
+      "id": "-NaI2zenwhNEPsoGwT4e",
+      "marca": "",
+      "nombre": "Purgar sistema de enfrimiento",
+      "precio": 300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaIGTTE_AezWpsOe5Qh": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NaIGTTE_AezWpsOe5Qh",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaIGXVUFzsnG-Kob5vm": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NaIGXVUFzsnG-Kob5vm",
+      "marca": "",
+      "nombre": "Rev. de luces",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaJ80qq6RZCVDu1W1iy": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NaJ80qq6RZCVDu1W1iy",
+      "marca": "",
+      "nombre": "Baleros delanteros",
+      "precio": 5349,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaJ9_wfJgoPe2E4qZ5Z": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NaJ9_wfJgoPe2E4qZ5Z",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos traseros",
+      "precio": 650,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaJ9d_lE94FzLv7V7mQ": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NaJ9d_lE94FzLv7V7mQ",
+      "marca": "",
+      "nombre": "Frenos delanteros",
+      "precio": 2869,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaJ9rSlyKAxu6-GcFni": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NaJ9rSlyKAxu6-GcFni",
+      "marca": "",
+      "nombre": "Llantas hankook 195 r15 c (pza.)",
+      "precio": 3280,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaN3t90PUzK_qzAn1dm": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2950,
+      "descripcion": "",
+      "id": "-NaN3t90PUzK_qzAn1dm",
+      "marca": "",
+      "nombre": "Reemplazar horquilla derecha",
+      "precio": 1400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaN42Oeqxck9nmS3sA8": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2400,
+      "descripcion": "",
+      "id": "-NaN42Oeqxck9nmS3sA8",
+      "marca": "",
+      "nombre": "Reemplazar bases de amortiguadores",
+      "precio": 900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaN6WaCu8pbx1kufo7R": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3200,
+      "descripcion": "",
+      "id": "-NaN6WaCu8pbx1kufo7R",
+      "marca": "",
+      "nombre": "Reemplazar amortiguador derecho",
+      "precio": 1600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaN7FsVAAfeBZYCRpUM": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1200,
+      "descripcion": "",
+      "id": "-NaN7FsVAAfeBZYCRpUM",
+      "marca": "",
+      "nombre": "Reemplazar base de amortiguador derecho",
+      "precio": 400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaN7UlrkbI_7sG6WbwI": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1800,
+      "descripcion": "",
+      "id": "-NaN7UlrkbI_7sG6WbwI",
+      "marca": "",
+      "nombre": "Reemplazar cables de bujias",
+      "precio": 950,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaN7_IjhWE7nHgjFm8J": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 800,
+      "descripcion": "",
+      "id": "-NaN7_IjhWE7nHgjFm8J",
+      "marca": "",
+      "nombre": "Reemplazar bujias",
+      "precio": 320,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaN7oLy2OhvduapsPEE": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1900,
+      "descripcion": "",
+      "id": "-NaN7oLy2OhvduapsPEE",
+      "marca": "",
+      "nombre": "Reemplazar lodera izquierda",
+      "precio": 850,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNKGTyjbjv9fEwddOw": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NaNKGTyjbjv9fEwddOw",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNLxxosx94SOO7v8k-": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 500,
+      "descripcion": "",
+      "id": "-NaNLxxosx94SOO7v8k-",
+      "marca": "",
+      "nombre": "Montaje de 4 llantas",
+      "precio": 200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNM34H88giEx8rbkzE": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 750,
+      "descripcion": "",
+      "id": "-NaNM34H88giEx8rbkzE",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNPFmebkSeCLZdFk_z": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3800,
+      "descripcion": "",
+      "id": "-NaNPFmebkSeCLZdFk_z",
+      "marca": "",
+      "nombre": "C/ sensor oxigeno primario banco 2",
+      "precio": 1900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNPPiuksOtsGrrX-qb": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3200,
+      "descripcion": "",
+      "id": "-NaNPPiuksOtsGrrX-qb",
+      "marca": "",
+      "nombre": "C/ sensor de oxigeno secundario banco 2",
+      "precio": 1600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNPZP50ebBhhFG54uj": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2800,
+      "descripcion": "",
+      "id": "-NaNPZP50ebBhhFG54uj",
+      "marca": "",
+      "nombre": "Reemplazar eslabones estabilizadores",
+      "precio": 1400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNPo3DbaHmHpGK4KOR": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NaNPo3DbaHmHpGK4KOR",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaNQP__7cKqrazXs81I": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3000,
+      "descripcion": "",
+      "id": "-NaNQP__7cKqrazXs81I",
+      "marca": "",
+      "nombre": "Reemplazar actuador solenoide admision",
+      "precio": 1500,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaOGbXvXOcidvKDWB4w": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 4400,
+      "descripcion": "",
+      "id": "-NaOGbXvXOcidvKDWB4w",
+      "marca": "",
+      "nombre": "Empacar juntas de aceite de motor",
+      "precio": 2200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaRw3DlhJ-aebTw6uYV": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NaRw3DlhJ-aebTw6uYV",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaXNMW0L6r3e0CJwD7M": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3600,
+      "descripcion": "",
+      "id": "-NaXNMW0L6r3e0CJwD7M",
+      "marca": "",
+      "nombre": "C/ jgo de chocotes de selector de velocidades",
+      "precio": 1900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaXUB5tkadOp523aEtX": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NaXUB5tkadOp523aEtX",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nah97blYHN_KRAsldNr": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 6200,
+      "descripcion": "",
+      "id": "-Nah97blYHN_KRAsldNr",
+      "marca": "",
+      "nombre": "Reemplazar soporte de motor derecho",
+      "precio": 3400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nah9GXcHiQpn3DjcGp4": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2600,
+      "descripcion": "",
+      "id": "-Nah9GXcHiQpn3DjcGp4",
+      "marca": "",
+      "nombre": "Reemplazar soporte de motor de izquierdo",
+      "precio": 1300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NahCl83P7W47O5ZEr5a": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2650,
+      "descripcion": "",
+      "id": "-NahCl83P7W47O5ZEr5a",
+      "marca": "",
+      "nombre": "Reemplazar frenos delanteros y rectifcar rotores",
+      "precio": 1350,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NahCtnI93Er3ldtKReh": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 950,
+      "descripcion": "",
+      "id": "-NahCtnI93Er3ldtKReh",
+      "marca": "",
+      "nombre": "Reemplazar banda de direccion",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NahD19njTEBu3Ztd5QY": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1400,
+      "descripcion": "",
+      "id": "-NahD19njTEBu3Ztd5QY",
+      "marca": "",
+      "nombre": "Reemplazar banda de alternador",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nai5yO58PP3NaE9TLNJ": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1200,
+      "descripcion": "",
+      "id": "-Nai5yO58PP3NaE9TLNJ",
+      "marca": "",
+      "nombre": "C/ buje de control de cambios y ajuste de palanca ",
+      "precio": 600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Naiav3eTy2gtr4CQj9p": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 5800,
+      "descripcion": "",
+      "id": "-Naiav3eTy2gtr4CQj9p",
+      "marca": "",
+      "nombre": "Reemplazar recuperador de refrigerante y tapon",
+      "precio": 2900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Naib2tN3b98yaPYBAXw": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 800,
+      "descripcion": "",
+      "id": "-Naib2tN3b98yaPYBAXw",
+      "marca": "",
+      "nombre": "Lavar sistema de enfriamiento y purgar sistema",
+      "precio": 400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamDUGtQ0yULRz_G6Ek": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NamDUGtQ0yULRz_G6Ek",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamJlb8uPyfZLW4eVgK": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NamJlb8uPyfZLW4eVgK",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamJu5poCluvFV3OjOS": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2300,
+      "descripcion": "",
+      "id": "-NamJu5poCluvFV3OjOS",
+      "marca": "",
+      "nombre": "Reemplazar frenos traseros",
+      "precio": 900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamK2OqBswv9hMQCZ8n": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1600,
+      "descripcion": "",
+      "id": "-NamK2OqBswv9hMQCZ8n",
+      "marca": "",
+      "nombre": "Reparar lineas de sensor de oxigeno banco uno",
+      "precio": 400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamK6KcavHmfqB4MLd_": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 200,
+      "descripcion": "",
+      "id": "-NamK6KcavHmfqB4MLd_",
+      "marca": "",
+      "nombre": "Birlo",
+      "precio": 50,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamOItjMo6p6lgR6hVf": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1950,
+      "descripcion": "",
+      "id": "-NamOItjMo6p6lgR6hVf",
+      "marca": "",
+      "nombre": "Reemplazar gomas de barra estabilizadora",
+      "precio": 800,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamOPJfZ4PmIrX-QaiT": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2800,
+      "descripcion": "",
+      "id": "-NamOPJfZ4PmIrX-QaiT",
+      "marca": "",
+      "nombre": "Reemplazar eslabones estabilizadores ",
+      "precio": 1400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamXvaBZH9WU0VOEs27": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2900,
+      "descripcion": "",
+      "id": "-NamXvaBZH9WU0VOEs27",
+      "marca": "",
+      "nombre": "Reemplazar bases de amortigaudores delanteros",
+      "precio": 1400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamYZQE7ZsBvjfKRrD6": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 7200,
+      "descripcion": "",
+      "id": "-NamYZQE7ZsBvjfKRrD6",
+      "marca": "",
+      "nombre": "Reemplazar amortiguadores delanteros",
+      "precio": 3600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamZO3HZKdtwa8vrs-j": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3600,
+      "descripcion": "",
+      "id": "-NamZO3HZKdtwa8vrs-j",
+      "marca": "",
+      "nombre": "Reemplazar horquillas ",
+      "precio": 1780,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamZYjNRB3Ia7jO4Shy": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1300,
+      "descripcion": "",
+      "id": "-NamZYjNRB3Ia7jO4Shy",
+      "marca": "",
+      "nombre": "Reemplazar tornillos estabilizadores",
+      "precio": 600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NamZt55gUi7qK6ZflcD": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 750,
+      "descripcion": "",
+      "id": "-NamZt55gUi7qK6ZflcD",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Namd75bT-9i9YdlelJn": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3000,
+      "descripcion": "",
+      "id": "-Namd75bT-9i9YdlelJn",
+      "marca": "",
+      "nombre": "Reemplazar tambores traseros",
+      "precio": 1600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Namdde1qg3ppJYoYGlZ": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1500,
+      "descripcion": "",
+      "id": "-Namdde1qg3ppJYoYGlZ",
+      "marca": "",
+      "nombre": "Cambiar jgo de resortes y ajustadores de balatas",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Namdodwc83Kbz8_vLfl": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1600,
+      "descripcion": "",
+      "id": "-Namdodwc83Kbz8_vLfl",
+      "marca": "",
+      "nombre": "Cambio de balatas trasera y conformar",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NarMhgS7wd0JB6wDMPb": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2600,
+      "descripcion": "",
+      "id": "-NarMhgS7wd0JB6wDMPb",
+      "marca": "",
+      "nombre": "Reemplazar recuperador de refrigerante",
+      "precio": 1300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NarOE0LWchjMtDxb30P": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1400,
+      "descripcion": "",
+      "id": "-NarOE0LWchjMtDxb30P",
+      "marca": "",
+      "nombre": "Reemplzar mangueras de calefaccion",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NarOIPqvWog7J2LB4M_": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 600,
+      "descripcion": "",
+      "id": "-NarOIPqvWog7J2LB4M_",
+      "marca": "",
+      "nombre": "Purgar sistema de enfriamiento",
+      "precio": 200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NasbzGmpEKYX0R5oez5": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3200,
+      "descripcion": "",
+      "id": "-NasbzGmpEKYX0R5oez5",
+      "marca": "",
+      "nombre": "Reemplazar kit de distribucion",
+      "precio": 1600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Naw2PBdaTrEWnSEz_QC": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 4600,
+      "descripcion": "",
+      "id": "-Naw2PBdaTrEWnSEz_QC",
+      "marca": "",
+      "nombre": "Aceite atf+4 y coladera de t/a",
+      "precio": 2850,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Naw5hWW6AAfE4WeecUf": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 13000,
+      "descripcion": "",
+      "id": "-Naw5hWW6AAfE4WeecUf",
+      "marca": "",
+      "nombre": "Reemplazar convertidor de torcion remanofacturado",
+      "precio": 6500,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NawDuSWToFbJa7r7NMO": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 13000,
+      "descripcion": "",
+      "id": "-NawDuSWToFbJa7r7NMO",
+      "marca": "",
+      "nombre": "Reemplazar convertidor de torsion",
+      "precio": 6500,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NawyTJpIotztPOuTxvL": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1950,
+      "descripcion": "",
+      "id": "-NawyTJpIotztPOuTxvL",
+      "marca": "",
+      "nombre": "Reemplazar maza balero derecho delantero",
+      "precio": 900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NawycI8GxR3V0SvZC1V": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2600,
+      "descripcion": "",
+      "id": "-NawycI8GxR3V0SvZC1V",
+      "marca": "",
+      "nombre": "Reemplazar soporte de motor derecho",
+      "precio": 1300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NawykAIgP8kUzJuPFW3": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1900,
+      "descripcion": "",
+      "id": "-NawykAIgP8kUzJuPFW3",
+      "marca": "",
+      "nombre": "Reemplazar soporte de trasmision",
+      "precio": 950,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NawywVDKVgLharrxGwm": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1500,
+      "descripcion": "",
+      "id": "-NawywVDKVgLharrxGwm",
+      "marca": "",
+      "nombre": "Reemplazar bujes flotantes de horquillas",
+      "precio": 500,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NawzCK1JFbmt-avyH0z": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 800,
+      "descripcion": "",
+      "id": "-NawzCK1JFbmt-avyH0z",
+      "marca": "",
+      "nombre": "Reemplazar cubre polvos espiga derecha",
+      "precio": 300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nax2YyBVSGOYIKaE2sa": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1600,
+      "descripcion": "",
+      "id": "-Nax2YyBVSGOYIKaE2sa",
+      "marca": "",
+      "nombre": "Reemplazar maza balero izquierda delantera",
+      "precio": 800,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxE0kUKbjOBQkvQRh0": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1460,
+      "descripcion": "",
+      "id": "-NaxE0kUKbjOBQkvQRh0",
+      "marca": "",
+      "nombre": "Reemplazar bases de amortiguadores del",
+      "precio": 720,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxEEhUTJzIai8_Mfyc": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 5900,
+      "descripcion": "",
+      "id": "-NaxEEhUTJzIai8_Mfyc",
+      "marca": "",
+      "nombre": "Reemplazar amortiguadores delanteros",
+      "precio": 300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxEMtzVS-oEp7bgfFD": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1900,
+      "descripcion": "",
+      "id": "-NaxEMtzVS-oEp7bgfFD",
+      "marca": "",
+      "nombre": "Reemplazar goams de tirantes",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxEWmN5nKPoDSD26C2": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1200,
+      "descripcion": "",
+      "id": "-NaxEWmN5nKPoDSD26C2",
+      "marca": "",
+      "nombre": "Reemplazar gomas de barra estabilizadora",
+      "precio": 400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxElM9vwsEjK2BmsZl": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1700,
+      "descripcion": "",
+      "id": "-NaxElM9vwsEjK2BmsZl",
+      "marca": "",
+      "nombre": "Reemplazar frenos delanteros y rectifcar rotores",
+      "precio": 900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxFJ-SPv2DaEw7jLGl": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1400,
+      "descripcion": "",
+      "id": "-NaxFJ-SPv2DaEw7jLGl",
+      "marca": "",
+      "nombre": "Reemplazar soporte central inferior",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxFPmIHSSxWp_THGJk": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 750,
+      "descripcion": "",
+      "id": "-NaxFPmIHSSxWp_THGJk",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxFZXFngHIy742n1PV": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1400,
+      "descripcion": "",
+      "id": "-NaxFZXFngHIy742n1PV",
+      "marca": "",
+      "nombre": "Reemplazar gomas de barra estabilizadora",
+      "precio": 600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NaxFm4DSwqyhdUQvNta": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1900,
+      "descripcion": "",
+      "id": "-NaxFm4DSwqyhdUQvNta",
+      "marca": "",
+      "nombre": "Reemplazar bujes de tirantes",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb00aHhUo-KNjejZRoa": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 15000,
+      "descripcion": "",
+      "id": "-Nb00aHhUo-KNjejZRoa",
+      "marca": "",
+      "nombre": "Reemplazar conjunto de embrague hidraulico",
+      "precio": 8000,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb0eRUBSrtpceoe0Ne2": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-Nb0eRUBSrtpceoe0Ne2",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb0lbDq_aqZuVkAuGEx": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 9600,
+      "descripcion": "",
+      "id": "-Nb0lbDq_aqZuVkAuGEx",
+      "marca": "",
+      "nombre": "Reemplazar amortiguadores delanteros",
+      "precio": 4800,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb0lhOpurhwQtX-Woks": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 850,
+      "descripcion": "",
+      "id": "-Nb0lhOpurhwQtX-Woks",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 650,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbGpTVliVJWEiqiV7ls": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2200,
+      "descripcion": "",
+      "id": "-NbGpTVliVJWEiqiV7ls",
+      "marca": "",
+      "nombre": "Reemplazar frenos delanteros y rectifcar rotores",
+      "precio": 960,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbGpjWJ-BDKLXstbg1m": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1900,
+      "descripcion": "",
+      "id": "-NbGpjWJ-BDKLXstbg1m",
+      "marca": "",
+      "nombre": "Reemnplazar frenos traseros y rectificar tambores",
+      "precio": 780,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbGtPdaHcF3m3WIkjdF": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3600,
+      "descripcion": "",
+      "id": "-NbGtPdaHcF3m3WIkjdF",
+      "marca": "",
+      "nombre": "Reemplazar baleros de flechas ",
+      "precio": 1800,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbGthC27p0frpr40L7h": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1100,
+      "descripcion": "",
+      "id": "-NbGthC27p0frpr40L7h",
+      "marca": "",
+      "nombre": "Reemplazar aceite de diferencial",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbLZ2CrIUaYnk_yRoFX": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NbLZ2CrIUaYnk_yRoFX",
+      "marca": "",
+      "nombre": "Cambio de maza balero",
+      "precio": 2679,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbLZ9ETuJQ6Nc46_13A": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NbLZ9ETuJQ6Nc46_13A",
+      "marca": "",
+      "nombre": "Cambio de clutch",
+      "precio": 6769,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbLZT5_p1MrnzEZmtwj": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NbLZT5_p1MrnzEZmtwj",
+      "marca": "",
+      "nombre": "Cambio de válvula pcv",
+      "precio": 959,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbLZZXlogR-qvXdw35v": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NbLZZXlogR-qvXdw35v",
+      "marca": "",
+      "nombre": "Cambio de banda de accesorios",
+      "precio": 1349,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbUquOJaPwxjtciZ9hW": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NbUquOJaPwxjtciZ9hW",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV41wOyvXN6dUFZe7t": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 200,
+      "descripcion": "",
+      "id": "-NbV41wOyvXN6dUFZe7t",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos traseros",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV48vAF6dDoew0Ub6a": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1700,
+      "descripcion": "",
+      "id": "-NbV48vAF6dDoew0Ub6a",
+      "marca": "",
+      "nombre": "Reemplazar frenos delanteros",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV4DnXU9cuAh4IhLV4": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2400,
+      "descripcion": "",
+      "id": "-NbV4DnXU9cuAh4IhLV4",
+      "marca": "",
+      "nombre": "Reemplazar discos delanteros",
+      "precio": 140,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV4IfW5gTmwaREzuyu": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1600,
+      "descripcion": "",
+      "id": "-NbV4IfW5gTmwaREzuyu",
+      "marca": "",
+      "nombre": "Reemplazar banda de accesorios",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV4PTp6kPrPTxc341J": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NbV4PTp6kPrPTxc341J",
+      "marca": "",
+      "nombre": "Reemplazar plumas de loimpiadores",
+      "precio": 300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV4WZ59Hf0QjAB9MMS": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 800,
+      "descripcion": "",
+      "id": "-NbV4WZ59Hf0QjAB9MMS",
+      "marca": "",
+      "nombre": "Reponer 8 tuercas de birlos faltantes",
+      "precio": 400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV4fhs20PtB6Uuexfm": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3400,
+      "descripcion": "",
+      "id": "-NbV4fhs20PtB6Uuexfm",
+      "marca": "",
+      "nombre": "Reemplazar amortiguadores delanteros",
+      "precio": 1700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV4kA1GKJ9jNi9DXuB": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 750,
+      "descripcion": "",
+      "id": "-NbV4kA1GKJ9jNi9DXuB",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV506eHktNtzcVgtuB": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3200,
+      "descripcion": "",
+      "id": "-NbV506eHktNtzcVgtuB",
+      "marca": "",
+      "nombre": "Reemplazar bateria  y regimen de carga",
+      "precio": 2400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbV6x5_Nib9SJMDCkNs": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 400,
+      "descripcion": "",
+      "id": "-NbV6x5_Nib9SJMDCkNs",
+      "marca": "",
+      "nombre": "Reemplazar plumas de limpiadores",
+      "precio": 300,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbVhh99Qp8yJJrXeK3S": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NbVhh99Qp8yJJrXeK3S",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbVqDNBFfgVdP1rU-Ny": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 600,
+      "descripcion": "",
+      "id": "-NbVqDNBFfgVdP1rU-Ny",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 200,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbVsGkor-jFXZY1ugd1": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NbVsGkor-jFXZY1ugd1",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbW8NYs7re5Gg_jShS1": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2400,
+      "descripcion": "",
+      "id": "-NbW8NYs7re5Gg_jShS1",
+      "marca": "",
+      "nombre": "Reemplazar bomba de aceite",
+      "precio": 690,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbW8_z_SzOtqeSUv8EL": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 980,
+      "descripcion": "",
+      "id": "-NbW8_z_SzOtqeSUv8EL",
+      "marca": "",
+      "nombre": "Cambio de aceite y filtro ",
+      "precio": 600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbW8ralP0L2NnR16K6M": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1950,
+      "descripcion": "",
+      "id": "-NbW8ralP0L2NnR16K6M",
+      "marca": "",
+      "nombre": "Reemplazar tensor de cadena de tiempo",
+      "precio": 500,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbZw_X69wNlA8Pn0naz": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2800,
+      "descripcion": "",
+      "id": "-NbZw_X69wNlA8Pn0naz",
+      "marca": "",
+      "nombre": "Repararmarcha",
+      "precio": 1400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbZwpRtcwUE43NaBeIB": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 14890,
+      "descripcion": "",
+      "id": "-NbZwpRtcwUE43NaBeIB",
+      "marca": "",
+      "nombre": "Reacondicionar  caja de velocidades",
+      "precio": 7500,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbZx4VOFo6zz2nmUVkO": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 900,
+      "descripcion": "",
+      "id": "-NbZx4VOFo6zz2nmUVkO",
+      "marca": "",
+      "nombre": "Cambio de aceite de transmision",
+      "precio": 400,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb_7i4nYbUD7wf9n_8x": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2200,
+      "descripcion": "",
+      "id": "-Nb_7i4nYbUD7wf9n_8x",
+      "marca": "",
+      "nombre": "Reemplazar bujes de horuillas",
+      "precio": 900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb_7ljmlXzWtkikg9SG": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 650,
+      "descripcion": "",
+      "id": "-Nb_7ljmlXzWtkikg9SG",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb_7vgb8DgGNHYxYV1m": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 1500,
+      "descripcion": "",
+      "id": "-Nb_7vgb8DgGNHYxYV1m",
+      "marca": "",
+      "nombre": "Reemplazar banda de accesorios",
+      "precio": 700,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb_kPWtkEM6cbPExSWF": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 750,
+      "descripcion": "",
+      "id": "-Nb_kPWtkEM6cbPExSWF",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 450,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb_oD0hRPECtaugA6io": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-Nb_oD0hRPECtaugA6io",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-Nb_zXXwVS2cVmtAPtfG": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2500,
+      "descripcion": "",
+      "id": "-Nb_zXXwVS2cVmtAPtfG",
+      "marca": "",
+      "nombre": "Reacondicionar motor de arranque",
+      "precio": 600,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbaXDT_9FZZo6W4347P": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 300,
+      "descripcion": "",
+      "id": "-NbaXDT_9FZZo6W4347P",
+      "marca": "",
+      "nombre": "Limpieza y ajuste de frenos",
+      "precio": 100,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbeKRWMQPU_U7XejFIQ": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 7800,
+      "descripcion": "",
+      "id": "-NbeKRWMQPU_U7XejFIQ",
+      "marca": "",
+      "nombre": "Reemplazar bases de amortigaudores delanteros",
+      "precio": 3900,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbeKa7pKaYqMKeQCxfR": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 9800,
+      "descripcion": "",
+      "id": "-NbeKa7pKaYqMKeQCxfR",
+      "marca": "",
+      "nombre": "Reemplazar amortiguadores delanteros",
+      "precio": 5000,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbeKi5GRlFVMUhiFL4e": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 3600,
+      "descripcion": "",
+      "id": "-NbeKi5GRlFVMUhiFL4e",
+      "marca": "",
+      "nombre": "Reemplazar amortiguadores traseros",
+      "precio": 1800,
+      "status": true,
+      "tipo": "mo"
+    },
+    "-NbeKoNH05BBt7sVl_ko": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 850,
+      "descripcion": "",
+      "id": "-NbeKoNH05BBt7sVl_ko",
+      "marca": "",
+      "nombre": "Alineacion y balanceo",
+      "precio": 650,
       "status": true,
       "tipo": "mo"
     }
@@ -115800,91 +127235,91 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 120,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE32XkfMPHMcMXOiOio",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE78vEAujLp8QfcIAtl",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "id": "-NE2pvE6CS_1mdeHFL5W",
@@ -115903,7 +127338,7 @@ export const BD = {
           "catalogo": true,
           "costo": 300,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NHgI_n9nJAmuOg4EwcL",
@@ -115918,14 +127353,14 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 200,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE78vEAujLp8QfcIAtl",
           "cantidad": 1,
           "catalogo": true,
           "precio": 100,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "GMC",
@@ -115942,14 +127377,14 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 700,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
           "cantidad": 1,
           "catalogo": true,
           "precio": 500,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NGbPadXFum0ZEpqn70p",
@@ -115995,7 +127430,7 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 600,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NGbPl434B_Pzb_G6vGp",
@@ -116016,7 +127451,7 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 6,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "Bentley",
@@ -116050,7 +127485,7 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 200,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NH0wMjGCbvLeVEGOrMW",
@@ -116064,7 +127499,7 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 231,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "Chevrolet",
@@ -116178,7 +127613,7 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 500,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "Baic",
@@ -116224,63 +127659,63 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 120,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE32XkfMPHMcMXOiOio",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyVgDX1Nrl63Wn5SpB",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "id": "-NN2Jqrc7I0QE7DprZMY",
@@ -116316,105 +127751,105 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 1800,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE32XkfMPHMcMXOiOio",
           "cantidad": 1,
           "catalogo": true,
           "precio": 500,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NN7GZQ-Cb2LtPBlEeGN",
           "cantidad": 1,
           "catalogo": true,
           "precio": 400,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NN7JnY78GstNucFSbJt",
           "cantidad": 1,
           "catalogo": true,
           "precio": 700,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NN7K-xTFdCJwfegFtwO",
           "cantidad": 1,
           "catalogo": true,
           "precio": 400,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NN7KB1JW7sIiNUvu_YO",
           "cantidad": 2,
           "catalogo": true,
           "precio": 600,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NN7KXIJj1WVhcyv3gp9",
           "cantidad": 1,
           "catalogo": true,
           "precio": 400,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyVgDX1Nrl63Wn5SpB",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFzjXL2niDv6QlUz8hi",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsMnQWQWQsj2ChYfI",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsW7Y5RzRrbI_F9dB",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "Fiat",
@@ -116440,70 +127875,70 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 120,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE32XkfMPHMcMXOiOio",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE78vEAujLp8QfcIAtl",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NN8SzBCToha5F4oc-P2",
           "cantidad": 1,
           "catalogo": true,
           "precio": 400,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NN8TMy3DOqgsu4z1c93",
           "cantidad": 3,
           "catalogo": true,
           "precio": 1370,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "Chevrolet",
@@ -116529,56 +127964,56 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 120,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE32XkfMPHMcMXOiOio",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyxBy74ehhZxnHrZ8Q",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFyVgDX1Nrl63Wn5SpB",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "Honda",
@@ -116595,70 +128030,70 @@ export const BD = {
           "cantidad": 1,
           "catalogo": true,
           "precio": 120,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE32XkfMPHMcMXOiOio",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE3nrow7Ol7iyGtRzO3",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NQAt2o5KlGO7Ut58j3K",
           "cantidad": 1,
           "catalogo": true,
           "precio": 100,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE78vEAujLp8QfcIAtl",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFGEgUK6OVe2fEDvCgS",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NFUnhpeX47MLHgB4zr6",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NE2OUuZ2lh5DhXHHeBL",
           "cantidad": 1,
           "catalogo": true,
           "precio": 300,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsduKTIhhpSrAJKS-",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         },
         {
           "IDreferencia": "-NIXsiafAdRrmZsuD-fs",
           "cantidad": 1,
           "catalogo": true,
           "precio": 150,
-          "tipo": "MO"
+          "tipo": "mo"
         }
       ],
       "marca": "SEAT",
@@ -117955,7 +129390,7 @@ export const BD = {
           "index": 20
         }
       ],
-      "diasSucursal": 195,
+      "diasSucursal": 216,
       "fechaPromesa": "12/1/2023",
       "fecha_recibido": "10/1/2023",
       "formaPago": 1,
@@ -117979,7 +129414,7 @@ export const BD = {
         "ub": 100
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "aprobado": true,
           "cantidad": 1,
@@ -117991,7 +129426,7 @@ export const BD = {
           "nombre": "CAMBIO DE ACEITE Y FILTRO",
           "precio": 120,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 120
         }
       ],
@@ -118007,7 +129442,7 @@ export const BD = {
           "nombre": "CAMBIO DE ACEITE Y FILTRO",
           "precio": 120,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 120
         }
       ],
@@ -118500,7 +129935,7 @@ export const BD = {
           "index": 20
         }
       ],
-      "diasSucursal": 195,
+      "diasSucursal": 216,
       "fechaPromesa": "12/1/2023",
       "fecha_entregado": "",
       "fecha_recibido": "10/1/2023",
@@ -118526,7 +129961,7 @@ export const BD = {
         "ub": 20
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "aprobado": true,
           "cantidad": 1,
@@ -119049,7 +130484,7 @@ export const BD = {
           "index": 20
         }
       ],
-      "diasSucursal": 195,
+      "diasSucursal": 216,
       "fechaPromesa": "11/1/2023",
       "fecha_entregado": "",
       "fecha_recibido": "10/1/2023",
@@ -119075,7 +130510,7 @@ export const BD = {
         "ub": 100
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "aprobado": true,
           "cantidad": 3,
@@ -119087,7 +130522,7 @@ export const BD = {
           "nombre": "CAMBIO DE ACEITE Y FILTRO",
           "precio": 1050,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3150
         }
       ],
@@ -119103,7 +130538,7 @@ export const BD = {
           "nombre": "CAMBIO DE ACEITE Y FILTRO",
           "precio": 1050,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 3150
         }
       ],
@@ -119597,7 +131032,7 @@ export const BD = {
           "index": 20
         }
       ],
-      "diasSucursal": 193,
+      "diasSucursal": 214,
       "fechaPromesa": "13/1/2023",
       "fecha_recibido": "12/1/2023",
       "formaPago": 1,
@@ -119621,7 +131056,7 @@ export const BD = {
         "ub": 100
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "aprobado": true,
           "cantidad": 1,
@@ -119634,7 +131069,7 @@ export const BD = {
           "precio": 150,
           "status": true,
           "terminado": false,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 150
         }
       ],
@@ -119651,7 +131086,7 @@ export const BD = {
           "precio": 150,
           "status": true,
           "terminado": false,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 150
         }
       ],
@@ -120144,7 +131579,7 @@ export const BD = {
           "index": 20
         }
       ],
-      "diasSucursal": 174,
+      "diasSucursal": 195,
       "fechaPromesa": "26/1/2023",
       "fecha_entregado": "",
       "fecha_recibido": "31/1/2023",
@@ -120170,7 +131605,7 @@ export const BD = {
         "ub": 100
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "UB": "100.00",
           "aprobado": true,
@@ -120186,7 +131621,7 @@ export const BD = {
               "nombre": "600",
               "precio": 350,
               "subtotal": 350,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 350
             }
           ],
@@ -120235,7 +131670,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -120284,7 +131719,7 @@ export const BD = {
               "nombre": "600",
               "precio": 350,
               "subtotal": 350,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 350
             }
           ],
@@ -120335,7 +131770,7 @@ export const BD = {
               "nombre": "600",
               "precio": 350,
               "subtotal": 350,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 350
             }
           ],
@@ -120384,7 +131819,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -120433,7 +131868,7 @@ export const BD = {
               "nombre": "600",
               "precio": 350,
               "subtotal": 350,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 350
             }
           ],
@@ -120510,7 +131945,7 @@ export const BD = {
         "telefono_movil": "5570461728",
         "tipo": "flotilla"
       },
-      "diasSucursal": 179,
+      "diasSucursal": 200,
       "fechaPromesa": "31/1/2023",
       "fecha_recibido": "26/1/2023",
       "formaPago": 1,
@@ -120534,7 +131969,7 @@ export const BD = {
         "ub": 100
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "aprobado": true,
           "cantidad": 1,
@@ -120547,7 +131982,7 @@ export const BD = {
           "nombre": "REV. RUIDO EN SUSPENSION DELANTERA",
           "precio": 400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 400
         }
       ],
@@ -120564,7 +131999,7 @@ export const BD = {
           "nombre": "REV. RUIDO EN SUSPENSION DELANTERA",
           "precio": 400,
           "status": true,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 400
         }
       ],
@@ -120609,7 +132044,7 @@ export const BD = {
         "telefono_movil": "5569658965",
         "tipo": "particular"
       },
-      "diasSucursal": 174,
+      "diasSucursal": 195,
       "fechaPromesa": "18/2/2023",
       "fecha_entregado": "",
       "fecha_recibido": "31/1/2023",
@@ -120635,7 +132070,7 @@ export const BD = {
         "ub": 61.38996138996139
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "UB": "86.20",
           "aprobado": true,
@@ -120653,7 +132088,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -120666,7 +132101,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -120783,7 +132218,7 @@ export const BD = {
               "nombre": "mano jose luis",
               "precio": 600,
               "subtotal": 600,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 600
             },
             {
@@ -120822,7 +132257,7 @@ export const BD = {
               "nombre": "mano jose luis 1",
               "precio": 6,
               "subtotal": 6,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 6
             }
           ],
@@ -120876,7 +132311,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -120889,7 +132324,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121006,7 +132441,7 @@ export const BD = {
               "nombre": "mano jose luis",
               "precio": 600,
               "subtotal": 600,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 600
             },
             {
@@ -121045,7 +132480,7 @@ export const BD = {
               "nombre": "mano jose luis 1",
               "precio": 6,
               "subtotal": 6,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 6
             }
           ],
@@ -121121,7 +132556,7 @@ export const BD = {
         "telefono_movil": "5570467464",
         "tipo": "particular"
       },
-      "diasSucursal": 130,
+      "diasSucursal": 151,
       "fechaPromesa": "17/3/2023",
       "fecha_recibido": "16/3/2023",
       "formaPago": 1,
@@ -121129,23 +132564,9 @@ export const BD = {
       "iva": true,
       "margen": 25,
       "no_os": "CU0323GE00017",
-      "reporte": {
-        "descuento": 0,
-        "iva": 512,
-        "meses": 0,
-        "mo": 0,
-        "refacciones_a": 0,
-        "refacciones_v": 0,
-        "sobrescrito": 3200,
-        "sobrescrito_mo": 0,
-        "sobrescrito_paquetes": 3200,
-        "sobrescrito_refaccion": 0,
-        "subtotal": 3200,
-        "total": 3711.9999999999995,
-        "ub": -45.3125
-      },
+      
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "UB": "",
           "aprobado": true,
@@ -121164,7 +132585,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -121177,7 +132598,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121190,7 +132611,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121203,7 +132624,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121216,7 +132637,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121229,7 +132650,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121242,7 +132663,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121255,7 +132676,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121268,7 +132689,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121281,7 +132702,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121294,7 +132715,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -121307,7 +132728,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -121320,7 +132741,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -121334,21 +132755,7 @@ export const BD = {
           "nombre": "SERVICIO MAYOR",
           "normal": "$  4,160.00",
           "precio": 3420,
-          "reporte": {
-            "mo": 3420,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 3420,
-            "ub": 100
-          },
-          "reporte_interno": {
-            "mo": 3420,
-            "refacciones": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0
-          },
+         
           "showStatus": "Aprobado",
           "status": "aprobado",
           "subtotal": "",
@@ -121372,20 +132779,7 @@ export const BD = {
           "nombre": "amortiguadores delanteros",
           "normal": "$  10,140.00",
           "precio": 0,
-          "reporte": {
-            "mo": 0,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 0
-          },
-          "reporte_interno": {
-            "mo": 0,
-            "refacciones": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0
-          },
+          
           "showStatus": "No aprobado",
           "status": "noAprobado",
           "subtotal": "",
@@ -121452,7 +132846,7 @@ export const BD = {
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
               "subtotal": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -121465,7 +132859,7 @@ export const BD = {
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121478,7 +132872,7 @@ export const BD = {
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121491,7 +132885,7 @@ export const BD = {
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121504,7 +132898,7 @@ export const BD = {
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121517,7 +132911,7 @@ export const BD = {
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121530,7 +132924,7 @@ export const BD = {
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121543,7 +132937,7 @@ export const BD = {
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121556,7 +132950,7 @@ export const BD = {
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121569,7 +132963,7 @@ export const BD = {
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121582,7 +132976,7 @@ export const BD = {
               "nombre": "LAVAR MOTOR",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -121595,7 +132989,7 @@ export const BD = {
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
               "subtotal": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -121608,7 +133002,7 @@ export const BD = {
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
               "subtotal": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -121622,21 +133016,7 @@ export const BD = {
           "nombre": "SERVICIO MAYOR",
           "normal": "$  4,160.00",
           "precio": 3420,
-          "reporte": {
-            "mo": 3420,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 3420,
-            "ub": 100
-          },
-          "reporte_interno": {
-            "mo": 3420,
-            "refacciones": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0
-          },
+          
           "showStatus": "Aprobado",
           "status": "aprobado",
           "subtotal": "",
@@ -121660,20 +133040,7 @@ export const BD = {
           "nombre": "amortiguadores delanteros",
           "normal": "$  10,140.00",
           "precio": 0,
-          "reporte": {
-            "mo": 0,
-            "refacciones": 0,
-            "refacciones_v": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0,
-            "total": 0
-          },
-          "reporte_interno": {
-            "mo": 0,
-            "refacciones": 0,
-            "sobrescrito_mo": 0,
-            "sobrescrito_refaccion": 0
-          },
+          
           "showStatus": "No aprobado",
           "status": "noAprobado",
           "subtotal": "",
@@ -121757,7 +133124,7 @@ export const BD = {
         "telefono_movil": "5570467464",
         "tipo": "particular"
       },
-      "diasSucursal": 130,
+      "diasSucursal": 151,
       "fechaPromesa": "16/3/2023",
       "fecha_recibido": "16/3/2023",
       "formaPago": 1,
@@ -121781,7 +133148,7 @@ export const BD = {
         "ub": 0
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "aprobado": false,
           "cantidad": 1,
@@ -121797,7 +133164,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -121809,7 +133176,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121821,7 +133188,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121833,7 +133200,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121845,7 +133212,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121857,7 +133224,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121869,7 +133236,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121881,7 +133248,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121893,7 +133260,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121905,7 +133272,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -121917,7 +133284,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -121929,7 +133296,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -121941,7 +133308,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -121991,7 +133358,7 @@ export const BD = {
               "index": 0,
               "nombre": "CAMBIO DE ACEITE Y FILTRO",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -122003,7 +133370,7 @@ export const BD = {
               "index": 1,
               "nombre": "REEMPLAZAR FILTRO DE AIRE",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122015,7 +133382,7 @@ export const BD = {
               "index": 2,
               "nombre": "REV. Y CORREGIR NIVELES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122027,7 +133394,7 @@ export const BD = {
               "index": 3,
               "nombre": "LAVAR INYECTORES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122039,7 +133406,7 @@ export const BD = {
               "index": 4,
               "nombre": "LAVAR CPO DE ACELERACION",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122051,7 +133418,7 @@ export const BD = {
               "index": 5,
               "nombre": "SCANEO POR COMPUTADORA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122063,7 +133430,7 @@ export const BD = {
               "index": 6,
               "nombre": "REV. 25 PUNTOS DE SEGURIDAD",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122075,7 +133442,7 @@ export const BD = {
               "index": 7,
               "nombre": "CAMBIO DE FOCOS FUNDIDOS CONVENCIONALES",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122087,7 +133454,7 @@ export const BD = {
               "index": 8,
               "nombre": "ROTACION DE LLANTAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122099,7 +133466,7 @@ export const BD = {
               "index": 9,
               "nombre": "REGIMEN DE CARGA DE BATERIA",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             },
             {
@@ -122111,7 +133478,7 @@ export const BD = {
               "index": 10,
               "nombre": "LAVAR MOTOR",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -122123,7 +133490,7 @@ export const BD = {
               "index": 11,
               "nombre": "LAVAR CARROCERIA",
               "precio": 150,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 150
             },
             {
@@ -122135,7 +133502,7 @@ export const BD = {
               "index": 12,
               "nombre": "REEMPLAZAR BUJIAS",
               "precio": 300,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 300
             }
           ],
@@ -122206,7 +133573,7 @@ export const BD = {
         "telefono_movil": "5512254265",
         "tipo": "flotilla"
       },
-      "diasSucursal": 123,
+      "diasSucursal": 144,
       "fechaPromesa": "24/3/2023",
       "fecha_recibido": "23/3/2023",
       "formaPago": 1,
@@ -122230,7 +133597,7 @@ export const BD = {
         "ub": 61.8421052631579
       },
       "servicio": 1,
-      "servicios": [
+      "elementos": [
         {
           "UB": "100.00",
           "aprobado": true,
@@ -122256,7 +133623,7 @@ export const BD = {
               "index": 0,
               "nombre": "FRENOSSSS",
               "precio": 200,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 200
             }
           ],
@@ -122314,7 +133681,7 @@ export const BD = {
               "index": 0,
               "nombre": "nueva",
               "precio": 100,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 100
             },
             {
@@ -122339,7 +133706,7 @@ export const BD = {
               "index": 2,
               "nombre": "nueva",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -122352,7 +133719,7 @@ export const BD = {
               "marca": "BMW",
               "nombre": "prueba 2000 mo",
               "precio": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             },
             {
@@ -122364,7 +133731,7 @@ export const BD = {
               "index": 4,
               "nombre": "prueba 500",
               "precio": 800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 800
             }
           ],
@@ -122442,7 +133809,7 @@ export const BD = {
               "normal": 910,
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             }
           ],
@@ -122660,7 +134027,7 @@ export const BD = {
               "normal": 650,
               "precio": 500,
               "subtotal": 500,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 500
             }
           ],
@@ -122722,7 +134089,7 @@ export const BD = {
               "normal": 650,
               "precio": 500,
               "subtotal": 500,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 500
             },
             {
@@ -122754,7 +134121,7 @@ export const BD = {
               "normal": 299,
               "precio": 230,
               "subtotal": 230,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 230
             },
             {
@@ -122770,7 +134137,7 @@ export const BD = {
               "normal": 104,
               "precio": 80,
               "subtotal": 80,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 80
             }
           ],
@@ -122880,7 +134247,7 @@ export const BD = {
               "normal": 910,
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             }
           ],
@@ -122942,7 +134309,7 @@ export const BD = {
               "normal": 455,
               "precio": 350,
               "subtotal": 350,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 350
             },
             {
@@ -122990,7 +134357,7 @@ export const BD = {
               "normal": 104,
               "precio": 80,
               "subtotal": 80,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 80
             }
           ],
@@ -123038,7 +134405,7 @@ export const BD = {
           "showStatus": "Aprobado",
           "status": "aprobado",
           "subtotal": 1000,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1000
         },
         {
@@ -123075,7 +134442,7 @@ export const BD = {
           "showStatus": "Aprobado",
           "status": "aprobado",
           "subtotal": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 300
         }
       ],
@@ -123105,7 +134472,7 @@ export const BD = {
               "index": 0,
               "nombre": "FRENOSSSS",
               "precio": 200,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 200
             }
           ],
@@ -123163,7 +134530,7 @@ export const BD = {
               "index": 0,
               "nombre": "nueva",
               "precio": 100,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 100
             },
             {
@@ -123188,7 +134555,7 @@ export const BD = {
               "index": 2,
               "nombre": "nueva",
               "precio": 120,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 120
             },
             {
@@ -123201,7 +134568,7 @@ export const BD = {
               "marca": "BMW",
               "nombre": "prueba 2000 mo",
               "precio": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             },
             {
@@ -123213,7 +134580,7 @@ export const BD = {
               "index": 4,
               "nombre": "prueba 500",
               "precio": 800,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 800
             }
           ],
@@ -123291,7 +134658,7 @@ export const BD = {
               "normal": 910,
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             }
           ],
@@ -123509,7 +134876,7 @@ export const BD = {
               "normal": 650,
               "precio": 500,
               "subtotal": 500,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 500
             }
           ],
@@ -123571,7 +134938,7 @@ export const BD = {
               "normal": 650,
               "precio": 500,
               "subtotal": 500,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 500
             },
             {
@@ -123603,7 +134970,7 @@ export const BD = {
               "normal": 299,
               "precio": 230,
               "subtotal": 230,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 230
             },
             {
@@ -123619,7 +134986,7 @@ export const BD = {
               "normal": 104,
               "precio": 80,
               "subtotal": 80,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 80
             }
           ],
@@ -123729,7 +135096,7 @@ export const BD = {
               "normal": 910,
               "precio": 700,
               "subtotal": 700,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 700
             }
           ],
@@ -123791,7 +135158,7 @@ export const BD = {
               "normal": 455,
               "precio": 350,
               "subtotal": 350,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 350
             },
             {
@@ -123839,7 +135206,7 @@ export const BD = {
               "normal": 104,
               "precio": 80,
               "subtotal": 80,
-              "tipo": "MO",
+              "tipo": "mo",
               "total": 80
             }
           ],
@@ -123887,7 +135254,7 @@ export const BD = {
           "showStatus": "Aprobado",
           "status": "aprobado",
           "subtotal": 1000,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 1000
         },
         {
@@ -123924,7 +135291,7 @@ export const BD = {
           "showStatus": "Aprobado",
           "status": "aprobado",
           "subtotal": 300,
-          "tipo": "MO",
+          "tipo": "mo",
           "total": 300
         }
       ],
@@ -128743,6 +140110,42 @@ export const BD = {
       "marca": "",
       "nombre": "Amortiguadores delanteros",
       "precio": 7487,
+      "status": true,
+      "tipo": "refaccion"
+    },
+    "-NaI2kxifhPpGWRLogLX": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2400,
+      "descripcion": "",
+      "id": "-NaI2kxifhPpGWRLogLX",
+      "marca": "",
+      "nombre": "Reemplazar  recirculador de refrigerante de t/a",
+      "precio": 1200,
+      "status": true,
+      "tipo": "refaccion"
+    },
+    "-Naw1tT02qLaWXT68EnR": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 2200,
+      "descripcion": "",
+      "id": "-Naw1tT02qLaWXT68EnR",
+      "marca": "",
+      "nombre": "Reemplazar tubo de circulacion de aceite t/a",
+      "precio": 1400,
+      "status": true,
+      "tipo": "refaccion"
+    },
+    "-NbLZO9Ky791E7XFZW_6": {
+      "aprobado": true,
+      "cantidad": 1,
+      "costo": 0,
+      "descripcion": "",
+      "id": "-NbLZO9Ky791E7XFZW_6",
+      "marca": "",
+      "nombre": "Cambio de banda de accesorios",
+      "precio": 1349,
       "status": true,
       "tipo": "refaccion"
     }

@@ -1,463 +1,4429 @@
 {
-  "-NXpvKAAGvHgD31bk8oQ": {
-      "cilindros": "4",
-      "elementos": [
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "id": "-NXpufTa9W5CBZXq5Vp6",
-              "nombre": "computadora chasis",
-              "precio": 3000,
-              "status": true,
-              "tipo": "refaccion"
-          }
-      ],
-      "enCatalogo": true,
-      "marca": "Audi",
-      "modelo": "A3",
-      "nombre": "computadora chasis",
-      "status": true,
-      "tipo": "paquete",
-      "id": "-NXpvKAAGvHgD31bk8oQ"
-  },
-  "-NXq3BcKzlcRXzFp46DT": {
-      "cilindros": "8",
-      "elementos": [
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "id": "-NXpyKfCYJ5fNTd8TO5R",
-              "nombre": "cambio de cadena distribucion",
-              "precio": 2500,
-              "status": true,
-              "tipo": "mo"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 6400,
-              "id": "-NXpyYexFpD1LjMYuDy4",
-              "nombre": "kit cadena distribucion",
-              "precio": 6500,
-              "status": true,
-              "tipo": "refaccion"
-          }
-      ],
-      "enCatalogo": true,
-      "marca": "BMW",
-      "modelo": "Serie 7",
-      "nombre": "cambio cadena distribucion",
-      "status": true,
-      "tipo": "paquete",
-      "id": "-NXq3BcKzlcRXzFp46DT"
-  },
-  "-NXqIwcwRkg1Szsrbjjz": {
-      "cilindros": "4",
-      "elementos": [
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "id": "-NXqI8eB8kyjlmNKADzk",
-              "nombre": "mano de obra",
-              "precio": 6500,
-              "status": true,
-              "tipo": "mo"
-          }
-      ],
-      "enCatalogo": true,
-      "marca": "Honda",
-      "modelo": "Civic",
-      "nombre": "cambio juntas de motor",
-      "status": true,
-      "tipo": "paquete",
-      "id": "-NXqIwcwRkg1Szsrbjjz"
-  },
-  "-NXqKcSDU7B4iYIGdzlV": {
-      "cilindros": "4",
-      "elementos": [
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "id": "-NXqI8eB8kyjlmNKADzk",
-              "nombre": "mano de obra",
-              "precio": 6500,
-              "status": true,
-              "tipo": "mo"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "id": "-NQbJyuAvZOQ6NRf2HCW",
-              "nombre": "soportes de motor",
-              "precio": 7450,
-              "status": true,
-              "tipo": "refaccion"
-          }
-      ],
-      "enCatalogo": true,
-      "marca": "Honda",
-      "modelo": "Civic",
-      "nombre": "cambio juntas de motor",
-      "status": true,
-      "tipo": "paquete",
-      "id": "-NXqKcSDU7B4iYIGdzlV"
-  },
-  "-N_4oFIgb0RSeHpuHYYz": {
-      "cilindros": "4",
-      "elementos": [
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 1300,
-              "id": "-N_4mvJyu-chz3GhIrAv",
-              "nombre": "cambio de aceite y filtro",
-              "precio": 900,
-              "status": true,
-              "tipo": "refaccion"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 600,
-              "descripcion": "ninguna",
-              "id": "-NE32XkfMPHMcMXOiOio",
-              "nombre": "reemplazar filtro de aire",
-              "precio": 300,
-              "status": true,
-              "tipo": "mo"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 350,
-              "descripcion": "ninguna",
-              "id": "-NE2OUuZ2lh5DhXHHeBL",
-              "nombre": "rev. y corregir niveles",
-              "precio": 300,
-              "status": true,
-              "tipo": "mo"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 600,
-              "id": "-NQBYCB5Eojp02pxdHdl",
-              "nombre": "revision puntos de seguridad",
-              "precio": 550,
-              "status": true,
-              "tipo": "mo"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 120,
-              "id": "-NWoPCGvjvv_Ehi8TSwS",
-              "nombre": "revision de frenos",
-              "precio": 100,
-              "status": true,
-              "tipo": "mo"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 180,
-              "descripcion": "N",
-              "id": "-NIXsduKTIhhpSrAJKS-",
-              "nombre": "lavar motor",
-              "precio": 150,
-              "status": true,
-              "tipo": "mo"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 180,
-              "descripcion": "N",
-              "id": "-NIXsiafAdRrmZsuD-fs",
-              "nombre": "lavar carroceria",
-              "precio": 150,
-              "status": true,
-              "tipo": "mo"
-          }
-      ],
-      "marca": "Fiat",
-      "modelo": "Ducato",
-      "nombre": "servicio menor diesel",
-      "status": true,
-      "id": "-N_4oFIgb0RSeHpuHYYz"
-  },
-  "-N__00FKRVgZyykKEDqv": {
-      "cilindros": "4",
-      "elementos": [
-          {
-              "aprobado": true,
-              "cantidad": 2,
-              "costo": 0,
-              "descripcion": "ford focus año 2017 sedan",
-              "id": "-N_ZyfLEXZJL-r5DhJTK",
-              "nombre": "amortiguadores delanteros",
-              "precio": 2250,
-              "status": true,
-              "tipo": "refaccion"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 2,
-              "costo": 0,
-              "descripcion": "ford focus año 2017 sedan",
-              "id": "-N_ZyxwWB9dVKsBehEts",
-              "nombre": "rotulas delanteras",
-              "precio": 450,
-              "status": true,
-              "tipo": "refaccion"
-          },
-          {
-              "aprobado": true,
-              "cantidad": 1,
-              "costo": 0,
-              "id": "-N_ZzbdsHOnE8znAxR-8",
-              "nombre": "mano de obra",
-              "precio": 2000,
-              "status": true,
-              "tipo": "mo"
-          }
-      ],
-      "enCatalogo": true,
-      "marca": "Audi",
-      "modelo": "A3",
-      "nombre": "amortiguadores y rotulas focus",
-      "status": true,
-      "tipo": "paquete",
-      "id": "-N__00FKRVgZyykKEDqv"
-  },
-  "-NaICs6mEz_D2MvWldRE": {
-      "cilindros": "",
-      "elementos": [
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "cambio de aceite y filtro",
-              "precio": 120,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "reemplazar filtro de aire",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "rev. y corregir niveles",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "lavar inyectores",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "C",
-              "nombre": "lavar cpo de aceleracion",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "scaneo por computadora",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "rev. 25 puntos de seguridad",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "cambio de focos fundidos convencionales",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "rotacion de llantas",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "regimen de carga de bateria",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "lavar motor",
-              "precio": 150,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "lavar carroceria",
-              "precio": 150,
-              "tipo": "mo"
-          }
-      ],
-      "enCatalogo": true,
-      "marca": "Mazda",
-      "modelo": "3",
-      "nombre": "servicio mayor",
-      "status": true,
-      "tipo": "paquete",
-      "id": "-NaICs6mEz_D2MvWldRE"
-  },
-
-  "-NbFbXehy1ft8gN1g2CS": {
-      "cilindros": "",
-      "elementos": [
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "cambio de aceite y filtro",
-              "precio": 120,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "reemplazar filtro de aire",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "rev. y corregir niveles",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "lavar inyectores",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "C",
-              "nombre": "lavar cpo de aceleracion",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "scaneo por computadora",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "rev. 25 puntos de seguridad",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "cambio de focos fundidos convencionales",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "rotacion de llantas",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "regimen de carga de bateria",
-              "precio": 300,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "lavar motor",
-              "precio": 150,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "N",
-              "nombre": "lavar carroceria",
-              "precio": 150,
-              "tipo": "mo"
-          },
-          {
-              "cantidad": 1,
-              "costo": 0,
-              "descripcion": "ninguna",
-              "nombre": "reemplazar bujias",
-              "precio": 300,
-              "tipo": "mo"
-          }
-      ],
-      "enCatalogo": true,
-      "marca": "Ford",
-      "modelo": "Edge",
-      "nombre": "servicio mayor",
-      "status": true,
-      "tipo": "paquete",
-      "id": "-NbFbXehy1ft8gN1g2CS"
-  }
+    "-NMG5B5vshrt9teB10mh": {
+        "nombre": "verificacion vehicular del edo de morelos",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 2900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMG5B5vshrt9teB10mh"
+    },
+    "-NWiGoA5gBvEW2sAVFzv": {
+        "nombre": "verificacion vehicular cdmx",
+        "cantidad": "1",
+        "precio": 1350,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWiGoA5gBvEW2sAVFzv"
+    },
+    "-NXkfBZW4ALb8wK8JGyt": {
+        "nombre": "verificación vehicular",
+        "cantidad": "1",
+        "precio": 1400,
+        "costo": "0",
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXkfBZW4ALb8wK8JGyt"
+    },
+    "-NN8LwZI7korwdWM6Kzl": {
+        "nombre": "verificacion vehicular",
+        "cantidad": 1,
+        "precio": 1370,
+        "costo": 1850,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN8LwZI7korwdWM6Kzl"
+    },
+    "-N_oA4mdf4VtccTElU4W": {
+        "nombre": "tornillos estabilizadores",
+        "cantidad": 1,
+        "precio": 903,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_oA4mdf4VtccTElU4W"
+    },
+    "-NM_NQ8fRCQ0uRSFfnju": {
+        "nombre": "tapones",
+        "cantidad": 1,
+        "precio": 1750,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NM_NQ8fRCQ0uRSFfnju"
+    },
+    "-NY4SPqS8rKSPHlwZcHP": {
+        "nombre": "tapon de llenado de motor",
+        "cantidad": 1,
+        "precio": 250,
+        "costo": 400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4SPqS8rKSPHlwZcHP"
+    },
+    "-N__T74jfVzoHbHmjoH0": {
+        "nombre": "tapa batea",
+        "cantidad": 1,
+        "precio": 2400,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N__T74jfVzoHbHmjoH0"
+    },
+    "-N_F-kGzepLNQ0VAZLST": {
+        "nombre": "soportes de motor",
+        "cantidad": 1,
+        "precio": 5649,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_F-kGzepLNQ0VAZLST"
+    },
+    "-N_FUDWbUj-fg9W3SHcy": {
+        "nombre": "soporte de motor superior derecho",
+        "cantidad": 1,
+        "precio": 1419,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_FUDWbUj-fg9W3SHcy"
+    },
+    "-NYe3yTqVYYFEhEbKzxG": {
+        "nombre": "sincronizar banda de tiempo",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYe3yTqVYYFEhEbKzxG"
+    },
+    "-NMZ_w5aysgzxyTFtpps": {
+        "nombre": "servicio menor diesel",
+        "cantidad": 1,
+        "precio": 2000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMZ_w5aysgzxyTFtpps"
+    },
+    "-NXvErpTCXt1fGb7kJ3H": {
+        "nombre": "servicio mayor con tratamiento a bujia",
+        "cantidad": 1,
+        "precio": 2980,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXvErpTCXt1fGb7kJ3H"
+    },
+    "-NNm0s9M8Gfo_Sku77Ha": {
+        "nombre": "servicio mayor",
+        "cantidad": 1,
+        "precio": 3249,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNm0s9M8Gfo_Sku77Ha"
+    },
+    "-NMdasCHrukYj_aG98tP": {
+        "nombre": "servicio frenos delanteros",
+        "cantidad": 1,
+        "precio": 1949,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "Incluye: Balatas delanteras, liquido de frenos, rectificado de discos y purgado de sistema",
+        "id": "-NMdasCHrukYj_aG98tP"
+    },
+    "-NMdcbzv6NYsZ2OpQOUI": {
+        "nombre": "servicio de frenos delanteros",
+        "cantidad": 1,
+        "precio": 1949,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMdcbzv6NYsZ2OpQOUI"
+    },
+    "-NNmWYLhzfoid7faiCW-": {
+        "nombre": "servicio de afinación",
+        "cantidad": 1,
+        "precio": 2799,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNmWYLhzfoid7faiCW-"
+    },
+    "-N_pX6HxLlb92iWc44nk": {
+        "nombre": "sellar tapa de punterías",
+        "cantidad": 1,
+        "precio": 1739,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_pX6HxLlb92iWc44nk"
+    },
+    "-NFUnhpeX47MLHgB4zr6": {
+        "nombre": "scaneo por computadora",
+        "precio": 300,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NFUnhpeX47MLHgB4zr6"
+    },
+    "-NQb_kl3rYm7EqEAQ0hG": {
+        "nombre": "rotación de llantas",
+        "cantidad": 1,
+        "precio": 250,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQb_kl3rYm7EqEAQ0hG"
+    },
+    "-NFzjXL2niDv6QlUz8hi": {
+        "nombre": "rotacion de llantas",
+        "precio": 300,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NFzjXL2niDv6QlUz8hi"
+    },
+    "-NQBYCB5Eojp02pxdHdl": {
+        "nombre": "revision puntos de seguridad",
+        "cantidad": 1,
+        "precio": 550,
+        "costo": 550,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQBYCB5Eojp02pxdHdl"
+    },
+    "-NN2XIIZ7nwsnXD2qjUO": {
+        "nombre": "revisión general",
+        "cantidad": 1,
+        "precio": 250,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN2XIIZ7nwsnXD2qjUO"
+    },
+    "-NMjep3VLOHcWuUszWcR": {
+        "nombre": "revision general",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMjep3VLOHcWuUszWcR"
+    },
+    "-NKUiZwveiZrVrfIHs57": {
+        "nombre": "revisión especial escaner",
+        "cantidad": 1,
+        "precio": 513,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKUiZwveiZrVrfIHs57"
+    },
+    "-NWoPCGvjvv_Ehi8TSwS": {
+        "nombre": "revision de frenos",
+        "cantidad": "1",
+        "precio": 100,
+        "costo": 200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWoPCGvjvv_Ehi8TSwS"
+    },
+    "-NXqF41jWtJOutMuXutl": {
+        "nombre": "revision  electrica",
+        "cantidad": 1,
+        "precio": 1500,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXqF41jWtJOutMuXutl"
+    },
+    "-NE2OUuZ2lh5DhXHHeBL": {
+        "nombre": "rev. y corregir niveles",
+        "precio": 300,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NE2OUuZ2lh5DhXHHeBL"
+    },
+    "-NMieQvFUYXlpFFIYC_n": {
+        "nombre": "rev. ruido en suspension delantera",
+        "cantidad": 1,
+        "precio": 100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMieQvFUYXlpFFIYC_n"
+    },
+    "-NN7GwXRZIFxBbeELzzn": {
+        "nombre": "rev. pre calentadores",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN7GwXRZIFxBbeELzzn"
+    },
+    "-NaCtzX0pDTl5QD9K0w0": {
+        "nombre": "rev. de suspension",
+        "cantidad": 1,
+        "precio": 1,
+        "costo": 1,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaCtzX0pDTl5QD9K0w0"
+    },
+    "-NaIGXVUFzsnG-Kob5vm": {
+        "nombre": "rev. de luces",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaIGXVUFzsnG-Kob5vm"
+    },
+    "-NFyxBy74ehhZxnHrZ8Q": {
+        "nombre": "rev. 25 puntos de seguridad",
+        "precio": 300,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NFyxBy74ehhZxnHrZ8Q"
+    },
+    "-N_F7y1YRqCS_JjzT3fi": {
+        "nombre": "retenes de flecha",
+        "cantidad": 1,
+        "precio": 1259,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_F7y1YRqCS_JjzT3fi"
+    },
+    "-NbV4WZ59Hf0QjAB9MMS": {
+        "nombre": "reponer 8 tuercas de birlos faltantes",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbV4WZ59Hf0QjAB9MMS"
+    },
+    "-NbZw_X69wNlA8Pn0naz": {
+        "nombre": "repararmarcha",
+        "cantidad": 1,
+        "precio": 1400,
+        "costo": 2800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbZw_X69wNlA8Pn0naz"
+    },
+    "-NYZ1voAwtE1lPVBspf9": {
+        "nombre": "reparar y pintar puerta trasera derecha",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 3500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYZ1voAwtE1lPVBspf9"
+    },
+    "-NTuw0yR_0fK9E7PKg_V": {
+        "nombre": "reparar y pintar carroceria en general",
+        "cantidad": 1,
+        "precio": 13000,
+        "costo": 18900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTuw0yR_0fK9E7PKg_V"
+    },
+    "-NYYunf12CeRibwFyBy6": {
+        "nombre": "reparar y ajutar sistema de freno de emergencia",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYYunf12CeRibwFyBy6"
+    },
+    "-NamK2OqBswv9hMQCZ8n": {
+        "nombre": "reparar lineas de sensor de oxigeno banco uno",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NamK2OqBswv9hMQCZ8n"
+    },
+    "-NKUMzEYtiTg4kdxfMKF": {
+        "nombre": "reparar lineas de ignicion originales",
+        "cantidad": 1,
+        "precio": 1,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKUMzEYtiTg4kdxfMKF"
+    },
+    "-NKUQTiLYSVlOYELH2h3": {
+        "nombre": "reparar lineas de bomba de gasolina - mo",
+        "cantidad": 1,
+        "precio": 1,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKUQTiLYSVlOYELH2h3"
+    },
+    "-NKUNXcCNhD-X73z_QA5": {
+        "nombre": "reparar lineas de bobma de gasolina",
+        "cantidad": 1,
+        "precio": 1,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKUNXcCNhD-X73z_QA5"
+    },
+    "-NMjXGloAC-zou8jBDfA": {
+        "nombre": "reparar lineas de arnes de sensor de cigueñal",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMjXGloAC-zou8jBDfA"
+    },
+    "-N_f4nV-zC4JZjjN8LHi": {
+        "nombre": "reparar closter seccion medidor de gasolina",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 4500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_f4nV-zC4JZjjN8LHi"
+    },
+    "-NYePXzAdQEcQVEGjrSi": {
+        "nombre": "reparar base sop. inf. acomodo pte.  modif. cárter",
+        "cantidad": 1,
+        "precio": 2279,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYePXzAdQEcQVEGjrSi"
+    },
+    "-NXv_J6BYwwMbuouOsNA": {
+        "nombre": "reparacion y pintura de frente de unidad",
+        "cantidad": 1,
+        "precio": 9700,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXv_J6BYwwMbuouOsNA"
+    },
+    "-N_ejWRJ_J6xrSTfAyay": {
+        "nombre": "reparacion indicador de gasolina",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 3800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_ejWRJ_J6xrSTfAyay"
+    },
+    "-NN3TGW17_sNPGwax96i": {
+        "nombre": "reparación fuga de escape",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN3TGW17_sNPGwax96i"
+    },
+    "-NXH1F3RcmoGYjA5cBRq": {
+        "nombre": "reparación de líneas y cuerpo de aceleración",
+        "cantidad": "1",
+        "precio": 4800,
+        "costo": "0",
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXH1F3RcmoGYjA5cBRq"
+    },
+    "-NYd3HaYvUiuGkKvl2at": {
+        "nombre": "reparación de líneas de alternador",
+        "cantidad": 1,
+        "precio": 2200,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYd3HaYvUiuGkKvl2at"
+    },
+    "-NMdb-SQxp5tpVbUZTfn": {
+        "nombre": "reparación de claxon",
+        "cantidad": 1,
+        "precio": 350,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMdb-SQxp5tpVbUZTfn"
+    },
+    "-NNnKB4vA7R8F1NLgufQ": {
+        "nombre": "reparación cinturones de seguridad",
+        "cantidad": 1,
+        "precio": 4800,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNnKB4vA7R8F1NLgufQ"
+    },
+    "-NYeOjU3NORCHhZxQdu4": {
+        "nombre": "reparación base de soporte inferior",
+        "cantidad": 1,
+        "precio": 2279,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYeOjU3NORCHhZxQdu4"
+    },
+    "-N_f4dvlGM72-JyeBqUe": {
+        "nombre": "repara closter seccion medidor de gasolina",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 4500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_f4dvlGM72-JyeBqUe"
+    },
+    "-N_f4WeFA8VE7otog5-g": {
+        "nombre": "repara closter seccion medidor de gaslina",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 4500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_f4WeFA8VE7otog5-g"
+    },
+    "-N_tFh0YR7BtJvlHVxDX": {
+        "nombre": "remplazar sensor de temperatura",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_tFh0YR7BtJvlHVxDX"
+    },
+    "-N_jr1vk7CSopvWN-z0v": {
+        "nombre": "remplazar rodamientos de compresor",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 3600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_jr1vk7CSopvWN-z0v"
+    },
+    "-NPcZ4LLNzL52uyTeqqI": {
+        "nombre": "remplazar manguera de circulacion de valvula pccv",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPcZ4LLNzL52uyTeqqI"
+    },
+    "-NTne_7O2WJrPKuXdtJN": {
+        "nombre": "remplazar junta de cabeza",
+        "cantidad": 1,
+        "precio": 6000,
+        "costo": 9000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTne_7O2WJrPKuXdtJN"
+    },
+    "-Na91jtf3gAzT6qQ8_Xw": {
+        "nombre": "remplazar  frenos traseros y rectifica rotores",
+        "cantidad": 1,
+        "precio": 590,
+        "costo": 1790,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Na91jtf3gAzT6qQ8_Xw"
+    },
+    "-NY4JgRbaOxwvGdXg4Ls": {
+        "nombre": "remparar base de soporte de caja de velocidades",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 2600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4JgRbaOxwvGdXg4Ls"
+    },
+    "-NId4S27TEtxsVYQ4Si2": {
+        "nombre": "registro prueba 6611",
+        "cantidad": "1",
+        "precio": 600,
+        "costo": 0,
+        "tipo": "mo",
+        "descripcion": "registro prueba 600",
+        "id": "-NId4S27TEtxsVYQ4Si2"
+    },
+    "-NIXsMnQWQWQsj2ChYfI": {
+        "nombre": "regimen de carga de bateria",
+        "precio": 300,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NIXsMnQWQWQsj2ChYfI"
+    },
+    "-NMdviJMDWMgFUwBFzO8": {
+        "nombre": "refuerzo plataforma y redillas (soldadura )",
+        "cantidad": 1,
+        "precio": 8300,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMdviJMDWMgFUwBFzO8"
+    },
+    "-NMZvRJgNW9AidayIUgV": {
+        "nombre": "refuerzo de plataforma y redilas",
+        "cantidad": 1,
+        "precio": 6200,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMZvRJgNW9AidayIUgV"
+    },
+    "-NZ6uE4lTTrqDnEZDIDq": {
+        "nombre": "reemplzar soporte de motor derecho",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 3600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ6uE4lTTrqDnEZDIDq"
+    },
+    "-NX0ni_cAlGjvaRWOXhc": {
+        "nombre": "reemplzar rotulas inferiores",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0ni_cAlGjvaRWOXhc"
+    },
+    "-NarOE0LWchjMtDxb30P": {
+        "nombre": "reemplzar mangueras de calefaccion",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NarOE0LWchjMtDxb30P"
+    },
+    "-NYYvUQjMadAooIBjTca": {
+        "nombre": "reemplzar brida de agua de multiple de admision",
+        "cantidad": 1,
+        "precio": 1000,
+        "costo": 2000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYYvUQjMadAooIBjTca"
+    },
+    "-NY-QdLiOfZSBmFDdf-R": {
+        "nombre": "reemplazr junta y sellos de tapa de punterias",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 2300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY-QdLiOfZSBmFDdf-R"
+    },
+    "-NYZ1ndTOwJlOh-jB8th": {
+        "nombre": "reemplazr hoquilla izquierdaq",
+        "cantidad": 1,
+        "precio": 3500,
+        "costo": 7500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYZ1ndTOwJlOh-jB8th"
+    },
+    "-NNDBu04AERaYrwCP52E": {
+        "nombre": "reemplazr cilindors de ruedas traseras",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNDBu04AERaYrwCP52E"
+    },
+    "-NTZzJaC56bVcUwgLJp4": {
+        "nombre": "reemplazar volante motriz",
+        "cantidad": 1,
+        "precio": 3800,
+        "costo": 5400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTZzJaC56bVcUwgLJp4"
+    },
+    "-NX0olxCI5cnRkkdxdG0": {
+        "nombre": "reemplazar varilla corta de direccion",
+        "cantidad": 1,
+        "precio": 1000,
+        "costo": 1850,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0olxCI5cnRkkdxdG0"
+    },
+    "-NX0oe2Ly2AVZcaleBYR": {
+        "nombre": "reemplazar varilla central de direccion",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 2950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0oe2Ly2AVZcaleBYR"
+    },
+    "-NPcYsHCCWRGrDU9OsMT": {
+        "nombre": "reemplazar valvula pcv",
+        "cantidad": 1,
+        "precio": 350,
+        "costo": 890,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPcYsHCCWRGrDU9OsMT"
+    },
+    "-NZ37hBHtwl_FXerfsZr": {
+        "nombre": "reemplazar turbo",
+        "cantidad": 1,
+        "precio": 12800,
+        "costo": 17800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ37hBHtwl_FXerfsZr"
+    },
+    "-NQ2IyWGa5Z3jCq8vGB1": {
+        "nombre": "reemplazar tuercas de rines",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQ2IyWGa5Z3jCq8vGB1"
+    },
+    "-NR9f_NHwFAlUmil4ekH": {
+        "nombre": "reemplazar tubo de cuerpo de aceleracion",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NR9f_NHwFAlUmil4ekH"
+    },
+    "-NNDCqI7QERZZ3CWKkQr": {
+        "nombre": "reemplazar tubo conductor de cuerpo de aceleracion",
+        "cantidad": 1,
+        "precio": 990,
+        "costo": 1930,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNDCqI7QERZZ3CWKkQr"
+    },
+    "-NY4JDaIUvMocv_NXMYQ": {
+        "nombre": "reemplazar tripoide izquierdo",
+        "cantidad": 1,
+        "precio": 890,
+        "costo": 2100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4JDaIUvMocv_NXMYQ"
+    },
+    "-NX0oUNwWhZqPb_UhbCZ": {
+        "nombre": "reemplazar tornillos estabilizadores",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0oUNwWhZqPb_UhbCZ"
+    },
+    "-NY4SEbFrxPzmu9qtyjy": {
+        "nombre": "reemplazar tonillos estabilizadores",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4SEbFrxPzmu9qtyjy"
+    },
+    "-NRizLTzjpaq7n9tAotJ": {
+        "nombre": "reemplazar termostato con base",
+        "cantidad": 1,
+        "precio": 960,
+        "costo": 4600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRizLTzjpaq7n9tAotJ"
+    },
+    "-NZSeXcf1OjAbOLRmn1J": {
+        "nombre": "reemplazar terminales de direccion y vieletas",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 2600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZSeXcf1OjAbOLRmn1J"
+    },
+    "-NWiKZL_zOF8k-23L4EI": {
+        "nombre": "reemplazar terminales de direccion",
+        "cantidad": 1,
+        "precio": 500,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWiKZL_zOF8k-23L4EI"
+    },
+    "-N_ejJSlzJ6KVLWZPhY2": {
+        "nombre": "reemplazar terminales de bateria",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_ejJSlzJ6KVLWZPhY2"
+    },
+    "-NbW8ralP0L2NnR16K6M": {
+        "nombre": "reemplazar tensor de cadena de tiempo",
+        "cantidad": 1,
+        "precio": 500,
+        "costo": 1950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbW8ralP0L2NnR16K6M"
+    },
+    "-NU4BfROO1R2gjtufspN": {
+        "nombre": "reemplazar tapon de recuperador de refrigerante",
+        "cantidad": 1,
+        "precio": 232,
+        "costo": 350,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NU4BfROO1R2gjtufspN"
+    },
+    "-Namd75bT-9i9YdlelJn": {
+        "nombre": "reemplazar tambores traseros",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 3000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Namd75bT-9i9YdlelJn"
+    },
+    "-NTFI2zdASQAA6R5UQ4R": {
+        "nombre": "reemplazar tambores",
+        "cantidad": 1,
+        "precio": 2000,
+        "costo": 3840,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTFI2zdASQAA6R5UQ4R"
+    },
+    "-NYPukKvgPc_YcM3Ztpb": {
+        "nombre": "reemplazar soportes de palanca",
+        "cantidad": 1,
+        "precio": 1700,
+        "costo": 3200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYPukKvgPc_YcM3Ztpb"
+    },
+    "-NXjuiFbFbch3vWZWS5P": {
+        "nombre": "reemplazar soportes de cabina",
+        "cantidad": 1,
+        "precio": 2400,
+        "costo": 4800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXjuiFbFbch3vWZWS5P"
+    },
+    "-Na92DvLkyp0apO_2shJ": {
+        "nombre": "reemplazar soporte sentral de motor",
+        "cantidad": 1,
+        "precio": 650,
+        "costo": 1450,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Na92DvLkyp0apO_2shJ"
+    },
+    "-NY-0y6w-pmJrT2tk3aZ": {
+        "nombre": "reemplazar soporte derecho",
+        "cantidad": 1,
+        "precio": 1400,
+        "costo": 2900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY-0y6w-pmJrT2tk3aZ"
+    },
+    "-NawykAIgP8kUzJuPFW3": {
+        "nombre": "reemplazar soporte de trasmision",
+        "cantidad": 1,
+        "precio": 950,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NawykAIgP8kUzJuPFW3"
+    },
+    "-NTuuL8-Z_QzLjD02EOv": {
+        "nombre": "reemplazar soporte de transmision",
+        "cantidad": 1,
+        "precio": 650,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTuuL8-Z_QzLjD02EOv"
+    },
+    "-NL2Q5pCHUhsKhjg3rkh": {
+        "nombre": "reemplazar soporte de motro izquierdo",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 4320,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NL2Q5pCHUhsKhjg3rkh"
+    },
+    "-NQ2Ih1hHjXmV3hWsDSl": {
+        "nombre": "reemplazar soporte de motor trasero",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQ2Ih1hHjXmV3hWsDSl"
+    },
+    "-NZ6a-RML7v9Ieqa1tAj": {
+        "nombre": "reemplazar soporte de motor izquierdo",
+        "cantidad": 1,
+        "precio": 2250,
+        "costo": 4500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ6a-RML7v9Ieqa1tAj"
+    },
+    "-NZ6uLx0m4Nlae4aasHW": {
+        "nombre": "reemplazar soporte de motor inferior",
+        "cantidad": 1,
+        "precio": 1700,
+        "costo": 3400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ6uLx0m4Nlae4aasHW"
+    },
+    "-NXRfqp8Ft11PPbN7211": {
+        "nombre": "reemplazar soporte de motor hidraulico  derecho",
+        "cantidad": "1",
+        "precio": 1480,
+        "costo": 2980,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXRfqp8Ft11PPbN7211"
+    },
+    "-NL2QEqLB1ho33FNY0Q8": {
+        "nombre": "reemplazar soporte de motor frontal",
+        "cantidad": 1,
+        "precio": 1970,
+        "costo": 4320,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NL2QEqLB1ho33FNY0Q8"
+    },
+    "-NL2Pvka_jb_fJQWHfli": {
+        "nombre": "reemplazar soporte de motor derecho",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 4320,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NL2Pvka_jb_fJQWHfli"
+    },
+    "-Nah9GXcHiQpn3DjcGp4": {
+        "nombre": "reemplazar soporte de motor de izquierdo",
+        "cantidad": 1,
+        "precio": 1300,
+        "costo": 2600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Nah9GXcHiQpn3DjcGp4"
+    },
+    "-NN7QH8zXKOABBTISuU8": {
+        "nombre": "reemplazar soporte de escape",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN7QH8zXKOABBTISuU8"
+    },
+    "-NY--nH6smVt8eMpv0iS": {
+        "nombre": "reemplazar soporte de caja",
+        "cantidad": 1,
+        "precio": 690,
+        "costo": 1570,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY--nH6smVt8eMpv0iS"
+    },
+    "-NaxFJ-SPv2DaEw7jLGl": {
+        "nombre": "reemplazar soporte central inferior",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaxFJ-SPv2DaEw7jLGl"
+    },
+    "-NZSoDlg0AFpwt3FkkyY": {
+        "nombre": "reemplazar soporte central de motor",
+        "cantidad": 1,
+        "precio": 2600,
+        "costo": 5200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZSoDlg0AFpwt3FkkyY"
+    },
+    "-NZSf5x01MPFyT85RzFZ": {
+        "nombre": "reemplazar sesnor de oxigeno banco 2",
+        "cantidad": 1,
+        "precio": 850,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZSf5x01MPFyT85RzFZ"
+    },
+    "-NN7GgmIf9ylst_I7mUn": {
+        "nombre": "reemplazar separador de agua",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 650,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN7GgmIf9ylst_I7mUn"
+    },
+    "-NWrha1Vk-b5BuHfSZf3": {
+        "nombre": "reemplazar sensores de oxigeno banco 2",
+        "cantidad": "1",
+        "precio": 3400,
+        "costo": 6800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWrha1Vk-b5BuHfSZf3"
+    },
+    "-NOzoF1Bi1jUwZE77Nhu": {
+        "nombre": "reemplazar sensores de desgaste de frenos",
+        "cantidad": 1,
+        "precio": 500,
+        "costo": 1000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOzoF1Bi1jUwZE77Nhu"
+    },
+    "-NZGvaq4bUlwFQLIkRVA": {
+        "nombre": "reemplazar sensores de desgaste",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZGvaq4bUlwFQLIkRVA"
+    },
+    "-NMEgGv4buQgjptlorzd": {
+        "nombre": "reemplazar sensor de temperatura",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMEgGv4buQgjptlorzd"
+    },
+    "-NMjXQJ3h3BCeojpT7iT": {
+        "nombre": "reemplazar sensor de sigueñal",
+        "cantidad": 1,
+        "precio": 565,
+        "costo": 1130,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMjXQJ3h3BCeojpT7iT"
+    },
+    "-NTum0GnoBQvLV61b3lb": {
+        "nombre": "reemplazar sensor de reversa",
+        "cantidad": 1,
+        "precio": 390,
+        "costo": 750,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTum0GnoBQvLV61b3lb"
+    },
+    "-NZgpdepNTjHdG739MGt": {
+        "nombre": "reemplazar sensor de presion de aceite",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 750,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZgpdepNTjHdG739MGt"
+    },
+    "-NWiH7zSnqI6kO1puV_u": {
+        "nombre": "reemplazar sensor de oxigeno inferior",
+        "cantidad": 1,
+        "precio": 1300,
+        "costo": 2600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWiH7zSnqI6kO1puV_u"
+    },
+    "-NWsLmrrh973hAhYO7tw": {
+        "nombre": "reemplazar sensor de desgaste delantero",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWsLmrrh973hAhYO7tw"
+    },
+    "-NNllHQ8NZMJEJ5vcQ2y": {
+        "nombre": "reemplazar sensor de cigueñal",
+        "cantidad": 1,
+        "precio": 1400,
+        "costo": 2800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNllHQ8NZMJEJ5vcQ2y"
+    },
+    "-NXk1fwvX_DVys8XqM0A": {
+        "nombre": "reemplazar sellos de tubos de bomba de agua",
+        "cantidad": "1",
+        "precio": 1200,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXk1fwvX_DVys8XqM0A"
+    },
+    "-NX0nrIsahU7kc8ykqVw": {
+        "nombre": "reemplazar rotulas superiores",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0nrIsahU7kc8ykqVw"
+    },
+    "-NOznHh-wK1wLmEB9xB6": {
+        "nombre": "reemplazar rotores delanteros",
+        "cantidad": 1,
+        "precio": 2800,
+        "costo": 4600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOznHh-wK1wLmEB9xB6"
+    },
+    "-NMVi4Z3RJ5XnqgxtGWp": {
+        "nombre": "reemplazar rodamiento trasero izquierdo",
+        "cantidad": 1,
+        "precio": 340,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMVi4Z3RJ5XnqgxtGWp"
+    },
+    "-NMViBWYmR3Ucq1IhJYR": {
+        "nombre": "reemplazar rodamiento trasero derecho",
+        "cantidad": 1,
+        "precio": 340,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMViBWYmR3Ucq1IhJYR"
+    },
+    "-N_tG-zNbkmcGfwXtAHs": {
+        "nombre": "reemplazar rociador de parabrisas",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_tG-zNbkmcGfwXtAHs"
+    },
+    "-NXjvtpYKtMIW3N2H_LR": {
+        "nombre": "reemplazar retenes y baleros de flechas",
+        "cantidad": 1,
+        "precio": 2600,
+        "costo": 5200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXjvtpYKtMIW3N2H_LR"
+    },
+    "-NMjYXT173BG_iG5DVnn": {
+        "nombre": "reemplazar retenes de distribucion",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 1800,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "INCLUYE RETENES DE ARBOL DE LEVAS Y DE CIGUEÑAL",
+        "id": "-NMjYXT173BG_iG5DVnn"
+    },
+    "-N_Zae7D-4zsYglhs87B": {
+        "nombre": "reemplazar reten de sigueñal y arbol de levas",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_Zae7D-4zsYglhs87B"
+    },
+    "-NQfpULJCCqsmK0FsugB": {
+        "nombre": "reemplazar reten de flecha derecha lado caja",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQfpULJCCqsmK0FsugB"
+    },
+    "-NTFKHQ97LqD2moYIni9": {
+        "nombre": "reemplazar reten de cigueñal trasero",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTFKHQ97LqD2moYIni9"
+    },
+    "-NTFJwSuPUEWzFPOhTKB": {
+        "nombre": "reemplazar reten de cigueñal delantero",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTFJwSuPUEWzFPOhTKB"
+    },
+    "-NZbW7-DpxNlJkOhEnJn": {
+        "nombre": "reemplazar reductores abs traseros",
+        "cantidad": 1,
+        "precio": 3000,
+        "costo": 6000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZbW7-DpxNlJkOhEnJn"
+    },
+    "-Naiav3eTy2gtr4CQj9p": {
+        "nombre": "reemplazar recuperador de refrigerante y tapon",
+        "cantidad": 1,
+        "precio": 2900,
+        "costo": 5800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Naiav3eTy2gtr4CQj9p"
+    },
+    "-NY4SL5N3YeFqNXMVKa5": {
+        "nombre": "reemplazar recuperador de refrigerante",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4SL5N3YeFqNXMVKa5"
+    },
+    "-NOAHP_waoYGtaI-9_zG": {
+        "nombre": "reemplazar recuperador  de refrigerante",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 2000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOAHP_waoYGtaI-9_zG"
+    },
+    "-N_pIVKbQy5q5AMuD1Aw": {
+        "nombre": "reemplazar radiador y refrigerante",
+        "cantidad": 1,
+        "precio": 2150,
+        "costo": 4200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_pIVKbQy5q5AMuD1Aw"
+    },
+    "-N_tFWSKlwDSzsVo8mGs": {
+        "nombre": "reemplazar radiador con tapon",
+        "cantidad": 1,
+        "precio": 4000,
+        "costo": 8900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_tFWSKlwDSzsVo8mGs"
+    },
+    "-NMdvGUc9-4s5HJ-VYtj": {
+        "nombre": "reemplazar radiador",
+        "cantidad": 1,
+        "precio": 2100,
+        "costo": 4780,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "INCLUYE RADIADOR NUEVO, REFRIGERANTE CONSENTRADO Y PURGAR SITEMA DE ENFRIAMIENTO",
+        "id": "-NMdvGUc9-4s5HJ-VYtj"
+    },
+    "-NbV4PTp6kPrPTxc341J": {
+        "nombre": "reemplazar plumas de loimpiadores",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbV4PTp6kPrPTxc341J"
+    },
+    "-NTumWvh6IfbiRm1Vx1o": {
+        "nombre": "reemplazar plumas de limpiadores",
+        "cantidad": 1,
+        "precio": 350,
+        "costo": 450,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTumWvh6IfbiRm1Vx1o"
+    },
+    "-NYeEy9JOVJyJIrBvxzq": {
+        "nombre": "reemplazar pastillas traseras",
+        "cantidad": 1,
+        "precio": 3000,
+        "costo": 5900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYeEy9JOVJyJIrBvxzq"
+    },
+    "-NYeFNveo1syun8jqAV3": {
+        "nombre": "reemplazar pastillas delanteras",
+        "cantidad": 1,
+        "precio": 3400,
+        "costo": 6200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYeFNveo1syun8jqAV3"
+    },
+    "-NMdbR0A97j3K_fAFIjk": {
+        "nombre": "reemplazar motor de arranque nuevo",
+        "cantidad": 1,
+        "precio": 2100,
+        "costo": 4800,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "MOTOR DE ARRANQUE CON 6 MESES DE GARANTIA",
+        "id": "-NMdbR0A97j3K_fAFIjk"
+    },
+    "-NZmhjkUmOZb3k1HtaKG": {
+        "nombre": "reemplazar modulo bomba de gasolina",
+        "cantidad": 1,
+        "precio": 4300,
+        "costo": 8600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZmhjkUmOZb3k1HtaKG"
+    },
+    "-NS7J8gaa9_5dqZZMtyw": {
+        "nombre": "reemplazar modulo a.b.s.",
+        "cantidad": 1,
+        "precio": 4000,
+        "costo": 12000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NS7J8gaa9_5dqZZMtyw"
+    },
+    "-NMFEqkqkCSsloHu9ur3": {
+        "nombre": "reemplazar maza trasera izquierda",
+        "cantidad": 1,
+        "precio": 2700,
+        "costo": 6137,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMFEqkqkCSsloHu9ur3"
+    },
+    "-NNDDLFSNJRHM0l5eg8o": {
+        "nombre": "reemplazar maza con abs trasera izquieda",
+        "cantidad": 1,
+        "precio": 1790,
+        "costo": 4069,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNDDLFSNJRHM0l5eg8o"
+    },
+    "-NNDDCsn2mIMNv8VgWLr": {
+        "nombre": "reemplazar maza con abs trasera derecha",
+        "cantidad": 1,
+        "precio": 1790,
+        "costo": 4069,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNDDCsn2mIMNv8VgWLr"
+    },
+    "-Nax2YyBVSGOYIKaE2sa": {
+        "nombre": "reemplazar maza balero izquierda delantera",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Nax2YyBVSGOYIKaE2sa"
+    },
+    "-NawyTJpIotztPOuTxvL": {
+        "nombre": "reemplazar maza balero derecho delantero",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NawyTJpIotztPOuTxvL"
+    },
+    "-NZgqAITLNhmRNwZfgzl": {
+        "nombre": "reemplazar maza balero derecha",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 2200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZgqAITLNhmRNwZfgzl"
+    },
+    "-N_G8e9HDyuXvFooHsXF": {
+        "nombre": "reemplazar maza balero delanteros",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 3800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_G8e9HDyuXvFooHsXF"
+    },
+    "-NYPv5M9C-ndjZKQCaT3": {
+        "nombre": "reemplazar maroma de selector de velocidades",
+        "cantidad": 1,
+        "precio": 4980,
+        "costo": 9300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYPv5M9C-ndjZKQCaT3"
+    },
+    "-NXjwuC7jyCIT7ugb2lU": {
+        "nombre": "reemplazar marcha",
+        "cantidad": 1,
+        "precio": 3200,
+        "costo": 5800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXjwuC7jyCIT7ugb2lU"
+    },
+    "-NTFKYw_8I4qherc-zo1": {
+        "nombre": "reemplazar manguera de retorno de direccion",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTFKYw_8I4qherc-zo1"
+    },
+    "-NI8QEKt1vqIUHz41Itz": {
+        "nombre": "reemplazar manguera de alta presion de direccion",
+        "precio": 300,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NI8QEKt1vqIUHz41Itz"
+    },
+    "-NaN7oLy2OhvduapsPEE": {
+        "nombre": "reemplazar lodera izquierda",
+        "cantidad": 1,
+        "precio": 850,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaN7oLy2OhvduapsPEE"
+    },
+    "-N_FnQo8s_o7RGfk9_a_": {
+        "nombre": "reemplazar llanta hankook modelo optimo 165-65/r14",
+        "cantidad": 4,
+        "precio": 1850,
+        "costo": 2290,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_FnQo8s_o7RGfk9_a_"
+    },
+    "-NWe0NnOE7efAHoy5GGK": {
+        "nombre": "reemplazar liquido de frenos y purgar sistema",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWe0NnOE7efAHoy5GGK"
+    },
+    "-NZSfSOVgz3kQV3ALv8L": {
+        "nombre": "reemplazar ligas caliper y embolos de pistones",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZSfSOVgz3kQV3ALv8L"
+    },
+    "-NRJ05j6_zuKHoqe_Dpk": {
+        "nombre": "reemplazar kit de distribucion",
+        "cantidad": 1,
+        "precio": 3300,
+        "costo": 6600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRJ05j6_zuKHoqe_Dpk"
+    },
+    "-NRiz_PFsNDbdVtOlw20": {
+        "nombre": "reemplazar juntas de multiple de admision",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 1950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRiz_PFsNDbdVtOlw20"
+    },
+    "-NZ37xv4Yo6WOc1BH2S8": {
+        "nombre": "reemplazar junta de tapa de punteris",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1450,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ37xv4Yo6WOc1BH2S8"
+    },
+    "-NYdqDTxV90ie5y6cTm4": {
+        "nombre": "reemplazar junta de tapa de punterias",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYdqDTxV90ie5y6cTm4"
+    },
+    "-NYYv_vsi4igU6MbYngk": {
+        "nombre": "reemplazar junta de tapa de distribucion",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYYv_vsi4igU6MbYngk"
+    },
+    "-NZgqVGI5rANdSk-VrcU": {
+        "nombre": "reemplazar junta de multiple de escape",
+        "cantidad": 1,
+        "precio": 5,
+        "costo": 1,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZgqVGI5rANdSk-VrcU"
+    },
+    "-NZgqJzn7DM-0OUv0pBR": {
+        "nombre": "reemplazar junta de multiple de esape",
+        "cantidad": 1,
+        "precio": 5,
+        "costo": 1,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZgqJzn7DM-0OUv0pBR"
+    },
+    "-NTFJdsGn40SzUXTM_1L": {
+        "nombre": "reemplazar junta de carter de motor",
+        "cantidad": 1,
+        "precio": 150,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTFJdsGn40SzUXTM_1L"
+    },
+    "-NR9gly2Q1x6K_xL9iAR": {
+        "nombre": "reemplazar juego de baleros ruedas traseras",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NR9gly2Q1x6K_xL9iAR"
+    },
+    "-NR8koDt0mfmWKa5L3Ov": {
+        "nombre": "reemplazar horquillas delanteras",
+        "cantidad": 1,
+        "precio": 1700,
+        "costo": 3950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NR8koDt0mfmWKa5L3Ov"
+    },
+    "-NZSei8WoaMR2mUu3GZu": {
+        "nombre": "reemplazar horquillas",
+        "cantidad": 1,
+        "precio": 5000,
+        "costo": 8900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZSei8WoaMR2mUu3GZu"
+    },
+    "-NaN3t90PUzK_qzAn1dm": {
+        "nombre": "reemplazar horquilla derecha",
+        "cantidad": 1,
+        "precio": 1400,
+        "costo": 2950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaN3t90PUzK_qzAn1dm"
+    },
+    "-NXM2bjR9pwQpH7W_Jr_": {
+        "nombre": "reemplazar hoquiillas",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 3600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXM2bjR9pwQpH7W_Jr_"
+    },
+    "-NRj2aoAzcpc1xyblaXI": {
+        "nombre": "reemplazar gomas de resortes traseros",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRj2aoAzcpc1xyblaXI"
+    },
+    "-NXkTT7_lhw9Gs8gNx75": {
+        "nombre": "reemplazar gomas de rebote delanteros",
+        "cantidad": "1",
+        "precio": 600,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXkTT7_lhw9Gs8gNx75"
+    },
+    "-NQezbGgBqbKFwzgb_GR": {
+        "nombre": "reemplazar gomas de rebote delanteras",
+        "cantidad": 1,
+        "precio": 280,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQezbGgBqbKFwzgb_GR"
+    },
+    "-NRsUzjVI5ok7L2zWGRA": {
+        "nombre": "reemplazar gomas de rebote del y tras",
+        "cantidad": 1,
+        "precio": 1360,
+        "costo": 2720,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRsUzjVI5ok7L2zWGRA"
+    },
+    "-N_9Qwjw-DBk-pS61R8i": {
+        "nombre": "reemplazar gomas de barra estabilizaora",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 2100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_9Qwjw-DBk-pS61R8i"
+    },
+    "-NKOZK6Kn-yfnj_naF6w": {
+        "nombre": "reemplazar gomas de barra estabilizadora -",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKOZK6Kn-yfnj_naF6w"
+    },
+    "-NXjuEjE-N3uthP3fed8": {
+        "nombre": "reemplazar gomas de barra estabilizadora",
+        "cantidad": "1",
+        "precio": 400,
+        "costo": 700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXjuEjE-N3uthP3fed8"
+    },
+    "-NX0o1pvnoRIca7AZvGY": {
+        "nombre": "reemplazar gomas de barra",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0o1pvnoRIca7AZvGY"
+    },
+    "-NaxEMtzVS-oEp7bgfFD": {
+        "nombre": "reemplazar goams de tirantes",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaxEMtzVS-oEp7bgfFD"
+    },
+    "-N_jttfmZjEvEkgTKVO3": {
+        "nombre": "reemplazar frenos traseros y rectificar tambores",
+        "cantidad": 1,
+        "precio": 960,
+        "costo": 2100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_jttfmZjEvEkgTKVO3"
+    },
+    "-NYz3ReA2trdly4YP9EJ": {
+        "nombre": "reemplazar frenos traseros y rectificar rotores",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 3200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYz3ReA2trdly4YP9EJ"
+    },
+    "-NZbuvqAe7mxZ1FE0XDq": {
+        "nombre": "reemplazar frenos traseros y rect. rotores",
+        "cantidad": 1,
+        "precio": 1500,
+        "costo": 3500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZbuvqAe7mxZ1FE0XDq"
+    },
+    "-NNDBdxShdac7Pn6e16b": {
+        "nombre": "reemplazar frenos traseros",
+        "cantidad": 1,
+        "precio": 1700,
+        "costo": 700,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "INCLUYE BALATAS Y RECTIFICADO DE TAMBORES",
+        "id": "-NNDBdxShdac7Pn6e16b"
+    },
+    "-NZ6_lJ_EFCQZuiFb-Qy": {
+        "nombre": "reemplazar frenos delanteros y rectificar rotores",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ6_lJ_EFCQZuiFb-Qy"
+    },
+    "-NWsHqgcGzLkvp7TjdFF": {
+        "nombre": "reemplazar frenos delanteros y rectifcar rotores",
+        "cantidad": "1",
+        "precio": 1300,
+        "costo": 2950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWsHqgcGzLkvp7TjdFF"
+    },
+    "-NJG6gBYj3cD1QBW6CSa": {
+        "nombre": "reemplazar frenos delanteros",
+        "precio": 300,
+        "status": true,
+        "descripcion": "INCLUYE PASTILLAS DELANTERAS RECTIFICADO DE DISCOS LIQUIDO DE FRENOS NECESARIO Y MANO DE OBRA",
+        "id": "-NJG6gBYj3cD1QBW6CSa"
+    },
+    "-NZ6a7VMrU9GrhXPTKD5": {
+        "nombre": "reemplazar focos varios",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ6a7VMrU9GrhXPTKD5"
+    },
+    "-N__R8r46WVesfYSHAEL": {
+        "nombre": "reemplazar focos de faros luz baja",
+        "cantidad": 1,
+        "precio": 150,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N__R8r46WVesfYSHAEL"
+    },
+    "-NXjwGbPT3WrfUTWYD0a": {
+        "nombre": "reemplazar focos de faro led",
+        "cantidad": 1,
+        "precio": 650,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXjwGbPT3WrfUTWYD0a"
+    },
+    "-NXjw9Wu41XVtXWZMoDj": {
+        "nombre": "reemplazar focos de cabina",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXjw9Wu41XVtXWZMoDj"
+    },
+    "-NTuu_nWt495heS8UNaI": {
+        "nombre": "reemplazar focos de baja de faros",
+        "cantidad": 2,
+        "precio": 150,
+        "costo": 250,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTuu_nWt495heS8UNaI"
+    },
+    "-NMja9F3YawqXREkDqrX": {
+        "nombre": "reemplazar focos",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 300,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "FOCO DE STOP Y FOCO DE FARO DERECHO",
+        "id": "-NMja9F3YawqXREkDqrX"
+    },
+    "-NWsHzNe5OshV4cYqBkD": {
+        "nombre": "reemplazar foco de stop izquierdo",
+        "cantidad": 1,
+        "precio": 20,
+        "costo": 250,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWsHzNe5OshV4cYqBkD"
+    },
+    "-NY4SrRRMd7xur6jGRcj": {
+        "nombre": "reemplazar foco de stop",
+        "cantidad": 1,
+        "precio": 30,
+        "costo": 90,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4SrRRMd7xur6jGRcj"
+    },
+    "-NQ79JZxcFIg6C_xbosF": {
+        "nombre": "reemplazar flotador de combustible",
+        "cantidad": 1,
+        "precio": 2300,
+        "costo": 4950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQ79JZxcFIg6C_xbosF"
+    },
+    "-NQ2IrGg7iakKpI3-zMz": {
+        "nombre": "reemplazar flecha izq. lado rueda",
+        "cantidad": 1,
+        "precio": 2800,
+        "costo": 6300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQ2IrGg7iakKpI3-zMz"
+    },
+    "-NN7K-xTFdCJwfegFtwO": {
+        "nombre": "reemplazar filtro secundario (si aplica)",
+        "precio": 400,
+        "status": true,
+        "descripcion": "DIESEL",
+        "id": "-NN7K-xTFdCJwfegFtwO"
+    },
+    "-NTugBP70-5pb8aUFe8A": {
+        "nombre": "reemplazar filtro de gasolina  (si aplica)",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTugBP70-5pb8aUFe8A"
+    },
+    "-NQAt2o5KlGO7Ut58j3K": {
+        "nombre": "reemplazar filtro de gasolina",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 1,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQAt2o5KlGO7Ut58j3K"
+    },
+    "-NN7GZQ-Cb2LtPBlEeGN": {
+        "nombre": "reemplazar filtro de combustible",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN7GZQ-Cb2LtPBlEeGN"
+    },
+    "-NE32XkfMPHMcMXOiOio": {
+        "nombre": "reemplazar filtro de aire",
+        "precio": 300,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NE32XkfMPHMcMXOiOio"
+    },
+    "-NYTdNX9Ejhmul1DSc7l": {
+        "nombre": "reemplazar filtro carbon activado a/c",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYTdNX9Ejhmul1DSc7l"
+    },
+    "-NTuvkR6SrTLz0UzCRou": {
+        "nombre": "reemplazar fascia delantera y pintar",
+        "cantidad": 1,
+        "precio": 5400,
+        "costo": 7950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTuvkR6SrTLz0UzCRou"
+    },
+    "-NTuyAleu-paZArRReEv": {
+        "nombre": "reemplazar faro izquierdo",
+        "cantidad": 1,
+        "precio": 4500,
+        "costo": 6000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTuyAleu-paZArRReEv"
+    },
+    "-NZRkOBLuOBxKVWK7rPU": {
+        "nombre": "reemplazar faoro izquierdo",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 2800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZRkOBLuOBxKVWK7rPU"
+    },
+    "-N_ejD59KO0oUEWmGnbn": {
+        "nombre": "reemplazar espigas de flechas delanteras",
+        "cantidad": 1,
+        "precio": 1700,
+        "costo": 3200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_ejD59KO0oUEWmGnbn"
+    },
+    "-NXvo9mjLBy5fDJQveys": {
+        "nombre": "reemplazar espejo lateral izquierdo electrico",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 4500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXvo9mjLBy5fDJQveys"
+    },
+    "-NXvoGGT8pooDDCewtGb": {
+        "nombre": "reemplazar espejo lateral derecho electrico",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 4500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXvoGGT8pooDDCewtGb"
+    },
+    "-NWndHnmx_cRCyiNOz4t": {
+        "nombre": "reemplazar espejo lateral derecho",
+        "cantidad": 1,
+        "precio": 1000,
+        "costo": 1950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWndHnmx_cRCyiNOz4t"
+    },
+    "-NOPTHVNCkX6IcHSJ6NT": {
+        "nombre": "reemplazar eslabones estabilizadores",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1590,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOPTHVNCkX6IcHSJ6NT"
+    },
+    "-NYe4WUmjKVbbDz1f25o": {
+        "nombre": "reemplazar eslabon estabilizador derecho",
+        "cantidad": 1,
+        "precio": 290,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYe4WUmjKVbbDz1f25o"
+    },
+    "-NRiyVBS9R56JSrkeH7v": {
+        "nombre": "reemplazar enfriador de aceite de motor",
+        "cantidad": 1,
+        "precio": 7000,
+        "costo": 9400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRiyVBS9R56JSrkeH7v"
+    },
+    "-NRZIFR0SAavlHgF8LWH": {
+        "nombre": "reemplazar discos delanteros",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRZIFR0SAavlHgF8LWH"
+    },
+    "-NY43UWCn9u1gt01VuKt": {
+        "nombre": "reemplazar cubre polvos flecha derecha lado rueda",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY43UWCn9u1gt01VuKt"
+    },
+    "-NawzCK1JFbmt-avyH0z": {
+        "nombre": "reemplazar cubre polvos espiga derecha",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NawzCK1JFbmt-avyH0z"
+    },
+    "-NWiKgOaPtOZU4LfyLHT": {
+        "nombre": "reemplazar cubre polvos de flechas lado caja",
+        "cantidad": 1,
+        "precio": 240,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWiKgOaPtOZU4LfyLHT"
+    },
+    "-N_KW-GDDtWVV4PUg8Jl": {
+        "nombre": "reemplazar cubre polvos de flechas delanteros",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_KW-GDDtWVV4PUg8Jl"
+    },
+    "-NRnwES6kbSWf5S9-2Mc": {
+        "nombre": "reemplazar cubre polvos de direccion",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRnwES6kbSWf5S9-2Mc"
+    },
+    "-NOPS-KyHXsB3ajNP0eq": {
+        "nombre": "reemplazar cubre polvos de calipers traseros",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 880,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOPS-KyHXsB3ajNP0eq"
+    },
+    "-NM_M7ViiTujG6eSNXWO": {
+        "nombre": "reemplazar cubre polvos de caliper´s delanteros",
+        "cantidad": 1,
+        "precio": 450,
+        "costo": 1050,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NM_M7ViiTujG6eSNXWO"
+    },
+    "-NawDuSWToFbJa7r7NMO": {
+        "nombre": "reemplazar convertidor de torsion",
+        "cantidad": 1,
+        "precio": 6500,
+        "costo": 13000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NawDuSWToFbJa7r7NMO"
+    },
+    "-Naw5hWW6AAfE4WeecUf": {
+        "nombre": "reemplazar convertidor de torcion remanofacturado",
+        "cantidad": 1,
+        "precio": 6500,
+        "costo": 13000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Naw5hWW6AAfE4WeecUf"
+    },
+    "-Nb00aHhUo-KNjejZRoa": {
+        "nombre": "reemplazar conjunto de embrague hidraulico",
+        "cantidad": 1,
+        "precio": 8000,
+        "costo": 15000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Nb00aHhUo-KNjejZRoa"
+    },
+    "-NRsXPsz3gA-Vp99QsZ5": {
+        "nombre": "reemplazar conjunto de embrague",
+        "cantidad": 1,
+        "precio": 7500,
+        "costo": 17500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRsXPsz3gA-Vp99QsZ5"
+    },
+    "-NWngUPMMnh1wPVxsVBE": {
+        "nombre": "reemplazar conector de bobina",
+        "cantidad": 1,
+        "precio": 250,
+        "costo": 500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWngUPMMnh1wPVxsVBE"
+    },
+    "-NMFHycazpHA_hGzdT7N": {
+        "nombre": "reemplazar cilindro maestro",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 2700,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "incluye fluido hidráulico y purgar sistema",
+        "id": "-NMFHycazpHA_hGzdT7N"
+    },
+    "-NU39QD9JF6mCRlb2jM9": {
+        "nombre": "reemplazar cilindro hidrulico d embrague",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NU39QD9JF6mCRlb2jM9"
+    },
+    "-N_dob8bb0lyiz2hy-4y": {
+        "nombre": "reemplazar cilindro hidrualico de clutch",
+        "cantidad": 1,
+        "precio": 2400,
+        "costo": 4800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_dob8bb0lyiz2hy-4y"
+    },
+    "-NTZtVF0rjKX2PozxQJd": {
+        "nombre": "reemplazar cilindro hidraulico",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 2000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTZtVF0rjKX2PozxQJd"
+    },
+    "-N_o8Gjamuiyu_svrjOG": {
+        "nombre": "reemplazar cilindro de frenos trasero derecho",
+        "cantidad": 1,
+        "precio": 430,
+        "costo": 980,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_o8Gjamuiyu_svrjOG"
+    },
+    "-NU4BUzKpm91mvPJ3edY": {
+        "nombre": "reemplazar chicotes selectores de velocidades",
+        "cantidad": 1,
+        "precio": 3000,
+        "costo": 5500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NU4BUzKpm91mvPJ3edY"
+    },
+    "-NQQm3PNKalajbI0ySe7": {
+        "nombre": "reemplazar chicotes de control de cambios",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 1800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQQm3PNKalajbI0ySe7"
+    },
+    "-NXvoVbfQpIooXjEH753": {
+        "nombre": "reemplazar chapa puerta trasera derecha",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 4800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXvoVbfQpIooXjEH753"
+    },
+    "-NRnOtdWv35P34FhoGpZ": {
+        "nombre": "reemplazar chapa electrica pta del izq.",
+        "cantidad": 1,
+        "precio": 5500,
+        "costo": 11500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRnOtdWv35P34FhoGpZ"
+    },
+    "-NT_5GDkLWFUQYUqG1om": {
+        "nombre": "reemplazar chapa electrica de maletero",
+        "precio": 200,
+        "status": true,
+        "descripcion": "INCLUYE MANO DE OBRA",
+        "id": "-NT_5GDkLWFUQYUqG1om"
+    },
+    "-NZGy4JDpS6gOyWVm1ut": {
+        "nombre": "reemplazar calefactor de a/c",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 7800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZGy4JDpS6gOyWVm1ut"
+    },
+    "-N_ouECNrqrSNZyWjMZn": {
+        "nombre": "reemplazar calavera izquieda",
+        "cantidad": 1,
+        "precio": 1450,
+        "costo": 2900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_ouECNrqrSNZyWjMZn"
+    },
+    "-N_osiuryqV-O3k05gB9": {
+        "nombre": "reemplazar calavera derecha",
+        "cantidad": 1,
+        "precio": 1450,
+        "costo": 2900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_osiuryqV-O3k05gB9"
+    },
+    "-NI8PSRR3xIk7sZBjGkc": {
+        "nombre": "reemplazar caja de direccion",
+        "precio": 1,
+        "status": true,
+        "descripcion": "incluye dirección remanufacturada fluido necesario y mano de obra",
+        "id": "-NI8PSRR3xIk7sZBjGkc"
+    },
+    "-NZRjAxiqos7UQbU8pVm": {
+        "nombre": "reemplazar cables y bujias",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZRjAxiqos7UQbU8pVm"
+    },
+    "-NM-9x5-_gzk6L0ML_xL": {
+        "nombre": "reemplazar cables de bujias",
+        "cantidad": 1,
+        "precio": 550,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NM-9x5-_gzk6L0ML_xL"
+    },
+    "-NXROXb400JGNg9ykkW2": {
+        "nombre": "reemplazar bujias high power",
+        "cantidad": 1,
+        "precio": 1120,
+        "costo": 2240,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXROXb400JGNg9ykkW2"
+    },
+    "-NE3nrow7Ol7iyGtRzO3": {
+        "nombre": "reemplazar bujias",
+        "precio": 300,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NE3nrow7Ol7iyGtRzO3"
+    },
+    "-NQaVab2CrUKBV7Gt8Ie": {
+        "nombre": "reemplazar bujes flotantes de horquillas",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 3800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQaVab2CrUKBV7Gt8Ie"
+    },
+    "-NaxFm4DSwqyhdUQvNta": {
+        "nombre": "reemplazar bujes de tirantes",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaxFm4DSwqyhdUQvNta"
+    },
+    "-Nb_7i4nYbUD7wf9n_8x": {
+        "nombre": "reemplazar bujes de horuillas",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 2200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Nb_7i4nYbUD7wf9n_8x"
+    },
+    "-NYZ3cUdFKDnIkkzvqWL": {
+        "nombre": "reemplazar bujes de horquillas delanteras",
+        "cantidad": 1,
+        "precio": 3700,
+        "costo": 7600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYZ3cUdFKDnIkkzvqWL"
+    },
+    "-NKOZZLivC8PC11MTWFo": {
+        "nombre": "reemplazar bujes de horquillas",
+        "cantidad": 1,
+        "precio": 1400,
+        "costo": 2600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKOZZLivC8PC11MTWFo"
+    },
+    "-NWcqsM5DI5vJWeKtc98": {
+        "nombre": "reemplazar bujes de horquilla superior derecha",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWcqsM5DI5vJWeKtc98"
+    },
+    "-NX0nwLoUfA2RbaQYgbG": {
+        "nombre": "reemplazar bujes de eje",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0nwLoUfA2RbaQYgbG"
+    },
+    "-NXkTbb-3oBaxcVvHnox": {
+        "nombre": "reemplazar bujaes de horquillas grandes",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 2200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXkTbb-3oBaxcVvHnox"
+    },
+    "-NZ6hoLpykdOadS8GwCc": {
+        "nombre": "reemplazar boster",
+        "cantidad": 1,
+        "precio": 1700,
+        "costo": 2900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ6hoLpykdOadS8GwCc"
+    },
+    "-NR9Ez4osnFEWJ872E7U": {
+        "nombre": "reemplazar booster",
+        "cantidad": 1,
+        "precio": 3300,
+        "costo": 6800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NR9Ez4osnFEWJ872E7U"
+    },
+    "-NOulWHurYk31XWBBs_x": {
+        "nombre": "reemplazar bomba de gasolina",
+        "cantidad": 1,
+        "precio": 1100,
+        "costo": 2100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOulWHurYk31XWBBs_x"
+    },
+    "-NI8Q1d_GB9FLqHfJEvr": {
+        "nombre": "reemplazar bomba de direccion",
+        "precio": 300,
+        "status": true,
+        "descripcion": "incluye bomba de de dirección remanufacturada y mano de obra",
+        "id": "-NI8Q1d_GB9FLqHfJEvr"
+    },
+    "-NRcaBNAjbqa14Q7BprW": {
+        "nombre": "reemplazar bomba de agua",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 3800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRcaBNAjbqa14Q7BprW"
+    },
+    "-NbW8NYs7re5Gg_jShS1": {
+        "nombre": "reemplazar bomba de aceite",
+        "cantidad": 1,
+        "precio": 690,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbW8NYs7re5Gg_jShS1"
+    },
+    "-NYYvKXpp-HR9pQ9aH0t": {
+        "nombre": "reemplazar bobma de agua",
+        "cantidad": 1,
+        "precio": 1500,
+        "costo": 3340,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYYvKXpp-HR9pQ9aH0t"
+    },
+    "-NXRN4AAyTRXumTDisOp": {
+        "nombre": "reemplazar bobina de ignicion (2)",
+        "cantidad": "1",
+        "precio": 2600,
+        "costo": 5900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXRN4AAyTRXumTDisOp"
+    },
+    "-NZRimhGrnSQY3AvhOEg": {
+        "nombre": "reemplazar bobina de ignicion",
+        "cantidad": 1,
+        "precio": 550,
+        "costo": 1300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZRimhGrnSQY3AvhOEg"
+    },
+    "-NZSfFHEFEWUHm5fMwr9": {
+        "nombre": "reemplazar bobina de compresor y carga de gas",
+        "cantidad": 1,
+        "precio": 1700,
+        "costo": 2950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZSfFHEFEWUHm5fMwr9"
+    },
+    "-NWnfY-WimDX6t5EHVm9": {
+        "nombre": "reemplazar bobina",
+        "cantidad": 2,
+        "precio": 1000,
+        "costo": 1500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWnfY-WimDX6t5EHVm9"
+    },
+    "-N_oB8Uzqy0lTSDN61bJ": {
+        "nombre": "reemplazar birlo y tuerca rueda del izq.",
+        "cantidad": 1,
+        "precio": 150,
+        "costo": 550,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_oB8Uzqy0lTSDN61bJ"
+    },
+    "-NQaW__qHgtdQ326714G": {
+        "nombre": "reemplazar bieletas",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQaW__qHgtdQ326714G"
+    },
+    "-NNllkz1aRPVbon_PkeC": {
+        "nombre": "reemplazar bateria y regimen de carga",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 2600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNllkz1aRPVbon_PkeC"
+    },
+    "-NXpSwcmxczYe1JQ1qhT": {
+        "nombre": "reemplazar bateria lth",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 2300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXpSwcmxczYe1JQ1qhT"
+    },
+    "-NZXQ2v9F5larNXWfEWh": {
+        "nombre": "reemplazar bateria  y regimen de carga",
+        "cantidad": 1,
+        "precio": 2050,
+        "costo": 2562,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZXQ2v9F5larNXWfEWh"
+    },
+    "-NYJjsKQsqXPM5y2BDvt": {
+        "nombre": "reemplazar bases de amrotiguadores delanteros",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYJjsKQsqXPM5y2BDvt"
+    },
+    "-NY4S4ij5mohG5RVeG4-": {
+        "nombre": "reemplazar bases de amortiguadores del",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4S4ij5mohG5RVeG4-"
+    },
+    "-NQez3pAkxkq4j3ftZ42": {
+        "nombre": "reemplazar bases de amortiguadores",
+        "cantidad": 1,
+        "precio": 3960,
+        "costo": 7920,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQez3pAkxkq4j3ftZ42"
+    },
+    "-N_KUQuxWMPRYAQ_fbzx": {
+        "nombre": "reemplazar bases de amortigaudores delanteros",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 3200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_KUQuxWMPRYAQ_fbzx"
+    },
+    "-NN8P2_i7gVDxu63BqP4": {
+        "nombre": "reemplazar base de modulo pcm",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1370,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN8P2_i7gVDxu63BqP4"
+    },
+    "-NOPSV5AzieklOwfKVdV": {
+        "nombre": "reemplazar base de filtro de aceite",
+        "cantidad": 1,
+        "precio": 1720,
+        "costo": 2900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOPSV5AzieklOwfKVdV"
+    },
+    "-NaN7FsVAAfeBZYCRpUM": {
+        "nombre": "reemplazar base de amortiguador derecho",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaN7FsVAAfeBZYCRpUM"
+    },
+    "-NTuhYLUCPzwhGutnp_V": {
+        "nombre": "reemplazar base de amortig. delantero izq.",
+        "cantidad": 1,
+        "precio": 850,
+        "costo": 1740,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTuhYLUCPzwhGutnp_V"
+    },
+    "-NM-APEzyh6qbioELbmP": {
+        "nombre": "reemplazar banda de tiempo",
+        "cantidad": 1,
+        "precio": 680,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NM-APEzyh6qbioELbmP"
+    },
+    "-NOPSG1kkoSGW9RAfvA6": {
+        "nombre": "reemplazar banda de direccion",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOPSG1kkoSGW9RAfvA6"
+    },
+    "-NahD19njTEBu3Ztd5QY": {
+        "nombre": "reemplazar banda de alternador",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NahD19njTEBu3Ztd5QY"
+    },
+    "-NJGOyfp7sTbWXJTgMmb": {
+        "nombre": "reemplazar banda de accesorios",
+        "cantidad": 1,
+        "precio": 1,
+        "costo": 1450,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NJGOyfp7sTbWXJTgMmb"
+    },
+    "-NYJkL1Mk6lNdtn2KyYE": {
+        "nombre": "reemplazar baleros traseros",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYJkL1Mk6lNdtn2KyYE"
+    },
+    "-NbGtPdaHcF3m3WIkjdF": {
+        "nombre": "reemplazar baleros de flechas",
+        "cantidad": 1,
+        "precio": 1800,
+        "costo": 3600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbGtPdaHcF3m3WIkjdF"
+    },
+    "-NRZIXNf4u_gIg38DbHU": {
+        "nombre": "reemplazar baleros con con lector abs  delanteros",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 2100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRZIXNf4u_gIg38DbHU"
+    },
+    "-NYJk4QmUd0ceHUDQ63K": {
+        "nombre": "reemplazar baleros  delanteros",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYJk4QmUd0ceHUDQ63K"
+    },
+    "-NXM6i8TauSZOUxClk__": {
+        "nombre": "reemplazar balero trasero derecho",
+        "cantidad": 1,
+        "precio": 450,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXM6i8TauSZOUxClk__"
+    },
+    "-NYTdHukueU37kEv6SwW": {
+        "nombre": "reemplazar balero de polea de compresor",
+        "cantidad": 1,
+        "precio": 2200,
+        "costo": 3800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYTdHukueU37kEv6SwW"
+    },
+    "-NX0p8nPtWZWktcpJwWs": {
+        "nombre": "reemplazar amrotiguadores traseros",
+        "cantidad": 1,
+        "precio": 1500,
+        "costo": 3200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0p8nPtWZWktcpJwWs"
+    },
+    "-NJGPN6KKMQxvg-4GYK5": {
+        "nombre": "reemplazar amrotiguadores delanteros",
+        "cantidad": 1,
+        "precio": 1,
+        "costo": 5480,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "INCLUYE AMORTIGUADORES DE GAS",
+        "id": "-NJGPN6KKMQxvg-4GYK5"
+    },
+    "-NXjuUs9cNnuLW6zXoAn": {
+        "nombre": "reemplazar amrotiguador de direccion",
+        "cantidad": 1,
+        "precio": 750,
+        "costo": 1500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXjuUs9cNnuLW6zXoAn"
+    },
+    "-NKOYqjlfbtYgiUgqqxE": {
+        "nombre": "reemplazar amortiguadores traseros -",
+        "cantidad": 1,
+        "precio": 2300,
+        "costo": 4600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKOYqjlfbtYgiUgqqxE"
+    },
+    "-NJGQtM7tnS0ePdMz7J4": {
+        "nombre": "reemplazar amortiguadores traseros",
+        "cantidad": 1,
+        "precio": 2040,
+        "costo": 4100,
+        "status": true,
+        "tipo": "mo",
+        "descripcion": "INCLUYE AMORTIGUADORES DE GAS",
+        "id": "-NJGQtM7tnS0ePdMz7J4"
+    },
+    "-N_9Qi3-0XRLWcAAIapo": {
+        "nombre": "reemplazar amortiguadores delanteros y bases",
+        "cantidad": 1,
+        "precio": 20000,
+        "costo": 39200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_9Qi3-0XRLWcAAIapo"
+    },
+    "-NZH0apn1bsPDaOSBe2I": {
+        "nombre": "reemplazar amortiguadores delanteros syd",
+        "cantidad": 1,
+        "precio": 4660,
+        "costo": 6700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZH0apn1bsPDaOSBe2I"
+    },
+    "-NWTJyf5X5XtUZ5HOqf5": {
+        "nombre": "reemplazar amortiguadores delanteros",
+        "cantidad": "1",
+        "precio": 3200,
+        "costo": 6100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWTJyf5X5XtUZ5HOqf5"
+    },
+    "-NN8bXjngiAjbY4u3Geg": {
+        "nombre": "reemplazar amortiguadores  delanteros",
+        "cantidad": 1,
+        "precio": 27220,
+        "costo": 38885,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NN8bXjngiAjbY4u3Geg"
+    },
+    "-NTugwugD3giBJgEoZmi": {
+        "nombre": "reemplazar amortiguador lenatero izquierdo",
+        "cantidad": 1,
+        "precio": 1180,
+        "costo": 2360,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTugwugD3giBJgEoZmi"
+    },
+    "-NaN6WaCu8pbx1kufo7R": {
+        "nombre": "reemplazar amortiguador derecho",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 3200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaN6WaCu8pbx1kufo7R"
+    },
+    "-NX12otWOc4DRW53sBP3": {
+        "nombre": "reemplazar amortiguador delantero derecho",
+        "cantidad": "1",
+        "precio": 2140,
+        "costo": 4280,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX12otWOc4DRW53sBP3"
+    },
+    "-NX0otB4TUPXfLLXybMO": {
+        "nombre": "reemplazar amortiguador de direccion",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0otB4TUPXfLLXybMO"
+    },
+    "-NTFhCXkj6-r_-gH850Z": {
+        "nombre": "reemplazar alternador",
+        "cantidad": 1,
+        "precio": 7200,
+        "costo": 17400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTFhCXkj6-r_-gH850Z"
+    },
+    "-NaNQP__7cKqrazXs81I": {
+        "nombre": "reemplazar actuador solenoide admision",
+        "cantidad": 1,
+        "precio": 1500,
+        "costo": 3000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaNQP__7cKqrazXs81I"
+    },
+    "-NYdqPFMLaesRXiRs1Lu": {
+        "nombre": "reemplazar aceite y coladera de t/a",
+        "cantidad": 1,
+        "precio": 1400,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYdqPFMLaesRXiRs1Lu"
+    },
+    "-NYPvUbIjvAolDKfbbs0": {
+        "nombre": "reemplazar aceite de transmision",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYPvUbIjvAolDKfbbs0"
+    },
+    "-NU4AtoVm8H_llidmkGO": {
+        "nombre": "reemplazar aceite de tranmision manual",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NU4AtoVm8H_llidmkGO"
+    },
+    "-NbGthC27p0frpr40L7h": {
+        "nombre": "reemplazar aceite de diferencial",
+        "cantidad": 1,
+        "precio": 450,
+        "costo": 1100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbGthC27p0frpr40L7h"
+    },
+    "-NY-92THbQVEN8GY1ltW": {
+        "nombre": "reemplazar 4 llantas dunlop 225/50 r17",
+        "cantidad": 1,
+        "precio": 20820,
+        "costo": 26940,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY-92THbQVEN8GY1ltW"
+    },
+    "-NY43FH9NNhugtIXTEP8": {
+        "nombre": "reemplazar  frenos traseros y rectificar rotores",
+        "cantidad": 1,
+        "precio": 750,
+        "costo": 1850,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY43FH9NNhugtIXTEP8"
+    },
+    "-NN7JnY78GstNucFSbJt": {
+        "nombre": "reemplazar  filtro separador de agua (si aplica)",
+        "precio": 700,
+        "status": true,
+        "descripcion": "DIESEL",
+        "id": "-NN7JnY78GstNucFSbJt"
+    },
+    "-NQaWP4U8N51OHvRlxxl": {
+        "nombre": "reemplazar  columna de direccion",
+        "cantidad": 1,
+        "precio": 6500,
+        "costo": 13700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQaWP4U8N51OHvRlxxl"
+    },
+    "-NXufyYMFtaX_2bg_vFk": {
+        "nombre": "reemplaz sensores tpm",
+        "cantidad": 1,
+        "precio": 10000,
+        "costo": 18000,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXufyYMFtaX_2bg_vFk"
+    },
+    "-N_doUD8Hppyi8JSlul_": {
+        "nombre": "reemplaqzar conjunto de embrague",
+        "cantidad": 1,
+        "precio": 13300,
+        "costo": 24600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_doUD8Hppyi8JSlul_"
+    },
+    "-NXRNVaMH1ykHePxtk0L": {
+        "nombre": "reemplaar bujias hogh power",
+        "cantidad": 1,
+        "precio": 1120,
+        "costo": 2240,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXRNVaMH1ykHePxtk0L"
+    },
+    "-NbGpjWJ-BDKLXstbg1m": {
+        "nombre": "reemnplazar frenos traseros y rectificar tambores",
+        "cantidad": 1,
+        "precio": 780,
+        "costo": 1900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbGpjWJ-BDKLXstbg1m"
+    },
+    "-NRsUkQXJb7ihAdr-PaS": {
+        "nombre": "reemlazar bases de amortiguadores dels",
+        "cantidad": 1,
+        "precio": 1300,
+        "costo": 2500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRsUkQXJb7ihAdr-PaS"
+    },
+    "-N_6OAJgOYnWI8Rno3Pd": {
+        "nombre": "reem`plazar banda de accesorios",
+        "cantidad": 1,
+        "precio": 590,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_6OAJgOYnWI8Rno3Pd"
+    },
+    "-NXugAue7pkE7iCe3wcZ": {
+        "nombre": "rectificar rotores traseros y conformar pastillas",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXugAue7pkE7iCe3wcZ"
+    },
+    "-NMFF045KwuGGtJa05U-": {
+        "nombre": "rectificar rotores traseros",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMFF045KwuGGtJa05U-"
+    },
+    "-NY4SjYkD-0bfdN3EOaJ": {
+        "nombre": "rectificar rotores generales y asentar pastillas",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 1800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY4SjYkD-0bfdN3EOaJ"
+    },
+    "-N_G9JnjViM1SNL8VPva": {
+        "nombre": "rectificar rotores delanteros y traseros",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_G9JnjViM1SNL8VPva"
+    },
+    "-N_o8qzvz6kkqZDbey60": {
+        "nombre": "rectificar rotores delant. y conformar pastillas",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_o8qzvz6kkqZDbey60"
+    },
+    "-NXufZ_NRGFQBw_oH4oj": {
+        "nombre": "rectificar rotores delan y conformar pastillas",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXufZ_NRGFQBw_oH4oj"
+    },
+    "-N_6DuD1upDruEB0GElo": {
+        "nombre": "recoleccion y entrega a domicilio",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_6DuD1upDruEB0GElo"
+    },
+    "-N_tForsixi-F9ZEUvSy": {
+        "nombre": "recarga gas refrigerante r134",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_tForsixi-F9ZEUvSy"
+    },
+    "-Nb_zXXwVS2cVmtAPtfG": {
+        "nombre": "reacondicionar motor de arranque",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 2500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Nb_zXXwVS2cVmtAPtfG"
+    },
+    "-NbZwpRtcwUE43NaBeIB": {
+        "nombre": "reacondicionar  caja de velocidades",
+        "cantidad": 1,
+        "precio": 7500,
+        "costo": 14890,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbZwpRtcwUE43NaBeIB"
+    },
+    "-NaCi2fkyUnc2P4_PTnr": {
+        "nombre": "radiador",
+        "cantidad": 1,
+        "precio": 3969,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaCi2fkyUnc2P4_PTnr"
+    },
+    "-NaI2zenwhNEPsoGwT4e": {
+        "nombre": "purgar sistema de enfrimiento",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaI2zenwhNEPsoGwT4e"
+    },
+    "-NaI2qBD24LBhd7f-tyc": {
+        "nombre": "purgar sistema de enfriamiento",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaI2qBD24LBhd7f-tyc"
+    },
+    "-NMU584bQy72CqKG6yQF": {
+        "nombre": "pulir y encerar carroceria",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMU584bQy72CqKG6yQF"
+    },
+    "-N_o8WKu26M4Mx2ma5ON": {
+        "nombre": "puergar sistema de frenos con liquido de frenos",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_o8WKu26M4Mx2ma5ON"
+    },
+    "-NIcb0QKSXD5knxNIFr9": {
+        "nombre": "prs",
+        "cantidad": "1",
+        "precio": 666,
+        "costo": 0,
+        "tipo": "mo",
+        "descripcion": "mano PRS",
+        "id": "-NIcb0QKSXD5knxNIFr9"
+    },
+    "-N_t9dSOfc3UkRfFBbZi": {
+        "nombre": "programar módulo abs y control de estabilidad",
+        "cantidad": 1,
+        "precio": 8249,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_t9dSOfc3UkRfFBbZi"
+    },
+    "-NY5IJRAEyv3SQlg_HOx": {
+        "nombre": "polea de bomba de agua",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY5IJRAEyv3SQlg_HOx"
+    },
+    "-NXvoO66D0_0A8V2CDyO": {
+        "nombre": "pintar cubiertas de espejos",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXvoO66D0_0A8V2CDyO"
+    },
+    "-NMG4zirY_a2N7rLHCl9": {
+        "nombre": "pago de multa por verificacion extemporanea",
+        "cantidad": 1,
+        "precio": 1357,
+        "costo": 1810,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMG4zirY_a2N7rLHCl9"
+    },
+    "-NIExgtpGe50mwCv8Xep": {
+        "nombre": "operadora de servicios automotrices integrales del centro del pais speed service gafeag",
+        "precio": 300,
+        "status": true,
+        "descripcion": "SERVICIO MAYOR",
+        "id": "-NIExgtpGe50mwCv8Xep"
+    },
+    "-NIJBmg8M_hMVtjheIJ0": {
+        "nombre": "nuevo jl",
+        "precio": 777,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NIJBmg8M_hMVtjheIJ0"
+    },
+    "-NKKsEnx6rMuf0q-EXTm": {
+        "nombre": "new element visual",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKKsEnx6rMuf0q-EXTm"
+    },
+    "-NWnilXz8l8xhVr7UCm4": {
+        "nombre": "montaje de llantas alineacion y balanceo",
+        "cantidad": "1",
+        "precio": 500,
+        "costo": 950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWnilXz8l8xhVr7UCm4"
+    },
+    "-NaCtgda6ZqXuHrzkFHp": {
+        "nombre": "montaje de llantas (4)",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaCtgda6ZqXuHrzkFHp"
+    },
+    "-NaNLxxosx94SOO7v8k-": {
+        "nombre": "montaje de 4 llantas",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaNLxxosx94SOO7v8k-"
+    },
+    "-NM_Tg9aZQfzC0bNvzt_": {
+        "nombre": "mo instalacion vieleta",
+        "cantidad": 3,
+        "precio": 250,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NM_Tg9aZQfzC0bNvzt_"
+    },
+    "-NQaUdgjAls0mdPELJRx": {
+        "nombre": "mantenimiento al sistema de a/a",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQaUdgjAls0mdPELJRx"
+    },
+    "-NZGyK44-EYSbh6FNvl3": {
+        "nombre": "mantenimiento a transmison cvt",
+        "cantidad": 1,
+        "precio": 3000,
+        "costo": 4500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZGyK44-EYSbh6FNvl3"
+    },
+    "-NIDnpj3T5exnLnxyWDd": {
+        "nombre": "mano nueva",
+        "precio": 500,
+        "status": true,
+        "id": "-NIDnpj3T5exnLnxyWDd"
+    },
+    "-NIJ59oXarA3-kLIDfEp": {
+        "nombre": "mano jose luis 1",
+        "precio": 6,
+        "status": true,
+        "descripcion": "prueba 2",
+        "id": "-NIJ59oXarA3-kLIDfEp"
+    },
+    "-NIJ4g98MXI7Zs3d3xe6": {
+        "nombre": "mano jose luis",
+        "precio": 600,
+        "status": true,
+        "descripcion": "ninguna descripc",
+        "id": "-NIJ4g98MXI7Zs3d3xe6"
+    },
+    "-NIYEHRX-MrLYFpFHpdb": {
+        "nombre": "mano de sobra",
+        "precio": 300,
+        "status": true,
+        "descripcion": "dbkfbjdsgf",
+        "id": "-NIYEHRX-MrLYFpFHpdb"
+    },
+    "-NKGiDgrFR-0_HedE7GP": {
+        "nombre": "mano de obra de cosas",
+        "precio": 500,
+        "status": true,
+        "descripcion": "Mano de obra de cosas realizadas",
+        "id": "-NKGiDgrFR-0_HedE7GP"
+    },
+    "-NMjf-rkSysJoAEM2keI": {
+        "nombre": "mano de obra",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMjf-rkSysJoAEM2keI"
+    },
+    "-NGbTfKvLWyoLMFNdzkv": {
+        "nombre": "mano 900",
+        "precio": 231,
+        "status": true,
+        "descripcion": "mano desc",
+        "id": "-NGbTfKvLWyoLMFNdzkv"
+    },
+    "-NWcpNgoZrCy-pZZCx97": {
+        "nombre": "manguera de alta presion de hidroback a bomba dh",
+        "cantidad": "1",
+        "precio": 1200,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWcpNgoZrCy-pZZCx97"
+    },
+    "-N_uIr0lGcJPB4FnGmAL": {
+        "nombre": "llantas hankook 225/45/r17 (pza.)",
+        "cantidad": 1,
+        "precio": 3450,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_uIr0lGcJPB4FnGmAL"
+    },
+    "-NaJ9rSlyKAxu6-GcFni": {
+        "nombre": "llantas hankook 195 r15 c (pza.)",
+        "cantidad": 1,
+        "precio": 3280,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaJ9rSlyKAxu6-GcFni"
+    },
+    "-N_uIh0V56SaGS9DLBnm": {
+        "nombre": "llantas goodyear 225/45/r17 (pza.)",
+        "cantidad": 1,
+        "precio": 3780,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_uIh0V56SaGS9DLBnm"
+    },
+    "-N_uISx5lLFtk98Sm9qX": {
+        "nombre": "llantas continental 225/45/r17 (pza.)",
+        "cantidad": 1,
+        "precio": 4420,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_uISx5lLFtk98Sm9qX"
+    },
+    "-N_p0gQ-g75_AXZE7-hL": {
+        "nombre": "llanta hankook 195 r15 c (pza.)",
+        "cantidad": 1,
+        "precio": 3275,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_p0gQ-g75_AXZE7-hL"
+    },
+    "-N_p0tp6jJp_4QUq0_yv": {
+        "nombre": "llanta firestone 195 r15 c (pza.)",
+        "cantidad": 1,
+        "precio": 3870,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_p0tp6jJp_4QUq0_yv"
+    },
+    "-N_p17gwEyFj6Pt0Uc-5": {
+        "nombre": "llanta continental 195 r15 c (pza.)",
+        "cantidad": 1,
+        "precio": 3850,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_p17gwEyFj6Pt0Uc-5"
+    },
+    "-NWnjpzCKsrXrj-B1Jke": {
+        "nombre": "llanta 175/70 r14 yokohama moedlo es32  (4)",
+        "cantidad": 1,
+        "precio": 7200,
+        "costo": 9580,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWnjpzCKsrXrj-B1Jke"
+    },
+    "-NWncDhu3P-ZQ1SqGl3F": {
+        "nombre": "llanta 175/70 r14 yokohama modelo es32",
+        "cantidad": 4,
+        "precio": 1750,
+        "costo": 2395,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWncDhu3P-ZQ1SqGl3F"
+    },
+    "-NWnj_idE50AH3Qln6a_": {
+        "nombre": "llanta 175/70 r14 good year modelo assurance (4)",
+        "cantidad": 1,
+        "precio": 7000,
+        "costo": 9060,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWnj_idE50AH3Qln6a_"
+    },
+    "-NWnc1Y_Kkz3q5IFL2x2": {
+        "nombre": "llanta 175/70 r14 good year modelo assurance",
+        "cantidad": 4,
+        "precio": 1900,
+        "costo": 2265,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWnc1Y_Kkz3q5IFL2x2"
+    },
+    "-N_6J-tSN-HgL1D0YX2I": {
+        "nombre": "llanta 165- 65 r14 hankook",
+        "cantidad": 4,
+        "precio": 18500,
+        "costo": 2290,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_6J-tSN-HgL1D0YX2I"
+    },
+    "-NWsI8_3rxxwzj36BRrT": {
+        "nombre": "limpieza y ajuste de frenos traseros",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWsI8_3rxxwzj36BRrT"
+    },
+    "-NFyVgDX1Nrl63Wn5SpB": {
+        "nombre": "limpieza y ajuste de frenos",
+        "precio": 300,
+        "status": true,
+        "descripcion": "NO",
+        "id": "-NFyVgDX1Nrl63Wn5SpB"
+    },
+    "-NZ6es1toKd2Fc55aWQ5": {
+        "nombre": "limpieza y ajuste de fremos traseros",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ6es1toKd2Fc55aWQ5"
+    },
+    "-NNllRHAZl4XbbpJgQk1": {
+        "nombre": "lavoratorio de inyectores",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNllRHAZl4XbbpJgQk1"
+    },
+    "-NZmi06mtDkoQxN4kjqG": {
+        "nombre": "lavar tanque de combustible",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZmi06mtDkoQxN4kjqG"
+    },
+    "-Naib2tN3b98yaPYBAXw": {
+        "nombre": "lavar sistema de enfriamiento y purgar sistema",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Naib2tN3b98yaPYBAXw"
+    },
+    "-NYTdiHdapRa9kHqdlic": {
+        "nombre": "lavar sist de enfriamien y cambio de refrigerante",
+        "cantidad": 1,
+        "precio": 300,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYTdiHdapRa9kHqdlic"
+    },
+    "-NIXsduKTIhhpSrAJKS-": {
+        "nombre": "lavar motor",
+        "precio": 150,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NIXsduKTIhhpSrAJKS-"
+    },
+    "-NE78vEAujLp8QfcIAtl": {
+        "nombre": "lavar inyectores",
+        "precio": 300,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NE78vEAujLp8QfcIAtl"
+    },
+    "-NFGEgUK6OVe2fEDvCgS": {
+        "nombre": "lavar cpo de aceleracion",
+        "precio": 300,
+        "status": true,
+        "descripcion": "C",
+        "id": "-NFGEgUK6OVe2fEDvCgS"
+    },
+    "-NIXsiafAdRrmZsuD-fs": {
+        "nombre": "lavar carroceria",
+        "precio": 150,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NIXsiafAdRrmZsuD-fs"
+    },
+    "-NM_LwhXSWeMcDMv7N6r": {
+        "nombre": "lavado y engrasado",
+        "cantidad": 1,
+        "precio": 1450,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NM_LwhXSWeMcDMv7N6r"
+    },
+    "-NXRO7mMNMt1ObWmXU-E": {
+        "nombre": "laboratorio de inyectores",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 2800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXRO7mMNMt1ObWmXU-E"
+    },
+    "-N_AD6a7--_SQukXun8Y": {
+        "nombre": "kit de distribución",
+        "cantidad": 1,
+        "precio": 8259,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_AD6a7--_SQukXun8Y"
+    },
+    "-NXv3g4f5J-JElHULl2u": {
+        "nombre": "instalacion de amortiguadores y horquillas",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXv3g4f5J-JElHULl2u"
+    },
+    "-N_F3mo0yZGkzk7RinSb": {
+        "nombre": "horquillas completas",
+        "cantidad": 1,
+        "precio": 6439,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_F3mo0yZGkzk7RinSb"
+    },
+    "-NNwKoq9V8xDUJq9zpsk": {
+        "nombre": "hojalatería y pintura",
+        "cantidad": 1,
+        "precio": 4900,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNwKoq9V8xDUJq9zpsk"
+    },
+    "-NY9mq8A4t_-MYaxUNV7": {
+        "nombre": "frenos traseros",
+        "cantidad": 1,
+        "precio": 2659,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY9mq8A4t_-MYaxUNV7"
+    },
+    "-NZDJ3iuSgFHPk6f15wI": {
+        "nombre": "frenos delanteros con discos",
+        "cantidad": 1,
+        "precio": 4449,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZDJ3iuSgFHPk6f15wI"
+    },
+    "-NY9mmMI5K3kwXFfLFsY": {
+        "nombre": "frenos delanteros",
+        "cantidad": 1,
+        "precio": 2979,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY9mmMI5K3kwXFfLFsY"
+    },
+    "-N_fCcCZf4SmgbvV-ZjX": {
+        "nombre": "flush de enfriamiento",
+        "cantidad": 1,
+        "precio": 969,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_fCcCZf4SmgbvV-ZjX"
+    },
+    "-N__TFjoDWyg92AFUjWf": {
+        "nombre": "facia trasera",
+        "cantidad": 1,
+        "precio": 2800,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N__TFjoDWyg92AFUjWf"
+    },
+    "-NNqq3IjCaR8vSjNN-ie": {
+        "nombre": "fabricación e instalación de redilas",
+        "cantidad": 1,
+        "precio": 22500,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNqq3IjCaR8vSjNN-ie"
+    },
+    "-NN7KXIJj1WVhcyv3gp9": {
+        "nombre": "escaneo por computaodra",
+        "precio": 400,
+        "status": true,
+        "descripcion": "DIESEL",
+        "id": "-NN7KXIJj1WVhcyv3gp9"
+    },
+    "-N_kWjIIB1sTfqzbiKa0": {
+        "nombre": "empaques de puertas",
+        "cantidad": 4,
+        "precio": 3569,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_kWjIIB1sTfqzbiKa0"
+    },
+    "-N_kX-iWltUrDurpMOwo": {
+        "nombre": "empaque de tapa",
+        "cantidad": 1,
+        "precio": 3975,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_kX-iWltUrDurpMOwo"
+    },
+    "-NZ38i87cvYd4rhCr-Pf": {
+        "nombre": "empacar tapa de distribucion",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 2400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZ38i87cvYd4rhCr-Pf"
+    },
+    "-NaOGbXvXOcidvKDWB4w": {
+        "nombre": "empacar juntas de aceite de motor",
+        "cantidad": 1,
+        "precio": 2200,
+        "costo": 4400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaOGbXvXOcidvKDWB4w"
+    },
+    "-NRnwVF4aFoaepmer3sK": {
+        "nombre": "empacar fuga por tapa y base de aceite",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 2200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NRnwVF4aFoaepmer3sK"
+    },
+    "-NZgpwPuc1vstKv6rBWF": {
+        "nombre": "empacar carter de t/a",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZgpwPuc1vstKv6rBWF"
+    },
+    "-N_Z_h96rp-Q2BRqRaxc": {
+        "nombre": "empacar caja de direccion",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 3800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_Z_h96rp-Q2BRqRaxc"
+    },
+    "-N_o7iQXKSkvjyFxtK1U": {
+        "nombre": "ducto de toma de aire",
+        "cantidad": 1,
+        "precio": 1849,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_o7iQXKSkvjyFxtK1U"
+    },
+    "-NN8SzBCToha5F4oc-P2": {
+        "nombre": "diagnsotico por computadora",
+        "precio": 400,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NN8SzBCToha5F4oc-P2"
+    },
+    "-NQl7mhyrKeES7Wb-uFd": {
+        "nombre": "diagnsotico de falla",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQl7mhyrKeES7Wb-uFd"
+    },
+    "-NNwN955dv2ilbmPdsWZ": {
+        "nombre": "desmontar, montar, encasqullar y tapón de carter",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNwN955dv2ilbmPdsWZ"
+    },
+    "-NNwPvF1M8mCf4QmJaK5": {
+        "nombre": "desmontar, montar, encasquillar y tapón de cárter",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNwPvF1M8mCf4QmJaK5"
+    },
+    "-NNwOED5I9Vl49A585JD": {
+        "nombre": "desmontar, montar, encasquillar y tapón de carter",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNwOED5I9Vl49A585JD"
+    },
+    "-NT-seCsqRE8kVGUs9Xt": {
+        "nombre": "desmontar y montar llanta",
+        "cantidad": 2,
+        "precio": 80,
+        "costo": 150,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NT-seCsqRE8kVGUs9Xt"
+    },
+    "-NWniuqeba2sMwbOWwYE": {
+        "nombre": "desmontar y montar espejo lateral derecho",
+        "cantidad": 1,
+        "precio": 1000,
+        "costo": 1950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWniuqeba2sMwbOWwYE"
+    },
+    "-NTQfimGoQHQc6wXRrAY": {
+        "nombre": "desmnotar y montar llantas",
+        "cantidad": 1,
+        "precio": 250,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTQfimGoQHQc6wXRrAY"
+    },
+    "-NMU4xxsbtgrfgLiA0PX": {
+        "nombre": "descontaminar cristales y pintura",
+        "cantidad": 1,
+        "precio": 1200,
+        "costo": 1800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMU4xxsbtgrfgLiA0PX"
+    },
+    "-NN8TMy3DOqgsu4z1c93": {
+        "nombre": "derechos y traslado de vehiculo a verificentro",
+        "precio": 1370,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NN8TMy3DOqgsu4z1c93"
+    },
+    "-NPU4vRoFSuo_efCGRSW": {
+        "nombre": "cuadrar salpicadera",
+        "cantidad": 1,
+        "precio": 350,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPU4vRoFSuo_efCGRSW"
+    },
+    "-N__TM7aggQg2KjMr6Hy": {
+        "nombre": "costado derecho",
+        "cantidad": 1,
+        "precio": 3100,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N__TM7aggQg2KjMr6Hy"
+    },
+    "-NWcrKsxeM3rjEouQEm3": {
+        "nombre": "corregir mecanismo de malacate de llanta auxiliar",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWcrKsxeM3rjEouQEm3"
+    },
+    "-NY43aclGPWelhy9kvdt": {
+        "nombre": "corregir fuga de aceite de caja y poner anivel",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY43aclGPWelhy9kvdt"
+    },
+    "-NNllZQ5aWoSQxDJ3KWO": {
+        "nombre": "codificar fallas",
+        "cantidad": 1,
+        "precio": 100,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNllZQ5aWoSQxDJ3KWO"
+    },
+    "-N_jrXAmPSV6frbBb7iH": {
+        "nombre": "carga de gas refrigernte de a/a",
+        "cantidad": 1,
+        "precio": 350,
+        "costo": 800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_jrXAmPSV6frbBb7iH"
+    },
+    "-NNhE2fhB57X0rP3sd5e": {
+        "nombre": "carga de gas",
+        "cantidad": 1,
+        "precio": 650,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NNhE2fhB57X0rP3sd5e"
+    },
+    "-NYeOac22tc0W8JiPO9o": {
+        "nombre": "cambio soporte de caja",
+        "cantidad": 1,
+        "precio": 1549,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYeOac22tc0W8JiPO9o"
+    },
+    "-NbLZT5_p1MrnzEZmtwj": {
+        "nombre": "cambio de válvula pcv",
+        "cantidad": 1,
+        "precio": 959,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbLZT5_p1MrnzEZmtwj"
+    },
+    "-NPNnESSvNAsDWyIBXGE": {
+        "nombre": "cambio de tornillos estabilizadores",
+        "cantidad": 1,
+        "precio": 450,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNnESSvNAsDWyIBXGE"
+    },
+    "-NaChqi-zWmV5IgTF3FW": {
+        "nombre": "cambio de toma de agua con termostato",
+        "cantidad": 1,
+        "precio": 3579,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaChqi-zWmV5IgTF3FW"
+    },
+    "-NYeOWqwGFeG7wwFIMbd": {
+        "nombre": "cambio de soporte motor superior",
+        "cantidad": 1,
+        "precio": 1689,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYeOWqwGFeG7wwFIMbd"
+    },
+    "-NYZ_Sr3wtfwxy66SSbu": {
+        "nombre": "cambio de soporte de transmisión",
+        "cantidad": 1,
+        "precio": 1559,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYZ_Sr3wtfwxy66SSbu"
+    },
+    "-NYZ_KmruopTxeIjPHYw": {
+        "nombre": "cambio de soporte de motor superior derecho",
+        "cantidad": 1,
+        "precio": 1689,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYZ_KmruopTxeIjPHYw"
+    },
+    "-N_t9waCkhqyIUbrWP4Q": {
+        "nombre": "cambio de sensor de cigueñal  y programación",
+        "cantidad": 1,
+        "precio": 3479,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_t9waCkhqyIUbrWP4Q"
+    },
+    "-NYePc4l4VGDY4JkzUC0": {
+        "nombre": "cambio de retenes de flecha",
+        "cantidad": 1,
+        "precio": 2249,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYePc4l4VGDY4JkzUC0"
+    },
+    "-NY9IurWeep9yFQFIqiW": {
+        "nombre": "cambio de radiador",
+        "cantidad": 1,
+        "precio": 5469,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY9IurWeep9yFQFIqiW"
+    },
+    "-NZmGFJTp5iW83LoPs__": {
+        "nombre": "cambio de polea tensora y polea loca",
+        "cantidad": 1,
+        "precio": 6850,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZmGFJTp5iW83LoPs__"
+    },
+    "-NYPuac7B-xiwHxEw1X0": {
+        "nombre": "cambio de palanca de velocidades con chicotes",
+        "cantidad": 1,
+        "precio": 9300,
+        "costo": 16600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYPuac7B-xiwHxEw1X0"
+    },
+    "-NbLZ2CrIUaYnk_yRoFX": {
+        "nombre": "cambio de maza balero",
+        "cantidad": 1,
+        "precio": 2679,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbLZ2CrIUaYnk_yRoFX"
+    },
+    "-NY9JIdJyYs6TkWsn97Y": {
+        "nombre": "cambio de mangueras de radiador",
+        "cantidad": 1,
+        "precio": 2159,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY9JIdJyYs6TkWsn97Y"
+    },
+    "-NPNngvpkq4-UFDFEQwd": {
+        "nombre": "cambio de junta de tapa de punterías",
+        "cantidad": 1,
+        "precio": 450,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNngvpkq4-UFDFEQwd"
+    },
+    "-NZSnwJH2tC2UAQf5J3g": {
+        "nombre": "cambio de jgo de chicotes de  selec. de veolidades",
+        "cantidad": 1,
+        "precio": 4200,
+        "costo": 5800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZSnwJH2tC2UAQf5J3g"
+    },
+    "-NPNnO5up62sEgDcKHM4": {
+        "nombre": "cambio de horquillas superiores",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNnO5up62sEgDcKHM4"
+    },
+    "-NPNnRf2F_sCmO7xOZdO": {
+        "nombre": "cambio de horquillas inferiores",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNnRf2F_sCmO7xOZdO"
+    },
+    "-NXR3CDV4Fq68wQ1IgcY": {
+        "nombre": "cambio de horquillas completas",
+        "cantidad": "1",
+        "precio": 5849,
+        "costo": "0",
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXR3CDV4Fq68wQ1IgcY"
+    },
+    "-NPt-Rh7Obe8I5kEP_Qd": {
+        "nombre": "cambio de horquillas",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPt-Rh7Obe8I5kEP_Qd"
+    },
+    "-NZDJSpLYgFNW9hnR-rr": {
+        "nombre": "cambio de gomas de barra estabilizazdora",
+        "cantidad": 1,
+        "precio": 1300,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZDJSpLYgFNW9hnR-rr"
+    },
+    "-NXR6ssHvHTNk7uQAZ1q": {
+        "nombre": "cambio de frenos delanteros con sensor",
+        "cantidad": "1",
+        "precio": 4280,
+        "costo": "0",
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXR6ssHvHTNk7uQAZ1q"
+    },
+    "-NIXsW7Y5RzRrbI_F9dB": {
+        "nombre": "cambio de focos fundidos convencionales",
+        "precio": 300,
+        "status": true,
+        "descripcion": "N",
+        "id": "-NIXsW7Y5RzRrbI_F9dB"
+    },
+    "-NZDJCWbvuh0xtG3m-Bl": {
+        "nombre": "cambio de espigas delanteras",
+        "cantidad": 1,
+        "precio": 3489,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZDJCWbvuh0xtG3m-Bl"
+    },
+    "-N_kKIk198yKEHpqJ-Rp": {
+        "nombre": "cambio de clutch con bomba",
+        "cantidad": 1,
+        "precio": 7049,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_kKIk198yKEHpqJ-Rp"
+    },
+    "-NaChuvJO2Q1o1vBHz6G": {
+        "nombre": "cambio de clutch",
+        "cantidad": 1,
+        "precio": 6789,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaChuvJO2Q1o1vBHz6G"
+    },
+    "-NXpyKfCYJ5fNTd8TO5R": {
+        "nombre": "cambio de cadena distribucion",
+        "cantidad": 1,
+        "precio": 2500,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXpyKfCYJ5fNTd8TO5R"
+    },
+    "-N_pWyjhjVNAIrw7ch3S": {
+        "nombre": "cambio de cables de bujías",
+        "cantidad": 1,
+        "precio": 2289,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_pWyjhjVNAIrw7ch3S"
+    },
+    "-NY5IBlJRsJKnlFK-2Ob": {
+        "nombre": "cambio de bomba de agua con anticongelante",
+        "cantidad": 1,
+        "precio": 10800,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY5IBlJRsJKnlFK-2Ob"
+    },
+    "-NPNmyGY9F0-B8HUT_ja": {
+        "nombre": "cambio de bieletas con terminal",
+        "cantidad": 1,
+        "precio": 500,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNmyGY9F0-B8HUT_ja"
+    },
+    "-N_5VwKcZrddNtc_saAU": {
+        "nombre": "cambio de batería america",
+        "cantidad": 1,
+        "precio": 2050,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_5VwKcZrddNtc_saAU"
+    },
+    "-NPNnbMnwjnjhTY8tcYO": {
+        "nombre": "cambio de batería",
+        "cantidad": 1,
+        "precio": 150,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNnbMnwjnjhTY8tcYO"
+    },
+    "-NPNnmfR4XoAH0ydCQxT": {
+        "nombre": "cambio de banda de accesorios",
+        "cantidad": 1,
+        "precio": 280,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNnmfR4XoAH0ydCQxT"
+    },
+    "-Namdodwc83Kbz8_vLfl": {
+        "nombre": "cambio de balatas trasera y conformar",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Namdodwc83Kbz8_vLfl"
+    },
+    "-NPNn3Afxg1VdaRqU0df": {
+        "nombre": "cambio de amortiguadores traseros",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNn3Afxg1VdaRqU0df"
+    },
+    "-NPNn7DL7ABUujIN6FlV": {
+        "nombre": "cambio de amortiguadores delanteros",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPNn7DL7ABUujIN6FlV"
+    },
+    "-NE2JJZu_LtUYJXSBola": {
+        "nombre": "cambio de aceite y filtro",
+        "precio": 120,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NE2JJZu_LtUYJXSBola"
+    },
+    "-NYKLrrbvgQHBQjqkuBz": {
+        "nombre": "cambio de aceite sintetico y filtro",
+        "cantidad": 1,
+        "precio": 1000,
+        "costo": 2100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYKLrrbvgQHBQjqkuBz"
+    },
+    "-NN7J-otRj9wagt1cnrV": {
+        "nombre": "cambio de aceite diesel y filtro",
+        "precio": 1800,
+        "status": true,
+        "descripcion": "ACEITE SINTETICO DIESEL",
+        "id": "-NN7J-otRj9wagt1cnrV"
+    },
+    "-NbZx4VOFo6zz2nmUVkO": {
+        "nombre": "cambio de aceite de transmision",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 900,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NbZx4VOFo6zz2nmUVkO"
+    },
+    "-NQR9nyO2eIOlKpTNG1o": {
+        "nombre": "cambio bieletas con terminal",
+        "cantidad": 1,
+        "precio": 500,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQR9nyO2eIOlKpTNG1o"
+    },
+    "-NXlSuVCPsNSntRK6PPG": {
+        "nombre": "cambio amortiguadores delan con gomas de rebote",
+        "cantidad": "1",
+        "precio": 2500,
+        "costo": 5700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXlSuVCPsNSntRK6PPG"
+    },
+    "-NTuiEBSLqjGujIrJvd3": {
+        "nombre": "cambiar soporte de motor der. superior",
+        "cantidad": 1,
+        "precio": 350,
+        "costo": 720,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTuiEBSLqjGujIrJvd3"
+    },
+    "-NTulSdxQXonobdscoRZ": {
+        "nombre": "cambiar soporte de motor der. inferior",
+        "cantidad": 1,
+        "precio": 707,
+        "costo": 1400,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTulSdxQXonobdscoRZ"
+    },
+    "-Namdde1qg3ppJYoYGlZ": {
+        "nombre": "cambiar jgo de resortes y ajustadores de balatas",
+        "cantidad": 1,
+        "precio": 700,
+        "costo": 1500,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Namdde1qg3ppJYoYGlZ"
+    },
+    "-NXMD5EiEsJju2nekxLQ": {
+        "nombre": "cambiar frenos tras  y rectificar rotor o tambor",
+        "cantidad": 1,
+        "precio": 900,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXMD5EiEsJju2nekxLQ"
+    },
+    "-NXMCmJj5k9gBtKtvdKh": {
+        "nombre": "cambiar frenos delanteros  y rectificar rotores",
+        "cantidad": "1",
+        "precio": 900,
+        "costo": 1700,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXMCmJj5k9gBtKtvdKh"
+    },
+    "-NY3rWhmo7NMEPSmKmuM": {
+        "nombre": "c/ tubo de enfriamiento de cpo de acel a termos",
+        "cantidad": 1,
+        "precio": 540,
+        "costo": 1300,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY3rWhmo7NMEPSmKmuM"
+    },
+    "-NaNPFmebkSeCLZdFk_z": {
+        "nombre": "c/ sensor oxigeno primario banco 2",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 3800,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaNPFmebkSeCLZdFk_z"
+    },
+    "-NaNPPiuksOtsGrrX-qb": {
+        "nombre": "c/ sensor de oxigeno secundario banco 2",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 3200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaNPPiuksOtsGrrX-qb"
+    },
+    "-NaXNMW0L6r3e0CJwD7M": {
+        "nombre": "c/ jgo de chocotes de selector de velocidades",
+        "cantidad": 1,
+        "precio": 1900,
+        "costo": 3600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaXNMW0L6r3e0CJwD7M"
+    },
+    "-Nai5yO58PP3NaE9TLNJ": {
+        "nombre": "c/ buje de control de cambios y ajuste de palanca",
+        "cantidad": 1,
+        "precio": 600,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Nai5yO58PP3NaE9TLNJ"
+    },
+    "-NOvA5I9182QbU7xiPr7": {
+        "nombre": "brio y mano de obra",
+        "cantidad": 1,
+        "precio": 3500,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NOvA5I9182QbU7xiPr7"
+    },
+    "-N_ADIpKwukqLqgz6REe": {
+        "nombre": "bomba de aceite",
+        "cantidad": 1,
+        "precio": 2689,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_ADIpKwukqLqgz6REe"
+    },
+    "-NamK6KcavHmfqB4MLd_": {
+        "nombre": "birlo",
+        "cantidad": 1,
+        "precio": 50,
+        "costo": 200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NamK6KcavHmfqB4MLd_"
+    },
+    "-N_F-AGKWOicygNDt82j": {
+        "nombre": "bieletas con terminal",
+        "cantidad": 1,
+        "precio": 2319,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_F-AGKWOicygNDt82j"
+    },
+    "-N_o9lMMTgrzl1yKJy4l": {
+        "nombre": "bases de amortiguadores delanteros",
+        "cantidad": 2,
+        "precio": 2434,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_o9lMMTgrzl1yKJy4l"
+    },
+    "-N_tA07i4Pn1s8IYlXiK": {
+        "nombre": "baño de pintura y hojalatería",
+        "cantidad": 1,
+        "precio": 2750,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_tA07i4Pn1s8IYlXiK"
+    },
+    "-NY5Ee-6locoeUl7fMB9": {
+        "nombre": "banda de accesorios",
+        "cantidad": 1,
+        "precio": 2850,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY5Ee-6locoeUl7fMB9"
+    },
+    "-NaJ80qq6RZCVDu1W1iy": {
+        "nombre": "baleros delanteros",
+        "cantidad": 1,
+        "precio": 5349,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NaJ80qq6RZCVDu1W1iy"
+    },
+    "-NPt-MZtvppODuO7NryK": {
+        "nombre": "amortiguadores delanteros con bases",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NPt-MZtvppODuO7NryK"
+    },
+    "-N_o9t44kQW1ib_xju0B": {
+        "nombre": "amortiguadores delanteros",
+        "cantidad": 1,
+        "precio": 7487,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_o9t44kQW1ib_xju0B"
+    },
+    "-N__4CxVz-KuKqAYTm0t": {
+        "nombre": "amortiguadores deelanteros y rotulas",
+        "cantidad": 1,
+        "precio": 12000,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N__4CxVz-KuKqAYTm0t"
+    },
+    "-NKOkokJ9WL81WWhAWoL": {
+        "nombre": "alineaciony balanceo",
+        "cantidad": 1,
+        "precio": 450,
+        "costo": 650,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NKOkokJ9WL81WWhAWoL"
+    },
+    "-NWhZKkifX67vxy7U69L": {
+        "nombre": "alineacion y balnceo",
+        "cantidad": 1,
+        "precio": 550,
+        "costo": 850,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWhZKkifX67vxy7U69L"
+    },
+    "-NX0pN5cngPf33Iet1Gh": {
+        "nombre": "alineacion y balanceo ruedas delanteras",
+        "cantidad": 1,
+        "precio": 800,
+        "costo": 1200,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NX0pN5cngPf33Iet1Gh"
+    },
+    "-NQR_9cpE0mBZOnRI612": {
+        "nombre": "alineacion y balanceo - refaccion",
+        "cantidad": 1,
+        "precio": 650,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NQR_9cpE0mBZOnRI612"
+    },
+    "-NZDJhcDNDbC5ga6TweQ": {
+        "nombre": "alineación y balanceo",
+        "cantidad": 1,
+        "precio": 450,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NZDJhcDNDbC5ga6TweQ"
+    },
+    "-NWTKELKRpDnu-RO-IK6": {
+        "nombre": "alineacion y balanceo",
+        "cantidad": 1,
+        "precio": 550,
+        "costo": 850,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NWTKELKRpDnu-RO-IK6"
+    },
+    "-NXvI4yay1555nvSJ0l2": {
+        "nombre": "alineacion y balaceo",
+        "cantidad": 1,
+        "precio": 550,
+        "costo": 750,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NXvI4yay1555nvSJ0l2"
+    },
+    "-NYZ2EFaS3vHecJkwCyU": {
+        "nombre": "alineacion de ruedas",
+        "cantidad": 1,
+        "precio": 400,
+        "costo": 650,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYZ2EFaS3vHecJkwCyU"
+    },
+    "-NTumBbK-dtxabcY8VWK": {
+        "nombre": "ajuster mordazas de frenos delanteros",
+        "cantidad": 1,
+        "precio": 200,
+        "costo": 600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTumBbK-dtxabcY8VWK"
+    },
+    "-NYePg4DiKxSLS2b-97c": {
+        "nombre": "ajuste de motor",
+        "cantidad": 1,
+        "precio": 24000,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NYePg4DiKxSLS2b-97c"
+    },
+    "-NTug_RAv57ByIeGOL3o": {
+        "nombre": "ajustar columna de direccion",
+        "cantidad": 1,
+        "precio": 1600,
+        "costo": 1600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NTug_RAv57ByIeGOL3o"
+    },
+    "-N_f8gUxu8Xq-X--xklE": {
+        "nombre": "afinación mayor",
+        "cantidad": 1,
+        "precio": 2989,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_f8gUxu8Xq-X--xklE"
+    },
+    "-NMjX_d0Fbl-dIBGL72q": {
+        "nombre": "afinacion de motor",
+        "cantidad": 1,
+        "precio": 920,
+        "costo": 1950,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NMjX_d0Fbl-dIBGL72q"
+    },
+    "-N_kVM7YTaiXSNhHA8jx": {
+        "nombre": "afinación + verificación",
+        "cantidad": 1,
+        "precio": 3300,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-N_kVM7YTaiXSNhHA8jx"
+    },
+    "-NLSGaahBHTJd8wKfYoI": {
+        "nombre": "afinación",
+        "cantidad": 1,
+        "precio": 2349,
+        "costo": 0,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NLSGaahBHTJd8wKfYoI"
+    },
+    "-Naw2PBdaTrEWnSEz_QC": {
+        "nombre": "aceite atf+4 y coladera de t/a",
+        "cantidad": 1,
+        "precio": 2850,
+        "costo": 4600,
+        "status": true,
+        "tipo": "mo",
+        "id": "-Naw2PBdaTrEWnSEz_QC"
+    },
+    "-NY3rpGrIIajKaHE8EDk": {
+        "nombre": "abrazaderas",
+        "cantidad": 1,
+        "precio": 50,
+        "costo": 100,
+        "status": true,
+        "tipo": "mo",
+        "id": "-NY3rpGrIIajKaHE8EDk"
+    },
+    "-NG3I_ejiuh3KiL9EdAp": {
+        "nombre": "600",
+        "precio": 350,
+        "status": true,
+        "descripcion": "ninguna",
+        "id": "-NG3I_ejiuh3KiL9EdAp"
+    }
 }
