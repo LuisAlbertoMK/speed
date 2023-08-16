@@ -76,8 +76,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
     this.ROL = rol
     this.SUCURSAL = sucursal
-    
-    this.ListadoClientes()
+    this.obtenerListaClientes()
   }
   irPagina(pagina, cliente){
     // /:ID/:tipo/:extra
@@ -97,62 +96,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }
-
-  ListadoClientes(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, async (snapshot) => {
-      if (snapshot.exists()) {
-        console.time('Execution Time');
-    
-        const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
-        // console.log(arreglo_sucursal);
-        const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({arreglo_sucursal})
-        // console.log(arreglo_rutas_clientes);
-        const promesasClientes = arreglo_rutas_clientes.map(async (f_search) => {
-          const clientes = await this._clientes.consulta_clientes__busqueda({ruta: f_search})
-          const nueva_data_Clientes =  this.transformaData_cliente(clientes)
-          return nueva_data_Clientes
-        })
-
-        const promesasResueltasClientes = await Promise.all(promesasClientes);
-        // console.log(promesasResueltasClientes);
-        const finales_clientes = promesasResueltasClientes.flat()
-        
-        const campos_cliente = [
-          'apellidos',
-          'correo',
-          'id',
-          'no_cliente',
-          'nombre',
-          'sucursal',
-          'telefono_movil',
-          'tipo',
-          'sucursalShow',
-          'fullname',
-        ]
-
-        
-        this.clientes_arr  = (!this.clientes_arr.length) ?  finales_clientes :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
-        
-        this.dataSourceClientes.data = this.clientes_arr
-        this.newPagination('clientes')
-        
-
-        console.timeEnd('Execution Time');
-        // console.time('Execution Time');
-        // const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
-        // const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
-        // const camposRecu = [...this._clientes.camposCliente,'fullname']
-        // const nueva  = (!this.clientes_arr.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes_arr, clientes,camposRecu);
-        // this.clientes_arr = nueva
-        
-        // console.timeEnd('Execution Time');
-      }
-    })
-  }
-  transformaData_cliente(data){
+  transformaDataCliente(data){
     const nuevos = [...data]
-    // console.log(nuevos);
     const retornados = nuevos.map(cli=>{
       const {sucursal, nombre, apellidos } = cli
       cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
@@ -160,7 +105,16 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       return cli
     })
     return retornados
-    
+  }
+
+  async obtenerClientesDeRutas(rutas) {
+    const promesasClientes = rutas.map(async (ruta) => {
+      const clientes = await this._clientes.consulta_clientes__busqueda({ ruta });
+      return this.transformaDataCliente(clientes);
+    });
+  
+    const promesasResueltasClientes = await Promise.all(promesasClientes);
+    return promesasResueltasClientes.flat();
   }
   crea_lista_rutas_por_sucursal(data){
     const {arreglo_sucursal, } = data
@@ -170,6 +124,42 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     })
     return Rutas_retorna
   }
+  async obtenerListaClientes() {
+    const starCountRef = ref(db, `clientes`)
+    const snapshot = await get(starCountRef);
+
+  
+    if (snapshot.exists()) {
+      console.time('Execution Time');
+  
+      const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
+      const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+  
+      const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
+
+      // console.log(finales_clientes);
+      const campos_cliente = [
+        'apellidos',
+        'correo',
+        'id',
+        'no_cliente',
+        'nombre',
+        'sucursal',
+        'telefono_movil',
+        'tipo',
+        'sucursalShow',
+        'fullname',
+      ]
+
+
+      this.clientes_arr  = (!this.clientes_arr.length) 
+      ?  finales_clientes 
+      :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
+
+      console.timeEnd('Execution Time');
+    }
+  }
+
   
 
   cargaDataCliente(cliente:any){
@@ -203,7 +193,6 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
     this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
 
-    this.newPagination('clientes')
   }
   // filtra_sucursal(sucursal:string){   
   //   // console.log(this.filtra_tipo_cliente);
@@ -214,15 +203,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   //   let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
   //   this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
   // }
-  newPagination(data:string){
-    this.cargandoInformacion = false
-    setTimeout(() => {
-    if (data==='clientes') {
-      this.dataSourceClientes.paginator = this.paginatorClientes;
-      this.dataSourceClientes.sort = this.sortClientes
-    }
-    }, 100)
-  }
+  
   registraUsuario(data){
     if (data.correo) {
       const dataSave = {

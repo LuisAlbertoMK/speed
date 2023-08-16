@@ -56,6 +56,11 @@ export class Loginv1Component implements OnInit {
     })
   }
   Login(){
+    Swal.fire({
+      title:'espere',
+      allowOutsideClick:false,
+      showConfirmButton: false
+    })
 
     if (localStorage.getItem('dataSecurity')) {
       console.log('no hacer peticion firebase auth');
@@ -65,6 +70,7 @@ export class Loginv1Component implements OnInit {
       signInWithEmailAndPassword(auth, email, password)
         .then(({user}) => {
           // console.log(user);
+          Swal.close()
           localStorage.setItem('email',this._security.servicioEncriptado(email))
           localStorage.setItem('password',this._security.servicioEncriptado(password))
         })
@@ -72,7 +78,7 @@ export class Loginv1Component implements OnInit {
           const errorCode = error.code;
           const errorMessage = error.message;
           this.intentos ++
-        console.log(error);
+        // console.log(error);
         
           switch (error.code) {
             case 'auth/user-not-found':
@@ -95,6 +101,7 @@ export class Loginv1Component implements OnInit {
               // this.apuntadores.usuario = false
               break;
           }
+          this._publicos.swalToast('Error de autenticacion',0)
           // console.log(errorCode);
           // console.log(errorMessage);
           
@@ -105,9 +112,10 @@ export class Loginv1Component implements OnInit {
   }
   verificaLogeo(){
     onAuthStateChanged(auth, async (user) => {
+      
       if(user){
         // console.log('esta logeado');
-        console.log(user);
+        // console.log(user);
         // user.providerData.forEach((profile) => {
         //   console.log("Sign-in provider: " + profile.providerId);
         //   console.log("  Provider-specific UID: " + profile.uid);
@@ -126,7 +134,7 @@ export class Loginv1Component implements OnInit {
         let usuario_econtrado = await this._clientes.consulta_usuario_new(user.uid)
 
         if (!usuario_econtrado['correo']) {
-          console.log('este usuario necesita otro tipo de busqueda');
+          // console.log('este usuario necesita otro tipo de busqueda');
           const usuarios = await this._usuarios.consulta_usuarios_correos()
           // console.log(usuarios);
           
@@ -146,8 +154,10 @@ export class Loginv1Component implements OnInit {
           localStorage.setItem('password',this._security.servicioEncriptado(newpass))
           localStorage.setItem('dataSecurity',JSON.stringify(dataSecurity))
           this.estalogeado()
+          
         }else{
-          console.log('no existe data de usuario');
+          // console.log('no existe data de usuario');
+          this._publicos.swalToast('no existe data de usuario',0)
         }
         
       }else{

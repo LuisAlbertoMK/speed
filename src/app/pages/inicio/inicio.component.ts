@@ -29,6 +29,7 @@ export class InicioComponent implements OnInit {
     {path:'recordatorios', show:'Recordatorios',icono:'alarm-exclamation'},
     {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
     {path:'eliminarEmpresa', show:'Elimina empresa',icono:'ban'},
+    {path:'automaticos', show:'AUTOMATICOS',icono:'ban'},
   ]
   asigancion_roles_cliente = [
     {path:'miPerfil', show:'Mi informacion',icono:'book'},

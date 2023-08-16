@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "esperando correcciones en produccion(en proceso)"
+git commit -m "Cambios en llamada de informacion de clientes (proceso de colocar observable para detectar cambios)"
 git push -u origin 
 
 

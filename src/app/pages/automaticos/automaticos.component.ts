@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { getDatabase, ref, update } from 'firebase/database';
+
 import { AutomaticosService } from '../../services/automaticos.service';
 
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
@@ -18,10 +18,12 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { BD } from './ayuda';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
+
+
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import { log } from 'console';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-
-
 
 @Component({
   selector: 'app-automaticos',
@@ -34,13 +36,117 @@ export class AutomaticosComponent implements OnInit {
     private _security:EncriptadoService, public _router: Router, public _location: Location,private _pdfRecepcion: PdfRecepcionService,
     private _sucursales: SucursalesService, private _clientes: ClientesService, private _vehiculos: VehiculosService,
     ) {   }
-  arr_sucursal = [...this._sucursales.lista_en_duro_sucursales]
+  
+    sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
+    clientes_arr = []
+  _sucursal:string
   ngOnInit(): void {
     this.rol()
-    this.realizaOperacionesClientes()
+    // this.realizaOperacionesClientes()
+    this.obtenerListaAsignar()
+    this.obtenerListaClientes()
   }
     rol(){
         const { rol, sucursal, usuario } = this._security.usuarioRol()
+        this._sucursal = sucursal
+    }
+    async obtenerClientesDeRutas(rutas) {
+      const promesasClientes = rutas.map(async (ruta) => {
+        const clientes = await this._clientes.consulta_clientes__busqueda({ ruta });
+        return this.transformaDataCliente(clientes);
+      });
+    
+      const promesasResueltasClientes = await Promise.all(promesasClientes);
+      return promesasResueltasClientes.flat();
+    }
+    async obtenerListaClientes() {
+      const starCountRef = ref(db, `clientes`);
+      const snapshot = await get(starCountRef);
+    
+      if (snapshot.exists()) {
+        console.time('Execution Time');
+    
+        const arreglo_sucursal = (this._sucursal === 'Todas') ? this.sucursales_array.map(s => s.id) : [this._sucursal];
+        const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+    
+        const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
+
+        // console.log(finales_clientes);
+        const campos_cliente = [
+          'apellidos',
+          'correo',
+          'id',
+          'no_cliente',
+          'nombre',
+          'sucursal',
+          'telefono_movil',
+          'tipo',
+          'sucursalShow',
+          'fullname',
+        ]
+
+
+        this.clientes_arr  = (!this.clientes_arr.length) ?  finales_clientes :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
+
+        console.timeEnd('Execution Time');
+      }
+    }
+    crea_lista_rutas_por_sucursal(data){
+      const {arreglo_sucursal, } = data
+      let Rutas_retorna = []
+      arreglo_sucursal.forEach(sucursal=>{
+        Rutas_retorna.push(`clientes/${sucursal}`)
+      })
+      return Rutas_retorna
+    }
+    transformaDataCliente(data){
+      const nuevos = [...data]
+      const retornados = nuevos.map(cli=>{
+        const {sucursal, nombre, apellidos } = cli
+        cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+        cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+        return cli
+      })
+      return retornados
+    }
+    obtenerListaAsignar(){
+
+      let clientes = []
+
+      if(this._sucursal !=='Todas') {
+        const starCountRef = ref(db, `clientes/${this._sucursal}`)
+        onValue(starCountRef, async (snapshot) => {
+          // console.log(snapshot.val());
+          const clientes_temp  = this._publicos.crearArreglo2(snapshot.val())
+          clientes = clientes_temp.map(cliente=>{
+            const {sucursal, nombre, apellidos } = cliente
+            cliente.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+            cliente.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+            return cliente
+          })
+        })
+      }else{
+        const starCountRef = ref(db, `clientes`)
+        onValue(starCountRef, async (snapshot) => {
+          // console.log(snapshot.val());
+          const data = snapshot.val()
+          let nuevos_ = []
+          Object.keys(data).forEach(sucur=>{
+            console.log(sucur);
+            let clientes_ = this._publicos.crearArreglo2(data[sucur])
+            nuevos_ = [...nuevos_, clientes_]
+          })
+          
+          const clientes_temp = nuevos_.flat();
+
+          clientes = clientes_temp.map(cliente=>{
+            const {sucursal, nombre, apellidos } = cliente
+            cliente.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+            cliente.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+            return cliente
+          })
+        })
+      }
     }
     realizaOperacionesClientes(){
       const clientes = BD.clientes
@@ -308,7 +414,7 @@ export class AutomaticosComponent implements OnInit {
       });
         
 
-      console.log(nuevos);
+      // console.log(nuevos);
       
       
       

@@ -1,0 +1,140 @@
+.texto-justificado {
+    text-align: justify;
+  }
+  
+  .ajustar {
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  table{
+    width: 100%;
+  }
+
+  .true{
+    background: #F0FEE2;
+  }
+  .false{
+    background: #FFD6D1 ;
+  }
+  .item-menu:hover{
+    background: lavender;
+    font-weight: bold;
+  }
+  tr.anima:hover{
+      background: lavender;
+  }
+  tr.anima{
+      height: 35px;
+  }
+  #btn-mas{
+    display: none;
+  }
+ .con-flot{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    
+    z-index: 0 !important;
+    
+  }
+  .redes a, .btn-mas{
+    display: block;
+    text-decoration: none;
+    background-color: #E91E63;
+    color: #ffffff;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 50%;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.4);
+    transition: all 500ms ease;
+   
+  }
+  .redes a:hover{
+    background-color: #2c2fa5;
+    transform: translateX(-10px);
+    
+  }
+  .redes a{
+    margin-bottom: -15px;
+    opacity: 0;
+    visibility: hidden;
+  }
+  #btn-mas:checked~ .redes a{
+    margin-bottom: 10px;
+    opacity: 1;
+    visibility: visible;
+
+  }
+  .btn-mas{
+    cursor: pointer;
+    background-color: #2c2fa5;
+  }
+  .btn-mas .btn-ma{
+    cursor: pointer;
+  }
+
+  #btn-mas:checked~ .btn-mas .btn-ma{
+    transform: rotate(45deg);
+    cursor: pointer;
+  }
+  .pointer{
+    cursor: pointer;
+  }
+  #btn-mas:checked~ .btn-mas{
+    background-color: #151589;
+  }
+  .mat-autocomplete-panel{
+    background:red !important;
+    z-index: 0 !important;
+    position: absolute;
+  }
+  table {
+    width: 100%;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+::ng-deep .cdk-overlay-container {
+  z-index: 1055 !important;
+}
+::ng-deep .mat-tooltip {
+  font-size: 1em;
+  min-width: 200px;
+}
+
+  
+  
+::ng-deep .cdk-overlay-container .mat-menu-item {
+  /* background-color: red; */
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* mat-focus-indicator mat-menu-item ng-tns-c188-9 */

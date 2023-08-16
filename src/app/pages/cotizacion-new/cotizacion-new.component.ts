@@ -279,6 +279,10 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.infoCotizacion.descuento = nuevo_descuento
       this.realizaOperaciones()
     })
+    this.formPlus.get('nota').valueChanges.subscribe((nota: string) => {
+      const nuevo_nota = nota ? nota : ''
+      this.infoCotizacion.nota = String(nuevo_nota).toLowerCase()
+    })
     this.formPlus.get('margen').valueChanges.subscribe((margen: number) => {
       const nuevo_margen = Math.min(Math.max(margen, 25), 100);
       this.infoCotizacion.margen = nuevo_margen
@@ -541,6 +545,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     update(ref(db), updates_paquetes);
 
     
+    console.log(this.infoCotizacion);
     
 
     //hacemos el llamdo de la funcion para la creaciion del pdf    

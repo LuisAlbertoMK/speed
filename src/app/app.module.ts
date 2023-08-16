@@ -152,6 +152,7 @@ import { TemplateTablaVehiculosComponent } from './components/template-tabla-veh
 import { EditarOsComponent } from './pages/editar-os/editar-os.component';
 import { TablaElementosComponent } from './components/tabla-elementos/tabla-elementos.component';
 import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario.component';
+import { TemplateClientesTablaComponent } from './components/template-clientes-tabla/template-clientes-tabla.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -235,7 +236,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TemplateTablaRecepcionesComponent,
     TemplateTablaVehiculosComponent,
     EditarOsComponent,
-    TablaElementosComponent
+    TablaElementosComponent,
+    TemplateClientesTablaComponent
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,10 @@
     </div>
   </div>
 </div>
+
+<app-template-clientes-tabla [clientes_arr]="clientes_arr"></app-template-clientes-tabla>
+
+
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
     <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalNewUser" (click)="data_cliente = {}">
@@ -38,91 +42,7 @@
     <input type="text" class="form-control form-control-sm" placeholder="Buscar" (keyup)="applyFilter($event)">
   </div>
 </div>
-<ng-container *ngIf="cargandoInformacion; else elseInfoLista">
-  <div class="alert alert-info row text-center">
-    <strong>Cargando información</strong>
-    <p><i class="fa fa-sync fa-2x fa-spin"></i></p>
-    <strong>Espere</strong>
-  </div>
-</ng-container>
-<ng-template #elseInfoLista>
 
-</ng-template>
-
-<div class="mat-elevation-z8 table-responsive">
-  <table #clientes="matSort" mat-table [dataSource]="dataSourceClientes" matSort multiTemplateDataRows>
-
-    <!-- ID Column -->
-    <ng-container matColumnDef="no_cliente">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*1.8+'px'}"> No. Cliente </th>
-      <td mat-cell *matCellDef="let row" class="text-uppercase"> {{row.no_cliente}} </td>
-    </ng-container>
-    <ng-container matColumnDef="sucursalShow">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Sucursal </th>
-      <td mat-cell *matCellDef="let row"> {{row.sucursalShow | capitalizarUno}} </td>
-    </ng-container>
-
-    <!-- Progress Column -->
-    <ng-container matColumnDef="fullname">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*2+'px'}"> Nombre </th>
-      <td mat-cell *matCellDef="let row" class="text-capitalize"> {{row.fullname}} </td>
-    </ng-container>
-    <!-- Progress Column -->
-    <ng-container matColumnDef="tipo">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Tipo </th>
-      <td mat-cell *matCellDef="let row"> {{row.tipo | capitalizarUno}} </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="correo">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}"> Correo </th>
-      <td mat-cell *matCellDef="let row"> {{row.correo}} </td>
-    </ng-container>
-    <!-- Name Column -->
-    <ng-container matColumnDef="opciones" stickyEnd>
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">  </th>
-      <td mat-cell *matCellDef="let row" class="text-center">
-        <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
-        <mat-menu #Opciones="matMenu">
-          <button mat-menu-item (click)="data_cliente = row" data-bs-toggle="modal" data-bs-target="#modalNewUser"> Editar información <i class="fa fa-edit text-primary ml-1"></i></button>
-          <button mat-menu-item (click)="data_cliente = row" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo"> Nuevo vehiculo <i class="fa fa-car text-primary ml-1"></i></button>
-          <button mat-menu-item (click)="irPagina('cotizacionNueva',row)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
-          <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
-          <button mat-menu-item (click)="irPagina('historial-cliente',row)">  Historial cliente <i class="fa fa-book text-danger ml-1"></i></button>
-          <!-- <button mat-menu-item  *ngIf="!row.usuario && row.correo" (click)="registraUsuario(row)">  Registra usuario <i class="fa fa-user-plus text-danger ml-1"></i></button> -->
-        </mat-menu>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="expand" >
-      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-          <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-          <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-  <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length ">
-      <div class="example-element-detail"
-           [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-           
-      </div>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-      class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element"
-      >
-      <!-- (click)="expandedElement = expandedElement === element ? null : element" -->
-  </tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-  </table>
-  <mat-paginator #clientesPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-</div>
 <!-- aqui las ventanas modal para el registro de nuevo cliente o vehiculo -->
 
   <div class="modal fade" id="modalNewUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
