@@ -119,10 +119,10 @@
           </ng-container>
           <div class="col-lg-6 col-md-6 col-sm-12" >
             <div class="mb-1 row">
-              <label class="col-sm-3 col-md-4 col-lg-3 col-form-label">Empresa</label>
+              <label class="col-sm-3 col-md-4 col-lg-3 col-form-label" for="empresa">Empresa</label>
               <div class="col-sm-9 col-md-8 col-lg-9 ">
                 <div class="input-group mb-3">
-                  <select class=" form-select  form-select-sm" [ngModel]="empresaSelect" (ngModelChange)="empresaValida()" formControlName="empresa"
+                  <select id="empresa" class=" form-select  form-select-sm" [ngModel]="empresaSelect" (ngModelChange)="empresaValida()" formControlName="empresa"
                     [class.is-invalid]="validarCampo('tipo')">
                     <option value="">Seleccionar</option>
                     <ng-container *ngIf="empresasSucursal; else elseEmpresas">
@@ -250,9 +250,14 @@
         <div class="row text-center">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
             <!--  -->
-            <button  type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1">
+            <!-- <button  type="submit" class="btn btn-sm  btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1">
               <i class="fa fa-save"></i> Guardar
+            </button> -->
+            <button type="submit" class="btn btn-sm btn-primary col-lg-4 col-md-4 col-sm-6 col-6 m-1" [disabled]="salvando">
+              <i class="fa" [class.fa-sync]="salvando" [class.fa-save]="!salvando"></i>
+              {{salvando ? 'Validando ...' : 'Guardar'}}
             </button>
+
             <button type="button"  class="btn btn-sm btn-danger col-lg-4 col-md-4 col-sm-6 col-6 m-1"
               >Limpiar</button>
           </div>

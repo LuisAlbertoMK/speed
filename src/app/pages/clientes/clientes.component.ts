@@ -125,39 +125,40 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     return Rutas_retorna
   }
   async obtenerListaClientes() {
+
     const starCountRef = ref(db, `clientes`)
-    const snapshot = await get(starCountRef);
-
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
+        const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+    
+        const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
   
-    if (snapshot.exists()) {
-      console.time('Execution Time');
+        // console.log(finales_clientes);
+        const campos_cliente = [
+          'apellidos',
+          'correo',
+          'id',
+          'no_cliente',
+          'nombre',
+          'sucursal',
+          'telefono_movil',
+          'tipo',
+          'sucursalShow',
+          'fullname',
+        ]
   
-      const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
-      const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
   
-      const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
-
-      // console.log(finales_clientes);
-      const campos_cliente = [
-        'apellidos',
-        'correo',
-        'id',
-        'no_cliente',
-        'nombre',
-        'sucursal',
-        'telefono_movil',
-        'tipo',
-        'sucursalShow',
-        'fullname',
-      ]
+        this.clientes_arr  = (!this.clientes_arr.length) 
+        ?  finales_clientes 
+        :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
+  
+      } 
+    })
 
 
-      this.clientes_arr  = (!this.clientes_arr.length) 
-      ?  finales_clientes 
-      :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
-
-      console.timeEnd('Execution Time');
-    }
+    
+    
   }
 
   

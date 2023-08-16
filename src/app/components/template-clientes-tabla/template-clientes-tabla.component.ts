@@ -7,6 +7,9 @@ import {MatSort} from '@angular/material/sort';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 
 @Component({
   selector: 'app-template-clientes-tabla',
@@ -28,21 +31,34 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
   @Input() clientes_arr:any[] = []
 
   miniColumnas:number = 120
-  
-  constructor(private router: Router) { }
 
+  _rol:  string
+  _sucursal: string
+  
+  constructor(private router: Router, private _clientes: ClientesService, private _security:EncriptadoService,
+    private _sucursales: SucursalesService) { }
+
+  sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
 
   displayedColumnsClientes: string[] = ['no_cliente','sucursalShow', 'fullname','tipo', 'correo','opciones']; //clientes
     // columnsToDisplayWithExpand = [...this.displayedColumnsClientes, 'expand'];
-    columnsToDisplayWithExpand = [...this.displayedColumnsClientes];
-    dataSourceClientes = new MatTableDataSource(); //clientes
-    expandedElement: any | null; //clientes
-    @ViewChild('clientesPaginator') paginatorClientes: MatPaginator //clientes
-    @ViewChild('clientes') sortClientes: MatSort //clientes
+  columnsToDisplayWithExpand = [...this.displayedColumnsClientes];
+  dataSourceClientes = new MatTableDataSource(); //clientes
+  expandedElement: any | null; //clientes
+  @ViewChild('clientesPaginator') paginatorClientes: MatPaginator //clientes
+  @ViewChild('clientes') sortClientes: MatSort //clientes
   
-    clickedRows = new Set<any>() //todas las tablas
+  clickedRows = new Set<any>() //todas las tablas
   
+  data_cliente= {}
+
+  filtro_tipo:string = 'todos'
+  filtro_sucursal:string = 'Todas'
+
+  tipos_cliente     =  [ ...this._clientes.tipos_cliente ]
+
   ngOnInit(): void {
+    this.rol()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -53,6 +69,14 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
         this.dataSourceClientes.data = this.clientes_arr
         this.newPagination()
     }
+  }
+  rol(){
+    
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this._rol = rol
+    this._sucursal = sucursal
+    
   }
   newPagination(){
     // setTimeout(() => {
@@ -78,6 +102,30 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
     // console.log(queryParams);
     
     this.router.navigate([`/${pagina}`], { queryParams });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSourceClientes.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSourceClientes.paginator) {
+      this.dataSourceClientes.paginator.firstPage();
+    }
+  }
+  filtra_informacion(){
+    
+    let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
+    this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
+    
+    this.newPagination()
+
+  }
+  clientesInfo(info:any){   
+    // console.log(info);
+    
+  }
+  vehiculoInfo(info:any){
+    // console.log(info);
   }
 
 }

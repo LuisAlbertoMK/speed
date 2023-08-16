@@ -860,16 +860,18 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       })
     }
   }
-  infoCliente(event){
-    // console.log(event);
-    const {cliente} =  event
-    if (cliente.id) {
-      this.infoConfirmar.cliente = cliente.id
+  async infoCliente(cliente){
+
+    if (cliente) {
+      const {id, sucursal} = cliente
+      this.infoConfirmar.cliente = id
       this.infoConfirmar.data_cliente = cliente
-      this.infoConfirmar.sucursal = cliente.sucursal
-      this.infoConfirmar.data_sucursal = cliente.data_sucursal
-      this.infoConfirmar.vehiculo = ''
-      // this.consulta_vehiculos()
+      this.infoConfirmar.sucursal = sucursal
+      this.infoConfirmar.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      this.extra = null
+      this.infoConfirmar.data_vehiculo = {}
+      this.infoConfirmar.vehiculo = null
+      // this.vigila_vehiculos_cliente()
     }
   }
   continuar(){
@@ -1010,6 +1012,22 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         })
       })
     })
+  }
+
+  async clientesInfo(event){
+    const {uid, sucursal} = event
+    if (uid) {
+
+      this.infoConfirmar.cliente = uid
+      this.infoConfirmar.data_cliente = event
+      this.infoConfirmar.sucursal = sucursal
+      this.infoConfirmar.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      
+      this.extra = null
+      this.infoConfirmar.data_vehiculo = {}
+      this.infoConfirmar.vehiculo = null
+      
+    }
   }
 
   calcularTotales(data) {

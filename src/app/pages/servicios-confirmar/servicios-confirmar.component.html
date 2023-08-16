@@ -22,7 +22,9 @@
 
 
 
-
+<div class="floating-btn" data-bs-toggle="modal" data-bs-target="#modalNewUser" #tooltip="matTooltip" matTooltip="Registra nuevo cliente" (click)="editar_cliente = false">
+  <span class="icon fa fa-user fa-1x"></span>
+</div>
 
 
 
@@ -484,22 +486,24 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div
     class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+      
+    <div class="modal-header">
+      <!-- <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1> -->
+      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
       <div class="modal-body">
-        <!-- <ng-container *ngIf="datCliente; else elseNewCliente">
-          <app-cliente [data]="datCliente" [id]="datCliente.id" (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
+        <ng-container *ngIf="editar_cliente; else elseTemplateRegistroCLiente">
+          <app-cliente [data_cliente]="infoConfirmar.data_cliente" (heroeSlec)="clientesInfo( $event )"></app-cliente>
         </ng-container>
-        <ng-template #elseNewCliente>
-          <div class="row">
-            <div class="col text-center">
-              <app-cliente (heroeSlec)="infoCliente( $event )" [sucursal]="SUCURSAL"></app-cliente>
-            </div>
-          </div>
-        </ng-template> -->
+         <ng-template #elseTemplateRegistroCLiente>     
+          <app-cliente  (heroeSlec)="clientesInfo( $event )"></app-cliente>
+        </ng-template> 
       </div>
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="modalNewVehiculo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div

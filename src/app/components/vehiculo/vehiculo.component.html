@@ -23,7 +23,7 @@
                         <div class="mb-1">
                           <label for="cliente" class="form-label obligatorio">Cliente <span class="obligatorio">*</span></label>
                           <!-- <ng-container *ngIf="!cliente"> -->
-                            <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente"
+                            <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente" id="cliente"
                             (click)="automaticos()"
                               class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto">
                             <small *ngIf="validaCampo('cliente')" class="text-danger">
@@ -63,7 +63,7 @@
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1 ">
                   <label for="marca" class="form-label ">Marca <span class="obligatorio">*</span></label>
-                  <select class="form-select form-select-sm" formControlName="marca"
+                  <select class="form-select form-select-sm" formControlName="marca" id="marca"
                     [class.is-invalid]="validaCampo('marca')" >
                     <option [defaultSelected]="" value="">Seleccione ...</option>
                     <option value="{{marca}}" *ngFor="let marca of marcas_vehiculos_id">{{marca}}</option>
@@ -77,7 +77,7 @@
                 <div class="mb-1 ">
                   <label for="modelo" class="form-label ">Modelo <span class="obligatorio">*</span></label>
                   <!-- <ng-container *ngIf="modeloAuto!==null"> -->
-                    <select class="form-select form-select-sm" formControlName="modelo" 
+                    <select class="form-select form-select-sm" formControlName="modelo"  id="modelo"
                       [class.is-invalid]="validaCampo('modelo')">
                       <option [defaultSelected]="" value="" >Seleccione ...</option>
                       <option  [value]="modelo.modelo" *ngFor="let modelo of array_modelos" >{{modelo.modelo}}</option>
@@ -91,7 +91,7 @@
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1 ">
                   <label for="categoria" class="form-label">Categoria</label>
-                  <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="categoria">
+                  <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="categoria" id="categoria">
                   <!-- <select class="form-select form-select-sm"  readonly formControlName=""
                     [class.is-invalid]="validaCampo('categoria')" [attr.disabled]="true">
                     <option value="{{categoria}}" *ngFor="let categoria of categorias">{{categoria}}</option>
@@ -105,7 +105,7 @@
                 <div class="mb-1">
                   <label for="anio" class="form-label ">Año <span class="obligatorio">*</span></label>
 
-                  <select class="form-select form-select-sm" formControlName="anio" [class.is-invalid]="validaCampo('anio')">
+                  <select class="form-select form-select-sm" formControlName="anio" [class.is-invalid]="validaCampo('anio')" id="anio">
                     <option [defaultSelected]="" value="">Selecciona año</option>
                     <!-- [defaultSelected]="anio===anioS" value="{{anioS}}" -->
                     <option [value]="a"  *ngFor="let a of anios">
@@ -120,7 +120,7 @@
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1 ">
                   <label for="cilindros" class="form-label ">Cilindros <span class="obligatorio">*</span></label>
-                  <select class="form-select form-select-sm" formControlName="cilindros"
+                  <select class="form-select form-select-sm" formControlName="cilindros" id="cilindros"
                     [class.is-invalid]="validaCampo('cilindros')">
                     <option [defaultSelected]="" value="">Seleccione</option>
                     <option value="4">4</option>
@@ -138,7 +138,7 @@
                 <div class="mb-1">
                   <label for="no_motor" class="form-label ">No. de motor </label>
                   <input type="text" class="form-control form-control-sm" id="no_motor" formControlName="no_motor"
-                    [class.is-invalid]="validaCampo('no_motor')" maxlength="17">
+                    [class.is-invalid]="validaCampo('no_motor')" maxlength="17" >
                   <small *ngIf="validaCampo('no_motor')" class="text-danger">
                     campo requerido
                   </small>
@@ -147,7 +147,7 @@
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1 ">
                   <label for="color" class="form-label ">Color <span class="obligatorio">*</span></label>
-                  <select class="form-select form-select-sm" formControlName="color"
+                  <select class="form-select form-select-sm" formControlName="color" id="color"
                     [class.is-invalid]="validaCampo('color')">
                     <option [defaultSelected]="" value="">Seleccione ...</option>
                     <option value="{{color}}" *ngFor="let color of colores">{{color}}</option>
@@ -160,14 +160,14 @@
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1">
                   <label for="engomado" class="form-label">Engomado </label>
-                  <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="engomado">
+                  <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="engomado" id="engomado">
                 </div>
               </div>
 
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1 ">
                   <label for="transmision" class="form-label">Transmisión</label>
-                  <select class="form-select form-select-sm" formControlName="transmision"
+                  <select class="form-select form-select-sm" formControlName="transmision" id="transmision"
                     [class.is-invalid]="validaCampo('transmision')">
                     <option [defaultSelected]="" value="">Seleccione ...</option>
                     <option value="Estandar">Manual o estándar</option>
@@ -201,7 +201,10 @@
               </div>
             </div>
             <div class="d-grid gap-2 col-lg-4 col-md-4 col-sm-6 mx-auto mt-2">
-              <button type="submit" class="btn btn-sm btn-primary" >Guardar</button>
+              <button type="submit" class="btn btn-sm btn-primary" [disabled]="salvando">
+                <i class="fa" [class.fa-sync]="salvando" [class.fa-save]="!salvando"></i>
+                {{salvando ? 'Validando ...' : 'Guardar'}}
+              </button>
             </div>
           </form>
           <div class="row m-1">

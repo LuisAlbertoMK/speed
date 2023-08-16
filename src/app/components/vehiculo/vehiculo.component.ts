@@ -51,6 +51,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     listaPlacas =[]
 
     faltante_s 
+    salvando:boolean
     
   ngOnInit(): void {
     this.rol()
@@ -177,22 +178,25 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     })
   }
   guardarLlenadoManual(){
-    
+    this.salvando = true
     const camposRecupera = [ 'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','sucursal','transmision','marcaMotor','vinChasis','no_motor','id']
     const info_get = this._publicos.recuperaDatos(this.form_vehiculo);
     const saveInfo:any = this._publicos.nuevaRecuperacionData(info_get, camposRecupera)
 
-    console.log(info_get);
-    
-
     const {ok, faltante_s}  =this._publicos.realizavalidaciones_new(saveInfo, this._vehiculos.obligatorios)
     this.faltante_s = faltante_s
 
-    if (!ok || this.existenPlacas) return
+    if (!ok || this.existenPlacas) {
+      setTimeout(() => {
+        this.salvando = false
+      }, 1000);
+      return
+    }
 
     const updates = {};
     const {sucursal, cliente, id} = info_get
     let nuevo_id  = ''
+
     if (info_get.id) {
       updates[`vehiculos`] = saveInfo;
       
@@ -211,6 +215,11 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       this.dataVehiculo.emit( nuevo_id )
       this.existenPlacas = false
       // const {sucursal, id} = saveInfo
+      setTimeout(() => {
+        this.salvando = false
+      }, 1000);
+     
+
       this.form_vehiculo.reset({sucursal, cliente})
       this._publicos.swalToast('Se registro vehiculo!!',1,'top-start')
     })

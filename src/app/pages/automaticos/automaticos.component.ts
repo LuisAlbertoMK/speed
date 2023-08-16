@@ -40,11 +40,18 @@ export class AutomaticosComponent implements OnInit {
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
     clientes_arr = []
   _sucursal:string
+
+  mensaje_actualizacion:boolean = true
+
+
   ngOnInit(): void {
     this.rol()
+    if (this.mensaje_actualizacion) {
+      // this._publicos.swalToast('Actualizacion pendiente', 1)
+    }
     // this.realizaOperacionesClientes()
-    this.obtenerListaAsignar()
-    this.obtenerListaClientes()
+    // this.obtenerListaAsignar()
+    // this.obtenerListaClientes()
   }
     rol(){
         const { rol, sucursal, usuario } = this._security.usuarioRol()

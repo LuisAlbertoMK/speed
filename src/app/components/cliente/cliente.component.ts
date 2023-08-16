@@ -76,6 +76,8 @@ export class ClienteComponent implements OnInit, OnChanges {
     formularioCreado = false;
     cambiosPendientes: any;
 
+    salvando: boolean = false
+
   ngOnInit(): void {
     this.roles()
     this.crearFormularioClientes()
@@ -302,6 +304,8 @@ export class ClienteComponent implements OnInit, OnChanges {
   }
   
   async guardarCliente(){
+
+    this.salvando = true
     
     const info_get = this._publicos.recuperaDatos(this.form_cliente);
 
@@ -309,6 +313,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]
     const campos_opcionales              = [ ...this._clientes.campos_opcionales ]
     const campos_permitidos_new_register = [ ...campos_cliente,...campos_opcionales ]
+
 
 
     const saveInfo = {};
@@ -331,15 +336,17 @@ export class ClienteComponent implements OnInit, OnChanges {
     if (this.correo_utilizado === 'sucursal') {
       campos_cliente = campos_cliente.filter(c=>c !=='correo')
     }
-    // console.log(campos_cliente);
-    
-    
 
     const { ok, faltante_s } = this._publicos.realizavalidaciones_new(info_get,campos_cliente)
     
     this.faltante_s = faltante_s
-    // console.log();
-    
+    if (!ok ) {
+      setTimeout(() => {
+        this.salvando = false
+      }, 1000);
+      return
+    }
+
     if (ok && !faltante_s) {
       const updates = {};
       const mensaje = (info_get.uid) ? 'Actualización de cliente correcto!!': 'Registro de cliente correcto!!'
@@ -376,6 +383,10 @@ export class ClienteComponent implements OnInit, OnChanges {
       if (existen_campos_update.length) {
         try {
           await update(ref(db), updates);
+          setTimeout(() => {
+            this.salvando = false
+          }, 1000);
+         
           this._publicos.mensajeSwal(`${mensaje}`,1, true, `...`);
           this.heroeSlec.emit(info_get);
           this.resetForm()

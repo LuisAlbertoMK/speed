@@ -39,6 +39,7 @@ import { HistorialClienteVehiculoComponent } from './pages/historial-cliente-veh
 import { FacturacionComponent } from './pages/facturacion/facturacion.component';
 import { AdministracionComponent } from './pages/administracion/administracion.component';
 import { EditarOsComponent } from './pages/editar-os/editar-os.component';
+import { CorteIngresosComponent } from './pages/corte-ingresos/corte-ingresos.component';
 
 const routes: Routes = [];
 
@@ -69,6 +70,7 @@ const APP_ROUTES: Routes = [
   { path: 'facturacion', component: FacturacionComponent,canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'administracion', component: AdministracionComponent,canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'editar-os', component: EditarOsComponent,canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'corte', component: CorteIngresosComponent,canActivate:[AuthGuard,GuardClienteGuard]},
 
   { path: 'automaticos', component: AutomaticosComponent, canActivate:[GuardClienteGuard,AuthGuard]},
 

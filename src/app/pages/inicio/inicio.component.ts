@@ -14,22 +14,24 @@ export class InicioComponent implements OnInit {
   constructor(private router:Router, private _security:EncriptadoService,) { }
   mostrarAdministracion: boolean = false
   userToken:string
+  mensaje_actualizacion:boolean = true
 
   asigancion_roles_gerente = [
+    {path:'administracion', show:'Administracion',icono:'book'},
+    {path:'automaticos', show:'AUTOMATICOS',icono:'ban'},
+    {path:'catalogos', show:'Catalogos',icono:'address-book'},
+    {path:'citas', show:'Citas',icono:'calendar-check'},
     {path:'clientes', show:'Clientes',icono:'user'},
     {path:'cotizacion', show:'Cotizaciones',icono:'folder'},
-    {path:'catalogos', show:'Catalogos',icono:'address-book'},
+    {path:'corte', show:'Corte de ingresos',icono:'folder'},
+    {path:'eliminarEmpresa', show:'Elimina empresa',icono:'ban'},
     {path:'facturacion', show:'Facturación',icono:'file-contract'},
-    {path:'reporteGastos', show:'Reporte de gastos',icono:'book'},
-    {path:'administracion', show:'Administracion',icono:'book'},
-    {path:'sucursales', show:'Sucursales',icono:'landmark'},
-    {path:'servicios', show:'vehículos en piso',icono:'car-building'},
-    {path:'citas', show:'Citas',icono:'calendar-check'},
-    {path:'usuarios', show:'Usuarios y roles',icono:'user'},
     {path:'recordatorios', show:'Recordatorios',icono:'alarm-exclamation'},
     {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
-    {path:'eliminarEmpresa', show:'Elimina empresa',icono:'ban'},
-    {path:'automaticos', show:'AUTOMATICOS',icono:'ban'},
+    {path:'reporteGastos', show:'Reporte de gastos',icono:'book'},
+    {path:'servicios', show:'vehículos en piso',icono:'car-building'},
+    {path:'sucursales', show:'Sucursales',icono:'landmark'},
+    {path:'usuarios', show:'Usuarios y roles',icono:'user'},
   ]
   asigancion_roles_cliente = [
     {path:'miPerfil', show:'Mi informacion',icono:'book'},

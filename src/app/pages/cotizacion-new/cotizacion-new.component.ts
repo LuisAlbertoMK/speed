@@ -137,8 +137,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
-      console.log(params);
-      
       this.cargaDataCliente_new()
     });
   }
@@ -206,17 +204,23 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.infoCotizacion.data_sucursal = data_sucursal
 
     this.realizaOperaciones()
-    this.vigila_vehiculos_cliente({cliente, sucursal})
+    this.vigila_vehiculos_cliente()
 
   }
-  async vigila_vehiculos_cliente({cliente, sucursal}){
+  async vigila_vehiculos_cliente(){
+    const  {cliente, sucursal} = this.infoCotizacion
     const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
-    onValue(starCountRef, async (snapshot) => {
+    onValue(starCountRef, async  (snapshot) => {
       if (snapshot.exists()) {
-        this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-        this.infoCotizacion.data_vehiculo =  this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
+        const  {cliente, sucursal} = this.infoCotizacion
+        const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+        this.infoCotizacion.vehiculos = vehiculos
+        this.infoCotizacion.data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
+      } else {
+        this.infoCotizacion.vehiculos = []
+        this.extra = null
       }
-    })
+    })    
   }
 
   ///mensaje para poder agregar un paquete que no esta en el catalogo
@@ -312,24 +316,19 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   
   // REEMPLAZAR REFRIGERANTE Y PURGAR SISTEMA DE ENFRIAMIENTO
   //aqui la informacion del clienyte
-  async infoCliente(info:any){
-    // console.log(info);
-    const {cliente} = info
+  async infoCliente(cliente){
 
     if (cliente) {
-      const {data_sucursal, id, sucursal} = cliente
-      this.infoCotizacion.data_cliente = cliente
+      const {id, sucursal} = cliente
       this.infoCotizacion.cliente = id
+      this.infoCotizacion.data_cliente = cliente
       this.infoCotizacion.sucursal = sucursal
-      this.infoCotizacion.data_sucursal = data_sucursal
-      this.infoCotizacion.vehiculos = await this._vehiculos.consulta_vehiculos({sucursal, cliente: id}) 
+      this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
       this.extra = null
       this.infoCotizacion.data_vehiculo = {}
       this.infoCotizacion.vehiculo = null
-      // 
-      // this.infoCotizacion.vehiculos =  await this._vehiculos.consulta_vehiculos(cliente)
+      this.vigila_vehiculos_cliente()
     }
-    this.realizaOperaciones()
   }
 
  
@@ -346,16 +345,18 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   //recibir la nueva data y consukta extra de info cliente
   async clientesInfo(event){
     // console.log(event);
-    const {uid} = event
+    const {uid, sucursal} = event
     if (uid) {
-      // this.infoCotizacion.data_cliente = event
-      // console.log(event);
-      const {sucursal, uid: cliente} = event
+
+      this.infoCotizacion.cliente = uid
+      this.infoCotizacion.data_cliente = event
+      this.infoCotizacion.sucursal = sucursal
+      this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
       
-      this.infoCotizacion.data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-      // if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-      this.vigila_vehiculos_cliente({cliente, sucursal})
-      // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
+      this.extra = null
+      this.infoCotizacion.data_vehiculo = {}
+      this.infoCotizacion.vehiculo = null
+      this.vigila_vehiculos_cliente()
     }
     
   }
@@ -380,9 +381,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   vehiculo_registrado(event){
      if (event) {
       this.extra = event
-      const { cliente, sucursal } = this.enrutamiento
-
-      this.vigila_vehiculos_cliente({ cliente, sucursal } )
+      this.vigila_vehiculos_cliente()
     }
   }
 
@@ -543,11 +542,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       updates_paquetes[clave] = recuperada
     })   
     update(ref(db), updates_paquetes);
-
-    
-    console.log(this.infoCotizacion);
-    
-
     //hacemos el llamdo de la funcion para la creaciion del pdf    
     this._pdf.pdf(this.infoCotizacion).then((ansPDF)=>{
       //cuando obtengamos la respuesta asignamos la misma a una variable para su uso de PDF

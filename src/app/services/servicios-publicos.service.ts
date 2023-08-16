@@ -476,6 +476,33 @@ export class ServiciosPublicosService {
             })
         return mensajeAnswer
     }   
+    async mensaje_pregunta_2(data) {
+      const {mensaje, allowOutsideClick, html} = data
+      let mensajeAnswer = { respuesta: false }
+
+      let allow = (allowOutsideClick) ? allowOutsideClick : true
+      await Swal
+          .fire({
+              title: `¿${mensaje}?`,
+              showDenyButton: false,
+              showCancelButton: true,
+              confirmButtonText: 'Confirmar',
+              denyButtonText: `Don't save`,
+              cancelButtonText: `Cancelar`,
+              allowOutsideClick: allow,
+              backdrop:true,
+              html
+          })
+          .then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                  mensajeAnswer.respuesta = true
+              } else if (result.isDenied) {
+                  mensajeAnswer.respuesta = false
+              }
+          })
+      return mensajeAnswer
+  }  
     SwalTipoSobrescrito(costo : number) {
         Swal.fire({
             title: 'Costo de paquete sobrescrito',
@@ -1229,6 +1256,10 @@ export class ServiciosPublicosService {
       const formValue = form.getRawValue();
       return formValue
     }
+    getRawValue(form){
+      const formValue = form.getRawValue();
+      return formValue
+    }
     reemplaza_strig(cadena:string){
       const arreglo = this._campos.campos_reeemplza
       let cadenanew = null
@@ -1280,6 +1311,8 @@ export class ServiciosPublicosService {
       const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
       return diffDias
     }
+    
+   
     
 
     

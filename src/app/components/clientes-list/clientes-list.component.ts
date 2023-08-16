@@ -38,11 +38,14 @@ export class ClientesListComponent implements OnInit {
   ROL:string; SUCURSAL:string
   empresas_alls= {}
 
+  clientes_arr=[]
+
   ngOnInit(): void {
     this.rol()
     this.listaEmpresas()
     this.automaticos()
     this.vigila()
+    this.obtenerListaClientes()
   }
 
   rol(){
@@ -52,9 +55,9 @@ export class ClientesListComponent implements OnInit {
     this.SUCURSAL = sucursal
   }
   vigila(){
-    this.myControl.valueChanges.subscribe(cambio=>{
-      if (cambio instanceof Object) {
-        this.dataCliente.emit( {cliente: cambio} ) 
+    this.myControl.valueChanges.subscribe(cliente=>{
+      if (cliente instanceof Object) {
+        this.dataCliente.emit( cliente ) 
       }
     })
   }
@@ -69,20 +72,6 @@ export class ClientesListComponent implements OnInit {
     this.listaClientes_arr = clientes
   }
 
-  // clienteSeleccionado(data){
-  //   if (data.id) {
-  //     this.dataCliente.emit( Object({cliente: data, status: true}) )
-  //   }else{
-  //     this.dataCliente.emit( Object({status: false}))
-  //   }
-  // }
-  // clientesInfo(infoCliente){
-  //   if (infoCliente.registro) {
-  //     this.dataCliente.emit( infoCliente.cliente )
-  //   }else{
-  //     this.dataCliente.emit( {error:true} )
-  //   }    
-  // }
 
   automaticos(){
     this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -99,22 +88,79 @@ export class ClientesListComponent implements OnInit {
       // const nuevos = this.lista_arr_mo.concat(this.lista_arr_refacciones)
       // const ordenado = this._publicos.ordernarPorCampo(nuevos,'nombre')
       let resultados = []
-      resultados = this.listaClientes_arr.filter(option => option['nombre'].toLowerCase().includes(filterValue));
+      resultados = this.clientes_arr.filter(option => option['nombre'].toLowerCase().includes(filterValue));
       if (!resultados.length) {
-        let filtrados = this.listaClientes_arr.filter(c=>c.correo)
+        let filtrados = this.clientes_arr.filter(c=>c.correo)
         resultados = filtrados.filter(option => option['correo'].toLowerCase().includes(filterValue));
       }
       data = resultados
-      
     }
-    
     return data
-   
   }
   displayFn(user: any): any {
-    // return info && `${info['nombre']}` ? `${info['nombre']}` : '';
-
     return user && `${user['nombre']} ${user['apellidos']}` ? `${user['nombre']} ${user['apellidos']}` : '';
   }
 
+  //TODO
+  async obtenerListaClientes() {
+
+    const starCountRef = ref(db, `clientes`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
+        const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+    
+        const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
+  
+        // console.log(finales_clientes);
+        const campos_cliente = [
+          'apellidos',
+          'correo',
+          'id',
+          'no_cliente',
+          'nombre',
+          'sucursal',
+          'telefono_movil',
+          'tipo',
+          'sucursalShow',
+          'fullname',
+        ]
+  
+  
+        this.clientes_arr  = (!this.clientes_arr.length) 
+        ?  finales_clientes 
+        :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
+      
+      } 
+    })    
+  }
+
+  transformaDataCliente(data){
+    const nuevos = [...data]
+    const retornados = nuevos.map(cli=>{
+      const {sucursal, nombre, apellidos } = cli
+      cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+      cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+      return cli
+    })
+    return retornados
+  }
+
+  async obtenerClientesDeRutas(rutas) {
+    const promesasClientes = rutas.map(async (ruta) => {
+      const clientes = await this._clientes.consulta_clientes__busqueda({ ruta });
+      return this.transformaDataCliente(clientes);
+    });
+  
+    const promesasResueltasClientes = await Promise.all(promesasClientes);
+    return promesasResueltasClientes.flat();
+  }
+  crea_lista_rutas_por_sucursal(data){
+    const {arreglo_sucursal, } = data
+    let Rutas_retorna = []
+    arreglo_sucursal.forEach(sucursal=>{
+      Rutas_retorna.push(`clientes/${sucursal}`)
+    })
+    return Rutas_retorna
+  }
 }
