@@ -6,15 +6,16 @@
     </button>
   </div>
 </div>
-
-<form  [formGroup]="my_control">
-  <select name="sucursales" id="sucursales" class="form-control form-control-sm custom-select" formControlName="sucursal">
-    <option value="" >Selecciona sucursal</option>
-    <option [value]="sucu.id" *ngFor="let sucu of sucursales_array" >
-        {{sucu.sucursal}}
-    </option>
-</select>
-</form>
+<ng-container *ngIf="_sucursal ==='Todas'">
+  <form  [formGroup]="my_control">
+    <select name="sucursales" id="sucursales" class="form-control form-control-sm custom-select" formControlName="sucursal">
+      <option value="" >Selecciona sucursal</option>
+      <option [value]="sucu.id" *ngFor="let sucu of sucursales_array" >
+          {{sucu.sucursal}}
+      </option>
+    </select>
+  </form>
+</ng-container>
 
 <div class="input-group mb-3 ">
   <mat-date-range-picker #picker></mat-date-range-picker>
@@ -29,23 +30,46 @@
   </div>
 </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">mes / anio</th>
-      <th scope="col">objetivo</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of metas_mes; let i = index">
-      <th scope="row">{{i +1 }}</th>
-      <td>{{item.mes}} / {{item.anio}}</td>
-      <td>{{item.objetivo | monedas}}</td>
-    </tr>    
-  </tbody>
-</table>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">mes / anio</th>
+            <th scope="col">objetivo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of metas_mes; let i = index">
+            <th scope="row">{{i +1 }}</th>
+            <td>{{item.mes}} / {{item.anio}}</td>
+            <td>{{item.objetivo | monedas}}</td>
+          </tr>    
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
+
+
+<div class="card col-lg-6 col-md-6 col-sm-12 col-12 text-center">
+  <div class="card-body text-success ">
+    <div class="row">
+      <ng-container *ngFor="let item of camposReporte">
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item.show}}</div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
+      </ng-container>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">Porcentaje </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentaje | monedas:'%'}}</strong></div>
+    </div>
+  </div>
+</div>
+
+
+<app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false" [muestra_cliente]="true"> </app-template-tabla-recepciones>
 
 
 <div class="modal fade" id="modal-registro-metas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

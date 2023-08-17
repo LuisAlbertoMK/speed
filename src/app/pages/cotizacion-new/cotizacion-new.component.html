@@ -26,13 +26,13 @@
 </div> -->
 <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
 
-<ng-container *ngIf="infoCotizacion.data_cliente['id']">
+<!-- <ng-container *ngIf="infoCotizacion.data_cliente['id']">
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end m-1">
       <button class="btn btn-sm btn-primary" (click)="editar_cliente = true" data-bs-toggle="modal" data-bs-target="#modalNewUser">Editar información</button>
     </div>
   </div>
-</ng-container>
+</ng-container> -->
 
 
 <app-cliente-tarjeta [cliente]="infoCotizacion.data_cliente" ></app-cliente-tarjeta>
@@ -314,7 +314,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
       </button>
     </div>
     <div class="modal-body m-2">
-      <app-paquetes [modelo]="modeloVehiculo" (infoPaquete)="agrega_principal( $event)" ></app-paquetes>
+      <app-paquetes [modelo]="modelo" (infoPaquete)="agrega_principal( $event)" ></app-paquetes>
     </div>
   </div>
 </div>

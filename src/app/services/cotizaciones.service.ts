@@ -388,16 +388,19 @@ export class CotizacionesService {
     return await this._vehiculos.consulta_vehiculo_new(data)
   }
   async generaNombreCotizacion(rol:string, data){
-    const  {sucursal, cliente, data_sucursal} = data
+    const  {sucursal, cliente, data_sucursal, data_cliente} = data
+
     const date: Date = new Date()
     const year = date.getFullYear().toString().slice(-2)
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const nombreSucursal:string = data_sucursal.sucursal.slice(0,2).toUpperCase()
     const nuevoRol:string = rol.slice(0,2).toUpperCase()
+    const { nombre } = data_cliente
+    const nuevoCliente:string = nombre.slice(0,2).toUpperCase()
     const cotizacionesSnapshot = await get(child(dbRef, `cotizacionesRealizadas/${sucursal}/${cliente}`));
     const cotizacionesArray = cotizacionesSnapshot.exists() ? this._publicos.crearArreglo2(cotizacionesSnapshot.val()) : []
-    const secuencia = (cotizacionesArray.length + 1).toString().padStart(5, '0')
-    return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
+    const secuencia = (cotizacionesArray.length + 1).toString().padStart(4, '0')
+    return `${nombreSucursal}${month}${year}${nuevoRol}${nuevoCliente}${secuencia}`
 }
   
 }

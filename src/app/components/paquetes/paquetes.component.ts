@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,7 +21,7 @@ const dbRef = ref(getDatabase());
     ]),
   ],
 })
-export class PaquetesComponent implements OnInit {
+export class PaquetesComponent implements OnInit, OnChanges {
 
   listaPaquetes = []
   @Input() modelo:string
@@ -36,7 +36,7 @@ export class PaquetesComponent implements OnInit {
   listaRefacciones= []
   listaMO =  []
   listaPaquetes_arr=[]
-  filtrar:boolean = true
+  modelo_temp:string
   @ViewChild('paquetesPaginator') paginator: MatPaginator //paquetes
   @ViewChild('paquetes') sort: MatSort //paquetes
 
@@ -49,6 +49,22 @@ export class PaquetesComponent implements OnInit {
     this.consultaMO()
     // this.modelo = 'Fiesta'
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['modelo']) {
+      const nuevoValor = changes['modelo'].currentValue;
+      const valorAnterior = changes['modelo'].previousValue;
+      // console.log({nuevoValor, valorAnterior});
+      // console.log(nuevoValor);
+      if (nuevoValor) {
+        this.modelo_temp = nuevoValor
+      }else{
+        this.modelo_temp = null
+      }
+      this.aplicaFiltro()
+      
+    }
+  }
+
   consultaMO(){
     const starCountRef = ref(db, `manos_obra`)
     onValue(starCountRef, (snapshot) => {
@@ -116,20 +132,19 @@ export class PaquetesComponent implements OnInit {
         this.listaPaquetes_arr = paquetes.filter((p) => p.elementos.length);
         // this.listaPaquetes_arr = paquetes.filter(p=>p['elementos'].length);
         // (this.modelo) ? this.aplicaFiltro(true) : this.aplicaFiltro(false)
-        this.aplicaFiltro(false)
+        this.aplicaFiltro()
       } else {
         this.newPagination('paquetes')
       }
     })
   }
-  aplicaFiltro(filtro:boolean){
-    let data = this.listaPaquetes_arr;
-    if (filtro && this.modelo) {
-      data = data.filter((paquete) => paquete.modelo === this.modelo);
-    }
+  
+  aplicaFiltro(){
+    let data = (this.modelo_temp) ? this.listaPaquetes_arr.filter((paquete) => paquete.modelo === this.modelo) : this.listaPaquetes_arr
     this.dataSourcePaquetes.data = data;
     this.newPagination('paquetes')
   }
+
   dataElement(data:any){
     if (data['id']) {
       this.infoPaquete.emit(data)

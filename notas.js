@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "arreglar serviciosConfirmar (en proceso)"
+git commit -m "terminar modulo de corte ingresos (en proceso)"
 git push -u origin 
 
 
@@ -13,9 +13,14 @@ ls
 cd .\Desktop\speed\
 ng serve
 
+
 cd .\Desktop\SpeedProV1-produccion
 ng serve --port 4201
 
+
+cd .\Desktop\SpeedProV1-produccion
+ng build
+firebase deploy
 
 //realizar Corte de Ingresos del dia 10 del mes 8 nuevo modulo
 

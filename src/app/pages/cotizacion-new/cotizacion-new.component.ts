@@ -120,6 +120,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
 
   editar_cliente:boolean = false
+  modelo:string
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -147,14 +148,16 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
 
     this.infoCotizacion = this._cotizacion.infoCotizacion
-
+    // console.log(cliente);
+    if (cliente) this.infoCotizacion.cliente = cliente
+    
     if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
+    // if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
     // console.log(vehiculos_arr);
-
-    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    
+    
 
     const campos = [
       'cliente',
@@ -197,11 +200,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
 
     this.extra = vehiculo
-    this.infoCotizacion.vehiculos = vehiculos_arr
 
     this.infoCotizacion.data_cliente = data_cliente
-    this.infoCotizacion.data_vehiculo = data_vehiculo
+    
+    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     this.infoCotizacion.data_sucursal = data_sucursal
+    this.infoCotizacion.sucursal = sucursal
+    
+    this.infoCotizacion.vehiculo = vehiculo
 
     this.realizaOperaciones()
     this.vigila_vehiculos_cliente()
@@ -209,16 +215,25 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   async vigila_vehiculos_cliente(){
     const  {cliente, sucursal} = this.infoCotizacion
+    
     const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
     onValue(starCountRef, async  (snapshot) => {
       if (snapshot.exists()) {
         const  {cliente, sucursal} = this.infoCotizacion
         const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
         this.infoCotizacion.vehiculos = vehiculos
-        this.infoCotizacion.data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
+        const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
+        this.infoCotizacion.data_vehiculo  = data_vehiculo
+        this.infoCotizacion.vehiculo  = this.extra
+        if (data_vehiculo) {
+          if (data_vehiculo.modelo) {
+            this.modelo = data_vehiculo['modelo']
+          }
+        }
       } else {
         this.infoCotizacion.vehiculos = []
         this.extra = null
+        this.modelo = null
       }
     })    
   }
@@ -474,15 +489,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   //verificamos que existe el vehiculo seleccionado y que este tenga un id de lo contrario colocamos la informacion en null
   vehiculo(IDVehiculo){
-      this.modeloVehiculo = null
-      this.infoCotizacion.vehiculo = null
-      this.infoCotizacion.data_vehiculo = null
-    const vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === IDVehiculo)
-    if (vehiculo) {
       this.extra = IDVehiculo
-      this.infoCotizacion.data_vehiculo = vehiculo
       this.infoCotizacion.vehiculo = IDVehiculo
-    }
+      this.vigila_vehiculos_cliente()
   }
   async continuarCotizacion(){
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
@@ -498,8 +507,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.infoCotizacion.promocion = promocion
 
     const correos = this._publicos.dataCorreo(this.infoCotizacion.data_sucursal,this.infoCotizacion.data_cliente)
-    const {sucursal, cliente, data_sucursal} = this.infoCotizacion
-    await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal}).then(ans=>{
+    const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
+    await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
       this.infoCotizacion.no_cotizacion = ans
     })
 

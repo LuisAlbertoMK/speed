@@ -165,6 +165,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     ub:0,
   }
   editar_cliente:boolean = true
+
+  modelo:string
   ngOnInit(): void {
     this.rol()
   }
@@ -186,8 +188,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.detalles = this.detalles_rayar
     this.rutaActiva.queryParams.subscribe((params:any) => {
      this.enrutamiento = params
-     console.log(params);
-     
      this.acciones()
     });
   }
@@ -253,15 +253,27 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.sucursal = sucursal
 
     this.realizaOperaciones()
-    this.vigila_vehiculos_cliente({cliente, sucursal})
+    this.vigila_vehiculos_cliente()
 
   }
-  async vigila_vehiculos_cliente({cliente, sucursal}){
+  async vigila_vehiculos_cliente(){
+    const  {cliente, sucursal} = this.infoConfirmar
+
     const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        this.infoConfirmar.vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-        this.infoConfirmar.data_vehiculo =  this.infoConfirmar.vehiculos.find(v=>v.id === this.extra)
+        const  {cliente, sucursal} = this.infoConfirmar
+
+        const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+        this.infoConfirmar.vehiculos = vehiculos
+        const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
+        this.infoConfirmar.data_vehiculo  = data_vehiculo
+        this.infoConfirmar.vehiculo  = this.extra
+        if (data_vehiculo) {
+          if (data_vehiculo.modelo) {
+            this.modelo = data_vehiculo.modelo
+          }
+        }
       }
     })
   }
@@ -274,14 +286,13 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   vehiculo(IDVehiculo){
-    this.infoConfirmar.vehiculo = null
-    this.infoConfirmar.data_vehiculo = null
-    const vehiculo = this.infoConfirmar.vehiculos.find(v=>v.id === IDVehiculo)
-    if (vehiculo) {
-      this.extra = IDVehiculo
-      this.infoConfirmar.data_vehiculo = vehiculo
-      this.infoConfirmar.vehiculo = IDVehiculo
+    this.extra = IDVehiculo
+    this.infoConfirmar.vehiculo = IDVehiculo
+    this.vigila_vehiculos_cliente()
+    if (!IDVehiculo) {
+      this.modelo = null
     }
+    
   } 
 
   vehiculo_registrado(event){
@@ -289,7 +300,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
      this.extra = event
      const { cliente, sucursal } = this.enrutamiento
 
-     this.vigila_vehiculos_cliente({ cliente, sucursal } )
+     this.vigila_vehiculos_cliente()
    }
   }
   agrega_principal(event){
@@ -676,37 +687,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       })
       }
     }
-    
-
-    //   if(navigator.mediaDevices.getUserMedia){
-    //     // facingMode:'user'   para camara selfie
-    //     // facingMode: { exact: "environment" }  para camara exterior
-    //     // const unica = this.nombres_cameras.find(o=>o['id'] === this.camera_select)
-    //     let nueva = {}
-    //     let op = {audio: false, video: { facingMode: {exact: "environment"} }}
-
-    //     nueva = op
-       
-    //     this.camaraTrasera = await navigator.mediaDevices.getUserMedia(nueva).then(o=>{ return true}).catch((a)=>{return false})
-    //     // console.log(this.camaraTrasera);
-    //     // this._publicos.mensajeCorrecto('boolean: '+this.camaraTrasera)
-        
-    //     if (!this.camaraTrasera) {
-    //       nueva =  {audio: false, video: { facingMode: "user" }}
-    //     } // op = { audio:false, video: { facingMode: "user" } }
-    //     await navigator.mediaDevices.getUserMedia(nueva)
-    //     .then((str)=>{
-    //       this.cameraStart = true
-    //       stream.srcObject = str
-    //       stream.play()
-    //       this.stream = stream
-    //     })
-    //     .catch((error)=>{
-    //         // console.log(error);
-    //         this._publicos.mensajeIncorrecto('error de camara')
-    //         // camaraTrasera
-    //     })
-    // }
+  
   }
   async cameraOFF(){
     this.foto_tomada = ''
