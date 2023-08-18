@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "terminar modulo de corte ingresos (en proceso) - 1"
+git commit -m "corte de ingresos  (en espera de aprobacion)"
 git push -u origin 
 
 
@@ -10,7 +10,7 @@ shutdown -s -t 300 -c 'XD'
 
 ls
 
-cd .\Desktop\speed\
+cd C:\Users\KarinaSpeed\Documents\speed
 ng serve
 
 

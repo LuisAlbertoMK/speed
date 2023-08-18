@@ -1,14 +1,16 @@
 <div class="row">
+  <!-- [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'" -->
+  <!-- text-bg-danger -->
   <ng-container *ngIf="muestra_normal; else elseMuestra">
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-      <div class="card border-danger mb-3">
+      <div class="card  mb-3" [ngClass]="!color_n ? 'text-danger' : ''">
         <div class="card-header text-center">{{title}} normal</div>
-        <div class="card-body text-danger ">
+        <div class="card-body ">
             <div class="row">
-              <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'">
+              <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" >
                 U.B
               </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'">
+              <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" >
                 <strong>{{reporte['ub'] | monedas:'%'}}</strong>
               </div>
               <ng-container *ngFor="let campo of camposDesgloce">
@@ -23,14 +25,14 @@
     </div>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-      <div class="card border-success mb-3">
+      <div class="card  mb-3" [ngClass]="!color_n ? 'text-success' : ''">
         <div class="card-header text-center">{{title}} flotilla</div>
-        <div class="card-body text-success ">
+        <div class="card-body">
             <div class="row">
-              <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'">
+              <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" >
                 U.B
               </div>
-              <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'">
+              <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" >
                 <strong>{{reporte['ub'] | monedas:'%'}}</strong>
               </div>
               <ng-container *ngFor="let campo of camposDesgloce">
@@ -46,14 +48,14 @@
     </div>
   </ng-container>
   <ng-template #elseMuestra>
-    <div class="card border-success mb-3">
+    <div class="card  mb-3" [ngClass]="!color_n ? 'text-success' : ''">
       <div class="card-header text-center">{{title}}</div>
-      <div class="card-body text-success ">
+      <div class="card-body">
           <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'">
+            <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start">
               U.B
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end">
               <strong>{{reporte['ub'] | monedas:'%'}}</strong>
             </div>
             <ng-container *ngFor="let campo of camposDesgloce">

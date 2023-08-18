@@ -65,6 +65,24 @@ export class CorteIngresosComponent implements OnInit {
     {valor:'sobrante', show:'Restante '},
     {valor:'ticketPromedio', show:'ticket Promedio'},
   ]
+  metodospago = [
+    {metodo:'1', show:'Efectivo'},
+    {metodo:'2', show:'Cheque'},
+    {metodo:'3', show:'Tarjeta'},
+    {metodo:'4', show:'OpenPay'},
+    {metodo:'5', show:'Clip'},
+    {metodo:'6', show:'BBVA'},
+    {metodo:'7', show:'BANAMEX'}
+  ]
+  metodos = {
+    Efectivo:0,
+    Cheque:0,
+    Tarjeta:0,
+    OpenPay:0,
+    Clip:0,
+    BBVA:0,
+    BANAMEX:0,
+  }
   ngOnInit(): void {
     this.rol()
     this.resetea_horas_admin()
@@ -514,34 +532,128 @@ export class CorteIngresosComponent implements OnInit {
 
   generaExcel(){
     if (this.recepciones_arr.length) {
-      // console.log(this.recepciones_arr.length);
       const nueva_data = this.arreglar_info_recepciones(this.recepciones_arr)
-      console.log(nueva_data);
+      // const data_reporte_objetivos = this._publicos.crearArreglo2(this.reporte)
+
+      const casdgfh = [
+        {valor:'objetivo', show:'Objetivo'},
+        {valor:'ventas', show:'Total ventas'},
+        {valor:'operacion', show:'Gastos de operación'},
+        {valor:'orden', show:'Gastos de ordenes'},
+        {valor:'sobrante', show:'Restante '},
+        {valor:'ticketPromedio', show:'ticket Promedio'},
+        {valor:'porcentaje', show:'% cumplido'},
+      ]
+      const data_reporte_objetivos = Object.keys(casdgfh).map((a,index)=>{
+        const name = casdgfh[index].show
+        return {
+          Nombre: name,
+          Valor: this.reporte[casdgfh[index].valor],
+        }
+      })
+
+      // console.log(data_reporte_objetivos);
+      const metodos_ = this.obtener_suma_metodos(nueva_data)
+
+      let linea_blanca = 
+      {
+          no_os: '',
+          placas:'',
+          marca:'',
+          modelo:'',
+          descripcion:'',
+          // no_cliente: String(no_cliente).toUpperCase(),
+          sucursal: '',
+          // correo_cliente,
+          empresa: '',
+          // correo_sucursal,
+          tipo:'',
+          Efectivo:'',
+          Cheque:'',
+          Tarjeta:'',
+          OpenPay:'',
+          Clip:'',
+          BBVA:'',
+          BANAMEX:'',
+          subtotal:'',
+          iva:'',
+          total:'',
+          'status orden': '',
+        }
+        let nuevo_ob = JSON.parse(JSON.stringify(linea_blanca));
+        Object.keys(this.metodos).forEach(m=>{
+          nuevo_ob[m] = metodos_[m]
+        })
+        nueva_data.push({
+          ...nuevo_ob,
+          tipo: 'Totales formas pago'
+        })
+        nueva_data.push({
+          ...linea_blanca
+        })
+        
+
+      // console.log(nueva_data);
+      const {inicial, final} = this.fecha_formateadas
+
+      const { inicio: _inicial, final: _final } = this._publicos.getFirstAndLastDayOfCurrentMonth(inicial)
+      const { inicio: _inicial_, final: _final_ } = this._publicos.getFirstAndLastDayOfCurrentMonth(final)
+
+
+      const uno = this._publicos.retorna_fechas_hora({fechaString: new Date(_inicial)}).formateada
+      const uno_1 = this._publicos.retorna_fechas_hora({fechaString: new Date(_final_)}).formateada
+
+      const dos = this._publicos.retorna_fechas_hora().formateada
+
+      nueva_data.push({
+        ...linea_blanca,
+        Efectivo:'Arqueo Correspondiente a',
+        Tarjeta:'Fecha de Realizacion',
+      })
+      nueva_data.push({
+        ...linea_blanca,
+        Efectivo: `${uno} - ${uno_1}`,
+        Tarjeta: dos,
+      })
       
-      this._exporter.genera_excel_recorte_ingresos(nueva_data)
+      this._exporter.genera_excel_recorte_ingresos({arreglo: nueva_data, data_reporte_objetivos})
+    }else{
+      this._publicos.swalToast(`Ningun registro`,0)
     }
   }
 
   arreglar_info_recepciones(recepciones_arr:any[]){
-    console.log(recepciones_arr);
+    // console.log(recepciones_arr);
     const nueva = recepciones_arr.map(recep=>{
-      const data_recepcion = JSON.parse(JSON.stringify(recep));
+    const data_recepcion = JSON.parse(JSON.stringify(recep));
 
-      const {marca, modelo, placas } = data_recepcion.data_vehiculo
+    const {marca, modelo, placas } = data_recepcion.data_vehiculo
 
-      const {no_cliente, sucursalShow, tipo, empresa, correo: correo_cliente} = data_recepcion.data_cliente
+    const {no_cliente, sucursalShow, tipo, empresa, correo: correo_cliente} = data_recepcion.data_cliente
 
-      const { correo: correo_sucursal } = data_recepcion.data_sucursal
+    const { correo: correo_sucursal } = data_recepcion.data_sucursal
 
-      const {elementos, no_os, status, reporte } = recep
+    const {elementos, no_os, status, reporte, historial_pagos    } = recep
 
-      const {subtotal, iva, total } = reporte
+    const {subtotal, iva, total } = reporte
 
-      const nombres_elementos = this._publicos.obtenerNombresElementos(elementos)
+    const {
+      Efectivo,
+      Cheque,
+      Tarjeta,
+      OpenPay,
+      Clip,
+      BBVA,
+      BANAMEX,
+    }
+    = this.obtener_pormetodo(historial_pagos)
 
-      let nueva_empresa = empresa ? empresa : ''
+    const nombres_elementos = this._publicos.obtenerNombresElementos(elementos)
 
-      const temp_data = {
+    let nueva_empresa = empresa ? empresa : ''
+    // const reporte_
+
+    const temp_data = {
         no_os: String(no_os).toUpperCase(),
         placas:String(placas).toUpperCase() ,
         marca,
@@ -553,6 +665,13 @@ export class CorteIngresosComponent implements OnInit {
         empresa: nueva_empresa,
         // correo_sucursal,
         tipo,
+        Efectivo,
+        Cheque,
+        Tarjeta,
+        OpenPay,
+        Clip,
+        BBVA,
+        BANAMEX,
         subtotal,
         iva,
         total,
@@ -560,8 +679,31 @@ export class CorteIngresosComponent implements OnInit {
       }
       return temp_data
     })
-
+    
     return nueva
+  }
+
+  obtener_pormetodo(historial_pagos:any[]){
+    let metodos = JSON.parse(JSON.stringify(this.metodos));
+    historial_pagos.forEach(h=>{
+      const  {metodo, monto} = h
+      const data_pago = this.metodospago.find(m=>m.metodo === metodo)
+      if (metodo === data_pago.metodo) {
+        metodos[data_pago.show] += parseFloat(monto)
+      }
+    })
+
+    return metodos
+  }
+  obtener_suma_metodos (nueva_data:any[]){
+    let metodos = JSON.parse(JSON.stringify(this.metodos));
+    nueva_data.forEach(g=>{
+      Object.keys(metodos).forEach(m=>{
+        metodos[m] += parseFloat(g[m])
+      })
+    })
+
+    return metodos
   }
 
 }

@@ -557,7 +557,7 @@ export class ExporterService {
 
     const columnWidthsenviar_totales_orden = [
       { wch: 20 }, { wch: 10 }, { wch: 25 },{ wch: 15 },
-      { wch: 25 }, { wch: 25 }, { wch: 15 },{ wch: 15 },
+      { wch: 25 }, { wch: 25 }, { wch: 15 },{ wch: 20 },
       { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
       { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
     ];
@@ -573,8 +573,10 @@ export class ExporterService {
     this.saveAsExcel(excelBuffer,'Reporte de gastos')
   }
 
-  genera_excel_recorte_ingresos(arreglo:any[]){
-    console.log(arreglo);
+  genera_excel_recorte_ingresos(data){
+    const {arreglo, data_reporte_objetivos} = data
+    
+    const worksheetenviar_reporte : XLSX.WorkSheet = XLSX.utils.json_to_sheet(data_reporte_objetivos)
     const worksheetenviar_totales_orden : XLSX.WorkSheet = XLSX.utils.json_to_sheet(arreglo)
 
     const columnWidthsenviar_totales_orden = [
@@ -583,16 +585,23 @@ export class ExporterService {
       { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
       { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
     ];
+    const columnWidthsenviar_reporte = [
+      { wch: 25 }, { wch: 25 },
+    ];
     worksheetenviar_totales_orden['!cols'] = columnWidthsenviar_totales_orden;
+    worksheetenviar_reporte['!cols'] = columnWidthsenviar_reporte;
 
     const workbook: XLSX.WorkBook = {
-      Sheets: {'Servicios':worksheetenviar_totales_orden},
-      SheetNames:['Servicios']
+      Sheets: {'Reporte': worksheetenviar_reporte, 'Servicios':worksheetenviar_totales_orden},
+      SheetNames:['Reporte','Servicios']
     }
     
     const excelBuffer:any= XLSX.write(workbook,{bookType:'xlsx',type:'array'})
 
-    this.saveAsExcel(excelBuffer,'Recorte de gastos')
+
+    const fecha = new Date()
+    const nombre_excel = `Recorte_gastos_${fecha.getTime()}`
+    this.saveAsExcel(excelBuffer,`${nombre_excel}`)
     
   }
 

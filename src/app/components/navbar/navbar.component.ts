@@ -84,21 +84,13 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   tema_selecciondo = {valor:false,color:'navbar-white', show:'Modo oscuro',icono:'moon'}
   theme: string = 'dark';
   ngOnInit(): void {
-    // this.listadoClientes()
-    // this.listadoVehiculos()
+
     this.nombreSucursal()
-    // this.brow()
+
     this.AsiganacionVariablesSesion()
-    // this.MonitoreUsuario()
-    // // this.MonitoreoUnico()
-    // this.listaSucursales()
-    // this.obtCitas()
-    // this.recordatoriosVerificacion()
-    // this.verificacionPorvehiculos()
-    // this.recordatoriosCotizaciones()
-    // this.cambiosSys()
-    // this.logeado()
+
     this.comprobarTimeExpira()
+    this.comprobarTema()
   }
   ngAfterViewInit() {
     
@@ -108,8 +100,6 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
   cambiaColorNavbar(){    
 
-    // mat-dark-theme
-    // mat-app-background
     const body = document.body;
     const info = this.themes_colors.find(t=>t.valor === this.changeColor);
 
@@ -121,12 +111,41 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
       body.classList.add('mat-app-background')
       body.classList.remove('mat-dark-theme');
     }
-    // (this.changeColor) ? body.classList.add('mat-app-background') : body.classList.remove('mat-dark-theme')
-
     this.tema_selecciondo = info
+    localStorage.setItem("tema",JSON.stringify(info))
+    localStorage.setItem("color",JSON.stringify(info.color))
+    localStorage.setItem("changeColor",JSON.stringify(this.changeColor))
+    localStorage.setItem("tema_selecciondo",JSON.stringify(this.tema_selecciondo))
 
     this.color = info.color
-    // this.toggleTheme()
+    
+  }
+  comprobarTema(){
+    const changeColor = JSON.parse(localStorage.getItem('changeColor'))
+    
+    this.changeColor = changeColor
+    
+
+    if (localStorage.getItem('color')) {
+
+      const body = document.body;
+
+      const {color:c_theme, mode: m_theme} = JSON.parse(localStorage.getItem('tema'));
+      const tema_selecciondo = JSON.parse(localStorage.getItem('tema'))
+      this.tema_selecciondo = tema_selecciondo
+      this.color = c_theme;
+      const color = JSON.parse(localStorage.getItem('color'))
+
+      if(color === 'navbar-dark'){
+        body.classList.add(m_theme)
+        body.classList.add('mat-dark-theme')
+        body.classList.remove('mat-app-background');
+      }else{
+        body.classList.remove(m_theme)
+        body.classList.add('mat-app-background')
+        body.classList.remove('mat-dark-theme');
+      }
+    }
   }
   toggleTheme() {
     const linkElement = document.getElementById('material-theme') as HTMLLinkElement;
@@ -172,22 +191,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   		this._router.navigate([decodeURI(this._location.path())]);
 		});
   }
-  listadoClientes(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.clientes= this.crearArreglo2(snapshot.val())
-      }
-    })
-  }
-  listadoVehiculos(){
-    const starCountRef = ref(db, `vehiculos`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.vehiculos= this.crearArreglo2(snapshot.val())
-      }
-    })
-  }
+  
   AsiganacionVariablesSesion(){
     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
     this.ROL = this._security.servicioDecrypt(variableX['rol'])
@@ -234,46 +238,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     //         this.verificar()
     //     })
   }
-  verificar(){
-    let correo = CryptoJS.AES.decrypt(this.CORREOUnico, this.decPassword.trim()).toString(CryptoJS.enc.Utf8)
-    let password = CryptoJS.AES.decrypt(this.PASSWORDUnico, this.decPassword.trim()).toString(CryptoJS.enc.Utf8)
-    if (this.SUCURSAL !== this.SUCURSALUnico) {
-      this.mensajeIncorrecto('hubo cambio en informacion')
-      setTimeout(() => {
-        this._auth.logout('actualiza')
-      }, 2200)
-    }
-    if ((this.STATUS !== this.STATUSUnico) ) {
-      this.mensajeIncorrecto('hubo cambio en informacion')
-      setTimeout(() => {
-        this._auth.logout('actualiza')
-      }, 2200)
-    }
-    if (this.CORREO !== correo) {
-      this.mensajeIncorrecto('hubo cambio en informacion')
-      setTimeout(() => {
-        this._auth.logout('email')
-      }, 2200)
-    }
-    if (this.PASSWORD !== password) {
-      this.mensajeIncorrecto('hubo cambio en informacion')
-      setTimeout(() => {
-        this._auth.logout('password')
-      }, 2200)
-    }
-  }
-  MonitoreoUnico(){
-    get(child(dbRef, `usuarios/${this.USUARIO}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        // console.log(snapshot.val());
-        let inf = snapshot.val()
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
+  
   nombreSucursal(){
     const { rol, sucursal } = this._security.usuarioRol()
 
@@ -284,403 +249,14 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
       this.nombreSucursalMuestra = this.sucursales_array.find(s=>s.id === this.SUCURSAL).sucursal
     }
   }
-  ///CONTADOR DE CITAS PENDIENTES
-  contarRecordatorios(){
-    const starCountRef = ref(db, `clientes`)
-        onValue(starCountRef, (snapshot) => {
-	        let arreglo= this.crearArreglo2(snapshot.val())
-        })
-  }
-  obtCitas(){
-    // console.log(this.listSucursales);
-    
-    let fecha= new Date()
-    let dia= String(fecha.getDate())
-    let mes = String(fecha.getMonth() + 1)
-    let anio = String(fecha.getFullYear())
-    let hoy:string = dia+mes+anio
-    // console.log(hoy);
-    
-    let diaM= String(fecha.getDate()+1)
-    let maniana:string = diaM+mes+anio
-    this.maniana = maniana
-     
-      const starCountRef = ref(db, `citas`)
-      onValue(starCountRef, (snapshot) => {
-        // this.citasHoy =[]
-        this.citasManiana=[]
-        this.recordatoriosEnvia(maniana)
-      })
-  }
-  listaSucursales(){
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      this.listSucursales= this.crearArreglo2(snapshot.val())
-      // this.obtCitas()
-    })
-  }
-  recordatoriosEnvia(maniana:string){
-    this.citasManiana =[]
-    this.listRecorEnviado =[]
-    this.listSucursales.forEach(sucursal => {
-      get(child(dbRef, `citas/${sucursal.id}/${maniana}`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          let misfechas = this.crearArreglo2(snapshot.val())
-          // console.log(misfechas);
-          
-          if (misfechas.length!==0) {
-            misfechas.forEach(cita => {
-              const datCita = {
-                ...cita,
-                sucursal: sucursal.id
-              }
-                this.citasManiana.push(datCita)
-            })
-          }
-          this.filtroEnviar()
-        } else {
-          // console.log("No data available");
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    })
-    
-  }
-  filtroEnviar(){
-    // this.listRecorEnviado = this.citasManiana.filter(filter=>filter.recordatorio===true)
-    this.listRecorEnviar = this.citasManiana.filter(filter=>filter.recordatorio===false)
-    // console.log(this.listRecorEnviar);
-    this.numero = this.listRecorEnviar.length
-    
-    // this.obtenerInformacion()
-  }
+
+
   //ENVIAR recordatorios de verificacion
-  verificacionPorvehiculos(){
-    const starCountRef = ref(db, `vehiculos`)
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            setTimeout(() => {
-              this.registraAutosVerificacion()
-            }, 1000)
-          } else {
-            // console.log("No data available");
-          }
-        })
-  }
-  recordatoriosVerificacion(){
-      
-    const stratvehiculos = ref(db, `clientes`)
-    onValue(stratvehiculos, (snpClientes) => {
-      this.listPlacas =[]
-      this.dataPlacas =[]
-      
-      if (snpClientes.exists()) {
-        let arreglo = this.crearArreglo2(snpClientes.val())
-        arreglo.forEach(cliente => {
-           get(child(dbRef, `vehiculos/${cliente.id}`)).then((snapshot) => {
-             if (snapshot.exists()) {
-               let arregloVehiculos = this.crearArreglo2(snapshot.val())
-               arregloVehiculos.forEach(vehiculo => {
-                get(child(dbRef, `sucursales/${cliente.sucursal}`)).then((snpSucursal) => {
-                  if (snpSucursal.exists()) {
-                    let sucursal = snpSucursal.val()
-                    const tempData ={
-                      ...vehiculo,
-                      ...cliente,
-                      idSucursal: cliente.sucursal,
-                      sucursal: sucursal.sucursal,
-                      cliente: cliente.id,
-                      vehiculo: vehiculo.id,
-                      shownombre: cliente.nombre,
-                      nombre: cliente.nombre + ' ' + cliente.apellidos
-                    }
-                    this.dataPlacas.push(tempData)
-                    this.listPlacas.push(tempData.placas)
-                    
-                    // this.paginarDatos(this.arregloPlacas,'vehiculos')
-                  } else {
-                    // console.log("No data available");
-                  }
-                }).catch((error) => {
-                  console.error(error);
-                });
-               
-               });
-             } else {
-              //  console.log("No data available")
-             }
-           }).catch((error) => {
-             console.error(error);
-           })
-        })
-        setTimeout(() => {
-          this.registraAutosVerificacion()
-        }, 1000)
-      } else {
-        // console.log("No data available");
-      }
-    })
-  }
-  registraAutosVerificacion(){
-    this.getFechaHora()
-    let fechaRegistro:any = (this.fecha).split('/')
-    let registro = fechaRegistro[0]+''+fechaRegistro[1]+''+fechaRegistro[2]
-    
-    get(child(dbRef, `recordatoriosVerificacion/${this.anio}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        this.descomponerPlacas(this.anio)
-      } else {
-        this.descomponerPlacas(this.anio)
-      }
-    }).catch((error) => {
-      console.error(error);
-    })
-  }
-  descomponerPlacas(anio:string){
-    this.listPlacas.forEach(placas => {
-      let terminacion = placas.split('')
-      // console.log(terminacion[6]);
-      // console.log((Number(terminacion[6]) === 6 || Number(terminacion[6]) === 5))
-      // console.log((this.mes === 7 || this.mes === 8));
-      
-        if ((Number(terminacion[6]) === 6 || Number(terminacion[6]) === 5) && (this.mes === 7 || this.mes === 8) ) {
-          // console.log('terminacion: '+terminacion[6] + ' del mes ' + this.mes)
-          this.registroRecordatorioVerificacion(anio,placas,Number(terminacion[6]))
-        }
-        if ((Number(terminacion[6]) === 7 || Number(terminacion[6]) === 8) && (this.mes === 8 || this.mes === 9) ) {
-          // console.log('terminacion: '+terminacion[6] + ' del mes ' + this.mes)
-          this.registroRecordatorioVerificacion(anio,placas,Number(terminacion[6]))
-        }
-        if ((Number(terminacion[6]) === 3 || Number(terminacion[6]) === 4) && (this.mes === 9 || this.mes === 10) ) {
-          // console.log('terminacion: '+terminacion[6] + ' del mes ' + this.mes)
-          this.registroRecordatorioVerificacion(anio,placas,Number(terminacion[6]))
-        }
-        if ((Number(terminacion[6]) === 1 || Number(terminacion[6]) === 2) && (this.mes === 10 || this.mes === 11) ) {
-          // console.log('terminacion: '+terminacion[6] + ' del mes ' + this.mes)
-          this.registroRecordatorioVerificacion(anio,placas,Number(terminacion[6]))
-        }
-        if ((Number(terminacion[6]) === 0 || Number(terminacion[6]) === 9) && (this.mes === 11 || this.mes === 12) ) {
-          // console.log('terminacion: '+terminacion[6] + ' del mes ' + this.mes)
-          this.registroRecordatorioVerificacion(anio,placas,Number(terminacion[6]))
-        }
-    })
-  }
-  registroRecordatorioVerificacion(anio:string, placas:string, terminacion:number){
-      // console.log(`Recordatorio ${anio} placas ${placas} con termiancion ${terminacion}`)
-      
-      get(child(dbRef, `recordatoriosVerificacion/${anio}/${placas}/recordatorio`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          let sendMem = Boolean(snapshot.val())
-          if (sendMem) {
-            // console.log(`ya se envio recordatorio ${anio} placas ${placas} con termiancion ${terminacion}`);
-          }
-        } else {
-          this.dataPlacas.forEach(misPlacas => {
-    
-            if (misPlacas.placas === placas) {
-              this.getFechaHora()
-              const tempData ={
-                cliente: misPlacas.cliente,
-                fecha: this.fecha,
-                anio,
-                placas,
-                recordatorio: true
-              }
-              this.registraEnvioRecordatorio(tempData)
-            }
-          })  
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-  }
-  registraEnvioRecordatorio(data:any){
-      // const newPostKey = push(child(ref(db), 'posts')).key
-        const datatemp = {
-          recordatorio: data.recordatorio,
-          cliente: data.cliente,
-          fecha: data.fecha
-    
-        }
-      set(ref(db, `recordatoriosVerificacion/${data.anio}/${data.placas}`), datatemp )
-              .then(() => {
-                // Data saved successfully!
-                console.log(`Se registro recordatorio`);
-              })
-              .catch((error) => {
-                // The write failed...
-              });
-  }
-  recordatoriosCotizaciones(){
-    
-    const starCountRef = ref(db, `cotizacionesRealizadas`)
 
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {       
-        const arreglo = this.crearArreglo2(snapshot.val())
-        setTimeout(() => {
-          // console.log(arreglo);
-          for (let index = 0; index < arreglo.length; index++) {
-            const cotizacion = arreglo[index];
-            this.getFechaHora()
-            const dias =this.restaFechas(cotizacion.fecha,this.fecha)
-            
-
-            // 
-            if (dias === 3) {
-           
-
-              get(child(dbRef, `cotizacionesRealizadas/${cotizacion.id}/recordatorio3dias`)).then((snp) => {
-                // console.log(snp.val());
-                const valor:boolean = snp.val()
-                // console.log(`${cotizacion.id} - ${cotizacion.no_cotizacion}: ${valor}`);
-                
-                if (valor === true) {
-                  
-                }else{
-                  // console.log('dias :'+dias + ' -> ' + cotizacion.id);
-                  set(ref(db, `cotizacionesRealizadas/${cotizacion.id}/recordatorio3dias`), true )
-                  .then(async () => {
-                    // Data saved successfully!
-                    // let  cliente = this.clientes.find(option=>option.id === cotizacion.cliente)
-                    let cliente = [], vehiculo =[]
-
-                    
-                    await get(child(dbRef, `clientes/${cotizacion.cliente}`)).then((snapshot) => {
-                      if (snapshot.exists()) {
-                        const cli = snapshot.val()
-                        const tempData = {
-                          ...cli,
-                          fullname: `${cli.nombre} ${cli.apellidos}`
-                        }
-                        cliente = tempData
-                      } else {
-                        console.log("No data available");
-                      }
-                    }).catch((error) => {
-                      console.error(error);
-                    });
-                    await get(child(dbRef, `vehiculos/${cotizacion.vehiculo}`)).then((snapshot) => {
-                      if (snapshot.exists()) {
-                        vehiculo = snapshot.val()
-                      } else {
-                        console.log("No data available");
-                      }
-                    }).catch((error) => {
-                      console.error(error);
-                    });
-
-                    // const vehiculo = this.vehiculos.find(option=>option.id === cotizacion.vehiculo)
-
-                    let filtro_conceptos = []
-                    for (let index = 0; index < cotizacion.elementos.length; index++) {
-                      const element = cotizacion.elementos[index];
-                      // console.log(element);
-                      const tempDataname = {concepto:element.nombre}
-                      filtro_conceptos.push(element.nombre)
-                    }
-                    // console.log(filtro_conceptos);
-                    // console.log(cliente);
-                    setTimeout(() => {
-                      // this._email.recordatorioCotizacion(cliente,vehiculo,cotizacion,filtro_conceptos)
-                    }, 1000);
-                    // console.log('envio email');
-                  })
-                  .catch((error) => {
-                    // The write failed...
-                  });
-                }
-                
-                
-            })
-            }
-           
-          }
-          
-        }, 5000);
-      } else {
-        // console.log("No data available");
-      }
-    })
+ 
   
-    //   get(child(dbRef, `/cotizacionesRealizadas`)).then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //       const CR = this.crearArreglo2(snapshot.val())
-    //       for (let index = 0; index < CR.length; index++) {
-    //         const cotizacion = CR[index];
-    //         this.getFechaHora()
-    //         get(child(dbRef, `cotizacionesRealizadas/${cotizacion.id}/recordatorio3dias`)).then((snapshot) => {
-    //           if (snapshot.exists()) {
-    //             console.log(snapshot.val());
-    //           } else {
-    //             const dias =this.restaFechas(cotizacion.fecha,this.fecha)
-    //             if (dias===3) {
-    //               
+ 
 
-    //               set(ref(db, `cotizacionesRealizadas/${cotizacion.id}/recordatorio3dias`), true )
-    //                 .then(() => {
-    //                   
-    //                   console.log('recordatorio enviado: ' + cotizacion.id)
-    //                 })
-    //                 .catch((error) => {
-    //                   // The write failed...
-    //                 });
-    //             }
-    //           }
-    //         }).catch((error) => {
-    //           console.error(error);
-    //         });
-            
-           
-    //       }
-    //     } else {
-    //       console.log("No data available");
-    //     }
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
-    // }, 100000);
-	
-  }
-
-  ///funciones de mensajes
-  mensajeCorrecto(mensaje:string){
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'center',
-      showConfirmButton: false,
-      timer: 1000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-    
-    Toast.fire({
-      icon: 'success',
-      title: mensaje
-    })
-  }
-  mensajeIncorrecto(mensaje:string){
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'center',
-      showConfirmButton: false,
-      timer: 2500,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-    
-    Toast.fire({
-      icon: 'error',
-      title: mensaje
-    })
-  }
   //funcion para conocer el navegador
   brow(){
     var ua= navigator.userAgent, tem, 
@@ -702,41 +278,4 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
       this.navegador = M[0]
     }
   }
-  ///crear arregoo con ID
-  private crearArreglo2(arrayObj:object){
-    const arrayGet:any[]=[]
-    if (arrayObj===null) { return [] }
-    Object.keys(arrayObj).forEach(key=>{
-      const arraypush: any = arrayObj[key]
-      arraypush.id=key
-      arrayGet.push(arraypush)
-    })
-    return arrayGet
-  }
-  //obtener la fecha y hora actual
-  getFechaHora(){
-    const date: Date = new Date()
-    const months = ["enero", "febrero", "marzo","abril", "mayo", "junio", "julio", "agosto", "septiembre", "aoctibre", "noviembre", "diciembre"];
-    const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-    this.fecha=date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()
-    this.hora=date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
-    const n = new Date(date)
-    
-    n.setDate(date.getDate()+3);
-    // this.vencimiento = n.toLocaleDateString()
-    const numeroDia = new Date(date).getDay();
-    // console.log(dias[numeroDia]+ ' '+ date.getDate()+" "+(months[date.getMonth()])+" "+date.getFullYear());
-    // this.fechaPDF = `${dias[numeroDia]} ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
-
-  }
-  restaFechas = function(f1,f2)
-   {
-     var aFecha1 = f1.split('/');
-     var aFecha2 = f2.split('/');
-     var fFecha1 = Date.UTC(aFecha1[2],aFecha1[1]-1,aFecha1[0]);
-     var fFecha2 = Date.UTC(aFecha2[2],aFecha2[1]-1,aFecha2[0]);
-     var dif = fFecha2 - fFecha1;
-     var dias = Math.floor(dif / (1000 * 60 * 60 * 24));
-     return dias;
-   }
 }

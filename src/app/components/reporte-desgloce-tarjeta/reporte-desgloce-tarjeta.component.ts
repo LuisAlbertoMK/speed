@@ -15,8 +15,11 @@ export class ReporteDesgloceTarjetaComponent implements OnInit {
   @Input() reporte:any = null
   @Input() title:string 
   @Input() muestra_normal:boolean = false
+  color_n: boolean
 
   ngOnInit(): void {
+    const tema_selecciondo = JSON.parse(localStorage.getItem('tema'))
+    this.color_n = tema_selecciondo.valor
   }
 
 }
