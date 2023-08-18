@@ -572,6 +572,30 @@ export class ExporterService {
 
     this.saveAsExcel(excelBuffer,'Reporte de gastos')
   }
+
+  genera_excel_recorte_ingresos(arreglo:any[]){
+    console.log(arreglo);
+    const worksheetenviar_totales_orden : XLSX.WorkSheet = XLSX.utils.json_to_sheet(arreglo)
+
+    const columnWidthsenviar_totales_orden = [
+      { wch: 20 }, { wch: 10 }, { wch: 15 },{ wch: 15 },
+      { wch: 30 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
+      { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
+      { wch: 15 }, { wch: 15 }, { wch: 15 },{ wch: 15 },
+    ];
+    worksheetenviar_totales_orden['!cols'] = columnWidthsenviar_totales_orden;
+
+    const workbook: XLSX.WorkBook = {
+      Sheets: {'Servicios':worksheetenviar_totales_orden},
+      SheetNames:['Servicios']
+    }
+    
+    const excelBuffer:any= XLSX.write(workbook,{bookType:'xlsx',type:'array'})
+
+    this.saveAsExcel(excelBuffer,'Recorte de gastos')
+    
+  }
+
   private saveAsExcel(buffer:any,fileName:string): void{
     const data: Blob = new Blob([buffer],{type: EXCEL_TYPE})
     // FileSaver.saveAs(data, fileName+'_export_'+new Date().getTime()+ EXCEL_EXT)

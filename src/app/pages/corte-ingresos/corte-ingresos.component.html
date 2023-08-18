@@ -19,9 +19,9 @@
 
 <div class="input-group mb-3 ">
   <mat-date-range-picker #picker></mat-date-range-picker>
-  <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="fechas_corte" [rangePicker]="picker">
-    <input matStartDate class="mr-2" formControlName="inicial" readonly placeholder="Inicio">
-    <input matEndDate formControlName="final" readonly placeholder="Final">
+  <mat-date-range-input  (click)="picker.open()"  class="pointer form-control" [formGroup]="fechas_corte" [rangePicker]="picker">
+    <input name="inicial" matStartDate class="mr-2" formControlName="inicial" readonly placeholder="Inicio">
+    <input name="final" matEndDate formControlName="final" readonly placeholder="Final">
   </mat-date-range-input>
   <div class="input-group-append">
     <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
@@ -62,12 +62,20 @@
           <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item.show}}</div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
       </ng-container>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">Porcentaje </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">% Cumplido </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentaje | monedas:'%'}}</strong></div>
     </div>
   </div>
 </div>
 
+
+<div class="row">
+  <div class="col text-end">
+    <button class="btn btn-sm btn-success m-1" (click)="generaExcel()">
+      <i class="fa fa-file-excel"></i> Genera
+    </button>
+  </div>
+</div>
 
 <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false" [muestra_cliente]="true"> </app-template-tabla-recepciones>
 

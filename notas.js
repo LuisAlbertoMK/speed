@@ -1,6 +1,6 @@
 
 git add .
-git commit -m "terminar modulo de corte ingresos (en proceso)"
+git commit -m "terminar modulo de corte ingresos (en proceso) - 1"
 git push -u origin 
 
 

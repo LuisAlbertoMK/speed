@@ -12,6 +12,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { ExporterService } from '../../services/exporter.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -27,7 +28,7 @@ export class CorteIngresosComponent implements OnInit {
     private _publicos: ServiciosPublicosService, private _metas: MetasSucursalService,
     private _security:EncriptadoService, private _reporte_gastos: ReporteGastosService,
     private _vehiculos: VehiculosService, private _servicios: ServiciosService,
-    private _cotizaciones: CotizacionesService,
+    private _cotizaciones: CotizacionesService, private _exporter:ExporterService,
     private _clientes: ClientesService,) { }
   
   _rol:string
@@ -61,7 +62,7 @@ export class CorteIngresosComponent implements OnInit {
     {valor:'ventas', show:'Total ventas'},
     {valor:'operacion', show:'Gastos de operación'},
     {valor:'orden', show:'Gastos de ordenes'},
-    {valor:'sobrante', show:'% Cumplido'},
+    {valor:'sobrante', show:'Restante '},
     {valor:'ticketPromedio', show:'ticket Promedio'},
   ]
   ngOnInit(): void {
@@ -509,6 +510,58 @@ export class CorteIngresosComponent implements OnInit {
       reporte[donde] += operacion
     })
     return reporte
+  }
+
+  generaExcel(){
+    if (this.recepciones_arr.length) {
+      // console.log(this.recepciones_arr.length);
+      const nueva_data = this.arreglar_info_recepciones(this.recepciones_arr)
+      console.log(nueva_data);
+      
+      this._exporter.genera_excel_recorte_ingresos(nueva_data)
+    }
+  }
+
+  arreglar_info_recepciones(recepciones_arr:any[]){
+    console.log(recepciones_arr);
+    const nueva = recepciones_arr.map(recep=>{
+      const data_recepcion = JSON.parse(JSON.stringify(recep));
+
+      const {marca, modelo, placas } = data_recepcion.data_vehiculo
+
+      const {no_cliente, sucursalShow, tipo, empresa, correo: correo_cliente} = data_recepcion.data_cliente
+
+      const { correo: correo_sucursal } = data_recepcion.data_sucursal
+
+      const {elementos, no_os, status, reporte } = recep
+
+      const {subtotal, iva, total } = reporte
+
+      const nombres_elementos = this._publicos.obtenerNombresElementos(elementos)
+
+      let nueva_empresa = empresa ? empresa : ''
+
+      const temp_data = {
+        no_os: String(no_os).toUpperCase(),
+        placas:String(placas).toUpperCase() ,
+        marca,
+        modelo,
+        descripcion: String(nombres_elementos).toLowerCase(),
+        // no_cliente: String(no_cliente).toUpperCase(),
+        sucursal: sucursalShow,
+        // correo_cliente,
+        empresa: nueva_empresa,
+        // correo_sucursal,
+        tipo,
+        subtotal,
+        iva,
+        total,
+        'status orden': status,
+      }
+      return temp_data
+    })
+
+    return nueva
   }
 
 }
