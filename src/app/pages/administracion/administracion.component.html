@@ -16,8 +16,8 @@
         <div class="input-group mb-3 ">
             <mat-date-range-picker #picker></mat-date-range-picker>
             <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="rangeAdministracion" [rangePicker]="picker">
-              <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio">
-              <input matEndDate formControlName="end" readonly placeholder="Final">
+              <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio" id="Inicio">
+              <input matEndDate formControlName="end" readonly placeholder="Final" id="Final">
             </mat-date-range-input>
             <div class="input-group-append">
               <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">

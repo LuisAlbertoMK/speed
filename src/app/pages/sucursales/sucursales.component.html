@@ -37,10 +37,10 @@
             <ng-container *ngFor="let sucursal of sucursales_array; let i = index">
               <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt-2">
                 <div class="card h-100">
-                  <img src="{{sucursal.imagen}}" class="card-img-top img-thumbnail rounded "
+                  <img [src]="sucursal.imagen ? sucursal.imagen : 'assets/img/default-image.jpg'" class="card-img-top img-thumbnail rounded "
                     [alt]="sucursal.sucursal" *ngIf="sucursal.imagen!==''" [ngStyle]="{'height':(minAltura)*1.5+'px'}">
-                  <img src="assets/img/default-image.jpg" class="card-img-top img-thumbnail rounded "
-                    [alt]="sucursal.sucursal" *ngIf="sucursal.imagen===''" [ngStyle]="{'height':(minAltura)*1.5+'px'}">
+                  <!-- <img src="assets/img/default-image.jpg" class="card-img-top img-thumbnail rounded "
+                    [alt]="sucursal.sucursal" *ngIf="sucursal.imagen===''" [ngStyle]="{'height':(minAltura)*1.5+'px'}"> -->
                   <div class="card-body ">
                     <div class="row">
                       <div class="col">
@@ -210,9 +210,9 @@
               <div class="col-lg-6 col-md-12 col-sm-12">
                 <div class="mb-1">
                   <label for="imagen" class="form-label">Imagen</label>
-                  <input type="hidden" class="form-control" id="imagen" formControlName="imagen"
+                  <input type="hidden" class="form-control"  formControlName="imagen"
                     [class.is-invalid]="validarSucursal('imagen')">
-                    <input type="text" class="form-control" value="{{imagenSucursal}}" readonly>
+                    <input type="text" class="form-control" value="{{imagenSucursal}}" readonly id="imagen">
                 </div>
               </div>
   

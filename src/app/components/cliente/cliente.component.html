@@ -17,7 +17,8 @@
                       [class.is-invalid]="validarEmpresa('empresa')"
                       [formControl]="myControl_empresa"
                       (ngModelChange)="verificaInfoEmpresa()"
-                      [matAutocomplete]="auto">
+                      [matAutocomplete]="auto"
+                      id="empresa-cliente">
                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                   <mat-option *ngFor="let option of filteredOptions_empresa | async" [value]="option" (click)="empresaSeleccionda(option)">
                     {{option['empresa']}}
@@ -306,10 +307,10 @@
             <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="mb-1 row">
-                  <label for="tipo_cliente"
+                  <label for="nombre-empresa"
                     class="col-sm-3 col-md-4 col-lg-3 col-form-label">{{'nombre de empresa' | capitalizarUno}}</label>
                   <div class="col-sm-9 col-md-8 col-lg-9 ">
-                    <input type="text" class="form-control form-control-sm" id="no_cliente" formControlName="empresa"
+                    <input type="text" class="form-control form-control-sm" id="nombre-empresa" formControlName="empresa"
                       [class.is-invalid]="validarEmpresa('empresa')" >
                     <small *ngIf="validarCampo('tipo')" class="text-danger">Seleccionar tipo de cliente</small>
                   </div>

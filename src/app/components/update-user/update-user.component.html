@@ -6,28 +6,28 @@
         <div class="mb-1 row">
           <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Usuario (Alias)</label>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
-            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="usuario">
+            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="usuario" id="tipo_cliente">
             <small *ngIf="validarCampo('usuario')" class="text-danger">campo requerido</small>
           </div>
         </div>
         <div class="mb-1 row">
-          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Correo</label>
+          <label for="correo" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Correo</label>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
-            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="correo">
+            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="correo" id="correo">
             <small *ngIf="validarCampo('correo')" class="text-danger">campo requerido</small>
           </div>
         </div>
         <div class="mb-1 row">
-          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Correo new</label>
+          <label for="correo_new" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Correo new</label>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
-            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="correonew">
+            <input type="text" class="form-control form-control-sm text-lowercase" formControlName="correonew" id="correo_new">
             <small *ngIf="validarCampo('correonew')" class="text-danger">campo requerido</small>
           </div>
         </div>
         <div class="mb-1 row">
-          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Contraseña actual</label>
+          <label for="actual" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Contraseña actual</label>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 input-group">
-            <input type="{{ passwordFieldType }}" class="form-control form-control-sm" formControlName="password">
+            <input type="{{ passwordFieldType }}" class="form-control form-control-sm" formControlName="password" id="actual">
             <span class="input-group-text pointer" (click)="toggleFieldType('password')">
                 <i class="fa fa-eye text-danger"></i>
             </span>
@@ -35,9 +35,9 @@
           <small *ngIf="validarCampo('password')" class="text-danger">campo requerido</small>
         </div>
         <div class="mb-1 row">
-          <label for="tipo_cliente" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Contraseña nueva</label>
+          <label for="passnew" class="col-lg-12 col-md-12 col-sm-12 col-12 col-form-label">Contraseña nueva</label>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12 input-group">
-            <input type="{{ passwordFieldType2 }}" class="form-control form-control-sm" formControlName="passwordnew">
+            <input type="{{ passwordFieldType2 }}" class="form-control form-control-sm" formControlName="passwordnew" id="passnew">
             <span class="input-group-text pointer" (click)="toggleFieldType('passwordnew')">
                 <i class="fa fa-eye text-danger"></i>
             </span>
@@ -57,9 +57,9 @@
         Información faltante: <strong class="text-danger">{{ faltante_s }}</strong>
     </div>
 </ng-container>
-<pre>
+<!-- <pre>
     {{data | json}}
-</pre>
+</pre> -->
 
 
 

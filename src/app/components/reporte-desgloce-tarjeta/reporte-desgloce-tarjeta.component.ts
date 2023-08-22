@@ -18,8 +18,8 @@ export class ReporteDesgloceTarjetaComponent implements OnInit {
   color_n: boolean
 
   ngOnInit(): void {
-    const tema_selecciondo = JSON.parse(localStorage.getItem('tema'))
-    this.color_n = tema_selecciondo.valor
+    // const tema_selecciondo = JSON.parse(localStorage.getItem('tema'))
+    // this.color_n = tema_selecciondo.valor
   }
 
 }

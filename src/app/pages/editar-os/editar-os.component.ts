@@ -93,9 +93,11 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         // console.log(data_purifica);
         nueva_data.elementos = data_purifica
 
-
+        
         campos_update.forEach(campo=>{
-          updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
+          if (nueva_data[campo]) {
+            updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
+          }
         })
         // console.log(updates);
 

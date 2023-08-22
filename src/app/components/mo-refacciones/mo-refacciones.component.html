@@ -28,6 +28,7 @@
                      [formControl]="myControl"
                      [matAutocomplete]="auto"
                      maxlength="50"
+                     id="nombre"
                      >
                     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                       <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)"
@@ -75,7 +76,7 @@
                   <label for="tipo"
                     class="col-12 col-sm-4 col-md-4 col-lg-4 col-form-label text-capitalize">tipo</label>
                   <div class="col-12 col-sm-8 col-md-8 col-lg-8 ">
-                    <select  class="form-select form-select-sm" formControlName="tipo">
+                    <select  class="form-select form-select-sm" formControlName="tipo" id="tipo">
                       <option value="mo">Mano obra</option>
                       <option value="refaccion">Refaccion</option>
                   </select>
@@ -145,17 +146,17 @@
               <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                   <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-4 col-form-label">Margen</label>
+                    <label for="margen" class="col-sm-4 col-form-label">Margen</label>
                     <div class="col-sm-8">
-                      <input type="number" min="16" [value]="por" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="soloNumeros(event)"   >
+                      <input type="number" min="16" [value]="por" class="form-control form-control-sm" #porcentaje (change)="verifica_info('porcentaje',porcentaje.value)"  onkeypress="soloNumeros(event)" id="margen" >
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                   <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-4 col-form-label">precio / costo</label>
+                    <label for="precio" class="col-sm-4 col-form-label">precio / costo</label>
                     <div class="col-sm-8">
-                      <input type="number" min="1"  [value]="cantidad"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="validarDecimal(event)"        >
+                      <input type="number" min="1"  [value]="cantidad"class="form-control form-control-sm" #cantidad (change)="verifica_info('cantidad',cantidad.value)" onkeypress="validarDecimal(event)"  id="precio"      >
                     </div>
                   </div>
                 </div>

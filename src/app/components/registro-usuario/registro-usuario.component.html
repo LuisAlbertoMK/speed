@@ -12,7 +12,7 @@
                         <div class="mb-1 row">
                             <label for="usuario" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Usuario</label>
                             <div class="col-sm-9 col-md-8 col-lg-8">
-                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('usuario')" formControlName="usuario">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('usuario')" formControlName="usuario" id="usuario">
                             </div>
                             <small *ngIf="validarCampo('usuario')" class="text-danger">Campo requerido</small>
                         </div>
@@ -21,7 +21,7 @@
                         <div class="mb-1 row">
                             <label for="correo" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Correo</label>
                             <div class="col-sm-9 col-md-8 col-lg-8">
-                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('correo')" formControlName="correo">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('correo')" formControlName="correo" id="correo">
                             </div>
                             <small *ngIf="validarCampo('correo')" class="text-danger">Campo requerido</small>
                         </div>
@@ -30,7 +30,7 @@
                         <div class="mb-1 row">
                             <label for="confirmCorreo" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Confirmar correo</label>
                             <div class="col-sm-9 col-md-8 col-lg-8">
-                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('confirmCorreo')" formControlName="confirmCorreo">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('confirmCorreo')" formControlName="confirmCorreo" id="confirmCorreo">
                             </div>
                             <small *ngIf="validarCampo('confirmCorreo')" class="text-danger">Campo requerido</small>
                         </div>
@@ -39,7 +39,7 @@
                         <div class="mb-1 row">
                             <label for="password" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Contraseña</label>
                             <div class="col-sm-9 col-md-8 col-lg-8">
-                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('password')" formControlName="password">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('password')" formControlName="password" id="password">
                             </div>
                             <small *ngIf="validarCampo('password')" class="text-danger">Campo requerido</small>
                         </div>
@@ -48,7 +48,7 @@
                         <div class="mb-1 row">
                             <label for="confirmPassword" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Confirmar contraseña</label>
                             <div class="col-sm-9 col-md-8 col-lg-8">
-                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('confirmPassword')" formControlName="confirmPassword">
+                                <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('confirmPassword')" formControlName="confirmPassword" id="confirmPassword">
                             </div>
                             <small *ngIf="validarCampo('confirmPassword')" class="text-danger">Campo requerido</small>
                         </div>
@@ -58,7 +58,7 @@
                             <div class="mb-1 row">
                                 <label for="sucursal" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Sucursal</label>
                                 <div class="col-sm-9 col-md-8 col-lg-8">
-                                    <select class="form-control form-control-sm" [class.is-invalid]="validarCampo('sucursal')" formControlName="sucursal">
+                                    <select class="form-control form-control-sm" [class.is-invalid]="validarCampo('sucursal')" formControlName="sucursal" id="sucursal">
                                         <option value="" selected>Seleccione una sucursal</option>
                                         <option [value]="item.id" *ngFor="let item of sucursales_array">{{item.sucursal}}</option>
                                     </select>
@@ -73,7 +73,7 @@
                                 <label for="rol" class="col-sm-3 col-md-4 col-lg-4 col-form-label">Rol</label>
                                 <div class="col-sm-9 col-md-8 col-lg-8 ">
                                     <!-- <input type="text" class="form-control form-control-sm" [class.is-invalid]="validarCampo('rol')" formControlName="rol"> -->
-                                    <select class="form-control form-control-sm" [class.is-invalid]="validarCampo('rol')" formControlName="rol">
+                                    <select class="form-control form-control-sm" [class.is-invalid]="validarCampo('rol')" formControlName="rol" id="rol">
                                         <option value="">Seleccione Rol</option>
                                         <option [value]="item" *ngFor="let item of rolesMostrarnew">{{item | capitalizarUno}}</option>
                                     </select>

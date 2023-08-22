@@ -57,7 +57,7 @@
                       <label [ngClass]="{'text-danger': validaCampo('detalles'),'text-success': !validaCampo('detalles')}"
                         for="detalles" class="col-sm-12 col-md-4 col-lg-4 col-12 col-form-label">Detalles del problema </label>
                       <div class="col-sm-12 col-md-8 col-lg-8 col-12 text-center">
-                        <textarea cols="30" rows="10" style="width: 100%;" formControlName="detalles"></textarea>
+                        <textarea cols="30" rows="10" style="width: 100%;" formControlName="detalles" id="detalles"></textarea>
                       </div>
                       <span class="alert alert-info">Ser lo mas detallado posible</span>
                     </div>

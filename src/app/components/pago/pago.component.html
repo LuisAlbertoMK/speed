@@ -34,9 +34,9 @@
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
                 <div class="mb-1 row text-start">
                   <label [ngClass]="{'text-danger': validaCampo('no_os'),'text-success': !validaCampo('no_os')}" for="no_os"
-                    class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label"># O.S  [ ordenes: {{ claves_ordenes.length }} ]</label>
+                    class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label" for="os"># O.S  [ ordenes: {{ claves_ordenes.length }} ]</label>
                   <div class="col-sm-6 col-md-6 col-lg-6 col-12">
-                    <select id="sucursal" class="form-select form-select-sm" formControlName="no_os">
+                    <select id="os" class="form-select form-select-sm" formControlName="no_os" >
                       <option value="">Selecciona</option>
                       <option [value]="s.key" *ngFor="let s of claves_ordenes">
                         {{s['no_os']}}
@@ -82,7 +82,7 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" *ngIf="SUCURSAL === 'Todas'">
           <div class="input-group mb-3 ">
             <form  [formGroup]="fecha_recibido">
-              <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
+              <input (click)="pickerBarrido.open()" id="pickerBarrido" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
             </form>
             <!-- <input (click)="pickerBarrido.open()" [min]="minDate"  [max]="maxDate" [matDatepickerFilter]="myFilter"  
             class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)"> -->

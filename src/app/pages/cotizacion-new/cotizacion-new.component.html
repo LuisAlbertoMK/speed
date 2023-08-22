@@ -45,9 +45,9 @@
   <div class="card-body">
     <!-- <pre>{{ infoCotizacion.vehiculos | json}}</pre> -->
     <ng-container *ngIf="infoCotizacion.cliente">
-      <label for="exampleInputEmail1">Placas de vehiculos disponibles</label>
+      <label for="vehiculos-lista">Placas de vehiculos disponibles</label>
       <div class="input-group mb-3">
-        <select class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
+        <select id="vehiculos-lista" class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
           <option  value="">Selecciona placas</option>
           <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
         </select>
@@ -146,9 +146,9 @@
 </div>
 <div class="row">
   <div class="col text-end">
-    <section class="example-section " [formGroup]="checksBox"  >
-      <mat-checkbox class="m-1" formControlName="iva" checked="true" >IVA</mat-checkbox>
-      <mat-checkbox class="m-1" formControlName="detalles" >Detalles PDF</mat-checkbox>
+    <section class="example-section " [formGroup]="checksBox" id="checks" >
+      <mat-checkbox class="m-1" formControlName="iva" checked="true" name="iva" >IVA</mat-checkbox>
+      <mat-checkbox class="m-1" formControlName="detalles"  name="detalles">Detalles PDF</mat-checkbox>
     </section>
   </div>
 </div>

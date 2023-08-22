@@ -29,8 +29,8 @@
       </span>
       <mat-date-range-picker #picker></mat-date-range-picker>
       <mat-date-range-input  class="form-control" [formGroup]="range" [rangePicker]="picker" >
-        <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext ">
-        <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext ">
+        <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext" id="Inicial"> 
+        <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext" id="Final">
       </mat-date-range-input>
       <button class="btn btn-sm btn-danger" (click)="reseteaHoras()" #tooltip="matTooltip"
       matTooltip="limpiar rango de fechas">
@@ -45,7 +45,7 @@
             <span class="input-group-text pointer text-danger" id="basic-addon1">
               <i class="fa fa-filter"></i>
             </span>
-            <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm"
+            <select [(ngModel)]="sucursalCalendario" class="form-control form-control-sm" id="sucursal-filtro"
              (ngModelChange)="addEvent(range.controls['start'].value, range.controls['end'].value)">
               <option value="Todas" >Todas</option>
               <option [value]="s.id" *ngFor="let s of sucursales_array">{{s.sucursal}}</option>

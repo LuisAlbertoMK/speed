@@ -37,7 +37,7 @@
               <h3>Obtener el sobrante de sucursal y dia especifico</h3>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-              <select class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value;">
+              <select class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value;" id="sucursal">
                 <option value="">Selecciona</option>
                 <option [value]="s.id"  *ngFor="let s of sucursales_array" >{{s.sucursal}}</option>
               </select>
@@ -45,7 +45,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-1">
               <div class="input-group mb-3 ">
                 <form  [formGroup]="rangeBarrido">
-                  <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
+                  <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" id="pickerBarrido" >
                 </form>
                 <mat-datepicker #pickerBarrido></mat-datepicker>
                 <div class="input-group-append">
@@ -78,8 +78,8 @@
     <div class="input-group mb-3 ">
       <mat-date-range-picker #picker></mat-date-range-picker>
       <mat-date-range-input (click)="picker.open()" [min]="minDate" [max]="maxDate"   class="pointer form-control" [formGroup]="rangeReporteGastos" [rangePicker]="picker">
-        <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio"   >
-        <input matEndDate formControlName="end" readonly placeholder="Final"       >
+        <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio" id="inicio"  >
+        <input matEndDate formControlName="end" readonly placeholder="Final" id="final">
       </mat-date-range-input>
       <div class="input-group-append">
         <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">

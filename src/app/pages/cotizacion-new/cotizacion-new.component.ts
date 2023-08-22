@@ -245,6 +245,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       title: 'Ingresa nombre de paquete',
       input: 'text',
       // inputLabel: 'paquete',
+      
       inputValue: '',
       showCancelButton: true,
       inputValidator: (value:any) => {

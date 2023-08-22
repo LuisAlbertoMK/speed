@@ -1,11 +1,12 @@
-// Enviar
-private router: Router
-this.router.navigate([`/${this.enrutamiento.anterior}`], { 
-      queryParams: 
-      { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
-    });
+/*
 
-//recuperar
+  private router: Router
+  this.router.navigate([`/${this.enrutamiento.anterior}`], { 
+    queryParams: 
+    { cliente: this.enrutamiento.cliente, anterior:'clientes' } 
+  });
+
+
 private rutaActiva: ActivatedRoute
 enrutamiento = {vehiculo:'', cliente:'', anterior:''}
     this.rutaActiva.queryParams.subscribe(params => {
@@ -25,7 +26,6 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:''}
 
 onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
 
-//ancho minimo de columnas
    miniColumnas:number = 100
 
 [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
@@ -43,6 +43,7 @@ const closeButton = document.querySelector('[data-bs-dismiss="modal"]');
         if (closeButton) {
           closeButton.dispatchEvent(new Event('click'));
         }
+
         //promesas multiples
         const promesasConsultas = arreglo_fechas_busca.map(async (f_search) => {
           const gastos_hoy_array: any[] = await this._reporte_gastos.gastos_hoy({ ruta: f_search});
@@ -137,14 +138,13 @@ getUserMedia({
   }
 })
 
-
-//para remover validaciones
     this.form_cliente.controls['nombre'].clearValidators()
-    //agregar validaciones
+    
+    
     this.form_cliente.controls['nombre'].addValidators([
       Validators.required
     ])
-    //actualizar validaciones
+
     this.form_cliente.controls['nombre'].updateValueAndValidity()
 
 
@@ -154,4 +154,7 @@ getUserMedia({
 
 
 
-        [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}"
+  [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}"
+
+
+        */

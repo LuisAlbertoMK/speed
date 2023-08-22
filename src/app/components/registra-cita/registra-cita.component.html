@@ -39,7 +39,7 @@
                                                 <label for="sucursal" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Sucursal</label>
                                                 <div class="col-sm-9 col-md-8 col-lg-9 ">
                                                 <select class=" form-select  form-select-sm" formControlName="sucursal" required #sucu (ngModelChange)="ListadoClientes(sucu.value)"
-                                                    [class.is-invalid]="validarCampo('sucursal')">
+                                                    [class.is-invalid]="validarCampo('sucursal')" id="sucursal">
                                                     <option value="" >Selecciona</option>
                                                     <option [value]="item.id" *ngFor="let item of sucursales_array">{{item.sucursal}}</option>
                                                     </select>
@@ -62,7 +62,7 @@
                                                             aria-label="Number"
                                                             class="form-control form-control-sm"
                                                             [formControl]="myControl"
-                                                            [matAutocomplete]="auto">
+                                                            [matAutocomplete]="auto" id="cliente">
                                                         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
                                                         <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
                                                             {{option['fullname']}} - {{option['correo']}}
@@ -89,7 +89,7 @@
                                             <label for="vehiculo" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Placas </label>
                                             <div class="col-sm-9 col-md-8 col-lg-9 ">
                                                 <select class=" form-select  form-select-sm" formControlName="vehiculo" required 
-                                                [class.is-invalid]="validarCampo('vehiculo')">
+                                                [class.is-invalid]="validarCampo('vehiculo')" id="vehiculo">
                                                 <option value="" >selecciona</option>
                                                 <option [value]="item.id" *ngFor="let item of arr_vehiculos">{{item.placas | uppercase}}</option>
                                                 </select>
@@ -102,7 +102,7 @@
                                             <label for="servicio" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Servicio </label>
                                             <div class="col-sm-9 col-md-8 col-lg-9 ">
                                                 <select class=" form-select  form-select-sm" formControlName="servicio" required 
-                                                [class.is-invalid]="validarCampo('servicio')">
+                                                [class.is-invalid]="validarCampo('servicio')" id="servicio">
                                                 <option value="" >selecciona</option>
                                                 <option [value]="item.valor" *ngFor="let item of camposServicios">{{item.nombre | uppercase}}</option>
                                                 </select>
@@ -115,7 +115,7 @@
                                             <label for="dia" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Dia</label>
                                             <div class="col-sm-9 col-md-8 col-lg-9 ">
                                                 <div class="input-group mb-3">
-                                                    <input class="form-control form-control-sm" (click)="picker.open()" 
+                                                    <input class="form-control form-control-sm" (click)="picker.open()" id="dia"
                                                      [matDatepickerFilter]="myFilter" [formControl]="dateControl" [matDatepicker]="picker" (dateChange)="addEvent($event)" >
                                                     <mat-datepicker #picker ></mat-datepicker>
                                                   </div>
@@ -128,7 +128,7 @@
                                             <label for="horario" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Hora</label>
                                             <div class="col-sm-9 col-md-8 col-lg-9 ">
                                                 <select class=" form-select  form-select-sm" formControlName="horario" required 
-                                                [class.is-invalid]="validarCampo('horario')">
+                                                [class.is-invalid]="validarCampo('horario')" id="horario">
                                                     <option value="" >selecciona</option>
                                                     <option [value]="hora" *ngFor="let hora of horarios_show">{{hora }}</option>
                                                 </select>
@@ -140,9 +140,10 @@
                                         
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="mb-1 row">
-                                                <label for="cotizacion_utiliza" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Utilizar cotización</label>
+                                                <!-- <label for="cotizacion_utiliza" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label"></label> -->
+                                                <strong class="text-end col-sm-3 col-md-4 col-lg-3">Utilizar cotización</strong>
                                                 <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                    <mat-radio-group formControlName="cotizacion_utiliza" >
+                                                    <mat-radio-group formControlName="cotizacion_utiliza" id="cotizacion_utiliza">
                                                         <mat-radio-button  class="m-1" [value]="false" >Sin cotizacion</mat-radio-button>
                                                         <mat-radio-button  class="m-1" [value]="true">Usar cotizacion</mat-radio-button>
                                                     </mat-radio-group>
@@ -152,9 +153,9 @@
                                         <ng-container *ngIf="citaForm.get('cotizacion_utiliza').value">
                                             <div class="col-lg-6 col-md-6 col-sm-12">
                                                 <div class="mb-1 row">
-                                                    <label for="cotizacion" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Cotizacion</label>
+                                                    <strong  class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Cotizacion</strong>
                                                     <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                        <select formControlName="cotizacion" class="form-select  form-select-sm">
+                                                        <select formControlName="cotizacion" class="form-select  form-select-sm" id="cotizacion">
                                                             <option value="" >Selecciona</option>
                                                             <option [value]="item.id" *ngFor="let item of listaCotizacionesShow">{{item.no_cotizacion}}</option>
                                                         </select>
@@ -171,16 +172,16 @@
                                             <div class="mb-1 row">
                                             <label for="comentario" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Comentario</label>
                                             <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                <textarea  style="width: 100%;" formControlName="comentario"></textarea>
+                                                <textarea  style="width: 100%;" formControlName="comentario" id="comentario"></textarea>
                                                 <small *ngIf="validarCampo('comentario')" class="text-danger">campo requerido</small>
                                             </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="mb-1 row">
-                                            <label for="recoleccion" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Recoleccion a domicilio</label>
+                                            <strong  class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Recoleccion a domicilio</strong>
                                             <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                <mat-radio-group formControlName="recoleccion" >
+                                                <mat-radio-group formControlName="recoleccion" id="recoleccion">
                                                     <mat-radio-button  class="m-1" [value]="false" >NO</mat-radio-button>
                                                     <mat-radio-button  class="m-1" [value]="true">SI</mat-radio-button>
                                                 </mat-radio-group>
@@ -198,7 +199,7 @@
                                                 <div class="mb-1 row">
                                                 <label for="direccion" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Link de dirección</label>
                                                 <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                    <textarea  style="width: 100%;" formControlName="direccion"></textarea>
+                                                    <textarea  style="width: 100%;" formControlName="direccion" id="direccion"></textarea>
                                                     <!-- <input type="text"  formControlName="direccion"> -->
                                                     <small *ngIf="validarCampo('direccion')" class="text-danger">campo requerido</small>
                                                 </div>
