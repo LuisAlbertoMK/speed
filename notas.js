@@ -20,7 +20,6 @@ cd .\Desktop\SpeedProV1-produccion
 ng build
 firebase deploy
 
-
 */
 //realizar Corte de Ingresos del dia 10 del mes 8 nuevo modulo
 

@@ -858,6 +858,21 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   continuar(){
 
 
+    if (this.infoConfirmar.checkList) {
+      const checklist_campos = this.infoConfirmar.checkList.some(item => {
+        // Comprueba si 'status' no existe o es null o es una cadena vacía
+        return !item.status || typeof item.status !== 'string' || item.status.trim() === '';
+      });
+      if (checklist_campos) {
+        console.log('Al menos un campo status está vacío o no es una cadena.');
+      } else {
+        console.log('Todos los campos status tienen valores válidos.');
+      }
+      
+    }
+
+
+    return
     if (!this.infoConfirmar.data_cliente['correo']) {
       this._publicos.swalToast(`El cliente debe tener correo para poder crear la O.S`, 0)
       return

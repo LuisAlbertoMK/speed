@@ -106,7 +106,7 @@ export class RegistroUsuarioComponent implements OnInit {
           const recupera = ['usuario','correo','password','sucursal','rol']
           const recuperada = this._publicos.nuevaRecuperacionData(this.formUsuario.value, recupera)
           const otra = { email:    recuperada.correo,password: recuperada.password,nombre:   recuperada.usuario }
-          const updates = { [`usuarios/${this._publicos.generaClave()}`]: recuperada };
+          const updates = { [`usuarios/${recuperada.sucursal}/${this._publicos.generaClave()}`]: recuperada };
           if (this.usuario.id) {
             // update(ref(db), updates)
             //       .then(a=>{
