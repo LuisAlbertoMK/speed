@@ -146,6 +146,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
           'tipo',
           'sucursalShow',
           'fullname',
+          'usuario',
+          'localId'
         ]
   
   

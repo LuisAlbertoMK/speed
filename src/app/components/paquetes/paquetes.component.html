@@ -1,18 +1,21 @@
 <div class="card">
     <div class="card-body">
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end mb-1">
-          <ng-container *ngIf="modelo_temp; else elseTemplate">
-            <button class="btn btn-sm btn-outline-primary" (click)="modelo_temp = null; aplicaFiltro();">Sin filtro {{modelo}}</button>
-          </ng-container>
-          <ng-template #elseTemplate>
-            <button class="btn btn-sm btn-outline-primary" (click)="modelo_temp = modelo; aplicaFiltro();">Con filtro {{modelo}}</button>
-          </ng-template>
+      <ng-container *ngIf="btnfiltro">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end mb-1">
+            <ng-container *ngIf="modelo_temp; else elseTemplate">
+              <button class="btn btn-sm btn-outline-primary" (click)="modelo_temp = null; aplicaFiltro();">Sin filtro {{modelo}}</button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <button class="btn btn-sm btn-outline-primary" (click)="modelo_temp = modelo; aplicaFiltro();">Con filtro {{modelo}}</button>
+            </ng-template>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+            <input type="text" id="busqueda-paquete" class="form-control form-control-sm" placeholder="Busqueda de paquete" (keyup)="applyFilter($event)">
+          </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
-          <input type="text" id="busqueda-paquete" class="form-control form-control-sm" placeholder="Busqueda de paquete" (keyup)="applyFilter($event)">
-        </div>
-      </div>
+      </ng-container>
+      
         <div class="table-responsive mat-elevation-z8">
             <table #paquetes="matSort" matSort mat-table [dataSource]="dataSourcePaquetes" multiTemplateDataRows>
               <ng-container matColumnDef="index">
@@ -103,7 +106,8 @@
                     <i class="fa fa-trash btn btn-sm btn-danger fa-xs m-1" (click)="eliminaElemento(element['index'])"></i>
                     
                   </ng-container> -->
-                  <i class="fa fa-plus btn btn-sm btn-primary" aria-hidden="true" (click)="dataElement( element)"></i>
+                  <!-- <i class="fas fa-plus"></i> -->
+                  <i class="fas fa-plus btn btn-sm btn-primary" (click)="dataElement( element )"></i>
                   
                 </td>
               </ng-container>

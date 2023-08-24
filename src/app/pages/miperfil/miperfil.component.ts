@@ -109,9 +109,9 @@ export class MiperfilComponent implements OnInit {
       cot.data_vehiculo = data_vehiculo
       const {placas}= data_vehiculo
       cot.placas = placas || '------'
-      const {reporte, elementos} = this.calcularTotales(cot);
-      cot.reporte = reporte
-      cot.elementos = elementos
+      // const {reporte, elementos} = this.calcularTotales(cot);
+      // cot.reporte = reporte
+      // cot.elementos = elementos
       return cot
     })
     // console.log(filtro_cotizaciones);
@@ -123,9 +123,9 @@ export class MiperfilComponent implements OnInit {
       cot.data_vehiculo = data_vehiculo
       const {placas}= data_vehiculo
       cot.placas = placas || '------'
-      const {reporte, elementos} = this.calcularTotales(cot);
-      cot.reporte = reporte
-      cot.elementos = elementos
+      // const {reporte, elementos} = this.calcularTotales(cot);
+      // cot.reporte = reporte
+      // cot.elementos = elementos
       return cot
     })
 
@@ -134,8 +134,82 @@ export class MiperfilComponent implements OnInit {
 
 
     this.data_cliente = data_cliente
-    this.vehiculos_arr = vehiculos_arr
+    // this.vehiculos_arr = vehiculos_arr
+    this.vigila_vehiculos_cliente()
     
+  }
+  async vigila_vehiculos_cliente(){
+
+    // this.uid
+    // this.SUCURSAL
+    const sucursal = this.SUCURSAL
+    const cliente = this.uid
+
+    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    
+    const starCountRef_vehiculos = ref(db, `vehiculos/${sucursal}/${cliente}`)
+    onValue(starCountRef_vehiculos, async (snapshot) => {
+      if (snapshot.exists()) {
+        // let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+        const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
+        this.vehiculos_arr = vehiculos_arr
+      } else {
+        this.vehiculos_arr = []
+      }
+    })
+    const starCountRef_cotizaciones = ref(db, `cotizacionesRealizadas/${sucursal}/${cliente}`)
+    onValue(starCountRef_cotizaciones, async (snapshot) => {
+      if (snapshot.exists()) {
+        const ruta_cotizaciones   =  `cotizacionesRealizadas/${sucursal}/${cliente}`
+        const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
+        const filtro_cotizaciones = todas_cotizaciones.map(cot=>{
+          cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
+          cot.data_sucursal = this.sucursales_arr.find(s=>s.id === sucursal)
+          
+          const data_vehiculo = this.vehiculos_arr.find(v=>v.id === cot.vehiculo)
+          cot.data_vehiculo = data_vehiculo
+          const {placas}= data_vehiculo
+          cot.placas = placas || '------'
+          // const {reporte, elementos} = this.calcularTotales(cot);
+          // cot.reporte = reporte
+          // cot.elementos = elementos
+          return cot
+        })
+        this.cotizaciones_arr = filtro_cotizaciones
+      } else {
+        this.cotizaciones_arr = []
+      }
+    })
+
+    const starCountRef_recepciones = ref(db, `recepciones/${sucursal}/${cliente}`)
+    onValue(starCountRef_recepciones, async (snapshot) => {
+      if (snapshot.exists()) {
+        const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
+        const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
+        const filtro_recepciones = todas_recepciones.map(cot=>{
+          cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
+          cot.data_sucursal = this.sucursales_arr.find(s=>s.id === sucursal)
+          
+          const data_vehiculo = this.vehiculos_arr.find(v=>v.id === cot.vehiculo)
+          cot.data_vehiculo = data_vehiculo
+          const {placas}= data_vehiculo
+          cot.placas = placas || '------'
+          // const {reporte, elementos} = this.calcularTotales(cot);
+          // cot.reporte = reporte
+          // cot.elementos = elementos
+          return cot
+        })
+        this.recepciones_arr = filtro_recepciones
+      }else{
+        this.recepciones_arr = []
+      }
+
+    })
+
+   
+
+
+
   }
   async obtenerInformacion_cliente(id:string){
     const cliente:any = await this._clientes.consulta_cliente_new(id);

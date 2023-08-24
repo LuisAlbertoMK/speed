@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "correccion errores de label con id, for (en espera de aprobacion)"
+git commit -m "correccion de sesion de cliente (en proceso)"
 git push -u origin 
 
 shutdown -s -t 300 -c 'XD'

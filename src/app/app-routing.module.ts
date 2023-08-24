@@ -40,6 +40,8 @@ import { FacturacionComponent } from './pages/facturacion/facturacion.component'
 import { AdministracionComponent } from './pages/administracion/administracion.component';
 import { EditarOsComponent } from './pages/editar-os/editar-os.component';
 import { CorteIngresosComponent } from './pages/corte-ingresos/corte-ingresos.component';
+import { CotizacionClienteComponent } from './pages/cotizacion-cliente/cotizacion-cliente.component';
+import { HistorialVehiculoClienteComponent } from './pages/historial-vehiculo-cliente/historial-vehiculo-cliente.component';
 
 const routes: Routes = [];
 
@@ -84,6 +86,8 @@ const APP_ROUTES: Routes = [
   { path: 'estadisticasCliente', component: EstadisticasClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'historialCliente-vehiculo', component: HistorialClienteVehiculoComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'comentarios', component: ComentariosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'cotizacion-new-cliente', component: CotizacionClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'historial-vehiculo-cliente', component: HistorialVehiculoClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
 
   { path: 'home', component: HomeComponent },
 

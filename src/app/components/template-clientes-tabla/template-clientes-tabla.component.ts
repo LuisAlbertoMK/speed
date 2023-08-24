@@ -10,6 +10,13 @@ import { Router } from '@angular/router';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { AuthService } from 'src/app/services/auth.service';
+
+
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+const db = getDatabase()
+const dbRef = ref(getDatabase());
 
 @Component({
   selector: 'app-template-clientes-tabla',
@@ -36,7 +43,10 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
   _sucursal: string
   
   constructor(private router: Router, private _clientes: ClientesService, private _security:EncriptadoService,
-    private _sucursales: SucursalesService) { }
+    private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService,
+    private _auth: AuthService
+    
+    ) { }
 
   sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
 
@@ -126,6 +136,54 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
   }
   vehiculoInfo(info:any){
     // console.log(info);
+  }
+
+  async registra_usuario_new(data){
+
+    if (data.correo) {
+      const dataSave = {
+        rol: 'cliente',
+        status: true,
+        correo: data.correo,
+        password: this._publicos.generarCadenaAleatoria() || `${data.nombre}Xd1*(`,
+        sucursal: data.sucursal,
+        usuario: data.nombre
+      }
+      const otra = { email: data.correo, password: dataSave.password, nombre: data.nombre }
+      const updates = { [`usuarios/${data.id}`]: dataSave, [`clientes/${data.sucursal}/${data.id}/usuario`]:true };
+       console.log(updates);
+       const { respuesta } = await this._publicos.mensaje_pregunta(`Registro usuario`,true,`Registrar usuario con acceso a la plataforma`)
+
+       if (!respuesta) return
+
+
+        this._auth.nuevoUsuario(otra).subscribe((token:any)=>{
+          if (token) {
+            // console.log(token);
+            updates[`clientes/${data.sucursal}/${data.id}/localId`] = token.localId
+            update(ref(db), updates)
+              .then(a=>{
+                this._publicos.swalToast('Se registro usuario', 1)
+              })
+              .catch(err=>{
+                this._publicos.swalToast('Error al registrar usuario', 0)
+              })
+          }else{
+            this._publicos.swalToast('Error al generar token', 0)
+          }
+        })
+    }else{
+      this._publicos.swalToast('El cliente no tiene correo',0)
+    }
+
+    // console.log(data);
+    // const { respuesta } = await this._publicos.mensaje_pregunta(`Registro usuario`,true,`Registrar usuario con acceso a la plataforma`)
+    // // const respuesta = this._publicos.mensaje_pregunta('mensaje',true,`Registrar usuario con acceso a la plataforma`)
+    // console.log(respuesta);
+    // if (!respuesta) return
+
+    
+    
   }
 
 }

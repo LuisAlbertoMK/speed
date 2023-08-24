@@ -155,6 +155,8 @@ import { RegistroUsuarioComponent } from './components/registro-usuario/registro
 import { TemplateClientesTablaComponent } from './components/template-clientes-tabla/template-clientes-tabla.component';
 import { CorteIngresosComponent } from './pages/corte-ingresos/corte-ingresos.component';
 import { RegistraObjetivoComponent } from './components/registra-objetivo/registra-objetivo.component';
+import { CotizacionClienteComponent } from './pages/cotizacion-cliente/cotizacion-cliente.component';
+import { HistorialVehiculoClienteComponent } from './pages/historial-vehiculo-cliente/historial-vehiculo-cliente.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -241,7 +243,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TablaElementosComponent,
     TemplateClientesTablaComponent,
     CorteIngresosComponent,
-    RegistraObjetivoComponent
+    RegistraObjetivoComponent,
+    CotizacionClienteComponent,
+    HistorialVehiculoClienteComponent
   ],
   imports: [
     BrowserModule,

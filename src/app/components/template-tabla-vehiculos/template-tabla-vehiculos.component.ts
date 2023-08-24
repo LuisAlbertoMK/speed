@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 @Component({
   selector: 'app-template-tabla-vehiculos',
@@ -29,7 +30,7 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
   @Input() vehiculos_arr:any[] = []
   
 
-  constructor(private router: Router, private _campos: CamposSystemService) { }
+  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService) { }
 
 
   dataSource = new MatTableDataSource(); //elementos
@@ -41,8 +42,13 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
   @ViewChild('vehiculosPaginator') paginator: MatPaginator //vehiculos
   
   miniColumnas:number = 100
+  rol_:string
 
   ngOnInit(): void {
+    const { rol } = this._security.usuarioRol()
+    this.rol_ = rol
+    // console.log(rol);
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -55,16 +61,35 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
     }
   }
   irPagina(pagina, data){
-    const {cliente, sucursal, id: vehiculo, tipo } = data
+    console.log(data);
     
+    const {cliente, sucursal, id: vehiculo, tipo } = data
+    const { rol, uid, sucursal:sucursalID} = this._security.usuarioRol()
     let queryParams = {}
     if (pagina === 'cotizacionNueva' ) {
-      queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo, tipo:'vehiculo'} 
+      
+      // console.log(rol);
+      if (rol === 'cliente') {
+        queryParams = { anterior:'miPerfil',cliente: uid, sucursal: sucursalID,vehiculo, tipo:'vehiculo'}
+        pagina = 'cotizacion-new-cliente'
+      }else{
+        queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo, tipo:'vehiculo'} 
+      }
+      
     }else if (pagina === 'ServiciosConfirmar' ) {
-      queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo, tipo:'vehiculo'} 
+      if (rol !== 'cliente') {
+        queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo, tipo:'vehiculo'}  
+      }
     }else if (pagina === 'historial-vehiculo') {
-      queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo,}
+      if (rol === 'cliente') {
+        queryParams = { anterior:'miPerfil',cliente: uid, sucursal: sucursalID,vehiculo, tipo:'vehiculo'}
+        pagina = 'historial-vehiculo-cliente'
+      }else{
+        queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo,}
+      }
     }
+   
+    
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }

@@ -62,6 +62,12 @@ export class CotizacionesService {
     {valor:'total', show:'total'},
     {valor:'meses', show:'meses'},
   ]
+  camposDesgloce_cliente = [
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+    {valor:'meses', show:'meses'},
+  ]
   camposVehiculo=[
     {valor: 'placas', show:'Placas'},
     {valor: 'marca', show:'marca'},

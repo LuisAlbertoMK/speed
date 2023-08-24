@@ -1,42 +1,43 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onChildChanged, onChildRemoved, query, orderByChild, startAt, equalTo} from "firebase/database";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { CotizacionService } from 'src/app/services/cotizacion.service';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
 
+//creacion de pdf
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts.js";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
+
 //paginacion
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 
-
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { EncriptadoService } from 'src/app/services/encriptado.service';
-import { PdfService } from 'src/app/services/pdf.service';
-import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-import { SucursalesService } from 'src/app/services/sucursales.service';
-import Swal from 'sweetalert2';
-import { ClientesService } from '../../services/clientes.service';
-import { CotizacionService } from '../../services/cotizacion.service';
-import { EmailsService } from '../../services/emails.service';
-import { UploadPDFService } from '../../services/upload-pdf.service';
-import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { ServiciosService } from '../../services/servicios.service';
-import { CamposSystemService } from '../../services/campos-system.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { ServiciosService } from 'src/app/services/servicios.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
-export interface User {nombre: string, apellidos:string}
+
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SucursalesService } from 'src/app/services/sucursales.service';
+import { PdfService } from 'src/app/services/pdf.service';
+import { UploadPDFService } from 'src/app/services/upload-pdf.service';
+import Swal from 'sweetalert2';
+import { EmailsService } from 'src/app/services/emails.service';
+
 @Component({
-  selector: 'app-cotizacion-new',
-  templateUrl: './cotizacion-new.component.html',
-  styleUrls: ['./cotizacion-new.component.css'],
+  selector: 'app-cotizacion-cliente',
+  templateUrl: './cotizacion-cliente.component.html',
+  styleUrls: ['./cotizacion-cliente.component.css'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -45,238 +46,56 @@ export interface User {nombre: string, apellidos:string}
     ]),
   ],
 })
-export class CotizacionNewComponent implements OnInit,AfterViewInit {
-  
-  constructor(
-    private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
-    private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
-    private router: Router, private _sucursales: SucursalesService, private _clientes: ClientesService, private _cotizacion: CotizacionService,
-    private _cotizaciones: CotizacionesService, private _vehiculos: VehiculosService, private _servicios: ServiciosService, private _campos: CamposSystemService) { }
-    
-  ROL:string; SUCURSAL:string
-  
-  infoCotizacion   =  this._cotizacion.infoCotizacion
+export class CotizacionClienteComponent implements OnInit {
 
-  camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
-  camposCliente    =  [ ...this._clientes.camposCliente_show ]
-  camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
-  formasPago       =  [ ...this._cotizaciones.formasPago ]
-  servicios        =  [ ...this._servicios.servicios ]
-  promociones      =  [ ...this._campos.promociones ]
-  sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales ]
-  
+  constructor(
+    private _security:EncriptadoService, private _publicos:ServiciosPublicosService, private router: Router,
+    private _campos: CamposSystemService, private rutaActiva: ActivatedRoute, private _clientes: ClientesService,
+    private _cotizacion: CotizacionService, private _vehiculos: VehiculosService, private _formBuilder: FormBuilder,
+    private _cotizaciones: CotizacionesService, private _servicios: ServiciosService, private _sucursales: SucursalesService,
+    private _pdf: PdfService, private _uploadPDF: UploadPDFService, private _email: EmailsService,
+    ) { }
+  rol_:string
+  sucursal_:string
   paquete: string     =  this._campos.paquete
   refaccion: string   =  this._campos.refaccion
   mo: string          =  this._campos.mo
   miniColumnas:number =  this._campos.miniColumnas
-   // tabla
-   dataSource = new MatTableDataSource(); //elementos
+
+  infoCotizacion   =  this._cotizacion.infoCotizacion
+  formasPago       =  [ ...this._cotizaciones.formasPago ]
+
+  servicios        =  [ ...this._servicios.servicios ]
+  promociones      =  [ ...this._campos.promociones ]
+
+  sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales ]
+
+  extra:string
+  modelo:string
+
+  formPlus: FormGroup
+  checksBox = this._formBuilder.group({
+    iva: true,
+    detalles: false
+  });
+
+  idPaqueteEditar: number = -1
+  
+  faltante_s:string
+
+  dataSource = new MatTableDataSource(); //elementos
    elementos = ['nombre','cantidad','sobrescrito','precio','total']; //elementos
    columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
    expandedElement: any | null; //elementos
    @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
    @ViewChild('elements') sort: MatSort //elementos
 
-
-  checksBox = this._formBuilder.group({
-    iva: true,
-    detalles: false
-  });
-
-  formPlus: FormGroup
-
-  // obligatorios:string
-  // opcionales:string
-  extra:string
-  tipo:string
-
-  datCliente:any
-  cliente:string = null
-
-  vehiculoData:string = null
-  idPaqueteEditar: number = -1
   
-
-  modeloVehiculo:string = null
-
-  elementosPrueba = []
-
-  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
-  faltante_s:string
-
-
-  data_cliente = {}
-
-  reporte_totales = {
-    mo:0,
-    refacciones:0,
-    refacciones_v:0,
-    subtotal:0,
-    iva:0,
-    descuento:0,
-    total:0,
-    meses:0,
-    ub:0,
-  }
-
-  editar_cliente:boolean = false
-  modelo:string
-  ngOnInit() {
+  enrutamiento
+  ngOnInit(): void {
     this.rol()
     this.crearFormPlus()
   }
-  ngAfterViewInit(): void {
-    // this.crearFormPlus()
-  }
-  
-  rol(){
-    
-    const { rol, sucursal } = this._security.usuarioRol()
-    
-    
-
-    this.ROL = rol
-    this.SUCURSAL = sucursal
-    
-    this.rutaActiva.queryParams.subscribe((params:any) => {
-      this.enrutamiento = params
-      this.cargaDataCliente_new()
-    });
-  }
-  async cargaDataCliente_new(){
-
-    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
-    
-    let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
-
-    this.infoCotizacion = this._cotizacion.infoCotizacion
-    // console.log(cliente);
-    if (cliente) this.infoCotizacion.cliente = cliente
-    
-    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    // if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
-
-    // console.log(vehiculos_arr);
-    
-    
-
-    const campos = [
-      'cliente',
-      'descuento',
-      'elementos',
-      'formaPago',
-      'iva',
-      'margen',
-      'nota',
-      'servicio',
-      'sucursal',
-      'vehiculo',
-    ]
-
-    if (recepcion){
-
-      const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
-      const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
-      
-      data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
-      data_recepcion.nota = (data_recepcion.nota) ? data_recepcion.nota : ''
-
-      campos.forEach(campo=>{
-        this.infoCotizacion[campo] = data_recepcion[campo]
-      })
-      
-    }
-    if (cotizacion){
-      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
-      
-      const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
-
-      data_cotizacion.descuento = (data_cotizacion.descuento) ? data_cotizacion.descuento : 0
-      data_cotizacion.nota = (data_cotizacion.nota) ? data_cotizacion.nota : ''
-
-      campos.forEach(campo=>{
-        this.infoCotizacion[campo] = data_cotizacion[campo]
-      })
-      
-    }
-
-    this.extra = vehiculo
-
-    this.infoCotizacion.data_cliente = data_cliente
-    
-    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-    this.infoCotizacion.data_sucursal = data_sucursal
-    this.infoCotizacion.sucursal = sucursal
-    
-    this.infoCotizacion.vehiculo = vehiculo
-
-    this.realizaOperaciones()
-    this.vigila_vehiculos_cliente()
-
-  }
-  async vigila_vehiculos_cliente(){
-    const  {cliente, sucursal} = this.infoCotizacion
-    
-    const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
-    onValue(starCountRef, async  (snapshot) => {
-      if (snapshot.exists()) {
-        const  {cliente, sucursal} = this.infoCotizacion
-        const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-        this.infoCotizacion.vehiculos = vehiculos
-        const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
-        this.infoCotizacion.data_vehiculo  = data_vehiculo
-        this.infoCotizacion.vehiculo  = this.extra
-        if (data_vehiculo) {
-          if (data_vehiculo.modelo) {
-            this.modelo = data_vehiculo['modelo']
-          }
-        }
-      } else {
-        this.infoCotizacion.vehiculos = []
-        this.extra = null
-        this.modelo = null
-      }
-    })    
-  }
-
-  ///mensaje para poder agregar un paquete que no esta en el catalogo
-  async mensajePaquete(){
-    // this.mostrarPaquetes = false
-    const { value: nombrePaquete } = await Swal.fire({
-      title: 'Ingresa nombre de paquete',
-      input: 'text',
-      // inputLabel: 'paquete',
-      
-      inputValue: '',
-      showCancelButton: true,
-      inputValidator: (value:any) => {
-        const caracteresMinimos:number = String(value).length
-        if (!value || caracteresMinimos<4) {
-          return 'Necesitas escribir nombre de paquete con 3 caracteres minimos'
-        }else{
-          return null
-        }
-      }
-    })
-    if (nombrePaquete) {
-      
-      const tempData = {
-        elementos: [],
-        nombre: nombrePaquete,
-        aprobado: true,
-        // id: this._publicos.generaClave(),
-        tipo: this.paquete,
-        cantidad: 1,
-        costo: 0
-      }
-      this.infoCotizacion.elementos.push(tempData)
-      this.realizaOperaciones()
-      // this.colocarpaquete([{nombre:nombrePaquete,id:newPostKey}])
-    }
-  }
-  
-  
   crearFormPlus(){
     this.formPlus = this._formBuilder.group({
       servicio:[1,[Validators.required]],
@@ -324,84 +143,81 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   validaCampo(campo: string){
     return this.formPlus.get(campo).invalid && this.formPlus.get(campo).touched
   }
-  // primer hay que saber que tipo de usuario es en cada modulo para sus permisos, filtros, etc ademas de la SUCURSAL
-  
+  rol(){
+    
+    const { rol, sucursal , uid, usuario} = this._security.usuarioRol()
+
+    // console.log(uid);
+    // console.log(usuario);
+
+    this.rol_ = rol
+    this.sucursal_ = sucursal
+    this.rutaActiva.queryParams.subscribe((params:any) => {
+      this.enrutamiento = params
+      // this.cargaDataCliente_new()
+      // console.log(params);
+      
+    });
+    this.acciones()
+  }
   regresar(){
     this.router.navigate([`/${this.enrutamiento.anterior}`], { 
       queryParams: this.enrutamiento
     });
   }
-  
-  // REEMPLAZAR REFRIGERANTE Y PURGAR SISTEMA DE ENFRIAMIENTO
-  //aqui la informacion del clienyte
-  async infoCliente(cliente){
-
-    if (cliente) {
-      const {id, sucursal} = cliente
-      this.infoCotizacion.cliente = id
-      this.infoCotizacion.data_cliente = cliente
-      this.infoCotizacion.sucursal = sucursal
-      this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      this.extra = null
-      this.infoCotizacion.data_vehiculo = {}
-      this.infoCotizacion.vehiculo = null
-      this.vigila_vehiculos_cliente()
-    }
-  }
-
- 
-  //cargar la informacion del cliente para poder editar
-  cargaDataCliente(cliente:any){
-    this.datCliente = null
-    // this.vehiculo = null
-    if (cliente) {
-      setTimeout(() => {
-        this.datCliente = cliente
-      } , 200);
-    }
-  }
-  //recibir la nueva data y consukta extra de info cliente
-  async clientesInfo(event){
-    // console.log(event);
-    const {uid, sucursal} = event
-    if (uid) {
-
-      this.infoCotizacion.cliente = uid
-      this.infoCotizacion.data_cliente = event
-      this.infoCotizacion.sucursal = sucursal
-      this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      
-      this.extra = null
-      this.infoCotizacion.data_vehiculo = {}
-      this.infoCotizacion.vehiculo = null
-      this.vigila_vehiculos_cliente()
-    }
+  async acciones(){
+    const {cliente, sucursal, vehiculo} =this.enrutamiento
+    let data_cliente = {}
+    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
     
+    this.infoCotizacion.data_cliente = data_cliente
+    this.infoCotizacion.cliente = cliente
+    this.infoCotizacion.sucursal = sucursal
+    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    this.infoCotizacion.data_sucursal = data_sucursal
+    this.infoCotizacion.vehiculo = vehiculo
+    this.extra = vehiculo
+    this.vigila_vehiculos_cliente()
   }
-  cargaDataVehiculo(data: any, quien: string) {
-    this.cliente = null;
-    this.vehiculoData = null;
-  
-    if (quien === 'cliente' && data['id']) {
-      setTimeout(() => {
-        this.cliente = data['id'];
-      }, 300);
-    }
-  
-    if (quien === 'vehiculo' && data['id']) {
-      setTimeout(() => {
-        this._publicos.mensaje('Se cargó la información',1);
-        this.vehiculoData = data;
-      }, 300);
-    }
+  async vigila_vehiculos_cliente(){
+    const  {cliente, sucursal} = this.infoCotizacion
+    
+    const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
+    onValue(starCountRef, async  (snapshot) => {
+      if (snapshot.exists()) {
+        const  {cliente, sucursal} = this.infoCotizacion
+        const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+        this.infoCotizacion.vehiculos = vehiculos
+        const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
+        this.infoCotizacion.data_vehiculo  = data_vehiculo
+        this.infoCotizacion.vehiculo  = this.extra
+        if (data_vehiculo) {
+          if (data_vehiculo.modelo) {
+            this.modelo = data_vehiculo['modelo']
+          }
+        }
+      } else {        
+        this.infoCotizacion.vehiculos = []
+        this.extra = null
+        this.modelo = null
+      }
+    })    
   }
-  
+
+
+
+
+  vehiculo_ghange(valor){
+    // console.log(valor);
+    this.extra = valor
+    this.vigila_vehiculos_cliente()
+  }
   vehiculo_registrado(event){
-     if (event) {
-      this.extra = event
-      this.vigila_vehiculos_cliente()
-    }
-  }
+    if (event) {
+     this.extra = event
+     this.vigila_vehiculos_cliente()
+   }
+ }
 
   agrega_principal(event){
     let nuevos = [...this.infoCotizacion.elementos]
@@ -490,12 +306,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.newPagination()
 
   }
-  //verificamos que existe el vehiculo seleccionado y que este tenga un id de lo contrario colocamos la informacion en null
-  vehiculo(IDVehiculo){
-      this.extra = IDVehiculo
-      this.infoCotizacion.vehiculo = IDVehiculo
-      this.vigila_vehiculos_cliente()
-  }
   async continuarCotizacion(){
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
     // const opcionales = ['promocion','descuento','nota','iva']
@@ -511,7 +321,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     const correos = this._publicos.dataCorreo(this.infoCotizacion.data_sucursal,this.infoCotizacion.data_cliente)
     const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
-    await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
+    await this._cotizaciones.generaNombreCotizacion(this.rol_, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
       this.infoCotizacion.no_cotizacion = ans
     })
 
@@ -633,6 +443,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       })
     })
   }
+  ///TODO acciones que no cambian
   newPagination(){
     setTimeout(() => {
     // if (data==='elementos') {
@@ -641,7 +452,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     // }
     }, 500)
   }
-
 
   calcularTotales(data) {
     const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
@@ -660,16 +470,13 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
-          ele.precio = mo + (refacciones * margen)
-          ele.total = (mo + (refacciones * margen)) * cantidad
-          if (costo > 0 ){
-            ele.total = costo * cantidad
-            reporte.costos += costo * cantidad
-          }else{
-            reporte.mo += mo
-            reporte.refacciones += refacciones
-          }
+          reporte.mo += mo * cantidad
+          reporte.refacciones += refacciones * cantidad
+          reporte.refacciones_v += (refacciones * margen) * cantidad
         }
+        ele.precio = mo + (refacciones * margen)
+        ele.total = (mo + (refacciones * margen)) * cantidad
+        if (costo > 0 ) ele.total = costo * cantidad
       }else if (tipo === 'mo' || tipo === 'refaccion') {
 
         // const operacion = this.mano_refaccion(ele)
@@ -714,6 +521,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     reporte.meses = total_meses
 
     reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
+
     return {reporte, _servicios}
     
   }
@@ -791,4 +599,5 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     return nuevos_elementos 
 
   }
+
 }

@@ -192,7 +192,7 @@ export class EstadisticasClienteComponent implements OnInit{
 
     this.recepciones_generales = filtro_recepciones
 
-    console.log(this.recepciones_generales);
+    // console.log(this.recepciones_generales);
     
 
     const info = {};
@@ -207,16 +207,20 @@ export class EstadisticasClienteComponent implements OnInit{
       // console.log(totales);
     
       // reporte.servicios_totales =  totales.length
-      totales.forEach((cotiza)=>{
-        const {reporte: reporteCotiza} = cotiza
-
-        let total = reporteCotiza.refacciones + reporteCotiza.mo
-        ticketPromedio = total / totales.length
-        ticketGeneral += total + reporteCotiza.iva
-        
-        mo += reporteCotiza.mo
-        refacciones += reporteCotiza.refacciones
-      })
+      if (totales.length) {
+        totales.forEach((cotiza)=>{
+          const {reporte: reporteCotiza} = cotiza
+          
+  
+          let total = reporteCotiza.refacciones + reporteCotiza.mo
+          ticketPromedio = total / totales.length
+          ticketGeneral += total + reporteCotiza.iva
+          
+          mo += reporteCotiza.mo
+          refacciones += reporteCotiza.refacciones
+        })
+      }
+      
       servicios_totales = totales.length
       const  data_vehiculo = vehiculos_arr.find(v=>v.id === vehiculo)
       info[vehiculo] = {
@@ -232,8 +236,15 @@ export class EstadisticasClienteComponent implements OnInit{
 
       } = this._publicos.obtenerValorMaximoMinimo(totales)
       
+      // let validacion_divicion = ticketGeneral / servicios_totales
+
+      let nuevo_t = 0
+      if (ticketGeneral > 0 &&  servicios_totales > 0) {
+        nuevo_t = ticketGeneral / servicios_totales
+      }
+
       this.campos_estadisticas = { 
-        ticketPromedioFinal: ticketGeneral / servicios_totales, 
+        ticketPromedioFinal: nuevo_t, 
         servicios_totales, 
         ticketGeneral }
       this.clonado = [
@@ -252,7 +263,7 @@ export class EstadisticasClienteComponent implements OnInit{
           },
           {
             name: "Ticket promedio servicios",
-            value: ticketGeneral / servicios_totales,
+            value: nuevo_t,
             contador: 0,
             arreglo:[]
           },

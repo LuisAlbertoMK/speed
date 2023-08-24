@@ -590,7 +590,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         }
         ele.precio = mo + (refacciones * margen)
         ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad 
+        if (costo > 0 ) ele.total = costo * cantidad
       }else if (tipo === 'mo' || tipo === 'refaccion') {
 
         const operacion = this.mano_refaccion(ele)

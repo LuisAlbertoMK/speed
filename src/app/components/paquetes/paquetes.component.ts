@@ -25,6 +25,7 @@ export class PaquetesComponent implements OnInit, OnChanges {
 
   listaPaquetes = []
   @Input() modelo:string
+  @Input() btnfiltro:boolean = true
   @Output() infoPaquete : EventEmitter<any>
   miniColumnas:number = 100
 

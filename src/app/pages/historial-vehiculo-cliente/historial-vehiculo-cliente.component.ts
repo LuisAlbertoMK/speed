@@ -1,7 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { child, get, getDatabase, onValue, push, ref, set } from "firebase/database";
-
 import { ActivatedRoute, Router } from '@angular/router';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
+import { ClientesService } from 'src/app/services/clientes.service';
+import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { ServiciosService } from 'src/app/services/servicios.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
+
 
 import {animate, state, style, transition, trigger} from '@angular/animations';
 //paginacion
@@ -9,19 +15,10 @@ import {MatPaginator, MatPaginatorIntl,PageEvent} from '@angular/material/pagina
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 
-import { CotizacionesService } from 'src/app/services/cotizaciones.service';
-import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-import { CamposSystemService } from '../../services/campos-system.service';
-import { ClientesService } from 'src/app/services/clientes.service';
-import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { ServiciosService } from 'src/app/services/servicios.service';
-import { SucursalesService } from 'src/app/services/sucursales.service';
-const db = getDatabase();
-const dbRef = ref(getDatabase());
 @Component({
-  selector: 'app-historial-vehiculo',
-  templateUrl: './historial-vehiculo.component.html',
-  styleUrls: ['./historial-vehiculo.component.css'],
+  selector: 'app-historial-vehiculo-cliente',
+  templateUrl: './historial-vehiculo-cliente.component.html',
+  styleUrls: ['./historial-vehiculo-cliente.component.css'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -30,15 +27,16 @@ const dbRef = ref(getDatabase());
     ]),
   ],
 })
-export class HistorialVehiculoComponent implements OnInit {
-  
+export class HistorialVehiculoClienteComponent implements OnInit {
+
   constructor(
     private rutaActiva: ActivatedRoute,private _cotizaciones: CotizacionesService,
     private _publicos: ServiciosPublicosService, private router: Router,private _sucursales: SucursalesService,
     private _campos: CamposSystemService, private _clientes: ClientesService,
     private _vehiculos: VehiculosService, private _servicios: ServiciosService
-    ) { }
-    ROL:string;SUCURSAL:string;
+  ) { }
+
+  ROL:string;SUCURSAL:string;
 
     miniColumnas:number = this._campos.miniColumnas
     reporte_Cotizaciones={subtotal:0, iva:0, total:0}
@@ -79,7 +77,6 @@ export class HistorialVehiculoComponent implements OnInit {
   ngOnInit(): void {
     this.rol()
   }
-
   rol(){
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
@@ -91,7 +88,7 @@ export class HistorialVehiculoComponent implements OnInit {
     const {vehiculo, cliente, anterior, sucursal} = this.enrutamiento
   
     const queryParams = {vehiculo, cliente, sucursal}
-    this.router.navigate([`/historial-cliente`], { 
+    this.router.navigate([`/miPerfil`], { 
       queryParams
     });
   }
@@ -147,7 +144,5 @@ export class HistorialVehiculoComponent implements OnInit {
 
     console.timeEnd('Execution Time');
   }
-
-  
 
 }

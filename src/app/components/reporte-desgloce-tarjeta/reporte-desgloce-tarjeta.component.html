@@ -13,7 +13,7 @@
               <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" >
                 <strong>{{reporte['ub'] | monedas:'%'}}</strong>
               </div>
-              <ng-container *ngFor="let campo of camposDesgloce">
+              <ng-container *ngFor="let campo of campos_usados">
                 <ng-container *ngIf="reporte[campo['valor']] > 0">
                   <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">{{campo['show']}}</div>
                   <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo.valor] * 1.30  | monedas}}</strong></div>
@@ -35,7 +35,7 @@
               <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" >
                 <strong>{{reporte['ub'] | monedas:'%'}}</strong>
               </div>
-              <ng-container *ngFor="let campo of camposDesgloce">
+              <ng-container *ngFor="let campo of campos_usados">
                 <ng-container *ngIf="reporte[campo['valor']] > 0">
                   <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">{{campo['show']}}</div>
                   <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo.valor]  | monedas}}</strong></div>
@@ -52,13 +52,13 @@
       <div class="card-header text-center">{{title}}</div>
       <div class="card-body">
           <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start">
+            <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" *ngIf="rol_ !== 'cliente'">
               U.B
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" *ngIf="rol_ !== 'cliente'">
               <strong>{{reporte['ub'] | monedas:'%'}}</strong>
             </div>
-            <ng-container *ngFor="let campo of camposDesgloce">
+            <ng-container *ngFor="let campo of campos_usados">
               <ng-container *ngIf="reporte[campo['valor']] > 0">
                 <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">{{campo['show']}}</div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo.valor]  | monedas}}</strong></div>

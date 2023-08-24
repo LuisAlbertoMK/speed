@@ -134,8 +134,13 @@ export class HistorialClienteComponent implements OnInit {
     const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
 
     const vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    let nuevos_vehiculos = vehiculos_arr.map(v=>{
+      v.sucursal = sucursal
+      v.cliente = cliente
+      return v
+    })
 
-    this.vehiculos_arr = vehiculos_arr
+    this.vehiculos_arr = nuevos_vehiculos
     
     const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
     const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
