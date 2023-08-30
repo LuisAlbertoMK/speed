@@ -1,15 +1,5 @@
-<div class="content-header">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
-            <li class="breadcrumb-item active">Catalogos</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <app-template-navegacion></app-template-navegacion>
 
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
@@ -45,7 +35,12 @@
               <ng-container matColumnDef="precio">
                 <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
                   [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> precio </th>
-                <td mat-cell *matCellDef="let element" class="text-start"> {{element.precio | monedas }}</td>
+                <td mat-cell *matCellDef="let element" class="text-end"> {{element.precio | monedas }}</td>
+              </ng-container>
+              <ng-container matColumnDef="costo">
+                <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize " 
+                  [ngStyle]="{'min-width':(miniColumnas)*.7+'px'}"> costo </th>
+                <td mat-cell *matCellDef="let element" class="text-end"> {{element.costo | monedas }}</td>
               </ng-container>
               <ng-container matColumnDef="nombre">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize text-end"
@@ -60,22 +55,21 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize"
                   [ngStyle]="{'min-width':(miniColumnas)*.5+'px'}"> cantidad </th>
                 <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-center">
-                  <input type="number" min="1" max="20" [value]="element.cantidad"> 
+                  <input name="cantidad" type="number" aria-label="cantidad" min="1" max="20" [value]="element.cantidad" id="cantidad-1"> 
                 </td>
               </ng-container>
               <ng-container matColumnDef="sobrescrito">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" class="td-2">
                   precio sobrescrito </th>
                 <td mat-cell *matCellDef="let element; let indicePadre = dataIndex;" class="text-end td-2">
-                  <input type="number" min="0" max="10000" [value]="element.costo">
+                  <input aria-label="costo" type="number" min="0" max="10000" [value]="element.costo">
                 </td>
               </ng-container>
               
               <ng-container matColumnDef="normal">
                 <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-end"
                   [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" >
-                  <span class="pointer" style="width: 100%;">normal &nbsp;
-                  </span> 
+                  <span lang="en" class="pointer" [style]="'width: 100%;'">normal &nbsp; </span> 
     
                    </th>
                 <td mat-cell *matCellDef="let element" class="text-end"> 
@@ -92,7 +86,7 @@
                   [ngStyle]="{'min-width':(miniColumnas)*1.2+'px'}" 
                   > 
                   <!-- (click)="ordenamiento = !ordenamiento; ordenarElementos('flotilla')" -->
-                  <span class="pointer" style="width: 100%;">flotilla &nbsp;
+                  <span class="pointer" [style]="'width: 100%;'">flotilla &nbsp;
                     <!-- <ng-container *ngIf="ordenamiento; else elseOrdenamiento">
                       <i class="fa fa-arrow-down" aria-hidden="true"></i>
                     </ng-container>
@@ -108,7 +102,7 @@
               </ng-container>
               <ng-container matColumnDef="opciones">
                 <th mat-header-cell *matHeaderCellDef  class="text-capitalize text-center"
-                [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> opciones </th>
+                [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> &nbsp; </th>
                 <td mat-cell *matCellDef="let element; let indicePadre = dataIndex" class="text-center">
                   <!-- <i class="fa fa-edit btn btn-sm btn-success fa-xs m-1" (click)="agregarelementopaquete(!elementoAgregar, element.index)"></i> --> 
                   <!-- <ng-container>
@@ -137,13 +131,25 @@
                 <td mat-cell *matCellDef="let element;let indexPadre = dataIndex"
                   [attr.colspan]="columnsToDisplayWithExpand.length">
                   <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                    <div class="row m-1" style="width: 100%;">
+                    <div class="row m-1" [style]="'width: 100%;'">
                       <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                          <ng-container *ngIf="element.vehiculos_compatibles">
+                            <h4><strong>Vehículos  compatibles</strong> </h4>
+                            <ng-container *ngFor="let item of element.vehiculos_compatibles; let i = index">
+                                <span class="etiqueta">{{item.marca}} - {{item.modelo}}, {{item.anio_inicial}} a {{item.anio_final}} 
+                                    <i class="fas fa-times pointer" (click)="elimina_etiqueta_paquete(element, i)"></i>
+                                </span>
+                            </ng-container>
+                        </ng-container>
+                        </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                           <div class="card border-success mb-3">
                             <div class="card-header text-center"></div>
                             <div class="card-body text-success ">
                                 <div class="row">
+
+                                  
                   
                                   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase">
                                     con margen inicial de 25 % para las refacciones
@@ -457,9 +463,70 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
+              <div class="row g-3 align-items-center">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-12">
+                  <label for="costo">Costo sobrescrito:</label>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                  <input type="number" min="0" max="99999999" id="costo-sobrescrito" formControlName="costo" class="form-control form-control-sm" onkeypress="validarDecimal(event)">
+                  <small *ngIf="validarCampo('costo')" class="text-danger">Campo requerido</small>
+                </div>
+              </div>
+            </div>
           </div>
           
         </form>
+        <div class="card">
+          <div class="card-body">
+              <h1><strong>Registro de vehículo compatible</strong></h1>
+              <form class="" [formGroup]="formulario_etiqueta" (ngSubmit)="colocar_etiqueta()">
+                  <div class="form-row">
+                      <div class="col-lg-4 col-md-4 col-sm-3 col-12 mb-3">
+                          <label for="marca-etiqueta" name="marca-etiqueta">Marca</label>
+                          <select name="marca-etiqueta" id="marca-etiqueta" formControlName="marca" class="form-control form-control-sm custom-select">
+                              <option value="">Selecciona marca</option>
+                              <option value="{{marca}}" *ngFor="let marca of marcas_vehiculos_id">{{marca}}</option>
+                          </select>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-3 col-12 mb-3">
+                          <label for="modelo-etiqueta" name="modelo-etiqueta">Modelo</label>
+                          <select name="modelo-etiqueta" id="modelo-etiqueta" formControlName="modelo" class="form-control form-control-sm custom-select">
+                              <option  [value]="modelo.modelo" *ngFor="let modelo of array_modelos" >{{modelo.modelo}}</option>
+                          </select>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-3 col-12 mb-3">
+                          <label for="anio-inicial-etiqueta" name="anio-inicial-etiqueta">De</label>
+                          <select name="anio-inicial-etiqueta" id="anio-inicial-etiqueta" formControlName="anio_inicial" class="form-control form-control-sm custom-select">
+                              <option [value]="item" *ngFor="let item of anios">{{item}}</option>
+                          </select>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-3 col-12 mb-3">
+                          <label for="anio-final-etiqueta" name="anio-final-etiqueta">Hasta</label>
+                          <select name="anio-final-etiqueta" id="anio-final-etiqueta" formControlName="anio_final" class="form-control form-control-sm custom-select">
+                              <option [value]="item" *ngFor="let item of anios">{{item}}</option>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col text-center">
+                          <button type="submit" class="btn btn-sm btn-success">Registrar compatibilidad</button>
+                      </div>
+                  </div>
+                  <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+              </form>
+              <ng-container *ngIf="vehiculos_compatibles.length">
+                  <h4><strong>Vehículos  compatibles</strong> </h4>
+                  <ng-container *ngFor="let item of vehiculos_compatibles; let i = index">
+                      <span class="etiqueta">{{item.marca}} - {{item.modelo}}, {{item.anio_inicial}} a {{item.anio_final}} 
+                          <i class="fas fa-times pointer" (click)="elimina_etiqueta(i)"></i>
+                      </span>
+                  </ng-container>
+              </ng-container>
+          </div>
+      </div>
+
+        
         
         <app-mo-refacciones [registro]="true" (dataElemento)="elementoInfo( $event )"></app-mo-refacciones>
 

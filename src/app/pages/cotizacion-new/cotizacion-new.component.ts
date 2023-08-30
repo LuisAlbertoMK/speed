@@ -411,8 +411,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
           nuevos[this.idPaqueteEditar].elementos.push(event)
           this.asignar_nuevos_elementos(nuevos)
       }else{
-          nuevos.push(event)
-          this.asignar_nuevos_elementos(nuevos)
+        nuevos.push(event)
+        this.asignar_nuevos_elementos(nuevos)
       }
     }
   }

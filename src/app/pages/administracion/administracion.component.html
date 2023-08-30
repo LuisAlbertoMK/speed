@@ -1,15 +1,5 @@
-<div class="content-header">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
-            <li class="breadcrumb-item active">Administración</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <app-template-navegacion></app-template-navegacion>
 
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
@@ -20,7 +10,7 @@
               <input matEndDate formControlName="end" readonly placeholder="Final" id="Final">
             </mat-date-range-input>
             <div class="input-group-append">
-              <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
+              <button aria-label="Boton calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
                 <i class="fa fa-calendar-alt"></i>
               </button>
             </div>
@@ -28,14 +18,14 @@
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
         <ng-container *ngIf="SUCURSAL === 'Todas'">
-            <button class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
+            <button aria-label="Boton calendario" class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
             matTooltip="Filtro sucursal"><i class="fa fa-filter"></i></button>
             <mat-menu #filtroSucursal="matMenu">
                 <button mat-menu-item (click)="sucursalFiltroReporte = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
             </mat-menu>
         </ng-container>
         
-        <button class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
+        <button aria-label="Boton calendario" class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
         matTooltip="Filtro fecha"><i class="fa fa-filter"></i></button>
         <mat-menu #filtroTipo="matMenu">
             <button mat-menu-item (click)="filtro_entregado_recibido = tipo.valor; filtra_informacion()" *ngFor="let tipo of filtros_entregado_recibido">{{tipo.show | capitalizarUno}}</button>

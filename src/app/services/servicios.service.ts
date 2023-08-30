@@ -24,42 +24,42 @@ export class ServiciosService {
 
     campos_servicios_hard = ['index','checkList','cliente','detalles','diasEntrega','diasSucursal','fecha_recibido','formaPago','hora_recibido','iva','hitorial_gastos','historial_pagos',
     'margen','sucursal','notificar','reporte','servicio','servicios','status','vehiculo','fecha_entregado','hora_entregado','tecnico','showNameTecnico']
-
+    valor_asiganado = 'si'
     checkList = [
-      {valor:"antena",show:'antena', opciones: [ "si","no","dañado"],status:''},
-      {valor:"birlo_seguridad",show:'birlo seguridad', opciones: [ "si","no","dañado"],status:''},
-      {valor:"bocinas",show:'bocinas', opciones: [ "si","no","dañado"],status:''},
-      {valor:"botones_interiores",show:'botones interiores', opciones: [ "si","no","dañado"],status:''},
-      {valor:"boxina_claxon",show:'boxina claxon', opciones: [ "si","no","dañado"],status:''},
-      {valor:"calefaccion",show:'calefaccion', opciones: [ "si","no","dañado"],status:''},
-      {valor:"cenicero",show:'cenicero', opciones: [ "si","no","dañado"],status:''},
-      {valor:"cristales",show:'cristales', opciones: [ "si","no","dañado"],status:''},
-      {valor:"encendedor",show:'encendedor', opciones: [ "si","no","dañado"],status:''},
-      {valor:"espejo_retorvisor",show:'espejo retrovisor', opciones: [ "si","no","dañado"],status:''},
-      {valor:"espejos_laterales",show:'espejos laterales', opciones: [ "si","no","dañado"],status:''},
-      {valor:"estuche_herramientas",show:'estuche herramientas', opciones: [ "si","no","dañado"],status:''},
-      {valor:"extintor",show:'extintor', opciones: [ "si","no","dañado"],status:''},
-      {valor:"gato",show:'gato', opciones: [ "si","no","dañado"],status:''},
-      {valor:"golpes_y_carroceria",show:'golpes y carroceria', opciones: [ "si","no","dañado"],status:''},
-      {valor:"instrumentos_tablero",show:'instrumentos tablero', opciones: [ "si","no","dañado"],status:''},
-      {valor:"interiores",show:'interiores', opciones: [ "si","no","dañado"],status:''},
-      {valor:"limpiadores",show:'limpiadores', opciones: [ "si","no","dañado"],status:''},
-      {valor:"llanta_refaccion",show:'llanta refaccion', opciones: [ "si","no","dañado"],status:''},
-      {valor:"llave_cruz",show:'llave cruz', opciones: [ "si","no","dañado"],status:''},
-      {valor:"luces",show:'Luces', opciones: ["si","no","dañado"],status:''},
-      {valor:"maneral_gato",show:'maneral gato', opciones: [ "si","no","dañado"],status:''},
-      {valor:"manijas_interiores",show:'manijas interiores', opciones: [ "si","no","dañado"],status:''},
-      {valor:"molduras_completas",show:'molduras completas', opciones: [ "si","no","dañado"],status:''},
-      {valor:"radio",show:'radio', opciones: [ "si","no","dañado"],status:''},
-      {valor:"tapetes",show:'tapetes', opciones: [ "si","no","dañado"],status:''},
-      {valor:"tapon_combustible",show:'tapon combustible', opciones: [ "si","no","dañado"],status:''},
-      {valor:"tapones_llantas",show:'tapones llantas', opciones: [ "si","no","dañado"],status:''},
-      {valor:"tapones_motor",show:'tapones motor', opciones: [ "si","no","dañado"],status:''},
-      {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:''},
-      {valor:"tarjeta_de_circulacion",show:'tarjeta de circulacion', opciones: [ "si","no"],status:''},
-      {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],status:''},
-      {valor:"testigos_en_tablero",show:'testigos en tablero', opciones: [ "si","no"],status:''},
-      {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:''}
+      {valor:"antena",show:'antena', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"birlo_seguridad",show:'birlo seguridad', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"bocinas",show:'bocinas', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"botones_interiores",show:'botones interiores', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"boxina_claxon",show:'boxina claxon', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"calefaccion",show:'calefaccion', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"cenicero",show:'cenicero', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"cristales",show:'cristales', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"encendedor",show:'encendedor', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"espejo_retorvisor",show:'espejo retrovisor', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"espejos_laterales",show:'espejos laterales', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"estuche_herramientas",show:'estuche herramientas', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"extintor",show:'extintor', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"gato",show:'gato', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"golpes_y_carroceria",show:'golpes y carroceria', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"instrumentos_tablero",show:'instrumentos tablero', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"interiores",show:'interiores', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"limpiadores",show:'limpiadores', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"llanta_refaccion",show:'llanta refaccion', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"llave_cruz",show:'llave cruz', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"luces",show:'Luces', opciones: ["si","no","dañado"],status:this.valor_asiganado},
+      {valor:"maneral_gato",show:'maneral gato', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"manijas_interiores",show:'manijas interiores', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"molduras_completas",show:'molduras completas', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"radio",show:'radio', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"tapetes",show:'tapetes', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"tapon_combustible",show:'tapon combustible', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"tapones_llantas",show:'tapones llantas', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"tapones_motor",show:'tapones motor', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"triangulos_seguridad",show:'triangulos seguridad', opciones: [ "si","no","dañado"],status:this.valor_asiganado},
+      {valor:"tarjeta_de_circulacion",show:'tarjeta de circulacion', opciones: [ "si","no"],status:this.valor_asiganado},
+      {valor:"llega_en_grua",show:'llega en grua', opciones: [ "si","no"],status:this.valor_asiganado},
+      {valor:"testigos_en_tablero",show:'testigos en tablero', opciones: [ "si","no"],status:this.valor_asiganado},
+      {valor:"nivel_gasolina",show:'nivel gasolina', opciones: [ "vacio","1/4","1/2", "3/4", "lleno"],status:this.valor_asiganado}
       
     ]
     detalles_rayar=[
@@ -229,6 +229,21 @@ consulta_recepcion_new(data): Promise<any> {
         resolve(snapshot.val());
       } else {
         resolve({});
+      }
+    },{
+      onlyOnce: true
+    });
+  });
+}
+consulta_recepciones_cliente_satus(data): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    const {ruta} = data
+    const starCountRef = ref(db, `${ruta}`);
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        resolve(this._publicos.crearArreglo2(snapshot.val()));
+      } else {
+        resolve([]);
       }
     },{
       onlyOnce: true

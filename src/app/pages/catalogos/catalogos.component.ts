@@ -44,7 +44,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   listaPaquetes = []
   // tabla
   dataSourcePaquetes = new MatTableDataSource(); //paquetes
-  paquetes = ['index','nombre','modelo','marca','precio']; //paquetes
+  paquetes = ['index','nombre','modelo','marca','precio','costo']; //paquetes
   columnsToDisplayWithExpand = [...this.paquetes, 'opciones', 'expand']; //paquetes
   expandedElement: any | null; //paquetes
   @ViewChild('paquetesPaginator') paginator: MatPaginator //paquetes
@@ -71,6 +71,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
   paqueteForm: FormGroup;
   
+  
   elementosDePaqueteNuevo = []
   lista_marcas_arr = []
   
@@ -91,14 +92,38 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   @Output() datosSeleccionados: EventEmitter<any> = new EventEmitter<any>();
   elemento_get
 
+  formulario_etiqueta: FormGroup
+
   anios:any=                [...this._vehiculos.anios];
   marcas_vehiculos:any=     this._vehiculos.marcas_vehiculos
   marcas_vehiculos_id = []
   array_modelos = []
   
 
+  faltante_s:string
+  vehiculos_compatibles = [
+    {
+      "marca": "Chevrolet",
+      "modelo": "Camaro ZL1",
+      "anio_inicial": "1999",
+      "anio_final": "1999"
+    },
+    {
+      "marca": "Pontiac",
+      "modelo": "Matiz",
+      "anio_inicial": "1996",
+      "anio_final": "2001"
+    },
+    {
+      "marca": "Aston Martín",
+      "modelo": "DBX",
+      "anio_inicial": "1996",
+      "anio_final": "1996"
+    }
+  ]
   ngOnInit() {
     // this.consultaMO()
+    this.construye_formulario_etiqueta()
     this.construyeFirmularioPaquete()
     this.nuevas_consultas()
     const n = this._publicos.crearArreglo2(this._vehiculos.marcas_vehiculos)
@@ -112,6 +137,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   enviarDatos(item: any) {
     this.datosSeleccionados.emit(item);
   }
+  
   async nuevas_consultas(){
     //consultamos las manos de obra y asiganamos para la paginacion de los resultados
     const starCountRef = ref(db, `manos_obra`)
@@ -190,6 +216,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
       elementos: [[], Validators.required],
+      costo: [0,],
     });
     this.vigila()
   }
@@ -206,6 +233,20 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
          modelo_ = this.array_modelos.find(m=>m.modelo === modelo).categoria
       }
       // this.paqueteForm.controls['categoria'].setValue(modelo_)
+    })
+    this.formulario_etiqueta.get('marca').valueChanges.subscribe((marca: string) => {
+      this.array_modelos = []
+      if (marca) {
+        this.array_modelos = this.marcas_vehiculos[marca]
+      }
+    })
+    this.formulario_etiqueta.get('anio_final').valueChanges.subscribe((anio_final: number) => {
+      if(anio_final){
+        const anio_inicial:number = this.formulario_etiqueta.get('anio_inicial').value
+        if (anio_final < anio_inicial) {
+          this.formulario_etiqueta.get('anio_final').setValue(anio_inicial) 
+        }
+      }
     })
   }
   elementoInfo(event){
@@ -271,14 +312,19 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
             cilindros: this.paqueteForm.get('cilindros').value,
             elementos: [],
             status: true,
+            vehiculos_compatibles:[],
+            tipo:'paquete',
+            costo: this.paqueteForm.get('costo').value || 0,
           }
           tempData.elementos = this.purifica_informacion_interna(this.elementosDePaqueteNuevo)
+          tempData.vehiculos_compatibles = this.vehiculos_compatibles
           const updates = { [`paquetes/${this._publicos.generaClave()}`]:tempData };
           // console.log(updates);
           
           update(ref(db), updates).then(()=>{
             this._publicos.swalToast('Se registro paquete!!', 1)
             this.reseteaInfo_paqueteForm()
+            this.vehiculos_compatibles = []
           })
         }
       })
@@ -299,6 +345,47 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     this.infoFaltente_paquete = null
     this.infoAdicional.elementos = this.elementosDePaqueteNuevo
     this.paqueteForm.reset()
+  }
+
+  //crear guardar validar datos de formulario etiqueta
+  
+  construye_formulario_etiqueta(): void {
+    this.formulario_etiqueta = this.formBuilder.group({
+      marca: ['', Validators.required],
+      modelo: ['', Validators.required],
+      anio_inicial: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],
+      anio_final: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],
+    });
+    
+  }
+  
+
+  colocar_etiqueta(){
+    const data_form = this._publicos.getRawValue(this.formulario_etiqueta)
+    
+    const { faltante_s, ok } =this._publicos.realizavalidaciones_new(data_form,['marca','modelo','anio_inicial','anio_final'])
+    this.faltante_s = faltante_s
+    if (!ok) return
+    this.vehiculos_compatibles.push(data_form)
+    this.formulario_etiqueta.reset()
+  }
+  elimina_etiqueta(index:number){
+    if (this.vehiculos_compatibles.length ) {
+      const nuevos = [...this.vehiculos_compatibles]
+      nuevos.splice(index,1)
+      this.vehiculos_compatibles = nuevos
+    }
+  }
+  elimina_etiqueta_paquete(data, index){
+
+    let data_new = JSON.parse(JSON.stringify(data));
+    console.log(data, index);
+    const nuevos = [...data_new.vehiculos_compatibles]
+      nuevos.splice(index,1)
+      data_new.vehiculos_compatibles = nuevos
+
+      console.log(data_new);
+      
   }
   //TODO realiza edicion de elemento
   inicia(){

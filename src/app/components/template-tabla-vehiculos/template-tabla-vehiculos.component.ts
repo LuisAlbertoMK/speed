@@ -61,8 +61,7 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
     }
   }
   irPagina(pagina, data){
-    console.log(data);
-    
+      
     const {cliente, sucursal, id: vehiculo, tipo } = data
     const { rol, uid, sucursal:sucursalID} = this._security.usuarioRol()
     let queryParams = {}
@@ -88,9 +87,6 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
         queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo,}
       }
     }
-   
-    
-    
     this.router.navigate([`/${pagina}`], { queryParams });
   }
 

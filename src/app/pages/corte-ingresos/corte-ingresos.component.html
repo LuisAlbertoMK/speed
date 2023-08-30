@@ -1,6 +1,8 @@
+<app-template-navegacion></app-template-navegacion>
+
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-    <button class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modal-registro-metas" #tooltip="matTooltip"
+    <button aria-label="Registro de objetivos" class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modal-registro-metas" #tooltip="matTooltip"
     matTooltip="Registro objetivo mes">
       <i class="fa fa-keyboard"></i>
     </button>
@@ -8,7 +10,7 @@
 </div>
 <ng-container *ngIf="_sucursal ==='Todas'">
   <form  [formGroup]="my_control">
-    <select name="sucursales" id="sucursales" class="form-control form-control-sm custom-select" formControlName="sucursal">
+    <select aria-label="Lista sucursales" name="sucursales" id="sucursales" class="form-control form-control-sm custom-select" formControlName="sucursal">
       <option value="" >Selecciona sucursal</option>
       <option [value]="sucu.id" *ngFor="let sucu of sucursales_array" >
           {{sucu.sucursal}}
@@ -24,7 +26,7 @@
     <input name="final" matEndDate formControlName="final" readonly placeholder="Final">
   </mat-date-range-input>
   <div class="input-group-append">
-    <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
+    <button aria-label="boton de calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
       <i class="fa fa-calendar-alt"></i>
     </button>
   </div>

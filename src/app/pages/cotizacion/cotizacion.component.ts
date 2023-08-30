@@ -153,8 +153,11 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
           // console.log(cotizacion);
           
           const pagoName = this.formasPago.find(d=>d.id === String(cotizacion.formaPago)).pago
+
+          const data_sucursal = this.sucursales_array.find(s=>s.id === String(cotizacion.sucursal))
           return { ...cotizacion, 
-            data_cliente: cli, 
+            data_cliente: cli,
+            data_sucursal,
             data_vehiculo,
             fullname: `${cli.nombre} ${cli.apellidos}`,
             placas: data_vehiculo.placas,
@@ -240,11 +243,16 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
 
   filtra_informacion(){
     // console.log(this.filtro_sucursal);
+
+    // console.log(this.filtro_sucursal);
+    
     const resultados = (this.filtro_sucursal === 'Todas') ? this.cotizacionesList : this.cotizacionesList.filter(c=>c.sucursal === this.filtro_sucursal)
     this.newPagination(resultados)
   }
   exportar(){
     if (this.cotizacionesList.length) {
+      console.log(this.dataSource.data);
+      
       this._exporter_excel.exportToExcelCotizaciones(this.dataSource.data,'exportacion')
     }else{
       this._publicos.swalToast('ningun dato ...',0, 'top-start')

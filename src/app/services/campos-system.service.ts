@@ -113,6 +113,32 @@ export class CamposSystemService {
     {campos:'gasto_Tipo', reemplaza:'Tipo de gasto'},
     {campos:'fecha_recibido', reemplaza:'Fecha registro'},
     {campos:'numero_os', reemplaza:'No. OS'},
+    {campos:'anio_inicial', reemplaza:'Año inicial'},
+    {campos:'anio_final', reemplaza:'Año final'},
+  ]
+  campos_navegacion= [
+    {campos:'inicio', reemplaza:'Inicio'},
+    {campos:'catalogos', reemplaza:'catálogos'},
+    {campos:'citas', reemplaza:'citas'},
+    {campos:'clientes', reemplaza:'clientes'},
+    {campos:'configuracion', reemplaza:'configuración'},
+    {campos:'cotizacion', reemplaza:'cotizaciones'},
+    {campos:'sucursales', reemplaza:'sucursales'},
+    {campos:'servicios', reemplaza:'servicios'},
+    {campos:'usuarios', reemplaza:'usuarios'},
+    {campos:'recordatorios', reemplaza:'recordatorios'},
+    {campos:'historial-vehiculo', reemplaza:'historial vehículo'},
+    {campos:'historial-cliente', reemplaza:'historial cliente'},
+    {campos:'cotizacionNueva', reemplaza:'Nueva cotización'},
+    {campos:'ServiciosConfirmar', reemplaza:'Servicios Confirmar'},
+    {campos:'modificaRecepcion', reemplaza:'modifica Recepción'},
+    {campos:'reporteGastos', reemplaza:'reporte Gastos'},
+    {campos:'registraProblemas', reemplaza:'registra Problemas'},
+    {campos:'eliminarEmpresa', reemplaza:'eliminar Empresa'},
+    {campos:'facturacion', reemplaza:'facturación'},
+    {campos:'administracion', reemplaza:'Administración'},
+    {campos:'editar-os', reemplaza:'editar O.S'},
+    {campos:'corte', reemplaza:'corte gastos'},
   ]
 
   formasPago = [

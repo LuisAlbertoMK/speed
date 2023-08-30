@@ -1,17 +1,5 @@
 
-<div class="content-header">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item pointer"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
-            <li class="breadcrumb-item pointer"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li>
-            <li class="breadcrumb-item active">Historial de vehículo</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
+<app-template-navegacion></app-template-navegacion>
 
 <div class="card">
   <div class="card-body">
@@ -418,7 +406,7 @@
                                     <div class="row m-1">
                                       <ng-container *ngFor="let per of row.personalizados">
                                         <div class="col-lg-3 col-md-3 col-sm-4 col-12">
-                                          <img [src]="per.data64" class="img-thumbnail" [alt]="per.nombre" style="max-width: 150px; max-height: 150px;">
+                                          <img alt="informacion de la imagen" [src]="per.data64" class="img-thumbnail" [alt]="per.nombre" [style]="'max-width: 150px; max-height: 150px;'">
                                         </div>
                                       </ng-container>
                                       <ng-container *ngIf="!row.personalizados">

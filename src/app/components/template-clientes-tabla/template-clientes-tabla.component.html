@@ -1,19 +1,19 @@
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-    <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalNewUser" (click)="data_cliente = {}">
+    <button aria-label="newUSer" class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modalNewUser" (click)="data_cliente = {}">
       <i class="fa fa-user-plus"></i>
     </button>
-    <button class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="data_cliente = {}">
+    <button aria-label="modalVehiculo" class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" (click)="data_cliente = {}">
       <i class="fa fa-car"></i>
     </button>
     <!-- <button class="btn btn-sm btn-secondary m-1" ><i class="fa fa-filter"></i></button> -->
-    <button class="btn btn-sm btn-secondary m-1" [matMenuTriggerFor]="filtroTipo"><i class="fa fa-filter"></i></button>
+    <button aria-label="Menutipo" class="btn btn-sm btn-secondary m-1" [matMenuTriggerFor]="filtroTipo"><i class="fa fa-filter"></i></button>
       <mat-menu #filtroTipo="matMenu">
         <button mat-menu-item (click)="filtro_tipo = tipo; filtra_informacion()" *ngFor="let tipo of tipos_cliente">{{tipo | capitalizarUno}}</button>
       </mat-menu>
       
       <ng-container *ngIf="_sucursal === 'Todas'">
-        <button class="btn btn-sm btn-secondary m-1" [matMenuTriggerFor]="filtroSucursal"><i class="fa fa-filter"></i></button>
+        <button aria-label="MenuSucursal" class="btn btn-sm btn-secondary m-1" [matMenuTriggerFor]="filtroSucursal"><i class="fa fa-filter"></i></button>
         <mat-menu #filtroSucursal="matMenu">
           <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
           <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>

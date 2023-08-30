@@ -75,3 +75,22 @@ tr.anima{
 .full-width-bottom-sheet {
   width: 100%;
 }
+
+
+
+
+/* Estilo para el span */
+span.etiqueta {
+  font-size: 12px;
+  background-color: rgb(50, 146, 202);
+  color: white; /* Cambia el color del texto según tus preferencias */
+  padding: 4px 8px; /* Ajusta el espaciado según tus preferencias */
+  border-radius: 4px; /* Agrega esquinas redondeadas */
+  margin-right: 8px; /* Agrega un margen derecho para separar etiquetas */
+  margin-top: 4px; /* Agrega un margen arriba */
+  margin-bottom: 4px; /* Agrega un margen abajo */
+  display: inline-block; /* Hace que las etiquetas ocupen solo el ancho necesario */
+}
+.pointer{
+  cursor: pointer;
+}

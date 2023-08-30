@@ -136,14 +136,14 @@
                   </select>
                     <ng-container *ngIf="form_cliente.controls['tipo'].value === 'flotilla' ">
                       <ng-container *ngIf="muestraFormEmpresa; else elseTemplate">
-                        <button [disabled]="form_cliente.controls['tipo'].value === 'particular' "
-                          class="btn btn-sm btn-outline-primary" type="button"
+                        <button [disabled]="form_cliente.controls['tipo'].value === 'particular' " aria-label="btn registro"
+                          class="btn btn-sm btn-outline-primary" type="button" 
                           (click)="mensajeEmpresa(!muestraFormEmpresa)">
                           <i class="fa fa-layer-minus"></i>
                         </button>
                       </ng-container>
                       <ng-template #elseTemplate>
-                        <button [disabled]="form_cliente.controls['tipo'].value === 'particular'" *ngIf="ROL !== 'cliente'"
+                        <button  aria-label="btn registro" [disabled]="form_cliente.controls['tipo'].value === 'particular'" *ngIf="ROL !== 'cliente'"
                           class="btn btn-sm btn-outline-danger" type="button" (click)="registraEmpresaShow = true">
                           <i class="fa fa-layer-plus"></i>
                         </button>

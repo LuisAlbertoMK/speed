@@ -1,67 +1,38 @@
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
-          <li class="breadcrumb-item"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li>
-          <li class="breadcrumb-item active">Nueva cotizacion</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</div>
+<app-template-navegacion></app-template-navegacion>
 
 <div class="floating-btn" data-bs-toggle="modal" data-bs-target="#modalNewUser" #tooltip="matTooltip" matTooltip="Registra nuevo cliente" (click)="editar_cliente = false">
   <span class="icon fa fa-user fa-1x"></span>
 </div>
 
-<!-- <div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-    <button class="btn btn-group-sm btn-sm btn-outline-primary" type="button" id="button-addon1"  data-bs-toggle="modal" data-bs-target="#modalNewUser"
-        #tooltip="matTooltip" matTooltip="Registra nuevo cliente" (click)="data_cliente = {}">
-            <i class="fa fa-user-plus"></i>
-        </button>
-  </div>
-</div> -->
+
 <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
-
-<!-- <ng-container *ngIf="infoCotizacion.data_cliente['id']">
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end m-1">
-      <button class="btn btn-sm btn-primary" (click)="editar_cliente = true" data-bs-toggle="modal" data-bs-target="#modalNewUser">Editar información</button>
-    </div>
-  </div>
-</ng-container> -->
-
 
 <app-cliente-tarjeta [cliente]="infoCotizacion.data_cliente" ></app-cliente-tarjeta>
 
 <!-- <app-vehiculo-tarjeta [vehiculo]="infoCotizacion.data_vehiculo"></app-vehiculo-tarjeta> -->
 
-
-
-<div class="card border-dark">
-  <div class="card-body">
-    <!-- <pre>{{ infoCotizacion.vehiculos | json}}</pre> -->
-    <ng-container *ngIf="infoCotizacion.cliente">
-      <label for="vehiculos-lista">Placas de vehiculos disponibles</label>
-      <div class="input-group mb-3">
-        <select id="vehiculos-lista" class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
-          <option  value="">Selecciona placas</option>
-          <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
-        </select>
-        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
-          <i class="fa fa-car"></i>
-        </button>
+<ng-container *ngIf="infoCotizacion.cliente">
+  <div class="card border-dark">
+    <div class="card-body">
+        <label for="vehiculos-lista">Placas de vehiculos disponibles</label>
+        <div class="input-group mb-3">
+          <select id="vehiculos-lista" class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
+            <option  value="">Selecciona placas</option>
+            <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
+          </select>
+          <button aria-label="modalVehiculo" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
+            <i class="fa fa-car"></i>
+          </button>
+        </div>
+      
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+        <app-vehiculo-tarjeta [vehiculo]="infoCotizacion.data_vehiculo"></app-vehiculo-tarjeta>
       </div>
-    </ng-container>
-    <h1>Informacion de vehiculo</h1>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
-      <app-vehiculo-tarjeta [vehiculo]="infoCotizacion.data_vehiculo"></app-vehiculo-tarjeta>
     </div>
   </div>
-</div>
+</ng-container>
+
+
 <div class="alert alert-info text-center">Precio de promoción solo aplica pagando de contado</div>
 <form [formGroup]="formPlus">
   <div class="row text-start">
@@ -148,7 +119,7 @@
   <div class="col text-end">
     <section class="example-section " [formGroup]="checksBox" id="checks" >
       <mat-checkbox class="m-1" formControlName="iva" checked="true" name="iva" >IVA</mat-checkbox>
-      <mat-checkbox class="m-1" formControlName="detalles"  name="detalles">Detalles PDF</mat-checkbox>
+      <mat-checkbox class="m-1" formControlName="detalles"  name="detalles">Mostrar costos en PDF </mat-checkbox>
     </section>
   </div>
 </div>
@@ -168,7 +139,7 @@
     <ng-container matColumnDef="cantidad">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
       <td mat-cell *matCellDef="let row"> 
-      <input type="number" min="1"  maxlength="5" onkeypress="soloNumeros(event)" [value]="row.cantidad" 
+      <input aria-label="cantidad" type="number" min="1"  maxlength="5" onkeypress="soloNumeros(event)" [value]="row.cantidad" 
       (change)="editar('cantidad',row, cantidadEle.value)" #cantidadEle class="smallInput">
       </td>
     </ng-container>
@@ -178,7 +149,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo sobrescrito </th>
       <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1.1+'px'}"> 
 
-        <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" 
+        <input  aria-label="costoSobrescrito" type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" 
       (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
       <!-- {{row.sobrescrito | monedas}} -->
          </td>
@@ -250,11 +221,11 @@
                     {{item.descripcion}}
                   </td>
                   <td class="text-center">
-                    <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="soloNumeros(event)" class="smallInput"
+                    <input aria-label="cantidadSub" type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="soloNumeros(event)" class="smallInput"
                             (change)="editar_subelemento_paquete('cantidad',row,item, cantidadSub.value)" #cantidadSub>
                   </td>
                   <td class="text-end">
-                    <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="validarDecimal(event)" class="smallInput"
+                    <input aria-label="CostoSub" type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="validarDecimal(event)" class="smallInput"
                             (change)="editar_subelemento_paquete('costo',row,item, cantidadCosto.value)" #cantidadCosto>
                   </td>
                   <td class="text-end">{{item.precio | monedas}}</td>
@@ -310,7 +281,7 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar paquete</h1>
-      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+      <button id="buscar-paquete" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
         <i class="fas fa-times"></i>
       </button>
     </div>

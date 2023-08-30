@@ -19,7 +19,7 @@ export class ClienteTarjetaComponent implements OnInit, OnChanges {
   constructor(private _clientes: ClientesService, private fb: FormBuilder, private _publicos:  ServiciosPublicosService,
   private _empresas: EmpresasService) { }
     
-  @Input() cliente:any = null
+  @Input() cliente:any = {}
   @Input() editar:boolean  = false
 
   camposCliente    =  [ ...this._clientes.camposCliente_show ]

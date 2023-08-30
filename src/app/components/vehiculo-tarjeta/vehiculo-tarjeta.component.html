@@ -1,12 +1,14 @@
-
-    <div class="card">
-      <div class="card-body">
-        <div class="row" *ngIf="vehiculo">
-          <ng-container *ngFor="let item of camposVehiculo">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-uppercase text-start" *ngIf="vehiculo[item.valor]">
-              <strong >{{item.show}} </strong>: {{vehiculo[item.valor]}}
-            </div>
-          </ng-container>
-        </div>
+<ng-container *ngIf="vehiculo">
+  <div class="card">
+    <div class="card-body">
+      <h1>Información de vehículo</h1>
+      <div class="row" *ngIf="vehiculo">
+        <ng-container *ngFor="let item of camposVehiculo">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-uppercase text-start" *ngIf="vehiculo[item.valor]">
+            <strong >{{item.show}} </strong>: {{vehiculo[item.valor]}}
+          </div>
+        </ng-container>
       </div>
     </div>
+  </div>
+</ng-container>

@@ -610,6 +610,7 @@ export class PdfRecepcionService {
     { text: `C) en caso de requerir un servicio adicional el cliente será notificado antes de realizar dicho servicio`,alignment: 'justify', style:'terminos2' },
     { text: `D) la empresa no se hace responsable por artículos de valor no reportados al momento de recibir el vehículo`,alignment: 'justify', style:'terminos2' },
     // { text: `E) Cualquier diagnóstico y cotización que no sea autorizada tendra un costo minimo de $ 499.00 pesos'`,alignment: 'justify', style:'terminos' },
+    { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },
     ]
     let limites_ = []
 
@@ -638,6 +639,7 @@ export class PdfRecepcionService {
     if (donde.length) {
      
       info.push({ columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },)
+      
       info.push({ text: `${'Detalles en vehiculos'}`,alignment: 'center', style:'otro' })
 
       donde.forEach((c, index)=>{

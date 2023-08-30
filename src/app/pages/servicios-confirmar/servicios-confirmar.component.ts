@@ -87,7 +87,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   
   
 
-  sinDetalles: boolean = true
+  sinDetalles: boolean = false
   kilometraje:number =1234; diasEntrega:number = null
 
   
@@ -169,6 +169,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   modelo:string
   ngOnInit(): void {
     this.rol()
+    
   }
   ngAfterViewInit() {
     this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
@@ -190,6 +191,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
      this.enrutamiento = params
      this.acciones()
     });
+    this.cambiaTodosCheckA(true)
   }
   vigila_informacion_cliente({sucursal, cliente}){
     const starCountRef = ref(db, `clientes/${sucursal}/${cliente}`)
@@ -855,7 +857,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       // this.vigila_vehiculos_cliente()
     }
   }
-  continuar(){
+  async continuar(){
+
+    
 
 
     // if (this.infoConfirmar.checkList) {
@@ -878,6 +882,25 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     
     this.faltante_s = faltante_s
     if (!ok) return
+
+    const {cliente, sucursal, vehiculo} = this.infoConfirmar
+
+    const existen:any[] = await this._servicios.consulta_recepciones_cliente_satus({ruta: `recepciones/${sucursal}/${cliente}`})
+    
+    const verificacion = existen
+    .filter(v=>v.vehiculo === vehiculo)
+    .map(r=>{
+      console.log(r);
+      
+      return r.status
+    })
+    const status_encontrado = !verificacion.includes('entregado');
+    
+    if (status_encontrado){
+      this._publicos.mensajeSwal('El vehiculo cuenta con orden abierta ',0, true ,`Cerrar / modificar orden del vehiculo que se encuentra en la sucursal`)
+      return
+    } 
+    
     this.infoConfirmar.personalizados = this.archivos
     this.infoConfirmar.personalizados = []
     let arregloPer = []
@@ -940,7 +963,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
           showDenyButton: true,
           showCancelButton: false,
-          confirmButtonText: 'Previsualizar PDF cotizacion',
+          confirmButtonText: 'Previsualizar PDF recepción',
           denyButtonText: `Guardar y enviar correo`,
           cancelButtonText:`cancelar`,
         }).then((result) => {

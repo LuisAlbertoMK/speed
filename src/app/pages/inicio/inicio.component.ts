@@ -67,7 +67,7 @@ export class InicioComponent implements OnInit {
       this.Cliente_rol = true
     }
 
-    }
+  }
   leerToken(){
     if (localStorage.getItem('token')) {
       this.userToken = localStorage.getItem('token')
@@ -89,8 +89,6 @@ export class InicioComponent implements OnInit {
     }else{
       return false
     }
-    
-    
   }
   brow(){
     var ua= navigator.userAgent, tem, 
@@ -135,6 +133,6 @@ export class InicioComponent implements OnInit {
       }, 1000);
      
     }
-}
+  }
   
 }

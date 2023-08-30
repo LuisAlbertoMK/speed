@@ -1,0 +1,15 @@
+a{
+    text-decoration: none;
+    cursor: pointer;
+    color: #007bff; /* Color del texto del enlace (puedes cambiarlo) */
+    text-decoration: none; /* Quita la subrayado predeterminado del enlace */
+    transition: color 0.3s; /* Transición de color suave al pasar el mouse */
+    font-weight: bolder;
+  }
+  
+  /* Estilo para el enlace al pasar el mouse (hover) */
+  a:hover {
+    color: #3380d8; /* Cambia el color del texto al pasar el mouse */
+    font-weight: bolder;
+  }
+  

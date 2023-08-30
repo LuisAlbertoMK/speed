@@ -1,18 +1,14 @@
+<app-template-navegacion></app-template-navegacion>
 
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <ol class="breadcrumb float-sm-right">
-          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/cotizacion']">Regresar</a></li> -->
-          <li class="breadcrumb-item"><a class="breadcrumb-item pointer" (click)="regresar()">Regresar</a></li>
-          <li class="breadcrumb-item active">Nueva cotización</li>
-        </ol>
-      </div>
-    </div>
+<!-- <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
+  <i class="fa fa-car"></i>
+  </button> -->
+
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+    <i class="fas fa-hands-helping fa-2x text-info pointer" data-bs-toggle="modal" data-bs-target="#modalAyuda" #tooltip="matTooltip" matTooltip="Ayuda de proceso"></i>
   </div>
 </div>
-
 <app-clientes-list (dataCliente)="infoCliente ( $event )" ></app-clientes-list>
 
 
@@ -32,18 +28,18 @@
 <div class="card border-dark">
   <div class="card-body">
     <ng-container *ngIf="infoConfirmar.cliente">
-      <label for="vehiculos-cliente">Placas de vehiculos disponibles </label>
+      <label for="vehiculos-cliente">Placas de vehículos disponibles </label>
       <div class="input-group mb-3">
         <select class=" form-select  form-select-sm text-uppercase" [ngModel]="extra" #valV  (change)="vehiculo( valV.value )" id="vehiculos-cliente">
           <option [selected]="extra" value="" >Seleccionar vehiculo</option>
           <option [value]="v.id" *ngFor="let v of infoConfirmar.vehiculos">{{v.placas}}</option>
         </select>
-        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
+        <button  aria-label="boton nuevo vehículo" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
           <i class="fa fa-car"></i>
           </button>
       </div>
     </ng-container>
-    <h1>Informacion de vehiculo</h1>
+    
     <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1"> -->
       <app-vehiculo-tarjeta [vehiculo]="infoConfirmar.data_vehiculo"></app-vehiculo-tarjeta>
     <!-- </div> -->
@@ -75,7 +71,8 @@
         <ng-container matColumnDef="cantidad">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
           <td mat-cell *matCellDef="let row"> 
-          <input type="number" min="1"  maxlength="5" onkeypress="soloNumeros(event)" [value]="row.cantidad" 
+          <label for="cantidad{{row.id}}" [style]="'visibility: hidden;'">Cantidad</label>
+          <input id="cantidad{{row.id}}" type="number" min="1"  maxlength="5" onkeypress="soloNumeros(event)" [value]="row.cantidad" 
           (change)="editar('cantidad',row, cantidadEle.value)" #cantidadEle class="smallInput">
           </td>
         </ng-container>
@@ -84,8 +81,8 @@
         <ng-container matColumnDef="sobrescrito">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo sobrescrito </th>
           <td mat-cell *matCellDef="let row"> 
-    
-            <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" 
+            <label for="costo{{row.id}}" [style]="'visibility: hidden;'">Cantidad</label>
+            <input id="costo{{row.id}}" type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" 
           (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
           <!-- {{row.sobrescrito | monedas}} -->
              </td>
@@ -103,7 +100,7 @@
           <td mat-cell *matCellDef="let row"> 
           <!-- aqui el btn para eliminar -->
           <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaElemento(row)"></i>
-          <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" 
+          <button aria-label="boton agregar elemento a paquete" data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" 
                   (click)="idPaqueteEditar = row.index; idPaqueteEditarBoolean = true" *ngIf="row.tipo === paquete">
                   <i class="fa fa-plus"></i>
                 </button>
@@ -146,12 +143,14 @@
                         {{item.nombre | capitalizarUno}}
                       </td>
                       <td class="text-center">
-                        <input  type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="soloNumeros(event)" class="smallInput"
+                        <label for="cantidad{{i}}" [style]="'visibility: hidden;'">Cantidad</label>
+                        <input  id="cantidad{{i}}" type="number"  min="1" [value]="item.cantidad" maxlength="5" onkeypress="soloNumeros(event)" class="smallInput"
                                 (change)="editar_subelemento_paquete('cantidad',row,item, cantidadSub.value)" #cantidadSub>
                         <!-- {{item.cantidad}} -->
                       </td>
                       <td class="text-end">
-                        <input  type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="validarDecimal(event)" class="smallInput"
+                        <label for="costo{{i}}" [style]="'visibility: hidden;'">costo</label>
+                        <input  id="costo{{i}}" type="number"  min="0" [value]="item.costo" maxlength="5" onkeypress="validarDecimal(event)" class="smallInput"
                                 (change)="editar_subelemento_paquete('costo',row,item, cantidadCosto.value)" #cantidadCosto>
                               <!-- {{item.costo | monedas}} -->
                       </td>
@@ -236,14 +235,14 @@
           <mat-tab label="Check detalles">
             <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-                <mat-checkbox type="checkbox" class="example-margin" (click)="cambiaTodosCheckA(sinDetalles)" [(ngModel)]="sinDetalles">Sin detalles</mat-checkbox>
+                <mat-checkbox type="checkbox" class="example-margin" (click)="cambiaTodosCheckA(sinDetalles)" (click)="sinDetalles = !sinDetalles">Sin detalles</mat-checkbox>
               </div>
               <ng-container *ngIf="!sinDetalles">
                 <div class="card col-lg-3 col-md-3 col-sm-6 col-xs-6 col-4" *ngFor="let item of infoConfirmar.detalles; let i = index">
-                  <img [src]="'../../../assets/imagenes_detalles/'+item.valor+'.jpg'" class="card-img-top  rayar" [alt]="item.show" width="150px" height="150px">
+                  <img alt="imagen de detalles" [src]="'../../../assets/imagenes_detalles/'+item.valor+'.jpg'" class="card-img-top  rayar" [alt]="item.show" width="150px" height="150px">
                   <div class="card-body">
                     <ng-container class="card-text">
-                      <mat-checkbox type="checkbox" [checked]="item.status" class="example-margin" [id]="item.valor" (click)=" cambiarCheck( i, !item.status )">
+                      <mat-checkbox type="checkbox" [checked]="item.status" class="example-margin" [id]="item.valor+i" (click)=" cambiarCheck( i, !item.status )">
                         {{item.show}}
                       </mat-checkbox>
                     </ng-container>
@@ -349,8 +348,6 @@
             <label for="kilometraje">Kilometraje: </label>
           </div>
           <div class="col-auto">
-            <!-- onkeypress="valideKey(event);" -->
-            <!-- (change)="revisarAvance()" -->
             <input type="number" id="kilometraje" onkeypress="soloNumeros(event)"
              [ngClass]="{'is-invalid': kilometraje<=0}" [(ngModel)]="kilometraje"
               class="form-control form-control-sm" min="0">
@@ -358,28 +355,61 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12" [ngClass]="{'NoChecado':!item.status}"
-          *ngFor="let item of infoConfirmar.checkList; let index = index">
+        <div
+          class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-12"
+          [ngClass]="{'NoChecado': !item.status}"
+          *ngFor="let item of infoConfirmar.checkList; let index = index"
+        >
           <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" [ngClass]="{'col-lg-12 col-md-12': item.valor === 'nivel_gasolina'}"><strong>{{item.show | capitalizarUno}}</strong>:</div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" [ngClass]="{'col-lg-12 col-md-12': item.valor === 'nivel_gasolina'}">
-              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <div
+              class="col-lg-6 col-md-12 col-sm-12 col-12 text-start"
+              [ngClass]="{'col-lg-12 col-md-12': item.valor === 'nivel_gasolina'}"
+            >
+              <strong>{{ item.show | capitalizarUno }}</strong>:
+            </div>
+            <div
+              class="col-lg-6 col-md-6 col-sm-12 col-12 text-start"
+              [ngClass]="{'col-lg-12 col-md-12': item.valor === 'nivel_gasolina'}"
+            >
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
                 <ng-container *ngFor="let ite of item['opciones']; let i = index">
-                  <input type="radio" class="btn-check" [checked]="item.status === ite" [name]="item.valor+ite" [id]="item.valor+ite" autocomplete="off" checked>
-                  <!-- (click)="cambiarSattus(index,ite)"  -->
-                  <label class="btn btn-sm" (click)="cambiarStatusCheckList(index,ite)" [for]="item.valor+ite" [ngStyle]="{'min-width':(miniColumnas)*.6+'px'}"
-                  [ngClass]="
-                  {'btn-outline-danger': ite==='no' || ite ==='dañado' || ite==='vacio', 'btn-outline-warning': ite!=='lleno' && ite!=='vacio' && ite!=='si',
-                  'btn-outline-success': ite==='si' || ite==='lleno'}
-                  " 
-                  [for]="item.valor+ite">{{ite}}</label>
+                  <input
+                    aria-label="boton"
+                    type="radio"
+                    class="btn-check"
+                    [checked]="item.status === ite"
+                    [name]="item.valor + ite"
+                    [id]="item.valor + ite"
+                    autocomplete="off"
+                    checked
+                  />
+                  <label
+                    class="btn btn-sm"
+                    (click)="cambiarStatusCheckList(index,ite)"
+                    [for]="item.valor + ite"
+                    [ngStyle]="{ 'min-width': miniColumnas * 0.6 + 'px' }"
+                    [ngClass]="{
+                      'btn-outline-danger':
+                        ite === 'no' || ite === 'dañado' || ite === 'vacio',
+                      'btn-outline-warning':
+                        ite !== 'lleno' && ite !== 'vacio' && ite !== 'si',
+                      'btn-outline-success': ite === 'si' || ite === 'lleno'
+                    }"
+                    [for]="item.valor + ite"
+                  >
+                    {{ ite }}
+                  </label>
                 </ng-container>
               </div>
-              </div>
-
+            </div>
           </div>
         </div>
       </div>
+      
       
       
       
@@ -398,7 +428,7 @@
             <input class="form-control" readonly [matDatepickerFilter]="myFilter" [matDatepicker]="picker" (dateChange)="addEvent('change', $event)" id="picker-fecha">
             <mat-datepicker #picker></mat-datepicker>
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary"  (click)="picker.open()" type="button" id="button-addon2"><i class="fa fa-calendar-alt"></i></button>
+              <button aria-label="abrir calendario" class="btn btn-outline-secondary"  (click)="picker.open()" type="button" id="button-addon2"><i class="fa fa-calendar-alt"></i></button>
             </div>
           </div>
         </div>
@@ -425,8 +455,13 @@
       </div>
       <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
         <button class="btn btn-sm btn-danger m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" matStepperPrevious >Anterior</button>
-        <button class="btn btn-sm btn-danger m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="limpiarFirma()"   *ngIf="infoConfirmar.firma_cliente">Limpiar Firma</button>
-        <button class="btn btn-sm btn-success m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="firmar()"  *ngIf="!infoConfirmar.firma_cliente">Firmar recepción</button>
+        <!-- <button class="btn btn-sm btn-danger m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="limpiarFirma()"   *ngIf="infoConfirmar.firma_cliente">Limpiar Firma</button> -->
+        <button aria-label="firmar" class="btn btn-sm btn-primary m-1 " #tooltip="matTooltip" matTooltip="Firmar" (click)="firmar()"  *ngIf="!infoConfirmar.firma_cliente">
+          <i class="fas fa-marker"></i>
+        </button>
+        <button aria-label="limpiar" class="btn btn-sm btn-success m-1 "  #tooltip="matTooltip" matTooltip="Limpiar" (click)="limpiarFirma()" >
+          <i class="fas fa-eraser"></i>
+        </button>
       </div>
     </div>
   </mat-step>
@@ -524,6 +559,30 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-content">
       <div class="modal-body m-2">
         <!-- <app-data-facturacion-cliente [clienteID]="clienteId"></app-data-facturacion-cliente> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modalAyuda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body m-2">
+        <iframe
+          width="100%"
+          height="65%"
+          src="https://www.youtube.com/embed/IlLmI5j7el0"
+          frameborder="0"
+          allowfullscreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        ></iframe>
       </div>
     </div>
   </div>

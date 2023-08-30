@@ -1266,7 +1266,20 @@ export class ServiciosPublicosService {
       if (cadena.length) {
         cadenanew = cadena
         arreglo.forEach(r=>{
-          cadenanew = cadenanew.replace(r['campos'],r.reemplaza)
+          const regex = new RegExp(`\\b${r['campos']}\\b`, 'g');
+          cadenanew = cadenanew.replace(regex,r.reemplaza).trim()
+        })
+      }
+      return cadenanew
+    }
+    reemplaza_strig_navegacion(cadena:string){
+      const arreglo = this._campos.campos_navegacion
+      let cadenanew = null
+      if (cadena.length) {
+        cadenanew = cadena
+        arreglo.forEach(r=>{
+          const regex = new RegExp(`\\b${r['campos']}\\b`, 'g');
+          cadenanew = cadenanew.replace(regex,r.reemplaza).trim()
         })
       }
       return cadenanew

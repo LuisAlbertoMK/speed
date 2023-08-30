@@ -157,6 +157,7 @@ import { CorteIngresosComponent } from './pages/corte-ingresos/corte-ingresos.co
 import { RegistraObjetivoComponent } from './components/registra-objetivo/registra-objetivo.component';
 import { CotizacionClienteComponent } from './pages/cotizacion-cliente/cotizacion-cliente.component';
 import { HistorialVehiculoClienteComponent } from './pages/historial-vehiculo-cliente/historial-vehiculo-cliente.component';
+import { TemplateNavegacionComponent } from './components/template-navegacion/template-navegacion.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -245,7 +246,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CorteIngresosComponent,
     RegistraObjetivoComponent,
     CotizacionClienteComponent,
-    HistorialVehiculoClienteComponent
+    HistorialVehiculoClienteComponent,
+    TemplateNavegacionComponent
   ],
   imports: [
     BrowserModule,

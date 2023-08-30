@@ -1,16 +1,4 @@
-<!-- <button class="btn btn-sm btn-primary" (click)="unirResultados()">unirResultados</button> -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
-          <li class="breadcrumb-item active">Reporte de gastos</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</div>
+<app-template-navegacion></app-template-navegacion>
 
 
 <div class="row">
@@ -37,7 +25,7 @@
               <h3>Obtener el sobrante de sucursal y dia especifico</h3>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-              <select class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value;" id="sucursal">
+              <select aria-label="Lista de sucursales" class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value;" id="sucursal">
                 <option value="">Selecciona</option>
                 <option [value]="s.id"  *ngFor="let s of sucursales_array" >{{s.sucursal}}</option>
               </select>
@@ -45,11 +33,11 @@
             <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-1">
               <div class="input-group mb-3 ">
                 <form  [formGroup]="rangeBarrido">
-                  <input (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" id="pickerBarrido" >
+                  <input aria-label="calendario" (click)="pickerBarrido.open()" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" id="pickerBarrido" >
                 </form>
                 <mat-datepicker #pickerBarrido></mat-datepicker>
                 <div class="input-group-append">
-                  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
+                  <button aria-label="Boton de calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
                     <i class="fa fa-calendar-alt"></i>
                   </button>
                 </div>
@@ -82,18 +70,18 @@
         <input matEndDate formControlName="end" readonly placeholder="Final" id="final">
       </mat-date-range-input>
       <div class="input-group-append">
-        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
+        <button aria-label="calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
           <i class="fa fa-calendar-alt"></i>
         </button>
       </div>
     </div>
-    <button class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
+    <button aria-label="Boton de filtro" class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
     matTooltip="filtro Tipo"><i class="fa fa-filter"></i></button>
     <mat-menu #filtroTipo="matMenu">
       <button mat-menu-item (click)="filtro_tipo = tipo; filtra_informacion()" *ngFor="let tipo of tipos_muestra">{{tipo | capitalizarUno}}</button>
     </mat-menu>
     <ng-container *ngIf="SUCURSAL === 'Todas'">
-      <button class="btn btn-sm btn-danger m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
+      <button aria-label="boton filtro de sucursal" class="btn btn-sm btn-danger m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
       matTooltip="filtro sucursal"><i class="fa fa-filter"></i></button>
       <mat-menu #filtroSucursal="matMenu">
         <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
@@ -240,7 +228,7 @@
                 <ng-template #elseTemplate>
                   <p>Modificar su cantidad </p>
                   <span>para modificar es necesario presionar enter para guardar cambios</span>
-                  <input type="number" [value]="row.monto" [name]="row.id" [id]="row.id" #miCaja (keyup.enter)="accion({accion:'modificar', data: row, monto_caja: miCaja.value })" class="form-control form-control-sm mr-1"> &nbsp; &nbsp;
+                  <input aria-label="caja de texto modifica cantidad" type="number" [value]="row.monto" [name]="row.id" [id]="row.id" #miCaja (keyup.enter)="accion({accion:'modificar', data: row, monto_caja: miCaja.value })" class="form-control form-control-sm mr-1"> &nbsp; &nbsp;
                 </ng-template>
               </div>
              </div>
