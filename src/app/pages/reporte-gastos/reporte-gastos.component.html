@@ -76,19 +76,21 @@
       </div>
     </div>
     <button aria-label="Boton de filtro" class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
-    matTooltip="filtro Tipo"><i class="fa fa-filter"></i></button>
+    matTooltip="filtro Tipo"><i class="fa fa-funnel-dollar"></i></button>
     <mat-menu #filtroTipo="matMenu">
       <button mat-menu-item (click)="filtro_tipo = tipo; filtra_informacion()" *ngFor="let tipo of tipos_muestra">{{tipo | capitalizarUno}}</button>
     </mat-menu>
     <ng-container *ngIf="SUCURSAL === 'Todas'">
       <button aria-label="boton filtro de sucursal" class="btn btn-sm btn-danger m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
-      matTooltip="filtro sucursal"><i class="fa fa-filter"></i></button>
+      matTooltip="filtro sucursal"><i class="fa fa-university"></i></button>
       <mat-menu #filtroSucursal="matMenu">
         <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
         <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
       </mat-menu>
     </ng-container>
-    <button class="btn btn-sm btn-success m-1" (click)="generaReporteExcelReporteGastos()">Genera excel</button>
+    <button class="btn btn-sm btn-success m-1" (click)="generaReporteExcelReporteGastos()">
+      Genera reporte gastos <i class="fa fa-file-excel"></i>
+    </button>
   </div>
 </div>
 <div class="mat-elevation-z8 table-responsive">

@@ -19,14 +19,14 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
         <ng-container *ngIf="SUCURSAL === 'Todas'">
             <button aria-label="Boton calendario" class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
-            matTooltip="Filtro sucursal"><i class="fa fa-filter"></i></button>
+            matTooltip="Filtro sucursal"><i class="fa fa-university"></i></button>
             <mat-menu #filtroSucursal="matMenu">
                 <button mat-menu-item (click)="sucursalFiltroReporte = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
             </mat-menu>
         </ng-container>
         
         <button aria-label="Boton calendario" class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
-        matTooltip="Filtro fecha"><i class="fa fa-filter"></i></button>
+        matTooltip="Filtro fecha"><i class="fa fa-calendar"></i></button>
         <mat-menu #filtroTipo="matMenu">
             <button mat-menu-item (click)="filtro_entregado_recibido = tipo.valor; filtra_informacion()" *ngFor="let tipo of filtros_entregado_recibido">{{tipo.show | capitalizarUno}}</button>
         </mat-menu>

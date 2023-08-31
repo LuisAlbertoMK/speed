@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "correciones de excel parte-1 (en proceso)"
+git commit -m "correciones de excel parte-2 fecha 31-08-2023 (en proceso)"
 git push -u origin
 
 

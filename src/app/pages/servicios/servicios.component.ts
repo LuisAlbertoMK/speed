@@ -234,8 +234,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const recepciones = ref(db, `recepciones`)
       onValue(recepciones, async (snapshot) => {
         if (snapshot.exists()) {
-          console.log('llamado');
-          
             this.consulta_ordenes()
         }
       })

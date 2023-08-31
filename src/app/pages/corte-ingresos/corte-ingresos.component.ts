@@ -238,16 +238,9 @@ export class CorteIngresosComponent implements OnInit {
 
     const muestra_gastos_ordenes = promesas_gastos_orden.flat()
 
-    // console.log(muestra_gastos_ordenes);
-    let orden =0
-    muestra_gastos_ordenes.forEach(g=>{
-      const {monto, status} = g
-      if (status) {
-        orden+= monto
-      }
-    })
+    const {inicial:fec_fa, final: fech_fa}= this.fecha_formateadas;
 
-    this.reporte.orden = orden
+    
 
 
     const arreglo_rutas = this.crea_ordenes_sucursal({arreglo_sucursal})
@@ -303,15 +296,39 @@ export class CorteIngresosComponent implements OnInit {
     const {inicial:fec_f, final: fech_f}= this.fecha_formateadas;
 
 
-    const filtro = muestra_ordenes.filter(r=>new Date(r.fecha_recibido) >= fec_f && new Date(r.fecha_recibido) <= fech_f && r.status === 'entregado' )
+    const filtro = muestra_ordenes.filter(r=>new Date(r.fecha_entregado) >= fec_f && new Date(r.fecha_entregado) <= fech_f && r.status === 'entregado' )
     
     this.recepciones_arr = filtro
+
+    // console.log(filtro);
+
+    // const filtro_fechas = muestra_gastos_ordenes.filter(r=>new Date(r.fecha_entregado) >= fec_fa && new Date(r.fecha_entregado) <= fech_fa && r.status_orden === 'entregado' )
+    let orden =0
+    // las fechas de los gastos de orden son aunque no esten teminadas
+
+    // console.log(filtro_fechas);
+    
+    filtro.forEach(g=>{
+      const {historial_gastos} = g
+      // console.log(historial_gastos);
+      const new_historial_gastos = [...historial_gastos]
+      new_historial_gastos.forEach(gas=>{
+        const {monto, status} = gas
+        if (status) {
+          orden+= monto
+        }
+      })
+      
+    })
+
+    this.reporte.orden = orden
+    
 
     filtro.forEach(f=>{
       const { reporte, status} = f
       if (status === 'entregado') {
-        const {total} = reporte
-        total_ventas += total 
+        const {subtotal} = reporte
+        total_ventas += subtotal 
       }
     })
     this.reporte.ventas = total_ventas

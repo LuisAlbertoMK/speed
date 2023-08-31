@@ -13,6 +13,26 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
           <input class="form-control" id="busqueda" (keyup)="applyFilter('paquetes',$event)" placeholder="Buscar paquete" #input>
         </div>
+
+        <section>
+          <form [formGroup]="filtros_paquetes">
+            <div class="row mb-1 mt-1">
+              <div class="col">
+                <select formControlName="marca" aria-label="Filtro por marca" id="filtro-marca" name="filtro-marca" class="form-control form-control-sm custom-select">
+                  <option selected value="">Selecciona marca</option>
+                  <option value="{{marca}}" *ngFor="let marca of marcas_vehiculos_id">{{marca}}</option>
+                </select>
+              </div>
+              <div class="col">
+                <select class="form-control form-control-sm custom-select"  aria-label="form-select-sm example" id="filtro-modelo"  name="filtro-modelo" formControlName="modelo">
+                  <option selected value="">Selecciona modelo</option>
+                  <option  [value]="modelo.modelo" *ngFor="let modelo of array_modelos_filtro" >{{modelo.modelo}}</option>
+                </select>
+              </div>
+            </div>
+          </form>
+         
+        </section>
         
         <div class="col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="table-responsive mat-elevation-z8">

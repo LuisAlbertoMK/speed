@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="card-body">
+        <h1><strong>Registro de vehículo compatible</strong></h1>
+        <form class="" [formGroup]="formulario_etiqueta" (ngSubmit)="colocar_etiqueta()">
+            <div class="form-row">
+                <div class="col-lg-4 col-md-4 col-sm-3 col-12 mb-3">
+                    <label for="marca-etiqueta" name="marca-etiqueta">Marca</label>
+                    <select name="marca-etiqueta" id="marca-etiqueta" formControlName="marca" class="form-control form-control-sm custom-select">
+                        <option value="">Selecciona marca</option>
+                        <option value="{{marca}}" *ngFor="let marca of marcas_vehiculos_id">{{marca}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 col-12 mb-3">
+                    <label for="modelo-etiqueta" name="modelo-etiqueta">Modelo</label>
+                    <select name="modelo-etiqueta" id="modelo-etiqueta" formControlName="modelo" class="form-control form-control-sm custom-select">
+                        <option  [value]="modelo.modelo" *ngFor="let modelo of array_modelos" >{{modelo.modelo}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 col-12 mb-3">
+                    <label for="anio-inicial-etiqueta" name="anio-inicial-etiqueta">De</label>
+                    <select name="anio-inicial-etiqueta" id="anio-inicial-etiqueta" formControlName="anio_inicial" class="form-control form-control-sm custom-select">
+                        <option [value]="item" *ngFor="let item of anios">{{item}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 col-12 mb-3">
+                    <label for="anio-final-etiqueta" name="anio-final-etiqueta">Hasta</label>
+                    <select name="anio-final-etiqueta" id="anio-final-etiqueta" formControlName="anio_final" class="form-control form-control-sm custom-select">
+                        <option [value]="item" *ngFor="let item of anios">{{item}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-sm btn-success">Registrar compatibilidad</button>
+                </div>
+            </div>
+            <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+        </form>
+        <ng-container *ngIf="vehiculos_compatibles.length">
+            <h4><strong>Vehículos  compatibles</strong> </h4>
+            <ng-container *ngFor="let item of vehiculos_compatibles; let i = index">
+                <span class="etiqueta">{{item.marca}} - {{item.modelo}}, {{item.anio_inicial}} a {{item.anio_final}} 
+                    <i class="fas fa-times pointer" (click)="elimina_etiqueta(i)"></i>
+                </span>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

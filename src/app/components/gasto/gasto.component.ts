@@ -232,7 +232,7 @@ export class GastoComponent implements OnInit, OnChanges {
     const fecha_muestra = this.transform_fecha(nueva_fecha, true)
     // console.log(recuperada);
     
-    this._publicos.mensaje_pregunta('Realizar deposito de fecha '+ fecha_muestra).then(({respuesta})=>{
+    this._publicos.mensaje_pregunta('Realizar gasto de fecha '+ fecha_muestra).then(({respuesta})=>{
       if (respuesta) {
 
         const clave_ = this._publicos.generaClave()

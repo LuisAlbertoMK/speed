@@ -515,7 +515,7 @@ export class ServiciosPublicosService {
             confirmButtonAriaLabel: 'Thumbs up, great!'
         })
     }
-    mensajeSwal(mensaje : string,icon_get:number,allowOutsideClick?, html?:string) {
+    mensajeSwal(mensaje : string,icon_get:number, outclik?:boolean, html?:string) {
       let icon
       switch (icon_get) {
         case 0: icon = 'error'; break;
@@ -527,7 +527,7 @@ export class ServiciosPublicosService {
       }
         Swal.fire({
             position: 'center', icon, title: mensaje, showConfirmButton: true,
-            allowOutsideClick,
+            allowOutsideClick: outclik,
             html
             // timer: 1500
         })
@@ -1324,7 +1324,35 @@ export class ServiciosPublicosService {
       const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
       return diffDias
     }
+    sonArreglosDeObjetosIdenticos(arr1: any[], arr2: any[]): boolean {
+      if (arr1.length !== arr2.length) {
+        return false; // Los arreglos tienen longitudes diferentes, no pueden ser idénticos.
+      }
     
+      // Ordena ambos arreglos para asegurarse de que los objetos estén en el mismo orden.
+      const ordenadosArr1 = arr1.slice().sort();
+      const ordenadosArr2 = arr2.slice().sort();
+    
+      for (let i = 0; i < ordenadosArr1.length; i++) {
+        const objeto1 = ordenadosArr1[i];
+        const objeto2 = ordenadosArr2[i];
+    
+        const keys1 = Object.keys(objeto1);
+        const keys2 = Object.keys(objeto2);
+    
+        if (keys1.length !== keys2.length) {
+          return false; // Los objetos tienen un número diferente de propiedades, no pueden ser idénticos.
+        }
+    
+        for (const key of keys1) {
+          if (objeto1[key] !== objeto2[key]) {
+            return false; // Se encontró una propiedad con un valor diferente, los objetos no son idénticos.
+          }
+        }
+      }
+    
+      return true; // Si llegamos hasta aquí, los arreglos son idénticos.
+    }
    
     
 

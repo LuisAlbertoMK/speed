@@ -30,7 +30,7 @@ import { EditaElementoComponent } from 'src/app/components/edita-elemento/edita-
 
 export class CatalogosComponent implements  OnDestroy, OnInit  {
   
-  constructor(private _publicos: ServiciosPublicosService,private formBuilder: FormBuilder, private _cotizaciones: CotizacionesService,
+  constructor(private _publicos: ServiciosPublicosService,private _formBuilder: FormBuilder, private _cotizaciones: CotizacionesService,
     private _campos: CamposSystemService, private _catalogos: CatalogosService, private _bottomSheet: MatBottomSheet,
     private _vehiculos: VehiculosService) {     }
 
@@ -44,7 +44,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   listaPaquetes = []
   // tabla
   dataSourcePaquetes = new MatTableDataSource(); //paquetes
-  paquetes = ['index','nombre','modelo','marca','precio','costo']; //paquetes
+  paquetes = ['index','nombre','marca','modelo','precio','costo']; //paquetes
   columnsToDisplayWithExpand = [...this.paquetes, 'opciones', 'expand']; //paquetes
   expandedElement: any | null; //paquetes
   @ViewChild('paquetesPaginator') paginator: MatPaginator //paquetes
@@ -87,6 +87,8 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     descuento: 0,
     formaPago: '1'
   }
+
+  paquetes_arr = []
   
   ///nuevas
   @Output() datosSeleccionados: EventEmitter<any> = new EventEmitter<any>();
@@ -101,26 +103,18 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   
 
   faltante_s:string
-  vehiculos_compatibles = [
-    {
-      "marca": "Chevrolet",
-      "modelo": "Camaro ZL1",
-      "anio_inicial": "1999",
-      "anio_final": "1999"
-    },
-    {
-      "marca": "Pontiac",
-      "modelo": "Matiz",
-      "anio_inicial": "1996",
-      "anio_final": "2001"
-    },
-    {
-      "marca": "Aston Martín",
-      "modelo": "DBX",
-      "anio_inicial": "1996",
-      "anio_final": "1996"
-    }
-  ]
+  vehiculos_compatibles = []
+
+  // Filtrado por vehículo, marca, modelo, nombre, categoría
+  filtros_paquetes = this._formBuilder.group({
+    marca:'',
+    modelo:'',
+    nombre:'',
+    categoria:''
+  });
+
+  array_modelos_filtro = []
+
   ngOnInit() {
     // this.consultaMO()
     this.construye_formulario_etiqueta()
@@ -130,6 +124,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     this.marcas_vehiculos_id = n.map(c=>{
       return c.id
     })
+    
   }
   ngOnDestroy(): void {
     
@@ -193,6 +188,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
           return g
         })
         // console.log(nuevos__);
+        this.paquetes_arr = nuevos__
         
         this.dataSourcePaquetes.data = nuevos__
         this.newPagination('paquetes')
@@ -210,7 +206,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
  
 
   construyeFirmularioPaquete(){
-    this.paqueteForm = this.formBuilder.group({
+    this.paqueteForm = this._formBuilder.group({
       nombre: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       cilindros: ['', Validators.required],
       marca: ['', Validators.required],
@@ -222,9 +218,8 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   }
   vigila(){
     this.paqueteForm.get('marca').valueChanges.subscribe((marca: string) => {
-      this.array_modelos = []
       if (marca) {
-        this.array_modelos = this.marcas_vehiculos[marca]
+        this.array_modelos = this.marcas_vehiculos[marca] || []
       }
     })
     this.paqueteForm.get('modelo').valueChanges.subscribe((modelo: string) => {
@@ -235,9 +230,8 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
       // this.paqueteForm.controls['categoria'].setValue(modelo_)
     })
     this.formulario_etiqueta.get('marca').valueChanges.subscribe((marca: string) => {
-      this.array_modelos = []
       if (marca) {
-        this.array_modelos = this.marcas_vehiculos[marca]
+        this.array_modelos = this.marcas_vehiculos[marca] || [];
       }
     })
     this.formulario_etiqueta.get('anio_final').valueChanges.subscribe((anio_final: number) => {
@@ -248,6 +242,44 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
         }
       }
     })
+
+    //obervables de formulario filtros_paquetes
+    this.filtros_paquetes.get('marca').valueChanges.subscribe((marca:string)=>{
+      if (marca) {
+        this.array_modelos_filtro = this.marcas_vehiculos[marca] || [];
+      }
+      this.asiganacion_filtro()
+    })
+    this.filtros_paquetes.get('modelo').valueChanges.subscribe((modelo:string)=>{
+        this.asiganacion_filtro()
+    })
+  }
+  asiganacion_filtro(){
+    const { marca, modelo } = this._publicos.getRawValue(this.filtros_paquetes);
+    const copiaPaquetes: any[] = [...this.paquetes_arr];
+  
+    let resultados = copiaPaquetes;
+    // let nuevos = []
+    // if (marca.length) {
+    //   marca.forEach(c=>{
+    //     console.log(c);
+    //     nuevos.push(resultados.filter((paquete) => paquete.marca === c))
+    //   })
+    //   const otros = nuevos.flat()
+    //   resultados = otros
+    // }
+    if (marca) {
+      resultados = resultados.filter((paquete) => paquete.marca === marca);
+    }
+    
+    if (modelo) {
+      resultados = resultados.filter((paquete) => paquete.modelo === modelo);
+    }
+  
+    this.dataSourcePaquetes.data = resultados;
+  
+    this.newPagination('paquetes');
+
   }
   elementoInfo(event){
     if (event.id) {
@@ -257,12 +289,23 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     }
   }
   eliminaElemento(index){
-    let antiguos = []
-      antiguos = [...this.elementosDePaqueteNuevo]
-      antiguos[index] = null
-      const filtrados = antiguos.filter(e=>e !==null)
-      this.elementosDePaqueteNuevo = filtrados
-      this.infoAdicional.elementos = this.elementosDePaqueteNuevo
+    // let antiguos = []
+    //   antiguos = [...this.elementosDePaqueteNuevo]
+    //   antiguos[index] = null
+    //   const filtrados = antiguos.filter(e=>e !==null)
+    //   this.elementosDePaqueteNuevo = filtrados
+    //   this.infoAdicional.elementos = this.elementosDePaqueteNuevo
+    // Crear una copia de los elementos antiguos
+    const antiguos = [...this.elementosDePaqueteNuevo];
+
+    antiguos[index] = null;
+
+    const filtrados = antiguos.filter((e) => e !== null);
+
+    this.elementosDePaqueteNuevo = filtrados;
+
+    this.infoAdicional.elementos = this.elementosDePaqueteNuevo;
+    
     this.operaciones()
       // this.reporteGeneral = this._publicos.realizarOperaciones_2(this.infoAdicional).reporte
   }
@@ -350,7 +393,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   //crear guardar validar datos de formulario etiqueta
   
   construye_formulario_etiqueta(): void {
-    this.formulario_etiqueta = this.formBuilder.group({
+    this.formulario_etiqueta = this._formBuilder.group({
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
       anio_inicial: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],

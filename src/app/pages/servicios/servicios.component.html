@@ -17,16 +17,16 @@
   </div>
   <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
     <ng-container *ngIf="SUCURSAL === 'Todas'">
-        <button aria-label="boton filtro de sucursales" class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
-        matTooltip="Filtro sucursal"><i class="fa fa-filter"></i></button>
+        <button aria-label="boton filtro de sucursales" class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
+        matTooltip="Filtro sucursal"><i class="fa fa-university"></i></button>
         <mat-menu #filtroSucursal="matMenu">
             <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
             <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
         </mat-menu>
     </ng-container>
     
-    <button aria-label="boton filtro tipo" class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
-    matTooltip="Filtro tipo"><i class="fa fa-filter"></i></button>
+    <button aria-label="boton filtro tipo" class="btn btn-sm btn-primary m-1" [matMenuTriggerFor]="filtroTipo" #tooltip="matTooltip"
+    matTooltip="Filtro tipo"><i class="fa fa-lightbulb"></i></button>
     <mat-menu #filtroTipo="matMenu">
         <button mat-menu-item (click)="filtro_tipo = 'Todos'; filtra_informacion()" >{{'Todos' | capitalizarUno}}</button>
         <button mat-menu-item (click)="filtro_tipo = tipo.valor; filtra_informacion()" *ngFor="let tipo of statusOS">{{tipo.show | capitalizarUno}}</button>

@@ -4,7 +4,7 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -37,6 +37,13 @@ export class MoRefaccionesComponent implements OnInit  {
   totalMuestra:number = 0
   faltantes_string: string = null
   encontrado: boolean = false
+
+  registro_flag:boolean = false
+
+  faltante_s:string
+
+  elementos_actuales_compatibles = []
+  elementos_actuales_compatibles_ = []
   constructor(private _publicos: ServiciosPublicosService, private fb: FormBuilder) { 
     this.dataElemento = new EventEmitter()
   }
@@ -107,18 +114,21 @@ export class MoRefaccionesComponent implements OnInit  {
       costo:[0,[Validators.required,Validators.pattern("^[0-9]+$"),Validators.min(0)]],
       marca:['',[]],
       status:['',[]],
-      tipo:['refaccion',[Validators.required]],
-      descripcion:['',[]]
+      tipo:['mo',[Validators.required]],
+      descripcion:['',[]],
+      compatibles:[[],[]]
     })
     
 
     this.formElemento.get('id').valueChanges.subscribe((id: string) => {
       if (id) {
+        this.registro_flag= true
         // this.formElemento.get('nombre').disable();
         this.formElemento.get('tipo').disable();
         this.formElemento.get('precio').disable();
         this.formElemento.get('descripcion').disable();
       }else{
+        this.registro_flag= false
         // this.formElemento.get('nombre').enable();
         this.formElemento.get('tipo').enable();
         this.formElemento.get('precio').enable();
@@ -130,7 +140,35 @@ export class MoRefaccionesComponent implements OnInit  {
       this.calcularTotal();
     });
 
+    this.formElemento.get('tipo').valueChanges.subscribe((tipo: string) => {
+      // console.log(tipo);
+      if (tipo ==='refaccion') {
+        this.marca = true;
+        this.formElemento.get('marca').enable();
+      } else {
+        this.marca = false
+        this.formElemento.get('marca').disable();
+      }
+    })
     
+  }
+
+
+  data_compataible(data_form){
+    const {marca} = data_form
+    if (marca) {
+      const valores_compatibles = [...this.formElemento.get('compatibles').value];
+      valores_compatibles.push(data_form)
+      this.formElemento.get('compatibles').setValue(valores_compatibles)
+    } 
+  }
+  elimina_etiqueta(index:number){
+    let valores_compatibles = [...this.formElemento.get('compatibles').value];
+    if (valores_compatibles.length ) {
+      const nuevos = [...valores_compatibles]
+      nuevos.splice(index,1)
+      this.formElemento.get('compatibles').setValue(nuevos) 
+    }
   }
   calcularTotal(){
     const cantidad = this.formElemento.get('cantidad').value;
@@ -213,12 +251,54 @@ export class MoRefaccionesComponent implements OnInit  {
         status: recuperada.status,
         tipo: recuperada.tipo,
         descripcion: descri,
+        compatibles: recuperada.compatibles || []
       })
-      
+      this.elementos_actuales_compatibles = [
+        {
+          "marca": "Alfa Romeo",
+          "modelo": "Stelvio",
+          "anio_inicial": "1992",
+          "anio_final": "1994"
+        }
+      ]
     }
   }
 
+  
   colocarElemento(){
+    
+    const data_form = this._publicos.getRawValue(this.formElemento)
+    // console.log(data_form);
+    const {compatibles} = data_form
+
+    const actuales:any[] = this.formElemento.get('compatibles').value
+
+    this.elementos_actuales_compatibles_ = actuales
+    // Ejemplo de uso:
+    const obj1 = JSON.parse(JSON.stringify(this.elementos_actuales_compatibles));
+    const obj2 = JSON.parse(JSON.stringify(this.elementos_actuales_compatibles_));
+    
+    
+    
+    
+    
+    if (this._publicos.sonArreglosDeObjetosIdenticos(this.elementos_actuales_compatibles, this.elementos_actuales_compatibles_)) {
+      console.log('Los arreglos de objetos son idénticos.');
+    } else {
+      console.log('Los arreglos de objetos no son idénticos.');
+    }
+    
+  
+    
+
+    return
+    // console.log(compatibles);
+    if (!compatibles.length) {
+      this._publicos.mensajeSwal('Sin vehículos compatibles',0,true,`Debes colocar al menos un vehículo compatible`)
+      return
+    }
+
+    
     const claves = ['tipo','nombre','cantidad','precio','costo','descripcion']
     const claves2 = ['id',...claves]
     const valores = {}
@@ -228,8 +308,8 @@ export class MoRefaccionesComponent implements OnInit  {
     const nuevaInfo = this._publicos.nuevaRecuperacionData(valores, claves2)
     if(!nuevaInfo['costo']) nuevaInfo['costo'] =  0
     const {ok,faltante_s} = this._publicos.realizavalidaciones_new(nuevaInfo,claves)
-    
-    this.faltantes_string = faltante_s
+    this.faltante_s = faltante_s
+    // this.faltantes_string = faltante_s
     if (ok) {
       nuevaInfo['aprobado'] = true
       nuevaInfo['status'] = true
@@ -241,15 +321,15 @@ export class MoRefaccionesComponent implements OnInit  {
               nuevaInfo['id'] = this._publicos.generaClave()
               const path = nuevaInfo['tipo'] === 'refaccion' ? 'refacciones' : 'manos_obra';
               const updates = {[`${path}/${nuevaInfo['id']}`]: nuevaInfo}
-              // console.log(updates);
-              update(ref(db), updates).then(()=>{
-                this._publicos.swalToast('Se agrego elemento',1, 'top-start')
-                this.dataElemento.emit( nuevaInfo )
-                this.limpiarControl()
-              })
-              .catch(err=>{
-                this._publicos.swalToast('error al registrar elemento',0, 'top-start')
-              })
+              console.log(updates);
+              // update(ref(db), updates).then(()=>{
+              //   this._publicos.swalToast('Se agrego elemento',1, 'top-start')
+              //   this.dataElemento.emit( nuevaInfo )
+              //   this.limpiarControl()
+              // })
+              // .catch(err=>{
+              //   this._publicos.swalToast('error al registrar elemento',0, 'top-start')
+              // })
             } else{
               //en caso de que tenga id solo agregar
               this.dataElemento.emit( nuevaInfo )

@@ -29,7 +29,7 @@ export class InicioComponent implements OnInit {
     {path:'recordatorios', show:'Recordatorios',icono:'alarm-exclamation'},
     {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
     {path:'reporteGastos', show:'Reporte de gastos',icono:'book'},
-    {path:'servicios', show:'vehículos en piso',icono:'car-building'},
+    {path:'servicios', show:'Órdenes de servicio',icono:'car-building'},
     {path:'sucursales', show:'Sucursales',icono:'landmark'},
     {path:'usuarios', show:'Usuarios y roles',icono:'user'},
   ]

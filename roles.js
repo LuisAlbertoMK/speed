@@ -151,7 +151,11 @@ getUserMedia({
     console.time('Execution Time');
     console.timeEnd('Execution Time');
 
-
+<div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <div class="form-group">
+                  
+                </div>
+              </div>
 
 
   [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}"

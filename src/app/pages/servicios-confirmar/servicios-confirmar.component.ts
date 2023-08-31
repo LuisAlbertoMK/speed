@@ -894,7 +894,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       
       return r.status
     })
-    const status_encontrado = !verificacion.includes('entregado');
+    const status_encontrado = verificacion.includes('entregado');
+    // console.log(status_encontrado);
     
     if (status_encontrado){
       this._publicos.mensajeSwal('El vehiculo cuenta con orden abierta ',0, true ,`Cerrar / modificar orden del vehiculo que se encuentra en la sucursal`)
@@ -930,7 +931,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     
 
     this.infoConfirmar.data_vehiculo = this._vehiculos.verificaInfo_vehiculo(this.infoConfirmar.data_vehiculo)
-    
     this._pdfRecepcion.obtenerImege(this.infoConfirmar).then((pdfReturn:any) => {
       const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
 

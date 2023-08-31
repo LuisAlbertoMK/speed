@@ -182,13 +182,9 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
 
   calcularTotales(data) {
-    
     const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
     const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0, costos:0}
     
-    // const servicios_ = (elementos) ? elementos 
-
-
     const _servicios = [...elementos] 
     
     const margen = 1 + (new_margen / 100)
@@ -261,9 +257,10 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     const mul = (costo > 0 ) ? costo : precio
     return cantidad * mul
   }
-  total_paquete({elementos}){
+  total_paquete(ele){
     const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos] 
+    const {elementos} = ele
+    const nuevos_elementos = [...elementos]
 
     if (!nuevos_elementos.length) return reporte
 

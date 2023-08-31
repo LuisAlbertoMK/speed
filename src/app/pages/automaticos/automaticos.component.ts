@@ -89,4 +89,7 @@ export class AutomaticosComponent implements OnInit {
     realizaOperacionesClientes(){
       
     }
+    data_compataible(event){
+      console.log(event);
+    }
 }
