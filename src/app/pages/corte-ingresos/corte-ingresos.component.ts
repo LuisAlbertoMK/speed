@@ -56,14 +56,16 @@ export class CorteIngresosComponent implements OnInit {
     sucursal: new FormControl('')
   })
   sucursal_select:string
-  reporte = {objetivo:0, operacion: 0, orden:0, ventas:0, sobrante:0, porcentaje:0, ticketPromedio:0}
+  reporte = {objetivo:0, operacion: 0, orden:0, ventas:0, sobrante:0, porcentajeGM:0, porcentaje:0, ticketPromedio:0, refacciones:0}
   camposReporte = [
+    {valor:'ticketPromedio', show:'ticket Promedio'},
     {valor:'objetivo', show:'Objetivo'},
     {valor:'ventas', show:'Total ventas'},
     {valor:'operacion', show:'Gastos de operación'},
     {valor:'orden', show:'Gastos de ordenes'},
-    {valor:'sobrante', show:'Restante '},
-    {valor:'ticketPromedio', show:'ticket Promedio'},
+    {valor:'refacciones', show:'Refacciones'},
+    // {valor:'porcentaje', show:'% cumplido'},
+    {valor:'sobrante', show:'GM'},
   ]
   metodospago = [
     {metodo:'1', show:'Efectivo'},
@@ -165,6 +167,9 @@ export class CorteIngresosComponent implements OnInit {
     
   }
 
+actualiza(){
+  this.consulta_gastos_operacion()
+}
   
   
 
@@ -263,11 +268,11 @@ export class CorteIngresosComponent implements OnInit {
             const data_vehiculo:any =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
             
             const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id });
-
-            
             const historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === id)
+
             g.historial_pagos = historial_pagos
             g.historial_gastos = historial_gastos
+            
             g.data_vehiculo = data_vehiculo
             g.placas = data_vehiculo.placas
             const data_sucursal =  this.sucursales_array.find(s=>s.id === sucursal)
@@ -280,6 +285,10 @@ export class CorteIngresosComponent implements OnInit {
   
             g.data_sucursal =  data_sucursal
             g.sucursalShow = data_sucursal.sucursal
+
+            const  {reporte, _servicios} = this.calcularTotales(g)
+            g.servicios = _servicios
+            g.reporte = reporte
 
             return g
           });
@@ -322,17 +331,18 @@ export class CorteIngresosComponent implements OnInit {
     })
 
     this.reporte.orden = orden
-    
+    let total_refacciones = 0
 
     filtro.forEach(f=>{
-      const { reporte, status} = f
+      const { reporte, status } = f      
       if (status === 'entregado') {
-        const {subtotal} = reporte
-        total_ventas += subtotal 
+        const {subtotal, refacciones} = reporte
+        total_ventas += subtotal
+        total_refacciones += refacciones
       }
     })
     this.reporte.ventas = total_ventas
-
+    this.reporte.refacciones = total_refacciones
     
     let objetivo = 0
     this.metas_mes.forEach(g=>{
@@ -348,6 +358,17 @@ export class CorteIngresosComponent implements OnInit {
 
 
     this.reporte.ticketPromedio = total_ventas / filtro.length 
+    const op_refacciones = total_ventas - total_refacciones
+    this.reporte.porcentajeGM = total_ventas / op_refacciones
+    //notas
+    // res = ventas_totales - gastos_refacciones
+
+    // porce = res / ventas_totales
+    
+    // agregar columna credito
+    // sin modificacion de ordenes despues de entregado
+    // y pago
+
 
     
   }
@@ -472,43 +493,59 @@ export class CorteIngresosComponent implements OnInit {
   }
 
   calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    const elementos = (servicios_) ? [...servicios_] : []
+    const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
+    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0, costos:0}
+    
+    const _servicios = [...elementos] 
+    
     const margen = 1 + (new_margen / 100)
-    elementos.map(ele=>{
-      const {cantidad, costo, tipo} = ele
+    _servicios.map((ele, index) =>{
+      const {cantidad, costo, tipo, precio} = ele
+      ele.index = index
       if (tipo === 'paquete') {
         const report = this.total_paquete(ele)
         const {mo, refacciones} = report
         if (ele.aprobado) {
-          reporte.mo += mo
-          reporte.refacciones += refacciones
-          reporte.refacciones_v += refacciones * margen
+          ele.precio = mo + (refacciones * margen)
+          ele.subtotal = mo + (refacciones * margen) * cantidad
+          ele.total = (mo + (refacciones * margen)) * cantidad
+          if (costo > 0 ){
+            ele.total = costo * cantidad
+            reporte.costos += costo * cantidad
+          }else{
+            reporte.mo += mo
+            reporte.refacciones += refacciones
+          }
         }
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad 
       }else if (tipo === 'mo' || tipo === 'refaccion') {
 
-        const operacion = this.mano_refaccion(ele)
+        // const operacion = this.mano_refaccion(ele)
+        const operacion = (costo>0) ? cantidad * costo : cantidad * precio 
 
         ele.subtotal = operacion
-        ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
         
-        const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-
-        if (ele.aprobado) reporte[donde] += operacion
-
+        if (ele.aprobado){
+          if (costo > 0 ){
+            reporte.costos += (tipo === 'refaccion') ? operacion * margen : operacion
+          }else{
+            const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
+            reporte[donde] += operacion
+          }
+          ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
+        }
       }
       return ele
     })
     let descuento = parseFloat(descuento_) || 0
+
     const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
-    const {mo, refacciones_v, refacciones} = reporte
 
-    let nuevo_total = mo + refacciones_v
+    const {mo, refacciones} = reporte
 
+    reporte.refacciones_v = refacciones * margen
+
+    let nuevo_total = mo + reporte.refacciones_v + reporte.costos
+    
     let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
 
     let iva =  _iva ? nuevo_total * .16 : 0;
@@ -522,19 +559,19 @@ export class CorteIngresosComponent implements OnInit {
     reporte.subtotal = nuevo_total
     reporte.total = newTotal
     reporte.meses = total_meses
-    // console.log(reporte);
-    // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
+
     reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, elementos}
+    return {reporte, _servicios}
     
   }
   mano_refaccion({costo, precio, cantidad}){
     const mul = (costo > 0 ) ? costo : precio
     return cantidad * mul
   }
-  total_paquete({elementos}){
+  total_paquete(ele){
     const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos] 
+    const {elementos} = ele
+    const nuevos_elementos = [...elementos]
 
     if (!nuevos_elementos.length) return reporte
 
@@ -557,10 +594,14 @@ export class CorteIngresosComponent implements OnInit {
         {valor:'ventas', show:'Total ventas'},
         {valor:'operacion', show:'Gastos de operación'},
         {valor:'orden', show:'Gastos de ordenes'},
-        {valor:'sobrante', show:'Restante '},
+        {valor:'refacciones', show:'Refacciones'},
+        {valor:'sobrante', show:'GM'},
+        {valor:'porcentajeGM', show:'% GM'},
         {valor:'ticketPromedio', show:'ticket Promedio'},
         {valor:'porcentaje', show:'% cumplido'},
       ]
+
+      
       const data_reporte_objetivos = Object.keys(casdgfh).map((a,index)=>{
         const name = casdgfh[index].show
         return {
@@ -592,6 +633,7 @@ export class CorteIngresosComponent implements OnInit {
           Clip:'',
           BBVA:'',
           BANAMEX:'',
+          credito:'',
           subtotal:'',
           iva:'',
           total:'',
@@ -615,7 +657,6 @@ export class CorteIngresosComponent implements OnInit {
 
       const { inicio: _inicial, final: _final } = this._publicos.getFirstAndLastDayOfCurrentMonth(inicial)
       const { inicio: _inicial_, final: _final_ } = this._publicos.getFirstAndLastDayOfCurrentMonth(final)
-
 
       const uno = this._publicos.retorna_fechas_hora({fechaString: new Date(_inicial)}).formateada
       const uno_1 = this._publicos.retorna_fechas_hora({fechaString: new Date(_final_)}).formateada
@@ -653,7 +694,8 @@ export class CorteIngresosComponent implements OnInit {
     const {elementos, no_os, status, reporte, historial_pagos    } = recep
 
     const {subtotal, iva, total } = reporte
-
+    const { formaPago } = data_recepcion
+    
     const {
       Efectivo,
       Cheque,
@@ -689,6 +731,7 @@ export class CorteIngresosComponent implements OnInit {
         Clip,
         BBVA,
         BANAMEX,
+        credito: (formaPago === '1') ? 'no' : 'si',
         subtotal,
         iva,
         total,

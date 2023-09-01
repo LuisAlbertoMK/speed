@@ -27,6 +27,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import { PdfEntregaService } from 'src/app/services/pdf-entrega.service';
 import { UploadMetadata } from 'firebase/storage';
 import { UploadPDFService } from 'src/app/services/upload-pdf.service';
+import { ReporteGastosService } from 'src/app/services/reporte-gastos.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
@@ -64,11 +65,14 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     private _clientes: ClientesService, private _vehiculos: VehiculosService, private _sucursales: SucursalesService,
     private _cotizaciones: CotizacionesService, private _formBuilder: FormBuilder, private _publicos: ServiciosPublicosService,
     private _usuarios: UsuariosService, private router: Router, private _pdfRecepcion: PdfRecepcionService,
-    private _pdf_entrega: PdfEntregaService, private _uploadPDF: UploadPDFService
+    private _pdf_entrega: PdfEntregaService, private _uploadPDF: UploadPDFService,
+    private _reporte_gastos: ReporteGastosService,
     ) { }
 
   enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
   
+
+  rol_:string
 
   @ViewChild('firmaDigital',{static:true}) signatureElement:any; SignaturePad:any;
   ngOnInit(): void {
@@ -78,44 +82,46 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
   }
   async ngOnDestroy(){
-    const { sonIguales, diferencias } = this.compararObjetos(this.data_editar, this.temporal)
-    if (!sonIguales) {
-      const { respuesta } = await this._publicos.mensaje_pregunta(`Remplazar información?`,true,`${diferencias}`)
-      if (respuesta) {
-        const campos_update = ['elementos','margen','status','tecnico','formaPago', 'fecha_recibido','fecha_entregado']
-        let updates = {}
-        const {sucursal, cliente, vehiculo, id} = this.data_editar
+    // const { sonIguales, diferencias } = this.compararObjetos(this.data_editar, this.temporal)
+    // if (!sonIguales) {
+    //   const { respuesta } = await this._publicos.mensaje_pregunta(`Remplazar información?`,true,`${diferencias}`)
+    //   if (respuesta) {
+    //     const campos_update = ['elementos','margen','status','tecnico','formaPago', 'fecha_recibido','fecha_entregado']
+    //     let updates = {}
+    //     const {sucursal, cliente, vehiculo, id} = this.data_editar
         
-        const nueva_data = JSON.parse(JSON.stringify(this.data_editar));
-        // console.log(nueva_data);
+    //     const nueva_data = JSON.parse(JSON.stringify(this.data_editar));
+    //     // console.log(nueva_data);
         
-        const data_purifica = this.purifica_informacion(nueva_data)
-        // console.log(data_purifica);
-        nueva_data.elementos = data_purifica
+    //     const data_purifica = this.purifica_informacion(nueva_data)
+    //     // console.log(data_purifica);
+    //     nueva_data.elementos = data_purifica
 
         
-        campos_update.forEach(campo=>{
-          if (nueva_data[campo]) {
-            updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
-          }
-        })
-        // console.log(updates);
+    //     campos_update.forEach(campo=>{
+    //       if (nueva_data[campo]) {
+    //         updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
+    //       }
+    //     })
+    //     // console.log(updates);
 
-        update(ref(db), updates).then(()=>{
-          // console.log('finalizo');
-          this._publicos.swalToast(`Actualización correcta!!`,1)
-        })
-        .catch(err=>{
-          console.log(err);
-        })
+    //     update(ref(db), updates).then(()=>{
+    //       // console.log('finalizo');
+    //       this._publicos.swalToast(`Actualización correcta!!`,1)
+    //     })
+    //     .catch(err=>{
+    //       console.log(err);
+    //     })
         
         
         
-      }else{
-        this._publicos.swalToast(`Se cancelo`,0)
-      }
-    }
+    //   }else{
+    //     this._publicos.swalToast(`Se cancelo`,0)
+    //   }
+    // }
   }
+
+
   sucursales_array  =   [ ...this._sucursales.lista_en_duro_sucursales]
   formasPago        =   [ ...this._cotizaciones.formasPago ]
   statusOS             = [ ...this._servicios.statusOS ]
@@ -173,7 +179,9 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     showDetalles:false,
     formaPago_show:'',
     servicio_show:'',
-    kilometraje:0
+    kilometraje:0,
+    historial_pagos:[],
+    historial_gastos:[]
   }
   temporal 
 
@@ -202,6 +210,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
  
   async rol(){
     const { rol, sucursal } = this._security.usuarioRol()
+    this.rol_ = rol
 
     this.rutaActiva.queryParams.subscribe((params:any) => {
      this.enrutamiento = params
@@ -241,6 +250,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
     if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
     
+    
+    
     data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
     const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
@@ -258,6 +269,35 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         // console.log(data_tecnico);
         this.data_editar.tecnicoShow = data_tecnico
       }
+      let historial_pagos_arr = []
+        
+        const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id: recepcion });
+        // const historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === id)
+        historial_pagos_arr = historial_pagos    
+              // g.historial_gastos = historial_gastos
+
+              
+      // }
+
+
+      const arreglo_sucursal = [data_recepcion.sucursal]
+
+      const arreglo_fechas_busca = this.obtenerArregloFechas_gastos_diarios({ruta: 'historial_gastos_orden', arreglo_sucursal})
+  
+      const promesasConsultas_gastos_orden = arreglo_fechas_busca.map(async (f_search) => {
+        const gastos_hoy_array: any[] = await this._reporte_gastos.gastos_hoy({ ruta: f_search});
+        const promesasVehiculos = gastos_hoy_array
+          .filter(g => g.tipo === 'orden')
+          .map(async (g) => {
+            const { sucursal, cliente, vehiculo } = g;
+            // g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+          });
+        await Promise.all(promesasVehiculos);
+                return gastos_hoy_array;
+        });
+      const promesas_gastos_orden = await Promise.all(promesasConsultas_gastos_orden);
+  
+      const muestra_gastos_ordenes = promesas_gastos_orden.flat()
       
       // data_recepcion.elementos = temp.map(e=>e.aprobado = true)
       const campos = [
@@ -282,6 +322,9 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       campos.forEach(campo=>{
         this.data_editar[campo] = data_recepcion[campo]
       })
+      this.data_editar.historial_pagos = historial_pagos_arr
+
+      this.data_editar.historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === recepcion)
       this.data_editar.formaPago_show = this.formasPago.find(f=>f.id === String(data_recepcion['formaPago'])).pago
       this.data_editar.servicio_show = this.servicios_.find(f=>f.valor === String(data_recepcion['servicio'])).nombre
     }
@@ -491,6 +534,29 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
   async guardar_cambios(){
 
+
+    // console.log(this.data_editar.historial_pagos);
+    // this.data_editar.historial_pagos = []
+
+    const {historial_pagos, status, reporte} = this.data_editar
+    const { total } = JSON.parse(JSON.stringify(reporte));
+    // console.log(total);
+    
+    let total_pagos = 0
+
+    historial_pagos.forEach(p=>{
+      const { monto } = p
+      total_pagos+= monto
+    })
+
+    if (status === 'entregado' && total_pagos < total) {
+      this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
+      return
+    }
+  
+    
+    
+
     if (!this.data_editar.pdf_entrega) {
       let campos = [...this.campos_ocupados_editar]
       let campos_update = ['elementos','margen','status','tecnico','formaPago', 'fecha_recibido','fecha_entregado','observaciones']
@@ -538,10 +604,13 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
             //esperar a generar el pdf
       
             const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+
+            
               this.data_editar.fecha_entregado = actual
               this._pdf_entrega.pdf(this.data_editar).then((pdfReturn:any) => {
   
               const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
+
 
               Swal.fire({
                 title: 'Opciones de cotización',
@@ -575,6 +644,9 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
                         updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = resultado.ruta
                         updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_entregado`] = actual
+                        const fecha_limite_gastos = this._publicos.sumarRestarDiasFecha(actual,10)
+                        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_limite_gastos`] = fecha_limite_gastos
+
                         update(ref(db), updates).then(()=>{
                           // console.log('finalizo');
                           this._publicos.swalToast(`Actualización correcta!!`,1)
@@ -630,8 +702,6 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     const u = this.SignaturePad.toDataURL()
     if (!this.SignaturePad.isEmpty()) {
       this.data_editar.firma_cliente = u
-      console.log(this.data_editar);
-      
     }else{
       this.data_editar.firma_cliente = null
       this._publicos.swalToast('La firma no puede estar vacia',0)
@@ -785,6 +855,30 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
     return nuevos_elementos 
 
+  }
+
+  obtenerArregloFechas_gastos_diarios(data){
+    const {ruta, arreglo_sucursal} = data
+    const fecha_start = new Date('08-02-2023')
+    const fecha_end = new Date()
+    const diffTiempo = fecha_end.getTime() - fecha_start.getTime();
+    const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
+    let arreglo = []
+    for (let i = 0; i <= diffDias; i++) {       
+      const fecha_retorna = new Date(fecha_start.getTime() + i * 24 * 60 * 60 * 1000);
+      if (!this._publicos.esDomingo(fecha_retorna)) {
+        const Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_retorna)
+        arreglo.push(Fecha_formateada)
+      }
+    }
+
+    let Rutas = []
+    arreglo_sucursal.forEach(s=>{
+      arreglo.forEach(Fecha_formateada_=>{
+        Rutas.push(`${ruta}/${s}/${Fecha_formateada_}`)
+      })
+    })
+    return Rutas
   }
 
 }

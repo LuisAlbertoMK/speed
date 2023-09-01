@@ -17,6 +17,7 @@ const dbRef = ref(getDatabase());
 export class MoRefaccionesComponent implements OnInit  {
   // lista_arr_mo = []
   lista_arr_refacciones = []; lista_arr_mo =[]
+  lista_moRefacciones = []
   
   // @Input() 
   myControl = new FormControl('');
@@ -49,8 +50,9 @@ export class MoRefaccionesComponent implements OnInit  {
   }
 
   ngOnInit(): void {
-    this.listadoMO()
-    this.listadoRefacciones()
+    // this.listadoMO()
+    // this.listadoRefacciones()
+    this.listadoRefacciones_moRefacciones()
     this.automaticos()
     this.crearFormElemento()
     this.comprobar()
@@ -60,8 +62,9 @@ export class MoRefaccionesComponent implements OnInit  {
     
     
     this.myControl.valueChanges.subscribe(cambio=>{
-      // console.log(cambio.);
-      const unidos = [...this.lista_arr_mo,...this.lista_arr_refacciones]
+      // console.log(cambio);
+      // const unidos = [...this.lista_arr_mo,...this.lista_arr_refacciones]
+      const unidos = [...this.lista_moRefacciones]
       // console.log(unidos);
       this.faltantes_string = null
       const valor = this.myControl.value
@@ -79,7 +82,6 @@ export class MoRefaccionesComponent implements OnInit  {
             this.formElemento.get(val).setValue(encontrado[val]);
             this.formElemento.controls[val].setValue(encontrado[val]);
           });
-          
           // this.formElemento.get('status').setValue(true);
         } else {
           this.limpiarForm()
@@ -134,7 +136,6 @@ export class MoRefaccionesComponent implements OnInit  {
         this.formElemento.get('precio').enable();
         this.formElemento.get('descripcion').enable();
       }
-      
     })
     this.formElemento.valueChanges.subscribe(() => {
       this.calcularTotal();
@@ -157,10 +158,25 @@ export class MoRefaccionesComponent implements OnInit  {
   data_compataible(data_form){
     const {marca} = data_form
     if (marca) {
+
+      
       const valores_compatibles = [...this.formElemento.get('compatibles').value];
-      valores_compatibles.push(data_form)
-      this.formElemento.get('compatibles').setValue(valores_compatibles)
-    } 
+   
+
+      const estaEnArreglo2 = valores_compatibles.some((elemento) => {
+        return this._publicos.sonObjetosIguales(elemento, data_form);
+      });
+      // const existe = estaEnArreglo2.includes(true)
+      
+      if (!estaEnArreglo2) {
+        valores_compatibles.push(data_form)
+        this.formElemento.get('compatibles').setValue(valores_compatibles)
+        this._publicos.swalToast('Marca compatible registrada', 1)
+      }else{
+        this._publicos.swalToast('Marca compatible ya registrada', 0)
+      }
+      
+    }
   }
   elimina_etiqueta(index:number){
     let valores_compatibles = [...this.formElemento.get('compatibles').value];
@@ -185,27 +201,13 @@ export class MoRefaccionesComponent implements OnInit  {
     this.totalMuestra = operacion
     
   }
-  listadoMO(){
-    const starCountRef = ref(db, `manos_obra`)
+
+  listadoRefacciones_moRefacciones(){
+    const starCountRef = ref(db, `moRefacciones`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         const arreglo = this._publicos.crearArreglo2(snapshot.val())
-        arreglo.forEach(e=>{
-          e['tipo'] = 'mo'
-        })
-        this.lista_arr_mo = arreglo
-      }
-    })
-  }
-  listadoRefacciones(){
-    const starCountRef = ref(db, `refacciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const arreglo = this._publicos.crearArreglo2(snapshot.val())
-        arreglo.forEach(e=>{
-          e['tipo'] = 'refaccion'
-        })
-        this.lista_arr_refacciones = arreglo
+        this.lista_moRefacciones = arreglo
       }
     })
   }
@@ -224,7 +226,7 @@ export class MoRefaccionesComponent implements OnInit  {
       
     }else{
       const filterValue = value.toLowerCase();
-      const nuevos = this.lista_arr_mo.concat(this.lista_arr_refacciones)
+      const nuevos = [...this.lista_moRefacciones]
       const ordenado = this._publicos.ordernarPorCampo(nuevos,'nombre')
       data = ordenado.filter(option => option['nombre'].toLowerCase().includes(filterValue));
     }
@@ -253,14 +255,15 @@ export class MoRefaccionesComponent implements OnInit  {
         descripcion: descri,
         compatibles: recuperada.compatibles || []
       })
-      this.elementos_actuales_compatibles = [
-        {
-          "marca": "Alfa Romeo",
-          "modelo": "Stelvio",
-          "anio_inicial": "1992",
-          "anio_final": "1994"
-        }
-      ]
+      this.elementos_actuales_compatibles = recuperada.compatibles
+      // this.elementos_actuales_compatibles = [
+      //   {
+      //     "marca": "Alfa Romeo",
+      //     "modelo": "Stelvio",
+      //     "anio_inicial": "1992",
+      //     "anio_final": "1994"
+      //   }
+      // ]
     }
   }
 
@@ -279,16 +282,11 @@ export class MoRefaccionesComponent implements OnInit  {
     const obj2 = JSON.parse(JSON.stringify(this.elementos_actuales_compatibles_));
     
     
-    
-    
-    
     if (this._publicos.sonArreglosDeObjetosIdenticos(this.elementos_actuales_compatibles, this.elementos_actuales_compatibles_)) {
       console.log('Los arreglos de objetos son idénticos.');
     } else {
       console.log('Los arreglos de objetos no son idénticos.');
     }
-    
-  
     
 
     return

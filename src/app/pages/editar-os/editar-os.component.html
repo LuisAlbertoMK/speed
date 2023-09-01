@@ -1,17 +1,4 @@
-
-<div class="content-header">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
-            <li class="breadcrumb-item"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li>
-            <li class="breadcrumb-item active">Editar O.S</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
+<app-template-navegacion></app-template-navegacion>
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
     <app-cliente-tarjeta [cliente]="data_editar.data_cliente"></app-cliente-tarjeta>
@@ -77,7 +64,7 @@
       <div class="col-lg-4 col-md-4 col-sm-6 col-12">
         <div class="card border-primary">
           <div class="card-body">
-            <h5 class="card-title">Status orden</h5>
+            <h5 class="card-title">Status orden actual</h5>
             <select class=" form-select  form-select-sm" formControlName="status">
               <option [selected]="val.valor === data_editar.status" *ngFor="let val of statusOS" [value]="val.valor" class="text-capitalize" >
                 {{val.show | capitalizarUno}}</option>
@@ -111,8 +98,21 @@
 <button  data-bs-toggle="modal" (click)="idPaqueteEditar = -1;" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Agregar paquete</button>
 <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" 
 (click)="idPaqueteEditar = -1">Agregar elemento</button>
-<button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-gastos" data-bs-toggle="modal">Nuevo gasto</button>
-<button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-pagos" data-bs-toggle="modal">Nuevo pago</button>
+<!-- <ng-container *ngIf="rol_ === 'SuperSU'">
+  <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-gastos" data-bs-toggle="modal">Nuevo gasto</button>
+  <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-pagos" data-bs-toggle="modal">Nuevo pago</button>
+</ng-container>
+<ng-container *ngIf="rol_ === 'Gerente' && (data_editar.status !=='entregado' && data_editar.status !=='cancelado')">
+  <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-gastos" data-bs-toggle="modal">Nuevo gasto</button>
+  <button  class="btn btn-primary btn-sm m-1" data-bs-target="#modal-pagos" data-bs-toggle="modal">Nuevo pago</button>
+</ng-container> -->
+
+<ng-container *ngIf="(rol_ === 'SuperSU') || (rol_ === 'Gerente' && data_editar.status !== 'entregado' && data_editar.status !== 'cancelado')">
+  <button class="btn btn-primary btn-sm m-1" data-bs-target="#modal-gastos" data-bs-toggle="modal">Nuevo gasto</button>
+  <button class="btn btn-primary btn-sm m-1" data-bs-target="#modal-pagos" data-bs-toggle="modal">Nuevo pago</button>
+</ng-container>
+
+
 
 <div class="mat-elevation-z8 table-responsive">
     <table mat-table #elementos="matSort" matSort
@@ -255,7 +255,12 @@
   </div>
 </div>
 
+
 <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+
+<pre>
+  {{ data_editar.historial_gastos | json }}
+</pre>
 
 <div class="modal fade" id="modalPaquetes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 aria-labelledby="exampleModalLabel" aria-hidden="true">

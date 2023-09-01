@@ -527,7 +527,8 @@ export class ServiciosPublicosService {
       }
         Swal.fire({
             position: 'center', icon, title: mensaje, showConfirmButton: true,
-            allowOutsideClick: outclik,
+            allowOutsideClick: false,
+            focusConfirm: true,
             html
             // timer: 1500
         })
@@ -1353,6 +1354,24 @@ export class ServiciosPublicosService {
     
       return true; // Si llegamos hasta aquí, los arreglos son idénticos.
     }
+    sonObjetosIguales(objeto1, objeto2) {
+      const keys1 = Object.keys(objeto1);
+      const keys2 = Object.keys(objeto2);
+    
+      if (keys1.length !== keys2.length) {
+        return false;
+      }
+    
+      for (const key of keys1) {
+        if (objeto1[key] !== objeto2[key]) {
+          return false;
+        }
+      }
+    
+      return true;
+    }
+
+    
    
     
 

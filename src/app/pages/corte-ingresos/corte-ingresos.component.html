@@ -55,7 +55,7 @@
   </div>
 </div>
 
-
+<button  aria-label="botn actualizar reporte" type="button" class="btn btn-sm btn-primary m-1" (click)="actualiza()">actualiza</button>
 
 <div class="card col-lg-6 col-md-6 col-sm-12 col-12 text-center">
   <div class="card-body text-success ">
@@ -64,6 +64,10 @@
           <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item.show}}</div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
       </ng-container>
+      
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">% GM </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentajeGM | monedas:'%'}}</strong></div>
+
       <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">% Cumplido </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentaje | monedas:'%'}}</strong></div>
     </div>
@@ -74,14 +78,12 @@
 <div class="row">
   <div class="col text-end">
     <button class="btn btn-sm btn-success m-1" (click)="generaExcel()">
-      <i class="fa fa-file-excel"></i> Genera
+      Reporte órdenes entregadas <i class="fa fa-file-excel"></i>
     </button>
   </div>
 </div>
 
 <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false" [muestra_cliente]="true"> </app-template-tabla-recepciones>
-
-
 <div class="modal fade" id="modal-registro-metas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div

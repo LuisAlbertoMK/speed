@@ -15,7 +15,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { BD } from './ayuda';
+import { MO, refacciones } from './ayuda';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 
@@ -86,9 +86,58 @@ export class AutomaticosComponent implements OnInit {
         const { rol, sucursal, usuario } = this._security.usuarioRol()
         this._sucursal = sucursal
     }
-    realizaOperacionesClientes(){
-      
+    realizaOperacionesClientes2(){
+      const new_mo:any[] = Object.keys(MO).map((mo)=>{
+        MO[mo].tipo = 'mo'
+        return MO[mo]
+      })
+      console.log(new_mo);
+      const new_refacciones:any[] = Object.keys(refacciones).map((refaccion)=>{
+        refacciones[refaccion].tipo = 'refaccion'
+        return refacciones[refaccion]
+      })
+      console.log(new_refacciones);
+      const new_alls:any[] = [...new_mo, ...new_refacciones]
+
+      console.log(new_alls);
     }
+      realizaOperacionesClientes() {
+        const processItems = (items, tipo) => {
+          return Object.keys(items).map((item) => {
+            items[item].tipo = tipo;
+            return items[item];
+          });
+        };
+      
+        const new_mo = processItems(MO, 'mo');
+        const new_refacciones = processItems(refacciones, 'refaccion');
+      
+        const new_alls = [...new_mo, ...new_refacciones];
+        console.log(new_alls);
+
+        const objeto = {};
+        new_alls.forEach((element) => {
+          const {id} = element
+          const new_data  = JSON.parse(JSON.stringify(element));
+          delete new_data.id
+          new_data.compatibles = [
+            {
+              "marca": "Alfa Romeo",
+              "modelo": "Stelvio",
+              "anio_inicial": "1992",
+              "anio_final": "1994"
+            }
+          ]
+          objeto[id] = new_data
+        });
+        console.log(objeto);
+        
+
+      }
+      
+      
+      
+    
     data_compataible(event){
       console.log(event);
     }

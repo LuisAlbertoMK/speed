@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "correciones de excel parte-2 fecha 31-08-2023 (en proceso)"
+git commit -m "correcciones en modulo de recorte-gastos, editar-os (en proceso)"
 git push -u origin
 
 
@@ -23,4 +23,4 @@ firebase deploy
 
 */
 //realizar Corte de Ingresos del dia 10 del mes 8 nuevo modulo
-
+//validar que solo puedan darse de lata gastos antes de fecha limite de fecha_limite_gastos

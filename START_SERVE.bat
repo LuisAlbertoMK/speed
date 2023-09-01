@@ -1,2 +1,2 @@
 git pull
-ng serve
+ng serve -o
