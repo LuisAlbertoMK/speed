@@ -34,7 +34,7 @@
                       <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="elementoSelecccionado(option)"
                       [ngClass]="{'tipo-refaccion': option['tipo'] === 'refaccion','tipo-mo': option['tipo'] === 'mo'}"
                       >
-                          {{option['nombre'] | capitalizarUno}}
+                         {{ option['id_publico'] }} - {{option['nombre'] | capitalizarUno}}
                       </mat-option>
                     </mat-autocomplete>
                 </div>
@@ -97,7 +97,7 @@
                     </ng-container>
                   </ng-container>
                   
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="col-lg-6 col-md-6">
                       encontrados:
                       <pre>
@@ -110,7 +110,7 @@
                         {{elementos_actuales_compatibles_ | json}}
                       </pre>
                     </div>
-                  </div>
+                  </div> -->
                   
                   
                   

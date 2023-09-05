@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "correcciones en modulo de recorte-gastos, editar-os (en proceso)"
+git commit -m "catalogos revisar expansion de e elementos (proceso)"
 git push -u origin
 
 

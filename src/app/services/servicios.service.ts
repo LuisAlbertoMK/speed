@@ -299,7 +299,7 @@ claves_recepciones(busqueda): Promise<any[]> {
             }
             const servicios_a = (entrie_['elementos'] ) ? entrie_['elementos'] : []
             const sucursal = entrie_['sucursal']
-            claves.push({key, sucursal ,descripcion: ubicar(servicios_a) ,no_os: entrie_['no_os'], cliente: entrie_['cliente'], status_orden: entrie_['status'], vehiculo: entrie_['vehiculo']})
+            claves.push({key, sucursal ,descripcion: ubicar(servicios_a) ,no_os: entrie_['no_os'], cliente: entrie_['cliente'], status_orden: entrie_['status'], vehiculo: entrie_['vehiculo'], fecha_limite_gastos: entrie_['fecha_limite_gastos']})
           })
         })
         resolve(claves);

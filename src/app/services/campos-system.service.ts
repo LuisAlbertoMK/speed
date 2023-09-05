@@ -58,6 +58,9 @@ export class CamposSystemService {
   campos_elemento_refacciones = [...this.campos_elemento_mo,'marca','modelo']
   campos_elemento_paquetes = ['id','aprobado','cantidad','cilindros','costo','elementos','enCatalogo','marca','modelo','nombre','status','precio','reporte','tipo','total'
   ]
+  nuevos_campos_moRefacciones = [
+    'id','descripcion','nombre','precio','status','tipo','compatibles','id_publico','costo'
+  ]
 
   campos_reeemplza = [
     {campos:'cliente', reemplaza:'Cliente'},

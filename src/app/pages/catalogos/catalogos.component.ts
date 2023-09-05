@@ -69,6 +69,8 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   listaPaquetes_arr=[]
   filtrar:boolean = true
 
+  lista_moRefacciones = []
+
   paqueteForm: FormGroup;
   
   
@@ -134,33 +136,63 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   }
   
   async nuevas_consultas(){
-    //consultamos las manos de obra y asiganamos para la paginacion de los resultados
-    const starCountRef = ref(db, `manos_obra`)
-    onValue(starCountRef, async (snapshot) => {
+    function agregraindex(data){
+      let nuevo_arreglo = [...data]
+      nuevo_arreglo.map((e, index)=>{
+        e.index = index + 1
+        return e
+      })
+      return nuevo_arreglo
+    }
 
-      const mo = await this._catalogos.consulta_mo_new()
+    const starCountRef = ref(db, `moRefacciones`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        let moRefacciones = this._publicos.crearArreglo2(snapshot.val())
 
-      const nuevos  = (!this.listaMO.length) ?  mo :  this._publicos. actualizarArregloExistente(this.listaMO, mo,[...this._campos.campos_elemento_mo]);
-      this.listaMO = nuevos
+          const nuevos  = (!this.lista_moRefacciones.length) ?  moRefacciones :  this._publicos. actualizarArregloExistente(this.lista_moRefacciones, moRefacciones,[...this._campos.nuevos_campos_moRefacciones]);
 
-      this.dataSourceMO.data = nuevos
-      this.newPagination('mo')
+          const filtrado_mo =  nuevos.filter(e=>e.tipo === 'mo')
+          const filtrado_refacciones =  nuevos.filter(e=>e.tipo === 'refaccion')
+
+        this.dataSourceMO.data = agregraindex(filtrado_mo)
+        this.newPagination('mo')
+
+        this.dataSourceRefacciones.data = agregraindex(filtrado_refacciones)
+        this.newPagination('refacciones')
+
+      }else{
+
+      }
     })
+
+    //consultamos las manos de obra y asiganamos para la paginacion de los resultados
+    // const starCountRef = ref(db, `manos_obra`)
+    // onValue(starCountRef, async (snapshot) => {
+
+    //   const mo = await this._catalogos.consulta_mo_new()
+
+    //   const nuevos  = (!this.listaMO.length) ?  mo :  this._publicos. actualizarArregloExistente(this.listaMO, mo,[...this._campos.campos_elemento_mo]);
+    //   this.listaMO = nuevos
+
+    //   this.dataSourceMO.data = nuevos
+    //   this.newPagination('mo')
+    // })
     
 
-    //consultamos las refacciones y asiganamos para la paginacion de los resultados
-    const starCountRef_refacciones = ref(db, `refacciones`)
-    onValue(starCountRef_refacciones, async (snapshot) => {
+    // //consultamos las refacciones y asiganamos para la paginacion de los resultados
+    // const starCountRef_refacciones = ref(db, `refacciones`)
+    // onValue(starCountRef_refacciones, async (snapshot) => {
 
-      const refacciones = await this._catalogos.consulta_refacciones_new()
+    //   const refacciones = await this._catalogos.consulta_refacciones_new()
 
-      const nuevos  = (!this.listaRefacciones.length) ?  refacciones :  this._publicos. actualizarArregloExistente(this.listaRefacciones, refacciones,[...this._campos.campos_elemento_refacciones]);
+    //   const nuevos  = (!this.listaRefacciones.length) ?  refacciones :  this._publicos. actualizarArregloExistente(this.listaRefacciones, refacciones,[...this._campos.campos_elemento_refacciones]);
 
-      this.listaRefacciones = nuevos
+    //   this.listaRefacciones = nuevos
 
-      this.dataSourceRefacciones.data = nuevos
-      this.newPagination('refacciones')
-    })
+    //   this.dataSourceRefacciones.data = nuevos
+    //   this.newPagination('refacciones')
+    // })
     
 
     //consultamos los paquetes y asiganamos para la paginacion de los resultados
@@ -185,12 +217,15 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
           g.elementos = nuevos_elementos
           g.index = index
+          g.nombre = String(g.nombre).toLowerCase()
           return g
         })
         // console.log(nuevos__);
-        this.paquetes_arr = nuevos__
-        
-        this.dataSourcePaquetes.data = nuevos__
+        this.paquetes_arr = agregraindex(nuevos__)
+
+        this.dataSourcePaquetes.data = ordenamiento_(
+          {campo: 'nombre', asc_desc: true, arreglo: this.paquetes_arr}
+          )
         this.newPagination('paquetes')
         
       } else {
@@ -203,6 +238,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     
   }
   
+
  
 
   construyeFirmularioPaquete(){
@@ -580,4 +616,36 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     return nuevos_elementos 
 
   }
+  ordenaminetoas(campo){
+    this.expandedElement = null
+    const nuevo = ordenamiento_( {campo, asc_desc: true, arreglo: this.paquetes_arr} )
+    this.dataSourcePaquetes.data = nuevo
+    this.newPagination('paquetes')
+  }
+  marca
+  modelo
+  
+}
+function ordenamiento_(data){
+  const {campo, asc_desc, arreglo} =   data
+  return arreglo.sort((a, b) => {
+    if (campo === 'fecha_recibido') {
+      if (new Date(a[campo]) < new Date(b[campo])) {
+        return asc_desc ? -1 : 1;
+      }
+      if (new Date(a[campo]) > new Date(b[campo])) {
+        return asc_desc ? 1 : -1;
+      }
+      return 0;
+    }else{
+      if (a[campo] < b[campo]) {
+        return asc_desc ? -1 : 1;
+      }
+      if (a[campo] > b[campo]) {
+        return asc_desc ? 1 : -1;
+      }
+      return 0;
+    }
+    
+  });
 }

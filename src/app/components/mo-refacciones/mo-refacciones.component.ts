@@ -5,6 +5,7 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MorefaccionesService } from 'src/app/services/morefacciones.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -45,7 +46,10 @@ export class MoRefaccionesComponent implements OnInit  {
 
   elementos_actuales_compatibles = []
   elementos_actuales_compatibles_ = []
-  constructor(private _publicos: ServiciosPublicosService, private fb: FormBuilder) { 
+  constructor(
+    private _publicos: ServiciosPublicosService, private fb: FormBuilder,
+    private _morefacciones: MorefaccionesService
+    ) { 
     this.dataElemento = new EventEmitter()
   }
 
@@ -118,7 +122,7 @@ export class MoRefaccionesComponent implements OnInit  {
       status:['',[]],
       tipo:['mo',[Validators.required]],
       descripcion:['',[]],
-      compatibles:[[],[]]
+      compatibles:[[],[Validators.required]]
     })
     
 
@@ -155,25 +159,69 @@ export class MoRefaccionesComponent implements OnInit  {
   }
 
 
-  data_compataible(data_form){
-    const {marca} = data_form
+  async data_compataible(data_form){
+    const {marca, modelo} = data_form
+
+    
+    
     if (marca) {
 
-      
-      const valores_compatibles = [...this.formElemento.get('compatibles').value];
-   
+      const compatiblesControl = this.formElemento.get('compatibles');
 
-      const estaEnArreglo2 = valores_compatibles.some((elemento) => {
-        return this._publicos.sonObjetosIguales(elemento, data_form);
-      });
-      // const existe = estaEnArreglo2.includes(true)
-      
-      if (!estaEnArreglo2) {
+      let valores_compatibles:any[] = Array.isArray(compatiblesControl.value) ? compatiblesControl.value :  []
+
+      let valores_anios = []
+      let existe = false;
+      let index_encontrado = -1
+      valores_compatibles.forEach((elemento, index)=>{
+        // console.log(elemento);
+        const {marca:marca_element, modelo: modelo_element, anio_inicial, anio_final} = elemento
+        if (marca === marca_element && modelo === modelo_element) {
+          existe = true
+          index_encontrado = index
+          // console.log('ya se encuentra registrado');
+          valores_anios.push(anio_inicial)
+          valores_anios.push(anio_final)
+          const {anio_inicial:dta_form_inicial, anio_final: dta_form_final} = data_form
+          valores_anios.push(dta_form_inicial)
+          valores_anios.push(dta_form_final)
+        }
+      })
+
+      const ordenados = valores_anios.sort()
+
+      if (existe) {
+        const {respuesta} = await this._publicos.mensaje_pregunta_2({
+          mensaje: 'se encontro marca y modelo reemplazar?',
+          html:`Desea remplazar para este elemento, esto modificara la BD`
+        })
+        if (respuesta) {
+          const id_elemento = this.formElemento.get('id').value
+          if (id_elemento) {
+            const nuevo = {
+              marca,
+              modelo,
+              anio_inicial: ordenados[0],
+              anio_final: ordenados[ordenados.length - 1],
+            }
+            valores_compatibles[index_encontrado] = nuevo
+          const updates = {};
+          updates[`moRefacciones/${id_elemento}/compatibles`] = valores_compatibles;
+          update(ref(db), updates).then(()=>{
+            this.formElemento.get('compatibles').setValue(valores_compatibles)
+            this.elementos_actuales_compatibles = valores_compatibles
+            this._publicos.mensajeSwal('Registro correcto',1)
+          })
+          .catch(err=>{
+            console.log(err);
+          })
+          }
+        }else{
+          
+        }
+      }else{
         valores_compatibles.push(data_form)
         this.formElemento.get('compatibles').setValue(valores_compatibles)
-        this._publicos.swalToast('Marca compatible registrada', 1)
-      }else{
-        this._publicos.swalToast('Marca compatible ya registrada', 0)
       }
       
     }
@@ -271,27 +319,10 @@ export class MoRefaccionesComponent implements OnInit  {
   colocarElemento(){
     
     const data_form = this._publicos.getRawValue(this.formElemento)
-    // console.log(data_form);
-    const {compatibles} = data_form
-
-    const actuales:any[] = this.formElemento.get('compatibles').value
-
-    this.elementos_actuales_compatibles_ = actuales
-    // Ejemplo de uso:
-    const obj1 = JSON.parse(JSON.stringify(this.elementos_actuales_compatibles));
-    const obj2 = JSON.parse(JSON.stringify(this.elementos_actuales_compatibles_));
     
+    const  compatibles = this.formElemento.controls['compatibles'].value
     
-    if (this._publicos.sonArreglosDeObjetosIdenticos(this.elementos_actuales_compatibles, this.elementos_actuales_compatibles_)) {
-      console.log('Los arreglos de objetos son idénticos.');
-    } else {
-      console.log('Los arreglos de objetos no son idénticos.');
-    }
-    
-
-    return
-    // console.log(compatibles);
-    if (!compatibles.length) {
+    if ( !compatibles) {
       this._publicos.mensajeSwal('Sin vehículos compatibles',0,true,`Debes colocar al menos un vehículo compatible`)
       return
     }
@@ -312,22 +343,27 @@ export class MoRefaccionesComponent implements OnInit  {
       nuevaInfo['aprobado'] = true
       nuevaInfo['status'] = true
       const tipoShow = (nuevaInfo.tipo === 'refaccion') ? 'Refacción' : 'Mano de obra'
-      this._publicos.mensaje_pregunta(`Guardar elemento con costo total de $ ${this.totalMuestra}`,true,`de tipo ${tipoShow}`).then(({respuesta})=>{
+      this._publicos.mensaje_pregunta(`Guardar elemento con costo total de $ ${this.totalMuestra}`,true,`de tipo ${tipoShow}`).then( async ({respuesta})=>{
           if (respuesta) {
-            if(!nuevaInfo.id){
+             if(!nuevaInfo.id){
               //registrar en caso de que no tenga id
               nuevaInfo['id'] = this._publicos.generaClave()
-              const path = nuevaInfo['tipo'] === 'refaccion' ? 'refacciones' : 'manos_obra';
-              const updates = {[`${path}/${nuevaInfo['id']}`]: nuevaInfo}
-              console.log(updates);
-              // update(ref(db), updates).then(()=>{
-              //   this._publicos.swalToast('Se agrego elemento',1, 'top-start')
-              //   this.dataElemento.emit( nuevaInfo )
-              //   this.limpiarControl()
-              // })
-              // .catch(err=>{
-              //   this._publicos.swalToast('error al registrar elemento',0, 'top-start')
-              // })
+
+              nuevaInfo['compatibles'] = compatibles
+
+              const contador = await this._morefacciones.contadormorefacciones()
+              
+              nuevaInfo['id_publico'] = obtenerID_elemento(nuevaInfo, contador)
+              const updates = {[`moRefacciones/${nuevaInfo['id']}`]: nuevaInfo}
+              // // console.log(updates);
+              update(ref(db), updates).then(()=>{
+                this._publicos.swalToast('Se agrego elemento',1, 'top-start')
+                this.dataElemento.emit( nuevaInfo )
+                this.limpiarControl()
+              })
+              .catch(err=>{
+                this._publicos.swalToast('error al registrar elemento',0, 'top-start')
+              })
             } else{
               //en caso de que tenga id solo agregar
               this.dataElemento.emit( nuevaInfo )
@@ -336,6 +372,14 @@ export class MoRefaccionesComponent implements OnInit  {
             }
           }
       })
+    }
+    function obtenerID_elemento(data, index){
+      const {nombre, tipo} = data
+      const nuevo_nombre = nombre.slice(0,3).toUpperCase()
+      const nuevo_tipo = tipo.slice(0,2).toUpperCase()
+      const secuencia = (index).toString().padStart(4, '0')
+      const cadena = `${nuevo_tipo}${nuevo_nombre}-${secuencia}`
+      return cadena;
     }
   }
 

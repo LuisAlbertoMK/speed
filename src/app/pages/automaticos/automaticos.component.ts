@@ -113,26 +113,57 @@ export class AutomaticosComponent implements OnInit {
         const new_refacciones = processItems(refacciones, 'refaccion');
       
         const new_alls = [...new_mo, ...new_refacciones];
-        console.log(new_alls);
+        
+        new_alls.map((e, index)=>{
+          e.id_publico = obtenerID_elemento(e, index + 1)
+          return e
+        })
+
+        function obtenerID_elemento(data, index){
+          const {nombre, tipo} = data
+          const nuevo_nombre = nombre.slice(0,3).toUpperCase()
+          const nuevo_tipo = tipo.slice(0,2).toUpperCase()
+          const secuencia = (index).toString().padStart(4, '0')
+          const cadena = `${nuevo_tipo}${nuevo_nombre}-${secuencia}`
+          return cadena;
+        }
+
+        const filtrado_mo =  new_alls.filter(e=>e.tipo === 'mo')
+        const filtrado_refacciones =  new_alls.filter(e=>e.tipo === 'refaccion')
+
+
+        // console.log(filtrado_mo);
+        // console.log(filtrado_refacciones);
+        
+        // console.log(new_alls.length);
+        
 
         const objeto = {};
         new_alls.forEach((element) => {
           const {id} = element
           const new_data  = JSON.parse(JSON.stringify(element));
           delete new_data.id
+          delete new_data.cantidad
+          delete new_data.aprobado
+          let descripcion_nueva = new_data.descripcion || 'ninguna descripción'
           new_data.compatibles = [
             {
-              "marca": "Alfa Romeo",
-              "modelo": "Stelvio",
-              "anio_inicial": "1992",
-              "anio_final": "1994"
+              "marca": "Chevrolet",
+              "modelo": "Aveo",
+              "anio_inicial": "2008",
+              "anio_final": "2030"
             }
           ]
+          new_data.descripcion = descripcion_nueva
           objeto[id] = new_data
         });
-        console.log(objeto);
-        
 
+        
+        console.log(objeto);
+
+        // console.log(this._publicos.crearArreglo2(objeto).length);
+        
+        
       }
       
       

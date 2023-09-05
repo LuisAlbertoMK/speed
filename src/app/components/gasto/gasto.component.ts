@@ -216,6 +216,11 @@ export class GastoComponent implements OnInit, OnChanges {
     const recuperada = this._publicos.nuevaRecuperacionData(info_get, cuales_)
     const {sucursal, numero_os, fecha_recibido: fech_} = recuperada
     const data_orden =  this.claves_ordenes.find(f=>f.key === numero_os)
+
+    if (this.ROL !== 'SuperSU' &&   new Date(data_orden.fecha_limite_gastos) > new Date()) {
+      this._publicos.mensajeSwal('Error',0,true,`Fuera de fechas o permisos`)
+      return
+    }
     
     if (info_get.tipo === 'orden'){
       recuperada.no_os = data_orden.no_os
@@ -223,7 +228,7 @@ export class GastoComponent implements OnInit, OnChanges {
       recuperada.cliente = data_orden.cliente
       recuperada.vehiculo = data_orden.vehiculo
       recuperada.descripcion = data_orden.descripcion
-    } 
+    }
 
     const nueva_fecha:string = (info_get.fecha_recibido) 
     ? info_get.fecha_recibido 
@@ -231,7 +236,6 @@ export class GastoComponent implements OnInit, OnChanges {
 
     const fecha_muestra = this.transform_fecha(nueva_fecha, true)
     // console.log(recuperada);
-    
     this._publicos.mensaje_pregunta('Realizar gasto de fecha '+ fecha_muestra).then(({respuesta})=>{
       if (respuesta) {
 

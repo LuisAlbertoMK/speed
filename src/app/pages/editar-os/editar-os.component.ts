@@ -181,7 +181,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     servicio_show:'',
     kilometraje:0,
     historial_pagos:[],
-    historial_gastos:[]
+    historial_gastos:[],
+    fecha_limite_gastos:''
   }
   temporal 
 
@@ -207,7 +208,9 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   ]
 
   informacionLista:boolean = false
- 
+  
+  boton_gastos_show:boolean = false
+
   async rol(){
     const { rol, sucursal } = this._security.usuarioRol()
     this.rol_ = rol
@@ -271,15 +274,31 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       }
       let historial_pagos_arr = []
         
-        const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id: recepcion });
+      const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id: recepcion });
         // const historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === id)
-        historial_pagos_arr = historial_pagos    
+      historial_pagos_arr = historial_pagos    
               // g.historial_gastos = historial_gastos
 
               
-      // }
-
-
+      const {fecha_limite_gastos, fecha_recibido} = data_recepcion
+      
+      if (fecha_recibido && fecha_limite_gastos) {
+        const dentro_rango = verificarFechas()
+        if (dentro_rango) {
+            this.boton_gastos_show = dentro_rango
+        }else{
+          this.boton_gastos_show = dentro_rango
+          if (this.rol_ === 'SuperSU') {
+            this.boton_gastos_show = true
+          }
+        }
+      }
+        
+     
+      function verificarFechas(){
+        return new Date() <= new Date(fecha_limite_gastos) && new Date() >= new Date(fecha_recibido);
+      }
+      
       const arreglo_sucursal = [data_recepcion.sucursal]
 
       const arreglo_fechas_busca = this.obtenerArregloFechas_gastos_diarios({ruta: 'historial_gastos_orden', arreglo_sucursal})
@@ -317,7 +336,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         'tecnico',
         'sucursal',
         'vehiculo',
-        'pdf_entrega'
+        'pdf_entrega',
+        'fecha_limite_gastos'
       ]
       campos.forEach(campo=>{
         this.data_editar[campo] = data_recepcion[campo]
@@ -645,7 +665,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
                         updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = resultado.ruta
                         updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_entregado`] = actual
                         const fecha_limite_gastos = this._publicos.sumarRestarDiasFecha(actual,10)
-                        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_limite_gastos`] = fecha_limite_gastos
+                        const save_guardar = this._publicos.retorna_fechas_hora({fechaString: new Date(fecha_limite_gastos)}).toString
+                        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_limite_gastos`] = save_guardar
 
                         update(ref(db), updates).then(()=>{
                           // console.log('finalizo');
