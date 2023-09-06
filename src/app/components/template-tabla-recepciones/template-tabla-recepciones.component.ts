@@ -32,6 +32,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   @Input() recepciones_arr:any[] = []
   @Input() muestra_desgloce:boolean = false
   @Input() muestra_cliente:boolean = false
+  @Input() reales:boolean = false
   
 
   dataSource = new MatTableDataSource(); //elementos

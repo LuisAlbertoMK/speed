@@ -61,9 +61,9 @@ export class CorteIngresosComponent implements OnInit {
     {valor:'ticketPromedio', show:'ticket Promedio'},
     {valor:'objetivo', show:'Objetivo'},
     {valor:'ventas', show:'Total ventas'},
-    {valor:'operacion', show:'Gastos de operación'},
+    {valor:'operacion', show:'Gastos de operación (refacciones)'},
     {valor:'orden', show:'Gastos de ordenes'},
-    {valor:'refacciones', show:'Refacciones'},
+    // {valor:'refacciones', show:'Refacciones'},
     // {valor:'porcentaje', show:'% cumplido'},
     {valor:'sobrante', show:'GM'},
   ]
@@ -74,7 +74,8 @@ export class CorteIngresosComponent implements OnInit {
     {metodo:'4', show:'OpenPay'},
     {metodo:'5', show:'Clip'},
     {metodo:'6', show:'BBVA'},
-    {metodo:'7', show:'BANAMEX'}
+    {metodo:'7', show:'BANAMEX'},
+    {metodo:'8', show:'Credito'}
   ]
   metodos = {
     Efectivo:0,
@@ -84,6 +85,7 @@ export class CorteIngresosComponent implements OnInit {
     Clip:0,
     BBVA:0,
     BANAMEX:0,
+    credito:0,
   }
   ngOnInit(): void {
     this.rol()
@@ -359,10 +361,13 @@ actualiza(){
 
     this.reporte.ticketPromedio = total_ventas / filtro.length 
     const op_refacciones = total_ventas - total_refacciones
-    this.reporte.porcentajeGM = total_ventas / op_refacciones
+    // this.reporte.porcentajeGM = total_ventas / op_refacciones
+    this.reporte.porcentajeGM = (this.reporte.sobrante / total_ventas) *  100
     //notas
-    // res = ventas_totales - gastos_refacciones
 
+    //gm /  VENTAS
+    // res = ventas_totales - gastos_refacciones
+total_ventas
     // porce = res / ventas_totales
     
     // agregar columna credito

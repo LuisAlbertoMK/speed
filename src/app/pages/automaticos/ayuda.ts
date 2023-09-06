@@ -7898,3 +7898,12088 @@ export const refacciones = {
     "tipo": "refaccion"
   }
 }
+
+export const recepciones = {
+  "-N2gkzuYrS4XDFgYciId": {
+    "-NE31rH-xDj6Jv5hM7Jp": {
+      "-Nd6uLsO8B77F5uwwEi-": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/2",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NE31rH-xDj6Jv5hM7Jp",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 6,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NXpufTa9W5CBZXq5Vp6",
+                "nombre": "computadora chasis",
+                "precio": 3000,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXpvKAAGvHgD31bk8oQ",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "computadora chasis",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_promesa": "Wed Aug 30 2023 13:26:25 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Wed Aug 30 2023 13:26:28 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-Nd6uLsO8B77F5uwwEi-",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0823SU00001",
+        "notifico": true,
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0823SU00001.pdf?alt=media&token=0cc055a4-5de1-4e21-963c-45df2fa2f31a",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "vehiculo": "-Nc3C5baopZJ4hh-f6tR"
+      },
+      "-NdGhQFazlOAb0hDI5CX": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "lleno",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NE31rH-xDj6Jv5hM7Jp",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 5,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "8",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NXpyKfCYJ5fNTd8TO5R",
+                "index": 0,
+                "nombre": "cambio de cadena distribucion",
+                "precio": 2500,
+                "status": true,
+                "subtotal": 2500,
+                "tipo": "mo",
+                "total": 2500
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 6400,
+                "id": "-NXpyYexFpD1LjMYuDy4",
+                "index": 1,
+                "nombre": "kit cadena distribucion",
+                "precio": 6500,
+                "status": true,
+                "subtotal": 6400,
+                "tipo": "refaccion",
+                "total": 8000
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXq3BcKzlcRXzFp46DT",
+            "index": 0,
+            "marca": "BMW",
+            "modelo": "Serie 7",
+            "nombre": "cambio cadena distribucion",
+            "precio": 10500,
+            "status": true,
+            "tipo": "paquete",
+            "total": 10500
+          }
+        ],
+        "fecha_promesa": "Fri Sep 01 2023 11:06:08 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Fri Sep 01 2023 11:06:14 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdGhQFazlOAb0hDI5CX",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0923SU00002",
+        "notifico": true,
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0923SU00002.pdf?alt=media&token=8a5cd09c-8f72-45c1-bc20-20fcf70fb715",
+        "servicio": "1",
+        "status": "recibido",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "vehiculo": "-Nc3VgJseqUr6SUi1WBT"
+      }
+    },
+    "-NI3JfKMPyqUkZ6GBi9D": {
+      "-NdGhE-CEjDs9l2YWEHt": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "3/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NI3JfKMPyqUkZ6GBi9D",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 5,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NXpufTa9W5CBZXq5Vp6",
+                "index": 0,
+                "nombre": "computadora chasis",
+                "precio": 3000,
+                "status": true,
+                "subtotal": 3000,
+                "tipo": "refaccion",
+                "total": 3750
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXpvKAAGvHgD31bk8oQ",
+            "index": 0,
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "computadora chasis",
+            "precio": 3750,
+            "status": true,
+            "tipo": "paquete",
+            "total": 3750
+          }
+        ],
+        "fecha_promesa": "Fri Sep 01 2023 11:05:16 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Fri Sep 01 2023 11:05:19 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdGhE-CEjDs9l2YWEHt",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0923SU00003",
+        "notifico": true,
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0923SU00001.pdf?alt=media&token=ee0068ae-f765-4e2c-84c5-c9e5a0a95ddd",
+        "servicio": "1",
+        "status": "recibido",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "vehiculo": "-Nc-UW3o2Am12qSpDxB0"
+      }
+    },
+    "-NI8J3w_wd0HDj3-gYoA": {
+      "-NdfVXjgXomfg6W4pJZW": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/2",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NI8J3w_wd0HDj3-gYoA",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 0,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NXpufTa9W5CBZXq5Vp6",
+                "nombre": "computadora chasis",
+                "precio": 3000,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXpvKAAGvHgD31bk8oQ",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "computadora chasis",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "8",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "cambio de cadena distribucion",
+                "precio": 2500,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 6400,
+                "id": "-NXpyYexFpD1LjMYuDy4",
+                "nombre": "kit cadena distribucion",
+                "precio": 6500,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXq3BcKzlcRXzFp46DT",
+            "marca": "BMW",
+            "modelo": "Serie 7",
+            "nombre": "cambio cadena distribucion",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 1300,
+                "id": "-N_4mvJyu-chz3GhIrAv",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 900,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 350,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "nombre": "revision puntos de seguridad",
+                "precio": 550,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 120,
+                "nombre": "revision de frenos",
+                "precio": 100,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "id": "-N_4oFIgb0RSeHpuHYYz",
+            "marca": "Fiat",
+            "modelo": "Ducato",
+            "nombre": "servicio menor diesel",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyfLEXZJL-r5DhJTK",
+                "nombre": "amortiguadores delanteros",
+                "precio": 2250,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyxwWB9dVKsBehEts",
+                "nombre": "rotulas delanteras",
+                "precio": 450,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 2000,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-N__00FKRVgZyykKEDqv",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "amortiguadores y rotulas focus",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Wed Sep 06 2023 11:27:12 GMT-0600 (hora estándar central)",
+        "fecha_limite_gastos": "Sat Sep 16 2023 11:27:12 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Wed Sep 06 2023 11:19:59 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Wed Sep 06 2023 11:20:03 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdfVXjgXomfg6W4pJZW",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0923SU00004",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0923SU00001.pdf?alt=media&token=90f090ec-7d32-4dff-bd69-5af528273ee6",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FTO0923SU00001?alt=media&token=cc3b1ba7-af4c-4f19-a684-dbf84613490c",
+        "reporte": {
+          "descuento": 0,
+          "iva": 4264.8,
+          "meses": 0,
+          "mo": 6530,
+          "refacciones": 16100,
+          "refacciones_v": 20125,
+          "subtotal": 26655,
+          "total": 30919.8,
+          "ub": 39.598574376289626
+        },
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "tecnico": "-dsbhkdsfg_45dfgsda",
+        "vehiculo": "-NI8Nvm1_NQDe0oNk0_t"
+      }
+    },
+    "-NJGOM0kuATAqPGHQhTp": {
+      "-NbpcsFy9eRB_CLC5Sxb": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NJGOM0kuATAqPGHQhTp",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 22,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 3422,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE2JJZu_LtUYJXSBola",
+                "index": 0,
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "subtotal": 120,
+                "tipo": "mo",
+                "total": 120
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE32XkfMPHMcMXOiOio",
+                "index": 1,
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE2OUuZ2lh5DhXHHeBL",
+                "index": 2,
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE78vEAujLp8QfcIAtl",
+                "index": 3,
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "id": "-NFGEgUK6OVe2fEDvCgS",
+                "index": 4,
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NFUnhpeX47MLHgB4zr6",
+                "index": 5,
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NFyxBy74ehhZxnHrZ8Q",
+                "index": 6,
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsW7Y5RzRrbI_F9dB",
+                "index": 7,
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NFzjXL2niDv6QlUz8hi",
+                "index": 8,
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsMnQWQWQsj2ChYfI",
+                "index": 9,
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsduKTIhhpSrAJKS-",
+                "index": 10,
+                "nombre": "lavar motor",
+                "precio": 150,
+                "subtotal": 150,
+                "tipo": "mo",
+                "total": 150
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsiafAdRrmZsuD-fs",
+                "index": 11,
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "subtotal": 150,
+                "tipo": "mo",
+                "total": 150
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE3nrow7Ol7iyGtRzO3",
+                "index": 12,
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              }
+            ],
+            "enCatalogo": true,
+            "index": 0,
+            "marca": "Ford",
+            "modelo": "Fiesta",
+            "nombre": "SERVICIO MAYOR",
+            "precio": 3420,
+            "status": true,
+            "tipo": "paquete",
+            "total": 3422
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 4200,
+            "enCatalogo": true,
+            "id": "-NL2Pvka_jb_fJQWHfli",
+            "index": 1,
+            "nombre": "reemplazar soporte de motor derecho",
+            "precio": 1900,
+            "status": true,
+            "subtotal": 4200,
+            "tipo": "mo",
+            "total": 4200
+          }
+        ],
+        "fecha_promesa": "Mon Aug 14 2023 14:01:15 GMT-0600 (GMT-06:00)",
+        "fecha_recibido": "Mon Aug 14 2023 14:01:17 GMT-0600 (GMT-06:00)",
+        "formaPago": 1,
+        "id": "-NbpcsFy9eRB_CLC5Sxb",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0823SU00005",
+        "notifico": true,
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0823SU00001.pdf?alt=media&token=41fa1163-9a83-4e43-8ffa-d6c3775598e1",
+        "servicio": 1,
+        "status": "recibido",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "vehiculo": "-NJGOd9V6BKc0gEV9p6j"
+      },
+      "-Nc3rzLLopCYAY83aker": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NJGOM0kuATAqPGHQhTp",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 1,
+        "diasSucursal": 16,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 3422,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "marca": "Ford",
+            "modelo": "Fiesta",
+            "nombre": "SERVICIO MAYOR",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 4200,
+            "enCatalogo": true,
+            "id": "-NL2Pvka_jb_fJQWHfli",
+            "nombre": "reemplazar soporte de motor derecho",
+            "precio": 1900,
+            "status": "entregado",
+            "tipo": "mo"
+          }
+        ],
+        "fecha_entregado": "",
+        "fecha_promesa": "Fri Aug 18 2023 13:01:34 GMT-0600 (GMT-06:00)",
+        "fecha_recibido": "Mon Aug 21 2023 09:14:35 GMT-0600 (GMT-06:00)",
+        "formaPago": 1,
+        "id": "-Nc3rzLLopCYAY83aker",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0823SU00006",
+        "notifico": true,
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0823SU00002.pdf?alt=media&token=eba47fc7-5494-40b3-8a97-38c83190f1d6",
+        "servicio": 1,
+        "status": "entregado",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "vehiculo": "-NJGOd9V6BKc0gEV9p6j"
+      },
+      "-Nc3zcmPCC9LSostLgBZ": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NJGOM0kuATAqPGHQhTp",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 16,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 3422,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE2JJZu_LtUYJXSBola",
+                "index": 0,
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "subtotal": 120,
+                "tipo": "mo",
+                "total": 120
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE32XkfMPHMcMXOiOio",
+                "index": 1,
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE2OUuZ2lh5DhXHHeBL",
+                "index": 2,
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE78vEAujLp8QfcIAtl",
+                "index": 3,
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "id": "-NFGEgUK6OVe2fEDvCgS",
+                "index": 4,
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NFUnhpeX47MLHgB4zr6",
+                "index": 5,
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NFyxBy74ehhZxnHrZ8Q",
+                "index": 6,
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsW7Y5RzRrbI_F9dB",
+                "index": 7,
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NFzjXL2niDv6QlUz8hi",
+                "index": 8,
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsMnQWQWQsj2ChYfI",
+                "index": 9,
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsduKTIhhpSrAJKS-",
+                "index": 10,
+                "nombre": "lavar motor",
+                "precio": 150,
+                "subtotal": 150,
+                "tipo": "mo",
+                "total": 150
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "id": "-NIXsiafAdRrmZsuD-fs",
+                "index": 11,
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "subtotal": 150,
+                "tipo": "mo",
+                "total": 150
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NE3nrow7Ol7iyGtRzO3",
+                "index": 12,
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              }
+            ],
+            "enCatalogo": true,
+            "index": 0,
+            "marca": "Ford",
+            "modelo": "Fiesta",
+            "nombre": "SERVICIO MAYOR",
+            "precio": 3420,
+            "status": "espera",
+            "subtotal": 3420,
+            "tipo": "paquete",
+            "total": 3422
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 4200,
+            "enCatalogo": true,
+            "id": "-NL2Pvka_jb_fJQWHfli",
+            "index": 1,
+            "nombre": "reemplazar soporte de motor derecho",
+            "precio": 1900,
+            "status": "espera",
+            "subtotal": 4200,
+            "tipo": "mo",
+            "total": 4200
+          }
+        ],
+        "fecha_entregado": "",
+        "fecha_promesa": "Thu Aug 17 2023 13:34:59 GMT-0600 (GMT-06:00)",
+        "fecha_recibido": "Mon Aug 21 2023 08:40:31 GMT-0600 (GMT-06:00)",
+        "formaPago": 1,
+        "id": "-Nc3zcmPCC9LSostLgBZ",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0823GE00007",
+        "notifico": true,
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0823GE00003.pdf?alt=media&token=3c3abc94-bbdd-4b12-b67f-4a71af2f1cc3",
+        "servicio": 1,
+        "status": "recibido",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "vehiculo": "-NJGOd9V6BKc0gEV9p6j"
+      },
+      "-NdBcJB4ETYZd6s2L_lT": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NJGOM0kuATAqPGHQhTp",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 6,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 3422,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "marca": "Ford",
+            "modelo": "Fiesta",
+            "nombre": "SERVICIO MAYOR",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 4200,
+            "enCatalogo": true,
+            "id": "-NL2Pvka_jb_fJQWHfli",
+            "nombre": "reemplazar soporte de motor derecho",
+            "precio": 1900,
+            "status": "entregado",
+            "tipo": "mo"
+          }
+        ],
+        "fecha_entregado": "Thu Aug 31 2023 11:53:50 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Thu Aug 31 2023 11:25:38 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Thu Aug 31 2023 11:25:45 GMT-0600 (hora estándar central)",
+        "formaPago": 1,
+        "id": "-NdBcJB4ETYZd6s2L_lT",
+        "iva": true,
+        "margen": 25,
+        "no_os": "TO0823SU00008",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FTO0823SU00004.pdf?alt=media&token=05def53f-9af6-48df-87c0-3a4ff3fe6114",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FTO0823SU00004?alt=media&token=cc506830-5a1a-4cf8-8e63-92aea9705be3",
+        "servicio": 1,
+        "status": "entregado",
+        "sucursal": "-N2gkzuYrS4XDFgYciId",
+        "tecnico": "-dsbhkdsfg_45dfgsda",
+        "vehiculo": "-NJGOd9V6BKc0gEV9p6j"
+      }
+    }
+  },
+  "-N2glF34lV3Gj0bQyEWK": {
+    "-NFp1szdczrEHN9dLSrn": {
+      "-NdBitNoarmdG7NvVxBE": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/2",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NFp1szdczrEHN9dLSrn",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 6,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 0,
+            "descripcion": "ninguna",
+            "id": "-NM_TK5u-YtvZKTFrlYc",
+            "nombre": "vieleta",
+            "precio": 800,
+            "status": "entregado",
+            "tipo": "refaccion"
+          }
+        ],
+        "fecha_entregado": "Thu Aug 31 2023 11:55:00 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Thu Aug 31 2023 11:54:30 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Thu Aug 31 2023 11:54:33 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdBitNoarmdG7NvVxBE",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0823SU00009",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0823SU00001.pdf?alt=media&token=f6ed1c78-03b4-4feb-b0cc-39b4b6ab1d97",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0823SU00001?alt=media&token=1c157707-8fb4-4486-80ff-23b062401c80",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NFp2TuVQFCNzQ4R4Kkq"
+      }
+    },
+    "-NG2LstV0NhaJkHH6ro-": {
+      "-NdGhozS3Q1709omj-xQ": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NG2LstV0NhaJkHH6ro-",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 5,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyfLEXZJL-r5DhJTK",
+                "nombre": "amortiguadores delanteros",
+                "precio": 2250,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyxwWB9dVKsBehEts",
+                "nombre": "rotulas delanteras",
+                "precio": 450,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 2000,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-N__00FKRVgZyykKEDqv",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "amortiguadores y rotulas focus",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 0,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NbFbXehy1ft8gN1g2CS",
+            "marca": "Ford",
+            "modelo": "Edge",
+            "nombre": "servicio mayor",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Fri Sep 01 2023 11:15:40 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Fri Sep 01 2023 11:07:55 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Fri Sep 01 2023 11:07:59 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdGhozS3Q1709omj-xQ",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00010",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=f2f1b4a9-82a1-42f9-929e-3b14d5bc489a",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=ce771baa-3be4-4564-8f86-edab9cef864b",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NG2MESh7vZpmKP_Rpso"
+      }
+    },
+    "-NK-DDkbEZy70IfwWWDu": {
+      "-NdGhyRk9pVIMHfyv6NI": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NK-DDkbEZy70IfwWWDu",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": true,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": true,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": true,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": true,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": true,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": true,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": true,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": true,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": true,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": true,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": true,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": true,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": true,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 5,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyfLEXZJL-r5DhJTK",
+                "nombre": "amortiguadores delanteros",
+                "precio": 2250,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyxwWB9dVKsBehEts",
+                "nombre": "rotulas delanteras",
+                "precio": 450,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 2000,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-N__00FKRVgZyykKEDqv",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "amortiguadores y rotulas focus",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 0,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NbFbXehy1ft8gN1g2CS",
+            "marca": "Ford",
+            "modelo": "Edge",
+            "nombre": "servicio mayor",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Fri Sep 01 2023 11:15:12 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Fri Sep 01 2023 11:08:31 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Fri Sep 01 2023 11:08:35 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdGhyRk9pVIMHfyv6NI",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00011",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=d4c4d262-2af0-477b-aafe-1263c67b808e",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=f7547795-c082-42d2-aa03-d3cbb952663f",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NK-Dv4TMT-3_e5Q1QTj"
+      }
+    },
+    "-NKGdwfggl-iKF3VAJO4": {
+      "-NdfVgR60e_oyXnEW8CV": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/2",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NKGdwfggl-iKF3VAJO4",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 0,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NXpufTa9W5CBZXq5Vp6",
+                "nombre": "computadora chasis",
+                "precio": 3000,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXpvKAAGvHgD31bk8oQ",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "computadora chasis",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "8",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "cambio de cadena distribucion",
+                "precio": 2500,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 6400,
+                "id": "-NXpyYexFpD1LjMYuDy4",
+                "nombre": "kit cadena distribucion",
+                "precio": 6500,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXq3BcKzlcRXzFp46DT",
+            "marca": "BMW",
+            "modelo": "Serie 7",
+            "nombre": "cambio cadena distribucion",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 1300,
+                "id": "-N_4mvJyu-chz3GhIrAv",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 900,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 350,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "nombre": "revision puntos de seguridad",
+                "precio": 550,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 120,
+                "nombre": "revision de frenos",
+                "precio": 100,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "id": "-N_4oFIgb0RSeHpuHYYz",
+            "marca": "Fiat",
+            "modelo": "Ducato",
+            "nombre": "servicio menor diesel",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyfLEXZJL-r5DhJTK",
+                "nombre": "amortiguadores delanteros",
+                "precio": 2250,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyxwWB9dVKsBehEts",
+                "nombre": "rotulas delanteras",
+                "precio": 450,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 2000,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-N__00FKRVgZyykKEDqv",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "amortiguadores y rotulas focus",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Wed Sep 06 2023 11:26:26 GMT-0600 (hora estándar central)",
+        "fecha_limite_gastos": "Sat Sep 16 2023 11:26:26 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Wed Sep 06 2023 11:20:39 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Wed Sep 06 2023 11:23:29 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdfVgR60e_oyXnEW8CV",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00012",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=d83d7842-bb34-4198-acfb-b1915c70edc7",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=5d86b4e3-1fe1-4a19-9aa0-e34d1c4c0bb8",
+        "reporte": {
+          "descuento": 0,
+          "iva": 4264.8,
+          "meses": 0,
+          "mo": 6530,
+          "refacciones": 16100,
+          "refacciones_v": 20125,
+          "subtotal": 26655,
+          "total": 30919.8,
+          "ub": 39.598574376289626
+        },
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NKGg-_iI1-OskGP7y9S"
+      }
+    },
+    "-NKUp1xLKMOKSSJJXTn2": {
+      "-NdGi8pUuZZJhN9cxPEp": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NKUp1xLKMOKSSJJXTn2",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": true,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": true,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": true,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": true,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": true,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": true,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": true,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": true,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": true,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": true,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": true,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": true,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": true,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 5,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "5",
+            "costo": 3654,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NM_TK5u-YtvZKTFrlYc",
+                "nombre": "vieleta",
+                "precio": 800,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "id": "-Nd6lQrvaUZNARc9e2ng",
+            "marca": "Alfa Romeo",
+            "modelo": "Giulietta",
+            "nombre": "prueba",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 0,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-Nc3SuVRdFB1DCgC6ib8",
+            "marca": "Ford",
+            "modelo": "Figo",
+            "nombre": "SERVICIO MAYOR",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Fri Sep 01 2023 11:14:41 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Fri Sep 01 2023 11:09:17 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Fri Sep 01 2023 11:09:21 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdGi8pUuZZJhN9cxPEp",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00013",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=647ada21-df7c-4db9-8fd5-260b764ccae8",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=b4e420c1-8ee4-4121-aaa1-29d70116ec17",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NKUp8-dFMmFS4Hx_GBT"
+      }
+    },
+    "-NLS512d_ACSLeFE5r02": {
+      "-NdBh4VuMisx_ezmdy2L": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "3/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NLS512d_ACSLeFE5r02",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 6,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 0,
+            "enCatalogo": true,
+            "nombre": "LAVAR CARROCERIA",
+            "precio": 150,
+            "status": "entregado",
+            "tipo": "mo"
+          }
+        ],
+        "fecha_entregado": "Thu Aug 31 2023 11:49:33 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Thu Aug 31 2023 11:46:35 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Thu Aug 31 2023 11:46:36 GMT-0600 (hora estándar central)",
+        "formaPago": 1,
+        "id": "-NdBh4VuMisx_ezmdy2L",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0823SU00014",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0823SU00001.pdf?alt=media&token=dfdac308-ec85-4d92-8ff5-af0553c9ebcf",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0823SU00001?alt=media&token=ca125bf1-ad4f-426c-a004-69f3e80c31d5",
+        "servicio": "5",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NLS5GEDMnA0gVmS8iob"
+      }
+    },
+    "-NLcE0c8GTpe9BHqzCl9": {
+      "-NdfXfIc3rWm8G_tNHWU": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "3/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NLcE0c8GTpe9BHqzCl9",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 0,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 1300,
+                "id": "-N_4mvJyu-chz3GhIrAv",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 900,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 350,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "nombre": "revision puntos de seguridad",
+                "precio": 550,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 120,
+                "nombre": "revision de frenos",
+                "precio": 100,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "id": "-N_4oFIgb0RSeHpuHYYz",
+            "marca": "Fiat",
+            "modelo": "Ducato",
+            "nombre": "servicio menor diesel",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyfLEXZJL-r5DhJTK",
+                "nombre": "amortiguadores delanteros",
+                "precio": 2250,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyxwWB9dVKsBehEts",
+                "nombre": "rotulas delanteras",
+                "precio": 450,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 2000,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-N__00FKRVgZyykKEDqv",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "amortiguadores y rotulas focus",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Wed Sep 06 2023 11:30:58 GMT-0600 (hora estándar central)",
+        "fecha_limite_gastos": "Sat Sep 16 2023 11:30:58 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Wed Sep 06 2023 11:29:20 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Wed Sep 06 2023 11:29:24 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdfXfIc3rWm8G_tNHWU",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00015",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=ef7f5c93-509e-432d-86a4-e0aa07324cf2",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=de84234b-07ea-48c6-ace4-87cc9e0ab820",
+        "reporte": {
+          "descuento": 0,
+          "iva": 1984.8,
+          "meses": 0,
+          "mo": 4030,
+          "refacciones": 6700,
+          "refacciones_v": 8375,
+          "subtotal": 12405,
+          "total": 14389.8,
+          "ub": 45.989520354695685
+        },
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NLcHUz59SzQ6-NZhs0f"
+      }
+    },
+    "-NMZu-FV2AueR54KJb6e": {
+      "-NdGiMayd9JIynoORFPY": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NMZu-FV2AueR54KJb6e",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": true,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": true,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": true,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": true,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": true,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": true,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": true,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": true,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": true,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": true,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": true,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": true,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": true,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 5,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "5",
+            "costo": 3654,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NM_TK5u-YtvZKTFrlYc",
+                "nombre": "vieleta",
+                "precio": 800,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "id": "-Nd6lQrvaUZNARc9e2ng",
+            "marca": "Alfa Romeo",
+            "modelo": "Giulietta",
+            "nombre": "prueba",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyfLEXZJL-r5DhJTK",
+                "nombre": "amortiguadores delanteros",
+                "precio": 2250,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 2,
+                "costo": 0,
+                "descripcion": "ford focus año 2017 sedan",
+                "id": "-N_ZyxwWB9dVKsBehEts",
+                "nombre": "rotulas delanteras",
+                "precio": 450,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 2000,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-N__00FKRVgZyykKEDqv",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "amortiguadores y rotulas focus",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Fri Sep 01 2023 11:14:17 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Fri Sep 01 2023 11:10:11 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Fri Sep 01 2023 11:10:17 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdGiMayd9JIynoORFPY",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00016",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=663b4391-4581-4d81-9925-10dea5ce3980",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=10003b9b-2bfc-4a7b-a0bc-498bf3ce3b59",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NdGiF5mW_dN8QHi0VG4"
+      }
+    },
+    "-NNJDCuLY56cJhP8XI2F": {
+      "-NdfXqWuA77rhmDKYPh1": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "1/2",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NNJDCuLY56cJhP8XI2F",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 0,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "5",
+            "costo": 3654,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "id": "-NM_TK5u-YtvZKTFrlYc",
+                "nombre": "vieleta",
+                "precio": 800,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "id": "-Nd6lQrvaUZNARc9e2ng",
+            "marca": "Alfa Romeo",
+            "modelo": "Giulietta",
+            "nombre": "prueba",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 0,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-Nc3SuVRdFB1DCgC6ib8",
+            "marca": "Ford",
+            "modelo": "Figo",
+            "nombre": "SERVICIO MAYOR",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Wed Sep 06 2023 11:31:50 GMT-0600 (hora estándar central)",
+        "fecha_limite_gastos": "Sat Sep 16 2023 11:31:50 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Wed Sep 06 2023 11:30:05 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Wed Sep 06 2023 11:30:09 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdfXqWuA77rhmDKYPh1",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00017",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=8de381d6-1a6c-4e7f-9ae5-bdb7e5247f4d",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=31f01845-6bf4-4eb1-966f-bd6b44f79029",
+        "reporte": {
+          "descuento": 0,
+          "iva": 707.2,
+          "meses": 0,
+          "mo": 3420,
+          "refacciones": 800,
+          "refacciones_v": 1000,
+          "subtotal": 4420,
+          "total": 5127.2,
+          "ub": 81.90045248868778
+        },
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NNJDJH9WES8LInQavme"
+      }
+    },
+    "-NSlAuGVWHdIBPocMfqT": {
+      "-NdGi_C93mEBiKtnrNvG": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "si",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "si",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "si",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "si",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "si",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "si",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "si",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "si",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "si",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "si",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "si",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "si",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "vacio",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "-NSlAuGVWHdIBPocMfqT",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 0,
+        "diasSucursal": 2,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "8",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "cambio de cadena distribucion",
+                "precio": 2500,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 6400,
+                "id": "-NXpyYexFpD1LjMYuDy4",
+                "nombre": "kit cadena distribucion",
+                "precio": 6500,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXq3BcKzlcRXzFp46DT",
+            "marca": "BMW",
+            "modelo": "Serie 7",
+            "nombre": "cambio cadena distribucion",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 6500,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXqIwcwRkg1Szsrbjjz",
+            "marca": "Honda",
+            "modelo": "Civic",
+            "nombre": "cambio juntas de motor",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "mano de obra",
+                "precio": 6500,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NQbJyuAvZOQ6NRf2HCW",
+                "nombre": "soportes de motor",
+                "precio": 7450,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXqKcSDU7B4iYIGdzlV",
+            "marca": "Honda",
+            "modelo": "Civic",
+            "nombre": "cambio juntas de motor",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Mon Sep 04 2023 10:01:27 GMT-0600 (hora estándar central)",
+        "fecha_limite_gastos": "Thu Sep 14 2023 10:01:27 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Fri Sep 01 2023 11:11:10 GMT-0600 (hora estándar central)",
+        "fecha_recibido": "Mon Sep 04 2023 10:01:00 GMT-0600 (hora estándar central)",
+        "formaPago": "1",
+        "id": "-NdGi_C93mEBiKtnrNvG",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0923SU00018",
+        "notifico": true,
+        "observaciones": "",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0923SU00001.pdf?alt=media&token=a139f3ac-7f11-4213-b586-2f01bdf73c2e",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0923SU00001?alt=media&token=8704356e-f2a8-4c46-9494-cc3b24496a24",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NSlBTKhvtWv-Jt_9-79"
+      }
+    },
+    "RrgWsBCKu8OtIqDtEy4HgbCtBIw2": {
+      "-NcdItgnxAZQ--Q_90Vr": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "no",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "si",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "no",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "si",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "dañado",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "no",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "si",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "no",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "no",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "no",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "si",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "dañado",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "no",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "si",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "si",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "dañado",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "si",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "no",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "no",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "dañado",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "si",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "dañado",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "no",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "si",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "si",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "no",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "lleno",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "RrgWsBCKu8OtIqDtEy4HgbCtBIw2",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": false,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": false,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": false,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": false,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": false,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": false,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": false,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": false,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": false,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": false,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": false,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": false,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": false,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": false,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": false,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": false,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": false,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 2,
+        "diasSucursal": 12,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NXpufTa9W5CBZXq5Vp6",
+                "nombre": "computadora chasis",
+                "precio": 3000,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXpvKAAGvHgD31bk8oQ",
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "Computadora chasis",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "8",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "nombre": "cambio de cadena distribucion",
+                "precio": 2500,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 6400,
+                "id": "-NXpyYexFpD1LjMYuDy4",
+                "nombre": "kit cadena distribucion",
+                "precio": 6500,
+                "status": true,
+                "tipo": "refaccion"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXq3BcKzlcRXzFp46DT",
+            "marca": "BMW",
+            "modelo": "Serie 7",
+            "nombre": "Cambio cadena distribucion",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 1300,
+                "id": "-N_4mvJyu-chz3GhIrAv",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 900,
+                "status": true,
+                "tipo": "refaccion"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 350,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "nombre": "revision puntos de seguridad",
+                "precio": 550,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 120,
+                "nombre": "revision de frenos",
+                "precio": 100,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "status": true,
+                "tipo": "mo"
+              }
+            ],
+            "id": "-N_4oFIgb0RSeHpuHYYz",
+            "marca": "Fiat",
+            "modelo": "Ducato",
+            "nombre": "Servicio menor diesel",
+            "status": "entregado",
+            "tipo": "paquete"
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "costo": 0,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar bujias",
+                "precio": 300,
+                "tipo": "mo"
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NbFbXehy1ft8gN1g2CS",
+            "marca": "Ford",
+            "modelo": "Edge",
+            "nombre": "servicio mayor",
+            "status": "entregado",
+            "tipo": "paquete"
+          }
+        ],
+        "fecha_entregado": "Thu Aug 31 2023 11:06:08 GMT-0600 (hora estándar central)",
+        "fecha_promesa": "Sat Aug 26 2023 14:40:01 GMT-0600 (CST)",
+        "fecha_recibido": "Thu Aug 24 2023 14:48:38 GMT-0600 (CST)",
+        "formaPago": "1",
+        "id": "-NcdItgnxAZQ--Q_90Vr",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0823SU00019",
+        "notifico": true,
+        "observaciones": "poca bateria control auto",
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0823SU00001.pdf?alt=media&token=61467c3d-5a78-4bf9-891f-6cfc99ba1787",
+        "pdf_entrega": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2FrecepcionesEntregadas%2FCU0823SU00001?alt=media&token=eae56893-3f21-4bf4-aa8e-2cc3574f409b",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "tecnico": "-NL1hTSnVq0ImKF7kCT7",
+        "vehiculo": "-NcZo_9M0Q3PIpdNidaE"
+      },
+      "-NcyCJnVF2bX-NmnzfDE": {
+        "checkList": [
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "antena",
+            "status": "no",
+            "valor": "antena"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "birlo seguridad",
+            "status": "no",
+            "valor": "birlo_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "bocinas",
+            "status": "si",
+            "valor": "bocinas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "botones interiores",
+            "status": "dañado",
+            "valor": "botones_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "boxina claxon",
+            "status": "no",
+            "valor": "boxina_claxon"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "calefaccion",
+            "status": "no",
+            "valor": "calefaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cenicero",
+            "status": "no",
+            "valor": "cenicero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "cristales",
+            "status": "si",
+            "valor": "cristales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "encendedor",
+            "status": "no",
+            "valor": "encendedor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejo retrovisor",
+            "status": "no",
+            "valor": "espejo_retorvisor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "espejos laterales",
+            "status": "si",
+            "valor": "espejos_laterales"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "estuche herramientas",
+            "status": "dañado",
+            "valor": "estuche_herramientas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "extintor",
+            "status": "dañado",
+            "valor": "extintor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "gato",
+            "status": "no",
+            "valor": "gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "golpes y carroceria",
+            "status": "dañado",
+            "valor": "golpes_y_carroceria"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "instrumentos tablero",
+            "status": "si",
+            "valor": "instrumentos_tablero"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "interiores",
+            "status": "dañado",
+            "valor": "interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "limpiadores",
+            "status": "no",
+            "valor": "limpiadores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llanta refaccion",
+            "status": "si",
+            "valor": "llanta_refaccion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "llave cruz",
+            "status": "dañado",
+            "valor": "llave_cruz"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "Luces",
+            "status": "si",
+            "valor": "luces"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "maneral gato",
+            "status": "no",
+            "valor": "maneral_gato"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "manijas interiores",
+            "status": "no",
+            "valor": "manijas_interiores"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "molduras completas",
+            "status": "si",
+            "valor": "molduras_completas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "radio",
+            "status": "no",
+            "valor": "radio"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapetes",
+            "status": "no",
+            "valor": "tapetes"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapon combustible",
+            "status": "si",
+            "valor": "tapon_combustible"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones llantas",
+            "status": "dañado",
+            "valor": "tapones_llantas"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "tapones motor",
+            "status": "no",
+            "valor": "tapones_motor"
+          },
+          {
+            "opciones": [
+              "si",
+              "no",
+              "dañado"
+            ],
+            "show": "triangulos seguridad",
+            "status": "no",
+            "valor": "triangulos_seguridad"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "tarjeta de circulacion",
+            "status": "si",
+            "valor": "tarjeta_de_circulacion"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "llega en grua",
+            "status": "si",
+            "valor": "llega_en_grua"
+          },
+          {
+            "opciones": [
+              "si",
+              "no"
+            ],
+            "show": "testigos en tablero",
+            "status": "si",
+            "valor": "testigos_en_tablero"
+          },
+          {
+            "opciones": [
+              "vacio",
+              "1/4",
+              "1/2",
+              "3/4",
+              "lleno"
+            ],
+            "show": "nivel gasolina",
+            "status": "3/4",
+            "valor": "nivel_gasolina"
+          }
+        ],
+        "cliente": "RrgWsBCKu8OtIqDtEy4HgbCtBIw2",
+        "detalles": [
+          {
+            "show": "capo",
+            "status": true,
+            "valor": "capo"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "techo",
+            "status": true,
+            "valor": "techo"
+          },
+          {
+            "show": "espejo derecho",
+            "status": true,
+            "valor": "espejo_derecho"
+          },
+          {
+            "show": "espejo izquierdo",
+            "status": true,
+            "valor": "espejo_izquierdo"
+          },
+          {
+            "show": "faros frontales",
+            "status": true,
+            "valor": "faros_frontales"
+          },
+          {
+            "show": "faros posteriores",
+            "status": true,
+            "valor": "faros_posteriores"
+          },
+          {
+            "show": "parabrisas posterior",
+            "status": true,
+            "valor": "parabrisas_posterior"
+          },
+          {
+            "show": "paragolpes frontal",
+            "status": true,
+            "valor": "paragolpes_frontal"
+          },
+          {
+            "show": "paragolpes posterior",
+            "status": true,
+            "valor": "paragolpes_posterior"
+          },
+          {
+            "show": "puerta lateral derecha 1",
+            "status": true,
+            "valor": "puerta_lateral_derecha_1"
+          },
+          {
+            "show": "puerta lateral derecha 2",
+            "status": true,
+            "valor": "puerta_lateral_derecha_2"
+          },
+          {
+            "show": "puerta lateral izquierda 1",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_1"
+          },
+          {
+            "show": "puerta lateral izquierda 2",
+            "status": true,
+            "valor": "puerta_lateral_izquierda_2"
+          },
+          {
+            "show": "puerta posterior",
+            "status": true,
+            "valor": "puerta_posterior"
+          },
+          {
+            "show": "tirador lateral derecha 1",
+            "status": true,
+            "valor": "tirador_lateral_derecha_1"
+          },
+          {
+            "show": "tirador lateral derecha 2",
+            "status": true,
+            "valor": "tirador_lateral_derecha_2"
+          },
+          {
+            "show": "tirador lateral izquierda 1",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_1"
+          },
+          {
+            "show": "tirador lateral izquierda 2",
+            "status": true,
+            "valor": "tirador_lateral_izquierda_2"
+          },
+          {
+            "show": "tirador posterior",
+            "status": true,
+            "valor": "tirador_posterior"
+          }
+        ],
+        "diasEntrega": 2,
+        "diasSucursal": 8,
+        "elementos": [
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "id": "-NXpufTa9W5CBZXq5Vp6",
+                "index": 0,
+                "nombre": "computadora chasis",
+                "precio": 3000,
+                "status": true,
+                "subtotal": 3000,
+                "tipo": "refaccion",
+                "total": 3750
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NXpvKAAGvHgD31bk8oQ",
+            "index": 0,
+            "marca": "Audi",
+            "modelo": "A3",
+            "nombre": "computadora chasis",
+            "precio": 3750,
+            "status": true,
+            "tipo": "paquete",
+            "total": 3750
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "4",
+            "costo": 0,
+            "elementos": [
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 1300,
+                "id": "-N_4mvJyu-chz3GhIrAv",
+                "index": 0,
+                "nombre": "cambio de aceite y filtro",
+                "precio": 900,
+                "status": true,
+                "subtotal": 1300,
+                "tipo": "refaccion",
+                "total": 1625
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "descripcion": "ninguna",
+                "id": "-NE32XkfMPHMcMXOiOio",
+                "index": 1,
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "status": true,
+                "subtotal": 600,
+                "tipo": "mo",
+                "total": 600
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 350,
+                "descripcion": "ninguna",
+                "id": "-NE2OUuZ2lh5DhXHHeBL",
+                "index": 2,
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "status": true,
+                "subtotal": 350,
+                "tipo": "mo",
+                "total": 350
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 600,
+                "id": "-NQBYCB5Eojp02pxdHdl",
+                "index": 3,
+                "nombre": "revision puntos de seguridad",
+                "precio": 550,
+                "status": true,
+                "subtotal": 600,
+                "tipo": "mo",
+                "total": 600
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 120,
+                "id": "-NWoPCGvjvv_Ehi8TSwS",
+                "index": 4,
+                "nombre": "revision de frenos",
+                "precio": 100,
+                "status": true,
+                "subtotal": 120,
+                "tipo": "mo",
+                "total": 120
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "id": "-NIXsduKTIhhpSrAJKS-",
+                "index": 5,
+                "nombre": "lavar motor",
+                "precio": 150,
+                "status": true,
+                "subtotal": 180,
+                "tipo": "mo",
+                "total": 180
+              },
+              {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 180,
+                "descripcion": "N",
+                "id": "-NIXsiafAdRrmZsuD-fs",
+                "index": 6,
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "status": true,
+                "subtotal": 180,
+                "tipo": "mo",
+                "total": 180
+              }
+            ],
+            "id": "-N_4oFIgb0RSeHpuHYYz",
+            "index": 1,
+            "marca": "Fiat",
+            "modelo": "Ducato",
+            "nombre": "servicio menor diesel",
+            "precio": 3655,
+            "status": true,
+            "tipo": "paquete",
+            "total": 3655
+          },
+          {
+            "aprobado": true,
+            "cantidad": 1,
+            "cilindros": "",
+            "costo": 0,
+            "elementos": [
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "index": 0,
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "subtotal": 120,
+                "tipo": "mo",
+                "total": 120
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "index": 1,
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "index": 2,
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "index": 3,
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "index": 4,
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "index": 5,
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "index": 6,
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "index": 7,
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "index": 8,
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "index": 9,
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "subtotal": 300,
+                "tipo": "mo",
+                "total": 300
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "index": 10,
+                "nombre": "lavar motor",
+                "precio": 150,
+                "subtotal": 150,
+                "tipo": "mo",
+                "total": 150
+              },
+              {
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "index": 11,
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "subtotal": 150,
+                "tipo": "mo",
+                "total": 150
+              }
+            ],
+            "enCatalogo": true,
+            "id": "-NaICs6mEz_D2MvWldRE",
+            "index": 2,
+            "marca": "Mazda",
+            "modelo": "3",
+            "nombre": "servicio mayor",
+            "precio": 3120,
+            "status": true,
+            "tipo": "paquete",
+            "total": 3120
+          }
+        ],
+        "fecha_promesa": "Wed Aug 30 2023 16:11:52 GMT-0600 (CST)",
+        "fecha_recibido": "Mon Aug 28 2023 16:13:07 GMT-0600 (CST)",
+        "formaPago": "1",
+        "id": "-NcyCJnVF2bX-NmnzfDE",
+        "iva": true,
+        "margen": 25,
+        "no_os": "CU0823SU00020",
+        "notifico": true,
+        "pathPDF": "https://firebasestorage.googleapis.com/v0/b/speed-pro-desarrollo.appspot.com/o/PDF%2Frecepciones%2FCU0823SU00002.pdf?alt=media&token=09033947-1f55-408f-a4bb-114f1ecb9310",
+        "servicio": "1",
+        "status": "entregado",
+        "sucursal": "-N2glF34lV3Gj0bQyEWK",
+        "vehiculo": "-NcZo_9M0Q3PIpdNidaE"
+      }
+    }
+  }
+}

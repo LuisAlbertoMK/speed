@@ -619,6 +619,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   ordenaminetoas(campo){
     this.expandedElement = null
     const nuevo = ordenamiento_( {campo, asc_desc: true, arreglo: this.paquetes_arr} )
+    // this.dataSourcePaquetes.sort = nuevo
     this.dataSourcePaquetes.data = nuevo
     this.newPagination('paquetes')
   }

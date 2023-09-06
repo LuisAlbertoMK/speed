@@ -569,10 +569,10 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       total_pagos+= monto
     })
 
-    if (status === 'entregado' && total_pagos < total) {
-      this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
-      return
-    }
+    // if (status === 'entregado' ) {
+    //   this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
+    //   return
+    // }
   
     
     

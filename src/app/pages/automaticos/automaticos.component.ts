@@ -15,7 +15,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { MO, refacciones } from './ayuda';
+import { MO, refacciones, recepciones } from './ayuda';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 
@@ -166,6 +166,9 @@ export class AutomaticosComponent implements OnInit {
         
       }
       
+    realizarOperacionesRecepciones(){
+      console.log(recepciones)
+    }
       
       
     

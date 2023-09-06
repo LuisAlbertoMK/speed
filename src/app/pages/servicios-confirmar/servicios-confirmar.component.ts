@@ -944,7 +944,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         iva: reporte['iva'],
         total: reporte['total'],
       }
-      
       this._servicios.generateOSNumber(this.infoConfirmar,this.ROL).then((no_os)=>{
         const dataMail = {
           correos: this._publicos.dataCorreo(data_sucursal, data_cliente),

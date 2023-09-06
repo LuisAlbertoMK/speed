@@ -1,6 +1,9 @@
 <div class="row">
   <!-- [ngClass]="reporte['ub'] >= 55 ? 'text-success': 'text-danger'" -->
   <!-- text-bg-danger -->
+
+  <!-- {{reales | json}}
+  {{historial_gastos | json}} -->
   <ng-container *ngIf="muestra_normal; else elseMuestra">
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
       <div class="card  mb-3" [ngClass]="!color_n ? 'text-danger' : ''">

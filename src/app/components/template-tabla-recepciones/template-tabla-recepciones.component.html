@@ -89,7 +89,12 @@
                               Dias en sucursal: {{row.diasSucursal}}
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1 mt-1  offset-1" *ngIf="row.reporte">
-                              <app-reporte-desgloce-tarjeta [reporte]="row.reporte" [title]="'Flotilla'"></app-reporte-desgloce-tarjeta>
+                              <ng-container *ngIf="reales">
+                                <app-reporte-desgloce-tarjeta [reales]="reales" [iva] = "row.iva" [historial_gastos]="row.historial_gastos" [reporte]="row.reporte" [title]="'Flotilla'"></app-reporte-desgloce-tarjeta>
+                              </ng-container>
+                              <ng-container *ngIf="!reales">
+                                <app-reporte-desgloce-tarjeta [reporte]="row.reporte" [title]="'Flotilla'"></app-reporte-desgloce-tarjeta>
+                              </ng-container>
                             </div>
                             <div class="table-responsive">
                               <table class="table table-sm">

@@ -3,23 +3,28 @@
 
 
 git add .
-git commit -m "catalogos revisar expansion de e elementos (proceso)"
+git commit -m "modeificacion despues de revision (proceso)"
 git push -u origin
+
 
 
 shutdown -s -t 300 -c 'XD'
 
 ls
 
-cd .\Desktop\speed
+
+cd .\Documents\speed
 ng serve
 
-cd .\Desktop\speedProduccion
+
+cd .\Documents\speedProduccion
 ng serve --port 4201
 
-cd .\Desktop\speedProduccion
+
+cd .\Documents\speedProduccion
 ng build
 firebase deploy
+
 
 */
 //realizar Corte de Ingresos del dia 10 del mes 8 nuevo modulo
