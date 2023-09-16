@@ -78,6 +78,21 @@ export class ClientesService {
       });
     });
   }
+  consulta_Cliente(cliente): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const starCountRef = ref(db, `clientes/${cliente}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      }, {
+        onlyOnce: true
+      })
+    });
+  }
   formato_informacion_cliente(data_cliente){
     const {nombre, apellidos} = data_cliente
     const sucursalShow = this.sucursales_array.find(s=>s.id === data_cliente.sucursal).sucursal

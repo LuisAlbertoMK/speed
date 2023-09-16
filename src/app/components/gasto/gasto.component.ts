@@ -163,8 +163,10 @@ export class GastoComponent implements OnInit, OnChanges {
       }
     })
     this.formGasto.get('tipo').valueChanges.subscribe(async (tipo: string) => {
-      if (tipo) {
-        // this.muestra_claves_recepciones()
+      if (tipo === 'orden') {
+        this.formGasto.get('gasto_tipo').setValue('refaccion')
+      }else{
+        this.formGasto.get('gasto_tipo').setValue('')
       }
     })
     if (this.data_pendiente) {
@@ -192,6 +194,7 @@ export class GastoComponent implements OnInit, OnChanges {
   registroGasto(){
     // this.validaInformacion()
     const info_get = this._publicos.recuperaDatos(this.formGasto)
+
     const campos_operacion = [
       'concepto',
       'facturaRemision',

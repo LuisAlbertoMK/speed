@@ -129,65 +129,102 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }
-  async accion(){
-    this.cargandoInformacion = true
-    console.time('Execution Time');
-    const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
+  accion(){
+    // this.cargandoInformacion = true
 
-    const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+    const starCountRef = ref(db, "cotizacionesRealizadas");
 
-    const promesasClientes = arreglo_rutas_clientes.map(async (f_search) => {
-      const clientes = await this._clientes.consulta_clientes__busqueda({ ruta: f_search });
-
-      const promesas_internas = clientes.map(async (cli) => {
-        const { sucursal, id: cliente } = cli;
-        const ruta_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`;
-        const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ ruta: ruta_cotizaciones });
-        const vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        console.time('Execution Time');
+        const cotizacionesPromises = [];
+        const vehiculosPromises = []; // Array separado para las promesas de vehículos
     
-        const cotizaciones_new = todas_cotizaciones.map((cotizacion) => {
-          const data_vehiculo =vehiculos_arr.find(v=>v.id === cotizacion.vehiculo)
-          const {reporte, servicios} = this.calcularTotales(cotizacion);
-          cotizacion.reporte = reporte
-          cotizacion.servicios = servicios
-          // console.log(cotizacion);
-          
-          const pagoName = this.formasPago.find(d=>d.id === String(cotizacion.formaPago)).pago
-
-          const data_sucursal = this.sucursales_array.find(s=>s.id === String(cotizacion.sucursal))
-          return { ...cotizacion, 
-            data_cliente: cli,
-            data_sucursal,
-            data_vehiculo,
-            fullname: `${cli.nombre} ${cli.apellidos}`,
-            placas: data_vehiculo.placas,
-            pagoName
-          };
+        snapshot.forEach((childSnapshot) => {
+          const childKey = childSnapshot.key;
+          const childData = childSnapshot.val();
+    
+          const { cliente, vehiculo } = childData;
+          const clientesRef = ref(db, "clientes/" + cliente);
+          const vehiculosRef = ref(db, "vehiculos/" + vehiculo);
+    
+          const clientePromise = get(clientesRef).then((clienteSnapshot) => {
+            if (clienteSnapshot.exists()) {
+              const clienteData = clienteSnapshot.val();
+              childData.data_cliente = clienteData;
+              return childData; // Retorna la cotización con los datos del cliente
+            } else {
+              // console.log("El cliente no existe.");
+              return null;
+            }
+          }).catch((error) => {
+            // console.error("Error al obtener datos del cliente:", error);
+            return null;
+          });
+    
+          const vehiculoPromise = get(vehiculosRef).then((vehiculoSnapshot) => {
+            if (vehiculoSnapshot.exists()) {
+              const vehiculoData = vehiculoSnapshot.val();
+              childData.data_vehiculo = vehiculoData;
+              return childData; // Retorna la cotización con los datos del vehículo
+            } else {
+              // console.log("El vehículo no existe.");
+              return null;
+            }
+          }).catch((error) => {
+            // console.error("Error al obtener datos del vehículo:", error);
+            return null;
+          });
+    
+          cotizacionesPromises.push(clientePromise);
+          vehiculosPromises.push(vehiculoPromise);
         });
     
-        return cotizaciones_new;
-      });
+        // Espera a que todas las subconsultas de cotizaciones se completen antes de continuar
+        const cotizacionesConClientes = await Promise.all(cotizacionesPromises);
     
-      const promesas_r = await Promise.all(promesas_internas);
-      
-      return promesas_r.flat();
+        // Espera a que todas las subconsultas de vehículos se completen antes de continuar
+        const cotizacionesConClientesYVehiculos = await Promise.all(vehiculosPromises);
+
+        cotizacionesConClientesYVehiculos.map(c=>{
+          c.fullname = fullname(c.data_cliente)
+          c.placas = placas(c.data_vehiculo)
+          return c
+        })
+    
+        // Ahora tienes todas las cotizaciones con los datos de clientes y vehículos
+        // console.log("Cotizaciones con datos de cliente y vehículo:", cotizacionesConClientesYVehiculos);
+        this.cotizacionesList = cotizacionesConClientesYVehiculos
+        this.filtra_informacion()
+        console.timeEnd('Execution Time');
+      } else {
+        console.log("No existen cotizaciones realizadas.");
+      }
     });
+    
 
-    
-    
-    const cotizacionesPorCliente = await Promise.all(promesasClientes);
-    
-    const finales = cotizacionesPorCliente.flat()
-    // console.log(finales);
-    
-    
-    
-    this.cotizacionesList = finales
-    // this.newPagination()
-    this.filtra_informacion()
-
-    console.timeEnd('Execution Time');
-
+    function fullname(cliente){
+      const {sucursal, nombre, apellidos} = cliente
+      return `${nombre} ${apellidos}`
+    }
+    function placas(vehiculo){
+      const {placas} = vehiculo
+      return `${placas}`.toUpperCase()
+    }
+    function nueva_data_cliente(cliente:any){
+      const sucursales = [
+        {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
+        {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
+        {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
+        {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
+        {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
+        {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
+      ]
+      const {sucursal, nombre, apellidos} = cliente
+      cliente.sucursalShow = sucursales.find(s=>s.clave === sucursal).nombre
+      cliente.fullname = `${nombre} ${apellidos}`
+      return cliente
+    }
   }
   crea_cotizaciones_sucursal(data){
     const {arreglo_sucursal, } = data
@@ -242,10 +279,6 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
  
 
   filtra_informacion(){
-    // console.log(this.filtro_sucursal);
-
-    // console.log(this.filtro_sucursal);
-    
     const resultados = (this.filtro_sucursal === 'Todas') ? this.cotizacionesList : this.cotizacionesList.filter(c=>c.sucursal === this.filtro_sucursal)
     this.newPagination(resultados)
   }

@@ -89,10 +89,10 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
     
   }
   newPagination(){
-    // setTimeout(() => {
+    setTimeout(() => {
       this.dataSourceClientes.paginator = this.paginatorClientes;
       this.dataSourceClientes.sort = this.sortClientes;
-    // }, 500);
+    }, 500);
   }
 
   irPagina(pagina, cliente){

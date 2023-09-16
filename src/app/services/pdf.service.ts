@@ -28,6 +28,7 @@ export class PdfService {
 
 
     const empresaShow = (data_cliente.empresaShow ) ? data_cliente.empresaShow : ''
+    const correoShow = (data_cliente.correo ) ? data_cliente.correo : ''
     function table(data, columns, witdhsDef, showHeaders, headers, layoutDef) {
       return {
           table: {
@@ -477,7 +478,7 @@ export class PdfService {
               {width: '15%', text: 'no. Cliente.', style:'title' },
               {width: '35%', text: `${transformUppercase(data_cliente.no_cliente)}`,  style:'info'},
               {width: '15%', text: 'Mail', style:'title' },
-              {width: '35%', text: `${data_cliente.correo}`,  style:'info'},
+              {width: '35%', text: `${correoShow}`,  style:'info'},
             ]
           },
           {

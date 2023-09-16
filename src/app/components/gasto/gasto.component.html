@@ -77,21 +77,7 @@
 
                 
               </ng-template>
-              <ng-container *ngIf="muestraLista">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" *ngIf="dataRecepcion || muestraLista">
-                  <div class="mb-1 row">
-                    <label [ngClass]="{'text-danger': validaCampo('gasto_tipo'),'text-success': !validaCampo('gasto_tipo')}" for="gasto_tipo"
-                      class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Tipo de gasto</label>
-                    <div class="col-sm-8 col-md-6 col-lg-6 col-12">
-                      <select id="gasto_tipo" [ngModel]="''" class="form-select form-select-sm" formControlName="gasto_tipo" >
-                        <option value="">Selecciona</option>
-                        <option selected value="refaccion" class="text-capitalize">refacción</option>
-                        <option value="mo" class="text-uppercase">MO</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-            </ng-container>
+              
               <div class="col-lg-6 col-md-6  col-sm-12 col-12 text-start" >
                 <div class="mb-1 row">
                   <label [ngClass]="{'text-danger': validaCampo('facturaRemision'),'text-success': !validaCampo('facturaRemision')}" for="facturaRemision"

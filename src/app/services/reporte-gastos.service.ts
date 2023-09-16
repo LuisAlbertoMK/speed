@@ -171,6 +171,17 @@ export class ReporteGastosService {
     
     return data_
   }
+  totales_arreglo_1(data){
+    const {arreglo} = data
+    let  _total =0
+    const nuevo_arreglo = (arreglo) ? arreglo : []
+    nuevo_arreglo.forEach(element => {
+      const {status, monto} = element
+      if (status) _total += monto 
+    });
+    
+    return _total
+  }
   
   nombresServicios(data:any[]){
     let nombres = []

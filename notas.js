@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "modeificacion despues de revision (proceso)"
+git commit -m "correcciones minimas (proceso)"
 git push -u origin
 
 

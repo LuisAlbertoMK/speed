@@ -129,12 +129,21 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
-        const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+        // console.log(snapshot.val());
+        
+        // const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
+        // const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
     
-        const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
-  
+        // const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
+        const finales_clientes = this._publicos.crearArreglo2(snapshot.val())
+                                  .map(cliente=>{
+                                    return this.nueva_data_cliente(cliente)
+                                  })
         // console.log(finales_clientes);
+
+        // finales_clientes.map(cliente=>{
+        //   return this.nueva_data_cliente(cliente)
+        // })
         const campos_cliente = [
           'apellidos',
           'correo',
@@ -150,17 +159,27 @@ export class ClientesComponent implements AfterViewInit, OnInit {
           'localId'
         ]
   
-  
         this.clientes_arr  = (!this.clientes_arr.length) 
         ?  finales_clientes 
         :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
   
       } 
     })
+  }
 
-
-    
-    
+  nueva_data_cliente(cliente){
+    const nombres = [
+      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
+      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
+      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
+      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
+      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
+      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
+    ]
+    const {sucursal, nombre, apellidos} = cliente
+    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
+    cliente.fullname = `${nombre} ${apellidos}`
+    return cliente
   }
 
   

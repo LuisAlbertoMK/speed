@@ -16,6 +16,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { MO, refacciones, recepciones } from './ayuda';
+import { BD } from './BD_completa';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 
@@ -41,6 +42,15 @@ export class AutomaticosComponent implements OnInit {
     ) {   }
   
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
+
+    claves_sucursales = [
+      '-N2gkVg1RtSLxK3rTMYc',
+      '-N2gkzuYrS4XDFgYciId',
+      '-N2glF34lV3Gj0bQyEWK',
+      '-N2glQ18dLQuzwOv3Qe3',
+      '-N2glf8hot49dUJYj5WP',
+      '-NN8uAwBU_9ZWQTP3FP_',
+    ]
     clientes_arr = []
   _sucursal:string
 
@@ -169,10 +179,148 @@ export class AutomaticosComponent implements OnInit {
     realizarOperacionesRecepciones(){
       console.log(recepciones)
     }
-      
-      
-    
     data_compataible(event){
       console.log(event);
+    }
+    operacionesBD(){
+
+      const  {clientes, vehiculos, correos, cotizacionesRealizadas, recepciones } = BD
+
+      const sucursales =  this.claves_sucursales
+
+      const nuevos_clientes_ = nuevos_clientes({clientes,sucursales})
+
+      // console.log(nuevos_clientes_);
+
+      const vehiculos_arra = nuevos_vehiculos({vehiculos,sucursales})
+      
+      // console.log(vehiculos_arra);
+      
+      const cotizaciones_new = nuevas_cotizaciones({cotizacionesRealizadas, sucursales })
+      
+      // console.log(cotizaciones_new);
+
+      const recepciones_new = nuevas_recepciones({recepciones, sucursales })
+
+      // console.log(recepciones_new);
+
+      function nuevas_recepciones(data){
+        const {sucursales, recepciones} = data
+
+        const clientes_new = [];
+
+        sucursales.forEach((sucursal) => {
+          if (recepciones[sucursal]) {
+            const recepciones_ = recepciones[sucursal];
+            const claves_clientes = Object.keys(recepciones_)
+            claves_clientes.forEach(cli=>{
+              const arreglo_ = crearArreglo2(recepciones_[cli]);
+              const nuevo = arreglo_.map((c) => {
+                c.cliente = cli;
+                c.checkList = purifica_checklist(c.checkList)
+                c.detalles = purifica_detalles(c.detalles)
+                return c;
+              });
+              clientes_new.push(...nuevo);
+            })
+          }
+        })
+        // const aplanado = aplanar_array(clientes_new)
+        const nuevo =  aplanar_array(clientes_new)
+        return nuevo_objeto(nuevo)
+        // return 
+      }
+      function nuevas_cotizaciones(data){
+        const {sucursales, cotizacionesRealizadas} = data
+
+        const clientes_new = [];
+
+        sucursales.forEach((sucursal) => {
+          if (cotizacionesRealizadas[sucursal]) {
+            const cotizaciones_ = cotizacionesRealizadas[sucursal];
+            const claves_clientes = Object.keys(cotizaciones_)
+            claves_clientes.forEach(cli=>{
+              const arreglo_ = crearArreglo2(cotizaciones_[cli]);
+              const nuevo = arreglo_.map((c) => {
+                c.cliente = cli;
+                return c;
+              });
+              clientes_new.push(...nuevo);
+            })
+          }
+        })
+        const nuevo =  aplanar_array(clientes_new)
+        return nuevo_objeto(nuevo)
+        // return aplanar_array(clientes_new)
+      }
+      function nuevos_vehiculos(data){
+        const {vehiculos, sucursales} = data
+        // let vehiculos_new =[]
+
+        const vehiculos_new = [];
+
+        sucursales.forEach((sucursal) => {
+          const vehiculos_ = vehiculos[sucursal];
+          const nuevas = Object.keys(vehiculos_);
+          
+          nuevas.forEach((cli) => {
+            const arreglo_ = crearArreglo2(vehiculos_[cli]);
+            const nuevo = arreglo_.map((c) => {
+              c.cliente = cli;
+              return c;
+            });
+            
+            vehiculos_new.push(...nuevo); // Usamos spread para agregar los elementos individualmente
+          });
+        });
+        const nuevo =  aplanar_array(vehiculos_new)
+        return nuevo_objeto(nuevo)
+      }
+      function nuevos_clientes(data){
+        const { sucursales, clientes } = data
+
+        const clientes_new = [];
+
+        sucursales.forEach((sucursal) => {
+          const arreglo_ = crearArreglo2(clientes[sucursal]);
+          clientes_new.push(arreglo_)
+        })
+        const nuevo =  aplanar_array(clientes_new)
+        return nuevo_objeto(nuevo)
+      }
+      function nuevo_objeto(arreglo:any[]){
+        let nuevo_objeto = {}
+        arreglo.forEach(c=>{
+          const {id} = c
+          nuevo_objeto[id] = c
+        })
+        return nuevo_objeto
+      }
+      function crearArreglo2(arrayObj: Record<string, any> | null): any[] {
+        if (!arrayObj) return []; 
+        return Object.entries(arrayObj).map(([key, value]) => ({ ...value, id: key }));
+      }
+      function aplanar_array(arreglo){
+        const allas = arreglo.flat()
+        return allas
+      }
+      function purifica_checklist(checkList){
+        const nuevo_check = [...checkList]
+        const XD = nuevo_check.map(c=>{
+          const {status, valor, show} = c
+          let a = {status, valor}
+          return a
+        })
+        return XD
+      }
+      function purifica_detalles(detalles){
+        const nuevos_detalles = [...detalles]
+        const XD = nuevos_detalles.map(c=>{
+          const {status, valor, show} = c
+          let a = {status, valor}
+          return a
+        })
+        return XD
+      }
     }
 }

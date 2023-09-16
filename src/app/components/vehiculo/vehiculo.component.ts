@@ -52,6 +52,8 @@ export class VehiculoComponent implements OnInit, OnChanges  {
 
     faltante_s 
     salvando:boolean
+
+    sonPlacasIguales: boolean = false
     
   ngOnInit(): void {
     this.rol()
@@ -127,6 +129,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
         id:['',[]],
         cliente:['',[Validators.required]],
         placas:['',[Validators.required,Validators.minLength(6),Validators.maxLength(7)]],
+        placas_verificar:['',[Validators.required,Validators.minLength(6),Validators.maxLength(7)]],
         vinChasis:[''],
         marca:['',[Validators.required]],
         modelo:['',[Validators.required]],
@@ -154,6 +157,25 @@ export class VehiculoComponent implements OnInit, OnChanges  {
         this.array_modelos = this.marcas_vehiculos[marca]
       }
     })
+
+    this.form_vehiculo.get('placas').valueChanges.subscribe((placas: string) => {
+      const placas_verificar = this.form_vehiculo.get('placas_verificar').value;
+      this.sonPlacasIguales = verificarPlacasIguales(placas, placas_verificar);
+    });
+    this.form_vehiculo.get('placas_verificar').valueChanges.subscribe((placas_verificar: string) => {
+      const placas = this.form_vehiculo.get('placas').value;
+      this.sonPlacasIguales = verificarPlacasIguales(placas_verificar, placas);
+    });
+
+    function verificarPlacasIguales(placas: string, placasVerificar: string): boolean {
+      let valor = false
+      if (placas && placasVerificar) {
+        valor = placas.toLowerCase() === placasVerificar.toLowerCase();
+      }
+      return valor
+    }
+
+
     this.form_vehiculo.get('modelo').valueChanges.subscribe((modelo: string) => {
       let modelo_ = ''
       if (modelo) {
@@ -184,9 +206,12 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     const saveInfo:any = this._publicos.nuevaRecuperacionData(info_get, camposRecupera)
 
     const {ok, faltante_s}  =this._publicos.realizavalidaciones_new(saveInfo, this._vehiculos.obligatorios)
+    
     this.faltante_s = faltante_s
+    
+    if (!this.sonPlacasIguales)  this.faltante_s += ', Las placas ingresadas no coinciden'
 
-    if (!ok || this.existenPlacas) {
+    if (!ok || this.existenPlacas || !this.sonPlacasIguales) {
       setTimeout(() => {
         this.salvando = false
       }, 1000);
@@ -198,14 +223,14 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     let nuevo_id  = ''
 
     if (info_get.id) {
-      updates[`vehiculos`] = saveInfo;
+      // updates[`vehiculos`] = saveInfo;
       
-      updates[`vehiculos/${sucursal}/${cliente}/${id}`] = saveInfo;
+      updates[`vehiculos/${id}`] = saveInfo;
       nuevo_id = id
     }else{
       // const {sucursal, id } = this.data_cliente
       const clave_nueva = this._publicos.generaClave()
-      updates[`vehiculos/${sucursal}/${cliente}/${clave_nueva}`] = saveInfo;
+      updates[`vehiculos/${clave_nueva}`] = saveInfo;
       this.listaPlacas.push(String(saveInfo.placas).toLowerCase())
       updates[`placas`] = this.listaPlacas;
       nuevo_id = clave_nueva

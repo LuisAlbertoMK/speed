@@ -43,7 +43,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   
   listaPaquetes = []
   // tabla
-  dataSourcePaquetes = new MatTableDataSource(); //paquetes
+  dataSourcePaquetes = new MatTableDataSource([]); //paquetes
   paquetes = ['index','nombre','marca','modelo','precio','costo']; //paquetes
   columnsToDisplayWithExpand = [...this.paquetes, 'opciones', 'expand']; //paquetes
   expandedElement: any | null; //paquetes
@@ -223,9 +223,12 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
         // console.log(nuevos__);
         this.paquetes_arr = agregraindex(nuevos__)
 
-        this.dataSourcePaquetes.data = ordenamiento_(
-          {campo: 'nombre', asc_desc: true, arreglo: this.paquetes_arr}
-          )
+        // const ordadf = ordenamiento_(
+        //   {campo: 'nombre', asc_desc: true, arreglo: this.paquetes_arr}
+        //   )
+
+          // this.dataSourcePaquetes.sortData(this.paquetes_arr,this.sort) //= new MatTableDataSource(ordadf)
+          this.dataSourcePaquetes.data = this.paquetes_arr
         this.newPagination('paquetes')
         
       } else {
@@ -617,19 +620,22 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
   }
   ordenaminetoas(campo){
-    this.expandedElement = null
+    // this.expandedElement = null
     const nuevo = ordenamiento_( {campo, asc_desc: true, arreglo: this.paquetes_arr} )
+    console.log(nuevo);
+    this.dataSourcePaquetes = new MatTableDataSource(nuevo);
     // this.dataSourcePaquetes.sort = nuevo
-    this.dataSourcePaquetes.data = nuevo
-    this.newPagination('paquetes')
+    // this.dataSourcePaquetes.data = nuevo
+    // this.dataSourcePaquetes = nuevo
+    // this.newPagination('paquetes')
   }
-  marca
-  modelo
+  
   
 }
 function ordenamiento_(data){
   const {campo, asc_desc, arreglo} =   data
-  return arreglo.sort((a, b) => {
+  
+  return arreglo.sort((a:any, b:any) => {
     if (campo === 'fecha_recibido') {
       if (new Date(a[campo]) < new Date(b[campo])) {
         return asc_desc ? -1 : 1;

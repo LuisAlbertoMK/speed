@@ -55,7 +55,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
   ROL:string; SUCURSAL:string
   
-  infoCotizacion   =  this._cotizacion.infoCotizacion
+  infoCotizacion   = JSON.parse(JSON.stringify(this._cotizacion.infoCotizacion));
 
   camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
   camposCliente    =  [ ...this._clientes.camposCliente_show ]
@@ -63,7 +63,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   formasPago       =  [ ...this._cotizaciones.formasPago ]
   servicios        =  [ ...this._servicios.servicios ]
   promociones      =  [ ...this._campos.promociones ]
-  sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales ]
+  sucursales_array =  [ ...this._sucursales.lista_en_duro_sucursales ]
   
   paquete: string     =  this._campos.paquete
   refaccion: string   =  this._campos.refaccion
@@ -121,6 +121,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   editar_cliente:boolean = false
   modelo:string
+
+  enProceso:boolean = false
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
@@ -153,7 +155,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     // console.log(cliente);
     if (cliente) this.infoCotizacion.cliente = cliente
     
-    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    if (cliente) data_cliente  = await this._clientes.consulta_Cliente(cliente)
     // if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
     // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
@@ -180,7 +182,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
       
       data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
-      data_recepcion.nota = (data_recepcion.nota) ? data_recepcion.nota : ''
+      data_recepcion.nota = nota_valida(data_recepcion.nota)
+
+      function nota_valida(nota){
+        let nueva_nota = nota
+        if (!nota || nota === undefined || nota === null) {
+          nueva_nota = ''
+        }
+        return nueva_nota
+      }
 
       campos.forEach(campo=>{
         this.infoCotizacion[campo] = data_recepcion[campo]
@@ -188,7 +198,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       
     }
     if (cotizacion){
-      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
+      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${cotizacion}`
       
       const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
 
@@ -216,14 +226,13 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   }
   async vigila_vehiculos_cliente(){
-    const  {cliente, sucursal} = this.infoCotizacion
-    
-    const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
-    onValue(starCountRef, async  (snapshot) => {
+
+    const starCountRef = ref(db, `vehiculos`)
+    onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        const  {cliente, sucursal} = this.infoCotizacion
-        const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-        this.infoCotizacion.vehiculos = vehiculos
+        const {cliente} = this.infoCotizacion 
+        const vehiculos = this._publicos.crearArreglo2(snapshot.val())
+        this.infoCotizacion.vehiculos = vehiculos.filter(vehiculo=>vehiculo.cliente === cliente)
         const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
         this.infoCotizacion.data_vehiculo  = data_vehiculo
         this.infoCotizacion.vehiculo  = this.extra
@@ -233,11 +242,36 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
           }
         }
       } else {
+        // console.log("No data available");
         this.infoCotizacion.vehiculos = []
         this.extra = null
         this.modelo = null
       }
-    })    
+    })
+    
+
+    // const  {cliente, sucursal} = this.infoCotizacion
+    
+    // const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
+    // onValue(starCountRef, async  (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     const  {cliente, sucursal} = this.infoCotizacion
+    //     const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    //     this.infoCotizacion.vehiculos = vehiculos
+    //     const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
+    //     this.infoCotizacion.data_vehiculo  = data_vehiculo
+    //     this.infoCotizacion.vehiculo  = this.extra
+    //     if (data_vehiculo) {
+    //       if (data_vehiculo.modelo) {
+    //         this.modelo = data_vehiculo['modelo']
+    //       }
+    //     }
+    //   } else {
+    //     this.infoCotizacion.vehiculos = []
+    //     this.extra = null
+    //     this.modelo = null
+    //   }
+    // })    
   }
 
   ///mensaje para poder agregar un paquete que no esta en el catalogo
@@ -363,10 +397,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   //recibir la nueva data y consukta extra de info cliente
   async clientesInfo(event){
     // console.log(event);
-    const {uid, sucursal} = event
-    if (uid) {
-
-      this.infoCotizacion.cliente = uid
+    const {uid, sucursal, id} = event
+    if (id) {
+      this.infoCotizacion.cliente = id
       this.infoCotizacion.data_cliente = event
       this.infoCotizacion.sucursal = sucursal
       this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
@@ -484,9 +517,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         reporte_totales[campo] += reporte[campo]
       })
 
+    const _servicios_ = JSON.parse(JSON.stringify(_servicios));
+
     this.infoCotizacion.reporte = reporte
-    this.infoCotizacion.elementos = _servicios
-    this.dataSource.data = _servicios
+    this.infoCotizacion.elementos = _servicios_
+    this.dataSource.data = _servicios_
     this.newPagination()
 
   }
@@ -497,12 +532,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.vigila_vehiculos_cliente()
   }
   async continuarCotizacion(){
+    this.enProceso = false
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
     // const opcionales = ['promocion','descuento','nota','iva']
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoCotizacion,obligatorios )
 
     this.faltante_s = faltante_s
     if (!ok) return
+
+    this.enProceso = true
     const {promocion, descuento, nota} = this._publicos.recuperaDatos(this.formPlus)
 
     this.infoCotizacion.descuento = descuento
@@ -510,6 +548,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.infoCotizacion.promocion = promocion
 
     const correos = this._publicos.dataCorreo(this.infoCotizacion.data_sucursal,this.infoCotizacion.data_cliente)
+
+    
+    
     const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
     await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
       this.infoCotizacion.no_cotizacion = ans
@@ -554,6 +595,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       updates_paquetes[clave] = recuperada
     })   
     update(ref(db), updates_paquetes);
+    Swal.fire({title:'espere...',icon: 'info', showConfirmButton: false, allowOutsideClick: false})
+    Swal.isLoading()
     //hacemos el llamdo de la funcion para la creaciion del pdf    
     this._pdf.pdf(this.infoCotizacion).then((ansPDF)=>{
       //cuando obtengamos la respuesta asignamos la misma a una variable para su uso de PDF
@@ -563,15 +606,17 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         title: 'Opciones de cotización',
         html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
         showDenyButton: true,
-        showCancelButton: false,
+        showCancelButton: true,
         confirmButtonText: 'Previsualizar PDF cotizacion',
         denyButtonText: `Guardar y enviar correo`,
-        cancelButtonText:`cancelar`
-
+        cancelButtonText:`Cancelar`,
+        allowOutsideClick: false,
+        cancelButtonColor: '#5a5952'
       }).then((result) => {
         // si se confirma previsualizacion genera pdf en nueva ventana del navegador
         if (result.isConfirmed) {
           pdfDocGenerator.open()
+          this.enProceso = false
         } else if (result.isDenied) {
           // si presiono guardar y enviar obtenemos el blob del pdf para poder subirlo a firebasecloud
           pdfDocGenerator.getBlob(async (blob) => {
@@ -614,13 +659,24 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                     //mensaje de correcto aunque no se envie email
                     this._publicos.swalToast('Cotizacion realizada!!', 1, 'top-start')
                     //limpiamos la informacion para nueva cotizacion
-                    this.infoCotizacion = this._cotizacion.infoCotizacion
+                    
+                    this.infoCotizacion = JSON.parse(JSON.stringify(this._cotizacion.infoCotizacion));
+
+                    this.infoCotizacion.elementos = []
+                    // const {elementos: _eele } = this.infoCotizacion
+
+                    // console.log(_eele);
+                    
+                    // console.log(this.infoCotizacion.elementos);
+                    
+                    this.realizaOperaciones()
+                    
                     this.formPlus.reset({
                       servicio: 1,
                       margen: 25,
                       formaPago: '1'
                     })
-                    this.router.navigateByUrl('/cotizacion')
+                    // this.router.navigateByUrl('/cotizacion')
                   })
                   .catch((error) => {
                     this._publicos.swalToast('Error al guardar la cotizacion', 0, 'top-start')
@@ -629,8 +685,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
               },200)
             })
           })
+        } else if(result.isDismissed){
+          this.enProceso = false
         }
       })
+    }
+    )
+    .catch(err=>{
+      Swal.close()
+      this._publicos.mensajeSwal('algo salio mal',0)
     })
   }
   newPagination(){

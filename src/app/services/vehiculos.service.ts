@@ -2030,6 +2030,21 @@ export class VehiculosService {
       });
     });
   }
+  consulta_vehiculo_id(vehiculo): Promise<any> {
+    return new Promise((resolve, reject) => {
+    // const {cliente, sucursal, vehiculo} = data
+      const starCountRef = ref(db, `vehiculos/${vehiculo}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      },{
+        onlyOnce: true
+      });
+    });
+  }
   consulta_vehiculos(data): Promise<any[]> {
     return new Promise((resolve, reject) => {
         const {sucursal, cliente} = data

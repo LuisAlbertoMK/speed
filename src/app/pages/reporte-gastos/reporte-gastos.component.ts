@@ -405,18 +405,19 @@ export class ReporteGastosComponent implements OnInit {
     const filtro_notas = resultados.filter(f=>f.facturaRemision === 'nota')
 
     const data_reporte_general = this._reporte_gastos.reporte_gastos_sucursal_unica(arreglado)
-    const data_reporte_facturas = this._reporte_gastos.totales_arreglo_({arreglo: filtro_facturas, facturaRemision:'factura'})
-    const data_reporte_notas = this._reporte_gastos.totales_arreglo_({arreglo: filtro_notas, facturaRemision:'nota'})
-   
-    // console.log(data_reporte_general);
+
     const ordenados = this._publicos.ordenarData(arreglado,'fecha_recibido',false)
-    
+    const total_factura = this._reporte_gastos.totales_arreglo_1({arreglo: filtro_facturas, facturaRemision:'factura'})
+
+    const total_notas = this._reporte_gastos.totales_arreglo_1({arreglo: filtro_notas, facturaRemision:'nota'})
+
+    const restante_dia = total_factura + total_notas
 
     if (resultados.length) {
       this._publicos.mensajeSwal('Espere ....',3,false,`generando Excel`)
       this._export.generaReporteGastosExcel({
         arreglo: ordenados, data_reporte_general, 
-        data_reporte_facturas, data_reporte_notas,
+        total_factura, total_notas, restante_dia,
         filtro_facturas, filtro_notas
       })
       Swal.close()

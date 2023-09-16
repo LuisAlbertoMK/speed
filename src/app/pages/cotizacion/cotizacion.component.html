@@ -11,7 +11,7 @@
     <i class="fa fa-file-excel"></i> &nbsp; exportar 
   </button>
 </div>
-<ng-container *ngIf="cargandoInformacion; else elseInfoLista">
+<!-- <ng-container *ngIf="cargandoInformacion; else elseInfoLista">
   <div class="alert alert-info row text-center">
     <strong>Cargando información</strong>
     <p><i class="fa fa-sync fa-2x fa-spin"></i></p>
@@ -20,7 +20,7 @@
 </ng-container>
 <ng-template #elseInfoLista>
 
-</ng-template>
+</ng-template> -->
 
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
@@ -192,31 +192,13 @@
                       
                     </mat-tab>
                     <mat-tab label="Cliente">
-                      <div class="card border-dark">
-                        <div class="card-body">
-                          <h1>Informacion de cliente</h1>
-                          <div class="row">
-                            <ng-container *ngFor="let item of camposCliente">
-                              <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="row.data_cliente[item.valor]">
-                                <strong class="text-uppercase">{{item.show}} </strong>: {{row.data_cliente[item.valor]}}
-                              </div>
-                            </ng-container>
-                          </div>
-                        </div>
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+                        <app-cliente-tarjeta [cliente]="row.data_cliente"></app-cliente-tarjeta>
                       </div>
                     </mat-tab>
                     <mat-tab label="Vehiculo">
-                      <div class="card border-dark">
-                        <div class="card-body">
-                          <h1>Informacion de vehiculo</h1>
-                          <div class="row">
-                            <ng-container *ngFor="let item of camposVehiculo">
-                              <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="row.data_vehiculo[item.valor]">
-                                <strong class="text-uppercase">{{item.show}} </strong>: {{row.data_vehiculo[item.valor]}}
-                              </div>
-                            </ng-container>
-                          </div>
-                        </div>
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+                        <app-vehiculo-tarjeta [vehiculo]="row.data_vehiculo"></app-vehiculo-tarjeta>
                       </div>
                     </mat-tab>
                   </mat-tab-group>
@@ -250,7 +232,7 @@
 
   <!-- <button class="btn btn-sm btn-secondary m-1" [matMenuTriggerFor]="filtroSucursal"><i class="fa fa-filter"></i></button> -->
   
-<ng-container *ngIf="SUCURSAL === 'Todas'">
+<!-- <ng-container *ngIf="SUCURSAL === 'Todas'">
   <div class="floating-btn" [matMenuTriggerFor]="filtroSucursal" type="button">
     <span class="icon fa fa-filter fa-2x"></span>
     <mat-menu #filtroSucursal="matMenu">
@@ -258,4 +240,4 @@
       <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
     </mat-menu>
   </div>
-</ng-container>
+</ng-container> -->

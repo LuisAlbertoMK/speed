@@ -403,10 +403,10 @@ export class CotizacionesService {
     const nuevoRol:string = rol.slice(0,2).toUpperCase()
     const { nombre } = data_cliente
     const nuevoCliente:string = nombre.slice(0,2).toUpperCase()
-    const cotizacionesSnapshot = await get(child(dbRef, `cotizacionesRealizadas/${sucursal}/${cliente}`));
+    const cotizacionesSnapshot = await get(child(dbRef, `cotizacionesRealizadas`));
     const cotizacionesArray = cotizacionesSnapshot.exists() ? this._publicos.crearArreglo2(cotizacionesSnapshot.val()) : []
     const secuencia = (cotizacionesArray.length + 1).toString().padStart(4, '0')
-    return `${nombreSucursal}${month}${year}${nuevoRol}${nuevoCliente}${secuencia}`
+    return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
 }
   
 }

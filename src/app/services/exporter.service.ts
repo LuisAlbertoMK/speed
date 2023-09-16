@@ -367,7 +367,9 @@ export class ExporterService {
     this.saveAsExcel(excelBuffer,'ReporteServicios')
   }
   generaReporteGastosExcel(data){
-    const {arreglo, data_reporte_general, data_reporte_facturas, data_reporte_notas, filtro_facturas, filtro_notas} = data
+    const {arreglo, data_reporte_general, data_reporte_facturas, data_reporte_notas, filtro_facturas, filtro_notas, 
+      total_factura, total_notas, restante_dia
+    } = data
     let colocada = []
     const lieneaBlanca = {
       'no O.S':'',
@@ -511,46 +513,40 @@ export class ExporterService {
         colocada.push({ ...lieneaBlanca });
       }
     }
-    lineas_blancas(3)
+    lineas_blancas(1)
 
     
-    const nuevos_ = [['deposito','subtotal'],['sobrante','iva'], ['operacion','total'], ['orden',''],['restante','']]
+    const nuevos_ = ['deposito','sobrante','operacion','orden','restante']
 
-    // console.log(data_reporte_general['sobrante']);
-    // data_reporte_general.sobrante = -2000.445675756
-
-    console.log(data_reporte_general);
+    nuevos_.forEach((campo, index)=>{
     
-    console.log(data_reporte_facturas);
-    
-    nuevos_.forEach((g, index)=>{
-      const [campo, valor] = g
-
       const campo_v = this.transform_monedas(data_reporte_general[campo])
-      const valor_  = this.transform_monedas(data_reporte_facturas[valor])
-      const valor_notas  = this.transform_monedas(data_reporte_notas[valor])
-      let mu = {
+       let mu = {
         ...lieneaBlanca,
-        'Marca': `${valor} facturas`,
-        'Modelo': `${valor_}`,
-        'nota / factura': `${valor} notas`,
-        'metodo pago': `${valor_notas}`,
         'Fecha registro': `${campo}`, 
         'Referencia': campo_v,
-      }
-      if (campo === 'orden' || campo === 'restante') {
-        mu = {
-            ...mu,
-            'Marca': ``,
-            'Modelo': ``,
-            'nota / factura': ``,
-            'metodo pago': ``,
-          }
-      }
-      colocada.push(mu);
-
+       }
+       colocada.push(mu);
     })
+  
+    lineas_blancas(1)
 
+    colocada.push({
+      ...lieneaBlanca,
+      'Fecha registro': 'Total facturas',
+      'Referencia': `${this.transform_monedas(total_factura)}`,
+    })
+    colocada.push({
+      ...lieneaBlanca,
+      'Fecha registro': 'Total notas',
+      'Referencia': `${this.transform_monedas(total_notas)}`,
+    })
+    colocada.push({
+      ...lieneaBlanca,
+      'Fecha registro': 'Restante de dia',
+      'Referencia': `${this.transform_monedas(restante_dia)}`,
+    })
+    
     lineas_blancas(3)
     
     const worksheetenviar_totales_orden : XLSX.WorkSheet = XLSX.utils.json_to_sheet(colocada)

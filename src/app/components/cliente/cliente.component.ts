@@ -357,7 +357,7 @@ export class ClienteComponent implements OnInit, OnChanges {
         campos_permitidos_Actualizar.forEach(campo=>{
           if (informacion_recuperada [campo] !== campo) {
           // if (informacion_recuperada [campo] !== this.data[campo]) {
-            updates[`clientes/${info_get.sucursal}/${info_get.uid}/${campo}`] = informacion_recuperada [campo]
+            updates[`clientes/${info_get.uid}/${campo}`] = informacion_recuperada [campo]
           }
         })
       }else{
@@ -368,10 +368,10 @@ export class ClienteComponent implements OnInit, OnChanges {
 
         campos_permitidos_new_register.forEach(campo=>{
           if (informacion_recuperada [campo]) {
-            updates[`clientes/${info_get.sucursal}/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
+            updates[`clientes/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
           }
         })
-        updates[`clientes/${info_get.sucursal}/${ nueva_clave_generada }/status`] = true
+        updates[`clientes/${ nueva_clave_generada }/status`] = true
         if (this.correo_utilizado === 'personal') {
           this.correos_existentes.push(informacion_recuperada.correo)
           updates[`correos`] = this.correos_existentes
@@ -388,6 +388,7 @@ export class ClienteComponent implements OnInit, OnChanges {
           }, 1000);
          
           this._publicos.mensajeSwal(`${mensaje}`,1, true, `...`);
+          info_get.id = nueva_clave_generada
           this.heroeSlec.emit(info_get);
           this.resetForm()
         } catch (err) {
@@ -442,7 +443,7 @@ export class ClienteComponent implements OnInit, OnChanges {
     return user && user.empresa ? user.empresa : '';
   }
   constverifica(sucursal){
-    const postRef = ref(db, `clientes/${sucursal}`);
+    const postRef = ref(db, `clientes`);
     runTransaction(postRef, (post) => {
       if (post) {
         this.contadroClientes = this._publicos.crearArreglo2(post).length + 1

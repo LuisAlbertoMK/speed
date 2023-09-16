@@ -103,6 +103,7 @@ export class CamposSystemService {
     {campos:'recoleccion', reemplaza:'Recoleccion'},
     {campos:'direccion', reemplaza:'Direccion'},
     {campos:'placas', reemplaza:'Placas'},
+    {campos:'placas_verificar', reemplaza:'Confirmar placas'},
     {campos:'vinChasis', reemplaza:'Vin Chasis'},
     {campos:'modelo', reemplaza:'Modelo'},
     {campos:'categoria', reemplaza:'Categoria'},

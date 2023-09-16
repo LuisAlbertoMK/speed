@@ -42,10 +42,11 @@ export class ClientesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.rol()
+    this.listarClientes()
     this.listaEmpresas()
-    this.automaticos()
     this.vigila()
     this.obtenerListaClientes()
+    this.automaticos()
   }
 
   rol(){
@@ -64,12 +65,29 @@ export class ClientesListComponent implements OnInit {
   async listaEmpresas(){
     const empresas = await this._clientes.consulta_empresas_new()
     this.empresas_alls = empresas
-    this.listarClientes()
+    
   }
   async listarClientes(){
-    const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
-    const clientes = await this._clientes.consulta_clientes_new(busqueda,this.SUCURSAL)
-    this.listaClientes_arr = clientes
+    // const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
+    // const clientes = await this._clientes.consulta_clientes_new(busqueda,this.SUCURSAL)
+    // this.listaClientes_arr = clientes
+
+    const starCountRef = ref(db, `clientes`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+
+        const todas = this._publicos.crearArreglo2(snapshot.val())
+
+        if (this.SUCURSAL === 'Todas') {
+          this.listaClientes_arr = todas
+        }else{
+          this.listaClientes_arr = todas.filter(cliente => cliente.sucursal === this.SUCURSAL)
+        }
+
+      } else {
+        console.log("No data available");
+      }
+    })
   }
 
 
@@ -85,12 +103,10 @@ export class ClientesListComponent implements OnInit {
       
     }else{
       const filterValue = value.toLowerCase();
-      // const nuevos = this.lista_arr_mo.concat(this.lista_arr_refacciones)
-      // const ordenado = this._publicos.ordernarPorCampo(nuevos,'nombre')
       let resultados = []
-      resultados = this.clientes_arr.filter(option => option['nombre'].toLowerCase().includes(filterValue));
+      resultados = this.listaClientes_arr.filter(option => option['nombre'].toLowerCase().includes(filterValue));
       if (!resultados.length) {
-        let filtrados = this.clientes_arr.filter(c=>c.correo)
+        let filtrados = this.listaClientes_arr.filter(c=>c.correo)
         resultados = filtrados.filter(option => option['correo'].toLowerCase().includes(filterValue));
       }
       data = resultados
@@ -104,35 +120,35 @@ export class ClientesListComponent implements OnInit {
   //TODO
   async obtenerListaClientes() {
 
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, async (snapshot) => {
-      if (snapshot.exists()) {
-        const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
-        const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
+    // const starCountRef = ref(db, `clientes`)
+    // onValue(starCountRef, async (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
+    //     const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
     
-        const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
+    //     const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
   
-        // console.log(finales_clientes);
-        const campos_cliente = [
-          'apellidos',
-          'correo',
-          'id',
-          'no_cliente',
-          'nombre',
-          'sucursal',
-          'telefono_movil',
-          'tipo',
-          'sucursalShow',
-          'fullname',
-        ]
+    //     // console.log(finales_clientes);
+    //     const campos_cliente = [
+    //       'apellidos',
+    //       'correo',
+    //       'id',
+    //       'no_cliente',
+    //       'nombre',
+    //       'sucursal',
+    //       'telefono_movil',
+    //       'tipo',
+    //       'sucursalShow',
+    //       'fullname',
+    //     ]
   
   
-        this.clientes_arr  = (!this.clientes_arr.length) 
-        ?  finales_clientes 
-        :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
+    //     this.clientes_arr  = (!this.clientes_arr.length) 
+    //     ?  finales_clientes 
+    //     :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
       
-      } 
-    })    
+    //   } 
+    // })    
   }
 
   transformaDataCliente(data){

@@ -59,6 +59,18 @@
                   </ng-container>
                 </div>
               </div>
+              <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="mb-1">
+                  <label for="placas_verificar" class="form-label ">Confirmar placas <span class="obligatorio">*</span></label>
+                  <input type="text" class="form-control form-control-sm text-uppercase" id="placas_verificar" formControlName="placas_verificar"
+                    [class.is-invalid]="validaCampo('placas_verificar')" 
+                    maxlength="7" id="placas_verificar">
+                  <small *ngIf="validaCampo('placas_verificar') && !existenPlacas" class="text-danger">
+                    campo requerido
+                  </small>
+                  
+                </div>
+              </div>
               
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1 ">

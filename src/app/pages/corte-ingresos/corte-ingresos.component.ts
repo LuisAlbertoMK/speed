@@ -58,10 +58,10 @@ export class CorteIngresosComponent implements OnInit {
   sucursal_select:string
   reporte = {objetivo:0, operacion: 0, orden:0, ventas:0, sobrante:0, porcentajeGM:0, porcentaje:0, ticketPromedio:0, refacciones:0}
   camposReporte = [
-    {valor:'ticketPromedio', show:'ticket Promedio'},
+    {valor:'ticketPromedio', show:'Ticket Promedio'},
     {valor:'objetivo', show:'Objetivo'},
     {valor:'ventas', show:'Total ventas'},
-    {valor:'operacion', show:'Gastos de operación (refacciones)'},
+    {valor:'operacion', show:'Gastos de operación'},
     {valor:'orden', show:'Gastos de ordenes'},
     // {valor:'refacciones', show:'Refacciones'},
     // {valor:'porcentaje', show:'% cumplido'},
@@ -247,9 +247,6 @@ actualiza(){
 
     const {inicial:fec_fa, final: fech_fa}= this.fecha_formateadas;
 
-    
-
-
     const arreglo_rutas = this.crea_ordenes_sucursal({arreglo_sucursal})
 
     const promesasConsultas = arreglo_rutas.map(async (f_search) => {
@@ -264,10 +261,12 @@ actualiza(){
             // console.log(id);
             
             // g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
-            const data_cliente:any =  await this._clientes.consulta_cliente_new({sucursal, cliente})
+            const data_cliente:any =  await this._clientes.consulta_Cliente(cliente)
+
+            g.fullname = fullname(data_cliente)
             g.data_cliente = data_cliente
             g.clienteShow = data_cliente.fullname
-            const data_vehiculo:any =  await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
+            const data_vehiculo:any =  await this._vehiculos.consulta_vehiculo_id( vehiculo );
             
             const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id });
             const historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === id)
@@ -276,7 +275,7 @@ actualiza(){
             g.historial_gastos = historial_gastos
             
             g.data_vehiculo = data_vehiculo
-            g.placas = data_vehiculo.placas
+            g.placas = placas(data_vehiculo)
             const data_sucursal =  this.sucursales_array.find(s=>s.id === sucursal)
 
             const dias =this._publicos.dias_transcurridos_en_sucursal(fecha_recibido)
@@ -297,6 +296,16 @@ actualiza(){
         await Promise.all(promesasVehiculos);
         return gastos_hoy_array;
     });
+
+    function fullname(cliente){
+      const {sucursal, nombre, apellidos} = cliente
+      return `${nombre} ${apellidos}`.toUpperCase()
+    }
+    function placas(vehiculo){
+      const {placas} = vehiculo
+      return `${placas}`.toUpperCase()
+    }
+
     const promesas_gastos_ordenes = await Promise.all(promesasConsultas);
     const muestra_ordenes = promesas_gastos_ordenes.flat()
     // console.log(muestra_ordenes);
