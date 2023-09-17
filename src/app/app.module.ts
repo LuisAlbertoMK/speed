@@ -159,6 +159,7 @@ import { CotizacionClienteComponent } from './pages/cotizacion-cliente/cotizacio
 import { HistorialVehiculoClienteComponent } from './pages/historial-vehiculo-cliente/historial-vehiculo-cliente.component';
 import { TemplateNavegacionComponent } from './components/template-navegacion/template-navegacion.component';
 import { ModeloCompatiblesComponent } from './components/modelo-compatibles/modelo-compatibles.component';
+import { DetallesPaqueteComponent } from './components/detalles-paquete/detalles-paquete.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -249,7 +250,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CotizacionClienteComponent,
     HistorialVehiculoClienteComponent,
     TemplateNavegacionComponent,
-    ModeloCompatiblesComponent
+    ModeloCompatiblesComponent,
+    DetallesPaqueteComponent
   ],
   imports: [
     BrowserModule,

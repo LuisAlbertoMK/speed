@@ -44,8 +44,8 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   listaPaquetes = []
   // tabla
   dataSourcePaquetes = new MatTableDataSource([]); //paquetes
-  paquetes = ['index','nombre','marca','modelo','precio','costo']; //paquetes
-  columnsToDisplayWithExpand = [...this.paquetes, 'opciones', 'expand']; //paquetes
+  paquetes = ['nombre','marca','modelo','precio','costo']; //paquetes
+  columnsToDisplayWithExpand = [...this.paquetes, 'opciones']; //paquetes
   expandedElement: any | null; //paquetes
   @ViewChild('paquetesPaginator') paginator: MatPaginator //paquetes
   @ViewChild('paquetes') sort: MatSort //paquetes
@@ -116,6 +116,10 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   });
 
   array_modelos_filtro = []
+
+  ordenamiento_var:boolean= true
+
+  detalles:any = {}
 
   ngOnInit() {
     // this.consultaMO()
@@ -620,22 +624,29 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
   }
   ordenaminetoas(campo){
+    console.log(campo);
+    
+
+    this.ordenamiento_var = !this.ordenamiento_var
     // this.expandedElement = null
-    const nuevo = ordenamiento_( {campo, asc_desc: true, arreglo: this.paquetes_arr} )
+    const nuevo = ordenamiento_( {campo, asc_desc: this.ordenamiento_var, arreglo: this.paquetes_arr} )
     console.log(nuevo);
-    this.dataSourcePaquetes = new MatTableDataSource(nuevo);
+    this.dataSourcePaquetes.data = nuevo
     // this.dataSourcePaquetes.sort = nuevo
     // this.dataSourcePaquetes.data = nuevo
     // this.dataSourcePaquetes = nuevo
-    // this.newPagination('paquetes')
+    this.newPagination('paquetes')
   }
   
   
 }
-function ordenamiento_(data){
-  const {campo, asc_desc, arreglo} =   data
-  
-  return arreglo.sort((a:any, b:any) => {
+function ordenamiento_(data) {
+  const { campo, asc_desc, arreglo } = data;
+
+  // Clona el arreglo original para no modificarlo
+  const clonedArray = [...arreglo];
+
+  return clonedArray.sort((a, b) => {
     if (campo === 'fecha_recibido') {
       if (new Date(a[campo]) < new Date(b[campo])) {
         return asc_desc ? -1 : 1;
@@ -644,7 +655,7 @@ function ordenamiento_(data){
         return asc_desc ? 1 : -1;
       }
       return 0;
-    }else{
+    } else {
       if (a[campo] < b[campo]) {
         return asc_desc ? -1 : 1;
       }
@@ -653,6 +664,5 @@ function ordenamiento_(data){
       }
       return 0;
     }
-    
   });
 }

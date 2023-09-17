@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "correcciones minimas (proceso)"
+git commit -m "correcciones de fin de semana comentarios gerenetes (proceso)"
 git push -u origin
 
 
