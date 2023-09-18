@@ -745,7 +745,7 @@ total_ventas
         Clip,
         BBVA,
         BANAMEX,
-        credito: (formaPago === '1') ? 'no' : 'si',
+        credito: (formaPago === '1') ? `${0}` : `${1}`,
         subtotal,
         iva,
         total,

@@ -178,7 +178,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     if (recepcion){
 
-      const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
+      const busqueda_ruta_recepcion = `recepciones/${recepcion}`
       const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
       
       data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
@@ -646,7 +646,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
                   infoSave['elementos'] = filtrados
                   
-                  updates[`cotizacionesRealizadas/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = infoSave;
+                  updates[`cotizacionesRealizadas/${this._publicos.generaClave()}`] = infoSave;
                 
                   update(ref(db), updates)
                   .then(() => {
@@ -669,14 +669,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                     
                     // console.log(this.infoCotizacion.elementos);
                     
-                    this.realizaOperaciones()
                     
                     this.formPlus.reset({
                       servicio: 1,
                       margen: 25,
                       formaPago: '1'
                     })
-                    // this.router.navigateByUrl('/cotizacion')
+                    this.realizaOperaciones()
+                    
+                    this.router.navigateByUrl('/cotizacion')
                   })
                   .catch((error) => {
                     this._publicos.swalToast('Error al guardar la cotizacion', 0, 'top-start')

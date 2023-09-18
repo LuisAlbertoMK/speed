@@ -411,7 +411,7 @@ export class CotizacionClienteComponent implements OnInit {
 
                   infoSave['elementos'] = filtrados
                   
-                  updates[`cotizacionesRealizadas/${sucursal}/${cliente}/${this._publicos.generaClave()}`] = infoSave;
+                  updates[`cotizacionesRealizadas/${this._publicos.generaClave()}`] = infoSave;
                 
                   update(ref(db), updates)
                   .then(() => {

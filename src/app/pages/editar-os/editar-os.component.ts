@@ -159,7 +159,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     fecha_entregado:'',
     firma_cliente:'',
     formaPago:'1',
-    observaciones:'',
+    observaciones: observaciones(''),
     id:'',
     iva:true,
     margen:25,
@@ -232,7 +232,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   nuevas(){
     const {cliente, sucursal, recepcion } = this.enrutamiento
 
-    const starCountRef = ref(db, `recepciones/${sucursal}/${cliente}/${recepcion}`)
+    const starCountRef = ref(db, `recepciones/${recepcion}`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         this.acciones()
@@ -264,6 +264,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
       data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
 
+
+      this.data_editar.observaciones = observaciones(data_recepcion.observaciones)
       // const temp = [...data_recepcion.elementos]
 
       if (data_recepcion.tecnico) {
@@ -342,6 +344,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       campos.forEach(campo=>{
         this.data_editar[campo] = data_recepcion[campo]
       })
+
+      
       this.data_editar.historial_pagos = historial_pagos_arr
 
       this.data_editar.historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === recepcion)
@@ -452,11 +456,11 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       if (sucursal && cliente && id) {
         const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
         // this.data_editar.fecha_recibido = actual
-        updates[`recepciones/${sucursal}/${cliente}/${id}/status`] = status;
-        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_recibido`] = actual;
-        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_entregado`] = '';
-        updates[`recepciones/${sucursal}/${cliente}/${id}/elementos`] = this.data_editar.elementos
-        updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = null
+        updates[`recepciones/${id}/status`] = status;
+        updates[`recepciones/${id}/fecha_recibido`] = actual;
+        updates[`recepciones/${id}/fecha_entregado`] = '';
+        updates[`recepciones/${id}/elementos`] = this.data_editar.elementos
+        updates[`recepciones/${id}/pdf_entrega`] = null
         update(ref(db), updates).then(()=>{
           // console.log('finalizo');
         })
@@ -569,11 +573,15 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       total_pagos+= monto
     })
 
-    // if (status === 'entregado' ) {
-    //   this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
-    //   return
-    // }
-  
+    if (status === 'entregado' ) {
+      this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
+      return
+    }
+    
+
+    this.data_editar.observaciones = observaciones(this.data_editar.observaciones)
+
+    
     
     
 
@@ -616,8 +624,10 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   
           nueva_data.elementos = filtrados
   
+          
+
           campos_update.forEach(campo=>{
-            updates[`recepciones/${sucursal}/${cliente}/${id}/${campo}`] = nueva_data[campo]
+            updates[`recepciones/${id}/${campo}`] = nueva_data[campo]
           })
   
           if (this.data_editar.status === 'entregado' ) {
@@ -902,4 +912,12 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     return Rutas
   }
 
+}
+
+function observaciones(observacion){
+  let new_observacion = observacion
+  if (new_observacion === undefined || new_observacion === '' || new_observacion === null) {
+    new_observacion = ''
+  }
+  return new_observacion
 }

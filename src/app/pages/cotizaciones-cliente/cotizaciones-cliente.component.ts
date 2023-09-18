@@ -122,7 +122,7 @@ export class CotizacionesClienteComponent implements OnInit {
     const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
     const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
 
-    const ruta_cotizaciones   =  `cotizacionesRealizadas/${sucursal}/${cliente}`
+    const ruta_cotizaciones   =  `cotizacionesRealizadas`
     
     const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
 

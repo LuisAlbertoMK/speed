@@ -126,9 +126,9 @@ export class ClienteTarjetaComponent implements OnInit, OnChanges {
       const updates = {}
       const {sucursal, id } = this.cliente
       campos_update.forEach(campo=>{
-        updates[`clientes/${sucursal}/${id}/${campo}`] = data_form[campo]
+        updates[`clientes/${id}/${campo}`] = data_form[campo]
       })
-      updates[`clientes/${sucursal}/${id}/id`] = id
+      updates[`clientes/${id}/id`] = id
 
       update(ref(db), updates).then(()=>{
         this._publicos.swalToast(`Se actualizo la informacion de cliente`,1)

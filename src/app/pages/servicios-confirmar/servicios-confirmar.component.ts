@@ -210,19 +210,21 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
 
-    if (cliente){
-      this.vigila_informacion_cliente({sucursal, cliente})
-      data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-      vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    // if (cliente){
+    //   this.vigila_informacion_cliente({sucursal, cliente})
+    //   data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    //   vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
 
-    }
+    // }
+    if (cliente) this.infoConfirmar.cliente = cliente
+    if (cliente) data_cliente  = await this._clientes.consulta_Cliente(cliente)
 
     data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
     const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     
     if (recepcion){
-      const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
+      const busqueda_ruta_recepcion = `recepciones/${recepcion}`
       const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
       // data_recepcion.elementos = data_recepcion.servicios
       const campos = ['formaPago','iva','margen','servicio','elementos','nota']
@@ -232,7 +234,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       })
     }
     if (cotizacion){
-      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${sucursal}/${cliente}/${cotizacion}`
+      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${cotizacion}`
       
       const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
       
@@ -243,7 +245,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       })
     }
 
-    this.infoConfirmar.vehiculos = vehiculos_arr
+    // this.infoConfirmar.vehiculos = vehiculos_arr
 
     this.extra = vehiculo
 
@@ -259,25 +261,52 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   }
   async vigila_vehiculos_cliente(){
-    const  {cliente, sucursal} = this.infoConfirmar
 
-    const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
-    onValue(starCountRef, async (snapshot) => {
+    const starCountRef = ref(db, `vehiculos`)
+    onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        const  {cliente, sucursal} = this.infoConfirmar
-
-        const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-        this.infoConfirmar.vehiculos = vehiculos
+        const {cliente} = this.infoConfirmar 
+        const vehiculos = this._publicos.crearArreglo2(snapshot.val())
+        this.infoConfirmar.vehiculos = vehiculos.filter(vehiculo=>vehiculo.cliente === cliente)
         const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
         this.infoConfirmar.data_vehiculo  = data_vehiculo
         this.infoConfirmar.vehiculo  = this.extra
         if (data_vehiculo) {
           if (data_vehiculo.modelo) {
-            this.modelo = data_vehiculo.modelo
+            this.modelo = data_vehiculo['modelo']
           }
         }
+      } else {
+        // console.log("No data available");
+        this.infoConfirmar.vehiculos = []
+        this.extra = null
+        this.modelo = null
       }
     })
+    
+
+    // const  {cliente, sucursal} = this.infoCotizacion
+    
+    // const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
+    // onValue(starCountRef, async  (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     const  {cliente, sucursal} = this.infoCotizacion
+    //     const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    //     this.infoCotizacion.vehiculos = vehiculos
+    //     const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
+    //     this.infoCotizacion.data_vehiculo  = data_vehiculo
+    //     this.infoCotizacion.vehiculo  = this.extra
+    //     if (data_vehiculo) {
+    //       if (data_vehiculo.modelo) {
+    //         this.modelo = data_vehiculo['modelo']
+    //       }
+    //     }
+    //   } else {
+    //     this.infoCotizacion.vehiculos = []
+    //     this.extra = null
+    //     this.modelo = null
+    //   }
+    // })    
   }
 
   verificarInfoVehiculos(){
@@ -845,6 +874,17 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   async infoCliente(cliente){
 
+    // if (cliente) {
+    //   const {id, sucursal} = cliente
+    //   this.infoConfirmar.cliente = id
+    //   this.infoConfirmar.data_cliente = cliente
+    //   this.infoConfirmar.sucursal = sucursal
+    //   this.infoConfirmar.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    //   this.extra = null
+    //   this.infoConfirmar.data_vehiculo = {}
+    //   this.infoConfirmar.vehiculo = null
+    //   // this.vigila_vehiculos_cliente()
+    // }
     if (cliente) {
       const {id, sucursal} = cliente
       this.infoConfirmar.cliente = id
@@ -854,7 +894,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.extra = null
       this.infoConfirmar.data_vehiculo = {}
       this.infoConfirmar.vehiculo = null
-      // this.vigila_vehiculos_cliente()
+      this.vigila_vehiculos_cliente()
     }
   }
   async continuar(){
@@ -1002,7 +1042,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
                     let guardar_ = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
                     guardar_.id = clave
                     
-                    updates[`recepciones/${sucursal}/${cliente}/${clave}`] = guardar_
+                    updates[`recepciones/${clave}`] = guardar_
 
                     this._mail.EmailRecepcion(dataMail)
                     // if (this.ParamsGet.tipo === 'cita') {
@@ -1015,7 +1055,14 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
                       this.archivos = []
                       this.nombre = null
                       this.numeroDias = 0
-                      this.infoConfirmar= this._servicios.infoConfirmar
+                      // this.infoConfirmar= this._servicios.infoConfirmar
+                      this.infoConfirmar = JSON.parse(JSON.stringify(this._servicios.infoConfirmar));
+
+                      this.infoConfirmar.elementos = []
+                      this.limpiarFirma()
+                      this.realizaOperaciones()
+                      
+
                       this.router.navigateByUrl('/servicios')
                     })
                   }

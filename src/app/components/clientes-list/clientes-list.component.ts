@@ -175,7 +175,7 @@ export class ClientesListComponent implements OnInit {
     const {arreglo_sucursal, } = data
     let Rutas_retorna = []
     arreglo_sucursal.forEach(sucursal=>{
-      Rutas_retorna.push(`clientes/${sucursal}`)
+      Rutas_retorna.push(`clientes`)
     })
     return Rutas_retorna
   }
