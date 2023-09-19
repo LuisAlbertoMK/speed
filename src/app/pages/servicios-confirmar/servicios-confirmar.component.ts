@@ -216,12 +216,18 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     //   vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
 
     // }
-    if (cliente) this.infoConfirmar.cliente = cliente
-    if (cliente) data_cliente  = await this._clientes.consulta_Cliente(cliente)
+    // if (cliente) 
+    // if (cliente) data_cliente  = await this._clientes.consulta_Cliente(cliente)
 
-    data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
+    if (cliente) {
+      this.infoConfirmar.cliente = cliente
+      data_cliente  = await this._clientes.consulta_Cliente(cliente)
+      data_cliente = this.nueva_data_cliente(data_cliente)
+    }
+    if (vehiculo) {
+      this.extra = vehiculo
+    }
 
-    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     
     if (recepcion){
       const busqueda_ruta_recepcion = `recepciones/${recepcion}`
@@ -245,12 +251,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       })
     }
 
-    // this.infoConfirmar.vehiculos = vehiculos_arr
-
     this.extra = vehiculo
 
     this.infoConfirmar.cliente = cliente
-    this.infoConfirmar.data_sucursal = data_sucursal
+    this.infoConfirmar.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
     this.infoConfirmar.vehiculo = vehiculo
     this.infoConfirmar.data_cliente = data_cliente
     this.infoConfirmar.data_vehiculo = data_vehiculo
@@ -282,31 +286,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.extra = null
         this.modelo = null
       }
-    })
-    
-
-    // const  {cliente, sucursal} = this.infoCotizacion
-    
-    // const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
-    // onValue(starCountRef, async  (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     const  {cliente, sucursal} = this.infoCotizacion
-    //     const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    //     this.infoCotizacion.vehiculos = vehiculos
-    //     const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
-    //     this.infoCotizacion.data_vehiculo  = data_vehiculo
-    //     this.infoCotizacion.vehiculo  = this.extra
-    //     if (data_vehiculo) {
-    //       if (data_vehiculo.modelo) {
-    //         this.modelo = data_vehiculo['modelo']
-    //       }
-    //     }
-    //   } else {
-    //     this.infoCotizacion.vehiculos = []
-    //     this.extra = null
-    //     this.modelo = null
-    //   }
-    // })    
+    })  
   }
 
   verificarInfoVehiculos(){
@@ -1041,7 +1021,19 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
                     const clave =this._publicos.generaClave()
                     let guardar_ = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
                     guardar_.id = clave
+                    guardar_.fullname = fullname(this.infoConfirmar.data_cliente)
+                    guardar_.placas = placas(this.infoConfirmar.data_vehiculo)
                     
+                    function fullname(data_cliente){
+                      const {nombre, apellidos} = data_cliente
+                      return `${nombre} ${apellidos}`.toUpperCase()
+                    }
+                    function placas(data_vehiculo){
+                      const {placas} = data_vehiculo
+                      return `${placas}`.toUpperCase()
+                    }
+                    guardar_.checkList = this._servicios.purifica_checklist(this.infoConfirmar.checkList)
+                    guardar_.detalles =  this._servicios.purifica_detalles(this.infoConfirmar.detalles)
                     updates[`recepciones/${clave}`] = guardar_
 
                     this._mail.EmailRecepcion(dataMail)
@@ -1212,5 +1204,19 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       return nueva_info
     })
     return nuevos_subelementos
+  }
+  nueva_data_cliente(cliente){
+    const nombres = [
+      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
+      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
+      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
+      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
+      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
+      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
+    ]
+    const {sucursal, nombre, apellidos} = cliente
+    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
+    cliente.fullname = `${nombre} ${apellidos}`
+    return cliente
   }
 }

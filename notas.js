@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "falta correccion de rutas de consulta (proceso)"
+git commit -m "revisar error al consultar informacion o realizar operaciones (proceso)"
 git push -u origin
 
 
@@ -29,3 +29,4 @@ firebase deploy
 */
 //realizar Corte de Ingresos del dia 10 del mes 8 nuevo modulo
 //validar que solo puedan darse de lata gastos antes de fecha limite de fecha_limite_gastos
+//realizar barrido de fechas en reporte de gastos

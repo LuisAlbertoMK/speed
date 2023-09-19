@@ -59,12 +59,12 @@
                   <ng-container *ngIf="muestraLista && !id_os">
                     <div class="col-lg-6 col-md-6  col-sm-12 col-12 text-start" >
                       <div class="mb-1 row">
-                        <label [ngClass]="{'text-danger': validaCampo('numero_os'),'text-success': !validaCampo('numero_os')}" for="numero_os"
+                        <label [ngClass]="{'text-danger': validaCampo('id_os'),'text-success': !validaCampo('id_os')}" for="id_os"
                           class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label"># O.S  [ ordenes: {{ claves_ordenes.length }} ]</label>
                         <div class="col-sm-8 col-md-6 col-lg-6 col-12">
-                          <select id="numero_os" class="form-select form-select-sm" formControlName="numero_os" >
+                          <select id="id_os" class="form-select form-select-sm" formControlName="id_os" >
                             <option value="">Selecciona</option>
-                            <option [value]="s.key" *ngFor="let s of claves_ordenes">
+                            <option [value]="s.id" *ngFor="let s of claves_ordenes">
                               {{s.no_os}}
                             </option>
                           </select>

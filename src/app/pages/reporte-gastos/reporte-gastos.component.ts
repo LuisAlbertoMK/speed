@@ -69,6 +69,7 @@ export class ReporteGastosComponent implements OnInit {
   historial_gastos_operacion = []
   historial_gastos_diarios = []
   historial_gastos_orden = []
+  depositos = []
   todos_ultimate =[]
 
   // tabla
@@ -165,6 +166,7 @@ export class ReporteGastosComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
 
+
   ngOnInit(): void {
     this.rol()
   }
@@ -205,54 +207,29 @@ export class ReporteGastosComponent implements OnInit {
 
   llamada_multiple(){
     this.formate_fecha_horas()
-    const arreglo = ['historial_gastos_orden','historial_gastos_diarios','historial_gastos_operacion']
-    arreglo.forEach(donde=>{
-      this.funcion_obervador(donde)
-    })
-  }
-  funcion_obervador(donde){
-    const starCountRef = ref(db, `${donde}`)
-    onValue(starCountRef, async (snapshot) => {
+    const historial_gastos_operacion = ref(db, `historial_gastos_operacion`)
+    onValue(historial_gastos_operacion, async (snapshot) => {
       if (snapshot.exists()) {
-        // console.log(`cambio: ${donde}`);
-        
-        let fecha_start :Date = new Date()
-        const simular_fecha = this._publicos.sumarRestarDiasFecha(fecha_start, -1)
-
-          const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s=>{return s.id}) : [this.SUCURSAL]
-
-          const arreglo_fechas_busca = this.obtenerArregloFechas_gastos_diarios({ruta: donde, arreglo_sucursal})
-          // this._arreglo_fechas_busca = arreglo_fechas_busca
-          const promesasConsultas = arreglo_fechas_busca.map(async (f_search) => {
-            const gastos_hoy_array: any[] = await this._reporte_gastos.gastos_hoy({ ruta: f_search});
-            const promesasVehiculos = gastos_hoy_array
-              .filter(g => g.tipo === 'orden')
-              .map(async (g) => {
-                const { sucursal, cliente, vehiculo } = g;
-                g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
-              });
-            await Promise.all(promesasVehiculos);
-                    return gastos_hoy_array;
-            });
-          const promesas = await Promise.all(promesasConsultas);
-          const finales = promesas.flat() 
-          
-          switch (donde) {
-            case 'historial_gastos_diarios':
-              this.historial_gastos_diarios =  finales
-              break;
-            case 'historial_gastos_orden':
-              this.historial_gastos_orden =  finales
-              break;
-            case 'historial_gastos_operacion':
-              this.historial_gastos_operacion =  finales
-              break;
-          }
-
-          this.unirResultados_new()
+      this.historial_gastos_operacion = this._publicos.crearArreglo2(snapshot.val())
+       this.unirResultados_new()
+      }
+    })
+    const historial_gastos_orden = ref(db, `historial_gastos_orden`)
+    onValue(historial_gastos_orden, async (snapshot) => {
+      if (snapshot.exists()) {
+        this.historial_gastos_orden = this._publicos.crearArreglo2(snapshot.val())
+        this.unirResultados_new()
+      }
+    })
+    const historial_gastos_diarios = ref(db, `historial_gastos_diarios`)
+    onValue(historial_gastos_diarios, async (snapshot) => {
+      if (snapshot.exists()) {
+        this.historial_gastos_diarios = this._publicos.crearArreglo2(snapshot.val())
+        this.unirResultados_new()
       }
     })
   }
+  
 
   obtenerArregloFechas_gastos_diarios(data){
     const {ruta, arreglo_sucursal} = data
@@ -280,15 +257,30 @@ export class ReporteGastosComponent implements OnInit {
 
   unirResultados_new(){
     const ultimate = [...this.historial_gastos_diarios, ...this.historial_gastos_operacion, ...this.historial_gastos_orden]
-
-    const ordenados = this._publicos.ordenarData(ultimate,'fecha_recibido',false)
+    
+    function nueva_data_cliente(ultimate:any){
+      const sucursales = [
+        {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
+        {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
+        {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
+        {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
+        {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
+        {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
+      ]
+      // const {sucursal, nombre, apellidos} = cliente
+      let nuevos = [...ultimate]
+      nuevos.map(hi=>{
+        const {sucursal} = hi
+        hi.sucursalShow = sucursales.find(s=>s.clave === sucursal).nombre
+        return hi
+      })
+      return nuevos
+    }
+    const nuevos = nueva_data_cliente(ultimate)
+    const ordenados = this._publicos.ordenarData(nuevos,'fecha_recibido',false)
 
     this.todos_ultimate = ordenados
-    const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(ordenados)
-    this.reporte = reporte
-
-    this.dataSource.data = this.todos_ultimate
-    this.newPagination('reporteGastos')
+    
     this.filtra_informacion()
   }
   async filtra_informacion(){
@@ -296,11 +288,19 @@ export class ReporteGastosComponent implements OnInit {
     let resultados_1 = (this.filtro_tipo === 'Todos') ? this.todos_ultimate : this.todos_ultimate.filter(c=>c.tipo === this.filtro_tipo)
     const resultados =  (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
     
-    const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(resultados)
+    const {start, end} = this.fechas_get_formateado
+    const filtro = resultados.filter(r=>new Date(r.fecha_recibido) >= start && new Date(r.fecha_recibido) <= end )
+
+    // console.log(filtro);
+    // const filtro_clave_fecha = filtro.filter(f=>f.id !== clave_fecha)
+    const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(filtro)
     this.reporte = reporte
     
     if (this.filtro_tipo === 'Todos' && (this.filtro_sucursal !== 'Todas')){
        
+
+      // console.log(this.todos_ultimate);
+      
        const {start, end} = this.fechas_get
        const hoy = this._publicos.verificarFechasIgualesHoy(start, end)
       //  console.log(hoy);
@@ -318,23 +318,29 @@ export class ReporteGastosComponent implements OnInit {
         }
         
         if(reporte.restante !== 0){
-          let Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(simular_fecha)
+         
           // console.log('Registro normal');
           if (this._publicos.esDomingo(simular_fecha)) {
             // console.log('NO es domingo registra para el lunes');
             const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
             save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
-            Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_lunes)
+           
           }
-          const ruta_maniana = `historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`
-          const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
-          // console.log(existe_sobrante_anterior);
-          
-          if (!existe_sobrante_anterior) {
-            updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior`] = save
+
+
+          const nueva_fecha_maniana = this._publicos.sumarRestarDiasFecha(new Date(), 1)
+          const clave_fecha = genera_clave_diario(nueva_fecha_maniana, this.filtro_sucursal)
+
+          const clave_encontrada = this.todos_ultimate.find(c=>c.id === clave_fecha)
+          if (clave_encontrada) {
+            // console.log('tenemos sobrante actualizar solamente');
+            updates[`historial_gastos_diarios/${clave_fecha}/monto`] = reporte.restante
           }else{
-            updates[`historial_gastos_diarios/${this.filtro_sucursal}/${Fecha_formateada}/sobrante_anterior/monto`] = reporte.restante
+            // console.log('registrar nuevo sobrante');
+            updates[`historial_gastos_diarios/${clave_fecha}`] = save
+            
           }
+
           update(ref(db), updates).then(()=>{
             // console.log('finalizo');
           })
@@ -346,7 +352,7 @@ export class ReporteGastosComponent implements OnInit {
        }  
     }
     
-    this.dataSource.data = resultados
+    this.dataSource.data = filtro
     this.newPagination('reporteGastos')
   }
   accion(data_get){
@@ -368,7 +374,7 @@ export class ReporteGastosComponent implements OnInit {
       }
       const Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(new Date(fecha_recibido))
       const updates = {}
-      const ruta = `${donde}/${sucursal}/${Fecha_formateada}/${id}`
+      const ruta = `${donde}/${id}`
       if (accion === 'activar') {
         updates[`${ruta}/status`] = true
         updates[`${ruta}/habilitado_por_usuario`] = this.USUARIO
@@ -384,7 +390,7 @@ export class ReporteGastosComponent implements OnInit {
           updates[`${ruta}/modificado_por_rol`] = this.ROL
       } 
       const modificado = this._publicos.retorna_fechas_hora({fechaString: new Date(fecha_recibido).toString()}).toString_completa
-      updates[`${donde}/${sucursal}/${Fecha_formateada}/${id}/modificado`] = modificado
+      updates[`${donde}/${id}/modificado`] = modificado
       // console.log(updates);
       update(ref(db), updates).then(()=>{
         this._publicos.swalToast('acccion correcta',1,'top-start')
@@ -481,10 +487,8 @@ export class ReporteGastosComponent implements OnInit {
   async realizarBarrido(){
     
     if (this.sucursalBarrido && this.fecha_barrido.start) {
-      // mensaje, allowOutsideClick?, html?:string
-      
 
-      const { start }= this.fecha_barrido
+      const {start, end} = this.fecha_barrido
       
       const inicial = new Date(start)
       const final = this._publicos.resetearHoras_horas(new Date(),this.hora_end) 
@@ -496,9 +500,12 @@ export class ReporteGastosComponent implements OnInit {
 
       // let arreglo = []
       if(diffDias > 0){
-        const { respuesta } = await this._publicos.mensaje_pregunta(`Realizar barrido`,true,`${this.sucursalBarrido}`)
+        const nombre_sucursal = nueva_data_cliente(this.sucursalBarrido)
+        const { respuesta } = await this._publicos.mensaje_pregunta(`Realizar barrido`,true,`${nombre_sucursal}`)
 
         if(!respuesta) return
+
+        
 
         Swal.fire({
           title: 'Realizando calculos en gastos diarios',
@@ -506,66 +513,65 @@ export class ReporteGastosComponent implements OnInit {
           allowOutsideClick: false,
           showConfirmButton:false
         })
-        const donde = ['historial_gastos_orden','historial_gastos_diarios','historial_gastos_operacion']
+        Swal.isLoading()
+        // const donde = ['historial_gastos_orden','historial_gastos_diarios','historial_gastos_operacion']
         for (let i = 0; i <= diffDias; i++) {       
           const fecha_retorna = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
-          if (!this._publicos.esDomingo(fecha_retorna)) {
-            const Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_retorna)
-            // arreglo.push(Fecha_formateada)
-            // console.log(Fecha_formateada);
-            
-            let arreglo = []
-            donde.forEach(donde_=>{
-              arreglo.push(`${donde_}/${this.sucursalBarrido}/${Fecha_formateada}`)
-            })
+          // console.log( 'fecha esperada',fecha_retorna);
 
-             const promesasConsultas = arreglo.map(async(c)=>{
-              return  await this._reporte_gastos.gastos_hoy({ ruta: c});
-            })
-            const promesas = await Promise.all(promesasConsultas);
+          await this.llamada_multiple()
+          
+          // console.log(this.todos_ultimate);
+          const inicial:Date = this._publicos.resetearHoras_horas(new Date(fecha_retorna), this.hora_start)
+          const final:Date = this._publicos.resetearHoras_horas(new Date(fecha_retorna), this.hora_end)
 
-            let arreglo_resultados = []
-            promesas.forEach(c=>{
-              const arreglo_inter:any[] = c
-              arreglo_inter.forEach(f=>{
-                arreglo_resultados.push(f)
-              })
-            })
-            let updates = {}
-            const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(arreglo_resultados)
-            
-            const simular_fecha = this._publicos.sumarRestarDiasFecha(fecha_retorna, 1)
-            const save = {
-              sucursal: this.sucursalBarrido,
-              concepto:  'Sobrante dia anterior',
-              monto:     reporte.restante,      
-              metodo:    1,
-              status:    true,
-              tipo:      'sobrante',
-              fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: simular_fecha}).toString_completa
-            }
+          const resultados_fecha = this.todos_ultimate.filter(r=>new Date(r.fecha_recibido) >= inicial && new Date(r.fecha_recibido) <= final )
+          
+          const clave_fecha = genera_clave_diario(inicial, this.sucursalBarrido)
+          const filtro_clave_fecha = resultados_fecha.filter(f=>f.id !== clave_fecha)
 
-            if(reporte.restante !==0){
-              let Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(simular_fecha)
-            
-              if (this._publicos.esDomingo(simular_fecha)) {
-                // console.log('NO es domingo registra para el lunes');
-                const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
-                save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
-                Fecha_formateada_ = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_lunes)
-              }
-              const ruta_maniana = `historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`
-              const existe_sobrante_anterior = await this._reporte_gastos.gastos_hoy_sobrante_anterior({ ruta: ruta_maniana}); 
-  
-              if (!existe_sobrante_anterior) {
-                updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior`] = save
-              }else{
-                updates[`historial_gastos_diarios/${this.sucursalBarrido}/${Fecha_formateada_}/sobrante_anterior/monto`] = reporte.restante
-              }
-              const actualizo = await this._reporte_gastos.registra_sobrante(updates); 
-              // console.log(actualizo);
-            }
+          
+          const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(filtro_clave_fecha)
+          // console.log(reporte);
+          const simular_fecha = this._publicos.sumarRestarDiasFecha(inicial, 1)
+          let updates = {}
+          const save = {
+            sucursal: this.sucursalBarrido,
+            concepto:  'Sobrante dia anterior',
+            monto:     reporte.restante,      
+            metodo:    1,
+            status:    true,
+            tipo:      'sobrante',
+            fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: simular_fecha}).toString_completa
           }
+          // console.log(reporte);
+          
+          if (reporte.restante !== 0 ) {
+            if (this._publicos.esDomingo(simular_fecha)) {
+              const fecha_lunes = this._publicos.sumarRestarDiasFecha(inicial, 1)
+              save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
+
+            }
+            const nueva_fecha_maniana = this._publicos.sumarRestarDiasFecha(new Date(inicial), 1)
+            let clave_registro_sobrante = genera_clave_diario(nueva_fecha_maniana, this.sucursalBarrido)
+
+            const clave_encontrada = this.todos_ultimate.find(c=>c.id === clave_registro_sobrante)
+            if (clave_encontrada) {
+              // console.log('tenemos sobrante actualizar solamente');
+              updates[`historial_gastos_diarios/${clave_registro_sobrante}/monto`] = reporte.restante
+            }else{
+              // console.log('registrar nuevo sobrante');
+              updates[`historial_gastos_diarios/${clave_registro_sobrante}`] = save
+            }
+            update(ref(db), updates).then(()=>{
+              // console.log('finalizo');
+              // Swal.close()
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+          }
+
         }
         Swal.close()
         this._publicos.swalToast(`Completado`,1,'top-start')
@@ -594,4 +600,30 @@ export class ReporteGastosComponent implements OnInit {
 }
 
 
+function nueva_data_cliente(sucursal){
+  const nombres = [
+    {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
+    {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
+    {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
+    {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
+    {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
+    {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
+  ]
+  return nombres.find(s=>s.clave === sucursal).nombre
+}
 
+function genera_clave_diario(fecha, sucursal){
+  const clave_sobrante_fecha = formatearFecha(new Date(fecha), false)
+  const clave_sobrante_nombre = nueva_data_cliente(sucursal)
+  
+  const nombre_sucu = clave_sobrante_nombre.slice(0,2).toUpperCase()
+  return `${nombre_sucu}${clave_sobrante_fecha}`
+}
+function formatearFecha(fecha_get,simbolo:boolean,symbol?) {
+  let fecha = new Date(fecha_get)
+  const dia = fecha.getDate().toString().padStart(2, '0');
+  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+  const anio = fecha.getFullYear().toString();
+  if(!symbol) symbol= '/'
+  return (simbolo) ? `${dia}${symbol}${mes}${symbol}${anio}` : `${dia}${mes}${anio}`;
+}

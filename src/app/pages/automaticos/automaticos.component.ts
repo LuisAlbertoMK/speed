@@ -111,7 +111,9 @@ export class AutomaticosComponent implements OnInit {
 
       console.log(new_alls);
     }
-      realizaOperacionesClientes() {
+      operaciones_mo_refacciones() {
+      const {refacciones, manos_obra} = BD
+    
         const processItems = (items, tipo) => {
           return Object.keys(items).map((item) => {
             items[item].tipo = tipo;
@@ -119,8 +121,8 @@ export class AutomaticosComponent implements OnInit {
           });
         };
       
-        const new_mo = processItems(MO, 'mo');
-        const new_refacciones = processItems(refacciones, 'refaccion');
+        const new_mo = processItems(manos_obra, 'mo');
+        const new_refacciones =  processItems(refacciones, 'refaccion');
       
         const new_alls = [...new_mo, ...new_refacciones];
         
@@ -138,16 +140,7 @@ export class AutomaticosComponent implements OnInit {
           return cadena;
         }
 
-        const filtrado_mo =  new_alls.filter(e=>e.tipo === 'mo')
-        const filtrado_refacciones =  new_alls.filter(e=>e.tipo === 'refaccion')
-
-
-        // console.log(filtrado_mo);
-        // console.log(filtrado_refacciones);
-        
-        // console.log(new_alls.length);
-        
-
+       
         const objeto = {};
         new_alls.forEach((element) => {
           const {id} = element
@@ -168,41 +161,73 @@ export class AutomaticosComponent implements OnInit {
           objeto[id] = new_data
         });
 
-        
         console.log(objeto);
-
-        // console.log(this._publicos.crearArreglo2(objeto).length);
-        
-        
       }
       
-    realizarOperacionesRecepciones(){
-      console.log(recepciones)
-    }
-    data_compataible(event){
-      console.log(event);
-    }
+
     operacionesBD(){
 
       const  {clientes, vehiculos, correos, cotizacionesRealizadas, recepciones } = BD
+      // console.log(correos);
+      
 
       const sucursales =  this.claves_sucursales
 
       const nuevos_clientes_ = nuevos_clientes({clientes,sucursales})
-
+      // console.log('nuevos_clientes_')
       // console.log(nuevos_clientes_);
 
       const vehiculos_arra = nuevos_vehiculos({vehiculos,sucursales})
-      
+      // console.log('vehiculos_arra')
       // console.log(vehiculos_arra);
       
       const cotizaciones_new = nuevas_cotizaciones({cotizacionesRealizadas, sucursales })
-      
+      // console.log('cotizaciones_new')
       // console.log(cotizaciones_new);
 
       const recepciones_new = nuevas_recepciones({recepciones, sucursales })
-
+      // console.log('recepciones_new')
       // console.log(recepciones_new);
+
+
+      // const plac = placas('-NJLLN484p3b-aPyspIr')
+      // console.log(plac);
+      
+      
+      function placas(vehiculo){
+        const data_vehiculo = vehiculos_arra[vehiculo]
+        let placas = ''
+        if (data_vehiculo) {
+          const {placas:placas_found} = data_vehiculo
+          placas = placas_found
+        }
+        return `${placas}`.toUpperCase()
+      }
+      function fullname(cliente){
+        const data_cliente = nuevos_clientes_[cliente]
+        let fullname = ''
+        if (data_cliente) {
+          const {nombre, apellidos} = data_cliente
+          fullname = `${nombre} ${apellidos}`
+        }
+        return `${fullname}`.toUpperCase()
+      }
+      function nuevaRecuperacionData(data: any, camposRecuperar: any[]) {
+        const necessary: any = {};
+        camposRecuperar.forEach((recupera) => {
+            if(typeof data[recupera] === 'string'){
+                const evalua = String(data[recupera]).trim()
+                if (evalua !== undefined && evalua !== null && evalua !== "") {
+                    necessary[recupera] = evalua;
+                }
+            }else{
+                if (data[recupera] !== undefined && data[recupera] !== null && data[recupera] !== "") {
+                    necessary[recupera] = data[recupera];
+                }
+            }
+        });
+        return necessary;
+    }
 
       function nuevas_recepciones(data){
         const {sucursales, recepciones} = data
@@ -219,7 +244,11 @@ export class AutomaticosComponent implements OnInit {
                 c.cliente = cli;
                 c.checkList = purifica_checklist(c.checkList)
                 c.detalles = purifica_detalles(c.detalles)
-                return c;
+                const {vehiculo, cliente} = c
+                c.fullname = fullname(cliente)
+                c.placas = placas(vehiculo)
+                const campos = Object.keys(c)
+                return nuevaRecuperacionData(c, campos)
               });
               clientes_new.push(...nuevo);
             })
@@ -242,8 +271,12 @@ export class AutomaticosComponent implements OnInit {
             claves_clientes.forEach(cli=>{
               const arreglo_ = crearArreglo2(cotizaciones_[cli]);
               const nuevo = arreglo_.map((c) => {
+                const {vehiculo, cliente} = c
                 c.cliente = cli;
-                return c;
+                c.fullname = fullname(cliente)
+                c.placas = placas(vehiculo)
+                const campos = Object.keys(c)
+                return nuevaRecuperacionData(c, campos)
               });
               clientes_new.push(...nuevo);
             })
@@ -322,5 +355,9 @@ export class AutomaticosComponent implements OnInit {
         })
         return XD
       }
+    }
+
+    operaciones_gastos(){
+      const {refacciones, manos_obra} = BD
     }
 }

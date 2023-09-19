@@ -67,6 +67,8 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
 
   tipos_cliente     =  [ ...this._clientes.tipos_cliente ]
 
+  contador_resultados:number = 0
+
   ngOnInit(): void {
     this.rol()
   }
@@ -77,6 +79,7 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
       const valorAnterior = changes['clientes_arr'].previousValue;
       // console.log({nuevoValor, valorAnterior});
         this.dataSourceClientes.data = this.clientes_arr
+        this.contador_resultados = this.clientes_arr.length
         this.newPagination()
     }
   }
@@ -124,9 +127,10 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
   }
   filtra_informacion(){
     
-    let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
-    this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
-    
+    const resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
+    const resultados2 = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
+    this.dataSourceClientes.data  = resultados2
+    this.contador_resultados = resultados2.length
     this.newPagination()
 
   }

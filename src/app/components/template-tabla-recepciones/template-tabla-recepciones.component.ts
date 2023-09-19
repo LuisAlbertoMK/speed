@@ -70,6 +70,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
 
   servicio_editar
+  contador_resultados:number = 0
 
   ngOnInit(): void {
   }
@@ -79,7 +80,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       const valorAnterior = changes['recepciones_arr'].previousValue;
       // console.log({nuevoValor, valorAnterior});
       // console.log(this.recepciones_arr);
-      
+      this.contador_resultados = this.recepciones_arr.length
         this.obtener_total_cotizaciones()
     }
   

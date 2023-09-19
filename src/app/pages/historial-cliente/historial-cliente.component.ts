@@ -122,87 +122,48 @@ export class HistorialClienteComponent implements OnInit {
   }
   async acciones(){
     const { cliente, sucursal }  = this.enrutamiento
-    // console.log(this.enrutamiento);
-    // const ruta_buqueda_vehiculos = `vehiculos/${sucursal}/${cliente}`
-    // const ruta_buqueda_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
-    // const ruta_buqueda_recepciones = `recepciones/${sucursal}/${cliente}`
-    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+
+    if (cliente) this.data_cliente  = await this._clientes.consulta_Cliente(cliente)
+    // console.log(this.data_cliente);
     
-    this.data_cliente = data_cliente
+    this.vigila_vehiculos_cliente()
 
-    const ruta_cotizaciones   =  `cotizacionesRealizadas/${sucursal}/${cliente}`
-    const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
-
-    const vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    let nuevos_vehiculos = vehiculos_arr.map(v=>{
-      v.sucursal = sucursal
-      v.cliente = cliente
-      return v
+    const starCountRef = ref(db, `cotizacionesRealizadas`)
+    onValue(starCountRef, (snapshot) => {
+      // const {id:id_cliente} = this.data_cliente
+      this.cotizaciones_arr = this.filtra_cliente({
+        cliente: id_cliente(this.data_cliente),
+        data_temp: snapshot.val(),
+      })
     })
-
-    this.vehiculos_arr = nuevos_vehiculos
-    
-    const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
-    const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
-    
-
-
-    const filtro_cotizaciones = todas_cotizaciones.map(cot=>{
-      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
-      cot.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      
-      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
-      cot.data_vehiculo = data_vehiculo
-      const {placas}= data_vehiculo
-      cot.placas = placas || '------'
-      return cot
+    const starCountRef_rcepciones = ref(db, `recepciones`)
+    onValue(starCountRef_rcepciones, (snapshot) => {
+      // const {id:id_cliente} = this.data_cliente
+      this.recepciones_arr = this.filtra_cliente({
+        cliente: id_cliente(this.data_cliente),
+        data_temp: snapshot.val(),
+      })
     })
-    // console.log(filtro_cotizaciones);
-    const filtro_recepciones = todas_recepciones.map(cot=>{
-      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
-      cot.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      
-      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
-      cot.data_vehiculo = data_vehiculo
-      const {placas}= data_vehiculo
-      cot.placas = placas || '------'
-      return cot
-    })
-
-    this.cotizaciones_arr = filtro_cotizaciones
-    this.recepciones_arr = filtro_recepciones
-
-    
-    // const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    // const cotizaciones = await this._cotizaciones.consulta_cotizaciones({ruta: ruta_buqueda_cotizaciones, data_cliente, vehiculos})
-    // const recepciones = await this._servicios.consulta_recepciones({ruta: ruta_buqueda_recepciones, data_cliente, vehiculos})
-    // // console.log(recepciones);
-
-    // this.data_cliente = data_cliente
-    
-
-    // this.dataSource.data = vehiculos
-    // this.ordenamiento('vehiculos','placas')
-
-    // this.dataSourceCotizaciones.data = cotizaciones
-    // this.ordenamiento('cotizaciones','fecha_recibido')
-
-    // this.dataSourceRecepciones.data = recepciones
-    // this.ordenamiento('recepciones','fecha_recibido')
-
-    // console.log(recepciones);
-    
-
-    // const {ticketGeneral: cotizaciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(cotizaciones)
-    // const {ticketGeneral: recepciones_ticketGeneral} = this._publicos.obtener_ticketPromedioFinal(recepciones)
-
-    // this.reporteHistorial.reporteCotizaciones = cotizaciones_ticketGeneral
-    // this.reporteHistorial.reporteRecepciones = recepciones_ticketGeneral
-
-    
   }
-
-  //realziar paginacion de los resultados 
+  async vigila_vehiculos_cliente(){
+    const starCountRef = ref(db, `vehiculos`)
+    onValue(starCountRef, (snapshot) => {
+      this.vehiculos_arr = this.filtra_cliente({
+        cliente: id_cliente(this.data_cliente),
+        data_temp: snapshot.val(),
+      })
+    })
+  }
+  filtra_cliente(data){
+    const data_cliente = this.data_cliente
+    const { cliente, data_temp} = data
+    const nuevo = this._publicos.crearArreglo2(data_temp)
+    function fullname(data_cliente){
+      const {nombre, apellidos} = data_cliente
+      return `${nombre} ${apellidos}`
+    }
+    return nuevo.filter(element=>element.cliente === cliente)
+  }
   newPagination(tabla){
     setTimeout(() => {
       let dataSource;
@@ -259,4 +220,8 @@ export class HistorialClienteComponent implements OnInit {
         this.newPagination(tabla);
       }
   }
+}
+function id_cliente(data_cliente){
+  const {id}  = data_cliente
+  return id
 }

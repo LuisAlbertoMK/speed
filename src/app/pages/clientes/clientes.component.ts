@@ -66,6 +66,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     filtro_sucursal:string = 'Todas'
 
     data_cliente= {}
+
+    contador_resultados:number = 0
   ngOnInit() {
     this.rol()
   }
@@ -129,21 +131,11 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
-        // console.log(snapshot.val());
-        
-        // const arreglo_sucursal = (this.SUCURSAL === 'Todas') ? this.sucursales_array.map(s => s.id) : [this.SUCURSAL];
-        // const arreglo_rutas_clientes = this.crea_lista_rutas_por_sucursal({ arreglo_sucursal });
-    
-        // const finales_clientes = await this.obtenerClientesDeRutas(arreglo_rutas_clientes);
+
         const finales_clientes = this._publicos.crearArreglo2(snapshot.val())
                                   .map(cliente=>{
                                     return this.nueva_data_cliente(cliente)
                                   })
-        // console.log(finales_clientes);
-
-        // finales_clientes.map(cliente=>{
-        //   return this.nueva_data_cliente(cliente)
-        // })
         const campos_cliente = [
           'apellidos',
           'correo',
@@ -162,6 +154,9 @@ export class ClientesComponent implements AfterViewInit, OnInit {
         this.clientes_arr  = (!this.clientes_arr.length) 
         ?  finales_clientes 
         :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
+
+        this.filtra_informacion()
+        
   
       } 
     })
@@ -212,9 +207,9 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
   filtra_informacion(){
     
-    let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
-    this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
-
+    // let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
+    // const resultados2 = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
+    // this.dataSourceClientes.data = resultados2
   }
   // filtra_sucursal(sucursal:string){   
   //   // console.log(this.filtra_tipo_cliente);

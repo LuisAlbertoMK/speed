@@ -217,10 +217,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
     this.rutaActiva.queryParams.subscribe((params:any) => {
      this.enrutamiento = params
-    //  console.log(params);
-    //  this.acciones()
-    this.nuevas()
-     this.vigila()
+      this.nuevas()
+      this.vigila()
     });
   }
   regresar(){
@@ -240,133 +238,42 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     })
   }
   async acciones(){
-    Swal.fire({
-      icon: 'info',
-      html:'cargando',
-      allowOutsideClick:false,
-      showConfirmButton:false
-    } )
+
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
 
     let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
 
-    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    
-    
-    
-    data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
-
-    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-
-    if (recepcion){
-      const busqueda_ruta_recepcion = `recepciones/${sucursal}/${cliente}/${recepcion}`
-      const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
-      data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
-
-
-      this.data_editar.observaciones = observaciones(data_recepcion.observaciones)
-      // const temp = [...data_recepcion.elementos]
-
-      if (data_recepcion.tecnico) {
-        // console.log('buscar informacion del tecnico actual');
-        const data_tecnico = await this._usuarios.consulta_tecnico({ruta: data_recepcion.tecnico})
-        // console.log(data_tecnico);
-        this.data_editar.tecnicoShow = data_tecnico
-      }
-      let historial_pagos_arr = []
-        
-      const historial_pagos:any =  await this._servicios.historial_pagos({ sucursal, cliente, id: recepcion });
-        // const historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === id)
-      historial_pagos_arr = historial_pagos    
-              // g.historial_gastos = historial_gastos
-
-              
-      const {fecha_limite_gastos, fecha_recibido} = data_recepcion
-      
-      if (fecha_recibido && fecha_limite_gastos) {
-        const dentro_rango = verificarFechas()
-        if (dentro_rango) {
-            this.boton_gastos_show = dentro_rango
-        }else{
-          this.boton_gastos_show = dentro_rango
-          if (this.rol_ === 'SuperSU') {
-            this.boton_gastos_show = true
-          }
-        }
-      }
-        
-     
-      function verificarFechas(){
-        return new Date() <= new Date(fecha_limite_gastos) && new Date() >= new Date(fecha_recibido);
-      }
-      
-      const arreglo_sucursal = [data_recepcion.sucursal]
-
-      const arreglo_fechas_busca = this.obtenerArregloFechas_gastos_diarios({ruta: 'historial_gastos_orden', arreglo_sucursal})
-  
-      const promesasConsultas_gastos_orden = arreglo_fechas_busca.map(async (f_search) => {
-        const gastos_hoy_array: any[] = await this._reporte_gastos.gastos_hoy({ ruta: f_search});
-        const promesasVehiculos = gastos_hoy_array
-          .filter(g => g.tipo === 'orden')
-          .map(async (g) => {
-            const { sucursal, cliente, vehiculo } = g;
-            // g.data_vehiculo = await this._vehiculos.consulta_vehiculo({ sucursal, cliente, vehiculo });
-          });
-        await Promise.all(promesasVehiculos);
-                return gastos_hoy_array;
-        });
-      const promesas_gastos_orden = await Promise.all(promesasConsultas_gastos_orden);
-  
-      const muestra_gastos_ordenes = promesas_gastos_orden.flat()
-      
-      // data_recepcion.elementos = temp.map(e=>e.aprobado = true)
-      const campos = [
-        'cliente',
-        'descuento',
-        'elementos',
-        'fecha_promesa',
-        'fecha_recibido',
-        'observaciones',
-        'formaPago',
-        'id',
-        'iva',
-        'margen',
-        'no_os',
-        'servicio',
-        'status',
-        'tecnico',
-        'sucursal',
-        'vehiculo',
-        'pdf_entrega',
-        'fecha_limite_gastos'
-      ]
-      campos.forEach(campo=>{
-        this.data_editar[campo] = data_recepcion[campo]
-      })
-
-      
-      this.data_editar.historial_pagos = historial_pagos_arr
-
-      this.data_editar.historial_gastos = muestra_gastos_ordenes.filter(g=>g.numero_os === recepcion)
-      this.data_editar.formaPago_show = this.formasPago.find(f=>f.id === String(data_recepcion['formaPago'])).pago
-      this.data_editar.servicio_show = this.servicios_.find(f=>f.valor === String(data_recepcion['servicio'])).nombre
+    if (cliente) {
+      data_cliente  = await this._clientes.consulta_Cliente(cliente)
+      data_cliente = this.nueva_data_cliente(data_cliente)
     }
-    Swal.close()
+    if (vehiculo) {
+      data_vehiculo = await this._vehiculos.consulta_vehiculo_(vehiculo)
+    }
+
     this.data_editar.data_cliente = data_cliente
     this.data_editar.data_vehiculo = data_vehiculo
-    this.data_editar.data_sucursal = data_sucursal
-    
+
     const {reporte, _servicios} = this.calcularTotales(this.data_editar)
     this.data_editar.reporte = reporte
     this.data_editar.elementos = _servicios
     this.checksBox.get('margen').setValue(this.data_editar.margen)
 
-    // console.log(this.data_editar);
-    this.informacionLista = true;
-    this.temporal = JSON.parse(JSON.stringify(this.data_editar));
-  
     this.realizaOperaciones()
+  }
+  nueva_data_cliente(cliente){
+    const nombres = [
+      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
+      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
+      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
+      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
+      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
+      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
+    ]
+    const {sucursal, nombre, apellidos} = cliente
+    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
+    cliente.fullname = `${nombre} ${apellidos}`
+    return cliente
   }
   vigila(){
     this.checksBox.get('iva').valueChanges.subscribe((iva: boolean) => {

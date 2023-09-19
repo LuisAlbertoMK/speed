@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
-import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import { child, get, getDatabase, onValue, ref, set, update,push, query, startAt } from "firebase/database"
 import { SucursalesService } from '../../services/sucursales.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
@@ -116,7 +116,7 @@ export class GastoComponent implements OnInit, OnChanges {
 
     this.formGasto.reset({
       tipo: 'orden',
-      numero_os: id,
+      id_os: id,
       monto:0,
       metodo: '1',
       concepto:'',
@@ -134,7 +134,8 @@ export class GastoComponent implements OnInit, OnChanges {
     const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
     this.formGasto = this.fb.group({
       tipo:['operacion',[Validators.required]],
-      numero_os:['',[]],
+      id_os:['',[]],
+      no_os:['',[]],
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
@@ -165,8 +166,18 @@ export class GastoComponent implements OnInit, OnChanges {
     this.formGasto.get('tipo').valueChanges.subscribe(async (tipo: string) => {
       if (tipo === 'orden') {
         this.formGasto.get('gasto_tipo').setValue('refaccion')
+        this.formGasto.get('id_os').setValue('')
       }else{
         this.formGasto.get('gasto_tipo').setValue('')
+        this.formGasto.get('id_os').setValue('')
+      }
+    })
+    this.formGasto.get('id_os').valueChanges.subscribe(async (id_os: string) => {
+      const no_os = this.claves_ordenes.find(clave => clave.id === id_os)
+      if (no_os) {
+        this.formGasto.get('no_os').setValue(no_os.no_os)
+      }else{
+        this.formGasto.get('no_os').setValue('')
       }
     })
     if (this.data_pendiente) {
@@ -178,11 +189,25 @@ export class GastoComponent implements OnInit, OnChanges {
   async muestra_claves_recepciones(){
     const {tipo, sucursal} = this._publicos.recuperaDatos(this.formGasto)
     this.muestraLista = (tipo === 'orden') ? true : false
-    if (tipo === 'orden' && sucursal) {
-        this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
-    }else{
-      this.claves_ordenes = []
-    }
+    const starCountRef = ref(db, `recepciones`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const todas = this._publicos.crearArreglo2(snapshot.val());
+        const filtradas = todas.filter(recep=>recep.sucursal === sucursal)
+        const claves_show = solo_claves(filtradas)
+        this.claves_ordenes  = solo_claves(filtradas)
+        function solo_claves(arreglo){
+          let nuevos = [...arreglo]
+          return nuevos.map(n=>{
+            const {id, no_os} = n
+            return {id, no_os}
+          })
+        }
+        
+      } else {
+        console.log("No data available");
+      }
+    })
   }
 
   myFilter = (d: Date | null): boolean => {
@@ -207,7 +232,8 @@ export class GastoComponent implements OnInit, OnChanges {
     const campos_orden = [
       ...campos_operacion,
       'gasto_tipo',
-      'numero_os',
+      'id_os',
+      'no_os',
     ]
 
     const cuales_ = (info_get.tipo === 'orden') ? campos_orden : campos_operacion
@@ -217,8 +243,8 @@ export class GastoComponent implements OnInit, OnChanges {
 
     if (!ok) return
     const recuperada = this._publicos.nuevaRecuperacionData(info_get, cuales_)
-    const {sucursal, numero_os, fecha_recibido: fech_} = recuperada
-    const data_orden =  this.claves_ordenes.find(f=>f.key === numero_os)
+    const {sucursal, id_os, fecha_recibido: fech_} = recuperada
+    const data_orden =  this.claves_ordenes.find(f=>f.id === id_os)
 
     if (this.ROL !== 'SuperSU' &&   new Date(data_orden.fecha_limite_gastos) > new Date()) {
       this._publicos.mensajeSwal('Error',0,true,`Fuera de fechas o permisos`)
@@ -227,10 +253,10 @@ export class GastoComponent implements OnInit, OnChanges {
     
     if (info_get.tipo === 'orden'){
       recuperada.no_os = data_orden.no_os
-      recuperada.status_orden = data_orden.status_orden
-      recuperada.cliente = data_orden.cliente
-      recuperada.vehiculo = data_orden.vehiculo
-      recuperada.descripcion = data_orden.descripcion
+      // recuperada.status_orden = data_orden.status_orden
+      // recuperada.cliente = data_orden.cliente
+      // recuperada.vehiculo = data_orden.vehiculo
+      // recuperada.descripcion = data_orden.descripcion
     }
 
     const nueva_fecha:string = (info_get.fecha_recibido) 
@@ -244,11 +270,11 @@ export class GastoComponent implements OnInit, OnChanges {
 
         const clave_ = this._publicos.generaClave()
 
-        const solo_numeros_fecha_hoy = this._reporte_gastos.fecha_numeros_sin_Espacions(new Date(nueva_fecha))
+        // const solo_numeros_fecha_hoy = this._reporte_gastos.fecha_numeros_sin_Espacions(new Date(nueva_fecha))
 
         let ruta = (info_get.tipo === 'orden') ?
-        `historial_gastos_orden/${sucursal}/${solo_numeros_fecha_hoy}/${clave_}` : 
-        `historial_gastos_operacion/${sucursal}/${solo_numeros_fecha_hoy}/${clave_}`
+        `historial_gastos_orden/${clave_}` : 
+        `historial_gastos_operacion/${clave_}`
         recuperada.status = true
         // console.log(ruta);
         recuperada.fecha_recibido = nueva_fecha

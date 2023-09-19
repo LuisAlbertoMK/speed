@@ -395,56 +395,50 @@ obtenerTotalesHistoriales(pagos, gastos){
     const nameSucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
     const nombreSucursal = nameSucursal.slice(0, 2).toUpperCase();
     const nuevoRol = rol.slice(0, 2).toUpperCase();
-  
-    // let cuantas = 0;
-    // await get(child(dbRef, `recepciones/${sucursal}/${cliente}`)).then((snapshot) => {
-    //   if (snapshot.exists()) {
-    //     cuantas = this._publicos.crearArreglo2(snapshot.val()).length;
-    //   }
-    // })
-
-    // INGRESAR
-    const arreglo_sucursal = this.sucursales_array.map(s => s.id)
-
-    const arreglo_rutas_clientes = crea_lista_rutas_por_sucursal({ arreglo_sucursal });
-
-    const promesasClientes = arreglo_rutas_clientes.map(async (f_search) => {
-      const clientes = await this._clientes.consulta_clientes__busqueda({ ruta: f_search });
-
-      const promesas_internas = clientes.map(async (cli) => {
-        const { sucursal, id: cliente } = cli;
-        const ruta_cotizaciones = `recepciones/${sucursal}/${cliente}`;
-        const todas_cotizaciones = await this.conslta_cotizaciones_cliente({ ruta: ruta_cotizaciones });
-    
-        const cotizaciones_new = todas_cotizaciones.map((cotizacion) => {
-          return { ...cotizacion };
-        });
-    
-        return cotizaciones_new;
-      });
-    
-      const promesas_r = await Promise.all(promesas_internas);
-      
-      return promesas_r.flat();
-    });
-
-    function crea_lista_rutas_por_sucursal(data){
-      const {arreglo_sucursal, } = data
-      let Rutas_retorna = []
-      arreglo_sucursal.forEach(sucursal=>{
-        Rutas_retorna.push(`clientes/${sucursal}`)
-      })
-      return Rutas_retorna
-    }
-    // INGRESAR
-
-    const cotizacionesPorCliente = await Promise.all(promesasClientes);
-    const finales = cotizacionesPorCliente.flat()
-    const cauntos = finales.length + 1
-    
-
-    const secuencia = (cauntos).toString().padStart(5, '0');
+    const cuantos = (await this.consulta_cantidad_servicios()).length
+    const secuencia = (cuantos + 1).toString().padStart(5, '0');
     return `${nombreSucursal}${mes}${anio}${nuevoRol}${secuencia}`;
+  }
+
+  consulta_cantidad_servicios(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const starCountRef = ref(db, `recepciones`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(this._publicos.crearArreglo2(snapshot.val()))
+        } else {
+          resolve([]);
+        }
+      })
+    });
+  }
+
+  consulta_gastos_orden(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const historial_gastos_orden = ref(db, `historial_gastos_orden`)
+      onValue(historial_gastos_orden, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(this._publicos.crearArreglo2(snapshot.val()))
+        } else {
+          resolve([]);
+        }
+      })
+    });
+  }
+  consulta_pagos_orden(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const historial_pagos_orden = ref(db, `historial_pagos_orden`)
+      onValue(historial_pagos_orden, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(this._publicos.crearArreglo2(snapshot.val()))
+        } else {
+          resolve([]);
+        }
+      })
+    });
   }
   
   conslta_cotizaciones_cliente(data): Promise<any[]> {
@@ -717,6 +711,24 @@ obtenerTotalesHistoriales(pagos, gastos){
     reporte.precio = precio__
     reporte.ub = 100 - ((refacciones_v * 100) / precio__ )
     return reporte
+  }
+  purifica_checklist(checkList){
+    const nuevo_check = [...checkList]
+    const XD = nuevo_check.map(c=>{
+      const {status, valor, show} = c
+      let a = {status, valor}
+      return a
+    })
+    return XD
+  }
+  purifica_detalles(detalles){
+    const nuevos_detalles = [...detalles]
+    const XD = nuevos_detalles.map(c=>{
+      const {status, valor, show} = c
+      let a = {status, valor}
+      return a
+    })
+    return XD
   }
   
 

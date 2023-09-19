@@ -55,7 +55,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
   ROL:string; SUCURSAL:string
   
-  infoCotizacion   = JSON.parse(JSON.stringify(this._cotizacion.infoCotizacion));
+  infoCotizacion   = {
+    cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false
+  }
 
   camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
   camposCliente    =  [ ...this._clientes.camposCliente_show ]
@@ -149,13 +151,17 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
     
-    let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
+    let  data_cliente:any = {},  vehiculos_arr = [], data_vehiculo = {}
 
     this.infoCotizacion = this._cotizacion.infoCotizacion
     // console.log(cliente);
     if (cliente) this.infoCotizacion.cliente = cliente
     
-    if (cliente) data_cliente  = await this._clientes.consulta_Cliente(cliente)
+    if (cliente) {
+      data_cliente  = await this._clientes.consulta_Cliente(cliente)
+      data_cliente = this.nueva_data_cliente(data_cliente)
+    }
+  
     // if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
     // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
@@ -214,10 +220,17 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.extra = vehiculo
 
     this.infoCotizacion.data_cliente = data_cliente
+
+
+    if (cliente) {
+      this.infoCotizacion.sucursal = data_cliente.sucursal
+      this.infoCotizacion.data_sucursal = this.sucursales_array.find(sucursal => sucursal.id === data_cliente.sucursal)
+    }
     
-    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-    this.infoCotizacion.data_sucursal = data_sucursal
-    this.infoCotizacion.sucursal = sucursal
+    
+    // const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    // this.infoCotizacion.data_sucursal = data_sucursal
+    // this.infoCotizacion.sucursal = sucursal
     
     this.infoCotizacion.vehiculo = vehiculo
 
@@ -248,30 +261,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         this.modelo = null
       }
     })
-    
-
-    // const  {cliente, sucursal} = this.infoCotizacion
-    
-    // const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
-    // onValue(starCountRef, async  (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     const  {cliente, sucursal} = this.infoCotizacion
-    //     const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    //     this.infoCotizacion.vehiculos = vehiculos
-    //     const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
-    //     this.infoCotizacion.data_vehiculo  = data_vehiculo
-    //     this.infoCotizacion.vehiculo  = this.extra
-    //     if (data_vehiculo) {
-    //       if (data_vehiculo.modelo) {
-    //         this.modelo = data_vehiculo['modelo']
-    //       }
-    //     }
-    //   } else {
-    //     this.infoCotizacion.vehiculos = []
-    //     this.extra = null
-    //     this.modelo = null
-    //   }
-    // })    
+  
   }
 
   ///mensaje para poder agregar un paquete que no esta en el catalogo
@@ -536,7 +526,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
     // const opcionales = ['promocion','descuento','nota','iva']
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoCotizacion,obligatorios )
-
+    // console.log(this.infoCotizacion);
+    
     this.faltante_s = faltante_s
     if (!ok) return
 
@@ -660,16 +651,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                     this._publicos.swalToast('Cotizacion realizada!!', 1, 'top-start')
                     //limpiamos la informacion para nueva cotizacion
                     
-                    this.infoCotizacion = JSON.parse(JSON.stringify(this._cotizacion.infoCotizacion));
-
-                    this.infoCotizacion.elementos = []
-                    // const {elementos: _eele } = this.infoCotizacion
-
-                    // console.log(_eele);
-                    
-                    // console.log(this.infoCotizacion.elementos);
-                    
-                    
+                    this.infoCotizacion = {
+                      cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false
+                    }
                     this.formPlus.reset({
                       servicio: 1,
                       margen: 25,
@@ -706,6 +690,20 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }, 500)
   }
 
+  nueva_data_cliente(cliente){
+    const nombres = [
+      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
+      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
+      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
+      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
+      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
+      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
+    ]
+    const {sucursal, nombre, apellidos} = cliente
+    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
+    cliente.fullname = `${nombre} ${apellidos}`
+    return cliente
+  }
 
   calcularTotales(data) {
     const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data

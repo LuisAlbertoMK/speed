@@ -135,6 +135,7 @@ export class PagoComponent implements OnInit, OnChanges {
     (this.SUCURSAL ==='Todas') ? sucursal = '': sucursal= this.SUCURSAL
     this.formPago = this.fb.group({
       no_os:['',[Validators.required]],
+      id_os:['',[Validators.required]],
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
@@ -155,6 +156,16 @@ export class PagoComponent implements OnInit, OnChanges {
         this.muestra_claves_recepciones()
       }
     })
+    this.formPago.get('id_os').valueChanges.subscribe(async (id_os: string) => {
+      if (id_os) {
+        const no_os = this.claves_ordenes.find(clave => clave.id === id_os)
+          if (no_os) {
+            this.formPago.get('no_os').setValue(no_os.no_os)
+          }else{
+            this.formPago.get('no_os').setValue('')
+          }
+      }
+    })
     this.fecha_recibido.get('start').valueChanges.subscribe((start:Date)=>{
       if (start) {
         const fecha_re = this._publicos.retorna_fechas_hora({fechaString: start['_d']}).toString_completa
@@ -168,9 +179,32 @@ export class PagoComponent implements OnInit, OnChanges {
     }
   }
   
+  // async muestra_claves_recepciones(){
+  //   const {tipo, sucursal} = this._publicos.recuperaDatos(this.formPago)
+  //   this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
+  // }
   async muestra_claves_recepciones(){
     const {tipo, sucursal} = this._publicos.recuperaDatos(this.formPago)
-    this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
+    // this.muestraLista = (tipo === 'orden') ? true : false
+    const starCountRef = ref(db, `recepciones`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const todas = this._publicos.crearArreglo2(snapshot.val());
+        const filtradas = todas.filter(recep=>recep.sucursal === sucursal)
+        const claves_show = solo_claves(filtradas)
+        this.claves_ordenes  = solo_claves(filtradas)
+        function solo_claves(arreglo){
+          let nuevos = [...arreglo]
+          return nuevos.map(n=>{
+            const {id, no_os} = n
+            return {id, no_os}
+          })
+        }
+        
+      } else {
+        console.log("No data available");
+      }
+    })
   }
   validaCampo(campo: string){
     return this.formPago.get(campo).invalid && this.formPago.get(campo).touched
@@ -178,11 +212,13 @@ export class PagoComponent implements OnInit, OnChanges {
 
   async registroPago(){
     const info_get = this._publicos.recuperaDatos(this.formPago)
-    const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get, ['no_os','monto','metodo','concepto','sucursal'])
+ 
+    
+    const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get, ['id_os','no_os','monto','metodo','concepto','sucursal'])
     this.faltante_s = faltante_s
     if(!ok) {this._publicos.swalToast('Llenar datos de formulario',0); return} 
 
-    const {sucursal, cliente, key:id, no_os} = this.claves_ordenes.find(os=>os.key === info_get.no_os)
+    // const {sucursal, cliente, key:id, no_os} = this.claves_ordenes.find(os=>os.key === info_get.no_os)
    
     const nueva_fecha:string = (info_get.fecha_recibido) 
     ? info_get.fecha_recibido 
@@ -190,17 +226,17 @@ export class PagoComponent implements OnInit, OnChanges {
 
     const fecha_muestra = this.transform_fecha(nueva_fecha, true)
 
-    const {respuesta} = await this._publicos.mensaje_pregunta(`Realizar pago de orden ${no_os}`,true,`Fecha ${fecha_muestra}` )
+    const {respuesta} = await this._publicos.mensaje_pregunta(`Realizar pago de orden ${info_get.no_os}`,true,`Fecha ${fecha_muestra}` )
 
     if (!respuesta) return
 
     const clave_ = this._publicos.generaClave()
 
-   const ruta =  `historial_pagos_orden/${sucursal}/${cliente}/${id}/${clave_}` 
+   const ruta =  `historial_pagos_orden/${clave_}` 
   
    info_get.fecha_recibido = nueva_fecha
-   info_get.cliente = cliente
-   info_get.numero_os = id
+  //  info_get.cliente = cliente
+  //  info_get.numero_os = id
 
    const updates = {[ruta]: info_get }
 

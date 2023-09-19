@@ -9,6 +9,22 @@ import { EmpresasService } from 'src/app/services/empresas.service';
 import { switchMap } from 'rxjs/operators';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
+
+
+export interface Cliente {
+  id:string;
+  no_cliente: number;
+  nombre: string;
+  apellidos: string;
+  correo?: string;
+  correo_sec?: string;
+  telefono_fijo?: string;
+  telefono_movil?: string;
+  tipo: string;
+  sucursal: string;
+  empresa?: string;
+}
+
 @Component({
   selector: 'app-cliente-tarjeta',
   templateUrl: './cliente-tarjeta.component.html',
@@ -19,9 +35,9 @@ export class ClienteTarjetaComponent implements OnInit, OnChanges {
   constructor(private _clientes: ClientesService, private fb: FormBuilder, private _publicos:  ServiciosPublicosService,
   private _empresas: EmpresasService) { }
     
-  @Input() cliente:any = {}
+  @Input() cliente = null
   @Input() editar:boolean  = false
-
+  
   camposCliente    =  [ ...this._clientes.camposCliente_show ]
 
   form_cliente: FormGroup;

@@ -94,7 +94,7 @@ export class RealizaDepositoComponent implements OnInit {
       if (respuesta) {
         const nueva_clave = this._publicos.generaClave()
         const solo_numeros_fecha_hoy = this._publicos.solo_numeros_fecha_hoy()
-        const updates = {[`historial_gastos_diarios/${get_info.sucursal}/${solo_numeros_fecha_hoy}/${nueva_clave}`]: guarda}
+        const updates = {[`historial_gastos_diarios/${nueva_clave}`]: guarda}
         update(ref(db), updates).then(()=>{
           this.resetForm()
           this._publicos.swalToast('Deposito realizado',1, 'top-start')

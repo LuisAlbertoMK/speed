@@ -1,5 +1,7 @@
 
-<ng-container *ngIf="cliente">
+
+
+<ng-container *ngIf="cliente && cliente.id; else elseTemplateRegistroCliente">
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -8,7 +10,6 @@
             <i class="fa fa-edit text-primary pointer" data-bs-target="#modal-editar-info" data-bs-toggle="modal"></i>
           </div>
         </ng-container>
-        
         <ng-container *ngFor="let item of camposCliente">
           <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-uppercase text-start" *ngIf="cliente[item.valor]">
             <strong >{{item.show}} </strong>: {{cliente[item.valor]}}
@@ -18,6 +19,15 @@
     </div>
   </div>
 </ng-container>
+
+
+
+<ng-template #elseTemplateRegistroCliente>
+
+</ng-template>
+
+
+
 
   <div class="modal fade" id="modal-editar-info" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
