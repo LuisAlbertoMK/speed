@@ -11,7 +11,7 @@
         <div class="card-body ">
             <div class="row">
               <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" >
-                U.B
+                U.B gg
               </div>
               <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" >
                 <strong>{{reporte['ub'] | monedas:'%'}}</strong>
@@ -33,7 +33,7 @@
         <div class="card-body">
             <div class="row">
               <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" >
-                U.B
+                U.B hhhh
               </div>
               <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" >
                 <strong>{{reporte['ub'] | monedas:'%'}}</strong>
@@ -51,26 +51,31 @@
     </div>
   </ng-container>
   <ng-template #elseMuestra>
-    <div class="card  mb-3" [ngClass]="!color_n ? 'text-success' : ''">
-      <div class="card-header text-center">{{title}}</div>
-      <div class="card-body">
-          <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start" *ngIf="rol_ !== 'cliente'">
-              U.B
+    <div class="row">
+      <div class="col">
+        <div class="card  mb-3" [ngClass]="!color_n ? 'text-success' : ''">
+          <div class="card-header text-center">{{title}}</div>
+          <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start" *ngIf="rol_ !== 'cliente'">
+                  U.B kkk
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" *ngIf="rol_ !== 'cliente'">
+                  <strong>{{reporte['ub'] | monedas:'%'}}</strong>
+                </div>
+                <ng-container *ngFor="let campo of campos_usados">
+                  <ng-container *ngIf="reporte[campo['valor']] > 0">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">{{campo['show']}}</div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo.valor]  | monedas}}</strong></div>
+                  </ng-container>
+                </ng-container>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{reporte.total | numerosLetras}}</strong></div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" *ngIf="rol_ !== 'cliente'">
-              <strong>{{reporte['ub'] | monedas:'%'}}</strong>
-            </div>
-            <ng-container *ngFor="let campo of campos_usados">
-              <ng-container *ngIf="reporte[campo['valor']] > 0">
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">{{campo['show']}}</div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{reporte[campo.valor]  | monedas}}</strong></div>
-              </ng-container>
-            </ng-container>
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{reporte.total | numerosLetras}}</strong></div>
+          </div>
         </div>
       </div>
     </div>
+    
   </ng-template>
   
   

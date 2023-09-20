@@ -166,6 +166,22 @@ export class ServiciosService {
         }
 //TODO aqui las nuevas funciones
 
+consulta_recepciones_(): Promise<any> {
+  return new Promise((resolve, reject) => {
+    // const {ruta} = data
+    const recepciones = ref(db, `recepciones`)
+    onValue(recepciones, (snapshot) => {
+      if (snapshot.exists()) {
+        resolve(snapshot.val())
+      } else {
+        resolve({});
+      }
+    })
+  });
+}
+
+///TODO
+
 conslta_recepciones_cliente(data): Promise<any[]> {
   return new Promise((resolve, reject) => {
     const {ruta} = data
@@ -423,6 +439,19 @@ obtenerTotalesHistoriales(pagos, gastos){
           resolve(this._publicos.crearArreglo2(snapshot.val()))
         } else {
           resolve([]);
+        }
+      })
+    });
+  }
+  consulta_servicios(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const recepciones = ref(db, `recepciones`)
+      onValue(recepciones, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
         }
       })
     });

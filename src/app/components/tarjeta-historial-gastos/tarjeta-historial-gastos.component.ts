@@ -22,6 +22,8 @@ export class TarjetaHistorialGastosComponent implements OnInit,OnChanges  {
   }
   sumatorias(){
     const reporte = {total: 0}
+    console.log(this.historial_gastos);
+    
     const operaciones = [...this.historial_gastos]
     operaciones.forEach(pago=>{
       const {monto} = pago

@@ -62,6 +62,14 @@ export class CotizacionesService {
     {valor:'total', show:'total'},
     {valor:'meses', show:'meses'},
   ]
+  camposDesgloce_real = [
+    {valor:'mo', show:'mo'},
+    {valor:'refaccion', show:'refacciones compra'},
+    {valor:'refaccionVenta', show:'refacciones venta'},
+    {valor:'subtotal', show:'subtotal'},
+    {valor:'iva', show:'iva'},
+    {valor:'total', show:'total'},
+  ]
   camposDesgloce_cliente = [
     {valor:'subtotal', show:'subtotal'},
     {valor:'iva', show:'iva'},

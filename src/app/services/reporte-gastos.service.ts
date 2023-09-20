@@ -142,7 +142,10 @@ export class ReporteGastosService {
 
     const { deposito, operacion, sobrante, orden } = reporte_general;
 
-    reporte_general.restante = (deposito + sobrante) - (operacion + orden);
+    const gastos:number = operacion + orden
+    const suma_positivos:number = deposito + sobrante
+
+    reporte_general.restante = suma_positivos - gastos;
 
     return reporte_general;
     
@@ -200,6 +203,46 @@ export class ReporteGastosService {
           resolve([]);
         }
       });
+    });
+  }
+
+  consulta_operacion(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const historial_gastos_operacion = ref(db, `historial_gastos_operacion`)
+      onValue(historial_gastos_operacion, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      })
+    });
+  }
+  consulta_orden(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const historial_gastos_orden = ref(db, `historial_gastos_orden`)
+      onValue(historial_gastos_orden, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      })
+    });
+  }
+  consulta_diarios(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const historial_gastos_diarios = ref(db, `historial_gastos_diarios`)
+      onValue(historial_gastos_diarios, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      })
     });
   }
 }

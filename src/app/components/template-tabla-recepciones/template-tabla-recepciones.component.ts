@@ -47,8 +47,8 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
   reporte_totales = {
     mo:0,
-    refacciones:0,
-    refacciones_v:0,
+    refaccion:0,
+    refaccionVenta:0,
     subtotal:0,
     iva:0,
     descuento:0,
@@ -58,8 +58,8 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   }
   campos_reporte_show = [
     {valor: 'mo', show:'mo'},
-    {valor: 'refacciones', show:'refacciones'},
-    {valor: 'refacciones_v', show:'refacciones venta'},
+    {valor: 'refaccion', show:'refacciones'},
+    {valor: 'refaccionVenta', show:'refacciones venta'},
     {valor: 'subtotal', show:'subtotal'},
     {valor: 'iva', show:'iva'},
     {valor: 'descuento', show:'descuento'},
@@ -157,10 +157,10 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     let nueva_utilidad_operacion = (subtotal - reporte_totales.refacciones) * (100 / subtotal)
 
     this.reporte_totales.mo = reporte_totales.mo
-    this.reporte_totales.refacciones = reporte_totales.refacciones
-    this.reporte_totales.refacciones_v = reporte_totales.refacciones * margen
+    this.reporte_totales.refaccion = reporte_totales.refacciones
+    this.reporte_totales.refaccionVenta = reporte_totales.refacciones * margen
     this.reporte_totales.subtotal = subtotal
-    let total = reporte_totales.mo +  this.reporte_totales.refacciones_v
+    let total = reporte_totales.mo +  this.reporte_totales.refaccionVenta
     this.reporte_totales.total = total
     this.reporte_totales.ub = nueva_utilidad_operacion
 

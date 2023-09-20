@@ -160,6 +160,7 @@ import { HistorialVehiculoClienteComponent } from './pages/historial-vehiculo-cl
 import { TemplateNavegacionComponent } from './components/template-navegacion/template-navegacion.component';
 import { ModeloCompatiblesComponent } from './components/modelo-compatibles/modelo-compatibles.component';
 import { DetallesPaqueteComponent } from './components/detalles-paquete/detalles-paquete.component';
+import { TemplateReporteRealComponent } from './components/template-reporte-real/template-reporte-real.component';
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -251,7 +252,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     HistorialVehiculoClienteComponent,
     TemplateNavegacionComponent,
     ModeloCompatiblesComponent,
-    DetallesPaqueteComponent
+    DetallesPaqueteComponent,
+    TemplateReporteRealComponent
   ],
   imports: [
     BrowserModule,

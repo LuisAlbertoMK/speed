@@ -24,9 +24,9 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1">
               <h3>Obtener el sobrante de sucursal y dia especifico</h3>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-12 mb-1">
               <select aria-label="Lista de sucursales" class="form-control select-control" #arr_s (change)="sucursalBarrido = arr_s.value;" id="sucursal">
-                <option value="">Selecciona</option>
+                <option value="">Sucursal</option>
                 <option [value]="s.id"  *ngFor="let s of sucursales_array" >{{s.sucursal}}</option>
               </select>
             </div>
@@ -44,8 +44,14 @@
               </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center alert alert-warning">
-                <button class="btn btn-sm btn-success" (click)="realizarBarrido()">Barrido</button>
-                Realiza barrido hasta la fecha actual
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  Realiza barrido hasta la fecha actual
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  <button class="btn btn-sm btn-success m-1" (click)="realizarBarrido()">Barrido <i class="fas fa-broom"></i></button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

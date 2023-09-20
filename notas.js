@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "revisar error al consultar informacion o realizar operaciones (proceso)"
+git commit -m "terminar de corregir el modulo de recorte de gastos (proceso)"
 git push -u origin
 
 

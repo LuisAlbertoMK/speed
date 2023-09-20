@@ -114,8 +114,9 @@ export class CorteIngresosComponent implements OnInit {
     if (this._sucursal !== 'Todas') {
       this.my_control.get('sucursal').setValue(this._sucursal)
       this.sucursal_select = this._sucursal
-      this.consulta_gastos_operacion()
+      // this.consulta_gastos_operacion()
     }
+    this.nueva_consulta()
     // this.consulta_servicios()
     // this.consulta_gastos_operacion()
   }
@@ -133,7 +134,7 @@ export class CorteIngresosComponent implements OnInit {
     this.my_control.get('sucursal').valueChanges.subscribe((sucursal:string)=>{
       if(sucursal){
         this.sucursal_select = sucursal
-        this.consulta_gastos_operacion()
+        // this.consulta_gastos_operacion()
         const {inicial, final} = this.fechas_corte.value
         const S = new Date(inicial)
         const F = new Date(final)
@@ -151,7 +152,7 @@ export class CorteIngresosComponent implements OnInit {
         const S = new Date(inicial)
         const F = new Date(final)
         this.resultados_objetivos({S, F})
-        this.consulta_gastos_operacion()
+        // this.consulta_gastos_operacion()
       }
     })
   }
@@ -164,15 +165,163 @@ export class CorteIngresosComponent implements OnInit {
     this.fecha_formateadas.final = this._publicos.resetearHoras_horas(F,this.hora_end) 
 
     this.resultados_objetivos({S, F})
-    this.consulta_gastos_operacion()
+    // this.consulta_gastos_operacion()
     // this.consulta_servicios()
+    // this.nueva_consulta()
+    this.actualiza()
     
   }
 
 actualiza(){
-  this.consulta_gastos_operacion()
+  const cuales = ['recepciones','historial_gastos_operacion','historial_gastos_orden']
+  cuales.forEach(cual=>{
+    const starCountRef = ref(db, `${cual}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          console.log(cual);
+          
+          this.nueva_consulta()
+        }
+      })
+  })
+  
+}
+async nueva_consulta(){
+  console.time('Execution Time');
+
+  const {inicial:fec_f, final: fech_f}= this.fecha_formateadas;
+
+  console.log(this.fecha_formateadas);
+  
+  const _operacion = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_operacion())
+
+  console.log(_operacion);
+  
+  const _orden = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_orden())
+  // const _diarios = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_diarios())
+  const _recepciones = this._publicos.crearArreglo2( await this._servicios.consulta_recepciones_())
+  console.log(_recepciones);
+
+  const nuevas = _recepciones.filter(r=>new Date(r.fecha_entregado) >= fec_f && new Date(r.fecha_entregado) <= fech_f && r.status === 'entregado').map(recepcion=>{
+    const { id, elementos, margen, iva } = recepcion
+    recepcion.historial_gastos_orden = filtra_orden(_orden, id)
+    const filtro_elementos_only = elementos.filter(e =>e.tipo !== 'paquete' && e.aprobado)
+    const reporte_solo_elementos = nuevo_reporte(filtro_elementos_only)
+    const filtro_paquetes_only = elementos.filter(e =>e.tipo === 'paquete' && e.aprobado )
+    const aplicado = filtro_paquetes_only.map(paquete=>{
+      const {elementos} = paquete
+      const filtro_aprobado_internos = elementos.filter(e=>e.aprobado)
+      return nuevo_reporte(filtro_aprobado_internos) 
+    })
+    const sumatoria_paquetes = sumatorio_reportes(aplicado)
+    const reporte_sum = sumatorio_reportes([sumatoria_paquetes, reporte_solo_elementos])
+
+    // reporte_sum.refaccion = suma_gastos_ordenes([recepcion]).total_ordenes
+    // console.log(reporte_sum);
+    const nuevo = JSON.parse(JSON.stringify(reporte_sum));
+    nuevo['refaccion'] = gastos_orden_suma(recepcion.historial_gastos_orden)
+    // console.log(nuevo);
+    recepcion.total_gastos = gastos_orden_suma(recepcion.historial_gastos_orden)
+    
+    
+    recepcion.reporte = sumatoria_reporte(reporte_sum, margen, iva)
+    recepcion.reporte_real = sumatoria_reporte(nuevo, margen, iva)
+    
+    return recepcion
+  })
+  // console.log(nuevas);
+
+  const {total_ordenes,total_ventas } = suma_gastos_ordenes(nuevas)
+  let objetivo = 0
+  this.metas_mes.forEach(g=>{
+    objetivo+= g.objetivo
+  })
+  this.reporte.objetivo = objetivo
+  
+  this.reporte.porcentaje = (total_ventas / objetivo) * 100
+  this.reporte.ticketPromedio = total_ventas / nuevas.length 
+  this.reporte.orden = total_ordenes
+  this.reporte.ventas = total_ventas
+  this.reporte.operacion = filtro_operacion_fechas(_operacion, fec_f, fech_f)
+  this.reporte.sobrante = this.reporte.ventas - (this.reporte.operacion + this.reporte.orden)
+  this.reporte.porcentajeGM = (this.reporte.sobrante / this.reporte.ventas) *  100
+
+  this.recepciones_arr = nuevas
+  
+  
+  function filtro_operacion_fechas(arreglo, start, end){
+    const filtro_ = arreglo.filter(r=>new Date(r.fecha_recibido) >= new Date(start) && new Date(r.fecha_recibido) <= new Date(end))
+    let total = 0
+    filtro_.forEach(f=>{
+      const {status, monto} = f
+      if(status) total += monto
+    })
+    return  total
+  }
+  function filtra_orden(arreglo, id_orden){
+    return [...arreglo].filter(f=>f.id_os === id_orden)
+  }
+  function suma_gastos_ordenes(data:any){
+    let total_ordenes = 0, total_ventas= 0
+      data.forEach(f=>{
+        const {total_gastos, reporte} = f
+        const {subtotal } = reporte
+        total_ordenes += total_gastos
+        total_ventas += subtotal
+      })
+    return {total_ordenes, total_ventas}
+  }
+  function gastos_orden_suma(data:any[]){
+    let total = 0
+      data.forEach(f=>{
+        const {monto, status} = f
+        if (status) total += monto
+      })
+    return total
+  }
+  function sumatoria_reporte(data, margen, iva){
+    const {mo,refaccion} = data
+    const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0}
+    reporte.mo = mo 
+    reporte.refaccion = refaccion
+    reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
+    reporte.subtotal = reporte.mo + reporte.refaccionVenta
+    reporte.iva = (iva) ? reporte.subtotal * .16 : reporte.subtotal
+    reporte.total = reporte.subtotal + reporte.iva
+
+    reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+    return reporte
+  }
+  function sumatorio_reportes(arreglo_sumatorias){
+    const reporte = {mo:0,refaccion:0}
+    arreglo_sumatorias.forEach(a=>{
+        const {mo,refaccion, } = a
+        reporte.mo += mo
+        reporte.refaccion += refaccion
+    })
+    return reporte
+  }
+  function nuevo_reporte(elementos){
+    const reporte = {mo:0,refaccion:0}
+    const nuevos = [...elementos].forEach(elemento =>{
+      const { costo, precio, status, tipo} = elemento
+        if (costo > 0 ) {
+          reporte[tipo] += costo
+          // if (tipo === 'mo') {
+          //   reporte.sobrescritomo += costo
+          // }else{
+          //   reporte.sobrescritorefaccion += costo
+          // }
+        }else{
+          reporte[tipo] += precio
+        }
+    })
+    return reporte
+  }
+  console.timeEnd('Execution Time');
 }
   
+
   
 
   async consulta_gastos_operacion(){

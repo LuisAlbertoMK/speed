@@ -161,7 +161,10 @@ export class ReporteGastosComponent implements OnInit {
   filtro_tipo:string = 'Todos'
   tipos_muestra:string [] = ['Todos','deposito','operacion','orden','sobrante']
 
-  fecha_barrido = {start:null, end:null} 
+  fecha_barrido = {
+    start: this._publicos.resetearHoras_horas(new Date(),this.hora_start),
+    end: this._publicos.resetearHoras_horas(new Date(), this.hora_end)
+  } 
 
   minDate: Date;
   maxDate: Date;
@@ -189,10 +192,9 @@ export class ReporteGastosComponent implements OnInit {
         }        
     })
     this.rangeBarrido.valueChanges.subscribe(({start:start_})=>{
-      if (start_ && start_['_d'] ) {
-        this.fecha_barrido.start = this._publicos.resetearHoras_horas(new Date(start_['_d']),this.hora_start) 
-        this.fecha_barrido.end = this._publicos.resetearHoras_horas(new Date(start_['_d']), this.hora_end)
-      }        
+      const selectedDate = start_ && start_['_d'] ? new Date(start_['_d']) : new Date();
+      this.fecha_barrido.start = this._publicos.resetearHoras_horas(new Date(selectedDate),this.hora_start) 
+      this.fecha_barrido.end = this._publicos.resetearHoras_horas(new Date(selectedDate), this.hora_end)
     })
   }
   formate_fecha_horas(){
@@ -297,13 +299,14 @@ export class ReporteGastosComponent implements OnInit {
     this.reporte = reporte
     
     if (this.filtro_tipo === 'Todos' && (this.filtro_sucursal !== 'Todas')){
-       
+
+      const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(filtro)
 
       // console.log(this.todos_ultimate);
       
-       const {start, end} = this.fechas_get
+      //  const {start, end} = this.fechas_get_formateado
        const hoy = this._publicos.verificarFechasIgualesHoy(start, end)
-      //  console.log(hoy);
+
        if (hoy) {
         const simular_fecha = this._publicos.sumarRestarDiasFecha(start, 1)
         let updates = {}
@@ -324,9 +327,7 @@ export class ReporteGastosComponent implements OnInit {
             // console.log('NO es domingo registra para el lunes');
             const fecha_lunes = this._publicos.sumarRestarDiasFecha(simular_fecha, 1)
             save.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: fecha_lunes.toString()}).toString_completa
-           
           }
-
 
           const nueva_fecha_maniana = this._publicos.sumarRestarDiasFecha(new Date(), 1)
           const clave_fecha = genera_clave_diario(nueva_fecha_maniana, this.filtro_sucursal)
@@ -335,6 +336,7 @@ export class ReporteGastosComponent implements OnInit {
           if (clave_encontrada) {
             // console.log('tenemos sobrante actualizar solamente');
             updates[`historial_gastos_diarios/${clave_fecha}/monto`] = reporte.restante
+            updates[`historial_gastos_diarios/${clave_fecha}/status`] = true
           }else{
             // console.log('registrar nuevo sobrante');
             updates[`historial_gastos_diarios/${clave_fecha}`] = save
@@ -351,18 +353,40 @@ export class ReporteGastosComponent implements OnInit {
         
        }  
     }
-    
-    this.dataSource.data = filtro
+    const campos = [
+      'concepto',
+      'fecha_recibido',
+      'habilitado_por_rol',
+      'habilitado_por_usuario',
+      'inhabilitado_por_rol',
+      'inhabilitado_por_usuario',
+      'metodo',
+      'modificado',
+      'modificado_por_rol',
+      'modificado_por_usuario',
+      'monto',
+      'status',
+      'sucursal',
+      'tipo',
+    ]
+    this.todos_ultimate  = (!this.todos_ultimate.length) 
+        ?  filtro 
+        :  this._publicos.actualizarArregloExistente(this.todos_ultimate, filtro,campos);
+
+    this.dataSource.data = this.todos_ultimate
     this.newPagination('reporteGastos')
   }
   accion(data_get){
     const {accion, data, monto_caja} = data_get
     if (accion && data) {
       const data_accion = {...data}
-      const {fecha_recibido, sucursal, id} = data_accion
+      const {fecha_recibido, sucursal, id, tipo} = data_accion
+      console.log(tipo);
+      
       let donde 
-      switch (data_accion.tipo) {
+      switch (tipo) {
         case 'deposito':
+        case 'sobrante':
           donde = 'historial_gastos_diarios'
           break;
         case 'orden':
@@ -400,15 +424,18 @@ export class ReporteGastosComponent implements OnInit {
       }) 
     }
   }
-  generaReporteExcelReporteGastos(){
+  async generaReporteExcelReporteGastos(){
     
-    let resultados_1 = (this.filtro_tipo === 'Todos') ? this.todos_ultimate : this.todos_ultimate.filter(c=>c.tipo === this.filtro_tipo)
+    const resultados_1 = (this.filtro_tipo === 'Todos') ? this.todos_ultimate : this.todos_ultimate.filter(c=>c.tipo === this.filtro_tipo)
     const resultados =  (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
+    
+    const {start, end} = this.fechas_get_formateado
+    const filtro = resultados.filter(r=>new Date(r.fecha_recibido) >= start && new Date(r.fecha_recibido) <= end )
 
-    const arreglado = this.arreglado_para_reporte_excel(resultados)
-
-    const filtro_facturas = resultados.filter(f=>f.facturaRemision === 'factura')
-    const filtro_notas = resultados.filter(f=>f.facturaRemision === 'nota')
+    const arreglado = await this.arreglado_para_reporte_excel(filtro)
+  
+    const filtro_facturas = filtro.filter(f=>f.facturaRemision === 'factura')
+    const filtro_notas = filtro.filter(f=>f.facturaRemision === 'nota')
 
     const data_reporte_general = this._reporte_gastos.reporte_gastos_sucursal_unica(arreglado)
 
@@ -431,8 +458,31 @@ export class ReporteGastosComponent implements OnInit {
       this._publicos.swalToast(`Ningun resultado para exportar`, 0)
     }
   }
-  arreglado_para_reporte_excel(arreglo:any[]){
+  async arreglado_para_reporte_excel(arreglo:any[]){
     let nuevos = []
+    const recepciones = await this._servicios.consulta_servicios()
+    const vehiculos = await this._vehiculos.consulta_vehiculos_()
+
+    function descripcion_orden(data){
+      const { elementos } = data
+      return [...elementos].map(nuevos=>{ return `${nuevos.nombre}`.toLowerCase() }).join(', ')
+    }
+    function metodo_pago(forma){
+      const pagos = [
+      {valor:'1', show:'Efectivo'},
+        {valor:'2', show:'Cheque'},
+        {valor:'3', show:'Tarjeta'},
+        {valor:'4', show:'Transferencia'},
+        {valor:'5', show:'Credito'},
+        // {valor:4, show:'OpenPay'},
+        // {valor:5, show:'Clip / Mercado Pago'},
+        {valor:'6', show:'Terminal BBVA'},
+        {valor:'7', show:'Terminal BANAMEX'},
+      ]
+      const forma_:string = String(forma)
+      return pagos.find(p=>p.valor === forma_).show
+    }
+    
     arreglo.forEach(c=>{
       const {no_os,sucursalShow,
         fecha_recibido,
@@ -442,8 +492,8 @@ export class ReporteGastosComponent implements OnInit {
         facturaRemision,
         monto,
         status,
-        tipo, gasto_tipo, metodoShow, status_orden, data_vehiculo} = c
-        const data_vehiculo_ = {...data_vehiculo}
+        tipo, gasto_tipo, metodo, id_os } = c
+        
       const data_registro = {
         no_os: no_os || '',
         sucursal: sucursalShow,
@@ -451,16 +501,27 @@ export class ReporteGastosComponent implements OnInit {
         fecha_recibido,
         referencia:  referencia || '',
         concepto,
-        marca: data_vehiculo_.marca || '',
-        modelo: data_vehiculo_.modelo || '',
-        placas: data_vehiculo_.placas || '',
+        marca:  '',
+        modelo: '',
+        placas: '',
         facturaRemision: facturaRemision || '',
-        metodo: metodoShow,
+        metodo: metodo_pago(metodo),
         monto,
         status: (status) ? 'aprobado': 'no aprobado',
         tipo,
         gasto_tipo: gasto_tipo || '',
-        status_orden: status_orden || ''
+        status_orden: ''
+      }
+      if (tipo === 'orden') {
+        const {vehiculo:id_vehiculo, status} = recepciones[id_os]
+        const data_vehiculo = vehiculos[id_vehiculo]
+        const { marca,modelo ,placas} = data_vehiculo
+        data_registro.marca = marca
+        data_registro.modelo = modelo
+        data_registro.placas = `${placas}`.toUpperCase()
+        data_registro.descripcion = descripcion_orden(recepciones[id_os])
+        data_registro.status_orden = status
+
       }
       nuevos.push(data_registro)
     })
@@ -499,7 +560,7 @@ export class ReporteGastosComponent implements OnInit {
       
 
       // let arreglo = []
-      if(diffDias > 0){
+      if(diffDias >= 0){
         const nombre_sucursal = nueva_data_cliente(this.sucursalBarrido)
         const { respuesta } = await this._publicos.mensaje_pregunta(`Realizar barrido`,true,`${nombre_sucursal}`)
 
@@ -517,22 +578,24 @@ export class ReporteGastosComponent implements OnInit {
         // const donde = ['historial_gastos_orden','historial_gastos_diarios','historial_gastos_operacion']
         for (let i = 0; i <= diffDias; i++) {       
           const fecha_retorna = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
-          // console.log( 'fecha esperada',fecha_retorna);
 
           await this.llamada_multiple()
+
+          const _operacion = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_operacion())
+          const _orden = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_orden())
+          const _diarios = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_diarios())
+
+          const ultimate = [..._operacion, ..._orden, ..._diarios]
           
-          // console.log(this.todos_ultimate);
           const inicial:Date = this._publicos.resetearHoras_horas(new Date(fecha_retorna), this.hora_start)
           const final:Date = this._publicos.resetearHoras_horas(new Date(fecha_retorna), this.hora_end)
 
-          const resultados_fecha = this.todos_ultimate.filter(r=>new Date(r.fecha_recibido) >= inicial && new Date(r.fecha_recibido) <= final )
-          
-          const clave_fecha = genera_clave_diario(inicial, this.sucursalBarrido)
-          const filtro_clave_fecha = resultados_fecha.filter(f=>f.id !== clave_fecha)
+          const filtro_sucursal = ultimate.filter(s=>s.sucursal === this.sucursalBarrido)
 
+          const resultados_fecha = filtro_sucursal.filter(r=>new Date(r.fecha_recibido) >= inicial && new Date(r.fecha_recibido) <= final )
+
+          const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(resultados_fecha)
           
-          const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(filtro_clave_fecha)
-          // console.log(reporte);
           const simular_fecha = this._publicos.sumarRestarDiasFecha(inicial, 1)
           let updates = {}
           const save = {
@@ -544,8 +607,8 @@ export class ReporteGastosComponent implements OnInit {
             tipo:      'sobrante',
             fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: simular_fecha}).toString_completa
           }
-          // console.log(reporte);
-          
+
+
           if (reporte.restante !== 0 ) {
             if (this._publicos.esDomingo(simular_fecha)) {
               const fecha_lunes = this._publicos.sumarRestarDiasFecha(inicial, 1)
@@ -558,7 +621,16 @@ export class ReporteGastosComponent implements OnInit {
             const clave_encontrada = this.todos_ultimate.find(c=>c.id === clave_registro_sobrante)
             if (clave_encontrada) {
               // console.log('tenemos sobrante actualizar solamente');
-              updates[`historial_gastos_diarios/${clave_registro_sobrante}/monto`] = reporte.restante
+              const path = `historial_gastos_diarios/${clave_registro_sobrante}`
+              updates[`${path}/monto`] = reporte.restante
+              updates[`${path}/status`] = true
+              updates[`${path}/habilitado_por_usuario`] = this.USUARIO
+              updates[`${path}/habilitado_por_rol`] = this.ROL
+              const modificado = this._publicos.retorna_fechas_hora({fechaString: new Date().toString()}).toString_completa
+              updates[`${path}/modificado`] = modificado
+              updates[`${path}/modificado_por_usuario`] = this.USUARIO
+              updates[`${path}/modificado_por_rol`] = this.ROL
+
             }else{
               // console.log('registrar nuevo sobrante');
               updates[`historial_gastos_diarios/${clave_registro_sobrante}`] = save

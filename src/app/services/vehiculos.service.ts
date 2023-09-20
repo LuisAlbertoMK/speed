@@ -1848,6 +1848,10 @@ export class VehiculosService {
         },
         {
             "categoria": "Sedán",
+            "modelo": "Bora"
+        },
+        {
+            "categoria": "Sedán",
             "modelo": "Beetle"
         },
         {
@@ -2042,6 +2046,19 @@ export class VehiculosService {
         }
       }, {
         onlyOnce: true
+      })
+    });
+  }
+  consulta_vehiculos_(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const vehiculos = ref(db, `vehiculos`)
+      onValue(vehiculos, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
       })
     });
   }
