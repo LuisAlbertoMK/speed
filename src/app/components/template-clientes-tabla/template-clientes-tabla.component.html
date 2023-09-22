@@ -72,7 +72,8 @@
           <button mat-menu-item (click)="irPagina('cotizacionNueva',row)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('historial-cliente',row)">  Historial cliente <i class="fa fa-book text-danger ml-1"></i></button>
-          <button mat-menu-item *ngIf="!row.usuario" (click)="registra_usuario_new(row)"> crear usuario </button>
+          <button mat-menu-item *ngIf="row.tipo === 'flotilla'">  Crear credito <i class="fa fa-dollar text-danger ml-1"></i></button>
+          <button mat-menu-item *ngIf="!row.usuario" (click)="registra_usuario_new(row)"> Crear usuario </button>
         </mat-menu>
       </td>
     </ng-container>

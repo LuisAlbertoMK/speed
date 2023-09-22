@@ -97,44 +97,50 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="row.reporte">
                               <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                  <app-reporte-desgloce-tarjeta [reales]="reales" [iva] = "row.iva" [historial_gastos]="row.historial_gastos_orden" [reporte]="row.reporte" [title]="'Espectativa'"></app-reporte-desgloce-tarjeta>
+                                  <app-reporte-desgloce-tarjeta [historial_gastos]="row.historial_gastos_orden" [reporte]="row.reporte" [title]="'Espectativa'"></app-reporte-desgloce-tarjeta>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                  <app-template-reporte-real [reporte]="row.reporte_real" [title]="'Real'"></app-template-reporte-real>
-                                </div>
+                                <ng-container *ngIf="reales">
+                                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                    <app-template-reporte-real [reporte]="row.reporte_real" [title]="'Real'"></app-template-reporte-real>
+                                  </div>
+                                </ng-container>
+                                
                               </div>
 
                             </div>
-                            <div class="table-responsive">
-                              <table class="table table-sm">
-                                <thead>
-                                  <tr>
-                                    <th scope="text-start">Nombre</th>
-                                    <th scope="text-center">Cantidad</th>
-                                    <th scope="text-end">Precio</th>
-                                    <th scope="text-end">Costo</th>
-                                    <th scope="text-end">Subtotal</th>
-                                    <th scope="text-end">Total</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <ng-container *ngFor="let item of row.servicios">
-                                    <tr [ngClass]="'tipo-'+item.tipo" >
-                                      <td class="text-start">
-                                        {{item.nombre}} &nbsp;
-                                        <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
-                                        <span class="badge badge-info m-1">{{item.status}}</span>
-                                      </td>
-                                      <td class="text-center">{{item.cantidad}}</td>
-                                      <td class="text-end">{{item.precio | monedas}}</td>
-                                      <td class="text-end">{{item.costo | monedas}}</td>
-                                      <td class="text-end">{{item.subtotal | monedas}}</td>
-                                      <td class="text-end">{{item.total | monedas}}</td>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                              <div class="table-responsive">
+                                <table class="table table-sm">
+                                  <thead>
+                                    <tr>
+                                      <th scope="text-start">Nombre</th>
+                                      <th scope="text-center">Cantidad</th>
+                                      <th scope="text-end">Precio</th>
+                                      <th scope="text-end">Costo</th>
+                                      <th scope="text-end">Subtotal</th>
+                                      <th scope="text-end">Total</th>
                                     </tr>
-                                  </ng-container>
-                                </tbody>
-                              </table>
+                                  </thead>
+                                  <tbody>
+                                    <ng-container *ngFor="let item of row.elementos">
+                                      <tr  >
+                                        <td class="text-start" [ngClass]="'tipo-'+item.tipo">
+                                          {{item.nombre}} &nbsp;
+                                          <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
+                                          <span class="badge badge-info m-1">{{item.status}}</span>
+                                        </td>
+                                        <td class="text-center">{{item.cantidad}}</td>
+                                        <td class="text-end">{{item.precio | monedas}}</td>
+                                        <td class="text-end">{{item.costo | monedas}}</td>
+                                        <td class="text-end">{{item.subtotal | monedas}}</td>
+                                        <td class="text-end">{{item.total | monedas}}</td>
+                                      </tr>
+                                    </ng-container>
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
+                            
                           </mat-tab>
                           <!-- <mat-tab label="Cliente" *ngIf="muestra_cliente">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
@@ -153,7 +159,7 @@
                               <app-tarjeta-historial-gastos [historial_gastos]="row.historial_gastos_orden"></app-tarjeta-historial-gastos>
                             </mat-tab>
                             <mat-tab label="Historial pagos">
-                              <!-- <app-tarjeta-historial-pagos [historial_pagos]="row.historial_pagos"></app-tarjeta-historial-pagos> -->
+                              <app-tarjeta-historial-pagos [historial_pagos]="row.historial_pagos_orden"></app-tarjeta-historial-pagos>
                             </mat-tab>
                       </mat-tab-group>
                   </div>

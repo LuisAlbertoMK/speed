@@ -159,7 +159,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     fecha_entregado:'',
     firma_cliente:'',
     formaPago:'1',
-    observaciones: observaciones(''),
+    observaciones: observaciones_new(''),
     id:'',
     iva:true,
     margen:25,
@@ -233,31 +233,53 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     const starCountRef = ref(db, `recepciones/${recepcion}`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        this.acciones()
+        this.acciones(snapshot.val())
       } 
     })
   }
-  async acciones(){
-
-    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
-
-    let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
-
-    if (cliente) {
-      data_cliente  = await this._clientes.consulta_Cliente(cliente)
-      data_cliente = this.nueva_data_cliente(data_cliente)
-    }
-    if (vehiculo) {
-      data_vehiculo = await this._vehiculos.consulta_vehiculo_(vehiculo)
-    }
-
+  async acciones(data){
+    const {sucursal, cliente, vehiculo, observaciones, elementos, iva,  margen, formaPago, descuento, status, kilometraje} = data
+    const data_cliente = await this._clientes.consulta_Cliente(cliente)
+    const data_vehiculo = await this._vehiculos.consulta_vehiculo_id(vehiculo)
+    console.log(data);
+    this.data_editar = data
     this.data_editar.data_cliente = data_cliente
     this.data_editar.data_vehiculo = data_vehiculo
+    this.data_editar.sucursal = sucursal;
 
-    const {reporte, _servicios} = this.calcularTotales(this.data_editar)
-    this.data_editar.reporte = reporte
-    this.data_editar.elementos = _servicios
-    this.checksBox.get('margen').setValue(this.data_editar.margen)
+
+    this.data_editar.elementos = elementos
+    
+    this.data_editar.observaciones = observaciones_new(observaciones)
+    
+
+    const campos = ['iva','descuento','margen','formaPago','status','kilometraje']
+    
+    campos.forEach(campo=>{
+      this.data_editar[campo] = data[campo]
+    })
+    // this.data_editar= snapshot.val();
+    // this.data_editar.observaciones = observaciones(this.data_editar.observaciones)
+
+    // const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
+
+    // let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
+
+    // if (cliente) {
+    //   data_cliente  = await this._clientes.consulta_Cliente(cliente)
+    //   data_cliente = this.nueva_data_cliente(data_cliente)
+    // }
+    // if (vehiculo) {
+    //   data_vehiculo = await this._vehiculos.consulta_vehiculo_(vehiculo)
+    // }
+
+    // this.data_editar.data_cliente = data_cliente
+    // this.data_editar.data_vehiculo = data_vehiculo
+
+    // const {reporte, _servicios} = this.calcularTotales(this.data_editar)
+    // this.data_editar.reporte = reporte
+    // this.data_editar.elementos = _servicios
+    // this.checksBox.get('margen').setValue(this.data_editar.margen)
 
     this.realizaOperaciones()
   }
@@ -383,6 +405,8 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
   async dataTecnico(event){
     // console.log(event);
+    // console.log(this.data_editar);
+    const { no_os, id:id_recepcion } = this.data_editar
     const {id, usuario} = event
     if (id && id !== this.data_editar.tecnico) {
       const { respuesta} = await this._publicos.mensaje_pregunta(`Cambiar tecnico?`,true,`El tecnico de la orden sera reemplazado`)
@@ -390,6 +414,20 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       if (respuesta) {
         this.data_editar.tecnico = id
         this.data_editar.tecnicoShow = usuario
+        
+        const updates ={}
+        updates[`recepciones/${id_recepcion}/tecnico`] = id
+        updates[`recepciones/${id_recepcion}/tecnicoShow`] = usuario
+        // console.log(updates);
+
+        update(ref(db), updates).then(()=>{
+          // console.log('finalizo');
+          this._publicos.mensajeSwal(`Se actualizo el tecnico de la O.S ${no_os}`,1)
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+        
       }
     }
   }
@@ -468,29 +506,29 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
     // console.log(this.data_editar.historial_pagos);
     // this.data_editar.historial_pagos = []
-
-    const {historial_pagos, status, reporte} = this.data_editar
+    const {id:id_recepcion, status, reporte} = this.data_editar
     const { total } = JSON.parse(JSON.stringify(reporte));
-    // console.log(total);
-    
-    let total_pagos = 0
+    const _pagos = this._publicos.crearArreglo2( await this._servicios.consulta_pagos()).filter(f=>f.id_os === id_recepcion)
 
-    historial_pagos.forEach(p=>{
-      const { monto } = p
-      total_pagos+= monto
+  const total_pagado = suma_pagado(_pagos)
+  function suma_pagado(arreglo:any[]){
+    let total = 0
+    arreglo.forEach(p=>{
+      const {monto} = p
+      total += monto
     })
+    return total
+  }
+  if (status === 'entregado' ) {
+    this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
+    return
+  }
+  if (total_pagado < total) {
+    this._publicos.mensajeSwal('Error',0,true, `Debe realizar el pago completo de la orden de servicio`)
+    return
+  }
 
-    if (status === 'entregado' ) {
-      this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
-      return
-    }
-    
-
-    this.data_editar.observaciones = observaciones(this.data_editar.observaciones)
-
-    
-    
-    
+    this.data_editar.observaciones = observaciones_new(this.data_editar.observaciones)
 
     if (!this.data_editar.pdf_entrega) {
       let campos = [...this.campos_ocupados_editar]
@@ -821,10 +859,17 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
 }
 
-function observaciones(observacion){
+function observaciones_new(observacion){
   let new_observacion = observacion
   if (new_observacion === undefined || new_observacion === '' || new_observacion === null) {
     new_observacion = ''
   }
   return new_observacion
+}
+function new_tecnico(tecnico: string){
+  let new_tecnic = tecnico
+  if (!new_tecnic || new_tecnic === '' || new_tecnic === undefined) {
+    new_tecnic = ''
+  }
+  return new_tecnic
 }

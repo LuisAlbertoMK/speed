@@ -56,7 +56,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   ROL:string; SUCURSAL:string
   
   infoCotizacion   = {
-    cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false
+    cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false, kms:0
   }
 
   camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
@@ -308,6 +308,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       formaPago:['1',[Validators.required]],
       promocion:['',[]],
       descuento:['',[Validators.min(0)]],
+      kms:['',[Validators.min(0)]],
       nota:['',[]]
     })
     this.vigila()
@@ -324,6 +325,10 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       const nuevo_descuento = descuento < 0 ? 0 : descuento
       this.infoCotizacion.descuento = nuevo_descuento
       this.realizaOperaciones()
+    })
+    this.formPlus.get('kms').valueChanges.subscribe((kms: number) => {
+      const nuevo_kms = kms < 0 ? 0 : kms
+      this.infoCotizacion.kms = nuevo_kms
     })
     this.formPlus.get('nota').valueChanges.subscribe((nota: string) => {
       const nuevo_nota = nota ? nota : ''
@@ -652,7 +657,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                     //limpiamos la informacion para nueva cotizacion
                     
                     this.infoCotizacion = {
-                      cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false
+                      cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false, kms:0
                     }
                     this.formPlus.reset({
                       servicio: 1,

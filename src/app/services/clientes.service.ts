@@ -78,6 +78,19 @@ export class ClientesService {
       });
     });
   }
+  consulta_clientes(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const clientes = ref(db, `clientes`)
+      onValue(clientes, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      })
+    });
+  }
   consulta_Cliente(cliente): Promise<any> {
     return new Promise((resolve, reject) => {
       // const {ruta} = data

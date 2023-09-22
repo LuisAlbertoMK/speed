@@ -148,7 +148,7 @@ export class ServiciosService {
       {valor:'7',nombre:'rescate vial'}
     ]
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
-    camposGuardar = [ 'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','reporte','elementos','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados']
+    camposGuardar = [ 'checkList','observaciones','cliente','detalles','diasEntrega','fecha_promesa','formaPago','iva','margen','elementos','sucursal','vehiculo','pathPDF', 'status', 'diasSucursal','fecha_recibido','notifico','servicio', 'tecnico','showNameTecnico','no_os','personalizados']
 
     infoConfirmar=
         {
@@ -171,6 +171,19 @@ consulta_recepciones_(): Promise<any> {
     // const {ruta} = data
     const recepciones = ref(db, `recepciones`)
     onValue(recepciones, (snapshot) => {
+      if (snapshot.exists()) {
+        resolve(snapshot.val())
+      } else {
+        resolve({});
+      }
+    })
+  });
+}
+consulta_pagos(): Promise<any> {
+  return new Promise((resolve, reject) => {
+    // const {ruta} = data
+    const historial_pagos_orden = ref(db, `historial_pagos_orden`)
+    onValue(historial_pagos_orden, (snapshot) => {
       if (snapshot.exists()) {
         resolve(snapshot.val())
       } else {

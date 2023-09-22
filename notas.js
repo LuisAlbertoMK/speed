@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "terminar de corregir el modulo de recorte de gastos (proceso)"
+git commit -m "establecer credito limite para clientes flotilla (proceso)"
 git push -u origin
 
 

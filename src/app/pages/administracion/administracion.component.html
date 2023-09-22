@@ -21,6 +21,7 @@
             <button aria-label="Boton calendario" class="btn btn-sm btn-success m-1" [matMenuTriggerFor]="filtroSucursal" #tooltip="matTooltip"
             matTooltip="Filtro sucursal"><i class="fa fa-university"></i></button>
             <mat-menu #filtroSucursal="matMenu">
+                <button mat-menu-item (click)="sucursalFiltroReporte = 'Todas'; filtra_informacion()" >Todas</button>
                 <button mat-menu-item (click)="sucursalFiltroReporte = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
             </mat-menu>
         </ng-container>
@@ -87,12 +88,12 @@
             <ng-container matColumnDef="subtotal">
               <th mat-header-cell *matHeaderCellDef class="text-center pointer" > Subtotal
               </th>
-              <td mat-cell *matCellDef="let row" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{ row.subtotal | monedas }} </td>
+              <td mat-cell *matCellDef="let row" class="text-center" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> {{ row.reporte['subtotal'] | monedas }} </td>
             </ng-container>
-            <ng-container matColumnDef="clienteShow">
+            <ng-container matColumnDef="fullname">
               <th mat-header-cell *matHeaderCellDef class="text-center pointer " >Cliente
               </th>
-              <td mat-cell *matCellDef="let row" class="text-center text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*2+'px'}"> {{ row.clienteShow }} </td>
+              <td mat-cell *matCellDef="let row" class="text-center text-capitalize" [ngStyle]="{'min-width':(miniColumnas)*2+'px'}"> {{ row.fullname }} </td>
             </ng-container>
             <ng-container matColumnDef="opciones">
               <th mat-header-cell *matHeaderCellDef class="text-center pointer" > &nbsp;
@@ -121,9 +122,9 @@
                     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
                         <mat-tab label="Servicios">
                           <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-1 mt-1" *ngIf="row.reporte">
-                            <app-reporte-desgloce-tarjeta [reporte]="row.reporte" ></app-reporte-desgloce-tarjeta>
+                            <app-reporte-desgloce-tarjeta [title]="'Desgloce'" [reporte]="row.reporte" ></app-reporte-desgloce-tarjeta>
                           </div>
-                          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="row.servicios">
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start" *ngIf="row.elementos">
                             <h3>Elementos de O.S</h3>
                             <div class="table-responsive">
                               <table class="table table-sm">
@@ -138,7 +139,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <ng-container *ngFor="let item of row.servicios">
+                                  <ng-container *ngFor="let item of row.elementos">
                                     <tr [ngClass]="'tipo-'+item.tipo" >
                                       <td class="text-start">
                                         {{item.nombre}} &nbsp;
@@ -158,12 +159,12 @@
                             </div>
                           </div>
                         </mat-tab>
-                        <mat-tab label="Cliente">
+                        <!-- <mat-tab label="Cliente">
                           <app-cliente-tarjeta [cliente]="row.data_cliente"></app-cliente-tarjeta>
                         </mat-tab>
                         <mat-tab label="vehiculo">
                           <app-vehiculo-tarjeta [vehiculo]="row.data_vehiculo"></app-vehiculo-tarjeta>
-                        </mat-tab>
+                        </mat-tab> -->
                       </mat-tab-group>
                   </div>
                 </td>

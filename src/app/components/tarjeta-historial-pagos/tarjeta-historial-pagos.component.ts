@@ -22,11 +22,11 @@ export class TarjetaHistorialPagosComponent implements OnInit,OnChanges  {
   }
   sumatorias(){
     const reporte = {total: 0}
-    // const operaciones = [...this.historial_pagos]
-    // operaciones.forEach(pago=>{
-    //   const {monto} = pago
-    //   reporte.total += monto
-    // })
+    const operaciones = [...this.historial_pagos]
+    operaciones.forEach(pago=>{
+      const {monto} = pago
+      reporte.total += monto
+    })
     this.total_pagos = reporte.total
   }
 

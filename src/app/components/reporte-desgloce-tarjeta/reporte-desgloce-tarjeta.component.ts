@@ -48,30 +48,7 @@ export class ReporteDesgloceTarjetaComponent implements OnInit, OnChanges {
           this.historial_gastos.forEach(element => {
             refacciones += element.monto
           });
-          this.reporte['refacciones_v'] = refacciones
-          const {subtotal, iva, total, UB} = calcularTotales(this.reporte,this.iva)
-          this.reporte['subtotal'] = subtotal
-          this.reporte['iva'] = iva
-          this.reporte['total'] = total
-          this.reporte['ub'] = UB
-        // }
-        
-        function calcularTotales(data, get_iva) {
-          const {refacciones_v, mo, refacciones } = JSON.parse(JSON.stringify(data));
-          const suma = refacciones_v + mo
-            let subtotal = suma
-            let iva_ = suma 
-            let total = suma
-
-            if (get_iva) {
-              subtotal = suma
-              iva_ = suma * .16
-              total = suma * 1.16
-            }
-            const sin_margen = refacciones_v / 1.25
-           const UB = (total - sin_margen) * (100 / total)
-            return {subtotal, iva: iva_, total, UB}
-        }
+          
       }
       
     }

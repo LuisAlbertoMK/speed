@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
@@ -14,7 +14,7 @@ const dbRef = ref(getDatabase());
   templateUrl: './lista-tecnicos.component.html',
   styleUrls: ['./lista-tecnicos.component.css']
 })
-export class ListaTecnicosComponent implements OnInit {
+export class ListaTecnicosComponent implements OnInit, OnChanges{
   listatecnicos_arr = []
   tecnico: string = 'tecnico'
   myControl = new FormControl('');
@@ -33,6 +33,13 @@ export class ListaTecnicosComponent implements OnInit {
   ngOnInit(): void {
     this.listaTecnicos()
     this.automaticos()
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['sucursal']) {
+      const nuevoValor = changes['sucursal'].currentValue;
+      const valorAnterior = changes['sucursal'].previousValue;
+ 
+    }
   }
   listaTecnicos(){
     const starCountRef = ref(db, `usuarios`)
@@ -72,13 +79,19 @@ export class ListaTecnicosComponent implements OnInit {
 
   private _filter(value: string): any[] {
     let data = [];
-    if (!value['usuario']) {
-      const filterValue = value.toLowerCase();
-      let resultados = this.listatecnicos_arr.filter(option => option['usuario'].toLowerCase().includes(filterValue));
+    console.log(value);
     
+    // if (!value) {
+      const filterValue = value.toLowerCase();
+      console.log(this.listatecnicos_arr);
+      
+      let resultados = this.listatecnicos_arr.filter(option => option['usuario'].toLowerCase().includes(filterValue));
+      
+      console.log(resultados);
+      
       if (!resultados.length)  resultados = this.listatecnicos_arr.filter(option => option['correo'].toLowerCase().includes(filterValue)); 
       data = resultados.filter(r=>r.sucursal === this.sucursal)
-    }
+    // }
     return data
   }
 

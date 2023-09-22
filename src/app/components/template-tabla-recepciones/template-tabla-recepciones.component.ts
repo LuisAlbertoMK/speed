@@ -83,9 +83,6 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       this.contador_resultados = this.recepciones_arr.length
         this.obtener_total_cotizaciones()
     }
-  
-    
-    
   }   
   irPagina(pagina, data, nueva?){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
@@ -100,21 +97,6 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
     }
 
-    // console.log(this.enrutamiento);
-    // if (pagina === 'cotizacionNueva' && !tipo) {
-    //   queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
-    // }else if (pagina === 'cotizacionNueva' && tipo) {
-    //   queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
-    // }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-    //   console.log('aqui');
-      
-    //   queryParams = { anterior:'historial-vehiculo',cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
-    // }else if (pagina === 'ServiciosConfirmar' && tipo) {
-    //   console.log('aqui');
-      
-    //   queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
-    // }
-    // console.log(this.router.url);
     const ruta_Actual= this.router.url
 
     const ruta = ruta_Actual.split('/')
@@ -122,7 +104,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     const ruta_anterior = ruta[1].split('?')
 
     queryParams['anterior'] = ruta_anterior[0]
-    console.log(queryParams);
+    // console.log(queryParams);
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }
@@ -135,15 +117,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     let margen_ = 0
 
     const nuevas = [...this.recepciones_arr]
-    nuevas.map(g=>{
-      margen_ += g.margen
-      const  {reporte, _servicios} = this.calcularTotales(g)
-      Object.keys(reporte_totales).forEach(campo=>{
-        reporte_totales[campo] += reporte[campo]
-      })
-      g.servicios = _servicios
-      g.reporte = reporte
-    })
+
     this.recepciones_arr = nuevas
     this.dataSource.data = nuevas
     this.newPagination()
@@ -183,96 +157,5 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
 
 
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0, costos:0}
-    
-    const _servicios = [...elementos] 
-    
-    const margen = 1 + (new_margen / 100)
-    _servicios.map((ele, index) =>{
-      const {cantidad, costo, tipo, precio} = ele
-      ele.index = index
-      if (tipo === 'paquete') {
-        const report = this.total_paquete(ele)
-        const {mo, refacciones} = report
-        if (ele.aprobado) {
-          ele.precio = mo + (refacciones * margen)
-          ele.subtotal = mo + (refacciones * margen) * cantidad
-          ele.total = (mo + (refacciones * margen)) * cantidad
-          if (costo > 0 ){
-            ele.total = costo * cantidad
-            reporte.costos += costo * cantidad
-          }else{
-            reporte.mo += mo
-            reporte.refacciones += refacciones
-          }
-        }
-      }else if (tipo === 'mo' || tipo === 'refaccion') {
-
-        // const operacion = this.mano_refaccion(ele)
-        const operacion = (costo>0) ? cantidad * costo : cantidad * precio 
-
-        ele.subtotal = operacion
-        
-        if (ele.aprobado){
-          if (costo > 0 ){
-            reporte.costos += (tipo === 'refaccion') ? operacion * margen : operacion
-          }else{
-            const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-            reporte[donde] += operacion
-          }
-          ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
-        }
-      }
-      return ele
-    })
-    let descuento = parseFloat(descuento_) || 0
-
-    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
-
-    const {mo, refacciones} = reporte
-
-    reporte.refacciones_v = refacciones * margen
-
-    let nuevo_total = mo + reporte.refacciones_v + reporte.costos
-    
-    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
-
-    let iva =  _iva ? nuevo_total * .16 : 0;
-
-    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
-    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
-    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
-
-    reporte.descuento = descuentoshow
-    reporte.iva = iva
-    reporte.subtotal = nuevo_total
-    reporte.total = newTotal
-    reporte.meses = total_meses
-
-    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, _servicios}
-    
-  }
-  mano_refaccion({costo, precio, cantidad}){
-    const mul = (costo > 0 ) ? costo : precio
-    return cantidad * mul
-  }
-  total_paquete(ele){
-    const reporte = {mo:0, refacciones:0}
-    const {elementos} = ele
-    const nuevos_elementos = [...elementos]
-
-    if (!nuevos_elementos.length) return reporte
-
-    nuevos_elementos.forEach(ele=>{
-      const {tipo} = ele
-      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-      const operacion = this.mano_refaccion(ele)
-      reporte[donde] += operacion
-    })
-    return reporte
-  }
 
 }

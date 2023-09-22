@@ -24,7 +24,7 @@ export class PdfService {
   constructor(public _publicos:ServiciosPublicosService) { }
   async pdf(data:any){
 
-    const {data_cliente, data_sucursal, data_vehiculo, fecha_recibido, vencimiento, reporte, formaPago, iva, showDetalles: detalles} = data
+    const {data_cliente, data_sucursal, data_vehiculo, fecha_recibido, vencimiento, reporte, formaPago, iva, showDetalles: detalles, kms} = data
 
 
     const empresaShow = (data_cliente.empresaShow ) ? data_cliente.empresaShow : ''
@@ -518,7 +518,7 @@ export class PdfService {
           {
             columns: [
               {width: '15%', text: 'KMS', style:'title' },
-              {width: '35%', text: ``,  style:'info'},
+              {width: '35%', text: `${kms}`,  style:'info'},
               {width: '10%', text: 'Motor', style:'title' },
               {width: '12.5%', text: `${data_vehiculo.no_motor}`,  style:'info'},
               {width: '12.5%', text: 'O.S', style:'title' },

@@ -89,8 +89,18 @@
       <div class="mb-1 row">
         <label for="descuento" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Descuento</label>
         <div class="col-sm-9 col-md-8 col-lg-9 ">
-          <input type="number" min="0" onkeypress="validarDecimal(event)" class="form-control form-control-sm" formControlName="descuento"   id="descuento" class="smallInput">
+          <input type="number" min="0" onkeypress="validarDecimal(event)" class="form-control form-control-sm" formControlName="descuento"   id="descuento" >
+          <!-- class="smallInput" -->
           <small *ngIf="validaCampo('descuento')" class="text-danger">Introduce descuento valido</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mb-1 row">
+        <label for="kms" class="col-sm-3 col-md-4 col-lg-3 col-form-label">KMS</label>
+        <div class="col-sm-9 col-md-8 col-lg-9 ">
+          <input type="number" min="0" onkeypress="soloNumeros(event)" class="form-control form-control-sm" formControlName="kms" id="kms">
+          <small *ngIf="validaCampo('kms')" class="text-danger">Introduce KMS</small>
         </div>
       </div>
     </div>

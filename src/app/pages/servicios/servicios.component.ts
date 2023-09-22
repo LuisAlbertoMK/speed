@@ -215,20 +215,20 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.my_control_1.get('margen').valueChanges.subscribe(margen=>{
         let new_margen = margen < 25 ? 0 : margen
         this.servicio_editar.margen = new_margen
-        this.asigna_resultados_servicio_editar()
+        // this.asigna_resultados_servicio_editar()
       })
       this.my_control_1.get('iva').valueChanges.subscribe(iva=>{
         this.servicio_editar['iva'] = iva
-        this.asigna_resultados_servicio_editar()
+        // this.asigna_resultados_servicio_editar()
       })
       this.my_control_1.get('formaPago').valueChanges.subscribe(formaPago=>{
         this.servicio_editar['formaPago'] = formaPago
-        this.asigna_resultados_servicio_editar()
+        // this.asigna_resultados_servicio_editar()
       })
       this.my_control_1.get('descuento').valueChanges.subscribe(descuento=>{
         let new_descuento = descuento < 0 ? 0 : descuento
         this.servicio_editar['descuento'] = new_descuento
-        this.asigna_resultados_servicio_editar()
+        // this.asigna_resultados_servicio_editar()
       })
 
     
@@ -253,26 +253,101 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const recepciones = ref(db, `recepciones`)
     onValue(recepciones, async (snapshot) => {
       if (snapshot.exists()) {
-        this.arreglo_historial_gastos_orden = await this._servicios.consulta_gastos_orden()
-        this.arreglo_historial_pagos_orden = await this._servicios.consulta_pagos_orden()
-        
-        function filtra_orden(arreglo:any[], id_orden:string) {
-          const nuevos = [...arreglo]
-          return nuevos.filter(o=>o.id_os === id_orden)
-        }
-        let esperados = this._publicos.crearArreglo2(snapshot.val())
-        esperados.map(g=>{
-          const {id}= g
-          g.historial_gastos = filtra_orden(this.arreglo_historial_gastos_orden,id)
-          g.historial_pagos = filtra_orden(this.arreglo_historial_pagos_orden,id)
-          return g
+        const _orden = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_orden())
+        const _pagos = this._publicos.crearArreglo2( await this._servicios.consulta_pagos())
+
+        let esperados = 
+        this._publicos.crearArreglo2(snapshot.val())
+        .map(recepcion=>{
+          const { id, elementos, margen, iva } = recepcion
+          
+          recepcion.historial_gastos_orden = filtra_orden(_orden, id)
+          recepcion.historial_pagos_orden = filtra_orden(_pagos, id)
+
+          const filtro_elementos_only = elementos.filter(e =>e.tipo !== 'paquete' && e.aprobado)
+          const reporte_solo_elementos = nuevo_reporte(filtro_elementos_only)
+          const filtro_paquetes_only = elementos.filter(e =>e.tipo === 'paquete' && e.aprobado )
+          const aplicado = filtro_paquetes_only.map(paquete=>{
+            const {elementos} = paquete
+            const filtro_aprobado_internos = elementos.filter(e=>e.aprobado)
+            return nuevo_reporte(filtro_aprobado_internos) 
+          })
+          const sumatoria_paquetes = sumatorio_reportes(aplicado)
+          const reporte_sum = sumatorio_reportes([sumatoria_paquetes, reporte_solo_elementos])
+      
+          // reporte_sum.refaccion = suma_gastos_ordenes([recepcion]).total_ordenes
+          // console.log(reporte_sum);
+          const nuevo = JSON.parse(JSON.stringify(reporte_sum));
+          nuevo['refaccion'] = gastos_orden_suma(recepcion.historial_gastos_orden)
+          // console.log(nuevo);
+          recepcion.total_gastos = gastos_orden_suma(recepcion.historial_gastos_orden)
+          
+          
+          recepcion.reporte = sumatoria_reporte(reporte_sum, margen, iva)
+          recepcion.reporte_real = sumatoria_reporte(nuevo, margen, iva)
+          return recepcion
         })
+        // console.log(esperados);
+        
           this.array_recepciones = esperados 
           this.filtra_informacion()
+          function filtra_orden(arreglo, id_orden){
+            return [...arreglo].filter(f=>f.id_os === id_orden)
+          }
+          function suma_gastos_ordenes(data:any){
+            let total_ordenes = 0, total_ventas= 0
+              data.forEach(f=>{
+                const {total_gastos, reporte_real} = f
+                const {subtotal } = reporte_real
+                total_ordenes += total_gastos
+                total_ventas += subtotal
+              })
+            return {total_ordenes, total_ventas}
+          }
+          function gastos_orden_suma(data:any[]){
+            let total = 0
+              data.forEach(f=>{
+                const {monto, status} = f
+                if (status) total += monto
+              })
+            return total
+          }
+          function sumatoria_reporte(data, margen, iva){
+            const {mo,refaccion} = data
+            const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0}
+            reporte.mo = mo 
+            reporte.refaccion = refaccion
+            reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
+            reporte.subtotal = reporte.mo + reporte.refaccionVenta
+            reporte.iva = (iva) ? reporte.subtotal * .16 : reporte.subtotal
+            reporte.total = reporte.subtotal + reporte.iva
+        
+            reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+            return reporte
+          }
+          function sumatorio_reportes(arreglo_sumatorias){
+            const reporte = {mo:0,refaccion:0}
+            arreglo_sumatorias.forEach(a=>{
+                const {mo,refaccion, } = a
+                reporte.mo += mo
+                reporte.refaccion += refaccion
+            })
+            return reporte
+          }
+          function nuevo_reporte(elementos){
+            const reporte = {mo:0,refaccion:0}
+            const nuevos = [...elementos].forEach(elemento =>{
+              const { costo, precio, status, tipo} = elemento
+                if (costo > 0 ) {
+                  reporte[tipo] += costo
+                }else{
+                  reporte[tipo] += precio
+                }
+            })
+            return reporte
+          }
       }
     })
-    
-
   }
 
   resetea_horas_admin(){
@@ -296,7 +371,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const campos = [
       'cliente','clienteShow','data_cliente','data_sucursal','data_vehiculo',
       'showNameTecnico','diasSucursal','fecha_promesa','fecha_recibido','formaPago','id',
-      'iva','margen','no_os','placas','reporte','servicio','elementos','status','subtotal',
+      'iva','margen','no_os','placas','reporte','reporte_real','servicio','elementos','status','subtotal',
       'sucursal','sucursalShow','vehiculo','historial_pagos','historial_gastos','status','fecha_entregado',
       'pdf_entrega'
     ]
@@ -444,7 +519,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     this.servicio_editar.elementos = elementos
     this.servicio_editar.status = status
-    this.asigna_resultados_servicio_editar()
+    // this.asigna_resultados_servicio_editar()
   }
   actualiza_servicio_unico(data){
     const {servicio, aprobado,status} = data
@@ -461,20 +536,20 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     const filtrado = elementos .filter(s=>s.status !== 'eliminado')
     this.servicio_editar.elementos = filtrado
-    this.asigna_resultados_servicio_editar()
+    // this.asigna_resultados_servicio_editar()
   }
   agregar_servicio(event){
     const {id} = event
     if (id) {
       this.servicio_editar.elementos.push( {...event,status: 'espera'})
-      this.asigna_resultados_servicio_editar()
+      // this.asigna_resultados_servicio_editar()
     }
   }
   agregar_paquete(event){
     const {id} = event
     if (id) {
       this.servicio_editar.elementos.push( {...event,status: 'espera'})
-      this.asigna_resultados_servicio_editar()
+      // this.asigna_resultados_servicio_editar()
     }
   }
 
@@ -515,86 +590,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this._publicos.cerrar_modal('cerrar-modal')
     }
   }
-  asigna_resultados_servicio_editar(){
-    const {reporte, elementos} = this.calcularTotales(this.servicio_editar);
-    this.servicio_editar.reporte = reporte
-    this.servicio_editar.elementos = elementos
-  }
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    const elementos = (servicios_) ? [...servicios_] : []
-    const margen = 1 + (new_margen / 100)
-    elementos.map(ele=>{
-      const {cantidad, costo, tipo} = ele
-      if (tipo === 'paquete') {
-        const report = this.total_paquete(ele)
-        const {mo, refacciones} = report
-        if (ele.aprobado) {
-          reporte.mo += mo
-          reporte.refacciones += refacciones
-          reporte.refacciones_v += refacciones * margen
-        }
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad
-      }else if (tipo === 'mo' || tipo === 'refaccion') {
+  
 
-        const operacion = this.mano_refaccion(ele)
-
-        ele.subtotal = operacion
-        ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
-        
-        const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-
-        if (ele.aprobado) reporte[donde] += operacion
-
-      }
-      return ele
-    })
-    let descuento = parseFloat(descuento_) || 0
-    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
-    const {mo, refacciones_v, refacciones} = reporte
-
-    let nuevo_total = mo + refacciones_v
-
-    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
-
-    let iva =  _iva ? nuevo_total * .16 : 0;
-
-    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
-    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
-    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
-
-    reporte.descuento = descuentoshow
-    reporte.iva = iva
-    reporte.subtotal = nuevo_total
-    reporte.total = newTotal
-    reporte.meses = total_meses
-    // console.log(reporte);
-    // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
-    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, elementos}
-    
-  }
-  mano_refaccion({costo, precio, cantidad}){
-    const mul = (costo > 0 ) ? costo : precio
-    return cantidad * mul
-  }
-  total_paquete({elementos}){
-    const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos] 
-
-    if (!nuevos_elementos.length) return reporte
-
-    nuevos_elementos.forEach(ele=>{
-      const {tipo} = ele
-      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-      const operacion = this.mano_refaccion(ele)
-      reporte[donde] += operacion
-    })
-    return reporte
-  }
  
 }
   

@@ -15,7 +15,7 @@ const dbRef = ref(getDatabase());
 export class CotizacionesService {
   camposCotizaciones = ['id','searchName','searchPlacas','reporte','formaPago','cliente','elementos','fecha','hora','iva','margen','nota','no_ctoizacion','servicio','vencimiento','vehiculo','pagoName','sucursalShow']
 
-  camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refacciones_v','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
+  camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refaccionVenta','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
 
   camposReporte_show = [
     {valor:'descuento', show:'descuento'},
@@ -23,7 +23,7 @@ export class CotizacionesService {
     {valor:'meses', show:'meses'},
     {valor:'mo', show:'mo'},
     // {valor:'refacciones_a', show:'refacciones compra'},
-    {valor:'refacciones_v', show:'refacciones'},
+    {valor:'refaccionVenta', show:'refacciones'},
     {valor:'sobrescrito', show:'sobrescrito'},
     {valor:'sobrescrito_mo', show:'sobrescrito mo'},
     // {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
@@ -35,7 +35,7 @@ export class CotizacionesService {
   camposReporte_show2 = {
     mo: 0,
     // refacciones_a: 0,
-    refacciones_v: 0,
+    refaccionVenta: 0,
     sobrescrito: 0,
     // sobrescrito_mo: 0,
     // sobrescrito_refaccion: 0,
@@ -50,12 +50,7 @@ export class CotizacionesService {
   camposDesgloce = [
     {valor:'mo', show:'mo'},
     // {valor:'refacciones_a', show:'refacciones a'},
-    {valor:'refacciones_v', show:'refacciones'},
-    {valor:'costos', show:'Costos'},
-    // {valor:'sobrescrito_mo', show:'sobrescrito mo'},
-    // {valor:'sobrescrito_refaccion', show:'sobrescrito refaccion'},
-    // {valor:'sobrescrito_paquetes', show:'sobrescrito paquete'},
-    // {valor:'sobrescrito', show:'sobrescrito'},
+    {valor:'refaccionVenta', show:'refacciones'},
     {valor:'descuento', show:'descuento'},
     {valor:'subtotal', show:'subtotal'},
     {valor:'iva', show:'iva'},

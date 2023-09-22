@@ -50,7 +50,8 @@ export class PagoComponent implements OnInit, OnChanges {
       {metodo:'4', show:'OpenPay'},
       {metodo:'5', show:'Clip / mercadoPago'},
       {metodo:'6', show:'Terminal BBVA'},
-      {metodo:'7', show:'Terminal BANAMEX'}
+      {metodo:'7', show:'Terminal BANAMEX'},
+      {metodo:'8', show:'Credito'}
     ]
 
     validaciones= [

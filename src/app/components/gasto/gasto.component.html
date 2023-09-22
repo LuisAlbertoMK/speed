@@ -121,7 +121,7 @@
                   <label [ngClass]="{'text-danger': validaCampo('concepto'),'text-success': !validaCampo('concepto')}"
                     for="concepto" class="col-sm-4 col-md-4 col-lg-3 col-form-label">Concepto </label>
                   <div class="col-sm-8 col-md-8 col-lg-9">
-                    <textarea style="width: 100%" formControlName="concepto" id="concepto"></textarea>
+                    <textarea [style]="'width: 100%'" formControlName="concepto" id="concepto"></textarea>
                   </div>
                 </div>
               </div>
@@ -130,7 +130,7 @@
                   <label [ngClass]="{'text-danger': validaCampo('referencia'),'text-success': !validaCampo('referencia')}"
                     for="referencia" class="col-sm-4 col-md-4 col-lg-3 col-form-label">Proveedor / Referencia </label>
                   <div class="col-sm-8 col-md-8 col-lg-9">
-                    <textarea style="width: 100%" formControlName="referencia" id="referencia"></textarea>
+                    <textarea [style]="'width: 100%'" formControlName="referencia" id="referencia"></textarea>
                   </div>
                 </div>
               </div>
@@ -139,11 +139,11 @@
           <ng-container *ngIf="SUCURSAL === 'Todas'">
             <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-center" >
               <div class="input-group mb-3 ">
-                <input (click)="pickerBarrido.open()"  [min]="minDate" [max]="maxDate" [matDatepickerFilter]="myFilter" 
+                <input aria-label="input calendario" (click)="pickerBarrido.open()"  [min]="minDate" [max]="maxDate" [matDatepickerFilter]="myFilter" 
                 class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)" id="pickerBarrido">
                 <mat-datepicker #pickerBarrido class="mat-datepicker-overlay" ></mat-datepicker>
                 <div class="input-group-append">
-                  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
+                  <button aria-label="abrir calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
                     <i class="fa fa-calendar-alt"></i>
                   </button>
                 </div>
