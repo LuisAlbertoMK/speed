@@ -161,6 +161,8 @@ import { TemplateNavegacionComponent } from './components/template-navegacion/te
 import { ModeloCompatiblesComponent } from './components/modelo-compatibles/modelo-compatibles.component';
 import { DetallesPaqueteComponent } from './components/detalles-paquete/detalles-paquete.component';
 import { TemplateReporteRealComponent } from './components/template-reporte-real/template-reporte-real.component';
+import { NuevoCreditoClienteComponent } from './components/nuevo-credito-cliente/nuevo-credito-cliente.component';
+
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   interactionPlugin,
@@ -253,7 +255,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TemplateNavegacionComponent,
     ModeloCompatiblesComponent,
     DetallesPaqueteComponent,
-    TemplateReporteRealComponent
+    TemplateReporteRealComponent,
+    NuevoCreditoClienteComponent,
   ],
   imports: [
     BrowserModule,

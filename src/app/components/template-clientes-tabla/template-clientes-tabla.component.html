@@ -32,6 +32,7 @@
 
 
 
+
 <div class="mat-elevation-z8 table-responsive">
 <table #clientes="matSort" mat-table [dataSource]="dataSourceClientes" matSort multiTemplateDataRows>
 
@@ -72,7 +73,8 @@
           <button mat-menu-item (click)="irPagina('cotizacionNueva',row)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
           <button mat-menu-item (click)="irPagina('historial-cliente',row)">  Historial cliente <i class="fa fa-book text-danger ml-1"></i></button>
-          <button mat-menu-item *ngIf="row.tipo === 'flotilla'">  Crear credito <i class="fa fa-dollar text-danger ml-1"></i></button>
+
+          <button mat-menu-item *ngIf="row.tipo === 'flotilla'" data-bs-toggle="modal" data-bs-target="#modal_credito"  (click)="data_cliente_credito = row" >  Crear credito <i class="fas fa-dollar-sign text-danger ml-1" ></i></button>
           <button mat-menu-item *ngIf="!row.usuario" (click)="registra_usuario_new(row)"> Crear usuario </button>
         </mat-menu>
       </td>
@@ -133,6 +135,7 @@
   aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
+      
       <div class="modal-body m-2">
         <ng-container *ngIf="data_cliente['id']; else elseTemplateDataCliente">
           <app-vehiculo [data_cliente]="data_cliente" (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
@@ -140,6 +143,23 @@
         <ng-template #elseTemplateDataCliente>
           <app-vehiculo (dataVehiculo)="vehiculoInfo( $event )" ></app-vehiculo>
         </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_credito" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body m-2">
+        
+        <app-nuevo-credito-cliente [data_cliente_credito]="data_cliente_credito"></app-nuevo-credito-cliente>
       </div>
     </div>
   </div>

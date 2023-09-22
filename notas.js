@@ -3,7 +3,7 @@
 
 
 git add .
-git commit -m "establecer credito limite para clientes flotilla (proceso)"
+git commit -m "registrar credito de cliente (proceso)"
 git push -u origin
 
 

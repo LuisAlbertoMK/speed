@@ -208,6 +208,8 @@ export class ClienteComponent implements OnInit, OnChanges {
         if (!this.data_cliente) this.actualizaNoCliente()
     })
     this.form_cliente.get('nombre').valueChanges.subscribe((nombre: string) => {
+      const new_nombre = this.dejarUnEspacio(nombre)
+      // this.form_cliente.get('nombre').setValue(new_nombre)
         if (!this.data_cliente) this.actualizaNoCliente()
     })
     this.form_cliente.get('apellidos').valueChanges.subscribe((apellidos: string) => {
@@ -275,8 +277,8 @@ export class ClienteComponent implements OnInit, OnChanges {
   }
   async actualizaNoCliente() {
     
-    const nombre = this.form_cliente.controls['nombre'].value?.trim();
-    const apellidos = this.form_cliente.controls['apellidos'].value?.trim();
+    const nombre = eliminarEspacios(this.form_cliente.controls['nombre'].value?.trim());
+    const apellidos = eliminarEspacios(this.form_cliente.controls['apellidos'].value?.trim())
     const uid = this.form_cliente.controls['uid'].value?.trim();
     let sucursal = this.form_cliente.controls['sucursal'].value?.trim();
   
@@ -292,6 +294,7 @@ export class ClienteComponent implements OnInit, OnChanges {
         const anio = date.getFullYear().toString().slice(-2);
         const secuencia = this.contadroClientes.toString().padStart(4, '0');
         const nombreCotizacion = `${nombre?.slice(0, 2)}${apellidos?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`;
+        
         this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion.toUpperCase());
       } catch (error) {
         this._publicos.mensajeCorrecto(`error: ${error}`, 0);
@@ -301,8 +304,14 @@ export class ClienteComponent implements OnInit, OnChanges {
     } else {
       this.form_cliente.controls['no_cliente'].setValue('');
     }
+    function eliminarEspacios(cadena) {
+      return cadena.replace(/\s+/g, '');
+    }
   }
-  
+  dejarUnEspacio(cadena:string) {
+    return cadena.replace(/\s+/g, ' ');
+  }
+
   async guardarCliente(){
 
     this.salvando = true
@@ -313,14 +322,12 @@ export class ClienteComponent implements OnInit, OnChanges {
     const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]
     const campos_opcionales              = [ ...this._clientes.campos_opcionales ]
     const campos_permitidos_new_register = [ ...campos_cliente,...campos_opcionales ]
-
-
-
     const saveInfo = {};
 
     campos_cliente.forEach(campo=>{
-      saveInfo[campo] = info_get[campo]?.trim()
+      saveInfo[campo] = this.dejarUnEspacio( info_get[campo]?.trim())
     });
+ 
     campos_opcionales.forEach(campo=>{
       saveInfo[campo] = (info_get[campo]) ? String(info_get[campo]).trim(): null;
     });
@@ -364,8 +371,6 @@ export class ClienteComponent implements OnInit, OnChanges {
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_new_register);
         nueva_clave_generada = this._publicos.generaClave()
 
-        
-
         campos_permitidos_new_register.forEach(campo=>{
           if (informacion_recuperada [campo]) {
             updates[`clientes/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
@@ -378,7 +383,7 @@ export class ClienteComponent implements OnInit, OnChanges {
         }
        
       }
-      
+
       const existen_campos_update = Object.keys(updates)
       if (existen_campos_update.length) {
         try {

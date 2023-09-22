@@ -151,12 +151,15 @@ export class ClientesComponent implements AfterViewInit, OnInit {
           'localId'
         ]
   
-        this.clientes_arr  = (!this.clientes_arr.length) 
+        const todos_clientes = (!this.clientes_arr.length) 
         ?  finales_clientes 
         :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
-
-        this.filtra_informacion()
         
+        this.clientes_arr =  (this.SUCURSAL === 'Todas') ? todos_clientes : filtro_sucursal(todos_clientes, this.SUCURSAL)
+        this.filtra_informacion()
+        function filtro_sucursal(arreglo:any[],sucursal:string){
+          return arreglo.filter(c=>c.sucursal === sucursal)
+        }
   
       } 
     })

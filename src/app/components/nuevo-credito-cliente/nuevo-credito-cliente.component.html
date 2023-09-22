@@ -1,0 +1,41 @@
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center alert alert-info">
+        <h1>Asignar crédito a cliente (flotilla) </h1>
+        <h3>registro de crédito mensual</h3>
+    </div>
+</div>
+<form (ngSubmit)="registra_credito()" [formGroup]="form_credito" class="m-2">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <label [ngClass]="{'text-danger': validaCampo('id_cliente'),'text-success': !validaCampo('id_cliente')}" for="id_cliente" class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Cliente:  {{data_cliente_credito['fullname'] | uppercase}} </label>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+            <div class="form-group">
+                <label [ngClass]="{'text-danger': validaCampo('mes'),'text-success': !validaCampo('mes')}" for="mes"
+                class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Mes</label>
+                <select id="mes"  class="form-select form-select-sm" formControlName="mes" >
+                    <option value="" class="text-capitalize">Selecciona mes</option>
+                    <option [value]="indice" class="text-capitalize" *ngFor="let mes of meses; let indice = index">{{mes | capitalizarUno}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
+            <div class="form-group">
+                <label [ngClass]="{'text-danger': validaCampo('credito'),'text-success': !validaCampo('credito')}" for="credito"
+                class="col-sm-4 col-md-6 col-lg-6 col-12 col-form-label">Crédito</label>
+                <input aria-describedby="dsfgh" id="credito" type="number" onkeypress="validarDecimal(event)" min="1" max="10000000" class="form-control form-control-sm" formControlName="credito">
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <button class="btn btn-sm btn-success" type="submit">
+                <i class="fa fa-save"></i> Guardar crédito
+            </button>
+        </div>
+    </div>
+</form>
+<app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+
+<!-- <pre>{{data_cliente_credito | json}}</pre>
+<pre>{{form_credito.value | json}}</pre> -->

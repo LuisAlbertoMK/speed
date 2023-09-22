@@ -91,6 +91,19 @@ export class ClientesService {
       })
     });
   }
+  consulta_credito_cliente(clave): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const consulta_credito_cliente = ref(db, `creditos_clientes/${clave}`)
+      onValue(consulta_credito_cliente, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve(null);
+        }
+      })
+    });
+  }
   consulta_Cliente(cliente): Promise<any> {
     return new Promise((resolve, reject) => {
       // const {ruta} = data

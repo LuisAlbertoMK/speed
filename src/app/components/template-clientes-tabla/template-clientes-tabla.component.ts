@@ -68,6 +68,7 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
   tipos_cliente     =  [ ...this._clientes.tipos_cliente ]
 
   contador_resultados:number = 0
+  data_cliente_credito:any = {}
 
   ngOnInit(): void {
     this.rol()
