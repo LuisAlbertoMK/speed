@@ -20,6 +20,7 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import { getAuth,onAuthStateChanged  } from "firebase/auth";
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { ServiciosService } from 'src/app/services/servicios.service';
+import { ReporteGastosService } from 'src/app/services/reporte-gastos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 const auth = getAuth();
@@ -39,7 +40,7 @@ const auth = getAuth();
 export class MiperfilComponent implements OnInit {
 
   constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _clientes: ClientesService,
-    private _servicios: ServiciosService,
+    private _servicios: ServiciosService, private _reporte_gastos: ReporteGastosService,
     private _sucursales: SucursalesService, private _vehiculos: VehiculosService, private router: Router, private _cotizaciones: CotizacionesService,) { }
   rol_cliente:string = 'cliente'
   info_cliente = {}
@@ -76,6 +77,8 @@ export class MiperfilComponent implements OnInit {
   }
   rol(){
     const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
+    // console.log(uid);
+    
     this.SUCURSAL = sucursal
     if (rol === this.rol_cliente && uid) {
       this.vigila(uid)
@@ -86,56 +89,63 @@ export class MiperfilComponent implements OnInit {
   }
   async vigila(id){
    
-    const sucursal = this.SUCURSAL
+    // const sucursal = this.SUCURSAL
     const cliente = id
 
-    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-
-    const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
-
-    const ruta_cotizaciones   =  `cotizacionesRealizadas/${sucursal}/${cliente}`
-    const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
-
-    const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
-    const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
+    const data_cliente  = await this._clientes.consulta_Cliente(id)
+    // console.log(data_cliente);
     
-
-
-    const filtro_cotizaciones = todas_cotizaciones.map(cot=>{
-      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
-      cot.data_sucursal = this.sucursales_arr.find(s=>s.id === sucursal)
-      
-      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
-      cot.data_vehiculo = data_vehiculo
-      const {placas}= data_vehiculo
-      cot.placas = placas || '------'
-      // const {reporte, elementos} = this.calcularTotales(cot);
-      // cot.reporte = reporte
-      // cot.elementos = elementos
-      return cot
-    })
-    // console.log(filtro_cotizaciones);
-    const filtro_recepciones = todas_recepciones.map(cot=>{
-      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
-      cot.data_sucursal = this.sucursales_arr.find(s=>s.id === sucursal)
-      
-      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
-      cot.data_vehiculo = data_vehiculo
-      const {placas}= data_vehiculo
-      cot.placas = placas || '------'
-      // const {reporte, elementos} = this.calcularTotales(cot);
-      // cot.reporte = reporte
-      // cot.elementos = elementos
-      return cot
+    const starCountRef_vehiculos = ref(db, `vehiculos`)
+    onValue(starCountRef_vehiculos, async (snapshot) => {
+      if (snapshot.exists()) {
+        const vehiculos_arr =  this._publicos.crearArreglo2( await this._vehiculos.consulta_vehiculos_())
+        const vehiculos_filtrados = this._publicos.filtra_informacion(vehiculos_arr,'cliente',cliente)
+        this.vehiculos_arr = vehiculos_filtrados
+      } else {
+        // console.log("No data available");
+        this.vehiculos_arr = []
+      }
     })
 
-    this.cotizaciones_arr = filtro_cotizaciones
-    this.recepciones_arr = filtro_recepciones
+    const starCountRef_cotizacionesRealizadas = ref(db, `cotizacionesRealizadas`)
+    onValue(starCountRef_cotizacionesRealizadas, async (snapshot) => {
+      if (snapshot.exists()) {
+        const _cotizaciones = this._publicos.crearArreglo2( await this._cotizaciones.consulta__cotizaciones())
+        const cotizaciones_filtrados = this._publicos.filtra_informacion(_cotizaciones,'cliente',cliente)
+        this.cotizaciones_arr = cotizaciones_filtrados
+      } else {
+        // console.log("No data available");
+        this.cotizaciones_arr = []
+      }
+    })
 
+    const starCountRef_recepciones = ref(db, `recepciones`)
+    onValue(starCountRef_recepciones, async (snapshot) => {
+      if (snapshot.exists()) {
+
+        const _orden = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_orden())
+        // console.log(_orden);
+        const _pagos = this._publicos.crearArreglo2( await this._servicios.consulta_pagos())
+      
+        const recepciones = this._publicos.crearArreglo2( await this._servicios.consulta_recepciones_())
+        const recepciones_filtrados = this._publicos.filtra_informacion(recepciones,'cliente',cliente)
+        .map(recepcion=>{
+          const {id} = recepcion
+          recepcion.historial_gastos_orden = this._publicos.filtra_informacion(_orden,'id_os',id)
+          recepcion.historial_pagos_orden = this._publicos.filtra_informacion(_pagos,'id_os',id)
+          return recepcion
+        })
+      
+        this.recepciones_arr = recepciones_filtrados
+      } else {
+        // console.log("No data available");
+        this.recepciones_arr = []
+      }
+    })
 
     this.data_cliente = data_cliente
-    // this.vehiculos_arr = vehiculos_arr
-    this.vigila_vehiculos_cliente()
+    
+    // this.vigila_vehiculos_cliente()
     
   }
   async vigila_vehiculos_cliente(){

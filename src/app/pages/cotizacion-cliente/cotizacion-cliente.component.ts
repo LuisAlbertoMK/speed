@@ -167,9 +167,12 @@ export class CotizacionClienteComponent implements OnInit {
   }
   async acciones(){
     const {cliente, sucursal, vehiculo} =this.enrutamiento
-    let data_cliente = {}
-    if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
+    // let data_cliente = {}
+    // if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
     
+    
+    const data_cliente  = await this._clientes.consulta_Cliente(cliente)
+
     this.infoCotizacion.data_cliente = data_cliente
     this.infoCotizacion.cliente = cliente
     this.infoCotizacion.sucursal = sucursal
@@ -178,16 +181,16 @@ export class CotizacionClienteComponent implements OnInit {
     this.infoCotizacion.vehiculo = vehiculo
     this.extra = vehiculo
     this.vigila_vehiculos_cliente()
+    this.realizaOperaciones()
   }
   async vigila_vehiculos_cliente(){
-    const  {cliente, sucursal} = this.infoCotizacion
-    
-    const starCountRef = ref(db, `vehiculos/${sucursal}/${cliente}`)
-    onValue(starCountRef, async  (snapshot) => {
+
+    const starCountRef = ref(db, `vehiculos`)
+    onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
-        const  {cliente, sucursal} = this.infoCotizacion
-        const vehiculos = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-        this.infoCotizacion.vehiculos = vehiculos
+        const {cliente} = this.infoCotizacion 
+        const vehiculos = this._publicos.crearArreglo2(snapshot.val())
+        this.infoCotizacion.vehiculos = vehiculos.filter(vehiculo=>vehiculo.cliente === cliente)
         const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
         this.infoCotizacion.data_vehiculo  = data_vehiculo
         this.infoCotizacion.vehiculo  = this.extra
@@ -196,12 +199,14 @@ export class CotizacionClienteComponent implements OnInit {
             this.modelo = data_vehiculo['modelo']
           }
         }
-      } else {        
+      } else {
+        // console.log("No data available");
         this.infoCotizacion.vehiculos = []
         this.extra = null
         this.modelo = null
       }
-    })    
+    })
+  
   }
 
 
@@ -289,22 +294,13 @@ export class CotizacionClienteComponent implements OnInit {
   }
 
   realizaOperaciones(){
-
-    const reporte_totales = {
-      mo:0,
-      refacciones:0,
-    }
-
-    const  {reporte, _servicios} = this.calcularTotales(this.infoCotizacion)
-      Object.keys(reporte_totales).forEach(campo=>{
-        reporte_totales[campo] += reporte[campo]
-      })
+    const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
+    const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
 
     this.infoCotizacion.reporte = reporte
-    this.infoCotizacion.elementos = _servicios
-    this.dataSource.data = _servicios
+    this.infoCotizacion.elementos = elementos
+    this.dataSource.data = elementos
     this.newPagination()
-
   }
   async continuarCotizacion(){
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
@@ -401,7 +397,7 @@ export class CotizacionClienteComponent implements OnInit {
                   const infoSave = this._publicos.nuevaRecuperacionData(this.infoCotizacion,campos)
                   // console.log(infoSave);
                   const {sucursal, cliente} = this.infoCotizacion
-                  const otros = this.purifica_informacion(infoSave)
+                  const otros = this._publicos.purifica_informacion(infoSave)
                   const filtrados = otros.filter((element) => {
                     if (element.tipo === "paquete") {
                       return element.elementos.length > 0;
@@ -410,6 +406,18 @@ export class CotizacionClienteComponent implements OnInit {
                   });
 
                   infoSave['elementos'] = filtrados
+
+                  infoSave.fullname = fullname(this.infoCotizacion.data_cliente)
+                  infoSave.placas = placas(this.infoCotizacion.data_vehiculo)
+                    
+                  function fullname(data_cliente){
+                      const {nombre, apellidos} = data_cliente
+                      return `${nombre} ${apellidos}`.toUpperCase()
+                  }
+                  function placas(data_vehiculo){
+                      const {placas} = data_vehiculo
+                      return `${placas}`.toUpperCase()
+                  }
                   
                   updates[`cotizacionesRealizadas/${this._publicos.generaClave()}`] = infoSave;
                 
@@ -453,96 +461,7 @@ export class CotizacionClienteComponent implements OnInit {
     }, 500)
   }
 
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0, costos:0}
-    
-    // const servicios_ = (elementos) ? elementos 
 
-
-    const _servicios = [...elementos] 
-    
-    const margen = 1 + (new_margen / 100)
-    _servicios.map((ele, index) =>{
-      const {cantidad, costo, tipo, precio} = ele
-      ele.index = index
-      if (tipo === 'paquete') {
-        const report = this.total_paquete(ele)
-        const {mo, refacciones} = report
-        if (ele.aprobado) {
-          reporte.mo += mo * cantidad
-          reporte.refacciones += refacciones * cantidad
-          reporte.refacciones_v += (refacciones * margen) * cantidad
-        }
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad
-      }else if (tipo === 'mo' || tipo === 'refaccion') {
-
-        // const operacion = this.mano_refaccion(ele)
-        const operacion = (costo>0) ? cantidad * costo : cantidad * precio 
-
-        ele.subtotal = operacion
-        
-        if (ele.aprobado){
-          if (costo > 0 ){
-            reporte.costos += (tipo === 'refaccion') ? operacion * margen : operacion
-          }else{
-            const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-            reporte[donde] += operacion
-          }
-          ele.total = (tipo === 'refaccion') ? operacion * margen : operacion
-        }
-      }
-      return ele
-    })
-    let descuento = parseFloat(descuento_) || 0
-
-    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
-
-    const {mo, refacciones} = reporte
-
-    reporte.refacciones_v = refacciones * margen
-
-    let nuevo_total = mo + reporte.refacciones_v + reporte.costos
-    
-    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
-
-    let iva =  _iva ? nuevo_total * .16 : 0;
-
-    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
-    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
-    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
-
-    reporte.descuento = descuentoshow
-    reporte.iva = iva
-    reporte.subtotal = nuevo_total
-    reporte.total = newTotal
-    reporte.meses = total_meses
-
-    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-
-    return {reporte, _servicios}
-    
-  }
-  mano_refaccion({costo, precio, cantidad}){
-    const mul = (costo > 0 ) ? costo : precio
-    return cantidad * mul
-  }
-  total_paquete({elementos}){
-    const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos] 
-
-    if (!nuevos_elementos.length) return reporte
-
-    nuevos_elementos.forEach(ele=>{
-      const {tipo} = ele
-      const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
-      const operacion = this.mano_refaccion(ele)
-      reporte[donde] += operacion
-    })
-    return reporte
-  }
 
   purifica_informacion(data){
     const nueva_ = JSON.parse(JSON.stringify(data));

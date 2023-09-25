@@ -1371,6 +1371,154 @@ export class ServiciosPublicosService {
       return true;
     }
 
+    filtra_informacion(arreglo:any[], campo:string, filtro:string){
+      let nueva = [...arreglo]
+      return nueva.filter(x=>x[campo] === filtro)
+    }
+
+    genera_reporte(data){
+
+      
+      const {margen, iva, elementos, descuento, formaPago } = data
+
+      const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
+
+      const paquetes = this.filtro_elementos(elementos, true)
+      const elementos_ = this.filtro_elementos(elementos, false)
+      
+      const otro = this.nuevo_reporte(elementos_)
+
+      const aplicado = paquetes.map(paquete=>{
+        const {elementos} = paquete
+        const filtro_aprobado_internos = elementos.filter(e=>e.aprobado)
+        return this.nuevo_reporte(filtro_aprobado_internos) 
+      })
+
+      const sumatoria_paquetes = this.sumatorio_reportes(aplicado)
+
+      const reporte_sum = this.sumatorio_reportes([sumatoria_paquetes, otro])
+
+      const reporte:any = this.sumatoria_reporte({reporte_sum, margen, iva})
+
+      // const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
+        // console.log(enCaso_meses);
+        if (enCaso_meses.id === '1') {
+          reporte.descuento = Number(descuento)
+          if(!reporte.descuento) reporte.descuento = 0
+          reporte.total -= reporte.descuento
+        }else{
+          reporte.descuento = 0
+          const operacion = reporte.total * (1 + (enCaso_meses['interes'] / 100))
+          reporte.meses = operacion;
+        }
+
+        reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+
+        // if (reporte.total >0 ) {
+        //     reporte.ub = (reporte.subtotal - cstoCOmpra) *100/reporte.subtotal
+        // } 
+      
+      return reporte
+
+    }
+    filtro_elementos(arreglo:any[], paquetes){
+      if (paquetes) {
+        return arreglo.filter(g=>g.tipo === 'paquete')
+      }else{
+        return arreglo.filter(g=>g.tipo !== 'paquete')
+      }
+    }
+
+    sumatoria_reporte(data){
+      const {reporte_sum, margen, iva} = data
+      const {mo,refaccion} = reporte_sum
+      const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0}
+      reporte.mo = mo
+      reporte.refaccion = refaccion
+      reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
+      reporte.subtotal = reporte.mo + reporte.refaccionVenta
+      reporte.iva = (iva) ? reporte.subtotal * .16 : reporte.subtotal
+      reporte.total = reporte.subtotal + reporte.iva
+
+      reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+      return reporte
+    }
+    sumatorio_reportes(arreglo_sumatorias){
+      const reporte = {mo:0,refaccion:0}
+      arreglo_sumatorias.forEach(a=>{
+          const {mo,refaccion, } = a
+          reporte.mo += mo
+          reporte.refaccion += refaccion
+      })
+      return reporte
+    }
+    nuevo_reporte(elementos){
+      const reporte = {mo:0,refaccion:0}
+      const nuevos = [...elementos].forEach(elemento =>{
+        const { costo, precio, status, tipo} = elemento
+          if (costo > 0 ) {
+            reporte[tipo] += costo
+          }else{
+            reporte[tipo] += precio
+          }
+      })
+      return reporte
+    }
+    purifica_informacion(data){
+      const nueva_ = JSON.parse(JSON.stringify(data));
+      const {elementos} = nueva_
+      const _elementos_purifica = (elementos) ? elementos : []
+      const registra = _elementos_purifica.map(element => {
+        const {tipo } = element
+        const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+        const campos_refaccion = [ ...campos_mo, 'marca']
+        const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo' ]
+        let nueva 
+        switch (tipo) {
+          case 'paquete':
+            nueva = this.nuevaRecuperacionData(element,campos_paquete)
+            const info_su = this.purifica_informacion_interna(nueva.elementos)
+            // console.log(info_su);
+            nueva.elementos = info_su
+            
+            break;
+          case 'mo':
+            nueva = this.nuevaRecuperacionData(element,campos_mo)
+            break;
+          case 'refaccion':
+            nueva = this.nuevaRecuperacionData(element,campos_refaccion)
+            break;
+        }
+  
+        //primera recuperacion 
+        // console.log(nueva);
+        return nueva
+      });
+      // console.log(registra);
+      return registra
+    }
+    purifica_informacion_interna(elementos:any[]){
+      const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
+      const campos_refaccion = [ ...campos_mo, 'marca']
+  
+      const nuevos_elementos = elementos.map(e=>{
+        const {tipo} = e
+        e.nombre = String(e.nombre).toLowerCase()
+        switch (tipo) {
+          case 'mo':
+          case 'MO':
+            e.id = e.IDreferencia
+            e.tipo = String(tipo).toLowerCase()
+            
+            return this.nuevaRecuperacionData(e,campos_mo)
+          case 'refaccion':
+            return this.nuevaRecuperacionData(e,campos_refaccion)
+        }
+      })
+  
+      return nuevos_elementos 
+  
+    }
     
    
     

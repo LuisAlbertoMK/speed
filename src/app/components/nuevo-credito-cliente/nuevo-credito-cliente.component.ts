@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { getDatabase, ref, update } from 'firebase/database';
+import { equalTo, getDatabase, limitToFirst, limitToLast, onValue, orderByChild, orderByKey, orderByValue, query, ref, startAt, update } from 'firebase/database';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
@@ -27,11 +27,9 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.crear_formulario_credito()
-    // console.log('aqui');
-    
+    this.limitantes_Claves()
   }
   ngOnChanges(changes: SimpleChanges) {
-    // console.log('aqui changes');
     if (changes['data_cliente_credito']) {
       const nuevoValor = changes['data_cliente_credito'].currentValue;
       const valorAnterior = changes['data_cliente_credito'].previousValue;
@@ -41,8 +39,6 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
     }
   }
   crear_formulario_credito(){
-    // console.log('creacion formulario');
-    
     this.form_credito = this.fb.group({
       id:['',[]],
       id_cliente:['',[Validators.required]],
@@ -52,11 +48,7 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
     this.vigila()
   }
   vigila(){
-    // console.log('asiganacion valores formulario');
-    
     if (this.id_cliente) {
-      // console.log('existencia id_cliente', this.id_cliente);
-      
       this.form_credito.get('id_cliente').setValue(this.id_cliente)
     }
   }
@@ -65,7 +57,6 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
   }
   async registra_credito(){
     const info_formulario =  this._publicos.getRawValue(this.form_credito)
-    // console.log(info_formulario);
 
     const campos = ['id_cliente','mes','credito']
 
@@ -89,29 +80,20 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
     }
 
     const existe_credito = await this._clientes.consulta_credito_cliente(clave_credito)
-    console.log(existe_credito);
-    
+    // console.log(existe_credito);
     if (existe_credito) {
-      console.log('existe el registro de credito preguntar si quiere reempkazar');
-      const {respuesta}= await this._publicos.mensaje_pregunta_2({mensaje:`existe el registro`, allowOutsideClick: true, html:'Reemplzar'})
+      // console.log('existe el registro de credito preguntar si quiere reempkazar');
+      const {respuesta}= await this._publicos.mensaje_pregunta_2({mensaje:`existe el registro de crédito`, allowOutsideClick: true, html:'Reemplzar'})
       console.log(respuesta);
-      
+      if (respuesta) {
+        updates[`${path_save}/${clave_credito}/credito`] = save_info.credito
+        this.actualiza(updates);
+      }
     }else{
       updates[`${path_save}/${clave_credito}`] = save_info
-      // console.log(updates);
-      update(ref(db), updates).then(()=>{
-        this._publicos.mensajeSwal('Se registro el credito',1)
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+      this.actualiza(updates);
     }
 
-    
-
-    
-    
-    
     function genera_clave(data, mes){
       const fecha = new Date()
       const anio = fecha.getFullYear()
@@ -120,6 +102,52 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
       return `${no_cliente}-${nuevomes}-${anio}`
     }
     
+  }
+  actualiza(updates){
+    // console.log(updates);
+    update(ref(db), updates).then(()=>{
+      this._publicos.mensajeSwal('Se registro el credito',1)
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  }
+  limitantes_Claves(){
+    // const db = getDatabase();
+    // const starCountRef = ref(db, `clientes`)
+    // const recentPostsRef = query(starCountRef, limitToFirst(10), startAt('-'));
+  
+    // onValue(recentPostsRef, (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     console.log(snapshot.val());
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // })
+    // Obtén una referencia a la ubicación de la base de datos que deseas consultar
+    const referencia = ref(db, 'creditos_clientes');
+    
+    // Valor a partir del cual deseas comenzar la consulta
+    const valorInicial = 0; // Reemplaza esto con el valor que desees
+    
+    // Crea una consulta que comienza desde el valor inicial
+    const consulta = query(referencia, startAt(valorInicial));
+    console.log(consulta);
+    
+    
+    // Escucha cambios en los datos que coinciden con la consulta en tiempo real
+    onValue(consulta, (snapshot) => {
+      if (snapshot.exists()) {
+        // La consulta devolvió resultados
+        const datos = snapshot.val();
+        console.log('Datos que coinciden con la consulta:', datos);
+      } else {
+        // No se encontraron datos que coincidan con la consulta
+        console.log('No se encontraron datos que coincidan con la consulta.');
+      }
+    }, {
+      // Opciones adicionales, si es necesario
+    });
   }
   
 

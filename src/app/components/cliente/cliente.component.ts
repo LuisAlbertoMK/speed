@@ -281,21 +281,18 @@ export class ClienteComponent implements OnInit, OnChanges {
     const apellidos = eliminarEspacios(this.form_cliente.controls['apellidos'].value?.trim())
     const uid = this.form_cliente.controls['uid'].value?.trim();
     let sucursal = this.form_cliente.controls['sucursal'].value?.trim();
-  
    
     if (!uid && nombre?.length >= 2 && apellidos?.length >= 2 && sucursal) {
       try {
-        // const data = await this._sucursales.inforSucursalUnica(sucursal);
         await this.constverifica(sucursal)
         const nombre_sucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
-        // const nombreSucursal = data['sucursal'];
         const date = new Date();
         const mes = (date.getMonth() + 1).toString().padStart(2, '0');
         const anio = date.getFullYear().toString().slice(-2);
         const secuencia = this.contadroClientes.toString().padStart(4, '0');
-        const nombreCotizacion = `${nombre?.slice(0, 2)}${apellidos?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`;
+        const nombreCotizacion = `${nombre?.slice(0, 2)}${apellidos?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`.toUpperCase();
         
-        this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion.toUpperCase());
+        this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion);
       } catch (error) {
         this._publicos.mensajeCorrecto(`error: ${error}`, 0);
       }

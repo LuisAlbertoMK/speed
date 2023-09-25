@@ -161,4 +161,14 @@ getUserMedia({
   [ngClass]="{'tipo-mo': row.tipo === mo,'tipo-refaccion': row.tipo === refaccion,'tipo-paquete': row.tipo === paquete}"
 
 
+  realizaOperaciones(){
+    const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
+    const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+
+    this.infoCotizacion.reporte = reporte
+    this.infoCotizacion.elementos = elementos
+    this.dataSource.data = elementos
+    this.newPagination()
+  }
+
         */

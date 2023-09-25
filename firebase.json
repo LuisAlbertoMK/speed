@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/speed-pro-v1",
+    "public": "dist/speed-desarrollo",
     "ignore": [
       "firebase.json",
       "**/.*",
