@@ -1,2 +1,62 @@
 07 de agosto de 2023
 olvide añadir boton de cerrar modal en nuevo cliente o editar informacion
+
+ahora ayudame con las creacion de  los arboles de real time para una base de datos las ramas son las siguientes
+clientes
+correos
+cotizacionesRealizadas
+creditos_clientes
+empresas
+historial_gastos_diarios
+historial_gastos_operacion
+historial_gastos_orden
+historial_pagos_orden
+horarios
+manos_obra
+marcas_refacciones
+metas_sucursales
+moRefacciones
+paquetes
+placas
+problemasPlataforma
+recepciones
+refacciones
+sucursales
+usuarios
+vehiculos
+
+Datos consultados por sucursal pero solo de gerenete y super usuario
+
+automaticos
+catalogos
+citas
+clientes
+cotizacion
+corte
+eliminarEmpresa
+facturacion
+recordatorios
+registraProblemas
+reporteGastos
+servicios
+sucursales
+usuarios
+
+consultas por cliente
+
+miPerfil
+estadisticasCliente
+cotizacionesCliente
+serviciosCliente
+sucursales
+registraProblemas
+comentarios
+
+en ordenes quiero que esten relacionados con los historial_gastos_orden, historial_pagos_orden los gastos diarios iran relacionado el historial_gastos_orden
+
+
+diferencia entre get(starCountRef).then((snapshot) => {})
+y   onValue(starCountRef, (snapshot) => {})
+
+
+340.8MB consumo hasta 26 de septiembre de 2023 a las 5:13

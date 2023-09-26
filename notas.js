@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "revisar donde se le agrega el index a los elementos de cotizacion (proceso)"
+git commit -m "revisar exceso de descargas en firebase 2 (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

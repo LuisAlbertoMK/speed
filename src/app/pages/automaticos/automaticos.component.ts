@@ -22,9 +22,10 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 
 import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
-import { log } from 'console';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/services/servicios.service';
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -91,6 +92,7 @@ export class AutomaticosComponent implements OnInit {
     this.marcas_vehiculos_id = n.map(c=>{
       return c.id
     })
+    this.iperaciones_ewn()
   }
     rol(){
         const { rol, sucursal, usuario } = this._security.usuarioRol()
@@ -111,7 +113,7 @@ export class AutomaticosComponent implements OnInit {
 
       console.log(new_alls);
     }
-      operaciones_mo_refacciones() {
+    operaciones_mo_refacciones() {
       const {refacciones, manos_obra} = BD
     
         const processItems = (items, tipo) => {
@@ -162,7 +164,7 @@ export class AutomaticosComponent implements OnInit {
         });
 
         console.log(objeto);
-      }
+    }
       
 
     operacionesBD(){
@@ -359,5 +361,21 @@ export class AutomaticosComponent implements OnInit {
 
     operaciones_gastos(){
       const {refacciones, manos_obra} = BD
+    }
+    iperaciones_ewn(){
+      const starCountRef = ref(db, `clientes`)
+      onValue(starCountRef, (snapshot) => {
+        get(starCountRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            console.log(data);
+            // Aquí puedes trabajar con los datos de la rama "clientes"
+          } else {
+            console.log('No existen datos en la rama "clientes".');
+          }
+        }).catch((error) => {
+          console.error('Error al obtener los datos de la rama "clientes":', error);
+        });
+      })
     }
 }
