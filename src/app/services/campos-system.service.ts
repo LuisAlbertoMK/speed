@@ -143,6 +143,7 @@ export class CamposSystemService {
     {campos:'administracion', reemplaza:'Administración'},
     {campos:'editar-os', reemplaza:'editar O.S'},
     {campos:'corte', reemplaza:'corte gastos'},
+    {campos:'miPerfil', reemplaza:'Mi perfil'},
   ]
 
   formasPago = [

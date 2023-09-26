@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 @Component({
   selector: 'app-template-tabla-cotizaciones',
@@ -26,7 +27,7 @@ import { CamposSystemService } from 'src/app/services/campos-system.service';
 })
 export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
 
-  constructor(private router: Router, private _campos: CamposSystemService) { }
+  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService) { }
   @Input() cotizaciones_arr:any[]
   @Input() muestra_desgloce:boolean = false
 
@@ -62,7 +63,13 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
     {valor: 'meses', show:'meses'},
   ]
   miniColumnas:number = 100
+  rol_:string
   ngOnInit(): void {
+    this.roles()
+  }
+  roles(){
+    const { rol, sucursal } = this._security.usuarioRol()
+    this.rol_ = rol
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['cotizaciones_arr']) {
@@ -76,15 +83,23 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
   irPagina(pagina, data){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
     let queryParams = {}
-    if (pagina === 'cotizacionNueva' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
-    }else if (pagina === 'cotizacionNueva' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
-    }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
-    }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
-    }
+    
+    if (this.rol_ === 'cliente') {
+      if (pagina === 'cotizacionNueva' && !tipo) {
+        pagina = 'cotizacion-new-cliente'
+        queryParams = { anterior:'miPerfil',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
+      }
+    }else if(this.rol_ !=='cliente'){
+      if (pagina === 'cotizacionNueva' && !tipo) {
+        queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
+      }else if (pagina === 'cotizacionNueva' && tipo) {
+        queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
+      }else if (pagina === 'ServiciosConfirmar' && !tipo) {
+        queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
+      }else if (pagina === 'ServiciosConfirmar' && tipo) {
+        queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
+      }
+    }    
     this.router.navigate([`/${pagina}`], { queryParams });
   }
   obtener_total_cotizaciones(){

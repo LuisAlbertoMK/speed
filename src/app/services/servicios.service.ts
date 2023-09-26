@@ -192,6 +192,21 @@ consulta_pagos(): Promise<any> {
     })
   });
 }
+consulta_recepcion_unica(recepcion): Promise<any> {
+  return new Promise((resolve, reject) => {
+    // const {ruta} = data
+    const recepciones = ref(db, `recepciones/${recepcion}`)
+    onValue(recepciones, (snapshot) => {
+      if (snapshot.exists()) {
+        resolve(snapshot.val())
+      } else {
+        resolve({});
+      }
+    }, {
+      onlyOnce: true
+    })
+  });
+}
 
 ///TODO
 

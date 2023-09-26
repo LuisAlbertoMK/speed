@@ -140,14 +140,10 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   }
   
   async nuevas_consultas(){
-    function agregraindex(data){
-      let nuevo_arreglo = [...data]
-      nuevo_arreglo.map((e, index)=>{
-        e.index = index + 1
-        return e
-      })
-      return nuevo_arreglo
-    }
+    // function agregraindex(data){
+    //   let nuevo_arreglo = [...data]
+    //   return nuevo_arreglo
+    // }
 
     const starCountRef = ref(db, `moRefacciones`)
     onValue(starCountRef, (snapshot) => {
@@ -159,10 +155,10 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
           const filtrado_mo =  nuevos.filter(e=>e.tipo === 'mo')
           const filtrado_refacciones =  nuevos.filter(e=>e.tipo === 'refaccion')
 
-        this.dataSourceMO.data = agregraindex(filtrado_mo)
+        this.dataSourceMO.data = filtrado_mo
         this.newPagination('mo')
 
-        this.dataSourceRefacciones.data = agregraindex(filtrado_refacciones)
+        this.dataSourceRefacciones.data = filtrado_refacciones
         this.newPagination('refacciones')
 
       }else{
@@ -206,7 +202,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
         // console.log(snapshot.val());
         // this.listaPaquetes_arr =  this._publicos.crearArreglo2(snapshot.val())
         const paquetes =  this._publicos.crearArreglo2(snapshot.val())
-        const nuevos__ = paquetes.map((g, index)=>{
+        const nuevos__ = paquetes.map((g)=>{
           const {reporte, nuevos_elementos} = this.total_paquete(g)
 
           const reporte_  =  {  ub:0,mo: reporte.mo, refacciones: reporte.refacciones, subtotal:0,  total: 0 }
@@ -218,21 +214,14 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
           g.reporte = reporte_
           g.precio = reporte_.total
-
           g.elementos = nuevos_elementos
-          g.index = index
           g.nombre = String(g.nombre).toLowerCase()
           return g
         })
         // console.log(nuevos__);
-        this.paquetes_arr = agregraindex(nuevos__)
+        this.paquetes_arr = nuevos__
 
-        // const ordadf = ordenamiento_(
-        //   {campo: 'nombre', asc_desc: true, arreglo: this.paquetes_arr}
-        //   )
-
-          // this.dataSourcePaquetes.sortData(this.paquetes_arr,this.sort) //= new MatTableDataSource(ordadf)
-          this.dataSourcePaquetes.data = this.paquetes_arr
+        this.dataSourcePaquetes.data = this.paquetes_arr
         this.newPagination('paquetes')
         
       } else {
@@ -302,15 +291,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     const copiaPaquetes: any[] = [...this.paquetes_arr];
   
     let resultados = copiaPaquetes;
-    // let nuevos = []
-    // if (marca.length) {
-    //   marca.forEach(c=>{
-    //     console.log(c);
-    //     nuevos.push(resultados.filter((paquete) => paquete.marca === c))
-    //   })
-    //   const otros = nuevos.flat()
-    //   resultados = otros
-    // }
+
     if (marca) {
       resultados = resultados.filter((paquete) => paquete.marca === marca);
     }
@@ -331,17 +312,11 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
      this.operaciones()
     }
   }
-  eliminaElemento(index){
-    // let antiguos = []
-    //   antiguos = [...this.elementosDePaqueteNuevo]
-    //   antiguos[index] = null
-    //   const filtrados = antiguos.filter(e=>e !==null)
-    //   this.elementosDePaqueteNuevo = filtrados
-    //   this.infoAdicional.elementos = this.elementosDePaqueteNuevo
-    // Crear una copia de los elementos antiguos
+  eliminaElemento(indece){
+
     const antiguos = [...this.elementosDePaqueteNuevo];
 
-    antiguos[index] = null;
+    antiguos[indece] = null;
 
     const filtrados = antiguos.filter((e) => e !== null);
 
@@ -455,23 +430,20 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     this.vehiculos_compatibles.push(data_form)
     this.formulario_etiqueta.reset()
   }
-  elimina_etiqueta(index:number){
+  elimina_etiqueta(indice:number){
     if (this.vehiculos_compatibles.length ) {
       const nuevos = [...this.vehiculos_compatibles]
-      nuevos.splice(index,1)
+      nuevos.splice(indice,1)
       this.vehiculos_compatibles = nuevos
     }
   }
-  elimina_etiqueta_paquete(data, index){
+  elimina_etiqueta_paquete(data, indice){
 
     let data_new = JSON.parse(JSON.stringify(data));
-    console.log(data, index);
+    
     const nuevos = [...data_new.vehiculos_compatibles]
-      nuevos.splice(index,1)
+      nuevos.splice(indice,1)
       data_new.vehiculos_compatibles = nuevos
-
-      console.log(data_new);
-      
   }
   //TODO realiza edicion de elemento
   inicia(){
@@ -558,8 +530,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
     if (!nuevos_elementos.length) return {reporte, nuevos_elementos}
 
-    nuevos_elementos.map((ele, index)=>{
-      ele.index = index
+    nuevos_elementos.map((ele)=>{
       const {tipo} = ele
       const donde = (tipo === 'refaccion') ? 'refacciones' : 'mo'
       const operacion = this.mano_refaccion(ele)
@@ -624,17 +595,11 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
 
   }
   ordenaminetoas(campo){
-    console.log(campo);
-    
-
     this.ordenamiento_var = !this.ordenamiento_var
-    // this.expandedElement = null
+
     const nuevo = ordenamiento_( {campo, asc_desc: this.ordenamiento_var, arreglo: this.paquetes_arr} )
-    console.log(nuevo);
+
     this.dataSourcePaquetes.data = nuevo
-    // this.dataSourcePaquetes.sort = nuevo
-    // this.dataSourcePaquetes.data = nuevo
-    // this.dataSourcePaquetes = nuevo
     this.newPagination('paquetes')
   }
   

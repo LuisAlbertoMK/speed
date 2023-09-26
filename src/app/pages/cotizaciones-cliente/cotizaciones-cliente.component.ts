@@ -88,22 +88,24 @@ export class CotizacionesClienteComponent implements OnInit {
   tabla_maximos  = [
     {valor:'maximo', show:'Inversion mas alta', },
     {valor:'contadorMaximo', show:'contador altas', },
-    {valor:'no_maximo', show:'# cotizacion mas alta',},
-    {valor:'arreglo_maximo', show:'cotizaciones maximas'},
+    {valor:'similitudesMaximo', show:'cotizaciones maximas'},
   ]
-   valores_tabla_maximos = { maximo: 0,contadorMaximo: 0,no_maximo: '',arreglo_maximo: '' }
+   valores_tabla_maximos = { maximo: 0,contadorMaximo: 0,similitudesMaximo: '' }
   tabla_minimos = [
     {valor:'minimo', show:'Inversion mas baja'},
     {valor:'contadorMinimo', show:'contador bajas'},
-    {valor:'no_minimo', show:'# cotizacion mas baja'},
-    {valor:'arreglo_minimo', show:'cotizaciones minimas'},
+    {valor:'similitudesMinimo', show:'cotizaciones minimas'},
   ]
-  valores_tabla_minimos = { minimo: 0,contadorMinimo: 0, no_minimo: '',arreglo_minimo: '' }
+  valores_tabla_minimos = { minimo: 0,contadorMinimo: 0,similitudesMinimo: '' }
   SUCURSAL:string
   cotizaciones_arr= []
+  collapse_maximos_class:string = 'collapse'
+  collapse_maximo_b:boolean = false
+  collapse_minimas_b:boolean = false
   ngOnInit(): void {
     this.rol()
   }
+
   rol(){
 
     // const { rol,  uid } = this._security.usuarioRol()
@@ -112,12 +114,73 @@ export class CotizacionesClienteComponent implements OnInit {
     if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
     
   }
+  asing_muestra(valor, cual:string) {
+    setTimeout(()=>{
+      if (cual==='maximas') {
+        this.collapse_maximo_b = valor
+      }else{
+        this.collapse_minimas_b = valor
+      }
+    },200)
+  }
 
   async obtenerInformacion_cliente(id:string){
 
     const sucursal = this.SUCURSAL
     const cliente = id
 
+    const starCountRef_cotizacionesRealizadas = ref(db, `cotizacionesRealizadas`)
+    onValue(starCountRef_cotizacionesRealizadas, async (snapshot) => {
+      if (snapshot.exists()) {
+        const _cotizaciones = this._publicos.crearArreglo2( await this._cotizaciones.consulta__cotizaciones())
+        const cotizaciones_filtrados = this._publicos.filtra_informacion(_cotizaciones,'cliente',cliente)
+        // this.cotizaciones_arr = cotizaciones_filtrados
+        const nuevas_cot  = [...cotizaciones_filtrados].map(cot=>{
+          const {elementos, margen, iva, descuento, formaPago} = cot
+          const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+          cot.reporte = reporte
+          return cot
+        })
+        const ordenadas = this._publicos.ordenamiento_fechas(nuevas_cot,'fecha_recibido', false)
+        const campos_cotizacion_recupera = [
+          'fullname',
+          'elementos',
+          'fecha_recibido',
+          'formaPago',
+          'iva',
+          'margen',
+          'pdf',
+          'servicio',
+          'sucursal',
+          'vehiculo',
+          'reporte',
+        ]
+        this.cotizaciones_arr = (!this.cotizaciones_arr.length)  ? ordenadas :
+        this._publicos.actualizarArregloExistente(this.cotizaciones_arr,ordenadas,campos_cotizacion_recupera)
+        const aqui = this._publicos.ticket_promedio(nuevas_cot)
+        
+        Object.keys(aqui).forEach(c=>{
+          this.valores_promedios[c] = aqui[c]
+        })
+        
+        const enviar = this._cotizaciones.conveirte_comparar(nuevas_cot)
+        const resultados_comparados = this._cotizaciones.obtenerMaximoMinimoYSimilitudes(enviar)
+
+        this.tabla_maximos.forEach(element => {
+          const {valor} = element
+          this.valores_tabla_maximos[valor] = resultados_comparados[0][valor]
+        });
+        this.tabla_minimos.forEach(element => {
+          const {valor} = element
+          this.valores_tabla_minimos[valor] = resultados_comparados[1][valor]
+        });
+
+      } else {
+        // console.log("No data available");
+        this.cotizaciones_arr = []
+      }
+    })
+/*
 
     const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
     const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
@@ -168,7 +231,7 @@ export class CotizacionesClienteComponent implements OnInit {
       }
     })
 
-      
+      */
     this.dataSource.data = this.cotizaciones_arr
     this.newPagination()
   }

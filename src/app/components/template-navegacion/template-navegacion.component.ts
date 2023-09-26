@@ -16,8 +16,7 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
     ) { }
 
   // enrutamiento:any = {anterior:''}
-  enrutamiento = {cliente:'', sucursal:'', recepcion:'', tipo:'', anterior:'', vehiculo:'',
-  cotizacion:''}
+  enrutamiento = {cliente:'', sucursal:'', recepcion:'', tipo:'', anterior:'', vehiculo:'', cotizacion:''}
   // enrutamiento: BehaviorSubject<any> = new BehaviorSubject<any>({
   //   cliente: '',
   //   sucursal: '',
@@ -57,8 +56,11 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
     }else if (this.donde_pura === 'clientes' || this.donde_pura === 'cotizacion') {
       this.enrutamiento.anterior = null
       this.donde = null
+    }else if(this.donde_pura === 'cotizacion-new-cliente'){
+      this.enrutamiento.anterior = 'miPerfil'
     }
     this.donde = this._publicos.reemplaza_strig_navegacion(donde)
+    // console.log(this.enrutamiento);
     
     
     function extraerParteDeURL(url) {
@@ -76,15 +78,27 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
     }
   }
   regresar(){
+
+    let ruta = 'inicio'
     if (this.donde_pura === 'historial-vehiculo') {
-      this.enrutamiento.anterior = 'historial-cliente'
+      ruta = 'historial-cliente'
     } else if (this.donde_pura === 'historial-cliente') {
-      this.enrutamiento.anterior = 'clientes'
+      ruta = 'clientes'
     }else if (this.donde_pura === 'clientes') {
-      this.enrutamiento.anterior = null
+      ruta = null
       this.donde = null
+    }else if (this.donde_pura === 'cotizacion-new-cliente') {
+      ruta= 'miPerfil'
+      this.enrutamiento = {cliente:null, sucursal:null, recepcion:null, tipo:null, anterior:null, vehiculo:null, cotizacion:null}
+    }else if (this.donde_pura === 'cotizacionNueva') {
+      // console.log('en cotizacionNueva');
+      ruta = this.enrutamiento.anterior
+      this.enrutamiento = {cliente:null, sucursal:null, recepcion:null, tipo:null, anterior:null, vehiculo:null, cotizacion:null}
     }
-    this.router.navigate([`/${this.enrutamiento['anterior']}`], { 
+
+    // console.log(ruta);
+    
+    this.router.navigate([`/${ruta}`], { 
       queryParams: this.enrutamiento
     });
   }

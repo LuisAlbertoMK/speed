@@ -9,6 +9,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 import { Router } from '@angular/router';
 import { CamposSystemService } from '../../services/campos-system.service';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { CamposSystemService } from '../../services/campos-system.service';
 })
 export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
-  constructor(private router: Router, private _campos: CamposSystemService) { }
+  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService) { }
   @Input() recepciones_arr:any[] = []
   @Input() muestra_desgloce:boolean = false
   @Input() muestra_cliente:boolean = false
@@ -72,7 +73,9 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   servicio_editar
   contador_resultados:number = 0
 
+  rol_:string
   ngOnInit(): void {
+    this.roles()
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['recepciones_arr']) {
@@ -83,18 +86,30 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       this.contador_resultados = this.recepciones_arr.length
         this.obtener_total_cotizaciones()
     }
-  }   
+  } 
+  roles(){
+    const { rol, sucursal } = this._security.usuarioRol()
+    this.rol_ = rol
+  }
   irPagina(pagina, data, nueva?){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
- 
-    let queryParams = {}
+    console.log(data);
     
-    if (pagina ==='cotizacionNueva') {
-      queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
-    } else if(pagina === 'ServiciosConfirmar'){
-      queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
-    } else if(pagina === 'editar-os'){
-      queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+    let queryParams = {}
+
+    if (this.rol_ === 'cliente') {
+      if (pagina === 'cotizacionNueva' && !tipo) {
+        pagina = 'cotizacion-new-cliente'
+        queryParams = { anterior:'miPerfil',cliente, sucursal, recepcion: idCotizacion, tipo:'cotizacion',vehiculo} 
+      }
+    }else if(this.rol_ !=='cliente'){
+      if (pagina ==='cotizacionNueva') {
+        queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+      } else if(pagina === 'ServiciosConfirmar'){
+        queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+      } else if(pagina === 'editar-os'){
+        queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+      }
     }
 
     const ruta_Actual= this.router.url
@@ -104,7 +119,8 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     const ruta_anterior = ruta[1].split('?')
 
     queryParams['anterior'] = ruta_anterior[0]
-    // console.log(queryParams);
+    
+    
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }

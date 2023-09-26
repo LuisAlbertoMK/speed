@@ -45,7 +45,7 @@ export class EmailsService {
     // console.log(dataEmail);
     const dataMail = await this.template(data['cliente'],data['vehiculo'],dataEmail)
     console.log(dataMail);
-    return this.http.post(url,dataMail).subscribe()
+    // return this.http.post(url,dataMail).subscribe()
   }
   async recordatorioCotizacion(cliente:any,vehiculo:any,cotizacion:any,filtro_conceptos:any){
     const dataEmail = {

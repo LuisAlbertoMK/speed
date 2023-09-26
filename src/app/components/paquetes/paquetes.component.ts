@@ -31,7 +31,7 @@ export class PaquetesComponent implements OnInit, OnChanges {
 
   // tabla
   dataSourcePaquetes = new MatTableDataSource(); //paquetes
-  paquetes = ['index','nombre','modelo','marca','precio','costo']; //paquetes
+  paquetes = ['nombre','modelo','marca','precio','costo']; //paquetes
   columnsToDisplayWithExpand = [...this.paquetes, 'opciones', 'expand']; //paquetes
   expandedElement: any | null; //paquetes
   listaRefacciones= []
@@ -119,7 +119,6 @@ export class PaquetesComponent implements OnInit, OnChanges {
           
               paquetes[index] = {
                 ...p,
-                index,
                 elementos: elementosActualizados,
                 reporte,
                 precio: reporte.total,
@@ -127,7 +126,6 @@ export class PaquetesComponent implements OnInit, OnChanges {
                 tipo: 'paquete',
                 aprobado: true,
                 cantidad: 1,
-
               };
             }
         this.listaPaquetes_arr = paquetes.filter((p) => p.elementos.length);

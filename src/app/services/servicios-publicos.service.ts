@@ -1253,6 +1253,74 @@ export class ServiciosPublicosService {
             arreglo_minimo
           };
     }
+    obtenerValorMaximoMinimo2(arreglo) {
+      if (arreglo.length === 0) {
+        // Si el arreglo está vacío, retorna valores predeterminados
+        return {
+          maximo: 0,
+          no_maximo: '',
+          contadorMaximo: 0,
+          arreglo_maximo: [],
+          minimo: 0,
+          no_minimo: '',
+          contadorMinimo: 0,
+          arreglo_minimo: []
+        };
+      }
+    
+      // Inicializa variables para el valor máximo y mínimo
+      let maximo = arreglo[0].reporte.total;
+      let minimo = arreglo[0].reporte.total;
+      let no_maximo = (arreglo[0].no_os) ? arreglo[0].no_os : arreglo[0].no_cotizacion;
+      let no_minimo = (arreglo[0].no_os) ? arreglo[0].no_os : arreglo[0].no_cotizacion;
+      let contadorMaximo = 1;
+      let contadorMinimo = 1;
+      let arreglo_maximo = [no_maximo];
+      let arreglo_minimo = [no_minimo];
+    
+      // Itera sobre el arreglo para encontrar el valor máximo y mínimo
+      for (let i = 1; i < arreglo.length; i++) {
+        const compara = arreglo[i].reporte.total;
+        const no_os = (arreglo[i].no_os) ? arreglo[i].no_os : arreglo[i].no_cotizacion;
+    
+        if (compara > maximo) {
+          no_maximo = no_os;
+          maximo = compara;
+          contadorMaximo = 1;
+          arreglo_maximo = [no_maximo];
+        } else if (compara === maximo) {
+          if (!arreglo_maximo.includes(no_os)) {
+            arreglo_maximo.push(no_os);
+          }
+          contadorMaximo++;
+        }
+    
+        if (compara < minimo) {
+          no_minimo = no_os;
+          minimo = compara;
+          contadorMinimo = 1;
+          arreglo_minimo = [no_minimo];
+        } else if (compara === minimo) {
+          if (!arreglo_minimo.includes(no_os)) {
+            arreglo_minimo.push(no_os);
+          }
+          contadorMinimo++;
+        }
+      }
+    
+      // Retorna un objeto con los resultados
+      return {
+        maximo,
+        no_maximo,
+        contadorMaximo,
+        arreglo_maximo,
+        minimo,
+        no_minimo,
+        contadorMinimo,
+        arreglo_minimo
+      };
+    }
+    
     recuperaDatos(form){
       const formValue = form.getRawValue();
       return formValue
@@ -1301,6 +1369,18 @@ export class ServiciosPublicosService {
           aqui.ticketPromedio = aqui.ticketGeneral / aqui.servicios_totales 
       });
       return {servicios_totales: aqui.servicios_totales, ticketPromedio: aqui.ticketPromedio, ticketGeneral: aqui.ticketGeneral}
+    }
+    ticket_promedio(arreglo:any[]){
+      let aqui = { servicios_totales: 0 ,ticketPromedio:0, ticketGeneral:0 }, ticketGeneral = 0;
+      let nuevo = [...arreglo]
+      nuevo.forEach(cotizacion=>{
+        const {reporte} = cotizacion
+        const {total} = reporte
+        aqui.ticketGeneral += total
+      })
+      aqui.servicios_totales = nuevo.length
+      aqui.ticketPromedio = aqui.ticketGeneral / nuevo.length
+      return aqui
     }
     obtener_subtotales(arreglo:any[]){
       let aqui = { iva: 0 ,subtotal:0, total:0 };
@@ -1378,14 +1458,13 @@ export class ServiciosPublicosService {
 
     genera_reporte(data){
 
-      
       const {margen, iva, elementos, descuento, formaPago } = data
-
+      
       const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
 
       const paquetes = this.filtro_elementos(elementos, true)
       const elementos_ = this.filtro_elementos(elementos, false)
-      
+
       const otro = this.nuevo_reporte(elementos_)
 
       const aplicado = paquetes.map(paquete=>{
@@ -1400,8 +1479,6 @@ export class ServiciosPublicosService {
 
       const reporte:any = this.sumatoria_reporte({reporte_sum, margen, iva})
 
-      // const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
-        // console.log(enCaso_meses);
         if (enCaso_meses.id === '1') {
           reporte.descuento = Number(descuento)
           if(!reporte.descuento) reporte.descuento = 0
@@ -1421,7 +1498,7 @@ export class ServiciosPublicosService {
       return reporte
 
     }
-    filtro_elementos(arreglo:any[], paquetes){
+    filtro_elementos(arreglo:any[], paquetes:boolean){
       if (paquetes) {
         return arreglo.filter(g=>g.tipo === 'paquete')
       }else{
@@ -1437,7 +1514,7 @@ export class ServiciosPublicosService {
       reporte.refaccion = refaccion
       reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
       reporte.subtotal = reporte.mo + reporte.refaccionVenta
-      reporte.iva = (iva) ? reporte.subtotal * .16 : reporte.subtotal
+      reporte.iva = (iva) ? reporte.subtotal * .16 : 0
       reporte.total = reporte.subtotal + reporte.iva
 
       reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
@@ -1519,7 +1596,29 @@ export class ServiciosPublicosService {
       return nuevos_elementos 
   
     }
-    
+    ordenamiento_fechas(arreglo:any, campo, orden){
+      let nuevos = [...arreglo]
+      return nuevos.sort((a, b) => {
+        // if (campo === 'fecha_recibido') {
+          if (new Date(a[campo]) < new Date(b[campo])) {
+            return orden ? -1 : 1;
+          }
+          if (new Date(a[campo]) > new Date(b[campo])) {
+            return orden ? 1 : -1;
+          }
+          return 0;
+        // }else{
+        //   if (a[campo] < b[campo]) {
+        //     return ascendente ? -1 : 1;
+        //   }
+        //   if (a[campo] > b[campo]) {
+        //     return ascendente ? 1 : -1;
+        //   }
+        //   return 0;
+        // }
+        
+      });
+    }
    
     
 

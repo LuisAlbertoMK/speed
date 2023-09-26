@@ -445,8 +445,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
   }
   eliminaElemento(data){
-    console.log(data);
-    
     const { index:index_elimina } = data
     let nuevos = [...this.infoCotizacion.elementos]
     nuevos = nuevos.filter((elemento, index) => index !== index_elimina);
@@ -462,8 +460,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   asignar_nuevos_elementos(nuevos:any[]){
     this.infoCotizacion.elementos = nuevos
-    console.log(nuevos);
-    
     this.realizaOperaciones()
   }
 

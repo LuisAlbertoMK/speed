@@ -126,6 +126,17 @@ export class CotizacionesService {
 
   clientes_temporales = {}
   vehiculos_temporales = {}
+
+  campos_cotizacion_recuperda = [
+    'cliente',
+    'elementos',
+    'formaPago',
+    'iva',
+    'margen',
+    'servicio',
+    'sucursal',
+    'vehiculo',
+  ]
   constructor(
     private _publicos: ServiciosPublicosService,private _clientes: ClientesService,private _vehiculos: VehiculosService,
     private _sucursales: SucursalesService, private _servicios:ServiciosService
@@ -144,6 +155,32 @@ export class CotizacionesService {
       })
     });
   }
+  consulta_cotizacion_unica(cotizacion): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const cotizacionesRealizadas = ref(db, `cotizacionesRealizadas/${cotizacion}`)
+      onValue(cotizacionesRealizadas, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      }, {
+        onlyOnce: true
+      })
+    });
+  }
+  recupera_data_cotizacion(data_cotizacion){
+    let nueva_info = {}
+    this.campos_cotizacion_recuperda.forEach(campo=>{
+      if (data_cotizacion[campo] && data_cotizacion[campo] !== undefined && data_cotizacion[campo] !== null) {
+        nueva_info[campo] = data_cotizacion[campo]
+      }
+    })
+    return nueva_info
+  }
+
+
 
   conslta_cotizaciones_sucursal(data): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -184,21 +221,7 @@ export class CotizacionesService {
         })
     })
   }
-  consulta_cotizacion_unica(data): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const {ruta} = data
-      const starCountRef = ref(db, `${ruta}`);
-      onValue(starCountRef, async (snapshot) => {
-        if (snapshot.exists()) {
-          resolve(snapshot.val());
-        } else {
-          resolve({});
-        }
-      },{
-        onlyOnce: true
-      });
-    });
-  }
+ 
   consulta_cotizaciones_new(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       get(child(dbRef, `cotizacionesRealizadas`)).then((snapshot) => {
@@ -424,6 +447,70 @@ export class CotizacionesService {
     const secuencia = (cotizacionesArray.length + 1).toString().padStart(4, '0')
     return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
 }
+  conveirte_comparar (arreglo){
+    let nuevo= [...arreglo]
+    return nuevo.map(d=>{
+      const {no_cotizacion, reporte} = d
+      const {total} = reporte
+      return {no_cotizacion, total}
+    })
+  }
+  obtenerMaximoMinimoYSimilitudes(arreglo) {
+    if (arreglo.length === 0) {
+      return {
+        maximo: 0,
+        minimo: 0,
+        similitudesMaximo: [],
+        similitudesMinimo: [],
+        contadorMaximo: 0,
+        contadorMinimo: 0
+      };
+    }
+  
+    let maximo = arreglo[0].total;
+    let minimo = arreglo[0].total;
+    let similitudesMaximo = [arreglo[0].no_cotizacion];
+    let similitudesMinimo = [arreglo[0].no_cotizacion];
+    let contadorMaximo = 1;
+    let contadorMinimo = 1;
+  
+    for (let i = 1; i < arreglo.length; i++) {
+      const valorActual = arreglo[i].total;
+      const no_cotizacion = arreglo[i].no_cotizacion;
+  
+      if (valorActual > maximo) {
+        maximo = valorActual;
+        similitudesMaximo = [no_cotizacion];
+        contadorMaximo = 1;
+      } else if (valorActual === maximo) {
+        similitudesMaximo.push(no_cotizacion);
+        contadorMaximo++;
+      }
+  
+      if (valorActual < minimo) {
+        minimo = valorActual;
+        similitudesMinimo = [no_cotizacion];
+        contadorMinimo = 1;
+      } else if (valorActual === minimo) {
+        similitudesMinimo.push(no_cotizacion);
+        contadorMinimo++;
+      }
+    }
+  
+    return [
+      {
+        maximo,
+        similitudesMaximo: similitudesMaximo.join(', '),
+        contadorMaximo,
+      },
+      {
+        minimo,
+        similitudesMinimo: similitudesMinimo.join(', '),
+        contadorMinimo
+      }
+    ]
+      ;
+  }
   
 }
 

@@ -18,6 +18,7 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { ServiciosService } from '../../services/servicios.service';
 import { CamposSystemService } from '../../services/campos-system.service';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { ReporteGastosService } from 'src/app/services/reporte-gastos.service';
 @Component({
   selector: 'app-servicios-cliente',
   templateUrl: './servicios-cliente.component.html',
@@ -32,7 +33,7 @@ import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 })
 export class ServiciosClienteComponent implements OnInit {
 
-  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, 
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _reporte_gastos: ReporteGastosService,
     private _clientes: ClientesService, private _sucursales: SucursalesService, private _campos: CamposSystemService,
     private _vehiculos: VehiculosService, private _servicios: ServiciosService, private _cotizaciones: CotizacionesService) { }
 
@@ -68,37 +69,75 @@ export class ServiciosClienteComponent implements OnInit {
 
     if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
   }
-  async obtenerInformacion_cliente(id:string){
-    const sucursal = this.SUCURSAL
-    const cliente = id
+  async obtenerInformacion_cliente(cliente:string){
+    
 
+    const starCountRef_recpciones = ref(db, `recepciones`)
+    onValue(starCountRef_recpciones, async (snapshot) => {
+      if (snapshot.exists()) {
+        const _orden = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_orden())
+        const _pagos = this._publicos.crearArreglo2( await this._servicios.consulta_pagos())
+    
+        const _recepciones = this._publicos.crearArreglo2( await this._servicios.consulta_recepciones_())
+        const recepciones_filtrados = this._publicos.filtra_informacion(_recepciones,'cliente',cliente)
+        
+        const nuevas_recepciones  = [...recepciones_filtrados].map(recepcion=>{
+          const {elementos, margen, iva, descuento, formaPago} = recepcion
+          const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+          recepcion.reporte = reporte
+          recepcion.historial_gastos_orden = filtra_orden(_orden, cliente)
+          recepcion.historial_pagos_orden = filtra_orden(_pagos, cliente)
+          return recepcion
+        })
+        function filtra_orden(arreglo, id_orden){
+          return [...arreglo].filter(f=>f.id_os === id_orden)
+        }
+        const campos_recpciones = [
+          'checkList',
+          'detalles',
+          'diasEntrega',
+          'diasSucursal',
+          'elementos',
+          'fecha_promesa',
+          'fecha_recibido',
+          'formaPago',
+          'iva',
+          'margen',
+          'no_os',
+          'notifico',
+          'pathPDF',
+          'servicio',
+          'status',
+          'reporte',
+          'historial_gastos_orden',
+          'historial_pagos_orden',
+        ]
+        // console.log(nuevas_recepciones);
 
-    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    const vehiculos_arr = await this._vehiculos.consulta_vehiculos({sucursal, cliente})
-
-    const ruta_recepciones    =  `recepciones/${sucursal}/${cliente}`
-
-    const todas_recepciones  = await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
-
-    const filtro_recepciones = todas_recepciones.map(cot=>{
-      cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
-      // cot.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      
-      const data_vehiculo = vehiculos_arr.find(v=>v.id === cot.vehiculo)
-      cot.data_vehiculo = data_vehiculo
-      const {placas}= data_vehiculo
-      cot.placas = placas || '------'
-      return cot
+        this.recepciones_arr = (!this.recepciones_arr.length)  ? nuevas_recepciones :
+        this._publicos.actualizarArregloExistente(this.recepciones_arr,nuevas_recepciones,campos_recpciones)
+      }
+      else {
+        // console.log("No data available");
+        this.recepciones_arr = []
+      }
     })
+    
+    
+    
 
     
-    if (!this.recepciones_arr.length) {
-      this.recepciones_arr = filtro_recepciones;
-      // this.cargandoInformacion = false
-    } else {
-      this.recepciones_arr = this._publicos.actualizarArregloExistente(this.recepciones_arr,filtro_recepciones,[...this._cotizaciones.camposCotizaciones])
-      // this.cargandoInformacion = false
-    }
+
+    
+
+    
+    // if (!this.recepciones_arr.length) {
+    //   this.recepciones_arr = filtro_recepciones;
+    //   // this.cargandoInformacion = false
+    // } else {
+    //   this.recepciones_arr = this._publicos.actualizarArregloExistente(this.recepciones_arr,filtro_recepciones,[...this._cotizaciones.camposCotizaciones])
+    //   // this.cargandoInformacion = false
+    // }
   }
 
 

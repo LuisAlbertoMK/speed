@@ -112,7 +112,22 @@ export class MiperfilComponent implements OnInit {
       if (snapshot.exists()) {
         const _cotizaciones = this._publicos.crearArreglo2( await this._cotizaciones.consulta__cotizaciones())
         const cotizaciones_filtrados = this._publicos.filtra_informacion(_cotizaciones,'cliente',cliente)
-        this.cotizaciones_arr = cotizaciones_filtrados
+        const ordenadas = this._publicos.ordenamiento_fechas(cotizaciones_filtrados,'fecha_recibido', false)
+        const campos_cotizacion_recupera = [
+          'fullname',
+          'elementos',
+          'fecha_recibido',
+          'formaPago',
+          'iva',
+          'margen',
+          'pdf',
+          'servicio',
+          'sucursal',
+          'vehiculo',
+          'reporte',
+        ]
+        this.cotizaciones_arr = (!this.cotizaciones_arr.length)  ? ordenadas :
+        this._publicos.actualizarArregloExistente(this.cotizaciones_arr,ordenadas,campos_cotizacion_recupera)
       } else {
         // console.log("No data available");
         this.cotizaciones_arr = []
@@ -130,13 +145,40 @@ export class MiperfilComponent implements OnInit {
         const recepciones = this._publicos.crearArreglo2( await this._servicios.consulta_recepciones_())
         const recepciones_filtrados = this._publicos.filtra_informacion(recepciones,'cliente',cliente)
         .map(recepcion=>{
-          const {id} = recepcion
+          
+          const {elementos, margen, iva, descuento, formaPago, id} = recepcion
+          const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+          recepcion.reporte = reporte
           recepcion.historial_gastos_orden = this._publicos.filtra_informacion(_orden,'id_os',id)
           recepcion.historial_pagos_orden = this._publicos.filtra_informacion(_pagos,'id_os',id)
           return recepcion
         })
-      
-        this.recepciones_arr = recepciones_filtrados
+        const ordenadas = this._publicos.ordenamiento_fechas(recepciones_filtrados,'fecha_recibido', false)
+
+        const campos_recepciones = [
+          'checkList',
+          'detalles',
+          'diasEntrega',
+          'diasSucursal',
+          'elementos',
+          'fecha_promesa',
+          'fecha_recibido',
+          'formaPago',
+          'iva',
+          'margen',
+          'fullname',
+          'no_os',
+          'notifico',
+          'pathPDF',
+          'servicio',
+          'status',
+          'reporte',
+          'historial_gastos_orden',
+          'historial_pagos_orden',
+        ]
+        this.recepciones_arr = (!this.recepciones_arr.length)  ? ordenadas :
+        this._publicos.actualizarArregloExistente(this.recepciones_arr,ordenadas,campos_recepciones)
+        // this.recepciones_arr = recepciones_filtrados
       } else {
         // console.log("No data available");
         this.recepciones_arr = []
@@ -273,84 +315,5 @@ export class MiperfilComponent implements OnInit {
       }
     })
   }
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    const elementos = (servicios_) ? [...servicios_] : []
-    const margen = 1 + (new_margen / 100)
-    elementos.map(ele=>{
-      const {cantidad, costo} = ele
-      if (ele.tipo === 'paquete') {
-        const report = this.total_paquete(ele)
-        const {mo, refacciones} = report
-        if (ele.aprobado) {
-          reporte.mo += mo
-          reporte.refacciones += refacciones
-          reporte.refacciones_v += refacciones * margen
-        }
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad 
-      }else if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.mo += operacion
-        }
-        ele.subtotal = operacion
-        ele.total = operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.refacciones += operacion
-          reporte.refacciones_v += operacion * margen
-        }
-        ele.subtotal = operacion
-        ele.total = operacion * margen
-      }
-      return ele
-    })
-    let descuento = parseFloat(descuento_) || 0
-    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
-    const {mo, refacciones_v, refacciones} = reporte
 
-    let nuevo_total = mo + refacciones_v
-
-    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
-
-    let iva =  _iva ? nuevo_total * .16 : 0;
-
-    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
-    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
-    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
-
-    reporte.descuento = descuentoshow
-    reporte.iva = iva
-    reporte.subtotal = nuevo_total
-    reporte.total = newTotal
-    reporte.meses = total_meses
-    // console.log(reporte);
-    // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
-    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, elementos}
-    
-  }
-  mano_refaccion(ele){
-    const {costo, precio, cantidad} = ele
-    const mul = (costo > 0 ) ? costo : precio
-    return cantidad * mul
-  }
-  total_paquete(data){
-    const {elementos} = data
-    const reporte = {mo:0, refacciones:0}
-    elementos.forEach(ele=>{
-      if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.mo += operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.refacciones += operacion
-      }
-    })
-    return reporte
-  }
 }

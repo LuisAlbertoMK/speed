@@ -92,6 +92,7 @@ export class CotizacionClienteComponent implements OnInit {
 
   
   enrutamiento
+  salvando:boolean = false
   ngOnInit(): void {
     this.rol()
     this.crearFormPlus()
@@ -166,20 +167,35 @@ export class CotizacionClienteComponent implements OnInit {
     });
   }
   async acciones(){
-    const {cliente, sucursal, vehiculo} =this.enrutamiento
-    // let data_cliente = {}
-    // if (cliente) data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    
-    
-    const data_cliente  = await this._clientes.consulta_Cliente(cliente)
+    const {cliente, sucursal, vehiculo, cotizacion, recepcion} =this.enrutamiento
 
+    const data_cliente  = await this._clientes.consulta_Cliente(cliente)
+    if (cliente) this.infoCotizacion.cliente = cliente
     this.infoCotizacion.data_cliente = data_cliente
-    this.infoCotizacion.cliente = cliente
-    this.infoCotizacion.sucursal = sucursal
-    const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+    if (vehiculo) {
+      this.infoCotizacion.vehiculo = vehiculo
+      this.extra = vehiculo
+    }
+    if (cotizacion) {
+      const data_cotizacion  = await this._cotizaciones.consulta_cotizacion_unica(cotizacion)
+      const recuperda = this._cotizaciones.recupera_data_cotizacion(data_cotizacion)
+      
+      Object.keys(recuperda).forEach(campo=>{
+        this.infoCotizacion[campo] = recuperda[campo]
+        if (campo === 'vehiculo') this.extra = recuperda[campo]
+      })
+    }else if(recepcion){
+      const data_recepcion  = await this._servicios.consulta_recepcion_unica(recepcion)
+      const recuperda = this._cotizaciones.recupera_data_cotizacion(data_recepcion)
+      Object.keys(recuperda).forEach(campo=>{
+        this.infoCotizacion[campo] = recuperda[campo]
+        if (campo === 'vehiculo') this.extra = recuperda[campo]
+      })
+    }
+
+    const data_sucursal = this.sucursales_array.find(s=>s.id === this.infoCotizacion.sucursal)
     this.infoCotizacion.data_sucursal = data_sucursal
-    this.infoCotizacion.vehiculo = vehiculo
-    this.extra = vehiculo
+
     this.vigila_vehiculos_cliente()
     this.realizaOperaciones()
   }
@@ -208,9 +224,6 @@ export class CotizacionClienteComponent implements OnInit {
     })
   
   }
-
-
-
 
   vehiculo_ghange(valor){
     // console.log(valor);
@@ -288,27 +301,55 @@ export class CotizacionClienteComponent implements OnInit {
 
     nuevos[index_editar].elementos = nuevos_
     
-    // nuevos[index_editar].elementos = nuevos_
 
     this.asignar_nuevos_elementos(nuevos)
+  }
+  asignar_index(arreglo:any[]):any[] {
+    const { formaPago } = this.infoCotizacion
+    let nuevos_ = [...arreglo]
+    if (!nuevos_.length) return []
+      return nuevos_.map((e, index)=>{
+        e.index = index
+        e.aprobado = true
+        if (e.tipo === 'paquete') {
+          const elementos:any = e.elementos
+          const nuevos_elementos = elementos.map(nu=>{
+            nu.aprobado = true
+            return nu
+          })
+          const reporte = this._publicos.genera_reporte({elementos: nuevos_elementos, margen:0, iva:0, descuento:0, formaPago})
+          const {total, refaccion, mo} = reporte
+          e.reporte = reporte
+          e.precio = refaccion + mo
+          e.total = total
+        }
+        return e
+      })
   }
 
   realizaOperaciones(){
     const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
-    const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
 
+    const nuevos_elementos_index = this.asignar_index(elementos)
+
+    const reporte = this._publicos.genera_reporte({elementos: nuevos_elementos_index, margen, iva, descuento, formaPago})
+    
     this.infoCotizacion.reporte = reporte
-    this.infoCotizacion.elementos = elementos
-    this.dataSource.data = elementos
+    this.infoCotizacion.elementos = nuevos_elementos_index
+    this.dataSource.data = nuevos_elementos_index
     this.newPagination()
   }
   async continuarCotizacion(){
+    this.salvando = true
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
     // const opcionales = ['promocion','descuento','nota','iva']
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.infoCotizacion,obligatorios )
 
     this.faltante_s = faltante_s
-    if (!ok) return
+    if (!ok) {
+      this.salvando = false
+      return
+    }
     const {promocion, descuento, nota} = this._publicos.recuperaDatos(this.formPlus)
 
     this.infoCotizacion.descuento = descuento
@@ -331,7 +372,6 @@ export class CotizacionClienteComponent implements OnInit {
       cliente: this.infoCotizacion.cliente,
       vehiculo: this.infoCotizacion.vehiculo,
     }
-
 
     const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
     const sumar = new Date(actual)
@@ -358,7 +398,7 @@ export class CotizacionClienteComponent implements OnInit {
       }
       const clave = `paquetes/${this._publicos.generaClave()}`;
       updates_paquetes[clave] = recuperada
-    })   
+    })
     update(ref(db), updates_paquetes);
     //hacemos el llamdo de la funcion para la creaciion del pdf    
     this._pdf.pdf(this.infoCotizacion).then((ansPDF)=>{
@@ -369,16 +409,19 @@ export class CotizacionClienteComponent implements OnInit {
         title: 'Opciones de cotización',
         html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
         showDenyButton: true,
-        showCancelButton: false,
+        showCancelButton: true,
         confirmButtonText: 'Previsualizar PDF cotizacion',
         denyButtonText: `Guardar y enviar correo`,
-        cancelButtonText:`cancelar`
+        cancelButtonText:`Cancelar`,
+        allowOutsideClick:false
 
       }).then((result) => {
         // si se confirma previsualizacion genera pdf en nueva ventana del navegador
         if (result.isConfirmed) {
           pdfDocGenerator.open()
+          this.salvando = false
         } else if (result.isDenied) {
+          this.salvando = true
           // si presiono guardar y enviar obtenemos el blob del pdf para poder subirlo a firebasecloud
           pdfDocGenerator.getBlob(async (blob) => {
             //una vez tenemos el blob realizamos la peticion de subida del pdf
@@ -438,15 +481,23 @@ export class CotizacionClienteComponent implements OnInit {
                       margen: 25,
                       formaPago: '1'
                     })
-                    this.router.navigateByUrl('/cotizacion')
+                    this.salvando = false
+                    this.router.navigateByUrl('/miPerfil')
                   })
                   .catch((error) => {
+                    this.salvando = false
                     this._publicos.swalToast('Error al guardar la cotizacion', 0, 'top-start')
                   });
                 }
               },200)
             })
+            .catch(err=>{
+              console.log(err.error());
+              this.salvando = false
+            })
           })
+        } else if(result.dismiss){
+          this.salvando = false
         }
       })
     })
@@ -459,64 +510,6 @@ export class CotizacionClienteComponent implements OnInit {
       this.dataSource.sort = this.sort
     // }
     }, 500)
-  }
-
-
-
-  purifica_informacion(data){
-    const nueva_ = JSON.parse(JSON.stringify(data));
-    const {elementos} = nueva_
-    const _elementos_purifica = (elementos) ? elementos : []
-    const registra = _elementos_purifica.map(element => {
-      const {tipo } = element
-      const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
-      const campos_refaccion = [ ...campos_mo, 'marca']
-      const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo' ]
-      let nueva 
-      switch (tipo) {
-        case 'paquete':
-          nueva = this._publicos.nuevaRecuperacionData(element,campos_paquete)
-          const info_su = this.purifica_informacion_interna(nueva.elementos)
-          // console.log(info_su);
-          nueva.elementos = info_su
-          
-          break;
-        case 'mo':
-          nueva = this._publicos.nuevaRecuperacionData(element,campos_mo)
-          break;
-        case 'refaccion':
-          nueva = this._publicos.nuevaRecuperacionData(element,campos_refaccion)
-          break;
-      }
-
-      //primera recuperacion 
-      // console.log(nueva);
-      return nueva
-    });
-    // console.log(registra);
-    return registra
-  }
-  purifica_informacion_interna(elementos:any[]){
-    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
-    const campos_refaccion = [ ...campos_mo, 'marca']
-
-    const nuevos_elementos = elementos.map(e=>{
-      const {tipo} = e
-      e.nombre = String(e.nombre).toLowerCase()
-      switch (tipo) {
-        case 'mo':
-        case 'MO':
-          e.id = e.IDreferencia
-          e.tipo = String(tipo).toLowerCase()
-          
-          return this._publicos.nuevaRecuperacionData(e,campos_mo)
-        case 'refaccion':
-          return this._publicos.nuevaRecuperacionData(e,campos_refaccion)
-      }
-    })
-
-    return nuevos_elementos 
-
   }
 
 }

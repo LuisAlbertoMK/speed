@@ -92,15 +92,22 @@ export class ClienteComponent implements OnInit, OnChanges {
       const valorAnterior = changes['data_cliente'].previousValue;
       // console.log({nuevoValor, valorAnterior});
       // console.log(nuevoValor);
-      
-      if (nuevoValor !== valorAnterior) {
-        if (!this.formularioCreado) {
-          this.crearFormularioClientes()
-          this.cambiosPendientes = nuevoValor
-        } else {
-          this.cargaDataForm(nuevoValor)
+      const data_nueva = JSON.parse(JSON.stringify(nuevoValor));
+      if (data_nueva.id) {
+        // console.log('Con id cliente valido');
+        if (nuevoValor !== valorAnterior) {
+          if (!this.formularioCreado) {
+            this.crearFormularioClientes()
+            this.cambiosPendientes = nuevoValor
+          } else {
+            this.cargaDataForm(nuevoValor)
+          }
         }
+      }else{
+        // console.log('sin id cliente no valido');
+        
       }
+      
     }
   }
   async cargaDataForm(cliente){

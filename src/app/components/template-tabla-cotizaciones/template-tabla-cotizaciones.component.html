@@ -64,7 +64,10 @@
               <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
                 <mat-menu #Opciones="matMenu">
                 <button mat-menu-item (click)="irPagina('cotizacionNueva',row)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
-                <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
+                
+                <ng-container *ngIf="rol_ !== 'cliente'">
+                  <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
+                </ng-container>
                 <a [href]="row.pdf" target="_blank">
                     <button mat-menu-item > PDF <i class="fa fa-file-pdf text-danger ml-1"></i></button>
                 </a>

@@ -82,10 +82,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   mo: string = this._campos.mo
   miniColumnas:number = this._campos.miniColumnas
 
-  infoConfirmar= this._servicios.infoConfirmar   
- 
-  
-  
+  infoConfirmar= {
+    cliente:'', data_cliente:{}, vehiculo:'', data_vehiculo:{},sucursal:'', data_sucursal:{}, reporte:{}, no_os:'', dataFacturacion: {},observaciones:'',
+    checkList:[], vehiculos:[], elementos:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
+    detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
+    fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: '', descuento:0
+  }
 
   sinDetalles: boolean = false
   kilometraje:number =1234; diasEntrega:number = null
@@ -148,7 +150,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   clienteId:string = null
   observaciones:string = null
   //TODO: aqui la informacion que es nueva
-  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:'', nueva:true}
+  enrutamiento = {cliente:null, sucursal:null, cotizacion:null, tipo:null, anterior:null, vehiculo:null, recepcion:null, nueva:true}
   ParamsGet:any = {}
   
   faltante_s
@@ -208,61 +210,70 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   async acciones(){
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
 
-    let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
+    const campos_cotizacion_recupera = [
+      'elementos',
+      'formaPago',
+      'iva',
+      'margen',
+      'servicio',
+      'sucursal',
+      'vehiculo',
+      'sucursal',
+      'cliente'
+    ]
+    
+    if (cotizacion) {
+      const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica(cotizacion)
+      // console.log(data_cotizacion);
 
-    // if (cliente){
-    //   this.vigila_informacion_cliente({sucursal, cliente})
-    //   data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    //   vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+      campos_cotizacion_recupera.forEach(campo=>{
+        if(data_cotizacion[campo] ) this.infoConfirmar[campo] = data_cotizacion[campo]
+      })
+      const {sucursal, cliente, vehiculo}  = data_cotizacion
+      this.infoConfirmar.data_sucursal = this.data_sucursal_consulta(sucursal)
 
-    // }
-    // if (cliente) 
-    // if (cliente) data_cliente  = await this._clientes.consulta_Cliente(cliente)
+      const data_cliente = await this._clientes.consulta_Cliente(cliente)
+      this.infoConfirmar.data_cliente = data_cliente
 
-    if (cliente) {
+      if (vehiculo)  this.extra = vehiculo
+
+    }else if(recepcion){
+      const data_recepcion = await this._servicios.consulta_recepcion_unica(recepcion)
+
+      campos_cotizacion_recupera.forEach(campo=>{
+        if(data_recepcion[campo] ) this.infoConfirmar[campo] = data_recepcion[campo]
+      })
+      const {sucursal, cliente, vehiculo}  = data_recepcion
+      const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      this.infoConfirmar.data_sucursal = data_sucursal
+
+      const data_cliente = await this._clientes.consulta_Cliente(cliente)
+      this.infoConfirmar.data_cliente = data_cliente
+
+      if (vehiculo)  this.extra = vehiculo
+    } if (cliente || vehiculo ) {
+      const data_cliente  = await this._clientes.consulta_Cliente(cliente)
+      this.infoConfirmar.data_cliente =  this.nueva_data_cliente(data_cliente)
+      const {sucursal} = data_cliente
+      this.infoConfirmar.data_sucursal = this.data_sucursal_consulta(sucursal)
+      // console.log(cliente);
       this.infoConfirmar.cliente = cliente
-      data_cliente  = await this._clientes.consulta_Cliente(cliente)
-      data_cliente = this.nueva_data_cliente(data_cliente)
-    }
-    if (vehiculo) {
       this.extra = vehiculo
-    }
+    } 
+    // if (vehiculo) {
+    //   console.log(vehiculo);
+      
+    // }
 
     
-    if (recepcion){
-      const busqueda_ruta_recepcion = `recepciones/${recepcion}`
-      const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
-      // data_recepcion.elementos = data_recepcion.servicios
-      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
-      data_recepcion.nota = data_recepcion.nota || ''
-      campos.forEach(campo=>{
-        this.infoConfirmar[campo] = data_recepcion[campo]
-      })
-    }
-    if (cotizacion){
-      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${cotizacion}`
-      
-      const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
-      
-      const campos = ['formaPago','iva','margen','servicio','elementos','nota']
-      data_cotizacion.nota = data_cotizacion.nota || ''
-      campos.forEach(campo=>{
-        this.infoConfirmar[campo] = data_cotizacion[campo]
-      })
-    }
-
-    this.extra = vehiculo
-
-    this.infoConfirmar.cliente = cliente
-    this.infoConfirmar.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-    this.infoConfirmar.vehiculo = vehiculo
-    this.infoConfirmar.data_cliente = data_cliente
-    this.infoConfirmar.data_vehiculo = data_vehiculo
-    this.infoConfirmar.sucursal = sucursal
-
+    console.log(this.infoConfirmar);
+    
     this.realizaOperaciones()
     this.vigila_vehiculos_cliente()
 
+  }
+  data_sucursal_consulta(sucursal){
+    return this.sucursales_array.find(s=>s.id === sucursal)
   }
   async vigila_vehiculos_cliente(){
 
