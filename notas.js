@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "revisar exceso de descargas en firebase 2 (proceso)"
+git commit -m "empezar a trabajar con cache pruebas en automaticos (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

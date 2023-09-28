@@ -10,9 +10,23 @@ export class EncriptadoService {
 
 
   constructor() { }
+  servicioEncriptado_objetc(data:any){
+    return CryptoJS.AES.encrypt(JSON.stringify(data), this.cadenaEncriptamiento);
+    // return CryptoJS.AES.encrypt(objeto, this.cadenaEncriptamiento).toString() 
+  }
+  servicioDecrypt_object(data){
+    var bytes  = CryptoJS.AES.decrypt(data.toString(), this.cadenaEncriptamiento);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  }
+
+  guarda_informacion(data_gif){
+    const {nombre, data} = data_gif
+    const encriptado_sucursales = this.servicioEncriptado_objetc(data)
+    localStorage.setItem(`${nombre}`, encriptado_sucursales)
+  }
+
 
   servicioEncriptado(cadena: string){
-    // const encriptado:string =  
     return CryptoJS.AES.encrypt(cadena.trim(), this.cadenaEncriptamiento.trim()).toString() 
   }
   servicioDecrypt(cadena:string){

@@ -26,6 +26,7 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/services/servicios.service';
 
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -39,7 +40,8 @@ export class AutomaticosComponent implements OnInit {
   constructor(private _automaticos: AutomaticosService, private _encript: EncriptadoService, private _publicos: ServiciosPublicosService,
     private _security:EncriptadoService, public _router: Router, public _location: Location,private _pdfRecepcion: PdfRecepcionService,
     private _sucursales: SucursalesService, private _clientes: ClientesService, private _vehiculos: VehiculosService, 
-    private formBuilder: FormBuilder, private _servicios: ServiciosService
+    private formBuilder: FormBuilder, private _servicios: ServiciosService,
+
     ) {   }
   
     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
@@ -52,7 +54,6 @@ export class AutomaticosComponent implements OnInit {
       '-N2glf8hot49dUJYj5WP',
       '-NN8uAwBU_9ZWQTP3FP_',
     ]
-    clientes_arr = []
   _sucursal:string
 
   mensaje_actualizacion:boolean = true
@@ -86,18 +87,240 @@ export class AutomaticosComponent implements OnInit {
     }
   ]
 
+  recepciones_arr:any=[]
+  cotizaciones_arr:any=[]
+  clientes_arr:any=[]
+  vehiculos_arr:any=[]
+
+  // TODO esto pertenece a administracion
+  
+  hora_start = '00:00:01';
+  hora_end = '23:59:59';
+
+  fechas_getAdministracion ={start:new Date(), end:new Date() }
+  fechas_get_formateado_admin = {start:new Date(), end:new Date() }
+
+  reporteAdministracion = {
+    iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,
+    margen:0, por_margen:0
+  }
+  camposReporteAdministracion = [
+    {valor:'cantidad', show:'Ordenes cerradas'},
+    {valor:'subtotal', show:'Monto de ventas (Antes de IVA)'},
+    {valor:'refacciones', show:'Costos Refacciones (de los autos cerrados)'},
+    {valor:'operacion', show:'Costo Operacion'},
+    {valor:'margen', show:'Margen'},
+    {valor:'por_margen', show:'% Margen'},
+  ]
+  // TODO esto pertenece a administracion
+
+
   ngOnInit(): void {
     this.rol()
     const n = this._publicos.crearArreglo2(this._vehiculos.marcas_vehiculos)
     this.marcas_vehiculos_id = n.map(c=>{
       return c.id
     })
-    this.iperaciones_ewn()
   }
     rol(){
         const { rol, sucursal, usuario } = this._security.usuarioRol()
         this._sucursal = sucursal
     }
+
+
+    manejar_cache(){
+      const nombre:string = `historial_pagos_orden`.toString()
+      const starCountRef = ref(db, `${nombre}`)
+        onValue(starCountRef, (snapshot) => {
+          if (snapshot.exists()) {
+            this._encript.guarda_informacion({nombre, data: snapshot.val()})
+          }
+        })
+    }
+
+    revisar_cache(nombre:string){
+      const objeto_desencriptado = localStorage.getItem(`${nombre}`)
+      const desc = this._encript.servicioDecrypt_object(objeto_desencriptado)
+      const nueva = JSON.parse(JSON.stringify(desc));
+      return nueva
+    }
+    armar_informacion(){
+      console.time('Execution Time');
+    
+      const recepciones_object = this.revisar_cache('recepciones')
+      const cotizacionesRealizadas_object = this.revisar_cache('cotizacionesRealizadas')
+
+      const historial_gastos_orden = this.crearArreglo2(this.revisar_cache('historial_gastos_orden'))
+      const historial_pagos_orden = this.crearArreglo2(this.revisar_cache('historial_pagos_orden'))
+      
+      const clientes = this.revisar_cache('clientes')
+      const vehiculos = this.revisar_cache('vehiculos')
+
+      const clientes_arr = this.transformaDataCliente(this.crearArreglo2(clientes))
+      
+      const vehiculos_arr = this.transformaDataVehiculo({ vehiculos: this.crearArreglo2(vehiculos), clientes})
+
+      const enviar_recepciones = {
+        bruto: this.crearArreglo2(recepciones_object), 
+        clientes, 
+        vehiculos, 
+        historial_gastos_orden, 
+        historial_pagos_orden
+      }
+      const enviar_cotizaciones = {
+        bruto: this.crearArreglo2(cotizacionesRealizadas_object), 
+        clientes, 
+        vehiculos, 
+        historial_gastos_orden, 
+        historial_pagos_orden
+      }
+      const recepciones_arr = this.asigna_datos_recepcion(enviar_recepciones)
+      const cotizaciones_arr = this.asigna_datos_cotizaciones(enviar_cotizaciones)
+      
+      this.clientes_arr = clientes_arr
+      this.vehiculos_arr = vehiculos_arr
+      this.recepciones_arr = recepciones_arr
+      this.cotizaciones_arr = cotizaciones_arr
+
+      //empezar con administracion
+
+      
+      
+
+      const servicios_terminados = recepciones_arr.filter(s=>s.status === 'entregado')
+      console.log(servicios_terminados);
+
+
+      const solo_gastos_orden = this.obtener_historial_orden(servicios_terminados,'historial_gastos_orden')
+      const solo_pagos_orden = this.obtener_historial_orden(servicios_terminados,'historial_pagos_orden')
+      
+      console.log(solo_gastos_orden);
+
+      const total_gastos_ordenes = this.sumaroria_historial_orden(solo_gastos_orden)
+      console.log(total_gastos_ordenes);
+      const total_pagos_ordenes = this.sumaroria_historial_orden(solo_pagos_orden)
+      console.log(total_pagos_ordenes);
+      
+
+      
+      
+
+      // Ordenes cerradas
+      // 0
+      // Monto de ventas (Antes de IVA)
+      // $ 0.00
+      // Costos Refacciones (de los autos cerrados)
+      // $ 0.00
+      // Costo Operacion
+      // $ 0.00
+      // Margen
+      // $ 0.00
+      // % Margen
+
+
+      // this.resetea_horas_admin(this.fechas_getAdministracion)
+      // console.log(this.fechas_get_formateado_admin);
+      // const {start, end } = this.fechas_get_formateado_admin
+
+      // const nuevas = recepciones_arr.filter(r=>new Date(r.fecha_entregado) >= start && new Date(r.fecha_entregado) <= end && r.status === 'entregado')
+
+      // console.log(nuevas);
+      
+      console.timeEnd('Execution Time');
+    }
+    
+    asigna_datos_recepcion(data){
+      const {bruto, clientes, vehiculos, historial_gastos_orden, historial_pagos_orden} = data
+
+      const nuevos_ordenamiento =this._publicos.ordenamiento_fechas(bruto,'fecha_recibido',false)
+      return nuevos_ordenamiento.map(recepcion=>{
+        const {id, cliente, vehiculo,elementos, margen, iva, descuento, formaPago} = recepcion;
+        recepcion.historial_gastos_orden = this.filtra_orden(historial_gastos_orden, id)
+        recepcion.historial_pagos_orden = this.filtra_orden(historial_pagos_orden, id)
+        recepcion.data_cliente = clientes[cliente]
+        recepcion.data_vehiculo = vehiculos[vehiculo]
+        recepcion.reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+        return recepcion
+      })
+    }
+    asigna_datos_cotizaciones(data){
+      const {bruto, clientes, vehiculos} = data
+      const nuevos_ordenamiento =this._publicos.ordenamiento_fechas(bruto,'fecha_recibido',false)
+      return nuevos_ordenamiento.map(cotizacion=>{
+        const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id} = cotizacion;
+        cotizacion.data_cliente = clientes[cliente]
+        cotizacion.data_vehiculo = vehiculos[vehiculo]
+        cotizacion.reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+        return cotizacion
+      })
+    }
+    filtra_orden(arreglo, id_orden){
+      return [...arreglo].filter(f=>f.id_os === id_orden)
+    }
+    crearArreglo2(arrayObj: Record<string, any> | null): any[] {
+      if (!arrayObj) return []; 
+      return Object.entries(arrayObj).map(([key, value]) => ({ ...value, id: key }));
+    }
+
+    transformaDataCliente(data){
+      const nuevos = [...data]
+      const retornados = nuevos.map(cli=>{
+        const {sucursal, nombre, apellidos } = cli
+        cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+        cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+        return cli
+      })
+      return retornados
+    }
+
+    transformaDataVehiculo(data){
+      const { clientes, vehiculos} = data
+      const nuevos_ordenamiento =this._publicos.ordenamiento_fechas_x_campo(vehiculos,'placas',true)
+      return nuevos_ordenamiento.map(vehiculo=>{
+        const { cliente } = vehiculo
+        vehiculo.data_cliente = clientes[cliente]
+        return vehiculo
+      })
+    }
+    resetea_horas_admin(data){
+      const {start, end} = data
+      this.fechas_get_formateado_admin.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
+      this.fechas_get_formateado_admin.end = this._publicos.resetearHoras_horas(new Date(end), this.hora_end)
+    }
+    obtener_historial_orden(arreglo:any[], campo:string){
+      let nuevos =[ ...arreglo]
+      
+      const arreglado = nuevos.map(recepcion=>{
+        const historial_campo = recepcion[campo]
+        return historial_campo
+      })
+      return arreglado.flat()
+    }
+    sumaroria_historial_orden(arreglo:any[]):number{
+      let nuevos = [...arreglo]
+
+      let sumatoria_montos_historial = 0
+      nuevos.forEach(gs=>{
+        const {status, monto} = gs
+        if (status) {
+          sumatoria_montos_historial+= monto
+        }
+      })
+      return sumatoria_montos_historial
+    }
+
+
+    
+
+
+
+
+
+
+
+
+
+
     realizaOperacionesClientes2(){
       const new_mo:any[] = Object.keys(MO).map((mo)=>{
         MO[mo].tipo = 'mo'
@@ -362,20 +585,5 @@ export class AutomaticosComponent implements OnInit {
     operaciones_gastos(){
       const {refacciones, manos_obra} = BD
     }
-    iperaciones_ewn(){
-      const starCountRef = ref(db, `clientes`)
-      onValue(starCountRef, (snapshot) => {
-        get(starCountRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            console.log(data);
-            // Aquí puedes trabajar con los datos de la rama "clientes"
-          } else {
-            console.log('No existen datos en la rama "clientes".');
-          }
-        }).catch((error) => {
-          console.error('Error al obtener los datos de la rama "clientes":', error);
-        });
-      })
-    }
+    
 }

@@ -1596,10 +1596,21 @@ export class ServiciosPublicosService {
       return nuevos_elementos 
   
     }
+    ordenamiento_fechas_x_campo(arreglo:any, campo, orden){
+      let nuevos = [...arreglo]
+      return nuevos.sort((a, b) => {
+        if (a[campo] < b[campo]) {
+          return orden ? -1 : 1;
+        }
+        if (a[campo] > b[campo]) {
+          return orden ? 1 : -1;
+        }
+        return 0;
+    });
+    }
     ordenamiento_fechas(arreglo:any, campo, orden){
       let nuevos = [...arreglo]
       return nuevos.sort((a, b) => {
-        // if (campo === 'fecha_recibido') {
           if (new Date(a[campo]) < new Date(b[campo])) {
             return orden ? -1 : 1;
           }
@@ -1607,16 +1618,6 @@ export class ServiciosPublicosService {
             return orden ? 1 : -1;
           }
           return 0;
-        // }else{
-        //   if (a[campo] < b[campo]) {
-        //     return ascendente ? -1 : 1;
-        //   }
-        //   if (a[campo] > b[campo]) {
-        //     return ascendente ? 1 : -1;
-        //   }
-        //   return 0;
-        // }
-        
       });
     }
    

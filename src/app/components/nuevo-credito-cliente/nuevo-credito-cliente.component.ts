@@ -132,7 +132,7 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
     
     // Crea una consulta que comienza desde el valor inicial
     const consulta = query(referencia, startAt(valorInicial));
-    console.log(consulta);
+    // console.log(consulta);
     
     
     // Escucha cambios en los datos que coinciden con la consulta en tiempo real
