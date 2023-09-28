@@ -63,8 +63,6 @@ export class CorteIngresosComponent implements OnInit {
     {valor:'ventas', show:'Total ventas'},
     {valor:'operacion', show:'Gastos de operación'},
     {valor:'orden', show:'Gastos de ordenes'},
-    // {valor:'refacciones', show:'Refacciones'},
-    // {valor:'porcentaje', show:'% cumplido'},
     {valor:'sobrante', show:'GM'},
   ]
   metodospago = [
@@ -472,11 +470,8 @@ async nueva_consulta(){
           marca:'',
           modelo:'',
           descripcion:'',
-          // no_cliente: String(no_cliente).toUpperCase(),
           sucursal: '',
-          // correo_cliente,
           empresa: '',
-          // correo_sucursal,
           tipo:'',
           Efectivo:'',
           Cheque:'',
@@ -533,15 +528,13 @@ async nueva_consulta(){
   }
 
   arreglar_info_recepciones(recepciones_arr:any[]){
-    // console.log(recepciones_arr);
+
     const nueva = recepciones_arr.map(recep=>{
     const data_recepcion = JSON.parse(JSON.stringify(recep));
 
     const {marca, modelo, placas } = data_recepcion.data_vehiculo
 
-    const {no_cliente, sucursalShow, tipo, empresa, correo: correo_cliente} = data_recepcion.data_cliente
-
-    const { correo: correo_sucursal } = data_recepcion.data_sucursal
+    const { sucursalShow, tipo, empresa} = data_recepcion.data_cliente
 
     const {elementos, no_os, status, reporte, historial_pagos_orden    } = recep
 
@@ -563,19 +556,14 @@ async nueva_consulta(){
     const nombres_elementos = this._publicos.obtenerNombresElementos(elementos)
 
     let nueva_empresa = empresa ? empresa : ''
-    // const reporte_
-
     const temp_data = {
         no_os: String(no_os).toUpperCase(),
         placas:String(placas).toUpperCase() ,
         marca,
         modelo,
         descripcion: String(nombres_elementos).toLowerCase(),
-        // no_cliente: String(no_cliente).toUpperCase(),
         sucursal: sucursalShow,
-        // correo_cliente,
         empresa: nueva_empresa,
-        // correo_sucursal,
         tipo,
         Efectivo,
         Cheque,

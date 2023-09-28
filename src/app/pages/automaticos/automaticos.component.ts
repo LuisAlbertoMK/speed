@@ -25,6 +25,7 @@ import { child, get, getDatabase, onValue, ref, set, update,push } from "firebas
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/services/servicios.service';
+import { ExporterService } from 'src/app/services/exporter.service';
 
 
 const db = getDatabase()
@@ -40,7 +41,7 @@ export class AutomaticosComponent implements OnInit {
   constructor(private _automaticos: AutomaticosService, private _encript: EncriptadoService, private _publicos: ServiciosPublicosService,
     private _security:EncriptadoService, public _router: Router, public _location: Location,private _pdfRecepcion: PdfRecepcionService,
     private _sucursales: SucursalesService, private _clientes: ClientesService, private _vehiculos: VehiculosService, 
-    private formBuilder: FormBuilder, private _servicios: ServiciosService,
+    private formBuilder: FormBuilder, private _servicios: ServiciosService, private _exporter:ExporterService,
 
     ) {   }
   
@@ -101,7 +102,7 @@ export class AutomaticosComponent implements OnInit {
   fechas_get_formateado_admin = {start:new Date(), end:new Date() }
 
   reporteAdministracion = {
-    iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,
+    refacciones:0, subtotal:0, operacion:0, cantidad:0,
     margen:0, por_margen:0
   }
   camposReporteAdministracion = [
@@ -113,6 +114,48 @@ export class AutomaticosComponent implements OnInit {
     {valor:'por_margen', show:'% Margen'},
   ]
   // TODO esto pertenece a administracion
+
+  // TODO pertenece a corte de ingresos
+  reporte = {objetivo:0, operacion: 0, orden:0, ventas:0, sobrante:0, porcentajeGM:0, porcentaje:0, ticketPromedio:0, refacciones:0}
+  camposReporte = [
+    {valor:'ticketPromedio', show:'Ticket Promedio'},
+    {valor:'objetivo', show:'Objetivo'},
+    {valor:'ventas', show:'Total ventas'},
+    {valor:'operacion', show:'Gastos de operación'},
+    {valor:'orden', show:'Gastos de ordenes'},
+    {valor:'sobrante', show:'GM'},
+  ]
+  metodospago = [
+    {metodo:'1', show:'Efectivo'},
+    {metodo:'2', show:'Cheque'},
+    {metodo:'3', show:'Tarjeta'},
+    {metodo:'4', show:'OpenPay'},
+    {metodo:'5', show:'Clip'},
+    {metodo:'6', show:'BBVA'},
+    {metodo:'7', show:'BANAMEX'},
+    {metodo:'8', show:'credito'}
+  ]
+  metodos = {
+    Efectivo:0,
+    Cheque:0,
+    Tarjeta:0,
+    OpenPay:0,
+    Clip:0,
+    BBVA:0,
+    BANAMEX:0,
+    credito:0,
+  }
+  // TODO pertenece a corte de ingresos
+  //TODO reporte de gastos
+  reporte_gastos = {deposito: 0, operacion: 0, sobrante:0, orden:0, restante:0}
+  camposReporte_gastos = [
+    {valor:'deposito', show:'Depositos'},
+    {valor:'sobrante', show:'Suma de sobrantes'},
+    {valor:'operacion', show:'Gastos de operación'},
+    {valor:'orden', show:'Gastos de ordenes'},
+    {valor:'restante', show:'Sobrante op'},
+  ]
+  //TODO reporte de gastos
 
 
   ngOnInit(): void {
@@ -129,13 +172,28 @@ export class AutomaticosComponent implements OnInit {
 
 
     manejar_cache(){
-      const nombre:string = `historial_pagos_orden`.toString()
-      const starCountRef = ref(db, `${nombre}`)
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            this._encript.guarda_informacion({nombre, data: snapshot.val()})
-          }
-        })
+      const obtener = [
+        // 'historial_gastos_orden',
+        // 'historial_pagos_orden',
+        // 'clientes',
+        // 'recepciones',
+        // 'cotizaciones',
+        // 'cotizacionesRealizadas',
+        // 'historial_gastos_diarios',
+        // 'historial_gastos_operacion',
+        // 'vehiculos'
+      ]
+
+      obtener.forEach(camp=>{
+        const nombre:string = `${camp}`.toString()
+        const starCountRef = ref(db, `${nombre}`)
+          onValue(starCountRef, (snapshot) => {
+            if (snapshot.exists()) {
+              this._encript.guarda_informacion({nombre, data: snapshot.val()})
+            }
+          })
+      })
+      
     }
 
     revisar_cache(nombre:string){
@@ -152,6 +210,13 @@ export class AutomaticosComponent implements OnInit {
 
       const historial_gastos_orden = this.crearArreglo2(this.revisar_cache('historial_gastos_orden'))
       const historial_pagos_orden = this.crearArreglo2(this.revisar_cache('historial_pagos_orden'))
+
+      const gastos_operacion_object = this.revisar_cache('historial_gastos_operacion')
+      const gastos_operacion_array = this.crearArreglo2(gastos_operacion_object)
+
+      const historial_gastos_diarios_object = this.revisar_cache('historial_gastos_diarios')
+      const historial_gastos_diarios_array = this.crearArreglo2(historial_gastos_diarios_object)
+
       
       const clientes = this.revisar_cache('clientes')
       const vehiculos = this.revisar_cache('vehiculos')
@@ -180,66 +245,200 @@ export class AutomaticosComponent implements OnInit {
       this.clientes_arr = clientes_arr
       this.vehiculos_arr = vehiculos_arr
       this.recepciones_arr = recepciones_arr
+      console.log(this.recepciones_arr);
+      
       this.cotizaciones_arr = cotizaciones_arr
 
       //empezar con administracion
 
-      
-      
-
       const servicios_terminados = recepciones_arr.filter(s=>s.status === 'entregado')
-      console.log(servicios_terminados);
-
 
       const solo_gastos_orden = this.obtener_historial_orden(servicios_terminados,'historial_gastos_orden')
+      // console.log(solo_gastos_orden);
       const solo_pagos_orden = this.obtener_historial_orden(servicios_terminados,'historial_pagos_orden')
+      // console.log(solo_pagos_orden);
+      const total_gastos_ordenes = this.sumatorias_aprobados(solo_gastos_orden)
+      // console.log(total_gastos_ordenes);
+      const total_pagos_ordenes = this.sumatorias_aprobados(solo_pagos_orden)
+      // console.log(total_pagos_ordenes);
+      const total_gastos_operacion = this.sumatorias_aprobados(gastos_operacion_array)
+      // console.log(total_gastos_operacion);
+      const total_historial_gastos_diarios = this.sumatorias_aprobados(historial_gastos_diarios_array)
+      // console.log(total_historial_gastos_diarios);
+      const total_refacciones = this.suma_refacciones_os_cerradas(recepciones_arr)
+      // console.log(total_refacciones);
+      const total_subtotales_ventas = this.suma_gastos_ordenes_subtotales(recepciones_arr)
+      // console.log(total_subtotales_ventas);
+      let margen:number = 0, por_margen:number = 0, total_ordenes:number =0
+      total_ordenes = recepciones_arr.length
+      if (total_subtotales_ventas > 0) {
+        margen = total_subtotales_ventas - total_refacciones
+        por_margen = (margen / total_subtotales_ventas) * 100
+      }
       
-      console.log(solo_gastos_orden);
 
-      const total_gastos_ordenes = this.sumaroria_historial_orden(solo_gastos_orden)
-      console.log(total_gastos_ordenes);
-      const total_pagos_ordenes = this.sumaroria_historial_orden(solo_pagos_orden)
-      console.log(total_pagos_ordenes);
+      // this.reporteAdministracion.cantidad = total_ordenes
+      // this.reporteAdministracion.margen = margen
+      // this.reporteAdministracion.operacion = total_gastos_operacion
+      // this.reporteAdministracion.por_margen = por_margen
+      // this.reporteAdministracion.refacciones = total_refacciones
+      // this.reporteAdministracion.subtotal = total_subtotales_ventas
+
+      // console.log(this.reporteAdministracion);
       
 
+      //TODO acciones corte de ingresos
+
+
+      //TODO reporte de gastos
+//       deposito
+        // sobrante
+        // operacion
+        // orden
+        // restante
+        console.log(solo_gastos_orden);
+        console.log(historial_gastos_diarios_array);
+        
+
+        let gastos_finales = [...solo_gastos_orden,...historial_gastos_diarios_array, ...gastos_operacion_array]
+        
+        const reporte_gastos = this.reporte_gastos_sucursal_unica(gastos_finales)
+        console.log(reporte_gastos);
+        
+
+      //TODO reporte de gastos
+
+      // ticketPromedio
+      // objetivo
+      // ventas
+      // operacion
+      // orden
+      // sobrante
       
+      const ticketPromedio = total_subtotales_ventas / total_ordenes
+      // this.reporte.ventas - (this.reporte.operacion + this.reporte.orden)
+      const sobrante = total_subtotales_ventas - (total_gastos_operacion + total_gastos_ordenes)
+      // (this.reporte.sobrante / this.reporte.ventas) *  100
+      const porcentajeGM =  (sobrante / total_subtotales_ventas) * 100
       
-
-      // Ordenes cerradas
-      // 0
-      // Monto de ventas (Antes de IVA)
-      // $ 0.00
-      // Costos Refacciones (de los autos cerrados)
-      // $ 0.00
-      // Costo Operacion
-      // $ 0.00
-      // Margen
-      // $ 0.00
-      // % Margen
-
-
-      // this.resetea_horas_admin(this.fechas_getAdministracion)
-      // console.log(this.fechas_get_formateado_admin);
-      // const {start, end } = this.fechas_get_formateado_admin
-
-      // const nuevas = recepciones_arr.filter(r=>new Date(r.fecha_entregado) >= start && new Date(r.fecha_entregado) <= end && r.status === 'entregado')
-
-      // console.log(nuevas);
       
       console.timeEnd('Execution Time');
     }
-    
+    generaExcel_corte_ingresos(){
+      if (this.recepciones_arr.length) {
+        const nueva_data = this.arreglar_info_recepciones(this.recepciones_arr)
+        // const data_reporte_objetivos = this._publicos.crearArreglo2(this.reporte)
+        // console.log(nueva_data);
+        
+        const casdgfh = [
+          {valor:'objetivo', show:'Objetivo'},
+          {valor:'ventas', show:'Total ventas'},
+          {valor:'operacion', show:'Gastos de operación'},
+          {valor:'orden', show:'Gastos de ordenes'},
+          {valor:'refacciones', show:'Refacciones'},
+          {valor:'sobrante', show:'GM'},
+          {valor:'porcentajeGM', show:'% GM'},
+          {valor:'ticketPromedio', show:'ticket Promedio'},
+          {valor:'porcentaje', show:'% cumplido'},
+        ]
+  
+        
+        const data_reporte_objetivos = Object.keys(casdgfh).map((a,index)=>{
+          const name = casdgfh[index].show
+          return {
+            Nombre: name,
+            Valor: this.reporte[casdgfh[index].valor],
+          }
+        })
+  
+        // console.log(data_reporte_objetivos);
+        const metodos_ = this.obtener_suma_metodos(nueva_data)
+  
+        let linea_blanca = 
+        {
+            no_os: '',
+            placas:'',
+            marca:'',
+            modelo:'',
+            descripcion:'',
+            sucursal: '',
+            empresa: '',
+            tipo:'',
+            Efectivo:'',
+            Cheque:'',
+            Tarjeta:'',
+            OpenPay:'',
+            Clip:'',
+            BBVA:'',
+            BANAMEX:'',
+            credito:'',
+            subtotal:'',
+            iva:'',
+            total:'',
+            'status orden': '',
+          }
+          let nuevo_ob = JSON.parse(JSON.stringify(linea_blanca));
+          Object.keys(this.metodos).forEach(m=>{
+            nuevo_ob[m] = metodos_[m]
+          })
+          nueva_data.push({
+            ...nuevo_ob,
+            tipo: 'Totales formas pago'
+          })
+          nueva_data.push({
+            ...linea_blanca
+          })
+          
+  
+        // console.log(nueva_data);
+        // const {inicial, final} = this.fecha_formateadas
+  
+        // const { inicio: _inicial, final: _final } = this._publicos.getFirstAndLastDayOfCurrentMonth(inicial)
+        // const { inicio: _inicial_, final: _final_ } = this._publicos.getFirstAndLastDayOfCurrentMonth(final)
+  
+        // const uno = this._publicos.retorna_fechas_hora({fechaString: new Date(_inicial)}).formateada
+        // const uno_1 = this._publicos.retorna_fechas_hora({fechaString: new Date(_final_)}).formateada
+  
+        const dos = this._publicos.retorna_fechas_hora().formateada
+  
+        nueva_data.push({
+          ...linea_blanca,
+          Efectivo:'Arqueo Correspondiente a',
+          Tarjeta:'Fecha de Realizacion',
+        })
+        nueva_data.push({
+          ...linea_blanca,
+          Efectivo: `${'uno'} - ${'uno_1'}`,
+          Tarjeta: dos,
+        })
+        
+        this._exporter.genera_excel_recorte_ingresos({arreglo: nueva_data, data_reporte_objetivos})
+      }else{
+        this._publicos.swalToast(`Ningun registro`,0)
+      }
+    }
     asigna_datos_recepcion(data){
       const {bruto, clientes, vehiculos, historial_gastos_orden, historial_pagos_orden} = data
 
       const nuevos_ordenamiento =this._publicos.ordenamiento_fechas(bruto,'fecha_recibido',false)
       return nuevos_ordenamiento.map(recepcion=>{
-        const {id, cliente, vehiculo,elementos, margen, iva, descuento, formaPago} = recepcion;
+        const {id, cliente, vehiculo,elementos, margen, iva, descuento, formaPago, sucursal} = recepcion;
         recepcion.historial_gastos_orden = this.filtra_orden(historial_gastos_orden, id)
         recepcion.historial_pagos_orden = this.filtra_orden(historial_pagos_orden, id)
         recepcion.data_cliente = clientes[cliente]
         recepcion.data_vehiculo = vehiculos[vehiculo]
         recepcion.reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+        recepcion.data_sucursal = this._sucursales.lista_en_duro_sucursales.find(s=>s.id === sucursal)
+        const solo_gastos_orden = this.obtener_historial_orden([recepcion],'historial_gastos_orden')
+        const total_gastos = this.sumatorias_aprobados(solo_gastos_orden)
+        // recepcion.reporte_real = sumatoria_reporte(total_gastos_ordenes, margen, iva)
+
+        const nuevo = JSON.parse(JSON.stringify(recepcion.reporte));
+        nuevo['refaccion'] = total_gastos
+
+        const reporte_real = this.sumatoria_reporte(nuevo, margen, iva)
+        recepcion.reporte_real = reporte_real
+    
         return recepcion
       })
     }
@@ -254,6 +453,26 @@ export class AutomaticosComponent implements OnInit {
         return cotizacion
       })
     }
+    obtener_suma_metodos (nueva_data:any[]){
+      let metodos = JSON.parse(JSON.stringify(this.metodos));
+      nueva_data.forEach(g=>{
+        Object.keys(metodos).forEach(m=>{
+          metodos[m] += parseFloat(g[m])
+        })
+      })
+      return metodos
+    }
+    obtener_pormetodo(historial_pagos:any[]){
+      let metodos = JSON.parse(JSON.stringify(this.metodos));
+      historial_pagos.forEach(h=>{
+        const  {metodo, monto} = h
+        const data_pago = this.metodospago.find(m=>m.metodo === metodo)
+        if (metodo === data_pago.metodo) {
+          metodos[data_pago.show] += parseFloat(monto)
+        }
+      })
+      return metodos
+    }
     filtra_orden(arreglo, id_orden){
       return [...arreglo].filter(f=>f.id_os === id_orden)
     }
@@ -261,7 +480,6 @@ export class AutomaticosComponent implements OnInit {
       if (!arrayObj) return []; 
       return Object.entries(arrayObj).map(([key, value]) => ({ ...value, id: key }));
     }
-
     transformaDataCliente(data){
       const nuevos = [...data]
       const retornados = nuevos.map(cli=>{
@@ -272,7 +490,6 @@ export class AutomaticosComponent implements OnInit {
       })
       return retornados
     }
-
     transformaDataVehiculo(data){
       const { clientes, vehiculos} = data
       const nuevos_ordenamiento =this._publicos.ordenamiento_fechas_x_campo(vehiculos,'placas',true)
@@ -289,14 +506,13 @@ export class AutomaticosComponent implements OnInit {
     }
     obtener_historial_orden(arreglo:any[], campo:string){
       let nuevos =[ ...arreglo]
-      
       const arreglado = nuevos.map(recepcion=>{
         const historial_campo = recepcion[campo]
         return historial_campo
       })
       return arreglado.flat()
     }
-    sumaroria_historial_orden(arreglo:any[]):number{
+    sumatorias_aprobados(arreglo:any[]):number{
       let nuevos = [...arreglo]
 
       let sumatoria_montos_historial = 0
@@ -308,7 +524,114 @@ export class AutomaticosComponent implements OnInit {
       })
       return sumatoria_montos_historial
     }
+    suma_refacciones_os_cerradas(arreglo:any[]):number{
+      let refacciones = 0
+      arreglo.forEach(recep=>{
+        const {reporte} = recep
+        const {refaccionVenta} = reporte
+        refacciones += refaccionVenta
+      })
+      return refacciones
+    }
+    suma_gastos_ordenes_subtotales(data:any[]):number{
+      let  total_ventas= 0
+        data.forEach(f=>{
+          const {total_gastos, reporte} = f
+          const {subtotal } = reporte
+          total_ventas += subtotal
+        })
+      return  total_ventas
+    }
+    arreglar_info_recepciones(recepciones_arr:any[]){
 
+      const nueva = recepciones_arr.map(recep=>{
+      const data_recepcion = JSON.parse(JSON.stringify(recep));
+  
+      const {marca, modelo, placas } = data_recepcion.data_vehiculo
+  
+      const {  tipo, empresa} = data_recepcion.data_cliente
+      const {sucursal: sucursalShow} = data_recepcion.data_sucursal
+  
+      const {elementos, no_os, status, reporte, historial_pagos_orden, reporte_real    } = recep
+  
+      const {subtotal, iva, total } = reporte_real
+      const { formaPago } = data_recepcion
+      
+      const {
+        Efectivo,
+        Cheque,
+        Tarjeta,
+        OpenPay,
+        Clip,
+        BBVA,
+        BANAMEX,
+        credito
+      }
+      = this.obtener_pormetodo(historial_pagos_orden)
+  
+      const nombres_elementos = this._publicos.obtenerNombresElementos(elementos)
+  
+      let nueva_empresa = empresa ? empresa : ''
+      const temp_data = {
+          no_os: String(no_os).toUpperCase(),
+          placas:String(placas).toUpperCase() ,
+          marca,
+          modelo,
+          descripcion: String(nombres_elementos).toLowerCase(),
+          sucursal: sucursalShow,
+          empresa: nueva_empresa,
+          tipo,
+          Efectivo,
+          Cheque,
+          Tarjeta,
+          OpenPay,
+          Clip,
+          BBVA,
+          BANAMEX,
+          credito,
+          subtotal,
+          iva,
+          total,
+          'status orden': status,
+        }
+        return temp_data
+      })
+      
+      return nueva
+    }
+    sumatoria_reporte(data, margen, iva){
+      const {mo,refaccion} = data
+      const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0}
+      reporte.mo = mo 
+      reporte.refaccion = refaccion
+      reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
+      reporte.subtotal = reporte.mo + reporte.refaccionVenta
+      reporte.iva = (iva) ? reporte.subtotal * .16 : reporte.subtotal
+      reporte.total = reporte.subtotal + reporte.iva
+      if (reporte.subtotal) {
+        reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+      }
+      return reporte
+    }
+   reporte_gastos_sucursal_unica(data:any[]){
+    let nueva = [...data]
+    const tipos = ['deposito', 'operacion', 'sobrante', 'gasto', 'orden'];
+    const reporte_general = { deposito: 0, operacion: 0, sobrante: 0, orden: 0, restante:0 };
+    
+    nueva.forEach(({ tipo, monto, status }) => {
+      if (status && tipos.includes(tipo)) reporte_general[tipo] += monto;
+    });
+
+    const { deposito, operacion, sobrante, orden } = reporte_general;
+
+    const gastos:number = operacion + orden
+    const suma_positivos:number = deposito + sobrante
+
+    reporte_general.restante = suma_positivos - gastos;
+
+    return reporte_general;
+    
+  }
 
     
 

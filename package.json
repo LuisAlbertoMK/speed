@@ -49,7 +49,7 @@
     "event-utils": "^2.1.0",
     "file-saver": "^2.0.5",
     "firebase": "^10.4.0",
-    "firebaseui": "^6.0.2",
+    "firebaseui": "^6.1.0",
     "html2canvas": "^1.4.1",
     "jquery": "^3.6.4",
     "jspdf": "^2.5.1",
