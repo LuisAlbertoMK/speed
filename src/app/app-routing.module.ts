@@ -42,6 +42,8 @@ import { HistorialClienteVehiculoComponent } from './pages/historial-cliente-veh
 import { HistorialVehiculoClienteComponent } from './pages/historial-vehiculo-cliente/historial-vehiculo-cliente.component';
 import { MiperfilComponent } from './pages/miperfil/miperfil.component';
 import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-cliente.component';
+import { VehiculoComponent } from './components/vehiculo/vehiculo.component';
+import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
 
 const routes: Routes = [];
 
@@ -73,6 +75,7 @@ const APP_ROUTES: Routes = [
   { path: 'administracion', component: AdministracionComponent,canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'editar-os', component: EditarOsComponent,canActivate:[AuthGuard,GuardClienteGuard]},
   { path: 'corte', component: CorteIngresosComponent,canActivate:[AuthGuard,GuardClienteGuard]},
+  { path: 'vehiculos', component: VehiculosComponent,canActivate:[AuthGuard,GuardClienteGuard]},
 
   { path: 'automaticos', component: AutomaticosComponent, canActivate:[GuardClienteGuard,AuthGuard]},
 

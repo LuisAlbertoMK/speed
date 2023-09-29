@@ -101,18 +101,18 @@ export class AutomaticosComponent implements OnInit {
   fechas_getAdministracion ={start:new Date(), end:new Date() }
   fechas_get_formateado_admin = {start:new Date(), end:new Date() }
 
-  reporteAdministracion = {
-    refacciones:0, subtotal:0, operacion:0, cantidad:0,
-    margen:0, por_margen:0
-  }
-  camposReporteAdministracion = [
-    {valor:'cantidad', show:'Ordenes cerradas'},
-    {valor:'subtotal', show:'Monto de ventas (Antes de IVA)'},
-    {valor:'refacciones', show:'Costos Refacciones (de los autos cerrados)'},
-    {valor:'operacion', show:'Costo Operacion'},
-    {valor:'margen', show:'Margen'},
-    {valor:'por_margen', show:'% Margen'},
-  ]
+    reporteAdministracion = {
+      refacciones:0, subtotal:0, operacion:0, cantidad:0,
+      margen:0, por_margen:0
+    }
+    camposReporteAdministracion = [
+      {valor:'cantidad', show:'Ordenes cerradas'},
+      {valor:'subtotal', show:'Monto de ventas (Antes de IVA)'},
+      {valor:'refacciones', show:'Costos Refacciones (de los autos cerrados)'},
+      {valor:'operacion', show:'Costo Operacion'},
+      {valor:'margen', show:'Margen'},
+      {valor:'por_margen', show:'% Margen'},
+    ]
   // TODO esto pertenece a administracion
 
   // TODO pertenece a corte de ingresos

@@ -162,6 +162,7 @@ import { ModeloCompatiblesComponent } from './components/modelo-compatibles/mode
 import { DetallesPaqueteComponent } from './components/detalles-paquete/detalles-paquete.component';
 import { TemplateReporteRealComponent } from './components/template-reporte-real/template-reporte-real.component';
 import { NuevoCreditoClienteComponent } from './components/nuevo-credito-cliente/nuevo-credito-cliente.component';
+import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -257,6 +258,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DetallesPaqueteComponent,
     TemplateReporteRealComponent,
     NuevoCreditoClienteComponent,
+    VehiculosComponent,
   ],
   imports: [
     BrowserModule,

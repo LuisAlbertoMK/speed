@@ -113,11 +113,11 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
       }
     }else if(this._rol !=='cliente'){
       if (pagina === 'cotizacionNueva' && !tipo) {
-        queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
+        queryParams = { anterior:'historial-vehiculo', cotizacion: idCotizacion} 
       }else if (pagina === 'cotizacionNueva' && tipo) {
         queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
       }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-        queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
+        queryParams = { anterior:'historial-vehiculo', cotizacion: idCotizacion} 
       }else if (pagina === 'ServiciosConfirmar' && tipo) {
         queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
       }

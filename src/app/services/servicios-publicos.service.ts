@@ -1817,5 +1817,32 @@ export class ServiciosPublicosService {
       })
       return retornados
     }
+    suma_refacciones_os_cerradas(arreglo:any[]):number{
+      let refacciones = 0
+      arreglo.forEach(recep=>{
+        const {reporte} = recep
+        const {refaccionVenta} = reporte
+        refacciones += refaccionVenta
+      })
+      return refacciones
+    }
+    suma_gastos_ordenes_subtotales(data:any[]):number{
+      let  total_ventas= 0
+        data.forEach(f=>{
+          const {total_gastos, reporte} = f
+          const {subtotal } = reporte
+          total_ventas += subtotal
+        })
+      return  total_ventas
+    }
+    suma_refacciones_os_cerradas_reales(arreglo:any[]):number{
+      let refacciones = 0
+      arreglo.forEach(recep=>{
+        const {reporte_real} = recep
+        const {refaccionVenta} = reporte_real
+        refacciones += refaccionVenta
+      })
+      return refacciones
+    }
       
  }

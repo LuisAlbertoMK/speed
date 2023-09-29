@@ -28,6 +28,7 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
 
   @Input() vehiculos_arr:any[] = []
+  @Input() show_cliente:boolean = false
   
 
   constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService) { }
@@ -36,7 +37,7 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
   dataSource = new MatTableDataSource(); //elementos
   //  'clienteShow'
   vehiculos = ['placas','marca','modelo','anio','categoria']; //vehiculos
-  columnsToDisplayWithExpand = [...this.vehiculos, 'opciones']; //vehiculos
+  columnsToDisplayWithExpand = [...this.vehiculos, 'opciones','expand']; //vehiculos
   expandedElement: any | null; //vehiculos
   @ViewChild('vehiculos') sort: MatSort //vehiculos
   @ViewChild('vehiculosPaginator') paginator: MatPaginator //vehiculos

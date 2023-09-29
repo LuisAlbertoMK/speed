@@ -22,8 +22,8 @@ export class InicioComponent implements OnInit {
     {path:'catalogos', show:'Catalogos',icono:'address-book'},
     {path:'citas', show:'Citas',icono:'calendar-check'},
     {path:'clientes', show:'Clientes',icono:'user'},
-    {path:'cotizacion', show:'Cotizaciones',icono:'folder'},
     {path:'corte', show:'Corte de ingresos',icono:'folder'},
+    {path:'cotizacion', show:'Cotizaciones',icono:'folder'},
     {path:'eliminarEmpresa', show:'Elimina empresa',icono:'ban'},
     {path:'facturacion', show:'Facturación',icono:'file-contract'},
     {path:'recordatorios', show:'Recordatorios',icono:'alarm-exclamation'},
@@ -32,6 +32,7 @@ export class InicioComponent implements OnInit {
     {path:'servicios', show:'Órdenes de servicio',icono:'car-building'},
     {path:'sucursales', show:'Sucursales',icono:'landmark'},
     {path:'usuarios', show:'Usuarios y roles',icono:'user'},
+    {path:'vehiculos', show:'Vehiculos',icono:'user'},
   ]
   asigancion_roles_cliente = [
     {path:'miPerfil', show:'Mi informacion',icono:'book'},

@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "arreglar cotizacion new   (proceso)"
+git commit -m "arreglar corte de ingresos en tamaño sm / md   (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

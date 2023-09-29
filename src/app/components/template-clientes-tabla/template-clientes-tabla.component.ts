@@ -106,11 +106,11 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
     
     let queryParams = {}
     if (pagina === 'historial-cliente') {
-      queryParams = { anterior:'clientes', sucursal, cliente: id  } 
+      queryParams = { anterior:'clientes', cliente: id  } 
     } else if (pagina === 'cotizacionNueva') {
-      queryParams = { anterior:'clientes', cliente: id, sucursal, tipo: 'cliente'  } 
+      queryParams = { anterior:'clientes', cliente: id, } 
     } else if (pagina === 'ServiciosConfirmar') {
-      queryParams = { anterior:'clientes',  tipo:'cliente', cliente: id, sucursal, vehiculo:'' } 
+      queryParams = { anterior:'clientes',  tipo:'cliente', cliente: id, vehiculo:'' } 
     }
 
     // console.log(queryParams);

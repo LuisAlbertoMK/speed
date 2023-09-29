@@ -144,6 +144,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
+      console.log(params);
+      
       this.cargaDataCliente_new()
     });
   }
@@ -153,16 +155,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     let  data_cliente:any = {},  vehiculos_arr = [], data_vehiculo = {}
 
-    this.infoCotizacion = this._cotizacion.infoCotizacion
-    // console.log(cliente);
-    if (cliente) this.infoCotizacion.cliente = cliente
-    
-    if (cliente) {
-      data_cliente  = await this._clientes.consulta_Cliente(cliente)
-      data_cliente = this.nueva_data_cliente(data_cliente)
-    }
-  
-    // if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
     // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
 
     // console.log(vehiculos_arr);
@@ -180,59 +173,73 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       'servicio',
       'sucursal',
       'vehiculo',
+      'data_cliente',
+      'data_vehiculo',
+      'data_sucursal',
+      'promocion'
     ]
 
     if (recepcion){
 
-      // const busqueda_ruta_recepcion = `recepciones/${recepcion}`
-      // const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
-      
-      // data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
-      // data_recepcion.nota = nota_valida(data_recepcion.nota)
+      const recepciones_object = this._publicos.revisar_cache('recepciones')
+      const clientes = this._publicos.revisar_cache('clientes')
+      const vehiculos = this._publicos.revisar_cache('vehiculos')
+      const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_gastos_orden'))
+      const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_pagos_orden'))
 
-      // function nota_valida(nota){
-      //   let nueva_nota = nota
-      //   if (!nota || nota === undefined || nota === null) {
-      //     nueva_nota = ''
-      //   }
-      //   return nueva_nota
-      // }
-
-      // campos.forEach(campo=>{
-      //   this.infoCotizacion[campo] = data_recepcion[campo]
-      // })
+      const data_recepcion = recepciones_object[recepcion]
       
+      const cotizaciones_arregladas = this._publicos.asigna_datos_recepcion({
+        bruto: [data_recepcion], clientes, vehiculos,
+        historial_gastos_orden,
+        historial_pagos_orden
+      })
+
+      const nueva_data_recepcion = cotizaciones_arregladas[0]
+
+      nueva_data_recepcion.descuento = (nueva_data_recepcion.descuento) ? nueva_data_recepcion.descuento : 0
+      nueva_data_recepcion.nota = (nueva_data_recepcion.nota) ? nueva_data_recepcion.nota : ''
+      nueva_data_recepcion.promocion = (nueva_data_recepcion.promocion) ? nueva_data_recepcion.promocion : 'ninguna'
+
+      campos.forEach(campo=>{
+        this.infoCotizacion[campo] = nueva_data_recepcion[campo]
+      })
+      this.extra = cotizaciones_arregladas[0].vehiculo
     }
     if (cotizacion){
+
       const cotizacionesRealizadas_object = this._publicos.revisar_cache('cotizacionesRealizadas')
-      
-      // const cotizaciones_arregladas = this._publicos.asigna_datos_cotizaciones(cotizacionesRealizadas_object)
-
-
+      const clientes = this._publicos.revisar_cache('clientes')
+      const vehiculos = this._publicos.revisar_cache('vehiculos')
       
       const data_cotizacion = cotizacionesRealizadas_object[cotizacion]
 
-      data_cotizacion.descuento = (data_cotizacion.descuento) ? data_cotizacion.descuento : 0
-      data_cotizacion.nota = (data_cotizacion.nota) ? data_cotizacion.nota : ''
-
+      const cotizaciones_arregladas = this._publicos.asigna_datos_cotizaciones({bruto: [data_cotizacion], clientes, vehiculos})
+      
+      const nueva_data_cotizacion = cotizaciones_arregladas[0]
+      
+      nueva_data_cotizacion.descuento = (nueva_data_cotizacion.descuento) ? nueva_data_cotizacion.descuento : 0
+      nueva_data_cotizacion.nota = (nueva_data_cotizacion.nota) ? nueva_data_cotizacion.nota : ''
+      nueva_data_cotizacion.promocion = (nueva_data_cotizacion.promocion) ? nueva_data_cotizacion.promocion : 'ninguna'
+      
       campos.forEach(campo=>{
-        this.infoCotizacion[campo] = data_cotizacion[campo]
+        this.infoCotizacion[campo] = nueva_data_cotizacion[campo]
       })
-      this.extra = vehiculo
+
+
+      this.extra = cotizaciones_arregladas[0].vehiculo
     }
-
-    // this.extra = vehiculo
-
-    // this.infoCotizacion.data_cliente = data_cliente
-
 
     if (cliente) {
-      this.infoCotizacion.sucursal = data_cliente.sucursal
-      this.infoCotizacion.data_sucursal = this.sucursales_array.find(sucursal => sucursal.id === data_cliente.sucursal)
+      const cadena = `${cliente}`.length
+      if (cadena < 15) return
+      const clientes = this._publicos.revisar_cache('clientes')
+      this.infoCotizacion.cliente = cliente
+      this.infoCotizacion.data_cliente = clientes[cliente]
     }
-    
-    this.infoCotizacion.vehiculo = vehiculo
 
+    console.log(this.infoCotizacion);
+    
     this.realizaOperaciones()
     this.vigila_vehiculos_cliente()
 
@@ -671,6 +678,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     .catch(err=>{
       Swal.close()
       this._publicos.mensajeSwal('algo salio mal',0)
+      this.enProceso = false
     })
   }
   newPagination(){

@@ -1,114 +1,54 @@
 <app-template-navegacion></app-template-navegacion>
 
 <div class="row">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-    <button aria-label="Registro de objetivos" class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modal-registro-metas" #tooltip="matTooltip"
-    matTooltip="Registro objetivo mes">
-      <i class="fa fa-keyboard"></i>
-    </button>
-  </div>
-</div>
-
-<div class="row">
-  <ng-container *ngIf="_sucursal ==='Todas'">
-  <div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-1">
-      <form  [formGroup]="my_control">
-        <select aria-label="Lista sucursales" name="sucursales" id="sucursales" class="form-control form-control-sm custom-select" formControlName="sucursal">
-          <option value="" >Selecciona sucursal</option>
-          <option [value]="sucu.id" *ngFor="let sucu of sucursales_array" >
-              {{sucu.sucursal}}
-          </option>
-        </select>
-      </form>
-    </div>
-  </ng-container>
-  <div class="col-lg-6 col-md-6 col-sm-6 col-12 ">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
     <div class="input-group mb-3 ">
-      <mat-date-range-picker #picker></mat-date-range-picker>
-      <mat-date-range-input  (click)="picker.open()"  class="pointer form-control" [formGroup]="fechas_corte" [rangePicker]="picker">
-        <input name="inicial" matStartDate class="mr-2" formControlName="inicial" readonly placeholder="Inicio">
-        <input name="final" matEndDate formControlName="final" readonly placeholder="Final">
-      </mat-date-range-input>
-      <div class="input-group-append">
-        <button aria-label="boton de calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
-          <i class="fa fa-calendar-alt"></i>
-        </button>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="fechas_filtro" [rangePicker]="picker">
+          <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio" id="Inicio">
+          <input matEndDate formControlName="end" readonly placeholder="Final" id="Final">
+        </mat-date-range-input>
+        <div class="input-group-append">
+          <button aria-label="boton de calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
+            <i class="fa fa-calendar-alt"></i>
+          </button>
+        </div>
       </div>
-    </div>
+</div>
+  <div class="col-lg-6 col-md-8 col-sm-12 col-12">
+    <div class="card border-success mb-3">
+      <div class="card-header text-center">Corte de ingresos</div>
+      <div class="card-body text-success ">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">Total ordenes </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.total_ordenes}}</strong></div>
+            </div>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+              <ng-container *ngFor="let item of camposReporte">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item.show}}</div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
+            </ng-container>
+            </div>
+          </div>
+          
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">% GM </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentajeGM | monedas:'%'}}</strong></div>
     
-  </div>
-</div>
-
-
-
-
-<div class="card">
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">mes / anio</th>
-            <th scope="col">objetivo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of metas_mes; let i = index">
-            <th scope="row">{{i +1 }}</th>
-            <td>{{item.mes}} / {{item.anio}}</td>
-            <td>{{item.objetivo | monedas}}</td>
-          </tr>    
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<button  aria-label="botn actualizar reporte" type="button" class="btn btn-sm btn-primary m-1" (click)="actualiza()">actualiza</button>
-
-<div class="card col-lg-6 col-md-6 col-sm-12 col-12 text-center">
-  <div class="card-body text-success ">
-    <div class="row">
-      <ng-container *ngFor="let item of camposReporte">
-          <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-start">{{item.show}}</div>
-          <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
-      </ng-container>
-      
-      <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-start">% GM </div>
-      <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end"><strong>{{reporte.porcentajeGM | monedas:'%'}}</strong></div>
-
-      <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-start">% Cumplido </div>
-      <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-end"><strong>{{reporte.porcentaje | monedas:'%'}}</strong></div>
-    </div>
-  </div>
-</div>
-
-
-<div class="row">
-  <div class="col text-end">
-    <button class="btn btn-sm btn-success m-1" (click)="generaExcel()">
-      Reporte órdenes entregadas <i class="fa fa-file-excel"></i>
-    </button>
-  </div>
-</div>
-
-<app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [reales]="true" [muestra_desgloce]="false" [muestra_cliente]="true"> </app-template-tabla-recepciones>
-
-
-<div class="modal fade" id="modal-registro-metas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="exampleModalLabel" aria-hidden="true" >
-  <div
-    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="modal-body m-2">
-        <app-registra-objetivo ></app-registra-objetivo>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">% Cumplido </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentaje | monedas:'%'}}</strong></div>
+        </div>
       </div>
     </div>
   </div>
+  
 </div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
+  <!-- <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false" [muestra_cliente]="true"></app-template-tabla-recepciones> -->
+  <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [reales]="true" [muestra_desgloce]="false" [muestra_cliente]="true"> </app-template-tabla-recepciones>
+</div>
+
