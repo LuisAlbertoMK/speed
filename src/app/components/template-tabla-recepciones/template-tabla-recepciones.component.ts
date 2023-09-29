@@ -10,6 +10,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Router } from '@angular/router';
 import { CamposSystemService } from '../../services/campos-system.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
 
 @Component({
@@ -29,12 +31,14 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 })
 export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
-  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService) { }
+  constructor(
+    private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService, 
+    private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService) { }
   @Input() recepciones_arr:any[] = []
   @Input() muestra_desgloce:boolean = false
   @Input() muestra_cliente:boolean = false
   @Input() reales:boolean = false
-  
+  @Input() filtro:boolean = false
 
   dataSource = new MatTableDataSource(); //elementos
   //  'clienteShow'
@@ -45,7 +49,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
    @ViewChild('recepciones') sort: MatSort //cotizaciones
    
    formasPago = [...this._campos.formasPago]
-
+   sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
   reporte_totales = {
     mo:0,
     refaccion:0,
@@ -73,7 +77,10 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   servicio_editar
   contador_resultados:number = 0
 
-  rol_:string
+  _rol:string
+  _sucursal:string
+
+  filtro_sucursal:string
   ngOnInit(): void {
     this.roles()
   }
@@ -89,7 +96,9 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   } 
   roles(){
     const { rol, sucursal } = this._security.usuarioRol()
-    this.rol_ = rol
+    this._rol = rol
+    this._sucursal = sucursal
+    
   }
   irPagina(pagina, data, nueva?){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
@@ -97,12 +106,12 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     
     let queryParams = {}
 
-    if (this.rol_ === 'cliente') {
+    if (this._rol === 'cliente') {
       if (pagina === 'cotizacionNueva' && !tipo) {
         pagina = 'cotizacion-new-cliente'
         queryParams = { anterior:'miPerfil',cliente, sucursal, recepcion: idCotizacion, tipo:'cotizacion',vehiculo} 
       }
-    }else if(this.rol_ !=='cliente'){
+    }else if(this._rol !=='cliente'){
       if (pagina ==='cotizacionNueva') {
         queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
       } else if(pagina === 'ServiciosConfirmar'){
@@ -168,6 +177,17 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  filtra_informacion(){
+    
+    const nuevas = [...this.recepciones_arr]
+    const ordenar = (this.filtro_sucursal === 'Todas') ? nuevas : this._publicos.filtra_campo(nuevas,'sucursal',this.filtro_sucursal)
+    const resultados = this._publicos.ordenamiento_fechas(ordenar,'fecha_recibido',false)
+
+    this.contador_resultados = resultados.length
+    this.dataSource.data = resultados
+    this.newPagination()
   }
 
 

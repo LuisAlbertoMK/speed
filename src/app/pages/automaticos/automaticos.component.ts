@@ -173,19 +173,21 @@ export class AutomaticosComponent implements OnInit {
 
     manejar_cache(){
       const obtener = [
-        // 'historial_gastos_orden',
-        // 'historial_pagos_orden',
-        // 'clientes',
-        // 'recepciones',
-        // 'cotizaciones',
-        // 'cotizacionesRealizadas',
-        // 'historial_gastos_diarios',
-        // 'historial_gastos_operacion',
-        // 'vehiculos'
+        'historial_gastos_orden',
+        'historial_pagos_orden',
+        'clientes',
+        'recepciones',
+        'cotizaciones',
+        'cotizacionesRealizadas',
+        'historial_gastos_diarios',
+        'historial_gastos_operacion',
+        'vehiculos'
       ]
 
       obtener.forEach(camp=>{
         const nombre:string = `${camp}`.toString()
+        console.log(nombre);
+        
         const starCountRef = ref(db, `${nombre}`)
           onValue(starCountRef, (snapshot) => {
             if (snapshot.exists()) {
@@ -296,14 +298,14 @@ export class AutomaticosComponent implements OnInit {
         // operacion
         // orden
         // restante
-        console.log(solo_gastos_orden);
-        console.log(historial_gastos_diarios_array);
+        // console.log(solo_gastos_orden);
+        // console.log(historial_gastos_diarios_array);
         
 
         let gastos_finales = [...solo_gastos_orden,...historial_gastos_diarios_array, ...gastos_operacion_array]
         
         const reporte_gastos = this.reporte_gastos_sucursal_unica(gastos_finales)
-        console.log(reporte_gastos);
+        // console.log(reporte_gastos);
         
 
       //TODO reporte de gastos
@@ -613,7 +615,7 @@ export class AutomaticosComponent implements OnInit {
       }
       return reporte
     }
-   reporte_gastos_sucursal_unica(data:any[]){
+    reporte_gastos_sucursal_unica(data:any[]){
     let nueva = [...data]
     const tipos = ['deposito', 'operacion', 'sobrante', 'gasto', 'orden'];
     const reporte_general = { deposito: 0, operacion: 0, sobrante: 0, orden: 0, restante:0 };
@@ -631,7 +633,7 @@ export class AutomaticosComponent implements OnInit {
 
     return reporte_general;
     
-  }
+    }
 
     
 

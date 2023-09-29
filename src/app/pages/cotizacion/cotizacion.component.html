@@ -7,243 +7,26 @@
   <button class="btn btn-primary btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="irPagina('cotizacionNueva',{tipo: 'nueva'})">
     <i class="fad fa-layer-plus"></i> &nbsp; Cotizacón
   </button>
-  <button class="btn btn-primary btn-sm m-1" [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="exportar()">
-    <i class="fa fa-file-excel"></i> &nbsp; exportar 
-  </button>
 </div>
-<!-- <ng-container *ngIf="cargandoInformacion; else elseInfoLista">
-  <div class="alert alert-info row text-center">
-    <strong>Cargando información</strong>
-    <p><i class="fa fa-sync fa-2x fa-spin"></i></p>
-    <strong>Espere</strong>
-  </div>
-</ng-container>
-<ng-template #elseInfoLista>
+<div class="row">
 
-</ng-template> -->
 
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
-      <input type="text" id="busqueda_cotizacion" class="form-control form-control-sm" placeholder="Buscar" [value]="busqueda" (keyup)="applyFilter($event)">
+<div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
+  <div class="input-group mb-3 ">
+      <mat-date-range-picker #picker></mat-date-range-picker>
+      <mat-date-range-input (click)="picker.open()"  class="pointer form-control" [formGroup]="fechas_filtro" [rangePicker]="picker">
+        <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio" id="Inicio">
+        <input matEndDate formControlName="end" readonly placeholder="Final" id="Final">
+      </mat-date-range-input>
+      <div class="input-group-append">
+        <button aria-label="boton de calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="picker.open()">
+          <i class="fa fa-calendar-alt"></i>
+        </button>
+      </div>
     </div>
   </div>
 
-  
-  
-  <ng-container *ngIf="SUCURSAL === 'Todas'">
-    <button class="btn btn-sm btn-success m-1" aria-label="filtro-sucursal" [matMenuTriggerFor]="filtroSucursal" id="filtro-sucursal">
-      <!-- <i class="fa fa-filter"></i> -->
-      <i class="fas fa-university fa-flip-horizontal"></i>
-    </button>
-    <mat-menu #filtroSucursal="matMenu">
-      <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
-      <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
-    </mat-menu>
-  </ng-container>
-
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-      <h4>Cotizaciones encontradas <strong>{{contador_resultados}}</strong></h4> 
-    </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
+    <app-template-tabla-cotizaciones  [filtro]="true" [cotizaciones_arr]="cotizaciones_arr" [export]="true" [muestra_desgloce]="false"></app-template-tabla-cotizaciones>
   </div>
-
-  <div class="mat-elevation-z8 table-responsive">
-    <table #cotizaciones="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-
-      
-      <ng-container matColumnDef="index">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
-        <td mat-cell *matCellDef="let row">
-          <strong></strong>  
-      </td>
-      </ng-container>
-
-      <ng-container matColumnDef="no_cotizacion">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> # Cotizacion </th>
-        <td mat-cell *matCellDef="let row" class="text-uppercase">
-          {{row.no_cotizacion }}
-      </td>
-      </ng-container>
-
-      <ng-container matColumnDef="fullname">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
-        <td mat-cell *matCellDef="let row" class="text-uppercase"> 
-          {{row.fullname  }} 
-        </td>
-      </ng-container>
-    <ng-container matColumnDef="placas">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Placas </th>
-      <td mat-cell *matCellDef="let row" class="text-uppercase">
-        {{row.placas }}
-      </td>
-    </ng-container>
-      <!-- Fruit Column -->
-      <ng-container matColumnDef="opciones">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
-        <td mat-cell *matCellDef="let row"> 
-          <i class="fa fa-cogs text-info pointer" [matMenuTriggerFor]="Opciones"></i>
-        <mat-menu #Opciones="matMenu">
-          <!-- <button mat-menu-item (click)="data_cliente = row" data-bs-toggle="modal" data-bs-target="#modalNewUser"> Editar información <i class="fa fa-edit text-primary ml-1"></i></button>
-          <button mat-menu-item (click)="data_cliente = row" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo"> Nuevo vehiculo <i class="fa fa-car text-primary ml-1"></i></button> -->
-          <button mat-menu-item (click)="irPagina('cotizacionNueva',row)"> Realizar cotizacion <i class="fa fa-calculator text-success ml-1"></i></button>
-          <button mat-menu-item (click)="irPagina('ServiciosConfirmar',row )"> Realizar recepcion <i class="fa fa-car-garage text-danger ml-1"></i></button>
-          <a [href]="row.pdf" target="_blank">
-            <button mat-menu-item > PDF <i class="fa fa-file-pdf text-danger ml-1"></i></button>
-          </a>
-          <!-- <button mat-menu-item (click)="irPagina('historial-cliente',row)">  Historial cliente <i class="fa fa-book text-danger ml-1"></i></button> -->
-          <!-- <button mat-menu-item  *ngIf="!row.usuario && row.correo" (click)="registraUsuario(row)">  Registra usuario <i class="fa fa-user-plus text-danger ml-1"></i></button> -->
-        </mat-menu>
-        <!-- <i class="fa fa-layer-plus pointer btn btn-sm btn-success m-1" (click)="irPagina('cotizacionNueva',row)" ></i>
-        <i class="fa fa-layer-plus pointer btn btn-sm btn-danger m-1"  (click)="irPagina('ServiciosConfirmar',row)" ></i> -->
-        </td>
-      </ng-container>
-    
-
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-        <td mat-cell *matCellDef="let element"  >
-          <!-- indexPosicionamiento -->
-            <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation(); " >
-              <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-              <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-            </button>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
-          <div class="example-element-detail row"
-              [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
-              <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
-                  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-                    <mat-tab label="Elementos">
-                      <div class="card border-dark">
-                        <div class="card-body">
-                          <!-- <h1>Informacion de cliente</h1> -->
-                          <div class="row">
-                            <div class="table-responsive">
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th class="text-center" scope="col">#</th>
-                                    <th class="text-start" scope="col">Nombre</th>
-                                    <th class="text-center" scope="col">Cantidad</th>
-                                    <th class="text-end" scope="col">Costo</th>
-                                    <th class="text-end" scope="col">Precio</th>
-                                    <th class="text-end" scope="col">Total</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr *ngFor="let item of row.elementos; let i = index">
-                                    <th class="text-center" scope="row">{{i +  1 }}</th>
-                                    <td class="text-start" [ngClass]="{'tipo-paquete': item.tipo === paquete,'tipo-mo': item.tipo === mo,'tipo-refaccion': item.tipo === refaccion}">
-                                      {{item.nombre | capitalizarUno}}
-                                    </td>
-                                    <td class="text-center">{{item.cantidad}} </td>
-                                    <td class="text-end"> {{item.costo}} </td>
-                                    <td class="text-end"> {{item.precio | monedas}}</td>
-                                    <td class="text-end"> {{item.total | monedas}}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start ">
-                              Forma de pago:  <strong class="text-uppercase"> {{row.pagoName }}</strong>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
-                              IVA:  <strong [ngClass]="{'text-success': row.iva, 'text-danger':  !row.iva}">  {{(row.iva) ? 'SI': 'NO'}} </strong>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
-                              Fecha de recibido:  <strong > {{row.fecha_recibido | formateHora:true}}</strong>
-                            </div >
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
-                              Fecha de vencimiento:  <strong > {{row.vencimiento | formateHora:true}}</strong>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="row.reporte">
-                              <div class="card border-success mb-3">
-                                <div class="card-header text-center">
-                                  Flotilla  <strong class="text-success" [ngClass]="{'text-danger': row.reporte['ub'] <55}">
-                                    U.B estimada {{ row.reporte['ub']  | monedas:' % ' }}
-                                  </strong>
-                                  </div>
-                                <div class="card-body text-success ">
-                                  <h5 class="card-title"></h5>
-                                  <div class="row">
-                                    <ng-container *ngFor="let campo of camposDesgloce">
-                                      <ng-container *ngIf="row.reporte[campo['valor']] !== 0">
-                                        <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-capitalize">{{campo['show']}}</div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{row.reporte[campo.valor]  | monedas}}</strong></div>
-                                      </ng-container>
-                                      
-                                    </ng-container>
-                                    <!-- <ng-container *ngIf="row.reporte['meses'] !== 0"> -->
-                                      <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
-                                      <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{row.reporte['meses'] | monedas}}</strong></div> -->
-                                    <!-- </ng-container> -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center"><strong>{{row.reporte['total']  | numerosLetras}}</strong></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      
-                        
-                      
-                    </mat-tab>
-                    <mat-tab label="Cliente">
-                      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
-                        <!-- <app-cliente-tarjeta [cliente]="row.data_cliente"></app-cliente-tarjeta> -->
-                      </div>
-                    </mat-tab>
-                    <mat-tab label="Vehiculo">
-                      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
-                        <!-- <app-vehiculo-tarjeta [vehiculo]="row.data_vehiculo"></app-vehiculo-tarjeta> -->
-                      </div>
-                    </mat-tab>
-                  </mat-tab-group>
-                </div>
-              </div>
-          </div>
-        </td>
-      </ng-container>
-    
-
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-      <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"  
-          class="example-element-row"
-          [class.example-expanded-row]="expandedElement === element"
-          >
-          <!-- (click)=" expandedElement = expandedElement === element ? null : element;" -->
-          <!--  -->
-          <!-- indexPosicionamiento -->
-      </tr>
-      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" ></tr>
-
-      <!-- Row shown when there is no matching data. -->
-      <!-- <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-      </tr> -->
-    </table>
-
-    <mat-paginator #cotizacionesPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-  </div>
-
-
-  <!-- <button class="btn btn-sm btn-secondary m-1" [matMenuTriggerFor]="filtroSucursal"><i class="fa fa-filter"></i></button> -->
-  
-<!-- <ng-container *ngIf="SUCURSAL === 'Todas'">
-  <div class="floating-btn" [matMenuTriggerFor]="filtroSucursal" type="button">
-    <span class="icon fa fa-filter fa-2x"></span>
-    <mat-menu #filtroSucursal="matMenu">
-      <button mat-menu-item (click)="filtro_sucursal = 'Todas'; filtra_informacion()" >{{'Todas' | capitalizarUno}}</button>
-      <button mat-menu-item (click)="filtro_sucursal = sucursal.id; filtra_informacion()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
-    </mat-menu>
-  </div>
-</ng-container> -->
+</div>

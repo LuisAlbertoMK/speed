@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "empezar a trabajar con cache pruebas en automaticos part2  (proceso)"
+git commit -m "arreglar cotizacion new   (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

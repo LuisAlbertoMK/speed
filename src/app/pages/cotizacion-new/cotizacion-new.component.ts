@@ -184,29 +184,33 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     if (recepcion){
 
-      const busqueda_ruta_recepcion = `recepciones/${recepcion}`
-      const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
+      // const busqueda_ruta_recepcion = `recepciones/${recepcion}`
+      // const data_recepcion = await this._servicios.consulta_recepcion_new({ruta: busqueda_ruta_recepcion})
       
-      data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
-      data_recepcion.nota = nota_valida(data_recepcion.nota)
+      // data_recepcion.descuento = (data_recepcion.descuento) ? data_recepcion.descuento : 0
+      // data_recepcion.nota = nota_valida(data_recepcion.nota)
 
-      function nota_valida(nota){
-        let nueva_nota = nota
-        if (!nota || nota === undefined || nota === null) {
-          nueva_nota = ''
-        }
-        return nueva_nota
-      }
+      // function nota_valida(nota){
+      //   let nueva_nota = nota
+      //   if (!nota || nota === undefined || nota === null) {
+      //     nueva_nota = ''
+      //   }
+      //   return nueva_nota
+      // }
 
-      campos.forEach(campo=>{
-        this.infoCotizacion[campo] = data_recepcion[campo]
-      })
+      // campos.forEach(campo=>{
+      //   this.infoCotizacion[campo] = data_recepcion[campo]
+      // })
       
     }
     if (cotizacion){
-      const busqueda_ruta_recepcion = `cotizacionesRealizadas/${cotizacion}`
+      const cotizacionesRealizadas_object = this._publicos.revisar_cache('cotizacionesRealizadas')
       
-      const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica({ruta: busqueda_ruta_recepcion})
+      // const cotizaciones_arregladas = this._publicos.asigna_datos_cotizaciones(cotizacionesRealizadas_object)
+
+
+      
+      const data_cotizacion = cotizacionesRealizadas_object[cotizacion]
 
       data_cotizacion.descuento = (data_cotizacion.descuento) ? data_cotizacion.descuento : 0
       data_cotizacion.nota = (data_cotizacion.nota) ? data_cotizacion.nota : ''
@@ -214,23 +218,18 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       campos.forEach(campo=>{
         this.infoCotizacion[campo] = data_cotizacion[campo]
       })
-      
+      this.extra = vehiculo
     }
 
-    this.extra = vehiculo
+    // this.extra = vehiculo
 
-    this.infoCotizacion.data_cliente = data_cliente
+    // this.infoCotizacion.data_cliente = data_cliente
 
 
     if (cliente) {
       this.infoCotizacion.sucursal = data_cliente.sucursal
       this.infoCotizacion.data_sucursal = this.sucursales_array.find(sucursal => sucursal.id === data_cliente.sucursal)
     }
-    
-    
-    // const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-    // this.infoCotizacion.data_sucursal = data_sucursal
-    // this.infoCotizacion.sucursal = sucursal
     
     this.infoCotizacion.vehiculo = vehiculo
 
@@ -239,29 +238,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
   }
   async vigila_vehiculos_cliente(){
-
-    const starCountRef = ref(db, `vehiculos`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const {cliente} = this.infoCotizacion 
-        const vehiculos = this._publicos.crearArreglo2(snapshot.val())
-        this.infoCotizacion.vehiculos = vehiculos.filter(vehiculo=>vehiculo.cliente === cliente)
-        const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
-        this.infoCotizacion.data_vehiculo  = data_vehiculo
-        this.infoCotizacion.vehiculo  = this.extra
-        if (data_vehiculo) {
-          if (data_vehiculo.modelo) {
-            this.modelo = data_vehiculo['modelo']
-          }
-        }
-      } else {
-        // console.log("No data available");
-        this.infoCotizacion.vehiculos = []
-        this.extra = null
-        this.modelo = null
-      }
-    })
-  
+    const {cliente: id_cliente} = this.infoCotizacion
+    const vehiculos_object = this._publicos.revisar_cache('vehiculos')
+    const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
+    const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
+    this.infoCotizacion.vehiculos = vehiculos_cliente
+    if (this.extra) {
+      this.infoCotizacion.data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
+    }
   }
 
   ///mensaje para poder agregar un paquete que no esta en el catalogo

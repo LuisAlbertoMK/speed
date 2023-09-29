@@ -140,10 +140,10 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
       if (snapshot.exists()) {
         // La consulta devolvió resultados
         const datos = snapshot.val();
-        console.log('Datos que coinciden con la consulta:', datos);
+        // console.log('Datos que coinciden con la consulta:', datos);
       } else {
         // No se encontraron datos que coincidan con la consulta
-        console.log('No se encontraron datos que coincidan con la consulta.');
+        // console.log('No se encontraron datos que coincidan con la consulta.');
       }
     }, {
       // Opciones adicionales, si es necesario

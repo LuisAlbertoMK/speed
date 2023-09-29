@@ -5,6 +5,8 @@ import { child, get, set, getDatabase, ref, onValue, onChildAdded, onChildChange
 import Swal from 'sweetalert2';
 import { CamposSystemService } from './campos-system.service';
 import { map } from 'rxjs/operators';
+import { EncriptadoService } from './encriptado.service';
+
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -12,7 +14,73 @@ const dbRef = ref(getDatabase());
 @Injectable({providedIn: 'root'})
 export class ServiciosPublicosService {
     
-    constructor(private http : HttpClient, private _campos:CamposSystemService) {}
+    constructor(private http : HttpClient, private _campos:CamposSystemService, private _encript: EncriptadoService, ) {}
+
+    sucursales_array = 
+    [
+      {
+        id: '-N2gkVg1RtSLxK3rTMYc',
+        "correo": "polancocallenuevdar@gmail.com",
+        "direccion": "Av. San Esteban No. 18 Col.Fraccionamiento el Parque C.P. 53390 Naucalpan Edo. de México.",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/trabajo%20envio%20dionicio.PNG?alt=media&token=608cf798-c28e-4a01-8ea6-987bea99baeb",
+        "serie": "1TKDG789",
+        "status": false,
+        "sucursal": "Polanco",
+        "telefono": "5524877791"
+      },
+      {
+        id: '-N2gkzuYrS4XDFgYciId',
+        "correo": "contacto@speed-service.com.mx",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/sucursales%2Ftoreo.jpg?alt=media&token=3598287f-7519-4837-9c79-e0ed1c44c2f0",
+        "serie": "5AJJL544",
+        "status": true,
+        "sucursal": "Toreo",
+        "telefono": "5570451111"
+      },
+      {
+        id: '-N2glF34lV3Gj0bQyEWK',
+        "correo": "ventas_culhuacan@speed-service.com.mx",
+        "direccion": "Avenida Tlahuac # 4160 Col. Santa María Tomatlan, C.P. 09870 México DF.",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/sucursales%2Fculhuacan.jpg?alt=media&token=8dc4dd01-7144-4860-9d26-b66dc9f95976",
+        "serie": "8PFRT119",
+        "status": true,
+        "sucursal": "Culhuacán",
+        "telefono": "5556951051"
+      },
+      {
+        id: '-N2glQ18dLQuzwOv3Qe3',
+        "correo": "Circuito@speed-service.com.mx",
+        "direccion": "Avenida Río Consulado #4102, Col. Nueva Tenochtitlan, CP: 07880, Del. Gustavo A. Madero.",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/sucursales%2Fmolina.jpg?alt=media&token=6e844e0a-8a59-4463-842c-f3eb5682d50d",
+        "serie": "3HDSK564",
+        "status": true,
+        "sucursal": "Circuito",
+        "telefono": "5587894618"
+      },
+      {
+        id: '-N2glf8hot49dUJYj5WP',
+        "correo": "coapa@speed-service.com.mx",
+        "direccion": "Prol. División del Nte. 1815, San Lorenzo la Cebada, Xochimilco, 16035 Ciudad de México, CDMX",
+        "imagen": "https://firebasestorage.googleapis.com/v0/b/speed-pro-f799a.appspot.com/o/sucursales%2Fcoapa.jpg?alt=media&token=7ef3f47a-120d-4455-83e3-8cdf12f91c5a",
+        "serie": "6JKGH923",
+        "status": true,
+        "sucursal": "Coapa",
+        "telefono": "5587894608"
+      },
+      {
+        id: '-NN8uAwBU_9ZWQTP3FP_',
+        "correo": "com.yo9999@gmail.com",
+        "direccion": " Calz. San Esteban 36, San Esteban, C.P. 53768 Naucalpan de Juárez.",
+        "imagen": "./assets/img/default-image.jpg",
+        "serie": "5AJJL54434",
+        "status": true,
+        "sucursal": "lomas",
+        "telefono": "5570451111"
+      }
+    
+  ]
+
     url: string
     camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refacciones_v','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
     camposReporte_show2 = {
@@ -1477,7 +1545,7 @@ export class ServiciosPublicosService {
 
       const reporte_sum = this.sumatorio_reportes([sumatoria_paquetes, otro])
 
-      const reporte:any = this.sumatoria_reporte({reporte_sum, margen, iva})
+      const reporte:any = this.sumatoria_reporte(reporte_sum, margen, iva)
 
         if (enCaso_meses.id === '1') {
           reporte.descuento = Number(descuento)
@@ -1506,20 +1574,7 @@ export class ServiciosPublicosService {
       }
     }
 
-    sumatoria_reporte(data){
-      const {reporte_sum, margen, iva} = data
-      const {mo,refaccion} = reporte_sum
-      const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0}
-      reporte.mo = mo
-      reporte.refaccion = refaccion
-      reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
-      reporte.subtotal = reporte.mo + reporte.refaccionVenta
-      reporte.iva = (iva) ? reporte.subtotal * .16 : 0
-      reporte.total = reporte.subtotal + reporte.iva
-
-      reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
-      return reporte
-    }
+    
     sumatorio_reportes(arreglo_sumatorias){
       const reporte = {mo:0,refaccion:0}
       arreglo_sumatorias.forEach(a=>{
@@ -1620,6 +1675,10 @@ export class ServiciosPublicosService {
           return 0;
       });
     }
+    filtro_fechas(arreglo:any, campo, start, end){
+      let nuevos = [...arreglo]
+      return nuevos.filter(r=>new Date(r[campo]) >= new Date(start) && new Date(r[campo]) <= new Date(end))
+    }
    
     
 
@@ -1629,6 +1688,134 @@ export class ServiciosPublicosService {
       if (closeButton) {
         closeButton.dispatchEvent(new Event('click'));
       }
+    }
+
+    //TODO revision de cache
+
+    revisar_cache(nombre:string){
+      const objeto_desencriptado = localStorage.getItem(`${nombre}`)
+      const desc = this._encript.servicioDecrypt_object(objeto_desencriptado)
+      const nueva = JSON.parse(JSON.stringify(desc));
+      return nueva
+    }
+    buscar_data_realcionada_con_cliente(cliente:string, data_cliente){
+      let cotizaciones_arr = [], recepciones_arr = [], vehiculos_arr = []
+      const recepciones_object = this.revisar_cache('recepciones')
+      const cotizaciones_object = this.revisar_cache('cotizacionesRealizadas')
+      const vehiculos = this.revisar_cache('vehiculos')
+
+      const historial_gastos_orden = this.crearArreglo2(this.revisar_cache('historial_gastos_orden'))
+      const historial_pagos_orden = this.crearArreglo2(this.revisar_cache('historial_pagos_orden'))
+      
+      const filtro_cotizaciones = this.filtra_campo(this.crearArreglo2(cotizaciones_object),'cliente', cliente)
+      const filtro_recepciones = this.filtra_campo(this.crearArreglo2(recepciones_object),'cliente', cliente)
+
+      cotizaciones_arr = this.asigna_datos_cotizaciones({
+          bruto: filtro_cotizaciones , clientes: data_cliente, vehiculos
+        })
+      recepciones_arr = this.asigna_datos_recepcion({
+          bruto: filtro_recepciones , clientes: data_cliente, vehiculos,
+          historial_gastos_orden, historial_pagos_orden
+        })
+      vehiculos_arr = this.filtra_campo(this.crearArreglo2(vehiculos),'cliente',cliente)
+
+      return {cotizaciones_arr, recepciones_arr, vehiculos_arr}
+    }
+    asigna_datos_recepcion(data){
+      const {bruto, clientes, vehiculos, historial_gastos_orden, historial_pagos_orden} = data
+
+      const nuevos_ordenamiento =this.ordenamiento_fechas(bruto,'fecha_recibido',false)
+      return nuevos_ordenamiento.map(recepcion=>{
+        const {id, cliente, vehiculo,elementos, margen, iva, descuento, formaPago, sucursal} = recepcion;
+        recepcion.historial_gastos_orden = this.filtra_orden(historial_gastos_orden, id)
+        recepcion.historial_pagos_orden = this.filtra_orden(historial_pagos_orden, id)
+        recepcion.data_cliente = clientes[cliente]
+        recepcion.data_vehiculo = vehiculos[vehiculo]
+        recepcion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
+        recepcion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+        const solo_gastos_orden = this.obtener_historial_orden([recepcion],'historial_gastos_orden')
+        const total_gastos = this.sumatorias_aprobados(solo_gastos_orden)
+        // recepcion.reporte_real = sumatoria_reporte(total_gastos_ordenes, margen, iva)
+
+        const nuevo = JSON.parse(JSON.stringify(recepcion.reporte));
+        nuevo['refaccion'] = total_gastos
+
+        const reporte_real = this.sumatoria_reporte(nuevo, margen, iva)
+        recepcion.reporte_real = reporte_real
+    
+        return recepcion
+      })
+    }
+    asigna_datos_cotizaciones(data){
+      const {bruto, clientes, vehiculos} = data
+      const nuevos_ordenamiento =this.ordenamiento_fechas(bruto,'fecha_recibido',false)
+      return nuevos_ordenamiento.map(cotizacion=>{
+        const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal} = cotizacion;
+        cotizacion.data_cliente = clientes[cliente]
+        cotizacion.data_vehiculo = vehiculos[vehiculo]
+        cotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+        cotizacion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
+        return cotizacion
+      })
+    }
+    filtra_orden(arreglo, id_orden){
+      return [...arreglo].filter(f=>f.id_os === id_orden)
+    }
+    filtra_campo(arreglo, campo:string, valor:string){
+      return [...arreglo].filter(item => item[campo] === valor)
+    }
+    obtener_historial_orden(arreglo:any[], campo:string){
+      let nuevos =[ ...arreglo]
+      const arreglado = nuevos.map(recepcion=>{
+        const historial_campo = recepcion[campo]
+        return historial_campo
+      })
+      return arreglado.flat()
+    }
+    sumatorias_aprobados(arreglo:any[]):number{
+      let nuevos = [...arreglo]
+
+      let sumatoria_montos_historial = 0
+      nuevos.forEach(gs=>{
+        const {status, monto} = gs
+        if (status) {
+          sumatoria_montos_historial+= monto
+        }
+      })
+      return sumatoria_montos_historial
+    }
+    sumatoria_reporte(data, margen, iva){
+      const {mo,refaccion} = data
+      const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0}
+      reporte.mo = mo 
+      reporte.refaccion = refaccion
+      reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
+      reporte.subtotal = reporte.mo + reporte.refaccionVenta
+      reporte.iva = (iva) ? reporte.subtotal * .16 : reporte.subtotal
+      reporte.total = reporte.subtotal + reporte.iva
+      if (reporte.subtotal) {
+        reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+      }
+      return reporte
+    }
+    transformaDataVehiculo(data){
+      const { clientes, vehiculos} = data
+      const nuevos_ordenamiento =this.ordenamiento_fechas_x_campo(vehiculos,'placas',true)
+      return nuevos_ordenamiento.map(vehiculo=>{
+        const { cliente } = vehiculo
+        vehiculo.data_cliente = clientes[cliente]
+        return vehiculo
+      })
+    }
+    transformaDataCliente(data){
+      const nuevos = [...data]
+      const retornados = nuevos.map(cli=>{
+        const {sucursal, nombre, apellidos } = cli
+        cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+        cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
+        return cli
+      })
+      return retornados
     }
       
  }

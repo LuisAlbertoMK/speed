@@ -9,6 +9,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Router } from '@angular/router';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ExporterService } from 'src/app/services/exporter.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
 @Component({
   selector: 'app-template-tabla-cotizaciones',
@@ -27,19 +30,23 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 })
 export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
 
-  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService) { }
+  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService, 
+    private _exporter_excel: ExporterService, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService) { }
   @Input() cotizaciones_arr:any[]
   @Input() muestra_desgloce:boolean = false
-
+  @Input() export:boolean = false
+  @Input() filtro:boolean = false 
+  
   dataSource = new MatTableDataSource(); //elementos
   //  'clienteShow'
-   cotizaciones = ['no_cotizacion','fullname','placas']; //cotizaciones
+   cotizaciones = ['no_cotizacion','fullname','placas','fecha_recibido']; //cotizaciones
    columnsToDisplayWithExpand = [...this.cotizaciones, 'opciones', 'expand']; //cotizaciones
    expandedElement: any | null; //cotizaciones
    @ViewChild('cotizacionesPaginator') paginator: MatPaginator //cotizaciones
    @ViewChild('cotizaciones') sort: MatSort //cotizaciones
    
    formasPago = [...this._campos.formasPago]
+   sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
 
   reporte_totales = {
     mo:0,
@@ -63,13 +70,16 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
     {valor: 'meses', show:'meses'},
   ]
   miniColumnas:number = 100
-  rol_:string
+  _rol:string
+  _sucursal:string
+  filtro_sucursal:string
   ngOnInit(): void {
     this.roles()
   }
   roles(){
     const { rol, sucursal } = this._security.usuarioRol()
-    this.rol_ = rol
+    this._rol = rol
+    this._sucursal = sucursal
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['cotizaciones_arr']) {
@@ -79,17 +89,29 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
         this.obtener_total_cotizaciones()
     }
   }
+  exportar(){
+    if (this.cotizaciones_arr.length) {
+      console.log('exportar correcto con datos');
+      console.log(this.cotizaciones_arr);
+      
+      this._exporter_excel.exportToExcelCotizaciones(this.dataSource.data,'exportacion')
+    }else{
+      console.log('sin datos para la exportacion');
+      
+      // this._publicos.swalToast('ningun dato ...',0, 'top-start')
+    }
+  }
 
   irPagina(pagina, data){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
     let queryParams = {}
     
-    if (this.rol_ === 'cliente') {
+    if (this._rol === 'cliente') {
       if (pagina === 'cotizacionNueva' && !tipo) {
         pagina = 'cotizacion-new-cliente'
         queryParams = { anterior:'miPerfil',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
       }
-    }else if(this.rol_ !=='cliente'){
+    }else if(this._rol !=='cliente'){
       if (pagina === 'cotizacionNueva' && !tipo) {
         queryParams = { anterior:'historial-vehiculo',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
       }else if (pagina === 'cotizacionNueva' && tipo) {
@@ -103,43 +125,44 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
     this.router.navigate([`/${pagina}`], { queryParams });
   }
   obtener_total_cotizaciones(){
+      this.dataSource.data = this.cotizaciones_arr
+      this.newPagination()
+    // const reporte_totales = {
+    //   mo:0,
+    //   refacciones:0,
+    // }
+    // let margen_ = 0
 
-    const reporte_totales = {
-      mo:0,
-      refacciones:0,
-    }
-    let margen_ = 0
-
-    const nuevas = [...this.cotizaciones_arr]
-    nuevas.map(g=>{
-      margen_ += g.margen
-      const  {reporte, servicios} = this.calcularTotales(g)
+    // const nuevas = [...this.cotizaciones_arr]
+    // nuevas.map(g=>{
+    //   margen_ += g.margen
+    //   const  {reporte, servicios} = this.calcularTotales(g)
       
-      Object.keys(reporte_totales).forEach(campo=>{
-        reporte_totales[campo] += reporte[campo]
-      })
-      g.elementos = servicios
-      g.reporte = reporte
-      // nueva_utilidad_suma += reporte.ub
-    })
-    this.dataSource.data = nuevas
-    this.newPagination()
-    this.cotizaciones_arr = nuevas
+    //   Object.keys(reporte_totales).forEach(campo=>{
+    //     reporte_totales[campo] += reporte[campo]
+    //   })
+    //   g.elementos = servicios
+    //   g.reporte = reporte
+    //   // nueva_utilidad_suma += reporte.ub
+    // })
+    // this.dataSource.data = nuevas
+    // this.newPagination()
+    // this.cotizaciones_arr = nuevas
 
-    const nuevo_margen = margen_ / nuevas.length
+    // const nuevo_margen = margen_ / nuevas.length
 
-    let subtotal = reporte_totales.mo + reporte_totales.refacciones
-    const margen = 1 + (nuevo_margen / 100)
+    // let subtotal = reporte_totales.mo + reporte_totales.refacciones
+    // const margen = 1 + (nuevo_margen / 100)
     
-    let nueva_utilidad_operacion = (subtotal - reporte_totales.refacciones) * (100 / subtotal)
+    // let nueva_utilidad_operacion = (subtotal - reporte_totales.refacciones) * (100 / subtotal)
 
-    this.reporte_totales.mo = reporte_totales.mo
-    this.reporte_totales.refacciones = reporte_totales.refacciones
-    this.reporte_totales.refacciones_v = reporte_totales.refacciones * margen
-    this.reporte_totales.subtotal = subtotal
-    let total = reporte_totales.mo +  this.reporte_totales.refacciones_v
-    this.reporte_totales.total = total
-    this.reporte_totales.ub = nueva_utilidad_operacion
+    // this.reporte_totales.mo = reporte_totales.mo
+    // this.reporte_totales.refacciones = reporte_totales.refacciones
+    // this.reporte_totales.refacciones_v = reporte_totales.refacciones * margen
+    // this.reporte_totales.subtotal = subtotal
+    // let total = reporte_totales.mo +  this.reporte_totales.refacciones_v
+    // this.reporte_totales.total = total
+    // this.reporte_totales.ub = nueva_utilidad_operacion
 
   }
   newPagination(){
@@ -236,6 +259,16 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
       reporte[donde] += operacion
     })
     return reporte
+  }
+  filtra_informacion(){
+    
+    const nuevas = [...this.cotizaciones_arr]
+    const ordenar = (this.filtro_sucursal === 'Todas') ? nuevas : this._publicos.filtra_campo(nuevas,'sucursal',this.filtro_sucursal)
+    const resultados = this._publicos.ordenamiento_fechas(ordenar,'fecha_recibido',false)
+
+    // this.contador_resultados = resultados.length
+    this.dataSource.data = resultados
+    this.newPagination()
   }
 
 }

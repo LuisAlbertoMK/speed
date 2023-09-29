@@ -37,37 +37,9 @@ export interface User {nombre: string}
 export class ClientesComponent implements AfterViewInit, OnInit {
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
     private _clientes: ClientesService, private router: Router, private _auth: AuthService,private _campos: CamposSystemService,){}
-    ROL:string; SUCURSAL:string;
+    _rol:string; _sucursal:string;
   
-    sucursales_array  =  [ ...this._sucursales.lista_en_duro_sucursales ]
-    tipos_cliente     =  [ ...this._clientes.tipos_cliente ]
-    
-    miniColumnas:number =  this._campos.miniColumnas
-    
-    cargandoInformacion:boolean = true
-    
-    clientes_arr=[]
-
-    displayedColumnsClientes: string[] = ['no_cliente','sucursalShow', 'fullname','tipo', 'correo','opciones']; //clientes
-    // columnsToDisplayWithExpand = [...this.displayedColumnsClientes, 'expand'];
-    columnsToDisplayWithExpand = [...this.displayedColumnsClientes];
-    dataSourceClientes = new MatTableDataSource(); //clientes
-    expandedElement: any | null; //clientes
-    @ViewChild('clientesPaginator') paginatorClientes: MatPaginator //clientes
-    @ViewChild('clientes') sortClientes: MatSort //clientes
-  
-    clickedRows = new Set<any>() //todas las tablas
-
-    //verificar si existe informacion de cliente
-    datCliente:any
-    // cliente:string = null
-    // vehiculo:string = null
-    filtro_tipo:string = 'todos'
-    filtro_sucursal:string = 'Todas'
-
-    data_cliente= {}
-
-    contador_resultados:number = 0
+    clientes_arr:any =[]
   ngOnInit() {
     this.rol()
   }
@@ -76,185 +48,23 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     
     const { rol, sucursal } = this._security.usuarioRol()
 
-    this.ROL = rol
-    this.SUCURSAL = sucursal
-    this.obtenerListaClientes()
+    this._rol = rol
+    this._sucursal = sucursal
+    this.lista_clientes()
+
   }
-  irPagina(pagina, cliente){
-    // /:ID/:tipo/:extra
-    // console.log(cliente);
-    const { id, sucursal, tipo } = cliente
+  lista_clientes(){
+    console.log(this._rol)
+    console.log(this._sucursal)
+    const clientes = this._publicos.revisar_cache('clientes')
+    const clientes_arr = this._publicos.crearArreglo2(clientes)
+    const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
     
-    let queryParams = {}
-    if (pagina === 'historial-cliente') {
-      queryParams = { anterior:'clientes', sucursal, cliente: id  } 
-    } else if (pagina === 'cotizacionNueva') {
-      queryParams = { anterior:'clientes', cliente: id, sucursal, tipo: 'cliente'  } 
-    } else if (pagina === 'ServiciosConfirmar') {
-      queryParams = { anterior:'clientes',  tipo:'cliente', cliente: id, sucursal, vehiculo:'' } 
-    }
-
-    // console.log(queryParams);
+    const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
     
-    this.router.navigate([`/${pagina}`], { queryParams });
-  }
-  transformaDataCliente(data){
-    const nuevos = [...data]
-    const retornados = nuevos.map(cli=>{
-      const {sucursal, nombre, apellidos } = cli
-      cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
-      cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
-      return cli
-    })
-    return retornados
-  }
+    this.clientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'fullname',false)
 
-  async obtenerClientesDeRutas(rutas) {
-    const promesasClientes = rutas.map(async (ruta) => {
-      const clientes = await this._clientes.consulta_clientes__busqueda({ ruta });
-      return this.transformaDataCliente(clientes);
-    });
-  
-    const promesasResueltasClientes = await Promise.all(promesasClientes);
-    return promesasResueltasClientes.flat();
   }
-  crea_lista_rutas_por_sucursal(data){
-    const {arreglo_sucursal, } = data
-    let Rutas_retorna = []
-    arreglo_sucursal.forEach(sucursal=>{
-      Rutas_retorna.push(`clientes/${sucursal}`)
-    })
-    return Rutas_retorna
-  }
-  async obtenerListaClientes() {
-
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, async (snapshot) => {
-      if (snapshot.exists()) {
-
-        const finales_clientes = this._publicos.crearArreglo2(snapshot.val())
-                                  .map(cliente=>{
-                                    return this.nueva_data_cliente(cliente)
-                                  })
-        const campos_cliente = [
-          'apellidos',
-          'correo',
-          'id',
-          'no_cliente',
-          'nombre',
-          'sucursal',
-          'telefono_movil',
-          'tipo',
-          'sucursalShow',
-          'fullname',
-          'usuario',
-          'localId'
-        ]
-  
-        const todos_clientes = (!this.clientes_arr.length) 
-        ?  finales_clientes 
-        :  this._publicos.actualizarArregloExistente(this.clientes_arr, finales_clientes,campos_cliente);
-        
-        this.clientes_arr =  (this.SUCURSAL === 'Todas') ? todos_clientes : filtro_sucursal(todos_clientes, this.SUCURSAL)
-        this.filtra_informacion()
-        function filtro_sucursal(arreglo:any[],sucursal:string){
-          return arreglo.filter(c=>c.sucursal === sucursal)
-        }
-  
-      } 
-    })
-  }
-
-  nueva_data_cliente(cliente){
-    const nombres = [
-      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
-      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
-      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
-      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
-      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
-      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
-    ]
-    const {sucursal, nombre, apellidos} = cliente
-    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
-    cliente.fullname = `${nombre} ${apellidos}`
-    return cliente
-  }
-
-  
-
-  cargaDataCliente(cliente:any){
-    this.datCliente = null
-    // this.vehiculo = null
-    if (cliente) {
-      setTimeout(() => {
-        this.datCliente = cliente
-      } , 200);
-    }
-  }
-  clientesInfo(info:any){   
-    // console.log(info);
-    
-  }
-  vehiculoInfo(info:any){
-    // console.log(info);
-  }
- 
- 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSourceClientes.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSourceClientes.paginator) {
-      this.dataSourceClientes.paginator.firstPage();
-    }
-  }
-  filtra_informacion(){
-    
-    // let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
-    // const resultados2 = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
-    // this.dataSourceClientes.data = resultados2
-  }
-  // filtra_sucursal(sucursal:string){   
-  //   // console.log(this.filtra_tipo_cliente);
-  //   // console.log(this.filtra_tipo_cliente);
-  //   // this.dataSourceClientes.data = (sucursal === 'Todas') ? this.clientes_arr : this.clientes_arr.filter(c=>c.sucursal === sucursal)
-  //   // this.newPagination('clientes')
-
-  //   let resultados_1 = (this.filtro_tipo === 'todos') ? this.clientes_arr : this.clientes_arr.filter(c=>c.tipo === this.filtro_tipo)
-  //   this.dataSourceClientes.data = (this.filtro_sucursal === 'Todas') ? resultados_1 : resultados_1.filter(c=>c.sucursal === this.filtro_sucursal)
-  // }
-  
-  registraUsuario(data){
-    if (data.correo) {
-      const dataSave = {
-        rol: 'cliente',
-        status: true,
-        correo: data.correo,
-        password: this._publicos.generarCadenaAleatoria() || `${data.nombre}Xd1*(`,
-        sucursal: data.sucursal,
-        usuario: data.nombre
-      }
-      const otra = { email: data.correo, password: dataSave.password, nombre: data.nombre }
-      const updates = { [`usuarios/${data.id}`]: dataSave, [`clientes/${data.id}/usuario`]:true };
-       console.log(updates);
-        this._auth.nuevoUsuario(otra).subscribe((token)=>{
-          if (token) {
-            update(ref(db), updates)
-              .then(a=>{
-                this._publicos.swalToast('Se registro usuario', 1)
-              })
-              .catch(err=>{
-                this._publicos.swalToast('Error al registrar usuario', 0)
-              })
-          }else{
-            this._publicos.swalToast('Error al generar token', 0)
-          }
-        })
-    }else{
-      this._publicos.swalToast('El cliente no tiene correo',0)
-    }
-  }
-
 }
 
 
