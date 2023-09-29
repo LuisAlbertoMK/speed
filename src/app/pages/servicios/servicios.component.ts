@@ -79,6 +79,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
      }
+     miniColumnas:number = 100
      _rol:string; _sucursal:string
      
      recepciones_arr=[]
@@ -114,15 +115,15 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.lista_cotizaciones()
   }
 
-  lista_cotizaciones(){
-    const recepciones = this._publicos.revisar_cache('recepciones')
+  async lista_cotizaciones(){
+    const recepciones = await this._publicos.revisar_cache('recepciones')
     const recepciones_arr = this._publicos.crearArreglo2(recepciones)
 
-    const clientes = this._publicos.revisar_cache('clientes')
-    const vehiculos = this._publicos.revisar_cache('vehiculos')
+    const clientes = await this._publicos.revisar_cache('clientes')
+    const vehiculos = await this._publicos.revisar_cache('vehiculos')
 
-    const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_gastos_orden'))
-    const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_pagos_orden'))
+    const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
+    const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
 
     const cotizaciones_completas =this._publicos.asigna_datos_recepcion({
       bruto:recepciones_arr, clientes, vehiculos,
@@ -159,6 +160,24 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.recepciones_arr = filtro_fechas
     }, 1000);
     
+  }
+  irPagina(pagina, data){
+    // console.log(data);
+    const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
+    // console.log(this.enrutamiento);
+    let queryParams = {}
+    if (pagina === 'cotizacionNueva' && !tipo) {
+      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
+    }else if (pagina === 'cotizacionNueva' && tipo) {
+      queryParams = { anterior:'cotizacion', tipo} 
+    }else if (pagina === 'ServiciosConfirmar' && !tipo) {
+      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
+    }else if (pagina === 'ServiciosConfirmar' && tipo) {
+      queryParams = { anterior:'cotizacion', tipo}
+    }
+    // console.log(queryParams);
+    
+    this.router.navigate([`/${pagina}`], { queryParams });
   }
   
 

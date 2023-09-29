@@ -5,6 +5,7 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 
 @Component({
   selector: 'app-administracion',
@@ -23,7 +24,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 export class AdministracionComponent implements OnInit {
 
-  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService) { }
+  constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService, 
+    private _sucursales: SucursalesService) { }
   
     _rol:string
     _sucursal:string
@@ -51,6 +53,10 @@ export class AdministracionComponent implements OnInit {
      fecha_formateadas = {start:new Date(), end:new Date() }
      hora_start = '00:00:01';
      hora_end = '23:59:59';
+
+     sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
+
+     filtro_sucursal:string
   
   ngOnInit(): void {
     this.rol()
@@ -61,17 +67,18 @@ export class AdministracionComponent implements OnInit {
     const { rol, sucursal } = this._security.usuarioRol()
     this._rol = rol
     this._sucursal = sucursal
+    this.filtro_sucursal = sucursal
   }
-  lista_gastos_administracion(){
-      const recepciones_object = this._publicos.revisar_cache('recepciones')
-      const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_gastos_orden'))
-      const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_pagos_orden'))
+  async lista_gastos_administracion(){
+      const recepciones_object = await this._publicos.revisar_cache('recepciones')
+      const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
+      const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
 
-      const gastos_operacion_object = this._publicos.revisar_cache('historial_gastos_operacion')
+      const gastos_operacion_object = await this._publicos.revisar_cache('historial_gastos_operacion')
       const gastos_operacion_array = this._publicos.crearArreglo2(gastos_operacion_object)
 
-      const clientes = this._publicos.revisar_cache('clientes')
-      const vehiculos = this._publicos.revisar_cache('vehiculos')
+      const clientes = await this._publicos.revisar_cache('clientes')
+      const vehiculos = await this._publicos.revisar_cache('vehiculos')
 
       const entregadas = this._publicos.filtra_campo(this._publicos.crearArreglo2(recepciones_object),'status','entregado')
 
@@ -86,9 +93,15 @@ export class AdministracionComponent implements OnInit {
       const antes_filtro_recepciones = this._publicos.asigna_datos_recepcion(enviar_recepciones)
       // console.log(antes_filtro_recepciones);
       const {start:start_, end: end_} = this.fecha_formateadas
-      const recepciones_arr = this._publicos.filtro_fechas(antes_filtro_recepciones,'fecha_recibido',start_,end_)
+      const filtro_sucursales = this._publicos.filtro_fechas(antes_filtro_recepciones,'fecha_recibido',start_,end_)
       // console.log(recepciones_arr);
-      const total_gastos_operacion = this._publicos.sumatorias_aprobados(gastos_operacion_array)
+      const recepciones_arr = (this.filtro_sucursal === 'Todas') 
+        ?  filtro_sucursales 
+        : this._publicos.filtra_campo(filtro_sucursales,'sucursal',this.filtro_sucursal)
+    
+      const filtro_fechas_operacion = this._publicos.filtro_fechas(gastos_operacion_array,'fecha_recibido',start_,end_)
+      // console.log(filtro_fechas_operacion);
+      const total_gastos_operacion = this._publicos.sumatorias_aprobados(filtro_fechas_operacion)
       // console.log(total_gastos_operacion);
       const total_refacciones = this._publicos.suma_refacciones_os_cerradas_reales(recepciones_arr)
       // console.log(total_refacciones);

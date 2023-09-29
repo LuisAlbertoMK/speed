@@ -32,7 +32,8 @@ export class SucursalesComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
 
   //rol
-  ROL:string=''; SUCURSAL:string = null
+  _rol:string
+  sucursal_:string
   
   //dropzone
   @Output() mouseSobre: EventEmitter<boolean> = new EventEmitter()
@@ -78,7 +79,8 @@ export class SucursalesComponent implements OnInit {
   //array lista de sucursales
 
   // listaArrarySucursales:any[]=[]
-  sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
+  // sucursales_array = [ ...this._sucursales.lista_en_duro_sucursales]
+  sucursales_array = [ ]
   //IDSucursal
   IDsucursal:string=''
 
@@ -87,6 +89,7 @@ export class SucursalesComponent implements OnInit {
   formaUploadFile: FormGroup
   desactivaGuardar:boolean = false
   constructor(private route: ActivatedRoute,private fb: FormBuilder,
+    private _publicos:ServiciosPublicosService,
     private _sucursal: SucursalesService, private _uploadImagen: UploadFileService,
     private _security:EncriptadoService, private _sucursales: SucursalesService) {}
 
@@ -98,12 +101,19 @@ export class SucursalesComponent implements OnInit {
   ngAfterViewInit() {
 
   }
-  rol(){
-    
+  async rol(){
+    console.time('Execution Time');
     const { rol, sucursal } = this._security.usuarioRol()
-
-    this.ROL = rol
-    this.SUCURSAL = sucursal
+    
+    this._rol = rol
+    this.sucursal_ = sucursal
+    const sucursales = await this._publicos.revisar_cache('sucursales')
+    // console.log(sucursales);
+    const sucursales_arr = this._publicos.crearArreglo2(sucursales)
+    // console.log(sucursales_arr);
+    this.sucursales_array = sucursales_arr
+    console.timeEnd('Execution Time');
+    
   }
   getInformacionSucursal(id:string){
     //priemro obtener informacion de sucursal

@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { SucursalesService } from 'src/app/services/sucursales.service';
 
 @Component({
   selector: 'app-corte-ingresos',
@@ -11,7 +12,8 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 })
 export class CorteIngresosComponent implements OnInit {
 
-  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService) { }
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
+    private _sucursales: SucursalesService) { }
   
   _rol:string
   _sucursal: string
@@ -50,15 +52,18 @@ export class CorteIngresosComponent implements OnInit {
 
   recepciones_arr_antes_filtro=[]
   
-   
-     fechas_filtro = new FormGroup({
-      start: new FormControl(new Date()),
-      end: new FormControl(new Date()),
-     });
+  filtro_sucursal:string
 
-     fecha_formateadas = {start:new Date(), end:new Date() }
-     hora_start = '00:00:01';
-     hora_end = '23:59:59';
+  sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
+   
+  fechas_filtro = new FormGroup({
+   start: new FormControl(new Date()),
+   end: new FormControl(new Date()),
+  })
+
+  fecha_formateadas = {start:new Date(), end:new Date() }
+  hora_start = '00:00:01';
+  hora_end = '23:59:59';
   
   ngOnInit(): void {
     this.rol()
@@ -70,7 +75,8 @@ export class CorteIngresosComponent implements OnInit {
     const { rol, sucursal } = this._security.usuarioRol()
 
     this._rol = rol
-    this._sucursal = sucursal 
+    this._sucursal = sucursal
+    this.filtro_sucursal = sucursal
   }
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
@@ -94,16 +100,18 @@ export class CorteIngresosComponent implements OnInit {
 
     
   }
-  listado_corte_ingresos(){
-    const recepciones_object = this._publicos.revisar_cache('recepciones')
+  async listado_corte_ingresos(){
+    const metas_sucursales = await this._publicos.revisar_cache('metas_sucursales')
 
-    const clientes = this._publicos.revisar_cache('clientes')
-    const vehiculos = this._publicos.revisar_cache('vehiculos')
+    const recepciones_object = await this._publicos.revisar_cache('recepciones')
 
-    const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_gastos_orden'))
-    const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.revisar_cache('historial_pagos_orden'))
+    const clientes = await this._publicos.revisar_cache('clientes')
+    const vehiculos = await this._publicos.revisar_cache('vehiculos')
 
-    const gastos_operacion_object = this._publicos.revisar_cache('historial_gastos_operacion')
+    const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
+    const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
+
+    const gastos_operacion_object = await this._publicos.revisar_cache('historial_gastos_operacion')
     const gastos_operacion_array = this._publicos.crearArreglo2(gastos_operacion_object)
 
     const arreglo_recepciones = this._publicos.crearArreglo2(recepciones_object)
@@ -122,20 +130,41 @@ export class CorteIngresosComponent implements OnInit {
       historial_pagos_orden
     }
 
-    const recepciones_arr = this._publicos.asigna_datos_recepcion(enviar_recepciones)
+    const filtro_sucursales = this._publicos.asigna_datos_recepcion(enviar_recepciones)
+
+    const recepciones_arr = (this.filtro_sucursal === 'Todas') 
+    ?  filtro_sucursales 
+    : this._publicos.filtra_campo(filtro_sucursales,'sucursal',this.filtro_sucursal)
 
     const solo_gastos_orden = this._publicos.obtener_historial_orden(recepciones_arr,'historial_gastos_orden')
 
-    const total_gastos_operacion = this._publicos.sumatorias_aprobados(gastos_operacion_array)
+    const filtro_fechas_operacion = this._publicos.filtro_fechas(gastos_operacion_array,'fecha_recibido',start_,end_)
+
+    const total_gastos_operacion = this._publicos.sumatorias_aprobados(filtro_fechas_operacion)
+
     const total_gastos_ordenes = this._publicos.sumatorias_aprobados(solo_gastos_orden)
 
     const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales(recepciones_arr)
 
-    let  total_ordenes:number =0
-    total_ordenes = recepciones_arr.length
+    let  total_ordenes:number = recepciones_arr.length
 
-    const objetivo = 100000
-  
+    const fecha_start = new Date(start_)
+    const fecha_end = new Date(end_)
+
+    const sucursales = [
+      '-N2gkVg1RtSLxK3rTMYc',
+      '-N2gkzuYrS4XDFgYciId',
+      '-N2glF34lV3Gj0bQyEWK',
+      '-N2glQ18dLQuzwOv3Qe3',
+      '-N2glf8hot49dUJYj5WP',
+      '-NN8uAwBU_9ZWQTP3FP_',
+    ]
+    let sucursales_busqueda = (this.filtro_sucursal !== 'Todas') ? [this.filtro_sucursal] : sucursales
+
+    const objetivo:number = this._publicos.sucursales_objetivos(
+      {sucursales: sucursales_busqueda, metas_sucursales, fecha_start, fecha_end}
+    )
+
     this.reporte.objetivo = objetivo 
     this.reporte.operacion = total_gastos_operacion
     this.reporte.orden = total_gastos_ordenes
@@ -151,13 +180,10 @@ export class CorteIngresosComponent implements OnInit {
       this.reporte.ventas = total_subtotales_ventas
       this.reporte.sobrante = sobrante
       this.reporte.porcentajeGM = porcentajeGM
-  
-      this.recepciones_arr = recepciones_arr
+
     }
-
-    
-
+    this.recepciones_arr = recepciones_arr
 
   }
-
+  
 }

@@ -6,7 +6,7 @@
     <div class="card">
       <div class="card-body">
         <div class="card-text">
-          <div class="text-end  mb-3" *ngIf="ROL==='SuperSU' || ROL === 'Administrador'">
+          <div class="text-end  mb-3" *ngIf="_rol==='SuperSU' || _rol === 'Administrador'">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detallesSucursal" id="btndetallesSucursal"
               (click)="resetAntes()"> Nueva sucursal</button>
           </div>
@@ -43,7 +43,7 @@
                       </ng-container>
                       <br>
                       <label>Correo: </label> {{sucursal.correo}} <br>
-                      <ng-container  *ngIf="ROL!== 'SuperSU' && ROL !== 'Administrador'">
+                      <ng-container  *ngIf="_rol!== 'SuperSU' && _rol !== 'Administrador'">
                         <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1">
                           <div class="d-grid gap-2">
                             <button aria-label="boton mostrar sucursal mas grande" class="btn verImagen btn-sm" type="button" alt="info" id="btncorreo"
@@ -55,7 +55,7 @@
                     </ng-container>
                   </div>
                   <div class="card-footer text-muted">
-                    <ng-container  *ngIf="ROL==='SuperSU' || ROL === 'Administrador'">
+                    <ng-container  *ngIf="_rol==='SuperSU' || _rol === 'Administrador'">
                       <div class="row" *ngIf="sucursal.status">
                         <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
                           <div class="d-grid gap-2">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
 @Component({
@@ -8,32 +9,31 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 })
 export class VehiculosComponent implements OnInit {
 
-  constructor(private _publicos: ServiciosPublicosService) { }
+  constructor(private _publicos: ServiciosPublicosService, private _security:EncriptadoService) { }
 
   vehiculos_arr:any[]=[]
+  _rol:string
+  _sucursal:string
   ngOnInit(): void {
-
     this.roles()
   }
   roles(){
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this._rol = rol
+    this._sucursal = sucursal
+
     this.vehiculos_sucursal()
   }
-  vehiculos_sucursal(){
-    const clientes = this._publicos.revisar_cache('clientes')
-    const vehiculos = this._publicos.revisar_cache('vehiculos')
+  async vehiculos_sucursal(){
+    const clientes = await this._publicos.revisar_cache('clientes')
+    const vehiculos = await this._publicos.revisar_cache('vehiculos')
 
     const nuevos_vehiculos = this._publicos.transformaDataVehiculo({clientes, vehiculos: this._publicos.crearArreglo2(vehiculos)})
-
-   this.vehiculos_arr = nuevos_vehiculos
+    setTimeout(() => {
+      this.vehiculos_arr = nuevos_vehiculos
+    }, 1000);
   }
-  data_vehiculos(vehiculos, clientes){
-    return  this._publicos.crearArreglo2(vehiculos)
-    .map(vehiculo=>{
-      const {cliente} = vehiculo
-      
-      vehiculo.data_cliente = clientes[cliente]
-      return vehiculo
-    })
-  }
+  
 
 }

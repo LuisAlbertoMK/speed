@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { CamposSystemService } from './campos-system.service';
 import { map } from 'rxjs/operators';
 import { EncriptadoService } from './encriptado.service';
+import { AutomaticosService } from './automaticos.service';
 
 
 const db = getDatabase()
@@ -14,7 +15,9 @@ const dbRef = ref(getDatabase());
 @Injectable({providedIn: 'root'})
 export class ServiciosPublicosService {
     
-    constructor(private http : HttpClient, private _campos:CamposSystemService, private _encript: EncriptadoService, ) {}
+    constructor(
+      private http : HttpClient, private _campos:CamposSystemService,
+      private _encript: EncriptadoService, private _automaticos:AutomaticosService) {}
 
     sucursales_array = 
     [
@@ -79,7 +82,18 @@ export class ServiciosPublicosService {
         "telefono": "5570451111"
       }
     
-  ]
+    ]
+    metodospago = [
+      {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
+      {valor:'2', show:'Cheque', ocupa:'Cheque'},
+      {valor:'3', show:'Tarjeta', ocupa:'Tarjeta'},
+      {valor:'4', show:'Transferencia', ocupa:'Transferencia'},
+      {valor:'5', show:'Credito', ocupa:'credito'},
+      // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
+      // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
+      {valor:'6', show:'Terminal BBVA', ocupa:'BBVA'},
+      {valor:'7', show:'Terminal BANAMEX', ocupa:'BANAMEX'}
+    ]
 
     url: string
     camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refacciones_v','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
@@ -1692,11 +1706,24 @@ export class ServiciosPublicosService {
 
     //TODO revision de cache
 
-    revisar_cache(nombre:string){
+    async revisar_cache(nombre:string){
       const objeto_desencriptado = localStorage.getItem(`${nombre}`)
-      const desc = this._encript.servicioDecrypt_object(objeto_desencriptado)
-      const nueva = JSON.parse(JSON.stringify(desc));
-      return nueva
+      let nueva 
+      if (objeto_desencriptado) {
+        console.log('existe en localHost');
+        const desc = this._encript.servicioDecrypt_object(objeto_desencriptado)
+        nueva = JSON.parse(JSON.stringify(desc));
+        return nueva
+      }else{
+        const info_ruta = await this._automaticos.consulta_ruta(nombre)
+        console.log(`se creo cache ${nombre} de la APP`);
+
+        this._encript.guarda_informacion({nombre, data: info_ruta})
+        let obtenida_cero = localStorage.getItem(`${nombre}`)
+        const desc = this._encript.servicioDecrypt_object(obtenida_cero)
+        nueva = JSON.parse(JSON.stringify(desc));
+        return nueva
+      }
     }
     buscar_data_realcionada_con_cliente(cliente:string, data_cliente){
       let cotizaciones_arr = [], recepciones_arr = [], vehiculos_arr = []
@@ -1757,6 +1784,20 @@ export class ServiciosPublicosService {
         cotizacion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
         return cotizacion
       })
+    }
+    asigna_data_diarios(data){
+      const {bruto, recepciones} = data
+      let nuevas = [...bruto]
+      
+      const nuevas_ = nuevas.map(diario=>{
+        const {tipo, id_os, sucursal, metodo} = diario
+        if (tipo === 'orden') diario.no_os = recepciones[id_os].no_os
+        diario.metodoShow = this.metodospago.find(m=>m.valor === String(metodo)).show
+        diario.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+        return diario
+      })
+
+      return nuevas_
     }
     filtra_orden(arreglo, id_orden){
       return [...arreglo].filter(f=>f.id_os === id_orden)
@@ -1844,5 +1885,62 @@ export class ServiciosPublicosService {
       })
       return refacciones
     }
+    sumatoria_meses(arreglo:any[]){
+      let total = 0
+      arreglo.forEach(a=>{
+        total += a
+      })
+      return total 
+    }
+    sucursales_objetivos(data){
+      const {sucursales, metas_sucursales, fecha_start, fecha_end} = data
+      let objetivo =0
+      sucursales.forEach(sucursal=>{
+        const resultados_metas_start = metas_sucursales[sucursal]
+        let objetivos = []
+        if (resultados_metas_start) {
+          const  aniosMeses = this.obtenerAniosMesesPorAnio_1(fecha_start, fecha_end)
+          aniosMeses.forEach(arr=>{
+            const {anio, meses} = arr
+            const anio_metas = resultados_metas_start[anio]
+            let nuevos_meses = [...meses]
+            nuevos_meses.forEach(mes=>{
+              if (anio_metas[mes -1 ]) {
+                objetivos.push(anio_metas[mes -1 ])
+              }
+            })
+          })
+          const total_objetivos = this.sumatoria_meses(objetivos)
+          objetivo += total_objetivos
+        }
+      })
+      return objetivo
+    }
+    obtenerAniosMesesPorAnio_1(fechaInicio, fechaFin) {
+      const fechaInicioObj = new Date(fechaInicio);
+      const fechaFinObj = new Date(fechaFin);
+    
+      const anioInicio = fechaInicioObj.getFullYear();
+      const mesInicio = fechaInicioObj.getMonth();
+      const anioFin = fechaFinObj.getFullYear();
+      const mesFin = fechaFinObj.getMonth();
+    
+      const aniosMeses = [];
+    
+      for (let anio = anioInicio; anio <= anioFin; anio++) {
+        const mesesPorAnio = [];
+        const mesInicial = (anio === anioInicio) ? mesInicio : 0;
+        const mesFinal = (anio === anioFin) ? mesFin : 11;
+    
+        for (let mes = mesInicial; mes <= mesFinal; mes++) {
+          mesesPorAnio.push(mes + 1);
+        }
+    
+        aniosMeses.push({ anio, meses: mesesPorAnio });
+      }
+    
+      return aniosMeses;
+    }
+  
       
  }

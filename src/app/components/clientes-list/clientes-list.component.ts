@@ -56,10 +56,10 @@ export class ClientesListComponent implements OnInit {
     this.lista_clientes()
 
   }
-  lista_clientes(){
+  async lista_clientes(){
     console.log(this._rol)
     console.log(this._sucursal)
-    const clientes = this._publicos.revisar_cache('clientes')
+    const clientes = await this._publicos.revisar_cache('clientes')
     const clientes_arr = this._publicos.crearArreglo2(clientes)
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
     

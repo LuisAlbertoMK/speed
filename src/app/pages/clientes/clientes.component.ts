@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 
 
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { child, get, getDatabase, onValue, push, ref, set, update } from "firebase/database";
+import { child, get, getDatabase, onChildChanged, onValue, push, ref, set, update } from "firebase/database";
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
 import {MatPaginator} from '@angular/material/paginator';
@@ -36,7 +36,8 @@ export interface User {nombre: string}
 })
 export class ClientesComponent implements AfterViewInit, OnInit {
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
-    private _clientes: ClientesService, private router: Router, private _auth: AuthService,private _campos: CamposSystemService,){}
+    private _clientes: ClientesService, private router: Router, private _auth: AuthService,private _campos: CamposSystemService,
+    ){}
     _rol:string; _sucursal:string;
   
     clientes_arr:any =[]
@@ -50,20 +51,40 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
     this._rol = rol
     this._sucursal = sucursal
-    this.lista_clientes()
+    this.vigila_hijo()
 
   }
-  lista_clientes(){
+  async lista_clientes(){
     console.log(this._rol)
     console.log(this._sucursal)
-    const clientes = this._publicos.revisar_cache('clientes')
+    const clientes = await this._publicos.revisar_cache('clientes')
     const clientes_arr = this._publicos.crearArreglo2(clientes)
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
     
     const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
-    
-    this.clientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'fullname',false)
-
+    setTimeout(() => {
+      this.clientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'fullname',true)
+    }, 1000);
+  }
+  async vigila_hijo(){
+    const clientes = await this._publicos.revisar_cache('clientes')
+    const clientes_arr = await this._publicos.crearArreglo2(clientes)
+    const nueva_data_clientes = JSON.parse(JSON.stringify(clientes));
+      const unicosdos = [clientes_arr[0], clientes_arr[1]]
+      unicosdos.forEach(cliente=>{
+        const {id:id_cliente} = cliente
+        const commentsRef = ref(db, `clientes/${id_cliente}` );
+        onChildChanged(commentsRef, (data) => {
+          const key = data.key
+          const valor = data.val()
+          if (nueva_data_clientes[id_cliente]) {
+            nueva_data_clientes[id_cliente][key] = valor
+            this._security.guarda_informacion({nombre:'clientes', data: nueva_data_clientes })
+            this.lista_clientes()
+          }
+        });
+      })
+      this.lista_clientes()
   }
 }
 

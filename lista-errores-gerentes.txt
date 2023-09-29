@@ -1,54 +1,20 @@
-USUARIO:string
-  ROL:string
-  SUCURSAL:string
+1.- modulos revisados_con_cache
 
-  miniColumnas:number = 100
+  Administracion    = true
+  automaticos   
+  catalogos
+  citas
+  clientes          = true
+  corte             = true
+  cotizacion        = true
+  eliminarEmpresa
+  facturacion
+  recordatorios
+  registraProblemas
+  reporteGastos     = true
+  servicios         = true
+  sucursales        = true
+  usuarios          
+  vehiculos         = true
 
-  camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce  ]
-  metodospago       =   [ ...this._cotizaciones.metodospago  ]
-  sucursales_array  =   [ ...this._sucursales.lista_en_duro_sucursales  ]
-
-  rangeAdministracion = new FormGroup({
-    start: new FormControl(new Date()),
-    end: new FormControl(new Date()),
-  });
-
-  hora_start = '00:00:01';
-  hora_end = '23:59:59';
-
-  fechas_getAdministracion ={start:new Date(), end:new Date() }
-  fechas_get_formateado_admin = {start:new Date(), end:new Date() }
-
-  sucursalFiltroReporte: string = 'Todas'
-  filtro_entregado_recibido: string = 'fecha_entregado'
-  filtros_entregado_recibido= [
-    {valor: 'fecha_recibido', show:'fecha recibido'},
-    {valor: 'fecha_entregado', show:'fecha entregado'},
-  ]
-
-  array_recepciones = []
-//   clienteShow
-// placas
-// sucursalShow
-// subtotal
-
-  dataSourceAdministracion = new MatTableDataSource(); //elementos
-  elementosAdministracion = ['no_os','fecha_recibido','fecha_entregado','subtotal','fullname']; //elementos
-  columnsToDisplayWithExpandAdministracion = [...this.elementosAdministracion, 'opciones', 'expand']; //elementos
-  expandedElement: any | null; //elementos
-  @ViewChild('AdministracionPaginator') paginatorAdministracion: MatPaginator //elementos
-  @ViewChild('Administracion') sortAdministracion: MatSort //elementos
-
-
-  camposReporteAdministracion = [
-    {valor:'cantidad', show:'Ordenes cerradas'},
-    {valor:'subtotal', show:'Monto de ventas (Antes de IVA)'},
-    {valor:'refacciones', show:'Costos Refacciones (de los autos cerrados)'},
-    {valor:'operacion', show:'Costo Operacion'},
-    {valor:'margen', show:'Margen'},
-    {valor:'por_margen', show:'% Margen'},
-  ]
-  reporteAdministracion = {
-    iva:0, refacciones:0, total:0, subtotal:0, operacion:0, cantidad:0,
-    margen:0, por_margen:0
-  }
+2.- Verificar cambios en hijos de un arbol principal

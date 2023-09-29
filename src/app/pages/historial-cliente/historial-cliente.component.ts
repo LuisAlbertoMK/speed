@@ -63,8 +63,8 @@ export class HistorialClienteComponent implements OnInit {
     
   }
  
-  consulta_info_cliente(id_cliente:string){
-    const clientes = this._publicos.revisar_cache('clientes')
+  async consulta_info_cliente(id_cliente:string){
+    const clientes = await this._publicos.revisar_cache('clientes')
     const data_cliente = clientes[id_cliente]
 
     this.data_cliente  = data_cliente

@@ -27,6 +27,7 @@ enrutamiento = {vehiculo:'', cliente:'', anterior:''}
 onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
 
    miniColumnas:number = 100
+   
 
 [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
 

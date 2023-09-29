@@ -69,7 +69,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   hora_start = '00:00:01';
   hora_end = '23:59:59';
   fechas_filtro = new FormGroup({
-    start: new FormControl(new Date('09-25-2023')),
+    start: new FormControl(new Date()),
     end: new FormControl(new Date()),
    });
   async ngOnInit() {
@@ -109,12 +109,12 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     this.router.navigate([`/${pagina}`], { queryParams });
   }
 
-  lista_cotizaciones(){
-    const cotizacionesRealizadas = this._publicos.revisar_cache('cotizacionesRealizadas')
+  async lista_cotizaciones(){
+    const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
     const cotizaciones_arr = this._publicos.crearArreglo2(cotizacionesRealizadas)
 
-    const clientes = this._publicos.revisar_cache('clientes')
-    const vehiculos = this._publicos.revisar_cache('vehiculos')
+    const clientes = await this._publicos.revisar_cache('clientes')
+    const vehiculos = await this._publicos.revisar_cache('vehiculos')
 
     const cotizaciones_completas =this._publicos.asigna_datos_cotizaciones({bruto:cotizaciones_arr, clientes, vehiculos})
 

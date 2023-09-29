@@ -84,8 +84,10 @@ export class UsuariosComponent implements OnInit {
           }
         })
         // console.log(nuevos);
-        this.dataSource.data = nuevos
-        this.newPagination()
+        setTimeout(() => {
+          this.dataSource.data = nuevos
+          this.newPagination()
+        }, 1000);
       }
     }, {
         onlyOnce: true

@@ -90,15 +90,10 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
     }
   }
   exportar(){
-    if (this.cotizaciones_arr.length) {
-      console.log('exportar correcto con datos');
-      console.log(this.cotizaciones_arr);
-      
+    if (this.dataSource.data.length) {
       this._exporter_excel.exportToExcelCotizaciones(this.dataSource.data,'exportacion')
     }else{
-      console.log('sin datos para la exportacion');
-      
-      // this._publicos.swalToast('ningun dato ...',0, 'top-start')
+      this._publicos.swalToast(`Sin datos para la exportacion`,0)
     }
   }
 
@@ -266,7 +261,6 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
     const ordenar = (this.filtro_sucursal === 'Todas') ? nuevas : this._publicos.filtra_campo(nuevas,'sucursal',this.filtro_sucursal)
     const resultados = this._publicos.ordenamiento_fechas(ordenar,'fecha_recibido',false)
 
-    // this.contador_resultados = resultados.length
     this.dataSource.data = resultados
     this.newPagination()
   }

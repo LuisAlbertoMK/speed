@@ -14,7 +14,16 @@
           </button>
         </div>
       </div>
-</div>
+  </div>
+  <ng-container *ngIf="_sucursal === 'Todas'">
+    <div class="col-lg-1 col-md-2 col-sm-2 col-12 mb-1">
+    <button aria-label="MenuSucursal" class="btn btn-sm btn-success" [matMenuTriggerFor]="filtroSucursal"><i class="fa fa-university"></i></button>
+    <mat-menu #filtroSucursal="matMenu">
+      <button mat-menu-item (click)="filtro_sucursal = 'Todas'; resetea_horas_admin()" >{{'Todas' | capitalizarUno}}</button>
+      <button mat-menu-item (click)="filtro_sucursal = sucursal.id; resetea_horas_admin()" *ngFor="let sucursal of sucursales_array">{{sucursal.sucursal | capitalizarUno}}</button>
+    </mat-menu>
+  </div>
+</ng-container>
   <div class="col-lg-6 col-md-8 col-sm-12 col-12">
     <div class="card border-success mb-3">
       <div class="card-header text-center">Corte de ingresos</div>

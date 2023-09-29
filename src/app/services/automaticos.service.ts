@@ -14,5 +14,21 @@ const db = getDatabase();
 export class AutomaticosService {
 
   constructor(private http: HttpClient) { }
+
+  consulta_ruta(ruta): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      const starCountRef = ref(db, `${ruta}`);
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      }, {
+        onlyOnce: true
+      })
+    });
+  }
   
 }
