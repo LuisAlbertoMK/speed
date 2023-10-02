@@ -41,6 +41,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     _rol:string; _sucursal:string;
   
     clientes_arr:any =[]
+    clientes_actual = []
   ngOnInit() {
     this.rol()
   }
@@ -62,29 +63,30 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
     
     const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
+
+    const campos_cliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','usuario']
     setTimeout(() => {
-      this.clientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'fullname',true)
+      
+      this.clientes_actual = this._publicos.ordenamiento_fechas_x_campo(ordenar,'fullname',true)
+      this.clientes_arr = this._publicos.actualizarArregloExistente(this.clientes_actual,ordenar, campos_cliente)
     }, 1000);
   }
   async vigila_hijo(){
-    const clientes = await this._publicos.revisar_cache('clientes')
-    const clientes_arr = await this._publicos.crearArreglo2(clientes)
-    const nueva_data_clientes = JSON.parse(JSON.stringify(clientes));
-      const unicosdos = [clientes_arr[0], clientes_arr[1]]
-      unicosdos.forEach(cliente=>{
-        const {id:id_cliente} = cliente
-        const commentsRef = ref(db, `clientes/${id_cliente}` );
-        onChildChanged(commentsRef, (data) => {
-          const key = data.key
-          const valor = data.val()
-          if (nueva_data_clientes[id_cliente]) {
-            nueva_data_clientes[id_cliente][key] = valor
-            this._security.guarda_informacion({nombre:'clientes', data: nueva_data_clientes })
-            this.lista_clientes()
-          }
-        });
-      })
-      this.lista_clientes()
+    await this._publicos.vigila_hijo(
+      [
+        'clientes'
+      ]
+    )
+    const starCountRef = ref(db, `clientes`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.lista_clientes()
+      } else {
+        console.log("No data available");
+      }
+    })
+    
+
   }
 }
 

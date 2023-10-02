@@ -164,56 +164,53 @@ export class AutomaticosComponent implements OnInit {
     this.marcas_vehiculos_id = n.map(c=>{
       return c.id
     })
-    this.vigila_hijo()
+    // this.vigila_hijo()
   }
     rol(){
         const { rol, sucursal, usuario } = this._security.usuarioRol()
         this._sucursal = sucursal
     }
 
-    async vigila_hijo(){
-      const clientes = await this._publicos.revisar_cache('clientes')
-      const clientes_arr = await this._publicos.crearArreglo2(clientes)
-      const nueva_data_clientes = JSON.parse(JSON.stringify(clientes));
+    async vigila_hijo(arreglo:any[]){
+      
+      let nombre  = 'clientes'
 
-      if (clientes) {
-        const unicosdos = [clientes_arr[0], clientes_arr[1]]
-        unicosdos.forEach(cliente=>{
-          const {id:id_cliente} = cliente
-          const commentsRef = ref(db, `clientes/${id_cliente}` );
-          onChildChanged(commentsRef, (data) => {
-            const key = data.key
-            const valor = data.val()
-            if (nueva_data_clientes[id_cliente]) {
-              nueva_data_clientes[id_cliente][key] = valor
-              console.log(nueva_data_clientes[id_cliente]);
-              this._encript.guarda_informacion({nombre:'clientes', data: nueva_data_clientes })
-            }
-          });
-        })
-      }else{
-        console.log('llamar toda la informacion de clientes');
-        
+      const commentsRef = ref(db, `${nombre}` );
+
+      const variable_busqueda = await this._publicos.revisar_cache(`${nombre}`)      
+
+      const variable_busqueda_arr = this._publicos.crearArreglo2(variable_busqueda)
+
+      const nueva_data_clientes = JSON.parse(JSON.stringify(variable_busqueda));
+
+      if (variable_busqueda) {
+        onChildAdded(commentsRef, (data) => {
+          // console.log('nuevos');
+          const key = data.key
+          const valor = data.val()
+
+          if (!nueva_data_clientes[key]) {
+              nueva_data_clientes[key] = valor
+              this._encript.guarda_informacion({nombre, data: nueva_data_clientes })
+          }else{
+            nueva_data_clientes[key] = valor
+            this._encript.guarda_informacion({nombre, data: nueva_data_clientes })
+          }          
+        });
       }
-
-      
-      // onChildAdded(commentsRef, (data) => {
-      //   console.log(data);
-        
-      //   // addCommentElement(postElement, data.key, data.val().text, data.val().author);
-      // });
-      
-      // onChildChanged(commentsRef, (data) => {
-      //   console.log(data);
-        
-      //   // setCommentValues(postElement, data.key, data.val().text, data.val().author);
-      // });
-      
-      // onChildRemoved(commentsRef, (data) => {
-      //   console.log(data);
-        
-      //   // deleteComment(postElement, data.key);
-      // });
+      variable_busqueda_arr.forEach(cliente=>{
+        const {id:id_nombre} = cliente
+        const commentsRef_childs = ref(db, `${nombre}/${id_nombre}` );
+        onChildChanged(commentsRef_childs, (data) => {
+          const key_child = data.key
+          const valor = data.val()
+          if (nueva_data_clientes[id_nombre]) {
+            nueva_data_clientes[id_nombre][key_child] = valor
+            // console.log(nueva_data_clientes[id_nombre]);
+            this._encript.guarda_informacion({nombre, data: nueva_data_clientes })
+          }
+        });
+      })
     }
 
 
@@ -237,7 +234,6 @@ export class AutomaticosComponent implements OnInit {
       obtener.forEach(camp=>{
         const nombre:string = `${camp}`.toString()
         console.log(nombre);
-        
         const starCountRef = ref(db, `${nombre}`)
           onValue(starCountRef, (snapshot) => {
             if (snapshot.exists()) {

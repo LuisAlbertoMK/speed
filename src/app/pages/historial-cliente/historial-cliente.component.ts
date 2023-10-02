@@ -67,11 +67,14 @@ export class HistorialClienteComponent implements OnInit {
     const clientes = await this._publicos.revisar_cache('clientes')
     const data_cliente = clientes[id_cliente]
 
+    console.log(data_cliente);
+    
+
     this.data_cliente  = data_cliente
 
     const info = { [id_cliente]: data_cliente }
 
-    const {cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.buscar_data_realcionada_con_cliente(id_cliente,info)
+    const {cotizaciones_arr, recepciones_arr, vehiculos_arr} = await this._publicos.buscar_data_realcionada_con_cliente(id_cliente,info)
    
     this.cotizaciones_arr = cotizaciones_arr
     this.recepciones_arr = recepciones_arr

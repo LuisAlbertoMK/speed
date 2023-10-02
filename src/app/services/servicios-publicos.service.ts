@@ -17,7 +17,7 @@ export class ServiciosPublicosService {
     
     constructor(
       private http : HttpClient, private _campos:CamposSystemService,
-      private _encript: EncriptadoService, private _automaticos:AutomaticosService) {}
+      private _security: EncriptadoService, private _automaticos:AutomaticosService) {}
 
     sucursales_array = 
     [
@@ -1705,34 +1705,118 @@ export class ServiciosPublicosService {
     }
 
     //TODO revision de cache
+    async vigila_hijo(arreglo:any[]){
+      
+      let nombre  = 'clientes'
+  
 
+      arreglo.forEach(campo=>{
+        console.log(campo);
+        
+      })
+
+      const commentsRef = ref(db, `${nombre}` );
+  
+      const variable_busqueda = await this.revisar_cache(`${nombre}`)      
+  
+      const variable_busqueda_arr = this.crearArreglo2(variable_busqueda)
+  
+      const nueva_data_clientes = JSON.parse(JSON.stringify(variable_busqueda));
+  
+      // if (variable_busqueda) {
+      //   onChildAdded(commentsRef, (data) => {
+      //     // console.log('nuevos');
+      //     const key = data.key
+      //     const valor = data.val()
+  
+      //     if (!nueva_data_clientes[key]) {
+      //         nueva_data_clientes[key] = valor
+      //         this._security.guarda_informacion({nombre, data: nueva_data_clientes })
+      //     }else{
+      //       nueva_data_clientes[key] = valor
+      //       this._security.guarda_informacion({nombre, data: nueva_data_clientes })
+      //     }          
+      //   });
+      // }
+      variable_busqueda_arr.forEach(cliente=>{
+        const {id:id_nombre} = cliente
+        const commentsRef_childs = ref(db, `${nombre}/${id_nombre}` );
+        onChildChanged(commentsRef_childs, (data) => {
+          const key_child = data.key
+          const valor = data.val()
+          console.log(id_nombre);
+          console.log(key_child);
+          console.log(valor);
+          
+          if (nueva_data_clientes[id_nombre]) {
+            nueva_data_clientes[id_nombre][key_child] = valor
+            console.log(nueva_data_clientes[id_nombre]);
+            console.log(nueva_data_clientes);
+            
+            this._security.guarda_informacion({nombre, data: nueva_data_clientes })
+          }
+        });
+      })
+    }
     async revisar_cache(nombre:string){
+
+      
       const objeto_desencriptado = localStorage.getItem(`${nombre}`)
       let nueva 
       if (objeto_desencriptado) {
-        console.log('existe en localHost');
-        const desc = this._encript.servicioDecrypt_object(objeto_desencriptado)
+        console.log('existe en localHost '+ nombre);
+        //comprobar si la informacion actual es igual a la antigua en localhost
+
+        const starCountRef = ref(db, `${nombre}`)
+          onValue(starCountRef, (snapshot) => {
+            if (snapshot.exists()) {
+              // let vehiculos= this._publicos.crearArreglo2(snapshot.val())
+              console.log(snapshot.val());
+              
+            } else {
+              console.log("No data available");
+            }
+          }, {
+              onlyOnce: true
+            })
+
+        const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
         nueva = JSON.parse(JSON.stringify(desc));
         return nueva
       }else{
-        const info_ruta = await this._automaticos.consulta_ruta(nombre)
+        const info_ruta = await this.consulta_ruta(nombre)
         console.log(`se creo cache ${nombre} de la APP`);
 
-        this._encript.guarda_informacion({nombre, data: info_ruta})
+        this._security.guarda_informacion({nombre, data: info_ruta})
         let obtenida_cero = localStorage.getItem(`${nombre}`)
-        const desc = this._encript.servicioDecrypt_object(obtenida_cero)
+        const desc = this._security.servicioDecrypt_object(obtenida_cero)
         nueva = JSON.parse(JSON.stringify(desc));
         return nueva
       }
     }
-    buscar_data_realcionada_con_cliente(cliente:string, data_cliente){
+    consulta_ruta(ruta): Promise<any> {
+      return new Promise((resolve, reject) => {
+        // const {ruta} = data
+        const starCountRef = ref(db, `${ruta}`);
+        onValue(starCountRef, (snapshot) => {
+          if (snapshot.exists()) {
+            resolve(snapshot.val())
+          } else {
+            resolve({});
+          }
+        }, {
+          onlyOnce: true
+        })
+      });
+    }
+    async buscar_data_realcionada_con_cliente(cliente:string, data_cliente){
       let cotizaciones_arr = [], recepciones_arr = [], vehiculos_arr = []
-      const recepciones_object = this.revisar_cache('recepciones')
-      const cotizaciones_object = this.revisar_cache('cotizacionesRealizadas')
-      const vehiculos = this.revisar_cache('vehiculos')
+      const recepciones_object = await this.revisar_cache('recepciones')
+      const cotizaciones_object = await this.revisar_cache('cotizacionesRealizadas')
+      const vehiculos = await this.revisar_cache('vehiculos')
 
-      const historial_gastos_orden = this.crearArreglo2(this.revisar_cache('historial_gastos_orden'))
-      const historial_pagos_orden = this.crearArreglo2(this.revisar_cache('historial_pagos_orden'))
+      const historial_gastos_orden = this.crearArreglo2(await this.revisar_cache('historial_gastos_orden'))
+      const historial_pagos_orden = this.crearArreglo2(await this.revisar_cache('historial_pagos_orden'))
       
       const filtro_cotizaciones = this.filtra_campo(this.crearArreglo2(cotizaciones_object),'cliente', cliente)
       const filtro_recepciones = this.filtra_campo(this.crearArreglo2(recepciones_object),'cliente', cliente)
