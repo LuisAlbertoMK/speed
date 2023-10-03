@@ -75,6 +75,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   async ngOnInit() {
     this.rol()
     this.vigila_calendario()
+    this.vigila_hijo()
   }
   ngAfterViewInit(): void { 
   }
@@ -109,12 +110,24 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     this.router.navigate([`/${pagina}`], { queryParams });
   }
 
+
+  async vigila_hijo(){
+    const starCountRef = ref(db, `cotizacionesRealizadas`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.lista_cotizaciones()
+      }
+    })
+  }
   async lista_cotizaciones(){
     const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
     const cotizaciones_arr = this._publicos.crearArreglo2(cotizacionesRealizadas)
 
     const clientes = await this._publicos.revisar_cache('clientes')
     const vehiculos = await this._publicos.revisar_cache('vehiculos')
+
+    // console.log(cotizaciones_arr);
+    
 
     const cotizaciones_completas =this._publicos.asigna_datos_cotizaciones({bruto:cotizaciones_arr, clientes, vehiculos})
 

@@ -88,32 +88,45 @@ export class SucursalesComponent implements OnInit {
   formaSucursal: FormGroup
   formaUploadFile: FormGroup
   desactivaGuardar:boolean = false
-  constructor(private route: ActivatedRoute,private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
     private _publicos:ServiciosPublicosService,
     private _sucursal: SucursalesService, private _uploadImagen: UploadFileService,
-    private _security:EncriptadoService, private _sucursales: SucursalesService) {}
+    private _security:EncriptadoService) {}
 
   ngOnInit(): void {
     this.rol()
     this.crearFormularioSucursal()
     this.brow()
+   
   }
   ngAfterViewInit() {
 
   }
-  async rol(){
+  vigila_hijo(){
+    const starCountRef = ref(db, `sucursales`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.lista_sucursales()
+      }
+    })
+  }
+  async lista_sucursales(){
     console.time('Execution Time');
-    const { rol, sucursal } = this._security.usuarioRol()
-    
-    this._rol = rol
-    this.sucursal_ = sucursal
     const sucursales = await this._publicos.revisar_cache('sucursales')
     // console.log(sucursales);
     const sucursales_arr = this._publicos.crearArreglo2(sucursales)
     // console.log(sucursales_arr);
     this.sucursales_array = sucursales_arr
     console.timeEnd('Execution Time');
+  }
+  async rol(){
+   
+    const { rol, sucursal } = this._security.usuarioRol()
     
+    this._rol = rol
+    this.sucursal_ = sucursal
+
+    this.vigila_hijo()
   }
   getInformacionSucursal(id:string){
     //priemro obtener informacion de sucursal

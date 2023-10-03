@@ -34,6 +34,7 @@ export class ClientesListComponent implements OnInit {
   
   @Output() dataCliente : EventEmitter<any>
   @Input() sucursal :string
+  @Input() tituloshow :boolean = true
 
   _rol:string; _sucursal:string
   empresas_alls= {}
@@ -53,19 +54,27 @@ export class ClientesListComponent implements OnInit {
 
     this._rol = rol
     this._sucursal = sucursal
-    this.lista_clientes()
+
+    this.vigila_hijo()
 
   }
+  async vigila_hijo(){
+    const starCountRef = ref(db, `clientes`)
+    onValue(starCountRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.lista_clientes()
+      }
+    })
+  }
   async lista_clientes(){
-    console.log(this._rol)
-    console.log(this._sucursal)
+
     const clientes = await this._publicos.revisar_cache('clientes')
     const clientes_arr = this._publicos.crearArreglo2(clientes)
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
     
     const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
 
-    this.listaClientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'fullname',false)
+    this.listaClientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
 
   }
   vigila(){

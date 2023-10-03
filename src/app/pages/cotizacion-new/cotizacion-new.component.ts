@@ -146,8 +146,28 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.enrutamiento = params
       console.log(params);
       
-      this.cargaDataCliente_new()
+      this.vigila_hijo()
     });
+    
+  }
+  vigila_hijo(){
+    const rutas_vigila = [
+      'clientes',
+      'vehiculos',
+      'recepciones',
+      'historial_gastos_operacion',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+    ]
+    rutas_vigila.forEach(nombre=>{
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          this.cargaDataCliente_new()
+        }
+      })
+    })
+    
   }
   async cargaDataCliente_new(){
 
@@ -156,11 +176,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     let  data_cliente:any = {},  vehiculos_arr = [], data_vehiculo = {}
 
     if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
-    // data_vehiculo = (vehiculo) ? vehiculos_arr.find(v=>v.id === vehiculo) :null 
-
-    // console.log(vehiculos_arr);
-    
-    
 
     const campos = [
       'cliente',
@@ -238,7 +253,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.infoCotizacion.data_cliente = clientes[cliente]
     }
 
-    console.log(this.infoCotizacion);
+    // console.log(this.infoCotizacion);
     
     this.realizaOperaciones()
     this.vigila_vehiculos_cliente()

@@ -504,6 +504,13 @@ export class ServiciosPublicosService {
       if (!arrayObj) return []; 
       return Object.entries(arrayObj).map(([key, value]) => ({ ...value, id: key }));
     }
+    crear_arreglo_per(arreglo:any):any[]{
+      if (!arreglo) return [];
+      return Object.entries(arreglo).map(([key, value]) => {
+        const  nue = {...arreglo[key], id: key};
+        return nue
+      });
+    }
     crearArreglo(clientesObj : object) {
       const clientes: any[] = clientesObj ? Object.values(clientesObj) : [];
       return clientes;
@@ -1731,8 +1738,11 @@ export class ServiciosPublicosService {
   
       //     if (!nueva_data_clientes[key]) {
       //         nueva_data_clientes[key] = valor
+      //         console.log('verifica informacion de nodo secundario NO EXISTE' + {key, valor});
+              
       //         this._security.guarda_informacion({nombre, data: nueva_data_clientes })
       //     }else{
+      //       console.log('verifica informacion de nodo secundario EXISTENTE ' + {key, valor});
       //       nueva_data_clientes[key] = valor
       //       this._security.guarda_informacion({nombre, data: nueva_data_clientes })
       //     }          
@@ -1744,15 +1754,13 @@ export class ServiciosPublicosService {
         onChildChanged(commentsRef_childs, (data) => {
           const key_child = data.key
           const valor = data.val()
-          console.log(id_nombre);
-          console.log(key_child);
-          console.log(valor);
-          
+          // console.log(id_nombre);
+          // console.log(key_child);
+          // console.log(valor);
           if (nueva_data_clientes[id_nombre]) {
             nueva_data_clientes[id_nombre][key_child] = valor
-            console.log(nueva_data_clientes[id_nombre]);
-            console.log(nueva_data_clientes);
-            
+            // console.log(nueva_data_clientes[id_nombre]);
+            // console.log(nueva_data_clientes);
             this._security.guarda_informacion({nombre, data: nueva_data_clientes })
           }
         });
@@ -1764,29 +1772,13 @@ export class ServiciosPublicosService {
       const objeto_desencriptado = localStorage.getItem(`${nombre}`)
       let nueva 
       if (objeto_desencriptado) {
-        console.log('existe en localHost '+ nombre);
-        //comprobar si la informacion actual es igual a la antigua en localhost
-
-        const starCountRef = ref(db, `${nombre}`)
-          onValue(starCountRef, (snapshot) => {
-            if (snapshot.exists()) {
-              // let vehiculos= this._publicos.crearArreglo2(snapshot.val())
-              console.log(snapshot.val());
-              
-            } else {
-              console.log("No data available");
-            }
-          }, {
-              onlyOnce: true
-            })
-
+        // console.log('existe en localHost '+ nombre);
         const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
         nueva = JSON.parse(JSON.stringify(desc));
         return nueva
       }else{
         const info_ruta = await this.consulta_ruta(nombre)
-        console.log(`se creo cache ${nombre} de la APP`);
-
+        // console.log(`se creo cache ${nombre} de la APP`);
         this._security.guarda_informacion({nombre, data: info_ruta})
         let obtenida_cero = localStorage.getItem(`${nombre}`)
         const desc = this._security.servicioDecrypt_object(obtenida_cero)
@@ -1850,9 +1842,12 @@ export class ServiciosPublicosService {
 
         const nuevo = JSON.parse(JSON.stringify(recepcion.reporte));
         nuevo['refaccion'] = total_gastos
-
+        // console.log(`recepcion: ${id}`);
+        // console.log(`reporte:` ,recepcion.reporte);
+        
         const reporte_real = this.sumatoria_reporte(nuevo, margen, iva)
         recepcion.reporte_real = reporte_real
+        // console.log(`reporte_real: `, reporte_real);
     
         return recepcion
       })
@@ -1862,8 +1857,18 @@ export class ServiciosPublicosService {
       const nuevos_ordenamiento =this.ordenamiento_fechas(bruto,'fecha_recibido',false)
       return nuevos_ordenamiento.map(cotizacion=>{
         const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal} = cotizacion;
-        cotizacion.data_cliente = clientes[cliente]
-        cotizacion.data_vehiculo = vehiculos[vehiculo]
+        const data_cliente = clientes[cliente]
+        if (data_cliente) {
+          const {nombre, apellidos} = data_cliente
+          cotizacion.fullname = `${nombre} ${apellidos}`.toLowerCase()
+        }
+        const data_vehiculo = vehiculos[vehiculo]
+        if (data_vehiculo) {
+          const {placas} = data_vehiculo
+          cotizacion.placas = `${placas}`.toUpperCase()
+        }
+        cotizacion.data_cliente = data_cliente
+        cotizacion.data_vehiculo = data_vehiculo
         cotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
         cotizacion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
         return cotizacion
@@ -1960,12 +1965,21 @@ export class ServiciosPublicosService {
         })
       return  total_ventas
     }
+    suma_gastos_ordenes_subtotales_reales(data:any[]):number{
+      let  total_ventas= 0
+        data.forEach(f=>{
+          const {total_gastos, reporte_real} = f
+          const {subtotal,refaccion } = reporte_real
+          total_ventas += subtotal
+        })
+      return  total_ventas
+    }
     suma_refacciones_os_cerradas_reales(arreglo:any[]):number{
       let refacciones = 0
       arreglo.forEach(recep=>{
         const {reporte_real} = recep
-        const {refaccionVenta} = reporte_real
-        refacciones += refaccionVenta
+        const {refaccionVenta, refaccion} = reporte_real
+        refacciones += refaccion
       })
       return refacciones
     }
@@ -2025,6 +2039,20 @@ export class ServiciosPublicosService {
     
       return aniosMeses;
     }
+
+    quitarAcentos(texto) {
+      // const nuevo_ = this.eliminarEspacios(texto)
+      // const nuevo_1 = this.dejarUnEspacio(nuevo_)
+
+      return texto
+        .normalize("NFD") // Normalizamos el texto en Unicode
+        .replace(/[\u0300-\u036f]/g, "") // Eliminamos los caracteres diacríticos
+        .replace(/[^\w\s]/gi, "") // Eliminamos caracteres especiales excepto letras y espacios
+        .replace(/\s+/g, " ") // Reemplazamos múltiples espacios en blanco por uno solo
+        .replace(/\s+/g, '') // Reemplazamos múltiples espacios en blanco por uno solo
+        .trim(); // Quitamos espacios en blanco al principio y al final
+    }
+    
   
       
  }

@@ -1,5 +1,13 @@
 <app-template-navegacion></app-template-navegacion>
 
+<ng-container *ngIf="_sucursal === 'Todas'">
+  <button  class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
+  data-bs-toggle="modal"  data-bs-target="#modalDeposito" (click)="realizaGasto = 'pago'"
+  >Nuevo deposito</button>
+</ng-container>
+<button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  (click)="realizaGasto = 'gasto'" data-bs-toggle="modal"  data-bs-target="#modalGasto">Nuevo gasto</button>
+<button class="btn btn-sm btn-success m-1" (click)="realizaGasto = 'pago'" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-toggle="modal"  data-bs-target="#modalGasto"
+    >Registra pago</button>
 
 <div class="row">
   <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
@@ -208,12 +216,12 @@
         </button>
       </div>
       <div class="modal-body m-2">
-        <!-- <ng-container *ngIf="realizaGasto === 'gasto'; else elseTemplate">
+        <ng-container *ngIf="realizaGasto === 'gasto'; else elseTemplate">
           <app-gasto ></app-gasto>
         </ng-container>
         <ng-template #elseTemplate>
           <app-pago></app-pago>
-        </ng-template> -->
+        </ng-template>
       </div>
     </div>
   </div>
@@ -230,7 +238,7 @@
         </button>
       </div>
       <div class="modal-body m-2">
-        <!-- <app-realiza-deposito (data_deposito)="data_deposito( $event )"></app-realiza-deposito> -->
+        <app-realiza-deposito (data_deposito)="data_deposito( $event )"></app-realiza-deposito>
       </div>
     </div>
   </div>

@@ -1,6 +1,17 @@
 
   <app-template-navegacion></app-template-navegacion>
-
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+    <ng-container *ngIf="_sucursal === 'Todas'">
+      <button  class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"
+      data-bs-toggle="modal"  data-bs-target="#modalDeposito" (click)="realizaGasto = 'pago'"
+      >Nuevo deposito</button>
+    </ng-container>
+    <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  (click)="realizaGasto = 'gasto'" data-bs-toggle="modal"  data-bs-target="#modalGasto">Nuevo gasto</button>
+    <button class="btn btn-sm btn-success m-1" (click)="realizaGasto = 'pago'" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-toggle="modal"  data-bs-target="#modalGasto"
+        >Registra pago</button>
+  </div>
+</div>
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
       <div class="input-group mb-3 ">
@@ -56,6 +67,45 @@
       </div>
   </div>
   <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
-      <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false" [muestra_cliente]="true"></app-template-tabla-recepciones>
+      <app-template-tabla-recepciones [reales]="true"  [muestra_cliente]="true" [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false" [muestra_cliente]="true"></app-template-tabla-recepciones>
   </div>
   </div>
+
+  <div class="modal fade" id="modalGasto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body m-2">
+        <ng-container *ngIf="realizaGasto === 'gasto'; else elseTemplate">
+          <app-gasto ></app-gasto>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <app-pago></app-pago>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDeposito" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body m-2">
+        <app-realiza-deposito (data_deposito)="data_deposito( $event )"></app-realiza-deposito>
+      </div>
+    </div>
+  </div>
+</div>

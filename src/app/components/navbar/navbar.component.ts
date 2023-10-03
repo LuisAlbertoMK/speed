@@ -4,7 +4,7 @@ import * as CryptoJS from 'crypto-js'
 
 import { InicioComponent } from 'src/app/pages/inicio/inicio.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { child, get, getDatabase, onValue, ref, set, update } from 'firebase/database';
+import { child, get, getDatabase, onChildAdded, onValue, ref, set, update } from 'firebase/database';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged,  signOut  } from "firebase/auth";
 
 import Swal from 'sweetalert2';
@@ -14,6 +14,7 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 const auth = getAuth();
@@ -25,8 +26,8 @@ const auth = getAuth();
 export class NavbarComponent implements AfterViewInit ,OnInit {
   @ViewChild(InicioComponent) child;
   constructor(private _auth:AuthService, private router : Router, private _email:EmailsService, 
-    private _sucursales: SucursalesService,
-    private _security:EncriptadoService,  public _router: Router, public _location: Location) { }
+    private _sucursales: SucursalesService, private _publicos:ServiciosPublicosService, private _security:EncriptadoService,
+    public _router: Router, public _location: Location) { }
   
     sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
 
@@ -83,8 +84,14 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   ]
   tema_selecciondo = {valor:false,color:'navbar-white', show:'Modo oscuro',icono:'moon'}
   theme: string = 'dark';
-  ngOnInit(): void {
 
+  _rol:string
+  _sucursal:string
+  ngOnInit(): void {
+    // console.log('llamado');
+    this.rol()
+    // this.vigila_hijo()
+    
     this.nombreSucursal()
 
     this.AsiganacionVariablesSesion()
@@ -95,6 +102,41 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   ngAfterViewInit() {
     
   }
+  rol(){
+    const { rol, sucursal } = this._security.usuarioRol()
+
+    this._rol = rol
+    this._sucursal = sucursal
+  }
+
+  async vigila_hijo(){
+    
+    const rutas_vigila = [
+      'clientes',
+      'vehiculos',
+      'recepciones',
+      'moRefacciones',
+      'cotizacionesRealizadas',
+      'historial_gastos_diarios',
+      'historial_gastos_operacion',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+      'sucursales',
+      'metas_sucursales'
+    ]
+    rutas_vigila.forEach(nombre=>{
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          this._security.guarda_informacion({nombre, data: snapshot.val()})
+        } else {
+          console.log("No data available");
+        }
+      })
+    })
+    
+  }
+ 
 
   //TODO aqui las nuevas funciones
 

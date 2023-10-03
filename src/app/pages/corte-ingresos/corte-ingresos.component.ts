@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { getDatabase, onValue, ref } from 'firebase/database';
 
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ExporterService } from 'src/app/services/exporter.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+
+
+const db = getDatabase()
 
 @Component({
   selector: 'app-corte-ingresos',
@@ -12,9 +17,9 @@ import { SucursalesService } from 'src/app/services/sucursales.service';
 })
 export class CorteIngresosComponent implements OnInit {
 
-  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService,
+  constructor(private _security:EncriptadoService, private _publicos: ServiciosPublicosService, private _exporter:ExporterService,
     private _sucursales: SucursalesService) { }
-  
+    miniColumnas:number = 100
   _rol:string
   _sucursal: string
 
@@ -64,11 +69,13 @@ export class CorteIngresosComponent implements OnInit {
   fecha_formateadas = {start:new Date(), end:new Date() }
   hora_start = '00:00:01';
   hora_end = '23:59:59';
+
+  realizaGasto:string = 'gasto'
   
   ngOnInit(): void {
     this.rol()
-    this.vigila_calendario()
     this.resetea_horas_admin()
+    this.vigila_calendario()
   }
   rol(){
     
@@ -77,6 +84,8 @@ export class CorteIngresosComponent implements OnInit {
     this._rol = rol
     this._sucursal = sucursal
     this.filtro_sucursal = sucursal
+
+    this.vigila_hijo()
   }
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
@@ -97,8 +106,26 @@ export class CorteIngresosComponent implements OnInit {
       this.listado_corte_ingresos()
     }, 500);
 
-
-    
+  }
+  vigila_hijo(){
+    const rutas_vigila = [
+      'clientes',
+      'vehiculos',
+      'recepciones',
+      'historial_gastos_operacion',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+      'historial_gastos_diarios',
+      'metas_sucursales'
+    ]
+    rutas_vigila.forEach(nombre=>{
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          this.listado_corte_ingresos()
+        }
+      })
+    })
   }
   async listado_corte_ingresos(){
     const metas_sucursales = await this._publicos.revisar_cache('metas_sucursales')
@@ -144,7 +171,7 @@ export class CorteIngresosComponent implements OnInit {
 
     const total_gastos_ordenes = this._publicos.sumatorias_aprobados(solo_gastos_orden)
 
-    const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales(recepciones_arr)
+    const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales_reales(recepciones_arr)
 
     let  total_ordenes:number = recepciones_arr.length
 
@@ -184,6 +211,169 @@ export class CorteIngresosComponent implements OnInit {
     }
     this.recepciones_arr = recepciones_arr
 
+  }
+  generaExcel_corte_ingresos(){
+    if (this.recepciones_arr.length) {
+      const nueva_data = this.arreglar_info_recepciones(this.recepciones_arr)
+      // const data_reporte_objetivos = this._publicos.crearArreglo2(this.reporte)
+      // console.log(nueva_data);
+      
+      const casdgfh = [
+        {valor:'objetivo', show:'Objetivo'},
+        {valor:'ventas', show:'Total ventas'},
+        {valor:'operacion', show:'Gastos de operación'},
+        {valor:'orden', show:'Gastos de ordenes'},
+        {valor:'refacciones', show:'Refacciones'},
+        {valor:'sobrante', show:'GM'},
+        {valor:'porcentajeGM', show:'% GM'},
+        {valor:'ticketPromedio', show:'ticket Promedio'},
+        {valor:'porcentaje', show:'% cumplido'},
+      ]
+
+      
+      const data_reporte_objetivos = Object.keys(casdgfh).map((a,index)=>{
+        const name = casdgfh[index].show
+        return {
+          Nombre: name,
+          Valor: this.reporte[casdgfh[index].valor],
+        }
+      })
+
+      // console.log(data_reporte_objetivos);
+      const metodos_ = this.obtener_suma_metodos(nueva_data)
+
+      let linea_blanca = 
+      {
+          no_os: '',
+          placas:'',
+          marca:'',
+          modelo:'',
+          descripcion:'',
+          sucursal: '',
+          empresa: '',
+          tipo:'',
+          Efectivo:'',
+          Cheque:'',
+          Tarjeta:'',
+          OpenPay:'',
+          Clip:'',
+          BBVA:'',
+          BANAMEX:'',
+          credito:'',
+          subtotal:'',
+          iva:'',
+          total:'',
+          'status orden': '',
+        }
+        let nuevo_ob = JSON.parse(JSON.stringify(linea_blanca));
+        Object.keys(this.metodos).forEach(m=>{
+          nuevo_ob[m] = metodos_[m]
+        })
+        nueva_data.push({
+          ...nuevo_ob,
+          tipo: 'Totales formas pago'
+        })
+        nueva_data.push({
+          ...linea_blanca
+        })
+        
+      const dos = this._publicos.retorna_fechas_hora().formateada
+
+      nueva_data.push({
+        ...linea_blanca,
+        Efectivo:'Arqueo Correspondiente a',
+        Tarjeta:'Fecha de Realizacion',
+      })
+      nueva_data.push({
+        ...linea_blanca,
+        Efectivo: `${'uno'} - ${'uno_1'}`,
+        Tarjeta: dos,
+      })
+      
+      this._exporter.genera_excel_recorte_ingresos({arreglo: nueva_data, data_reporte_objetivos})
+    }else{
+      this._publicos.swalToast(`Ningun registro`,0)
+    }
+  }
+  arreglar_info_recepciones(recepciones_arr:any[]){
+
+    const nueva = recepciones_arr.map(recep=>{
+    const data_recepcion = JSON.parse(JSON.stringify(recep));
+
+    const {marca, modelo, placas } = data_recepcion.data_vehiculo
+
+    const {  tipo, empresa} = data_recepcion.data_cliente
+    const {sucursal: sucursalShow} = data_recepcion.data_sucursal
+
+    const {elementos, no_os, status, reporte, historial_pagos_orden, reporte_real    } = recep
+
+    const {subtotal, iva, total } = reporte_real
+    const { formaPago } = data_recepcion
+    
+    const {
+      Efectivo,
+      Cheque,
+      Tarjeta,
+      OpenPay,
+      Clip,
+      BBVA,
+      BANAMEX,
+      credito
+    }
+    = this.obtener_pormetodo(historial_pagos_orden)
+
+    const nombres_elementos = this._publicos.obtenerNombresElementos(elementos)
+
+    let nueva_empresa = empresa ? empresa : ''
+    const temp_data = {
+        no_os: String(no_os).toUpperCase(),
+        placas:String(placas).toUpperCase() ,
+        marca,
+        modelo,
+        descripcion: String(nombres_elementos).toLowerCase(),
+        sucursal: sucursalShow,
+        empresa: nueva_empresa,
+        tipo,
+        Efectivo,
+        Cheque,
+        Tarjeta,
+        OpenPay,
+        Clip,
+        BBVA,
+        BANAMEX,
+        credito,
+        subtotal,
+        iva,
+        total,
+        'status orden': status,
+      }
+      return temp_data
+    })
+    
+    return nueva
+  }
+  obtener_suma_metodos (nueva_data:any[]){
+    let metodos = JSON.parse(JSON.stringify(this.metodos));
+    nueva_data.forEach(g=>{
+      Object.keys(metodos).forEach(m=>{
+        metodos[m] += parseFloat(g[m])
+      })
+    })
+    return metodos
+  }
+  obtener_pormetodo(historial_pagos:any[]){
+    let metodos = JSON.parse(JSON.stringify(this.metodos));
+    historial_pagos.forEach(h=>{
+      const  {metodo, monto} = h
+      const data_pago = this.metodospago.find(m=>m.metodo === metodo)
+      if (metodo === data_pago.metodo) {
+        metodos[data_pago.show] += parseFloat(monto)
+      }
+    })
+    return metodos
+  }
+  data_deposito(event){
+    if (event) this._publicos.cerrar_modal('modal-deposito')
   }
   
 }

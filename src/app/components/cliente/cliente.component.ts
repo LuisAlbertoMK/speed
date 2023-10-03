@@ -215,16 +215,22 @@ export class ClienteComponent implements OnInit, OnChanges {
         if (!this.data_cliente) this.actualizaNoCliente()
     })
     this.form_cliente.get('nombre').valueChanges.subscribe((nombre: string) => {
-      const new_nombre = this.dejarUnEspacio(nombre)
+      
       // this.form_cliente.get('nombre').setValue(new_nombre)
         if (!this.data_cliente) this.actualizaNoCliente()
     })
     this.form_cliente.get('apellidos').valueChanges.subscribe((apellidos: string) => {
         if (!this.data_cliente) this.actualizaNoCliente()
     })
-    this.form_cliente.get('correo').valueChanges.subscribe((correo: string) => {
+    this.form_cliente.get('correo').valueChanges.subscribe(async (correo: string) => {
       if (correo) {
-        const existe = this.correos_existentes.find(c=>c === correo)
+
+        let nuevo_correo_ = this._publicos.quitarAcentos(correo)
+        const clientes = await this._publicos.revisar_cache('clientes')
+        const clientes_arr = this._publicos.crearArreglo2(clientes)
+        const existe = clientes_arr.find(c=>c.correo === nuevo_correo_)
+        console.log(existe);
+        
         this.correoExistente = (existe) ? true : false
       }else{
         this.correoExistente = false
@@ -283,30 +289,44 @@ export class ClienteComponent implements OnInit, OnChanges {
     return this.form_cliente.get(campo).invalid && this.form_cliente.get(campo).touched
   }
   async actualizaNoCliente() {
-    
-    const nombre = eliminarEspacios(this.form_cliente.controls['nombre'].value?.trim());
-    const apellidos = eliminarEspacios(this.form_cliente.controls['apellidos'].value?.trim())
-    const uid = this.form_cliente.controls['uid'].value?.trim();
-    let sucursal = this.form_cliente.controls['sucursal'].value?.trim();
+
+    const {nombre:data_cliente_nombre, apellidos:data_cliente_apellidos} = this._publicos.getRawValue(this.form_cliente)
+    if (data_cliente_nombre && data_cliente_apellidos) {
+      const nombre_purificado = quitarAcentos(eliminarEspacios(this.dejarUnEspacio(data_cliente_nombre))).trim()
+      const apellidos_purificado = quitarAcentos(eliminarEspacios(this.dejarUnEspacio(data_cliente_apellidos))).trim()
+      const uid = this.form_cliente.controls['uid'].value?.trim();
+      let sucursal = this.form_cliente.controls['sucursal'].value?.trim();
    
-    if (!uid && nombre?.length >= 2 && apellidos?.length >= 2 && sucursal) {
-      try {
-        await this.constverifica(sucursal)
-        const nombre_sucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
-        const date = new Date();
-        const mes = (date.getMonth() + 1).toString().padStart(2, '0');
-        const anio = date.getFullYear().toString().slice(-2);
-        const secuencia = this.contadroClientes.toString().padStart(4, '0');
-        const nombreCotizacion = `${nombre?.slice(0, 2)}${apellidos?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`.toUpperCase();
-        
-        this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion);
-      } catch (error) {
-        this._publicos.mensajeCorrecto(`error: ${error}`, 0);
+      if (!uid && nombre_purificado?.length >= 2 && apellidos_purificado?.length >= 2 && sucursal) {
+        try {
+          await this.constverifica(sucursal)
+          const nombre_sucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
+          const date = new Date();
+          const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+          const anio = date.getFullYear().toString().slice(-2);
+          const secuencia = this.contadroClientes.toString().padStart(4, '0');
+          const nombreCotizacion = `${nombre_purificado?.slice(0, 2)}${apellidos_purificado?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`.toUpperCase();
+          
+          this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion);
+        } catch (error) {
+          this._publicos.mensajeCorrecto(`error: ${error}`, 0);
+        }
+      } else if(uid) {
+        // this.form_cliente.controls['no_cliente'].setValue('');
+      } else {
+        this.form_cliente.controls['no_cliente'].setValue('');
       }
-    } else if(uid) {
-      // this.form_cliente.controls['no_cliente'].setValue('');
-    } else {
+    }else{
       this.form_cliente.controls['no_cliente'].setValue('');
+    }
+    
+    function quitarAcentos(texto) {
+      return texto
+        .normalize("NFD") // Normalizamos el texto en Unicode
+        .replace(/[\u0300-\u036f]/g, "") // Eliminamos los caracteres diacríticos
+        .replace(/[^\w\s]/gi, "") // Eliminamos caracteres especiales excepto letras y espacios
+        .replace(/\s+/g, " ") // Reemplazamos múltiples espacios en blanco por uno solo
+        .trim(); // Quitamos espacios en blanco al principio y al final
     }
     function eliminarEspacios(cadena) {
       return cadena.replace(/\s+/g, '');
@@ -315,12 +335,19 @@ export class ClienteComponent implements OnInit, OnChanges {
   dejarUnEspacio(cadena:string) {
     return cadena.replace(/\s+/g, ' ');
   }
+  
 
   async guardarCliente(){
 
     this.salvando = true
     
     const info_get = this._publicos.recuperaDatos(this.form_cliente);
+
+    const informacion_purifica = [
+      'nombre', 'apellidos','correo'
+    ].forEach(campo=>{
+      info_get[campo] = this._publicos.quitarAcentos(info_get[campo])
+    })
 
     let campos_cliente                 = [ ...this._clientes.campos_cliente ]
     const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]

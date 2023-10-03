@@ -56,37 +56,27 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
   }
   async lista_clientes(){
-    console.log(this._rol)
-    console.log(this._sucursal)
     const clientes = await this._publicos.revisar_cache('clientes')
-    const clientes_arr = this._publicos.crearArreglo2(clientes)
-    const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
-    
-    const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
 
+    const clientes_arr = this._publicos.crearArreglo2(clientes)
+    
+    const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
+
+    const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
+    
     const campos_cliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','usuario']
     setTimeout(() => {
-      
-      this.clientes_actual = this._publicos.ordenamiento_fechas_x_campo(ordenar,'fullname',true)
+      this.clientes_actual = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
       this.clientes_arr = this._publicos.actualizarArregloExistente(this.clientes_actual,ordenar, campos_cliente)
     }, 1000);
   }
   async vigila_hijo(){
-    await this._publicos.vigila_hijo(
-      [
-        'clientes'
-      ]
-    )
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
         this.lista_clientes()
-      } else {
-        console.log("No data available");
       }
     })
-    
-
   }
 }
 

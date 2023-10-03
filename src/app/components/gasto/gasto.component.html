@@ -39,7 +39,7 @@
                     </div>
                   </div>
               </ng-container>
-              <ng-container *ngIf="!id_os && SUCURSAL ==='Todas'">
+              <ng-container *ngIf="!id_os && _sucursal ==='Todas'">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
                   <div class="mb-1 row">
                     <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
@@ -136,7 +136,7 @@
               </div>
               </div>
           </div>
-          <ng-container *ngIf="SUCURSAL === 'Todas'">
+          <ng-container *ngIf="_sucursal === 'Todas'">
             <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-center" >
               <div class="input-group mb-3 ">
                 <input aria-label="input calendario" (click)="pickerBarrido.open()"  [min]="minDate" [max]="maxDate" [matDatepickerFilter]="myFilter" 

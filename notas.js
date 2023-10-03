@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "implementar sincronizacion en todos los modulos -2  (proceso)"
+git commit -m "verificar el moduloce citas  (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

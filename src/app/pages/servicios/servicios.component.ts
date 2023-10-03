@@ -114,8 +114,28 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this._sucursal = sucursal 
     this.lista_cotizaciones()
   }
+  vigila_hijo(){
+    const rutas_vigila = [
+      'clientes',
+      'vehiculos',
+      'recepciones',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+    ]
+    rutas_vigila.forEach(nombre=>{
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          this.lista_cotizaciones()
+        }
+      })
+    })
+    
+  }
 
   async lista_cotizaciones(){
+    console.time('Execution Time');
+
     const recepciones = await this._publicos.revisar_cache('recepciones')
     const recepciones_arr = this._publicos.crearArreglo2(recepciones)
 
@@ -135,6 +155,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.recepciones_arr_antes_filtro = this._publicos.ordenamiento_fechas(ordenar,'fecha_recibido',false)
 
     this.resetea_horas_admin()
+    console.timeEnd('Execution Time');
   }
 
   vigila_calendario(){

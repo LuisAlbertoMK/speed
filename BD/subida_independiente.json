@@ -1,11 +1,41 @@
 {
-  "apellidos": "Sánchez",
-  "correo": "humberto.sanchez@genommalab.com",
-  "id": "-NeekzgvHBHAnRgY7M-A",
-  "no_cliente": "HUSÁCU09230076",
-  "nombre": "Humberto",
-  "status": true,
-  "sucursal": "-N2glF34lV3Gj0bQyEWK",
-  "telefono_movil": "5551841603",
-  "tipo": "particular"
+  "-Nej-DVUQQM6IEGVmBQt": {
+    "concepto": "asdasdasd",
+    "fecha_recibido": "Tue Sep 19 2023 13:53:15 GMT-0600 (hora estándar central)",
+    "id_os": "-NeilHGTHBi2jAL9DX78",
+    "metodo": "2",
+    "monto": 2500,
+    "rol": "SuperSU",
+    "status": true,
+    "sucursal": "-N2gkzuYrS4XDFgYciId"
+  },
+  "-Nej-VXpHeK0NfWaGWmI": {
+    "concepto": "dfgdfgdfg",
+    "fecha_recibido": "Tue Sep 19 2023 13:54:29 GMT-0600 (hora estándar central)",
+    "id_os": "-NeiehcXToEW7W0O4fUd",
+    "metodo": "2",
+    "monto": 525,
+    "rol": "SuperSU",
+    "status": true,
+    "sucursal": "-N2gkzuYrS4XDFgYciId"
+  },
+  "-NesKeFXWrm4AGxXApB3": {
+    "concepto": "bcvb",
+    "fecha_recibido": "Thu Sep 21 2023 09:23:30 GMT-0600 (hora estándar central)",
+    "id_os": "-NeoEUfB8p0Wpac9JDFd",
+    "metodo": "2",
+    "monto": 2000,
+    "rol": "SuperSU",
+    "sucursal": "-N2gkzuYrS4XDFgYciId"
+  },
+  "-NetFYaq20GLFLxZW1lQ": {
+    "concepto": "xcvxc",
+    "fecha_recibido": "Thu Sep 21 2023 13:40:49 GMT-0600 (hora estándar central)",
+    "id_os": "-NeoEUfB8p0Wpac9JDFd",
+    "metodo": "8",
+    "monto": 333,
+    "rol": "SuperSU",
+    "status": true,
+    "sucursal": "-N2gkzuYrS4XDFgYciId"
+  }
 }

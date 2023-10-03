@@ -6,6 +6,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { getDatabase, onValue, ref } from 'firebase/database';
+
+
+const db = getDatabase()
 
 @Component({
   selector: 'app-administracion',
@@ -27,6 +31,7 @@ export class AdministracionComponent implements OnInit {
   constructor(private _security:EncriptadoService,private _publicos: ServiciosPublicosService, 
     private _sucursales: SucursalesService) { }
   
+    miniColumnas:number = 100
     _rol:string
     _sucursal:string
 
@@ -57,6 +62,7 @@ export class AdministracionComponent implements OnInit {
      sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
 
      filtro_sucursal:string
+     realizaGasto:string = 'gasto'
   
   ngOnInit(): void {
     this.rol()
@@ -68,8 +74,33 @@ export class AdministracionComponent implements OnInit {
     this._rol = rol
     this._sucursal = sucursal
     this.filtro_sucursal = sucursal
+    this.vigila_hijo()
   }
+
+  vigila_hijo(){
+    const rutas_vigila = [
+      'clientes',
+      'vehiculos',
+      'recepciones',
+      'historial_gastos_operacion',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+    ]
+    rutas_vigila.forEach(nombre=>{
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          this.lista_gastos_administracion()
+        }
+      })
+    })
+    
+  }
+
+
   async lista_gastos_administracion(){
+    
+    console.time('Execution Time');
       const recepciones_object = await this._publicos.revisar_cache('recepciones')
       const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
       const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
@@ -105,7 +136,7 @@ export class AdministracionComponent implements OnInit {
       // console.log(total_gastos_operacion);
       const total_refacciones = this._publicos.suma_refacciones_os_cerradas_reales(recepciones_arr)
       // console.log(total_refacciones);
-      const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales(recepciones_arr)
+      const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales_reales(recepciones_arr)
       // console.log(total_subtotales_ventas);
       let margen:number = 0, por_margen:number = 0, total_ordenes:number =0
       total_ordenes = recepciones_arr.length
@@ -114,6 +145,8 @@ export class AdministracionComponent implements OnInit {
         por_margen = (margen / total_subtotales_ventas) * 100
       }
 
+      // console.log(recepciones_arr);
+      
       this.reporteAdministracion.cantidad = total_ordenes
       this.reporteAdministracion.margen = margen
       this.reporteAdministracion.operacion = total_gastos_operacion
@@ -122,7 +155,7 @@ export class AdministracionComponent implements OnInit {
       this.reporteAdministracion.subtotal = total_subtotales_ventas
 
       this.recepciones_arr = recepciones_arr
-      
+      console.timeEnd('Execution Time');
   }
 
   vigila_calendario(){
@@ -143,6 +176,10 @@ export class AdministracionComponent implements OnInit {
     setTimeout(() => {
       this.lista_gastos_administracion()
     }, 500);
+  }
+
+  data_deposito(event){
+    if (event) this._publicos.cerrar_modal('modal-deposito')
   }
 
 

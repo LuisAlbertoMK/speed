@@ -39,7 +39,7 @@ export class GastoComponent implements OnInit, OnChanges {
     @Output() showGastoHide : EventEmitter<any>
     @Input() id_os:any
   
-    ROL:string; SUCURSAL:string
+    _rol:string; _sucursal:string
     
     miniColumnas:number=100
     formGasto:FormGroup
@@ -127,11 +127,11 @@ export class GastoComponent implements OnInit, OnChanges {
   }
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
-    this.ROL = rol
-    this.SUCURSAL = sucursal
+    this._rol = rol
+    this._sucursal = sucursal
   }
   crearFormGasto(){
-    const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+    const sucursal = (this._sucursal ==='Todas') ? '': this._sucursal
     this.formGasto = this.fb.group({
       tipo:['operacion',[Validators.required]],
       id_os:['',[]],
@@ -154,7 +154,7 @@ export class GastoComponent implements OnInit, OnChanges {
   }
 
   vigila(){
-    if (this.SUCURSAL !== 'Todas')  this.formGasto.get('sucursal').disable()
+    if (this._sucursal !== 'Todas')  this.formGasto.get('sucursal').disable()
     this.formGasto.get('tipo').valueChanges.subscribe(async (tipo: string) => {
         this.muestra_claves_recepciones()
     })
@@ -187,27 +187,73 @@ export class GastoComponent implements OnInit, OnChanges {
   }
   
   async muestra_claves_recepciones(){
+
     const {tipo, sucursal} = this._publicos.recuperaDatos(this.formGasto)
     this.muestraLista = (tipo === 'orden') ? true : false
-    const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const todas = this._publicos.crearArreglo2(snapshot.val());
-        const filtradas = todas.filter(recep=>recep.sucursal === sucursal)
-        const claves_show = solo_claves(filtradas)
-        this.claves_ordenes  = solo_claves(filtradas)
-        function solo_claves(arreglo){
-          let nuevos = [...arreglo]
-          return nuevos.map(n=>{
-            const {id, no_os} = n
-            return {id, no_os}
-          })
-        }
-        
-      } else {
-        console.log("No data available");
-      }
+
+    const recepciones = await this._publicos.revisar_cache('recepciones')
+    const recepciones_arr = this._publicos.crearArreglo2(recepciones)
+
+    const clientes = await this._publicos.revisar_cache('clientes')
+    const vehiculos = await this._publicos.revisar_cache('vehiculos')
+
+    const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
+    const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
+
+    const cotizaciones_completas =this._publicos.asigna_datos_recepcion({
+      bruto:recepciones_arr, clientes, vehiculos,
+      historial_gastos_orden, historial_pagos_orden
     })
+
+    // console.log(cotizaciones_completas);
+    // console.log(this._rol);
+    // console.log(this._sucursal);
+
+    
+    
+   
+
+    // const {tipo, sucursal} = this._publicos.recuperaDatos(this.formGasto)
+    // this.muestraLista = (tipo === 'orden') ? true : false
+    // if (tipo === 'orden' && sucursal) {
+    //     this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
+    // }else{
+    //   this.claves_ordenes = []
+    // }
+    
+    const filtro_sucursal = (sucursal === 'Todas') 
+    ? cotizaciones_completas
+    : this._publicos.filtra_informacion(cotizaciones_completas,'sucursal',sucursal)
+
+    const filtro_status = 
+    filtro_sucursal.filter(status => status.status !== 'cancelado' && status.status !== 'entregado')
+    // console.log(filtro_sucursal);
+    // console.log(filtro_status);
+    
+
+    this.claves_ordenes = filtro_sucursal
+
+    // const {tipo, sucursal} = this._publicos.recuperaDatos(this.formGasto)
+    // this.muestraLista = (tipo === 'orden') ? true : false
+    // const starCountRef = ref(db, `recepciones`)
+    // onValue(starCountRef, (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     const todas = this._publicos.crearArreglo2(snapshot.val());
+    //     const filtradas = todas.filter(recep=>recep.sucursal === sucursal)
+    //     const claves_show = solo_claves(filtradas)
+    //     this.claves_ordenes  = solo_claves(filtradas)
+    //     function solo_claves(arreglo){
+    //       let nuevos = [...arreglo]
+    //       return nuevos.map(n=>{
+    //         const {id, no_os} = n
+    //         return {id, no_os}
+    //       })
+    //     }
+        
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // })
   }
 
   myFilter = (d: Date | null): boolean => {
@@ -231,9 +277,9 @@ export class GastoComponent implements OnInit, OnChanges {
     ]
     const campos_orden = [
       ...campos_operacion,
-      'gasto_tipo',
+      // 'gasto_tipo',
       'id_os',
-      'no_os',
+      // 'no_os',
     ]
 
     const cuales_ = (info_get.tipo === 'orden') ? campos_orden : campos_operacion
@@ -246,13 +292,13 @@ export class GastoComponent implements OnInit, OnChanges {
     const {sucursal, id_os, fecha_recibido: fech_} = recuperada
     const data_orden =  this.claves_ordenes.find(f=>f.id === id_os)
 
-    if (this.ROL !== 'SuperSU' &&   new Date(data_orden.fecha_limite_gastos) > new Date()) {
+    if (this._rol !== 'SuperSU' &&   new Date(data_orden.fecha_limite_gastos) > new Date()) {
       this._publicos.mensajeSwal('Error',0,true,`Fuera de fechas o permisos`)
       return
     }
     
     if (info_get.tipo === 'orden'){
-      recuperada.no_os = data_orden.no_os
+      // recuperada.no_os = data_orden.no_os
       // recuperada.status_orden = data_orden.status_orden
       // recuperada.cliente = data_orden.cliente
       // recuperada.vehiculo = data_orden.vehiculo
@@ -304,7 +350,7 @@ export class GastoComponent implements OnInit, OnChanges {
       await this.muestra_claves_recepciones()
       this.carga_data_gasto(this.id_os)
     }else{
-      const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+      const sucursal = (this._sucursal ==='Todas') ? '': this._sucursal
       this.formGasto.reset({sucursal, tipo:'operacion'})
     }
   }

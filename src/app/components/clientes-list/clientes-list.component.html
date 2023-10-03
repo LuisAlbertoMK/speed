@@ -1,5 +1,7 @@
 <form class="example-form ">
-  Clientes disponibles: <strong> {{listaClientes_arr.length}}</strong>
+  <ng-container *ngIf="tituloshow">
+    Clientes disponibles: <strong> {{listaClientes_arr.length}}</strong>
+  </ng-container>
       <div class="input-group mb-3">
 
         <input type="text"

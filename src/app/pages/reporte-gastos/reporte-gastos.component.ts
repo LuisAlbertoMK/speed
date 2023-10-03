@@ -80,6 +80,8 @@ export class ReporteGastosComponent implements OnInit {
 
   filtro_sucursal:string
 
+  realizaGasto:string = 'gasto'
+
   ngOnInit(): void {
     this.rol()
     this.vigila_calendario()
@@ -92,6 +94,7 @@ export class ReporteGastosComponent implements OnInit {
     this._sucursal = sucursal
     this._usuario = usuario
     this.filtro_sucursal = sucursal
+    this.vigila_hijo()
   }
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
@@ -118,9 +121,30 @@ export class ReporteGastosComponent implements OnInit {
     }, 1000);
     
   }
+  vigila_hijo(){
+    const rutas_vigila = [
+      'clientes',
+      'vehiculos',
+      'recepciones',
+      'historial_gastos_operacion',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+      'historial_gastos_diarios'
+    ]
+    rutas_vigila.forEach(nombre=>{
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          this.listado_corte_ingresos()
+        }
+      })
+    })
+    
+  }
   async listado_corte_ingresos(){
     
-    
+    // console.time('Execution Time');
+
     const recepciones_object = await this._publicos.revisar_cache('recepciones')
 
       const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
@@ -167,6 +191,7 @@ export class ReporteGastosComponent implements OnInit {
         })
       }
       this.reporte = reporte;
+      // console.timeEnd('Execution Time');
   }
   newPagination(){
     setTimeout(() => {
@@ -211,7 +236,7 @@ export class ReporteGastosComponent implements OnInit {
       .catch(err=>{
         console.log(err);
       })
-      console.log(updates);
+      // console.log(updates);
     }
 
 
@@ -288,5 +313,8 @@ export class ReporteGastosComponent implements OnInit {
         console.log(err);
       }) 
     }
+  }
+  data_deposito(event){
+    if (event) this._publicos.cerrar_modal('modal-deposito')
   }
 }

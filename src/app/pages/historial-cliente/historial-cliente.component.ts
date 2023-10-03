@@ -57,17 +57,36 @@ export class HistorialClienteComponent implements OnInit {
       console.log(params);
       const data_enrutamiento = JSON.parse(JSON.stringify(params))
       const {cliente} = data_enrutamiento
-      if (cliente) this.consulta_info_cliente(cliente)
+      if (cliente) this.vigila_hijo(cliente)
       
     });
     
+  }
+  vigila_hijo(cliente){
+    const rutas_vigila = [
+      'clientes',
+      'vehiculos',
+      'recepciones',
+      'historial_gastos_operacion',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+      'historial_gastos_diarios'
+    ]
+    rutas_vigila.forEach(nombre=>{
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, (snapshot) => {
+        if (snapshot.exists()) {
+          this.consulta_info_cliente(cliente)
+        }
+      })
+    })
   }
  
   async consulta_info_cliente(id_cliente:string){
     const clientes = await this._publicos.revisar_cache('clientes')
     const data_cliente = clientes[id_cliente]
 
-    console.log(data_cliente);
+    // console.log(data_cliente);
     
 
     this.data_cliente  = data_cliente
