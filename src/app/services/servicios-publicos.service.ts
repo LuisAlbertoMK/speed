@@ -1766,15 +1766,18 @@ export class ServiciosPublicosService {
         });
       })
     }
+    crear_new_object(objecto){
+      return JSON.parse(JSON.stringify(objecto));
+    }
     async revisar_cache(nombre:string){
-
-      
       const objeto_desencriptado = localStorage.getItem(`${nombre}`)
       let nueva 
       if (objeto_desencriptado) {
         // console.log('existe en localHost '+ nombre);
+        const snap = await this._automaticos.consulta_ruta(nombre)
+        this._security.guarda_informacion({nombre, data: snap})
         const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
-        nueva = JSON.parse(JSON.stringify(desc));
+        nueva = this.crear_new_object(desc)// JSON.parse(JSON.stringify(desc));
         return nueva
       }else{
         const info_ruta = await this.consulta_ruta(nombre)
@@ -1832,8 +1835,8 @@ export class ServiciosPublicosService {
         const {id, cliente, vehiculo,elementos, margen, iva, descuento, formaPago, sucursal} = recepcion;
         recepcion.historial_gastos_orden = this.filtra_orden(historial_gastos_orden, id)
         recepcion.historial_pagos_orden = this.filtra_orden(historial_pagos_orden, id)
-        recepcion.data_cliente = clientes[cliente]
-        recepcion.data_vehiculo = vehiculos[vehiculo]
+        recepcion.data_cliente = {...clientes[cliente], id: cliente}
+        recepcion.data_vehiculo = {...vehiculos[vehiculo], id: vehiculo}
         recepcion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
         recepcion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
         const solo_gastos_orden = this.obtener_historial_orden([recepcion],'historial_gastos_orden')
@@ -1867,8 +1870,11 @@ export class ServiciosPublicosService {
           const {placas} = data_vehiculo
           cotizacion.placas = `${placas}`.toUpperCase()
         }
-        cotizacion.data_cliente = data_cliente
-        cotizacion.data_vehiculo = data_vehiculo
+        cotizacion.data_cliente = {...clientes[cliente], id: cliente}
+        cotizacion.data_vehiculo = {...vehiculos[vehiculo], id: vehiculo}
+
+        // cotizacion.data_cliente = data_cliente
+        // cotizacion.data_vehiculo = data_vehiculo
         cotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
         cotizacion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
         return cotizacion

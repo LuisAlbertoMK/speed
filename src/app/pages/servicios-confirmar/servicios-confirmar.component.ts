@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { child, get, getDatabase, onValue, ref, update } from 'firebase/database';
+import { getDatabase, ref, update } from 'firebase/database';
 import SignaturePad from 'signature_pad';
 
 import { EmailsService } from 'src/app/services/emails.service';
@@ -28,10 +28,10 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts.js";
 
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { UploadPDFService } from '../../services/upload-pdf.service';
-import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
+import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { CamposSystemService } from '../../services/campos-system.service';
+import { UploadPDFService } from '../../services/upload-pdf.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
@@ -64,7 +64,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   @Output() mouseSobre: EventEmitter<boolean> = new EventEmitter()
   
   numeroDias: number = null
-  ROL:string =''; SUCURSAL:string ='';
+  _rol:string =''; _sucursal:string ='';
   // listaSucursales_arr =[]
   //TODO: aqui la informacion que es nueva
 
@@ -90,7 +90,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   sinDetalles: boolean = false
-  kilometraje:number =1234; diasEntrega:number = null
+  kilometraje:number =0; diasEntrega:number = null
 
   
   colorPluma:string = '#010101'
@@ -185,8 +185,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   async rol(){
     const { rol, sucursal } = this._security.usuarioRol()
 
-    this.ROL = rol
-    this.SUCURSAL = sucursal
+    this._rol = rol
+    this._sucursal = sucursal
     this.infoConfirmar.checkList = this.checkList
     this.infoConfirmar.detalles = this.detalles_rayar
     this.rutaActiva.queryParams.subscribe((params:any) => {
@@ -195,109 +195,68 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     });
     this.cambiaTodosCheckA(true)
   }
-  vigila_informacion_cliente({sucursal, cliente}){
-    const starCountRef = ref(db, `clientes/${sucursal}/${cliente}`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.infoConfirmar.data_cliente = snapshot.val()
-        this.editar_cliente = true
-      } else {
-        console.log("No data available");
-      }
-    })
-  }
+ 
 
   async acciones(){
-    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
+    console.log(this.enrutamiento);
+    const {cotizacion, recepcion} = this.enrutamiento
+    const vehiculos = await this._publicos.revisar_cache('vehiculos')
+    const clientes = await this._publicos.revisar_cache('clientes')
 
-    const campos_cotizacion_recupera = [
-      'elementos',
-      'formaPago',
-      'iva',
-      'margen',
-      'servicio',
-      'sucursal',
-      'vehiculo',
-      'sucursal',
-      'cliente'
-    ]
-    
     if (cotizacion) {
-      const data_cotizacion = await this._cotizaciones.consulta_cotizacion_unica(cotizacion)
-      // console.log(data_cotizacion);
-
-      campos_cotizacion_recupera.forEach(campo=>{
-        if(data_cotizacion[campo] ) this.infoConfirmar[campo] = data_cotizacion[campo]
-      })
-      const {sucursal, cliente, vehiculo}  = data_cotizacion
-      this.infoConfirmar.data_sucursal = this.data_sucursal_consulta(sucursal)
-
-      const data_cliente = await this._clientes.consulta_Cliente(cliente)
-      this.infoConfirmar.data_cliente = data_cliente
-
-      if (vehiculo)  this.extra = vehiculo
-
-    }else if(recepcion){
-      const data_recepcion = await this._servicios.consulta_recepcion_unica(recepcion)
-
-      campos_cotizacion_recupera.forEach(campo=>{
-        if(data_recepcion[campo] ) this.infoConfirmar[campo] = data_recepcion[campo]
-      })
-      const {sucursal, cliente, vehiculo}  = data_recepcion
-      const data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-      this.infoConfirmar.data_sucursal = data_sucursal
-
-      const data_cliente = await this._clientes.consulta_Cliente(cliente)
-      this.infoConfirmar.data_cliente = data_cliente
-
-      if (vehiculo)  this.extra = vehiculo
-    } if (cliente || vehiculo ) {
-      const data_cliente  = await this._clientes.consulta_Cliente(cliente)
-      this.infoConfirmar.data_cliente =  this.nueva_data_cliente(data_cliente)
-      const {sucursal} = data_cliente
-      this.infoConfirmar.data_sucursal = this.data_sucursal_consulta(sucursal)
-      // console.log(cliente);
-      this.infoConfirmar.cliente = cliente
-      this.extra = vehiculo
-    } 
-    // if (vehiculo) {
-    //   console.log(vehiculo);
+      const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
       
-    // }
-
-    
-    console.log(this.infoConfirmar);
-    
+      const campos_recupera_cotizacion = ["cliente","elementos","formaPago","iva","margen","servicio","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal","reporte"]
+      if(cotizacionesRealizadas[cotizacion]){
+        const cotizacion_completa = this._publicos.asigna_datos_cotizaciones(
+          {bruto: [cotizacionesRealizadas[cotizacion]], clientes, vehiculos}
+        )
+        console.log(cotizacion_completa);
+        const data_cotizacion = this._publicos.crear_new_object(cotizacion_completa[0])
+        // console.log(Object.keys(cotizacion_completa[0]));
+        campos_recupera_cotizacion.forEach(campo=>{
+          if (data_cotizacion[campo]) {
+            this.infoConfirmar[campo] = data_cotizacion[campo]
+          }
+        })
+        this.asignar_nuevos_elementos(data_cotizacion.elementos)
+        this.extra = data_cotizacion.vehiculo
+      }
+    }else if(recepcion){
+      const recepciones = await this._publicos.revisar_cache('recepciones')
+      console.log(recepcion);
+      if(recepciones[recepcion]){
+        const campos_recupera_recepcion = ["cliente","elementos","formaPago","id","iva","margen","servicio","status","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal"]
+        const recepcion_completa = this._publicos.asigna_datos_cotizaciones(
+          {bruto: [recepciones[recepcion]], clientes, vehiculos}
+        )
+        // console.log(Object.keys(recepcion_completa[0]));
+        const data_cotizacion = this._publicos.crear_new_object(recepcion_completa[0])
+        console.log(data_cotizacion);
+        
+        campos_recupera_recepcion.forEach(campo=>{
+          if (data_cotizacion[campo]) {
+            this.infoConfirmar[campo] = data_cotizacion[campo]
+          }
+        })
+        this.asignar_nuevos_elementos(data_cotizacion.elementos)
+        this.extra = data_cotizacion.vehiculo
+      }
+    }
     this.realizaOperaciones()
     this.vigila_vehiculos_cliente()
 
   }
-  data_sucursal_consulta(sucursal){
-    return this.sucursales_array.find(s=>s.id === sucursal)
-  }
-  async vigila_vehiculos_cliente(){
 
-    const starCountRef = ref(db, `vehiculos`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const {cliente} = this.infoConfirmar 
-        const vehiculos = this._publicos.crearArreglo2(snapshot.val())
-        this.infoConfirmar.vehiculos = vehiculos.filter(vehiculo=>vehiculo.cliente === cliente)
-        const data_vehiculo =  vehiculos.find(v=>v.id === this.extra)
-        this.infoConfirmar.data_vehiculo  = data_vehiculo
-        this.infoConfirmar.vehiculo  = this.extra
-        if (data_vehiculo) {
-          if (data_vehiculo.modelo) {
-            this.modelo = data_vehiculo['modelo']
-          }
-        }
-      } else {
-        // console.log("No data available");
-        this.infoConfirmar.vehiculos = []
-        this.extra = null
-        this.modelo = null
-      }
-    })  
+  async vigila_vehiculos_cliente(){
+    const {cliente: id_cliente} = this.infoConfirmar
+    const vehiculos_object = await this._publicos.revisar_cache('vehiculos')
+    const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
+    const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
+    this.infoConfirmar.vehiculos = vehiculos_cliente
+    if (this.extra) {
+      this.infoConfirmar.data_vehiculo = this.infoConfirmar.vehiculos.find(v=>v.id === this.extra)
+    }
   }
 
   verificarInfoVehiculos(){
@@ -378,7 +337,13 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   asignar_nuevos_elementos(nuevos:any[]){
-    this.infoConfirmar.elementos = nuevos
+    let indexados = nuevos.map((elemento, index)=> {
+      const {cantidad, precio, costo} = elemento
+      elemento.total = cantidad * ( (costo>0) ? costo : precio)
+      elemento.index = index
+      return elemento
+    })
+    this.infoConfirmar.elementos = indexados
     this.realizaOperaciones()
   }
   cambiaAprobado(index, aprobado){
@@ -419,22 +384,10 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
 
   realizaOperaciones(){
-    const reporte_totales = {
-      mo:0,
-      refacciones:0,
-    }
+    const { elementos, margen, iva, descuento, formaPago} = this.infoConfirmar
+    const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
 
-    const  {reporte, elementos} = this.calcularTotales(this.infoConfirmar)
-      Object.keys(reporte_totales).forEach(campo=>{
-        reporte_totales[campo] += reporte[campo]
-      })
-    this.reporte_totales = reporte
-    elementos.map((s, index)=>{
-      s.index = index
-      s.aprobado = true
-    })
     this.infoConfirmar.reporte = reporte
-
     this.infoConfirmar.elementos = elementos
     this.dataSource.data = elementos
     this.newPagination()
@@ -916,17 +869,16 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     const {cliente, sucursal, vehiculo} = this.infoConfirmar
 
-    const existen:any[] = await this._servicios.consulta_recepciones_cliente_satus({ruta: `recepciones/${sucursal}/${cliente}`})
+    const recepciones:any[] = await this._publicos.revisar_cache('recepciones')//this._servicios.consulta_recepciones_cliente_satus({ruta: `recepciones`})
+    const recepciones_existentes = this._publicos.crearArreglo2(recepciones)
     
-    const verificacion = existen
+    const verificacion = recepciones_existentes
     .filter(v=>v.vehiculo === vehiculo)
     .map(r=>{
-      console.log(r);
-      
       return r.status
     })
     const status_encontrado = verificacion.includes('entregado');
-    // console.log(status_encontrado);
+    console.log(status_encontrado);
     
     if (status_encontrado){
       this._publicos.mensajeSwal('El vehiculo cuenta con orden abierta ',0, true ,`Cerrar / modificar orden del vehiculo que se encuentra en la sucursal`)
@@ -975,7 +927,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         iva: reporte['iva'],
         total: reporte['total'],
       }
-      this._servicios.generateOSNumber(this.infoConfirmar,this.ROL).then((no_os)=>{
+      this._servicios.generateOSNumber(this.infoConfirmar,this._rol).then((no_os)=>{
         const dataMail = {
           correos: this._publicos.dataCorreo(data_sucursal, data_cliente),
           no_os,

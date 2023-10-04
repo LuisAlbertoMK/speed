@@ -75,7 +75,7 @@ export class UploadPDFService {
     return answer
   }
   async upload_pdf_entrega(file:Blob,nombre:string){
-    let answer = {ruta:'',error:[],progreso:0}
+    const answer = {ruta:'',error:[],progreso:0}
     const storageRef = ref(storage, 'PDF/recepcionesEntregadas/'+nombre);
     const uploadTask = uploadBytesResumable(storageRef, file)
 
@@ -100,7 +100,7 @@ export class UploadPDFService {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        answer.ruta = downloadURL
+        answer.ruta = downloadURL        
        })
       }
     )

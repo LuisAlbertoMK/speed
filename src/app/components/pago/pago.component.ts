@@ -22,7 +22,9 @@ export class PagoComponent implements OnInit, OnChanges {
   @Input() dataRecepcion:any = null
   @Output() showPagoHide : EventEmitter<any>
 
-  @Input() id_os:any
+  @Input() id_os
+
+  @Output() pago_registrado : EventEmitter<any>
 
 
   minDate: Date;
@@ -34,7 +36,7 @@ export class PagoComponent implements OnInit, OnChanges {
   faltante_s:string
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService, private _servicios: ServiciosService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, private _reporte_gastos: ReporteGastosService) {
-      this.showPagoHide = new EventEmitter()
+      this.pago_registrado = new EventEmitter()
       const currentYear = new Date().getFullYear();
       this.minDate = new Date(currentYear , 0, 1);
       this.maxDate = new Date(currentYear , 11, 31);
@@ -94,19 +96,19 @@ export class PagoComponent implements OnInit, OnChanges {
       const nuevoValor = changes['id_os'].currentValue;
       const valorAnterior = changes['id_os'].previousValue;
       // console.log({nuevoValor, valorAnterior});
-      const {id} = nuevoValor
+      const {id} = JSON.parse(JSON.stringify(nuevoValor));
 
-      if (nuevoValor && id) {
+      if ( nuevoValor && id) {
         if (!this.formPago) {
           const temp = {
-            ...nuevoValor,
+            ...JSON.parse(JSON.stringify(nuevoValor)),
             tipo: 'orden'
           }
           this.data_pendiente = temp
         }
       }else if(nuevoValor === valorAnterior && id){
         const temp = {
-          ...nuevoValor,
+          ...JSON.parse(JSON.stringify(nuevoValor)),
           tipo: 'orden'
         }
         this.data_pendiente = temp
@@ -116,7 +118,7 @@ export class PagoComponent implements OnInit, OnChanges {
   carga_data_gasto(data){
     const {id, sucursal} = data
     this.formPago.reset({
-      no_os: id,
+      id_os: id,
       monto: 0,
       metodo: '1',
       concepto: '',
@@ -132,41 +134,36 @@ export class PagoComponent implements OnInit, OnChanges {
   }
   
   crearFormPago(){
-    let sucursal = '';
-    (this.SUCURSAL ==='Todas') ? sucursal = '': sucursal= this.SUCURSAL
     this.formPago = this.fb.group({
-      no_os:['',[Validators.required]],
       id_os:['',[Validators.required]],
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
       fecha_recibido:[null,[Validators.required]],
-      sucursal: [sucursal,[Validators.required]],
       rol: [this.ROL, [Validators.required]],
     })
     this.vigila()
     
   }
   vigila(){
-    // if (this.SUCURSAL !== 'Todas')  this.formPago.get('sucursal').disable()
 
     if (this.SUCURSAL !== 'Todas')  this.muestra_claves_recepciones()
 
-    this.formPago.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
-      if (sucursal) {
-        this.muestra_claves_recepciones()
-      }
-    })
-    this.formPago.get('id_os').valueChanges.subscribe(async (id_os: string) => {
-      if (id_os) {
-        const no_os = this.claves_ordenes.find(clave => clave.id === id_os)
-          if (no_os) {
-            this.formPago.get('no_os').setValue(no_os.no_os)
-          }else{
-            this.formPago.get('no_os').setValue('')
-          }
-      }
-    })
+    // this.formPago.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
+    //   if (sucursal) {
+    //     this.muestra_claves_recepciones()
+    //   }
+    // })
+    // this.formPago.get('id_os').valueChanges.subscribe(async (id_os: string) => {
+    //   if (id_os) {
+    //     const no_os = this.claves_ordenes.find(clave => clave.id === id_os)
+    //       if (no_os) {
+    //         this.formPago.get('no_os').setValue(no_os.no_os)
+    //       }else{
+    //         this.formPago.get('no_os').setValue('')
+    //       }
+    //   }
+    // })
     this.fecha_recibido.get('start').valueChanges.subscribe((start:Date)=>{
       if (start) {
         const fecha_re = this._publicos.retorna_fechas_hora({fechaString: start['_d']}).toString_completa
@@ -174,7 +171,7 @@ export class PagoComponent implements OnInit, OnChanges {
       }
     })
 
-    if (this.data_pendiente) {
+    if (this.data_pendiente && this.data_pendiente.id) {
       this.carga_data_gasto(this.data_pendiente)
       this.data_pendiente = null
     }
@@ -215,7 +212,8 @@ export class PagoComponent implements OnInit, OnChanges {
     const info_get = this._publicos.recuperaDatos(this.formPago)
  
     
-    const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get, ['id_os','no_os','monto','metodo','concepto','sucursal'])
+    
+    const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get, ['id_os','monto','metodo','concepto'])
     this.faltante_s = faltante_s
     if(!ok) {this._publicos.swalToast('Llenar datos de formulario',0); return} 
 
@@ -241,11 +239,17 @@ export class PagoComponent implements OnInit, OnChanges {
 
    const updates = {[ruta]: info_get }
 
-    update(ref(db), updates).then(()=>{
+    update(ref(db), updates).then(async ()=>{
+
+      const historial_pagos_orden = await this._publicos.revisar_cache('historial_pagos_orden')
+      historial_pagos_orden[clave_] = info_get
+      this._security.guarda_informacion({nombre:'historial_pagos_orden', data: historial_pagos_orden})
+      this.pago_registrado.emit(true);
       this._publicos.swalToast(`Registro de pago correcto!!`, 1)
       this.reseteaForm()
     })
     .catch(err=>{
+      this.pago_registrado.emit(true);
       console.log(err);
     })  
   }

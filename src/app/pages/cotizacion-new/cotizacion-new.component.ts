@@ -465,7 +465,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.asignar_nuevos_elementos(nuevos)
   }
   asignar_nuevos_elementos(nuevos:any[]){
-    this.infoCotizacion.elementos = nuevos
+    let indexados = nuevos.map((elemento, index)=> {
+      elemento.index = index
+      return elemento
+    })
+    this.infoCotizacion.elementos = indexados
     this.realizaOperaciones()
   }
 

@@ -1,41 +1,17 @@
 {
-  "-Nej-DVUQQM6IEGVmBQt": {
-    "concepto": "asdasdasd",
-    "fecha_recibido": "Tue Sep 19 2023 13:53:15 GMT-0600 (hora estándar central)",
-    "id_os": "-NeilHGTHBi2jAL9DX78",
-    "metodo": "2",
-    "monto": 2500,
-    "rol": "SuperSU",
-    "status": true,
-    "sucursal": "-N2gkzuYrS4XDFgYciId"
+  "GEGUCU11220013-0-2023": {
+    "cliente": "-NG2LstV0NhaJkHH6ro-",
+    "credito": 555,
+    "mes": 0
   },
-  "-Nej-VXpHeK0NfWaGWmI": {
-    "concepto": "dfgdfgdfg",
-    "fecha_recibido": "Tue Sep 19 2023 13:54:29 GMT-0600 (hora estándar central)",
-    "id_os": "-NeiehcXToEW7W0O4fUd",
-    "metodo": "2",
-    "monto": 525,
-    "rol": "SuperSU",
-    "status": true,
-    "sucursal": "-N2gkzuYrS4XDFgYciId"
+  "ISVATO10220011-0-2023": {
+    "cliente": "-NEvOREdSxX4vBkd9asE",
+    "credito": 600,
+    "mes": 0
   },
-  "-NesKeFXWrm4AGxXApB3": {
-    "concepto": "bcvb",
-    "fecha_recibido": "Thu Sep 21 2023 09:23:30 GMT-0600 (hora estándar central)",
-    "id_os": "-NeoEUfB8p0Wpac9JDFd",
-    "metodo": "2",
-    "monto": 2000,
-    "rol": "SuperSU",
-    "sucursal": "-N2gkzuYrS4XDFgYciId"
-  },
-  "-NetFYaq20GLFLxZW1lQ": {
-    "concepto": "xcvxc",
-    "fecha_recibido": "Thu Sep 21 2023 13:40:49 GMT-0600 (hora estándar central)",
-    "id_os": "-NeoEUfB8p0Wpac9JDFd",
-    "metodo": "8",
-    "monto": 333,
-    "rol": "SuperSU",
-    "status": true,
-    "sucursal": "-N2gkzuYrS4XDFgYciId"
+  "ISVATO10220011-1-2023": {
+    "cliente": "-NEvOREdSxX4vBkd9asE",
+    "credito": 55,
+    "mes": 1
   }
 }

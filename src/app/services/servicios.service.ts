@@ -454,6 +454,8 @@ obtenerTotalesHistoriales(pagos, gastos){
         } else {
           resolve([]);
         }
+      }, {
+        onlyOnce: true
       })
     });
   }

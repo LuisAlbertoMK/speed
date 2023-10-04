@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment";
-import { getDatabase, onChildAdded, onChildChanged, onValue, ref, set } from "firebase/database"
+import { child, get, getDatabase, onChildAdded, onChildChanged, onValue, ref, set } from "firebase/database"
 import { initializeApp } from 'firebase/app';
 import { ServiciosPublicosService } from './servicios-publicos.service';
 import { EncriptadoService } from './encriptado.service';
 // const app = initializeApp(environment.firebaseConfig);
 const db = getDatabase();
-
+const dbRef = ref(getDatabase());
 // const urlServer = environment.urlServer
 
 @Injectable({
@@ -17,21 +17,31 @@ export class AutomaticosService {
 
   constructor( private _security:EncriptadoService) { }
 
-  // consulta_ruta(ruta): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     // const {ruta} = data
-  //     const starCountRef = ref(db, `${ruta}`);
-  //     onValue(starCountRef, (snapshot) => {
-  //       if (snapshot.exists()) {
-  //         resolve(snapshot.val())
-  //       } else {
-  //         resolve({});
-  //       }
-  //     }, {
-  //       onlyOnce: true
-  //     })
-  //   });
-  // }
+  consulta_ruta(ruta): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const {ruta} = data
+      // const starCountRef = ref(db, `${ruta}`);
+      // onValue(starCountRef, (snapshot) => {
+      //   if (snapshot.exists()) {
+      //     resolve(snapshot.val())
+      //   } else {
+      //     resolve({});
+      //   }
+      // }, {
+      //   onlyOnce: true
+      // })
+      // const dbRef = ref(getDatabase());
+      get(child(dbRef, `${ruta}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val())
+        } else {
+          resolve({});
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    });
+  }
   // async vigila_hijo(arreglo:any[]){
       
   //   let nombre  = 'clientes'

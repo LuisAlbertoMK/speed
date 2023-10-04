@@ -159,7 +159,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     fecha_entregado:'',
     firma_cliente:'',
     formaPago:'1',
-    observaciones: observaciones_new(''),
+    observaciones: this.observaciones_new(''),
     id:'',
     iva:true,
     margen:25,
@@ -174,15 +174,16 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     data_sucursal:{},
     tecnicoShow: '',
     reporte:{},
+    reporte_real:{},
     pdf_entrega:'',
     nivel_gasolina:'',
     showDetalles:false,
     formaPago_show:'',
     servicio_show:'',
     kilometraje:0,
-    historial_pagos:[],
-    historial_gastos:[],
-    fecha_limite_gastos:''
+    fecha_limite_gastos:'',
+    historial_gastos_orden:[],
+    historial_pagos_orden:[],
   }
   temporal 
 
@@ -207,7 +208,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     "vacio","1/4","1/2", "3/4", "lleno"
   ]
 
-  informacionLista:boolean = false
+  informacionLista:boolean = true
   
   boton_gastos_show:boolean = false
 
@@ -227,76 +228,46 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     });
   }
 
-  nuevas(){
-    const {cliente, sucursal, recepcion } = this.enrutamiento
+  async nuevas(){
 
-    const starCountRef = ref(db, `recepciones/${recepcion}`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.acciones(snapshot.val())
-      } 
-    })
-  }
-  async acciones(data){
-    const {sucursal, cliente, vehiculo, observaciones, elementos, iva,  margen, formaPago, descuento, status, kilometraje} = data
-    const data_cliente = await this._clientes.consulta_Cliente(cliente)
-    const data_vehiculo = await this._vehiculos.consulta_vehiculo_id(vehiculo)
-    console.log(data);
-    this.data_editar = data
-    this.data_editar.data_cliente = data_cliente
-    this.data_editar.data_vehiculo = data_vehiculo
-    this.data_editar.sucursal = sucursal;
+    const recepciones = await this._publicos.revisar_cache('recepciones')
+    const clientes = await this._publicos.revisar_cache('clientes')
+    const vehiculos = await this._publicos.revisar_cache('vehiculos')
+    const historial_gastos_orden_object = await this._publicos.revisar_cache('historial_gastos_orden')
+    const historial_gastos_orden = this._publicos.crearArreglo2(historial_gastos_orden_object)
+    const historial_pagos_orden_object = await this._publicos.revisar_cache('historial_pagos_orden')
+    const historial_pagos_orden = this._publicos.crearArreglo2(historial_pagos_orden_object)
 
+    // console.log(this.enrutamiento);
+    const {recepcion} = this.enrutamiento
 
-    this.data_editar.elementos = elementos
+    const recepci = this._publicos.asigna_datos_recepcion(
+      {bruto: [recepciones[recepcion]], clientes, vehiculos, historial_gastos_orden, historial_pagos_orden}
+    )
+
+    if (recepci[0]) {
+      const data_recepcion = this._publicos.crear_new_object(recepci[0]) //JSON.parse(JSON.stringify());
+      console.log(data_recepcion);
+      const claves_recuperar = [
+        "checkList", "cliente", "diasEntrega", "diasSucursal", "elementos", "formaPago", "id", "iva", "margen", "no_os", "servicio", "status", "sucursal", "vehiculo", "historial_gastos_orden", "historial_pagos_orden", "data_cliente", "data_vehiculo", "reporte", "data_sucursal", "reporte_real",'tecnicoShow','tecnico','pdf_entrega' ]
+
+        claves_recuperar.forEach(clave=>{
+          if (data_recepcion[clave]) {
+            this.data_editar[clave] = data_recepcion[clave]
+          }else{
+            this.data_editar[clave] = ''
+          }
+        })
+        this.dataSource.data = data_recepcion['elementos']
+        this.newPagination()
+    }else{
+      this._publicos.mensajeSwal('no se encontro informacion',0)
+    }
     
-    this.data_editar.observaciones = observaciones_new(observaciones)
     
-
-    const campos = ['iva','descuento','margen','formaPago','status','kilometraje']
-    
-    campos.forEach(campo=>{
-      this.data_editar[campo] = data[campo]
-    })
-    // this.data_editar= snapshot.val();
-    // this.data_editar.observaciones = observaciones(this.data_editar.observaciones)
-
-    // const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
-
-    // let  data_cliente = {},  vehiculos_arr = [], data_vehiculo = {}
-
-    // if (cliente) {
-    //   data_cliente  = await this._clientes.consulta_Cliente(cliente)
-    //   data_cliente = this.nueva_data_cliente(data_cliente)
-    // }
-    // if (vehiculo) {
-    //   data_vehiculo = await this._vehiculos.consulta_vehiculo_(vehiculo)
-    // }
-
-    // this.data_editar.data_cliente = data_cliente
-    // this.data_editar.data_vehiculo = data_vehiculo
-
-    // const {reporte, _servicios} = this.calcularTotales(this.data_editar)
-    // this.data_editar.reporte = reporte
-    // this.data_editar.elementos = _servicios
-    // this.checksBox.get('margen').setValue(this.data_editar.margen)
-
-    this.realizaOperaciones()
   }
-  nueva_data_cliente(cliente){
-    const nombres = [
-      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
-      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
-      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
-      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
-      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
-      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
-    ]
-    const {sucursal, nombre, apellidos} = cliente
-    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
-    cliente.fullname = `${nombre} ${apellidos}`
-    return cliente
-  }
+  
+  
   vigila(){
     this.checksBox.get('iva').valueChanges.subscribe((iva: boolean) => {
       this.data_editar.iva = iva
@@ -379,9 +350,9 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     this.data_editar.elementos = elementos
     this.data_editar.status = status
 
+    const {sucursal, cliente, id} = this.data_editar
     if (status !== 'entregado') {
       const updates = {};
-      const {sucursal, cliente, id} = this.data_editar
       if (sucursal && cliente && id) {
         const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
         // this.data_editar.fecha_recibido = actual
@@ -390,13 +361,30 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         updates[`recepciones/${id}/fecha_entregado`] = '';
         updates[`recepciones/${id}/elementos`] = this.data_editar.elementos
         updates[`recepciones/${id}/pdf_entrega`] = null
-        update(ref(db), updates).then(()=>{
+        update(ref(db), updates).then(async ()=>{
           // console.log('finalizo');
+          const recepciones = await this._publicos.revisar_cache('recepciones')
+          recepciones[id].fecha_recibido =''
+          recepciones[id].fecha_entregado = ''
+          recepciones[id].fecha_limite_gastos = ''
+          recepciones[id].pdf_entrega = ''
+          recepciones[id].status = status
+          this._security.guarda_informacion({nombre:'recepciones', data: recepciones})
+          this.nuevas()
         })
         .catch(err=>{
           console.log(err);
         })
       }
+    }else{
+      // const recepciones = await this._publicos.revisar_cache('recepciones')
+      // recepciones[id].fecha_recibido =''
+      // recepciones[id].fecha_entregado = ''
+      // recepciones[id].fecha_limite_gastos = ''
+      // recepciones[id].pdf_entrega = ''
+      // recepciones[id].status = status
+      // this._security.guarda_informacion({nombre:'recepciones', data: recepciones})
+      // this.nuevas()
     }
    
     this.realizaOperaciones()
@@ -419,9 +407,14 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         updates[`recepciones/${id_recepcion}/tecnico`] = id
         updates[`recepciones/${id_recepcion}/tecnicoShow`] = usuario
         // console.log(updates);
+        
+        update(ref(db), updates).then(async ()=>{
 
-        update(ref(db), updates).then(()=>{
-          // console.log('finalizo');
+          const recepciones = await this._publicos.revisar_cache('recepciones')
+          recepciones[id_recepcion].tecnico = id
+          recepciones[id_recepcion].tecnicoShow = usuario
+          this._security.guarda_informacion({nombre:'recepciones', data: recepciones})
+
           this._publicos.mensajeSwal(`Se actualizo el tecnico de la O.S ${no_os}`,1)
         })
         .catch(err=>{
@@ -465,22 +458,40 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   asignar_nuevos_elementos(nuevos:any[]){
-    this.data_editar.elementos = nuevos
+    let indexados = nuevos.map((elemento, index)=> {
+      elemento.index = index
+      return elemento
+    })
+    
+    this.data_editar.elementos = indexados
+    const {id} = this.data_editar
+    if (id) {
+      const updates = {};
+      updates[`recepciones/${id}/elementos`] = nuevos;
+      update(ref(db), updates).then(async ()=>{
+        // console.log('finalizo');
+        const recepciones = await this._publicos.revisar_cache('recepciones')
+        recepciones[id].elementos = nuevos;
+        this._security.guarda_informacion({nombre:'recepciones', data: recepciones})
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    }
+    
     this.realizaOperaciones()
   }
   realizaOperaciones(){
-    const reporte_totales = {
-      mo:0,
-      refacciones:0,
-    }
-
-    const  {reporte, _servicios} = this.calcularTotales(this.data_editar)
-      Object.keys(reporte_totales).forEach(campo=>{
-        reporte_totales[campo] += reporte[campo]
-      })
-    this.data_editar.reporte = reporte
-    this.data_editar.elementos = _servicios
-    this.dataSource.data = _servicios
+    const solo_gastos_orden = this._publicos.obtener_historial_orden([this.data_editar],'historial_gastos_orden')
+    const total_gastos = this._publicos.sumatorias_aprobados(solo_gastos_orden)
+    const {elementos, margen, iva, descuento, formaPago} = this.data_editar
+    this.data_editar.reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+    const nuevo = JSON.parse(JSON.stringify(this.data_editar.reporte));
+      nuevo['refaccion'] = total_gastos
+    const reporte_real = this._publicos.sumatoria_reporte(nuevo, margen, iva)
+    this.data_editar.reporte_real = reporte_real
+    this.data_editar.elementos = elementos
+    this.dataSource.data = elementos
     this.newPagination()
   }
 
@@ -502,163 +513,155 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   }
 
   async guardar_cambios(){
+    function suma_pagado(arreglo:any[]){
+      let total = 0
+      arreglo.forEach(p=>{
+        const {monto} = p
+        total += monto
+      })
+      return total
+    }
 
-
-    // console.log(this.data_editar.historial_pagos);
-    // this.data_editar.historial_pagos = []
-    const {id:id_recepcion, status, reporte} = this.data_editar
-    const { total } = JSON.parse(JSON.stringify(reporte));
-    const _pagos = this._publicos.crearArreglo2( await this._servicios.consulta_pagos()).filter(f=>f.id_os === id_recepcion)
-
-  const total_pagado = suma_pagado(_pagos)
-  function suma_pagado(arreglo:any[]){
-    let total = 0
-    arreglo.forEach(p=>{
-      const {monto} = p
-      total += monto
+    const {historial_pagos_orden, reporte_real, status} = this.data_editar
+    const total_pagado = suma_pagado(historial_pagos_orden)
+    const { total } = this._publicos.crear_new_object(reporte_real)
+    
+    if (total_pagado < total && status === 'entregado') {
+      this._publicos.mensajeSwal('Error',0,true, `Debe realizar el pago completo de ${total} de la orden de servicio se ha pagado ${total_pagado}`)
+    }
+    this.data_editar.observaciones = this.observaciones_new(this.data_editar.observaciones)
+    const data_nuevo_vehiculo = this._publicos.crear_new_object(this.data_editar.data_vehiculo)
+    const camposVehiculosave =  ['anio','categoria','cilindros','cliente','color','engomado','id','marca','marcaMotor','modelo','no_motor','placas','transmision','vinChasis']
+    let nuevo_data_vhiculo = {}
+    camposVehiculosave.forEach(campo=>{
+      if (data_nuevo_vehiculo[campo]) {
+        nuevo_data_vhiculo[campo] = this.x_campo_verifica(data_nuevo_vehiculo[campo])
+      }else{
+        nuevo_data_vhiculo[campo] = ''
+      }
     })
-    return total
-  }
-  if (status === 'entregado' ) {
-    this._publicos.mensajeSwal('Error',0,true, `No se puede entregar, no hay ningún pago realizado o no se ha pagado el monto total de la orden de servicio`)
-    return
-  }
-  if (total_pagado < total) {
-    this._publicos.mensajeSwal('Error',0,true, `Debe realizar el pago completo de la orden de servicio`)
-    return
-  }
+    // console.log(nuevo_data_vhiculo);
 
-    this.data_editar.observaciones = observaciones_new(this.data_editar.observaciones)
-
+    this.data_editar.data_vehiculo = nuevo_data_vhiculo
+    
+    // this.data_editar.observaciones = this.x_campo_verifica(this.data_editar.observaciones)
+    
     if (!this.data_editar.pdf_entrega) {
       let campos = [...this.campos_ocupados_editar]
-      let campos_update = ['elementos','margen','status','tecnico','formaPago', 'fecha_recibido','fecha_entregado','observaciones']
+      let campos_update = ['elementos','margen','status','formaPago','fecha_entregado','observaciones']
+
       if (this.data_editar.status === 'entregado' && !this.data_editar.pdf_entrega) {
         campos.push('firma_cliente')
-        // campos_update.push('firma_cliente')
       }else{
         this.limpiarFirma()
       }
       const {ok, faltante_s} = this._publicos.realizavalidaciones_new(this.data_editar, campos)
-  
       this.faltante_s = faltante_s
-      
       if (!ok) return
-  
-      // console.log(this.data_editar); 
-  
-      const { sonIguales, diferencias } = this.compararObjetos(this.data_editar, this.temporal)
-      // console.log({ sonIguales, diferencias });
-  
-      if (!sonIguales) {
-        const { respuesta } = await this._publicos.mensaje_pregunta(`Remplazar información?`,true,`${diferencias}`)
-        if (respuesta) {
-  
-          let updates = {}
-          const {sucursal, cliente, vehiculo, id} = this.data_editar
-          
-          const nueva_data = JSON.parse(JSON.stringify(this.data_editar));
-  
-          const otros = this.purifica_informacion(nueva_data)
-          const filtrados = otros.filter((element) => {
-            if (element.tipo === "paquete") {
-              return element.elementos.length > 0;
-            }
-            return true;
-          });
-  
-          nueva_data.elementos = filtrados
-  
-          
+      let updates = {}
+      const {elementos} = this.data_editar
 
-          campos_update.forEach(campo=>{
-            updates[`recepciones/${id}/${campo}`] = nueva_data[campo]
-          })
-  
-          if (this.data_editar.status === 'entregado' ) {
-            //esperar a generar el pdf
-      
-            const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
-
-            
-              this.data_editar.fecha_entregado = actual
-              this._pdf_entrega.pdf(this.data_editar).then((pdfReturn:any) => {
-  
-              const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
-
-
-              Swal.fire({
-                title: 'Opciones de cotización',
-                html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
-                showDenyButton: true,
-                showCancelButton: false,
-                confirmButtonText: 'Previsualizar PDF cotizacion',
-                denyButtonText: `Guardar y enviar correo`,
-                cancelButtonText:`cancelar`
-        
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  pdfDocGenerator.open()
-                } else if (result.isDenied) {
-                  pdfDocGenerator.getBlob(async (blob) => {
-                   
-                    // async function tuFuncionPrincipal() {
-                      try {
-                       
-                        const resultado = await this._uploadPDF.upload_pdf_entrega(blob,this.data_editar.no_os)
-                    
-                        // Esperar hasta que se tenga la ruta del archivo
-                        while (!resultado.ruta) {
-                          await new Promise(resolve => setTimeout(resolve, 100)); // Esperar 100ms antes de verificar nuevamente
-                        }
-                    
-                        // Aquí puedes continuar con el código después de que se tenga la ruta
-                        // console.log('Ruta del archivo:', resultado.ruta);
-                        // this.data_editar.pdf_entrega = resultado.ruta
-                        const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
-
-                        updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = resultado.ruta
-                        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_entregado`] = actual
-                        const fecha_limite_gastos = this._publicos.sumarRestarDiasFecha(actual,10)
-                        const save_guardar = this._publicos.retorna_fechas_hora({fechaString: new Date(fecha_limite_gastos)}).toString
-                        updates[`recepciones/${sucursal}/${cliente}/${id}/fecha_limite_gastos`] = save_guardar
-
-                        update(ref(db), updates).then(()=>{
-                          // console.log('finalizo');
-                          this._publicos.swalToast(`Actualización correcta!!`,1)
-                        })
-                        .catch(err=>{
-                          console.log(err);
-                        })
-                      } catch (error) {
-                        console.error('Ocurrió un error:', error);
-                      }                    
-                  })
-                }
-              })
-            })
-          }else{
-            updates[`recepciones/${sucursal}/${cliente}/${id}/pdf_entrega`] = null
-            update(ref(db), updates).then(()=>{
-              // console.log('finalizo');
-              this._publicos.swalToast(`Actualización correcta!!`,1)
-            })
-            .catch(err=>{
-              console.log(err);
-            })
-          }
-        }else{
-          this._publicos.swalToast(`Se cancelo`,0)
+      const nueva_data = JSON.parse(JSON.stringify(this.data_editar));
+      const otros = this.purifica_informacion(nueva_data)
+      const filtrados = otros.filter((element) => {
+        if (element.tipo === "paquete") {
+          return element.elementos.length > 0;
         }
+        return true;
+      });
+      nueva_data.elementos = filtrados
+      campos_update.forEach(campo=>{
+        updates[`recepciones/${nueva_data['id']}/${campo}`] = nueva_data[campo]
+      })
+      if (this.data_editar.status === 'entregado' ) {
+        this.data_editar.fecha_entregado = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+        this._pdf_entrega.pdf(this.data_editar).then((pdfReturn:any) => {
+          const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
+          Swal.fire({
+            title: 'Opciones de cotización',
+            html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Previsualizar PDF cotizacion',
+            denyButtonText: `Guardar y enviar correo`,
+            cancelButtonText:`cancelar`
+    
+          }).then((result) => {
+            if (result.isConfirmed) {
+              pdfDocGenerator.open()
+            } else if (result.isDenied) {
+              pdfDocGenerator.getBlob(async (blob) => {
+                try {
+                       
+                  const resultado = await this._uploadPDF.upload_pdf_entrega(blob,this.data_editar.no_os)
+                  // Esperar hasta que se tenga la ruta del archivo
+                  while (!resultado.ruta) {
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Esperar 100ms antes de verificar nuevamente
+                  }
+                  const _ruta_pdf_entrega:string = String(resultado.ruta).trim()
+
+                  const actual  = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
+
+                  updates[`recepciones/${nueva_data['id']}/pdf_entrega`] = _ruta_pdf_entrega
+                  updates[`recepciones/${nueva_data['id']}/fecha_entregado`] = actual
+                  const fecha_limite_gastos = this._publicos.sumarRestarDiasFecha(actual,10)
+                  const save_guardar = this._publicos.retorna_fechas_hora({fechaString: new Date(fecha_limite_gastos)}).toString
+                  updates[`recepciones/${nueva_data['id']}/fecha_limite_gastos`] = save_guardar
+
+                  
+                  update(ref(db), updates).then(async()=>{
+                    // console.log('finalizo');
+                    const recepciones = await this._publicos.revisar_cache('recepciones')
+                    recepciones[nueva_data['id']].pdf_entrega =_ruta_pdf_entrega
+                    recepciones[nueva_data['id']].fecha_entregado = actual
+                    recepciones[nueva_data['id']].fecha_limite_gastos = save_guardar
+                    recepciones[nueva_data['id']].status = this.data_editar.status
+                    this._security.guarda_informacion({nombre:'recepciones', data: recepciones})
+                    this.nuevas()
+                    this._publicos.swalToast(`Actualización correcta!!`,1)
+                  })
+                  .catch(err=>{
+                    console.log({err});
+                  })
+                } catch (error) {
+                  console.error('Ocurrió un error:', error);
+                }  
+              })
+            }
+          })
+        })
       }else{
-        this._publicos.swalToast(`No hubo cambios encontrados`,1)
+        updates[`recepciones/${nueva_data['id']}/pdf_entrega`] = null
+        update(ref(db), updates).then(()=>{
+          this._publicos.swalToast(`Actualización correcta!!`,1)
+        })
+        .catch(err=>{
+          console.log(err);
+        })
       }
-        
     }else{
       this._publicos.swalToast(`Ninguna accion realizada`,0, `Documento ya firmado para guardar los cambios cambia el status de la orden, se notificara con email a cliente`)
-      console.log('existe firma no puede guarda ninguna modificacion');
     }
+
+    
   }
+
+
+  observaciones_new(observacion){
+    let new_observacion = observacion
+    if (new_observacion === undefined || new_observacion === '' || new_observacion === null) {
+      new_observacion = ''
+    }
+    return new_observacion
+  }
+  x_campo_verifica(campo){
+    let new_campo = campo
+    if (new_campo === undefined || new_campo === '' || new_campo === null) {
+      new_campo = ''
+    }
+    return new_campo
+  }
+  
 
   newPagination(){
    
@@ -833,39 +836,17 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
   }
 
-  obtenerArregloFechas_gastos_diarios(data){
-    const {ruta, arreglo_sucursal} = data
-    const fecha_start = new Date('08-02-2023')
-    const fecha_end = new Date()
-    const diffTiempo = fecha_end.getTime() - fecha_start.getTime();
-    const diffDias = Math.floor(diffTiempo / (1000 * 3600 * 24));
-    let arreglo = []
-    for (let i = 0; i <= diffDias; i++) {       
-      const fecha_retorna = new Date(fecha_start.getTime() + i * 24 * 60 * 60 * 1000);
-      if (!this._publicos.esDomingo(fecha_retorna)) {
-        const Fecha_formateada = this._reporte_gastos.fecha_numeros_sin_Espacions(fecha_retorna)
-        arreglo.push(Fecha_formateada)
-      }
+  async se_registro(event){
+    const {id} = this.data_editar
+    if (event && id) {
+      const historial_pagos_orden = await  this._publicos.revisar_cache('historial_pagos_orden')
+      const arreglo_pagos = this._publicos.crearArreglo2(historial_pagos_orden)
+      this.data_editar.historial_pagos_orden = this._publicos.filtra_orden(arreglo_pagos, id)
     }
-
-    let Rutas = []
-    arreglo_sucursal.forEach(s=>{
-      arreglo.forEach(Fecha_formateada_=>{
-        Rutas.push(`${ruta}/${s}/${Fecha_formateada_}`)
-      })
-    })
-    return Rutas
   }
-
 }
 
-function observaciones_new(observacion){
-  let new_observacion = observacion
-  if (new_observacion === undefined || new_observacion === '' || new_observacion === null) {
-    new_observacion = ''
-  }
-  return new_observacion
-}
+
 function new_tecnico(tecnico: string){
   let new_tecnic = tecnico
   if (!new_tecnic || new_tecnic === '' || new_tecnic === undefined) {

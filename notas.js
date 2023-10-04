@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "verificar el moduloce citas  (proceso)"
+git commit -m "arreglar informacion de paquetes  (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

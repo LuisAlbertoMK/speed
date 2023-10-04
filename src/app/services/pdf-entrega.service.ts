@@ -18,7 +18,7 @@ export class PdfEntregaService {
     const colorTextoPDF: string = '#1215F4';
     const {
       data_cliente, elementos, data_sucursal,nivel_gasolina, data_vehiculo, fecha_recibido, 
-      fecha_entregado, firma_cliente, reporte, tecnicoShow, status, observaciones, showDetalles, 
+      fecha_entregado, firma_cliente, reporte_real, tecnicoShow, status, observaciones, showDetalles, 
       margen:new_margen, formaPago_show, servicio_show, kilometraje 
     } = data
 
@@ -118,10 +118,15 @@ export class PdfEntregaService {
       let filtrados = elements.filter(f=>f['aprobado'])
 
       filtrados.forEach(function (row) {
+        // console.log(row);
+        const {cantidad, precio, costo} = row
+        console.log({cantidad, precio, costo} );
+        
           var dataRow = [];
           var i = 0;
           columns.forEach(function(column) {
             if (column==='total' || column ==='precio') {
+              row.total = cantidad * ( (costo>0) ? costo : precio)
               dataRow.push({text: `${monedas(row[column])}`,alignment: headers[i].alignmentChild,style:'content' });
               i++;
             }else{
@@ -145,23 +150,23 @@ export class PdfEntregaService {
         [ 
           { text: ``,alignment: 'right', style:'info2' },
           { text: `SUBTOTAL`,alignment: 'right', style:'info2' },
-          { text: `${monedas(reporte.subtotal)}`,alignment: 'right', style:'info2' }
+          { text: `${monedas(reporte_real.subtotal)}`,alignment: 'right', style:'info2' }
         ]
       let IVA = 
         [ 
           { text: ``,alignment: 'right', style:'info2' },
           { text: `I.V.A`,alignment: 'right', style:'info2' },
-          { text: `${monedas(reporte.iva)}`,alignment: 'right', style:'info2' }
+          { text: `${monedas(reporte_real.iva)}`,alignment: 'right', style:'info2' }
         ]
       let TOTAL = 
         [ 
           { text: ``,alignment: 'right', style:'info2' },
           { text: `TOTAL`,alignment: 'right', style:'info2' },
-          { text: `${monedas(reporte.total)}`,alignment: 'right', style:'info2' }
+          { text: `${monedas(reporte_real.total)}`,alignment: 'right', style:'info2' }
         ]
       let LETRAS = 
       [
-        { text: `${convertirNumeroALetrasConCentavos(reporte.total)}`},
+        { text: `${convertirNumeroALetrasConCentavos(reporte_real.total)}`},
         { text: ``,alignment: 'right', style:'info2' },
         { text: ``,alignment: 'right', style:'info2' },
       ]

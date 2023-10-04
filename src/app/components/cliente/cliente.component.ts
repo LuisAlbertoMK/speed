@@ -229,8 +229,6 @@ export class ClienteComponent implements OnInit, OnChanges {
         const clientes = await this._publicos.revisar_cache('clientes')
         const clientes_arr = this._publicos.crearArreglo2(clientes)
         const existe = clientes_arr.find(c=>c.correo === nuevo_correo_)
-        console.log(existe);
-        
         this.correoExistente = (existe) ? true : false
       }else{
         this.correoExistente = false

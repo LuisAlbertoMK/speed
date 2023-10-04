@@ -1,5 +1,5 @@
 <app-template-navegacion></app-template-navegacion>
-
+<h1>Informacion de recepción {{data_editar.no_os}}</h1>
 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
     <app-cliente-tarjeta [cliente]="data_editar.data_cliente"></app-cliente-tarjeta>
 </div>
@@ -90,10 +90,15 @@
       </div>
     </div>
 </div>
-
-<div class="col-lg-6 col-md-6 col-sm-6 col-12 mb-1 mt-1 m-2" *ngIf="data_editar.reporte">
-    <app-reporte-desgloce-tarjeta [reporte]="data_editar.reporte"></app-reporte-desgloce-tarjeta>
+<div class="row mb-1 mt-1">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-12" *ngIf="data_editar.reporte">
+    <app-reporte-desgloce-tarjeta  [reporte]="data_editar.reporte"  [title]="'Expectativa'"></app-reporte-desgloce-tarjeta>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-12" *ngIf="data_editar.reporte">
+    <app-template-reporte-real [reporte]="data_editar.reporte_real" [title]="'Real'"></app-template-reporte-real>
+  </div>
 </div>
+
 
 <button  data-bs-toggle="modal" (click)="idPaqueteEditar = -1;" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">Agregar paquete</button>
 <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" 
@@ -163,8 +168,8 @@
     <ng-container matColumnDef="opciones" stickyEnd>
         <th mat-header-cell *matHeaderCellDef mat-sort-header> &nbsp; </th>
         <td mat-cell *matCellDef="let row" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> 
-            <i class="fa fa-trash pointer btn btn-sm btn-danger m-1" (click)="eliminaElemento(row)"></i>    
-            <i class="fa fa-plus pointer btn btn-sm btn-primary m-1" (click)="idPaqueteEditar = row.index" data-bs-toggle="modal" data-bs-target="#modalElemento"></i>    
+            <i class="fa fa-trash pointer text-danger  m-1" (click)="eliminaElemento(row)"></i>    
+            <i class="fa fa-plus pointer  text-primary m-1" (click)="idPaqueteEditar = row.index" data-bs-toggle="modal" data-bs-target="#modalElemento"></i>    
         </td>
     </ng-container>
     <ng-container matColumnDef="expand" stickyEnd>
@@ -234,11 +239,13 @@
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
-
     <mat-paginator #elementosPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
 </div>
 
-<div [ngClass]="{'ocultar': data_editar.status !== 'entregado' || data_editar.pdf_entrega}" class="mb-2 mt-5">
+<app-tarjeta-historial-gastos [historial_gastos]="data_editar.historial_gastos_orden"></app-tarjeta-historial-gastos>
+<app-tarjeta-historial-pagos [historial_pagos]="data_editar.historial_pagos_orden"></app-tarjeta-historial-pagos>
+
+<div [ngClass]="{'ocultar': data_editar.status === 'entregado' && data_editar.pdf_entrega !== ''}" class="mb-2 mt-5">
   <div class="row" >
     <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
       <canvas #firmaDigital class="fluid" [style]="'touch-action:none'"></canvas>
@@ -249,12 +256,13 @@
       <button class="btn btn-sm btn-success m-1 " [ngStyle]="{'min-width':(miniColumnas)*1.5+'px'}" (click)="firmar()"  *ngIf="!data_editar.firma_cliente">Firmar recepción</button>
     </div>
   </div>
-</div>
-<div class="row ">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mb-2 mt-2">
-      <button class="btn btn-sm btn-primary" (click)="guardar_cambios()">Guardar cambios</button>
+  <div class="row ">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center mb-2 mt-2">
+        <button class="btn btn-sm btn-primary" (click)="guardar_cambios()">Guardar cambios</button>
+    </div>
   </div>
 </div>
+
 
 <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
 
@@ -318,8 +326,8 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
         </button>
       </div>
       <div class="modal-body m-2">
-        <ng-container *ngIf="informacionLista">
-          <app-pago [id_os]="data_editar"></app-pago>
+        <ng-container *ngIf="data_editar.id">
+          <app-pago [id_os]="data_editar" (pago_registrado)="se_registro( $event )"></app-pago>
         </ng-container>
       </div>
       <div class="modal-footer">
