@@ -22,7 +22,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 
 
-import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue, update } from "firebase/database";
+import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue, update, push } from 'firebase/database';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/services/servicios.service';
@@ -63,7 +63,19 @@ export class AutomaticosComponent implements OnInit {
     // this.obtener_clavesgg()
     this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
   }
-  
+  supervisar_claves(data){
+    const {ruta_observacion, nombre} = data
+    const starCountRef = ref(db, `${nombre}`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const nuevos_claves = Object.values(snapshot.val())
+        this._security.guarda_informacion({nombre, data: nuevos_claves})
+        // this._security.guarda_informacion({nombre: ruta_observacion, data: snapshot.val()})
+      } else {
+        console.log("No data available");
+      }
+    })
+  }
     rol(){
         const { rol, sucursal, usuario } = this._security.usuarioRol()
         this._sucursal = sucursal
@@ -347,19 +359,7 @@ export class AutomaticosComponent implements OnInit {
       let arreglo_claves = [...claves_nombre]      
       return arreglo_claves.filter(clave=>clave)
     }
-    supervisar_claves(data){
-      const {ruta_observacion, nombre} = data
-      const starCountRef = ref(db, `${nombre}`)
-      onValue(starCountRef, async (snapshot) => {
-        if (snapshot.exists()) {
-          const nuevos_claves = Object.values(snapshot.val())
-          this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
-          this.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
-        } else {
-          console.log("No data available");
-        }
-      })
-    }
+    
     obtener_info_nombre(){
       const buscar_cache = [
         // 'clientes'
@@ -410,11 +410,13 @@ export class AutomaticosComponent implements OnInit {
       console.log(resultados);
       
       let claves_faltantes = []
+      let claves_existentes = []
       claves_nombre.forEach(async (clave, index) => {
 
         if (!resultados[clave]) {
           claves_faltantes.push(clave)
         }else{
+          claves_existentes.push(clave)
           const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
           onChildChanged(commentsRef, (data) => {
             const key = data.key
@@ -430,12 +432,13 @@ export class AutomaticosComponent implements OnInit {
           });
         }
       });
+      console.log(claves_faltantes);
+      console.log(claves_existentes);
+      
       claves_faltantes.forEach(async (clav)=>{
-        const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}}/${clav}`)
+        const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clav}`)
         const {no_cliente} = this._publicos.crear_new_object(data_cliente)
-        if (no_cliente) {
-          resultados[clav] = data_cliente
-        }
+        if (no_cliente) resultados[clav] = data_cliente
       })
       setTimeout(() => {
         this._security.guarda_informacion({nombre: ruta_observacion, data: resultados}) 

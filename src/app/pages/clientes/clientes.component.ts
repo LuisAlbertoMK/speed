@@ -58,7 +58,11 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   async lista_clientes(){
     const clientes = await this._publicos.revisar_cache2('clientes')
     
+    console.log(clientes);
+    
     const clientes_arr = this._publicos.crearArreglo2(clientes)
+    console.log(clientes_arr);
+    
     
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
 
@@ -78,8 +82,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     onValue(starCountRef, async (snapshot) => {
       if (snapshot.exists()) {
         const nuevos_claves = Object.values(snapshot.val())
-        this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
-        this._publicos.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
+        // this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
+        // this._publicos.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
         this.lista_clientes()
       } else {
         console.log("No data available");
