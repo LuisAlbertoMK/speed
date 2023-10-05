@@ -62,18 +62,23 @@ export class ClientesListComponent implements OnInit {
     const starCountRef = ref(db, `clientes`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
+        console.log('cambio');
+        
         this.lista_clientes()
       }
     })
   }
   async lista_clientes(){
+    console.log('revisando cambios');
+    
 
     const clientes = await this._publicos.revisar_cache('clientes')
     const clientes_arr = this._publicos.crearArreglo2(clientes)
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
-    
     const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
 
+    console.log(this.listaClientes_arr.length);
+    
     this.listaClientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
 
   }

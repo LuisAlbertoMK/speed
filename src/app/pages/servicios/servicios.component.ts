@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { EmailsService } from 'src/app/services/emails.service';
-import { child, get, getDatabase, onValue, ref, set, push , update} from 'firebase/database';
+import { child, get, getDatabase, onValue, ref, set, push , update, onChildChanged} from 'firebase/database';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
 import { ExporterService } from 'src/app/services/exporter.service';
@@ -104,6 +104,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
       this.rol()
       this.vigila_calendario()
+      this.vigila_hijo()
     }
 
   rol(){
@@ -112,38 +113,49 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     this._rol = rol
     this._sucursal = sucursal 
-    this.lista_cotizaciones()
-  }
-  vigila_hijo(){
-    const rutas_vigila = [
-      'clientes',
-      'vehiculos',
-      'recepciones',
-      'historial_gastos_orden',
-      'historial_pagos_orden',
-    ]
-    rutas_vigila.forEach(nombre=>{
-      const starCountRef = ref(db, `${nombre}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          this.lista_cotizaciones()
-        }
-      })
-    })
     
   }
+  async vigila_hijo(){
+    this.lista_cotizaciones()
+    const commentsRef = ref(db, `recepciones`);
+      onChildChanged(commentsRef, (data) => {
+        setTimeout(() => {
+          this.lista_cotizaciones()
+        }, 500);
+      })
+  }
+  // vigila_hijo(){
+  //   const rutas_vigila = [
+  //     'clientes',
+  //     'vehiculos',
+  //     'recepciones',
+  //     'historial_gastos_orden',
+  //     'historial_pagos_orden',
+  //   ]
+  //   rutas_vigila.forEach(nombre=>{
+  //     const starCountRef = ref(db, `${nombre}`)
+  //     onValue(starCountRef, (snapshot) => {
+  //       if (snapshot.exists()) {
+  //         this.lista_cotizaciones()
+  //       }
+  //     })
+  //   })
+    
+  // }
 
   async lista_cotizaciones(){
+    console.log('aqui');
+    
     console.time('Execution Time');
 
-    const recepciones = await this._publicos.revisar_cache('recepciones')
+    const recepciones = await this._publicos.revisar_cache2('recepciones')
     const recepciones_arr = this._publicos.crearArreglo2(recepciones)
 
-    const clientes = await this._publicos.revisar_cache('clientes')
-    const vehiculos = await this._publicos.revisar_cache('vehiculos')
+    const clientes = await this._publicos.revisar_cache2('clientes')
+    const vehiculos = await this._publicos.revisar_cache2('vehiculos')
 
-    const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
-    const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
+    const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache2('historial_gastos_orden'))
+    const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache2('historial_pagos_orden'))
 
     const cotizaciones_completas =this._publicos.asigna_datos_recepcion({
       bruto:recepciones_arr, clientes, vehiculos,
@@ -183,22 +195,19 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     
   }
   irPagina(pagina, data){
-    // console.log(data);
-    const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
-    // console.log(this.enrutamiento);
-    let queryParams = {}
-    if (pagina === 'cotizacionNueva' && !tipo) {
-      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
-    }else if (pagina === 'cotizacionNueva' && tipo) {
-      queryParams = { anterior:'cotizacion', tipo} 
-    }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-      queryParams = { anterior:'cotizacion',cliente, sucursal, cotizacion: idCotizacion, tipo:'cotizacion',vehiculo} 
-    }else if (pagina === 'ServiciosConfirmar' && tipo) {
-      queryParams = { anterior:'cotizacion', tipo}
+    const anterior = this._publicos.extraerParteDeURL()
+
+    const {id: id_recepcion} = this._publicos.crear_new_object(data)
+
+    if (id_recepcion) {
+      const queryParams = {
+        recepcion: id_recepcion,
+        anterior
+      }
+      this.router.navigate([`/${pagina}`], { 
+        queryParams
+      });
     }
-    // console.log(queryParams);
-    
-    this.router.navigate([`/${pagina}`], { queryParams });
   }
   
 

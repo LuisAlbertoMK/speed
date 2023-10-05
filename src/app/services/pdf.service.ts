@@ -24,8 +24,10 @@ export class PdfService {
   constructor(public _publicos:ServiciosPublicosService) { }
   async pdf(data:any){
 
-    const {data_cliente, data_sucursal, data_vehiculo, fecha_recibido, vencimiento, reporte, formaPago, iva, showDetalles: detalles, kms} = data
+    const {data_cliente, data_sucursal, elementos:elementos_, data_vehiculo, fecha_recibido, vencimiento, reporte, formaPago, iva, showDetalles: detalles, kms} = data
 
+
+    const elementos = JSON.parse(JSON.stringify(elementos_));
 
     const empresaShow = (data_cliente.empresaShow ) ? data_cliente.empresaShow : ''
     const correoShow = (data_cliente.correo ) ? data_cliente.correo : ''
@@ -300,26 +302,38 @@ export class PdfService {
       data.forEach(function (row) {
           var dataRow = [];
           var i = 0;
-          // console.log(row);
-          if(row['costo'] > 0){
-            row['flotilla2'] = transform(row['total'])
-            row['costoShow'] = transform(row['costo'])
-            row['normal'] = transform(row['total'] * 1.30)
-            row['nombre'] = transformName(row['nombre'])
-            columns.forEach(function(column) {
-              dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
+          const {total, precioShow } = row
+          columns.forEach(function(column) {
+            if (column==='precio' || column ==='flotilla' || column ==='normal') {
+              if (column==='precio') row.precio = precioShow
+              row.normal = total * 1.130
+              row.flotilla = total
+              dataRow.push({text: `${monedas(row[column])}`,alignment: headers[i].alignmentChild,style:'content' });
               i++;
-              })
-          }else{
-            row['flotilla2'] = transform(row['total'])
-            row['costoShow'] = transform(row['precio'])
-            row['normal'] = transform(row['total'] * 1.30)
-            row['nombre'] = transformName(row['nombre'])
-            columns.forEach(function(column) {
-              dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
-          i++;
+            }else{
+              dataRow.push({text: `${String(row[column]).toLowerCase()}`,style:'content' });
+              i++;
+            }
           })
-          }
+          // if(row['costo'] > 0){
+          //   row['flotilla2'] = transform(row['total'])
+          //   row['costoShow'] = transform(row['costo'])
+          //   row['normal'] = transform(row['total'] * 1.30)
+          //   row['nombre'] = transformName(row['nombre'])
+          //   columns.forEach(function(column) {
+          //     dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
+          //     i++;
+          //     })
+          // }else{
+          //   row['flotilla2'] = transform(row['total'])
+          //   row['costoShow'] = transform(row['precio'])
+          //   row['normal'] = transform(row['total'] * 1.30)
+          //   row['nombre'] = transformName(row['nombre'])
+          //   columns.forEach(function(column) {
+          //     dataRow.push({text: Object(row, column), alignment: headers[i].alignmentChild,style:'content' });
+          // i++;
+          // })
+          // }
           
           body.push(dataRow);
     
@@ -546,8 +560,8 @@ export class PdfService {
             ]
           },
           table(
-            data['elementos'],
-            ['tipo','nombre','cantidad','costoShow','normal','flotilla2'],
+            elementos,
+            ['tipo','nombre','cantidad','precio','normal','flotilla'],
             ['10%', '35%','10%', '15%','15%','15%'],
             true,
             [ {text:'Tipo', fillColor: '#FF6969', color:'white', style:'content', alignment: 'center', alignmentChild: 'center'},
@@ -563,7 +577,7 @@ export class PdfService {
               ]
           },
           table2(
-            data['elementos'],
+            elementos,
               ['nombre'],
               ['100%'],
               true,
@@ -931,4 +945,22 @@ function transforma_hora(fecha: string, incluirHora: boolean = false, ...args: u
     }
   
     return fechaFormateada;
+}
+function monedas(value: number, symbol = '$'): string {
+  if (!value || isNaN(value)) {
+    return `${symbol} 0.00`;
+  }
+  
+  const isNegative = value < 0;
+  const [integerPart, decimalPart = '00'] = Math.abs(value).toFixed(2).split('.');
+  const formattedIntegerPart = integerPart
+    .split('')
+    .reverse()
+    .reduce((result, digit, index) => {
+      const isThousands = index % 3 === 0 && index !== 0;
+      return `${digit}${isThousands ? ',' : ''}${result}`;
+    }, '');
+
+  const formattedValue = `${symbol} ${isNegative ? '-' : ''}${formattedIntegerPart}.${decimalPart}`;
+  return formattedValue;
 }

@@ -1770,23 +1770,41 @@ export class ServiciosPublicosService {
       return JSON.parse(JSON.stringify(objecto));
     }
     async revisar_cache(nombre:string){
-      const objeto_desencriptado = localStorage.getItem(`${nombre}`)
-      let nueva 
-      if (objeto_desencriptado) {
+      // const claves_extradidas = localStorage.getItem(`${nombre}`)
+      // let nueva 
+      // console.log(localStorage.getItem(`${nombre}`));
+      
+      if (localStorage.getItem(`${nombre}`)) {
         // console.log('existe en localHost '+ nombre);
-        const snap = await this._automaticos.consulta_ruta(nombre)
-        this._security.guarda_informacion({nombre, data: snap})
-        const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
-        nueva = this.crear_new_object(desc)// JSON.parse(JSON.stringify(desc));
-        return nueva
+        // const snap = await this._automaticos.consulta_ruta(nombre)
+        // await this._security.guarda_informacion({nombre, data: snap})
+
+        // const claves_extradidas = localStorage.getItem(`${nombre}`)
+
+        // const desc = 
+        // console.log(desc);
+        
+        // nueva = this.crear_new_object(desc)// JSON.parse(JSON.stringify(desc));
+        // return (nueva) ? nueva: []
+        return await this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`))
       }else{
-        const info_ruta = await this.consulta_ruta(nombre)
-        // console.log(`se creo cache ${nombre} de la APP`);
-        this._security.guarda_informacion({nombre, data: info_ruta})
-        let obtenida_cero = localStorage.getItem(`${nombre}`)
-        const desc = this._security.servicioDecrypt_object(obtenida_cero)
-        nueva = JSON.parse(JSON.stringify(desc));
-        return nueva
+        // const info_ruta = await this.consulta_ruta(nombre)
+        // // console.log(`se creo cache ${nombre} de la APP`);
+        // this._security.guarda_informacion({nombre, data: info_ruta})
+        // let obtenida_cero = localStorage.getItem(`${nombre}`)
+        // const desc = this._security.servicioDecrypt_object(obtenida_cero)
+        // nueva = JSON.parse(JSON.stringify(desc));
+        // return nueva
+        return []
+      }
+    }
+    async revisar_cache2(nombre:string){
+      const objeto_desencriptado = localStorage.getItem(`${nombre}`)
+      if (objeto_desencriptado) {
+        const desc = await this._security.servicioDecrypt_object(objeto_desencriptado)
+        return this.crear_new_object(desc)
+      }else{
+        return {}
       }
     }
     consulta_ruta(ruta): Promise<any> {
@@ -1927,7 +1945,7 @@ export class ServiciosPublicosService {
       reporte.refaccion = refaccion
       reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
       reporte.subtotal = reporte.mo + reporte.refaccionVenta
-      reporte.iva = (iva) ? reporte.subtotal * .16 : reporte.subtotal
+      reporte.iva = (iva) ? reporte.subtotal * .16 : 0
       reporte.total = reporte.subtotal + reporte.iva
       if (reporte.subtotal) {
         reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
@@ -2058,7 +2076,46 @@ export class ServiciosPublicosService {
         .replace(/\s+/g, '') // Reemplazamos múltiples espacios en blanco por uno solo
         .trim(); // Quitamos espacios en blanco al principio y al final
     }
-    
+
+    reporte_paquetes(paquete){
+      const {elementos, costo} = paquete
+      const nuevo_costo = (costo > 0 )? costo : 0
+      const reporte = this.sumatoria_reporte_paquete(elementos, 25)
+      paquete.reporte = reporte
+      paquete.costo = nuevo_costo
+      paquete.precio = reporte.total
+      return paquete
+    }
+    sumatoria_reporte_paquete(elementos:any[], margen){
+      const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0,ub:0}
+        elementos.forEach(elemento=>{
+          const {tipo, costo, precio} = elemento
+          const nuevo_costo_elemento = (costo > 0) ? costo : precio 
+          const new_tipo = `${tipo}`.toLowerCase().trim()
+          reporte[new_tipo] = nuevo_costo_elemento
+        })
+        reporte.refaccionVenta = reporte.refaccion *  (1 +(margen/ 100))
+        reporte.subtotal = reporte.mo + reporte.refaccionVenta
+        reporte.total = reporte.subtotal
+        if (reporte.subtotal > 0) {
+          reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+        }
+        return reporte
+    }
+    extraerParteDeURL() {
+      const urlCompleta = window.location.href;
+      // Utilizamos el objeto URL para analizar la URL
+      const parsedURL = new URL(urlCompleta);
+      
+      // Extraemos la ruta (path) de la URL
+      const path = parsedURL.pathname;
+      
+      // Dividimos la ruta en partes separadas por '/'
+      const partesDeRuta = path.split('/').filter(part => part); // Eliminamos segmentos vacíos
+      
+      // Devolvemos la última parte de la ruta (que suele ser la más relevante)
+      return `${partesDeRuta.pop()}`.toString();
+    }
   
       
  }

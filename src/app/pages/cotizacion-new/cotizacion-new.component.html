@@ -4,9 +4,14 @@
   <span class="icon fa fa-user fa-1x"></span>
 </div>
 
+<ng-container *ngIf="!infoCotizacion.cliente">
+  <div class="alert alert-info text-center">
+    No hay ningun cliente seleccionado para la cotizacion, revisa en la lista de abajo donde dice <br>
+    <strong>Buscar por nombre / correo</strong>
+  </div>
+</ng-container>
 
 <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
-
 <app-cliente-tarjeta [cliente]="infoCotizacion.data_cliente" [editar]="true"></app-cliente-tarjeta>
 
 <!-- <app-vehiculo-tarjeta [vehiculo]="infoCotizacion.data_vehiculo"></app-vehiculo-tarjeta> -->

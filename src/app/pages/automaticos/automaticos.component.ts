@@ -15,13 +15,14 @@ import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { data, morefacciones } from './ayuda';
-import { BD } from './BD_completa';
+import { data, morefacciones, vehiculos,  recepciones, clientes, historial_gastos_orden, 
+  historial_pagos_orden, cotizaciones} from './ayuda';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 
 
-import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue } from "firebase/database";
+import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue, update } from "firebase/database";
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/services/servicios.service';
@@ -45,176 +46,77 @@ export class AutomaticosComponent implements OnInit {
 
     ) {   }
   
-    sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
-
-    claves_sucursales = [
-      '-N2gkVg1RtSLxK3rTMYc',
-      '-N2gkzuYrS4XDFgYciId',
-      '-N2glF34lV3Gj0bQyEWK',
-      '-N2glQ18dLQuzwOv3Qe3',
-      '-N2glf8hot49dUJYj5WP',
-      '-NN8uAwBU_9ZWQTP3FP_',
-    ]
   _sucursal:string
-
-  mensaje_actualizacion:boolean = true
-
-
-  formulario_etiqueta: FormGroup
-
-  anios = this._vehiculos.anios
-  marcas_vehiculos = this._vehiculos.marcas_vehiculos
-  marcas_vehiculos_id = []
-  array_modelos = []
-  faltante_s:string
-  vehiculos_compatibles = [
-    {
-      "marca": "Chevrolet",
-      "modelo": "Camaro ZL1",
-      "anio_inicial": "1999",
-      "anio_final": "1999"
-    },
-    {
-      "marca": "Pontiac",
-      "modelo": "Matiz",
-      "anio_inicial": "1996",
-      "anio_final": "2001"
-    },
-    {
-      "marca": "Aston Martín",
-      "modelo": "DBX",
-      "anio_inicial": "1996",
-      "anio_final": "1996"
-    }
-  ]
-
-  recepciones_arr:any=[]
-  cotizaciones_arr:any=[]
-  clientes_arr:any=[]
-  vehiculos_arr:any=[]
-
-  // TODO esto pertenece a administracion
-  
-  hora_start = '00:00:01';
-  hora_end = '23:59:59';
-
-  fechas_getAdministracion ={start:new Date(), end:new Date() }
-  fechas_get_formateado_admin = {start:new Date(), end:new Date() }
-
-    reporteAdministracion = {
-      refacciones:0, subtotal:0, operacion:0, cantidad:0,
-      margen:0, por_margen:0
-    }
-    camposReporteAdministracion = [
-      {valor:'cantidad', show:'Ordenes cerradas'},
-      {valor:'subtotal', show:'Monto de ventas (Antes de IVA)'},
-      {valor:'refacciones', show:'Costos Refacciones (de los autos cerrados)'},
-      {valor:'operacion', show:'Costo Operacion'},
-      {valor:'margen', show:'Margen'},
-      {valor:'por_margen', show:'% Margen'},
-    ]
-  // TODO esto pertenece a administracion
-
-  // TODO pertenece a corte de ingresos
-  reporte = {objetivo:0, operacion: 0, orden:0, ventas:0, sobrante:0, porcentajeGM:0, porcentaje:0, ticketPromedio:0, refacciones:0}
-  camposReporte = [
-    {valor:'ticketPromedio', show:'Ticket Promedio'},
-    {valor:'objetivo', show:'Objetivo'},
-    {valor:'ventas', show:'Total ventas'},
-    {valor:'operacion', show:'Gastos de operación'},
-    {valor:'orden', show:'Gastos de ordenes'},
-    {valor:'sobrante', show:'GM'},
-  ]
-  metodospago = [
-    {metodo:'1', show:'Efectivo'},
-    {metodo:'2', show:'Cheque'},
-    {metodo:'3', show:'Tarjeta'},
-    {metodo:'4', show:'OpenPay'},
-    {metodo:'5', show:'Clip'},
-    {metodo:'6', show:'BBVA'},
-    {metodo:'7', show:'BANAMEX'},
-    {metodo:'8', show:'credito'}
-  ]
-  metodos = {
-    Efectivo:0,
-    Cheque:0,
-    Tarjeta:0,
-    OpenPay:0,
-    Clip:0,
-    BBVA:0,
-    BANAMEX:0,
-    credito:0,
-  }
-  // TODO pertenece a corte de ingresos
-  //TODO reporte de gastos
-  reporte_gastos = {deposito: 0, operacion: 0, sobrante:0, orden:0, restante:0}
-  camposReporte_gastos = [
-    {valor:'deposito', show:'Depositos'},
-    {valor:'sobrante', show:'Suma de sobrantes'},
-    {valor:'operacion', show:'Gastos de operación'},
-    {valor:'orden', show:'Gastos de ordenes'},
-    {valor:'restante', show:'Sobrante op'},
-  ]
-  //TODO reporte de gastos
-
-
+  _rol:string
+  paquetes_arr:any[] = []
   ngOnInit(): void {
     this.rol()
-    const n = this._publicos.crearArreglo2(this._vehiculos.marcas_vehiculos)
-    this.marcas_vehiculos_id = n.map(c=>{
-      return c.id
-    })
+    // const n = this._publicos.crearArreglo2(this._vehiculos.marcas_vehiculos)
+    // this.marcas_vehiculos_id = n.map(c=>{
+    //   return c.id
+    // })
+    this.obtener_claves()
   }
   
     rol(){
         const { rol, sucursal, usuario } = this._security.usuarioRol()
         this._sucursal = sucursal
-        this.acciones()
+        // this.acciones()
+        // this.nuevos_id_save()
+        // this.simular_descara_informacion_firebase_nombre()
+        // this.simular_observacion_informacion_firebase_nombre('claves_clientes')
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'})
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'recepciones', nombre:'claves_recepciones'})
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'})
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'})
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'})
     }
     acciones(){
         
-        let campo = 'nombre'
-        const encontrados = eliminarElementosRepetidos(data, campo)
-        // const arr= this._publicos.crearArreglo2(encontrados)
-        console.log('informacion depurada');
-        console.log(encontrados);
+        // let campo = 'nombre'
+        // const encontrados = eliminarElementosRepetidos(data, campo)
+        // // const arr= this._publicos.crearArreglo2(encontrados)
+        // console.log('informacion depurada');
+        // console.log(encontrados);
         
-        const depurados= this._publicos.crearArreglo2(encontrados)
-        console.log('depurados');
-        console.log('depurados.length', depurados.length);
-        console.log(encontrarElementosRepetidos(depurados,campo));
+        // const depurados= this._publicos.crearArreglo2(encontrados)
+        // console.log('depurados');
+        // console.log('depurados.length', depurados.length);
+        // console.log(encontrarElementosRepetidos(depurados,campo));
         
 
-        const sindepurar= this._publicos.crearArreglo2(data)
-        console.log('sindepurar')
-        console.log('sindepurar.length', sindepurar.length);
-        console.log(encontrarElementosRepetidos(sindepurar,campo));
+        // const sindepurar= this._publicos.crearArreglo2(data)
+        // console.log('sindepurar')
+        // console.log('sindepurar.length', sindepurar.length);
+        // console.log(encontrarElementosRepetidos(sindepurar,campo));
 
 
         console.log(`###### informacion xxx #`);
         
+
         // console.log(morefacciones);
-        const arreglo_morefacciones= this._publicos.crearArreglo2(morefacciones)
-        console.log('arreglo_morefacciones');
-        console.log(arreglo_morefacciones.length);
-        console.log(arreglo_morefacciones);
+        // const arreglo_morefacciones= this._publicos.crearArreglo2(morefacciones)
+        // console.log('arreglo_morefacciones');
+        // console.log(arreglo_morefacciones.length);
+        // console.log(arreglo_morefacciones);
         
         
 
-        let nuevos_paquetes = {}
+        // let nuevos_paquetes = {}
 
       
-        sindepurar.forEach((paquete, index)=>{
-          const {id, elementos} = paquete
-            paquete.elementos = nuevo_data_elemento({morefacciones, elementos})
-          nuevos_paquetes[id] = paquete
-        })
+        // sindepurar.forEach((paquete, index)=>{
+        //   const {id, elementos} = paquete
+        //     paquete.elementos = nuevo_data_elemento({morefacciones, elementos})
+        //   nuevos_paquetes[id] = paquete
+        // })
 
-        // console.log(nuevos_paquetes['-NXpvKAAGvHgD31bk8oQ']);
-        // console.log(nuevos_paquetes['-NXq3BcKzlcRXzFp46DT']);
-        // console.log(nuevos_paquetes['-NXqIwcwRkg1Szsrbjjz']);
 
-        console.log(nuevos_paquetes);
+        // console.log(nuevos_paquetes);
+        const paquetes_armados  = this._publicos.crearArreglo2(this.armar_paquetes({morefacciones, paquetes: data}))
+        console.log(paquetes_armados);
+        this.paquetes_arr = paquetes_armados
         
         
         function nuevo_data_elemento(data){
@@ -408,11 +310,110 @@ export class AutomaticosComponent implements OnInit {
         function crearArreglo2(arrayObj: Record<string, any> | null): any[] {
           if (!arrayObj) return []; 
           return Object.entries(arrayObj).map(([key, value]) => ({ ...value, id: key }));
-        }
+        }  
+    }
+
+    armar_paquetes(data){
+      const {morefacciones, paquetes} = data
+      const nuevos_paquetes = JSON.parse(JSON.stringify(paquetes));
+      Object.keys(nuevos_paquetes).forEach(paquete=>{
+        const {elementos, id} = nuevos_paquetes[paquete]
+        const nuevos_elementos = [...elementos]
+        const nuevos = nuevos_elementos.map(elemento=>{
+          const {id: id_elemento} = elemento
+          if (id_elemento) {
+            return {...morefacciones[id_elemento], ...elemento}
+          }else{
+            return elemento
+          }
+        })
+        nuevos_paquetes[id].elementos = nuevos;
+        nuevos_paquetes[id] = this._publicos.reporte_paquetes(nuevos_paquetes[id])
+      })
+      return nuevos_paquetes
+    }
+
+    obtener_claves(){
+      // console.log(Object.keys(vehiculos));
+      this._security.guarda_informacion({nombre: 'claves_vehiculos', data: Object.keys(vehiculos)})
+      this._security.guarda_informacion({nombre: 'claves_recepciones', data: Object.keys(recepciones)})
+      this._security.guarda_informacion({nombre: 'claves_clientes', data: Object.keys(clientes)})
+      this._security.guarda_informacion({nombre: 'claves_cotizaciones', data: Object.keys(cotizaciones)})
+      this._security.guarda_informacion({nombre: 'claves_historial_gastos_orden', data: Object.keys(historial_gastos_orden)})
+      this._security.guarda_informacion({nombre: 'claves_historial_pagos_orden', data: Object.keys(historial_pagos_orden)})
+      // this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
+      this._security.guarda_informacion({nombre: 'historial_gastos_orden', data: historial_gastos_orden})
+      this._security.guarda_informacion({nombre: 'historial_pagos_orden', data: historial_pagos_orden})
+      // this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
+      // this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
+    }
+
+    async simular_observacion_informacion_firebase_nombre(data){
+      const {ruta_observacion, nombre} = data
+      console.log({ruta_observacion, nombre});
+      
+      const claves_nombre:any[] = await this._publicos.revisar_cache(nombre)
+
+      console.log(claves_nombre);
+      
+      const resultados = await this._publicos.revisar_cache2(ruta_observacion)
+      claves_nombre.forEach(clave => {
+        const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
+        // console.log(`${ruta_observacion}/${clave}`);
         
-        
-        
-        
+        onChildChanged(commentsRef, (data) => {
+          const key = data.key
+          const valor =  data.val()
+          console.log(key);
+          // console.log(resultados[clave]);
+          
+          // resultados[clave][key] = valor
+          if (resultados[clave]) {
+            // console.log(resultados[clave]);
+            const nueva_data = this._publicos.crear_new_object(resultados[clave])
+              nueva_data[key] = valor
+              resultados[clave] = nueva_data
+              // console.log(clave);
+              console.log(nueva_data);
+              this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
+          }
+          
+          
+          
+        });
+      });
+
+      
+    }
+    async simular_descara_informacion_firebase_nombre(){
+      // let nombre = 'claves_clientes'
+      // const claves_clientes:any[] = await this.obtener_claves_cache(nombre)
+      // console.log(claves_clientes);
+      
+      // // const clave_cliente_new = `-clavegenerada-${claves_clientes.length}`
+      // // claves_clientes.push(clave_cliente_new)
+      
+      // // this.registra_clave_nombre(nuevas_claves)
+      // this._security.guarda_informacion({nombre, data: claves_clientes})
+
+      // const claves_clientes_cache = await this._publicos.revisar_cache(nombre)
+      // console.log(claves_clientes_cache);
+      // // // 439: "-NeekzgvHBHAnRgY7M-A"
+    }
+    async obtener_claves_cache(nombre){
+      const claves_clientes = await this._publicos.revisar_cache(nombre)
+      let nuevas_claves = [...claves_clientes]
+      return nuevas_claves
+    }
+    async registra_clave_nombre(arreglo_claves:any[], nombre:string){
+      const updates = {};
+      updates[`${nombre}`] = arreglo_claves;
+      update(ref(db), updates).then(()=>{
+        console.log('finalizo');
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     }
 
     

@@ -79,7 +79,7 @@
                                                      [matDatepickerFilter]="myFilter" (dateChange)="addEvent('change', $event)" [formControl]="dateControl" [matDatepicker]="picker" >
                                                     <mat-datepicker #picker ></mat-datepicker>
                                                   </div>
-                                                <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small>
+                                                <!-- <small *ngIf="validarCampo('dia')" class="text-danger">campo requerido</small> -->
                                             </div>
                                             </div>
                                         </div>
@@ -115,7 +115,7 @@
                                                 <div class="mb-1 row">
                                                     <strong  class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">id_cotizacion</strong>
                                                     <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                        <select formControlName="id_cotizacion" class="form-select  form-select-sm" id="id_cotizacion">
+                                                        <select aria-label="cotizacionesRealizadas" formControlName="id_cotizacion" class="form-select  form-select-sm" id="id_cotizacion">
                                                             <option value="" >Selecciona</option>
                                                             <option [value]="item.id" *ngFor="let item of cotizacionesRealizadas">{{item.no_cotizacion}}</option>
                                                         </select>

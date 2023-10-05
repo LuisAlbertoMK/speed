@@ -83,12 +83,9 @@ export class ListaTecnicosComponent implements OnInit, OnChanges{
     
     // if (!value) {
       const filterValue = value.toLowerCase();
-      console.log(this.listatecnicos_arr);
-      
+
       let resultados = this.listatecnicos_arr.filter(option => option['usuario'].toLowerCase().includes(filterValue));
-      
-      console.log(resultados);
-      
+
       if (!resultados.length)  resultados = this.listatecnicos_arr.filter(option => option['correo'].toLowerCase().includes(filterValue)); 
       data = resultados.filter(r=>r.sucursal === this.sucursal)
     // }

@@ -6,7 +6,7 @@
             <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
             <li class="breadcrumb-item active text-capitalize">{{donde}}</li>
             <!-- -->
-            <ng-container *ngIf="enrutamiento.anterior">
+            <ng-container *ngIf="enrutamiento && enrutamiento.anterior">
               <li class="breadcrumb-item" (click)="regresar()" >
                 <a class="breadcrumb-item navegacion">Regresar</a>
               </li>

@@ -22,9 +22,6 @@ export class PdfEntregaService {
       margen:new_margen, formaPago_show, servicio_show, kilometraje 
     } = data
 
-    // console.log(formaPago_show);
-    
-
     const margen = 1 + (new_margen / 100)
 
     async function bases(URL:any) {
@@ -120,7 +117,7 @@ export class PdfEntregaService {
       filtrados.forEach(function (row) {
         // console.log(row);
         const {cantidad, precio, costo} = row
-        console.log({cantidad, precio, costo} );
+        // console.log({cantidad, precio, costo} );
         
           var dataRow = [];
           var i = 0;
@@ -589,7 +586,7 @@ export class PdfEntregaService {
           [ { text: `Servicios solicitados`,alignment: 'left', style:'info2' }],
           [ 
             table(
-              data.elementos,
+              elementos,
               ['tipo', 'nombre','cantidad','precio','total'],
               ['10%', '40%', '10%','20%','20%'],
               true,

@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "arreglar informacion de paquetes  (proceso)"
+git commit -m "correcion de metodo de actualizacion de datos  (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

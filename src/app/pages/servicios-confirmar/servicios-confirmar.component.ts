@@ -199,7 +199,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   async acciones(){
     console.log(this.enrutamiento);
-    const {cotizacion, recepcion} = this.enrutamiento
+    const {cotizacion, recepcion, cliente, vehiculo} = this.enrutamiento
     const vehiculos = await this._publicos.revisar_cache('vehiculos')
     const clientes = await this._publicos.revisar_cache('clientes')
 
@@ -242,6 +242,24 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.asignar_nuevos_elementos(data_cotizacion.elementos)
         this.extra = data_cotizacion.vehiculo
       }
+    }else if(cliente){
+      // const clientes = await this._publicos.revisar_cache('clientes')
+      this.infoConfirmar.cliente = cliente
+      const data_cliente_new = this._publicos.crear_new_object(clientes[cliente])
+      data_cliente_new.id = cliente
+      this.infoConfirmar.data_cliente = data_cliente_new
+      this.infoConfirmar.sucursal = data_cliente_new.sucursal
+    }else if(vehiculo){
+      // const clientes = await this._publicos.revisar_cache('clientes')
+      // const vehiculos = await this._publicos.revisar_cache('vehiculos')
+      const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
+      const data_cliente_new = this._publicos.crear_new_object(clientes[data_vehiculo.cliente])
+      data_cliente_new.id = data_vehiculo.cliente
+      this.infoConfirmar.data_cliente = data_cliente_new
+      this.infoConfirmar.cliente = data_vehiculo.cliente
+      this.extra = vehiculo
+      this.infoConfirmar.sucursal = data_cliente_new.sucursal
+      this.infoConfirmar.vehiculo = vehiculo
     }
     this.realizaOperaciones()
     this.vigila_vehiculos_cliente()

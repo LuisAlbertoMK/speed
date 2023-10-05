@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 
-import { getDatabase, onValue, ref, set, push, get, child, limitToFirst } from 'firebase/database';
+import { getDatabase, onValue, ref, set, push, get, child, limitToFirst, onChildChanged } from 'firebase/database';
 import { CotizacionService } from 'src/app/services/cotizacion.service';
 
 const db = getDatabase()
@@ -110,15 +110,24 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     this.router.navigate([`/${pagina}`], { queryParams });
   }
 
-
   async vigila_hijo(){
-    const starCountRef = ref(db, `cotizacionesRealizadas`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.lista_cotizaciones()
-      }
-    })
+    this.lista_cotizaciones()
+    const commentsRef = ref(db, `recepciones`);
+      onChildChanged(commentsRef, (data) => {
+        setTimeout(() => {
+          this.lista_cotizaciones()
+        }, 500);
+      })
   }
+
+  // async vigila_hijo(){
+  //   const starCountRef = ref(db, `cotizacionesRealizadas`)
+  //   onValue(starCountRef, (snapshot) => {
+  //     if (snapshot.exists()) {
+  //       this.lista_cotizaciones()
+  //     }
+  //   })
+  // }
   async lista_cotizaciones(){
     const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
     const cotizaciones_arr = this._publicos.crearArreglo2(cotizacionesRealizadas)

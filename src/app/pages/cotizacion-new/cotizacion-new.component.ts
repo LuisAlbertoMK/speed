@@ -144,38 +144,36 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
-      console.log(params);
-      
-      this.vigila_hijo()
+      // this.vigila_hijo()
+      this.cargaDataCliente_new()
     });
     
   }
-  vigila_hijo(){
-    const rutas_vigila = [
-      'clientes',
-      'vehiculos',
-      'recepciones',
-      'historial_gastos_operacion',
-      'historial_gastos_orden',
-      'historial_pagos_orden',
-    ]
-    rutas_vigila.forEach(nombre=>{
-      const starCountRef = ref(db, `${nombre}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          this.cargaDataCliente_new()
-        }
-      })
-    })
+  // vigila_hijo(){
+  //   const rutas_vigila = [
+  //     'clientes',
+  //     'vehiculos',
+  //     'recepciones',
+  //     'historial_gastos_operacion',
+  //     'historial_gastos_orden',
+  //     'historial_pagos_orden'
+  //   ]
+  //   rutas_vigila.forEach(nombre=>{
+  //     const starCountRef = ref(db, `${nombre}`)
+  //     onValue(starCountRef, (snapshot) => {
+  //       if (snapshot.exists()) {
+  //         this.cargaDataCliente_new()
+  //       }
+  //     })
+  //   })
     
-  }
+  // }
   async cargaDataCliente_new(){
-
+    console.log('aqui');
+    
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
     
-    let  data_cliente:any = {},  vehiculos_arr = [], data_vehiculo = {}
-
-    if (cliente) vehiculos_arr = await this._vehiculos.consulta_vehiculos({cliente, sucursal})
+    
 
     const campos = [
       'cliente',
@@ -220,8 +218,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         this.infoCotizacion[campo] = nueva_data_recepcion[campo]
       })
       this.extra = cotizaciones_arregladas[0].vehiculo
-    }
-    if (cotizacion){
+    }else if (cotizacion){
 
       const cotizacionesRealizadas_object = await this._publicos.revisar_cache('cotizacionesRealizadas')
       const clientes = await this._publicos.revisar_cache('clientes')
@@ -243,19 +240,25 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
 
       this.extra = cotizaciones_arregladas[0].vehiculo
-    }
-
-    if (cliente) {
-      const cadena = `${cliente}`.length
-      if (cadena < 15) return
+    } else if(cliente){
       const clientes = await this._publicos.revisar_cache('clientes')
       this.infoCotizacion.cliente = cliente
-      this.infoCotizacion.data_cliente = clientes[cliente]
+      const data_cliente_new = this._publicos.crear_new_object(clientes[cliente])
+      data_cliente_new.id = cliente
+      this.infoCotizacion.data_cliente = data_cliente_new
+    } else if(vehiculo){
+      const clientes = await this._publicos.revisar_cache('clientes')
+      const vehiculos = await this._publicos.revisar_cache('vehiculos')
+      const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
+      const data_cliente_new = this._publicos.crear_new_object(clientes[data_vehiculo.cliente])
+      data_cliente_new.id = data_vehiculo.cliente
+      this.infoCotizacion.data_cliente = data_cliente_new
+      this.infoCotizacion.cliente = data_vehiculo.cliente
+      this.extra = vehiculo
+      this.infoCotizacion.vehiculo = vehiculo
     }
 
-    // console.log(this.infoCotizacion);
-    
-    this.realizaOperaciones()
+    this.asignar_nuevos_elementos(this.infoCotizacion.elementos)
     this.vigila_vehiculos_cliente()
 
   }
@@ -322,6 +325,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   vigila(){
     this.checksBox.get('iva').valueChanges.subscribe((iva: boolean) => {
       this.infoCotizacion.iva = iva
+      console.log('iva');
+      
       this.realizaOperaciones()
     })
     this.checksBox.get('detalles').valueChanges.subscribe((detalles: boolean) => {
@@ -330,6 +335,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.formPlus.get('descuento').valueChanges.subscribe((descuento: number) => {
       const nuevo_descuento = descuento < 0 ? 0 : descuento
       this.infoCotizacion.descuento = nuevo_descuento
+      console.log('descuento');
       this.realizaOperaciones()
     })
     this.formPlus.get('kms').valueChanges.subscribe((kms: number) => {
@@ -343,10 +349,12 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.formPlus.get('margen').valueChanges.subscribe((margen: number) => {
       const nuevo_margen = Math.min(Math.max(margen, 25), 100);
       this.infoCotizacion.margen = nuevo_margen
+      console.log('nuevo_margen');
       this.realizaOperaciones()
     })
     this.formPlus.get('formaPago').valueChanges.subscribe((formaPago: string) => {
       this.infoCotizacion.formaPago = formaPago
+      console.log('formaPago');
       this.realizaOperaciones()
     })
     this.formPlus.get('promocion').valueChanges.subscribe((promocion: string) => {
@@ -466,10 +474,24 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   asignar_nuevos_elementos(nuevos:any[]){
     let indexados = nuevos.map((elemento, index)=> {
+      // console.log(elemento);
+      const {costo, precio, cantidad, tipo} = elemento
+      const {margen} = this.infoCotizacion
+      if (tipo !== 'mo') {
+        const margen_new = 1 +(margen / 100)
+        const precioShow = (cantidad * ( (costo>0) ? costo : precio)) * margen_new
+        elemento.total = precioShow
+        elemento.precioShow = ( (costo>0) ? costo : precio) * margen_new
+      }else{
+        elemento.total = (cantidad * ( (costo>0) ? costo : precio))
+        elemento.precioShow = ( (costo>0) ? costo : precio)
+      }
+     
       elemento.index = index
       return elemento
     })
     this.infoCotizacion.elementos = indexados
+    
     this.realizaOperaciones()
   }
 
@@ -516,6 +538,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
     const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
 
+    // console.log(reporte);
+    
     this.infoCotizacion.reporte = reporte
     this.infoCotizacion.elementos = elementos
     this.dataSource.data = elementos

@@ -242,7 +242,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   }
   async infoCliente(cliente){
     if (cliente) {
-      console.log(cliente);
+      // console.log(cliente);
       this.data_cliente = cliente
       
       const {id, sucursal, correo} = cliente
@@ -276,7 +276,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
     this.citaForm = this.formBuilder.group({
       id:[''],
-      dia: ['', Validators.required],
+      // dia: ['', Validators.required],
       cliente: ['', Validators.required],
       correo:['',[Validators.required,Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       sucursal: [sucursal, Validators.required],
@@ -343,47 +343,24 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     const date = event.value
     if (date && date['_d']) {
       const saber_dia = new Date(date['_d'])
-      console.log(this.horarios);
-      console.log(saber_dia.getDay())
+      // console.log(this.horarios);
+      // console.log(saber_dia.getDay())
       const numeroDia = saber_dia.getDay()
       const sucursal = this.citaForm.get('sucursal').value;
 
       const cita_search  = this.ruta_guardar_cita(new Date(saber_dia))
-      console.log(cita_search);
-  
-      const citas_dia = `Citas/${cita_search}/${sucursal}/${this._publicos.generaClave()}`
-
-      // const dbRef = ref(getDatabase());
-      const citas_dia_ans = await this._citas.consulta_citas_dia(`Citas/${citas_dia}`)
-      // console.log(citas_dia_ans);
-      // const arreglo_citas_dias_ans = this._publicos.crearArreglo2(citas_dia_ans)
-      // console.log(arreglo_citas_dias_ans);
       
-      const arreglo_citas_dias_ans = [
-        "09:00",
-        "09:10",
-        "09:20",
-        "09:30",
-        "09:40",
-        "09:50",
-        "12:20",
-        "12:30",
-        "12:40",
-        "12:50",
-        "13:00",
-        "13:10",
-        "13:20",
-        "13:30",
-        "13:40",
-        "13:50",
-        "14:00",
-        "17:10",
-        "17:30",
-        "17:40",
-        "17:50",
-        "18:00",
-        "18:20"
-    ]
+      const data_cliente = this._publicos.crear_new_object( this.data_cliente )
+
+      const citas_dia = `Citas/${cita_search}/${data_cliente.sucursal}`
+
+      const citas_dia_ans = await this._citas.consulta_citas_dia(`${citas_dia}`)
+
+      const citas_dia_ans_arr = this._publicos.crearArreglo2(citas_dia_ans)
+
+      const arreglo_citas_dias_ans = citas_dia_ans_arr.map(c=> {return c.horario})
+
+      
     let horarios_libres = []
       if (sucursal && sucursal==='-N2glF34lV3Gj0bQyEWK') {
         if (numeroDia <=5 ) {
@@ -393,9 +370,9 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         }
       }else if (sucursal && sucursal !=='-N2glF34lV3Gj0bQyEWK') {
         if (numeroDia <=5 ) {
-          horarios_libres = this.horarios[sucursal]['lunesViernes']
+          horarios_libres = this.horarios['otras']['lunesViernes']
         }else{
-          horarios_libres = this.horarios[sucursal]['sabado']
+          horarios_libres = this.horarios['otras']['sabado']
         }
       }
 
@@ -413,9 +390,6 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       
         return [...diferencias1, ...diferencias2];
       }
-
-      // const sucursal = this.citaForm.get('cliente').value;
-      
     }
   }
   validarCampo(campo: string){
@@ -428,7 +402,6 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       'cliente',
       'vehiculo',
       'correo',
-      'dia',
       'horario',
       'servicio',
       'comentario',
@@ -443,46 +416,28 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       'direccion',
       'sucursal',
     ]
+
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get,campos )
-
-    console.log(info_get);
-
-    // const updates = {};
-    //   updates[`Citas/${cita_search}/${this._publicos.generaClave()}`] = {
-    //     username: 'aaaa',
-    //     email: 'email',
-    //     profile_picture : 'imageUrl'
-    //   };
-    //   update(ref(db), updates).then(()=>{
-    //     console.log('finalizo');
-    //   })
-    //   .catch(err=>{
-    //     console.log(err);
-    //   })
-
-    // const fecha = formatearFecha(new Date(), false)
-    const fecha_ruta = this.ruta_guardar_cita(new Date())
-    // console.log(fecha);
-    console.log(fecha_ruta);
-
-    
-    
-    // function formatearFecha(fecha_get,simbolo:boolean,symbol?) {
-    //   let fecha = new Date(fecha_get)
-    //   const dia = fecha.getDate().toString().padStart(2, '0');
-    //   const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-    //   const anio = fecha.getFullYear().toString();
-    //   if(!symbol) symbol= '/'
-    //   return (simbolo) ? `${dia}${symbol}${mes}${symbol}${anio}` : `${dia}${mes}${anio}`;
-    // }
-   
+    const recuperda = this._publicos.nuevaRecuperacionData(info_get,campos)
 
     this.faltante_s = faltante_s
     if (!ok) return
 
-    return
+    const fecha_ruta = this.ruta_guardar_cita(new Date())
+    const updates = {}
+    // `Citas/${cita_search}/${sucursal}}`
 
-    }
+    const data_cliente = this._publicos.crear_new_object( this.data_cliente )
+    updates[`Citas/${fecha_ruta}/${data_cliente.sucursal}/${this._publicos.generaClave()}`] = recuperda
+      update(ref(db), updates).then(()=>{
+        this.citaForm.reset()
+        this.inicioDetenerCita(false)
+        this._publicos.mensajeSwal('se registro cita correctamente',1)
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+  }
   
   ConfirmaCita(){
    

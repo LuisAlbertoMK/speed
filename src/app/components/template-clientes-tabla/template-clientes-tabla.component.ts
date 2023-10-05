@@ -100,22 +100,19 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
   }
 
   irPagina(pagina, cliente){
-    // /:ID/:tipo/:extra
-    // console.log(cliente);
-    const { id, sucursal, tipo } = cliente
-    
-    let queryParams = {}
-    if (pagina === 'historial-cliente') {
-      queryParams = { anterior:'clientes', cliente: id  } 
-    } else if (pagina === 'cotizacionNueva') {
-      queryParams = { anterior:'clientes', cliente: id, } 
-    } else if (pagina === 'ServiciosConfirmar') {
-      queryParams = { anterior:'clientes',  tipo:'cliente', cliente: id, vehiculo:'' } 
-    }
+    const anterior = this._publicos.extraerParteDeURL()
 
-    // console.log(queryParams);
-    
-    this.router.navigate([`/${pagina}`], { queryParams });
+    const {id: id_cliente} = this._publicos.crear_new_object(cliente)
+
+    if (id_cliente) {
+      const queryParams = {
+        cliente: id_cliente,
+        anterior
+      }
+      this.router.navigate([`/${pagina}`], { 
+        queryParams
+      });
+    }
   }
 
   applyFilter(event: Event) {

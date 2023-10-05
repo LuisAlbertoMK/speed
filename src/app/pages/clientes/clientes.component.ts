@@ -56,8 +56,9 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
   }
   async lista_clientes(){
-    const clientes = await this._publicos.revisar_cache('clientes')
-
+    const clientes = await this._publicos.revisar_cache2('clientes')
+    console.log(clientes);
+    
     const clientes_arr = this._publicos.crearArreglo2(clientes)
     
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
@@ -71,12 +72,13 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     }, 1000);
   }
   async vigila_hijo(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.lista_clientes()
-      }
-    })
+    this.lista_clientes()
+    const commentsRef = ref(db, `clientes`);
+      onChildChanged(commentsRef, (data) => {
+        setTimeout(() => {
+          this.lista_clientes()
+        }, 500);
+      })
   }
 }
 

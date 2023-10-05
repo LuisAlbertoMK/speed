@@ -20,26 +20,26 @@ export class AutomaticosService {
   consulta_ruta(ruta): Promise<any> {
     return new Promise((resolve, reject) => {
       // const {ruta} = data
-      // const starCountRef = ref(db, `${ruta}`);
-      // onValue(starCountRef, (snapshot) => {
-      //   if (snapshot.exists()) {
-      //     resolve(snapshot.val())
-      //   } else {
-      //     resolve({});
-      //   }
-      // }, {
-      //   onlyOnce: true
-      // })
-      // const dbRef = ref(getDatabase());
-      get(child(dbRef, `${ruta}`)).then((snapshot) => {
+      const starCountRef = ref(db, `${ruta}`);
+      onValue(starCountRef, (snapshot) => {
         if (snapshot.exists()) {
           resolve(snapshot.val())
         } else {
           resolve({});
         }
-      }).catch((error) => {
-        console.error(error);
-      });
+      }, {
+        onlyOnce: true
+      })
+      // const dbRef = ref(getDatabase());
+      // get(child(dbRef, `${ruta}`)).then((snapshot) => {
+      //   if (snapshot.exists()) {
+      //     resolve(snapshot.val())
+      //   } else {
+      //     resolve({});
+      //   }
+      // }).catch((error) => {
+      //   console.error(error);
+      // });
     });
   }
   // async vigila_hijo(arreglo:any[]){

@@ -9,6 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
+import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
 @Component({
   selector: 'app-template-tabla-vehiculos',
@@ -31,7 +32,8 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
   @Input() show_cliente:boolean = false
   
 
-  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService) { }
+  constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService,
+    private _publicos:ServiciosPublicosService) { }
 
 
   dataSource = new MatTableDataSource(); //elementos
@@ -62,33 +64,19 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
     }
   }
   irPagina(pagina, data){
-      
-    const {cliente, sucursal, id: vehiculo, tipo } = data
-    const { rol, uid, sucursal:sucursalID} = this._security.usuarioRol()
-    let queryParams = {}
-    if (pagina === 'cotizacionNueva' ) {
-      
-      // console.log(rol);
-      if (rol === 'cliente') {
-        queryParams = { anterior:'miPerfil',cliente: uid, sucursal: sucursalID,vehiculo, tipo:'vehiculo'}
-        pagina = 'cotizacion-new-cliente'
-      }else{
-        queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo, tipo:'vehiculo'} 
+
+    const anterior = this._publicos.extraerParteDeURL()
+    
+    const {id: id_vehiculo} = this._publicos.crear_new_object(data)
+    if (id_vehiculo) {
+      const queryParams = {
+        vehiculo: id_vehiculo,
+        anterior
       }
-      
-    }else if (pagina === 'ServiciosConfirmar' ) {
-      if (rol !== 'cliente') {
-        queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo, tipo:'vehiculo'}  
-      }
-    }else if (pagina === 'historial-vehiculo') {
-      if (rol === 'cliente') {
-        queryParams = { anterior:'miPerfil',cliente: uid, sucursal: sucursalID,vehiculo, tipo:'vehiculo'}
-        pagina = 'historial-vehiculo-cliente'
-      }else{
-        queryParams = { anterior:'historial-cliente',cliente, sucursal,vehiculo,}
-      }
+      this.router.navigate([`/${pagina}`], { 
+        queryParams
+      });
     }
-    this.router.navigate([`/${pagina}`], { queryParams });
   }
 
   newPagination(){

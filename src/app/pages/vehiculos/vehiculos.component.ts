@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { getDatabase, onValue, ref } from 'firebase/database';
+import { getDatabase, onChildChanged, onValue, ref } from 'firebase/database';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
@@ -34,8 +34,8 @@ export class VehiculosComponent implements OnInit {
   }
   async lista_vehiculos(){
     console.time('Execution Time');
-    const clientes = await this._publicos.revisar_cache('clientes')
-    const vehiculos = await this._publicos.revisar_cache('vehiculos')
+    const clientes = await this._publicos.revisar_cache2('clientes')
+    const vehiculos = await this._publicos.revisar_cache2('vehiculos')
     
     const nuevos_vehiculos = this._publicos.transformaDataVehiculo({clientes, vehiculos: this._publicos.crearArreglo2(vehiculos)})
     setTimeout(() => {
@@ -44,13 +44,14 @@ export class VehiculosComponent implements OnInit {
     console.timeEnd('Execution Time');
   }
   
-  vigila_hijo(){
-    const starCountRef = ref(db, `vehiculos`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.lista_vehiculos()
-      }
-    })
+  async vigila_hijo(){
+    this.lista_vehiculos()
+    const commentsRef = ref(db, `vehiculos`);
+      onChildChanged(commentsRef, (data) => {
+        setTimeout(() => {
+          this.lista_vehiculos()
+        }, 500);
+      })
   }
 
 }

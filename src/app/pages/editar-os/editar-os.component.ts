@@ -573,6 +573,22 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       campos_update.forEach(campo=>{
         updates[`recepciones/${nueva_data['id']}/${campo}`] = nueva_data[campo]
       })
+      // console.log(this.data_editar.elementos);
+      // console.log(this.data_editar.reporte_real);
+      const {refaccionVenta} = this._publicos.crear_new_object(this.data_editar.reporte_real)
+      const nuevos = {
+          aprobado: true,
+          tipo:'refaccion',
+          nombre: 'refacciones',
+          cantidad: 1,
+          precio: refaccionVenta,
+          total: refaccionVenta
+      }
+
+      const  asignacion = [...this.data_editar.elementos, nuevos]
+
+  
+      this.data_editar.elementos = asignacion
       if (this.data_editar.status === 'entregado' ) {
         this.data_editar.fecha_entregado = this._publicos.retorna_fechas_hora({fechaString: new Date()}).fecha_hora_actual
         this._pdf_entrega.pdf(this.data_editar).then((pdfReturn:any) => {

@@ -343,7 +343,8 @@ export class ClienteComponent implements OnInit, OnChanges {
 
     const informacion_purifica = [
       'nombre', 'apellidos','correo'
-    ].forEach(campo=>{
+    ]
+    informacion_purifica.forEach(campo=>{
       info_get[campo] = this._publicos.quitarAcentos(info_get[campo])
     })
 
