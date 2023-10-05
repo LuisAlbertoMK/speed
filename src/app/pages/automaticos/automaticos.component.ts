@@ -55,7 +55,13 @@ export class AutomaticosComponent implements OnInit {
     // this.marcas_vehiculos_id = n.map(c=>{
     //   return c.id
     // })
-    this.obtener_claves()
+    // this.obtener_claves()
+    // this.observar_nombre()
+    // this.obtener_info_nombre()
+    // this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+
+    // this.obtener_clavesgg()
+    this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
   }
   
     rol(){
@@ -65,7 +71,7 @@ export class AutomaticosComponent implements OnInit {
         // this.nuevos_id_save()
         // this.simular_descara_informacion_firebase_nombre()
         // this.simular_observacion_informacion_firebase_nombre('claves_clientes')
-        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+        this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'clientes', nombre:'claves_clientes'})
         // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'})
         // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'recepciones', nombre:'claves_recepciones'})
         // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'})
@@ -332,6 +338,48 @@ export class AutomaticosComponent implements OnInit {
       })
       return nuevos_paquetes
     }
+    async obtener_clavesgg(){
+      const claves_encontradas = await this.simula_inserccion()
+      console.log(claves_encontradas); 
+    }
+    async simula_inserccion(){
+      const claves_nombre = await  this._automaticos.consulta_ruta('claves_clientes')
+      let arreglo_claves = [...claves_nombre]      
+      return arreglo_claves.filter(clave=>clave)
+    }
+    supervisar_claves(data){
+      const {ruta_observacion, nombre} = data
+      const starCountRef = ref(db, `${nombre}`)
+      onValue(starCountRef, async (snapshot) => {
+        if (snapshot.exists()) {
+          const nuevos_claves = Object.values(snapshot.val())
+          this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
+          this.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
+        } else {
+          console.log("No data available");
+        }
+      })
+    }
+    obtener_info_nombre(){
+      const buscar_cache = [
+        // 'clientes'
+        // 'vehiculos',
+        // 'recepciones',
+        // 'cotizaciones',
+        // 'historial_gastos_operacion',
+        // 'historial_gastos_orden',
+        // 'historial_pagos_orden',
+        // 'historial_gastos_diarios'
+      ]
+      buscar_cache.forEach(async (nombre)=>{
+        console.log('buscando ' + nombre);
+        
+        const resultados = await this._automaticos.consulta_ruta(nombre)
+        console.log(resultados);
+        this._security.guarda_informacion({nombre: `claves_${nombre}`, data: Object.keys(resultados)})
+        this._security.guarda_informacion({nombre: `${nombre}`, data: resultados})
+      })
+    }
 
     obtener_claves(){
       // console.log(Object.keys(vehiculos));
@@ -341,11 +389,12 @@ export class AutomaticosComponent implements OnInit {
       this._security.guarda_informacion({nombre: 'claves_cotizaciones', data: Object.keys(cotizaciones)})
       this._security.guarda_informacion({nombre: 'claves_historial_gastos_orden', data: Object.keys(historial_gastos_orden)})
       this._security.guarda_informacion({nombre: 'claves_historial_pagos_orden', data: Object.keys(historial_pagos_orden)})
-      // this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
+      this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
       this._security.guarda_informacion({nombre: 'historial_gastos_orden', data: historial_gastos_orden})
       this._security.guarda_informacion({nombre: 'historial_pagos_orden', data: historial_pagos_orden})
-      // this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
-      // this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
+
+      this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
+      this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
     }
 
     async simular_observacion_informacion_firebase_nombre(data){
@@ -357,31 +406,55 @@ export class AutomaticosComponent implements OnInit {
       console.log(claves_nombre);
       
       const resultados = await this._publicos.revisar_cache2(ruta_observacion)
-      claves_nombre.forEach(clave => {
-        const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
-        // console.log(`${ruta_observacion}/${clave}`);
-        
-        onChildChanged(commentsRef, (data) => {
-          const key = data.key
-          const valor =  data.val()
-          console.log(key);
-          // console.log(resultados[clave]);
-          
-          // resultados[clave][key] = valor
-          if (resultados[clave]) {
-            // console.log(resultados[clave]);
-            const nueva_data = this._publicos.crear_new_object(resultados[clave])
-              nueva_data[key] = valor
-              resultados[clave] = nueva_data
-              // console.log(clave);
-              console.log(nueva_data);
-              this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
-          }
-          
-          
-          
-        });
+
+      console.log(resultados);
+      
+      let claves_faltantes = []
+      claves_nombre.forEach(async (clave, index) => {
+
+        if (!resultados[clave]) {
+          claves_faltantes.push(clave)
+        }else{
+          const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
+          onChildChanged(commentsRef, (data) => {
+            const key = data.key
+            const valor =  data.val()
+            console.log(key);
+            if (resultados[clave]) {
+              const nueva_data = this._publicos.crear_new_object(resultados[clave])
+                nueva_data[key] = valor
+                resultados[clave] = nueva_data
+                console.log(nueva_data);
+                this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
+            }
+          });
+        }
       });
+      claves_faltantes.forEach(async (clav)=>{
+        const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}}/${clav}`)
+        const {no_cliente} = this._publicos.crear_new_object(data_cliente)
+        if (no_cliente) {
+          resultados[clav] = data_cliente
+        }
+      })
+      setTimeout(() => {
+        this._security.guarda_informacion({nombre: ruta_observacion, data: resultados}) 
+      }, 2000);
+      
+      // this._security.guarda_informacion({nombre: ruta_observacion, data: clientes})
+      
+      // const clientes = await this._publicos.revisar_cache2(ruta_observacion)
+      //     const data_cliente = await this._automaticos.consulta_ruta(`clientes/${clave}`)
+      //     if (data_cliente) {
+      //       console.log(index);
+      //       clientes[clave] = data_cliente
+      //       console.log(data_cliente);
+      //       console.log(clientes);
+
+      //       console.log('no existe la clave de cliente', clave);
+            
+      //       await this._security.guarda_informacion({ruta_observacion, clientes})
+      //     }
 
       
     }
@@ -416,6 +489,17 @@ export class AutomaticosComponent implements OnInit {
       })
     }
 
-    
+    observar_nombre(){
+      console.log('revisando_clientes_genera');
+      
+      const commentsRef = ref(db, `clientes`);
+      onChildChanged(commentsRef, (data) => {
+        const key = data.key
+        const valor =  data.val()
+        console.log(key);
+        console.log(valor);
+        
+      })
+    }
 
 }

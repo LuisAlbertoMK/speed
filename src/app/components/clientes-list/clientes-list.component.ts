@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import { child, get, getDatabase, onValue, ref, set, update,push, onChildChanged } from "firebase/database"
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
 import {FormControl} from '@angular/forms';
@@ -59,25 +59,61 @@ export class ClientesListComponent implements OnInit {
 
   }
   async vigila_hijo(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        console.log('cambio');
+    this.lista_clientes()
+    // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+  }
+  async simular_observacion_informacion_firebase_nombre(data){
+    const {ruta_observacion, nombre} = data
+    console.log({ruta_observacion, nombre});
+    
+    const claves_nombre:any[] = await this._publicos.revisar_cache(nombre)
+
+    console.log(claves_nombre);
+    
+    const resultados = await this._publicos.revisar_cache2(ruta_observacion)
+
+    console.log(resultados);
+    
+    claves_nombre.forEach(clave => {
+      const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
+      // console.log(`${ruta_observacion}/${clave}`);
+      
+      onChildChanged(commentsRef, (data) => {
+        const key = data.key
+        const valor =  data.val()
+        console.log(key);
+        // console.log(resultados[clave]);
         
-        this.lista_clientes()
-      }
-    })
+        // resultados[clave][key] = valor
+        if (resultados[clave]) {
+          // console.log(resultados[clave]);
+          const nueva_data = this._publicos.crear_new_object(resultados[clave])
+            nueva_data[key] = valor
+            resultados[clave] = nueva_data
+            // console.log(clave);
+            console.log(nueva_data);
+            this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
+        }
+        
+        
+        
+      });
+    });
+
+    
   }
   async lista_clientes(){
-    console.log('revisando cambios');
-    
+    // console.log('revisando cambios');
 
-    const clientes = await this._publicos.revisar_cache('clientes')
+    const clientes = await this._publicos.revisar_cache2('clientes')
+    
     const clientes_arr = this._publicos.crearArreglo2(clientes)
+
+
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
+    
     const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
 
-    console.log(this.listaClientes_arr.length);
     
     this.listaClientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
 

@@ -52,12 +52,11 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
     this._rol = rol
     this._sucursal = sucursal
-    this.vigila_hijo()
+    this.vigila_hijo({ruta_observacion: 'clientes', nombre:'claves_clientes'})
 
   }
   async lista_clientes(){
     const clientes = await this._publicos.revisar_cache2('clientes')
-    console.log(clientes);
     
     const clientes_arr = this._publicos.crearArreglo2(clientes)
     
@@ -66,19 +65,26 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
     
     const campos_cliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','usuario']
+
     setTimeout(() => {
       this.clientes_actual = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
       this.clientes_arr = this._publicos.actualizarArregloExistente(this.clientes_actual,ordenar, campos_cliente)
     }, 1000);
   }
-  async vigila_hijo(){
-    this.lista_clientes()
-    const commentsRef = ref(db, `clientes`);
-      onChildChanged(commentsRef, (data) => {
-        setTimeout(() => {
-          this.lista_clientes()
-        }, 500);
-      })
+  // this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+  vigila_hijo(data){
+    const {ruta_observacion, nombre} = data
+    const starCountRef = ref(db, `${nombre}`)
+    onValue(starCountRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const nuevos_claves = Object.values(snapshot.val())
+        this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
+        this._publicos.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
+        this.lista_clientes()
+      } else {
+        console.log("No data available");
+      }
+    })
   }
 }
 

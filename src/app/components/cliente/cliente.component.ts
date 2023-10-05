@@ -12,6 +12,7 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { Observable } from 'rxjs';
 import { EmpresasService } from '../../services/empresas.service';
 import { CamposSystemService } from '../../services/campos-system.service';
+import { AutomaticosService } from 'src/app/services/automaticos.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -29,7 +30,7 @@ export class ClienteComponent implements OnInit, OnChanges {
 
   
   constructor(private fb: FormBuilder, private _sucursales: SucursalesService, private _publicos: ServiciosPublicosService, private _campos: CamposSystemService,
-    private _clientes: ClientesService,private _mail: EmailsService,private _security:EncriptadoService, private _empresas: EmpresasService) {
+    private _clientes: ClientesService,private _mail: EmailsService,private _security:EncriptadoService, private _empresas: EmpresasService, private _automaticos: AutomaticosService) {
       this.heroeSlec = new EventEmitter()
     }
 
@@ -389,6 +390,8 @@ export class ClienteComponent implements OnInit, OnChanges {
       const mensaje = (info_get.uid) ? 'Actualización de cliente correcto!!': 'Registro de cliente correcto!!'
 
       let nueva_clave_generada = info_get.uid
+
+      let apuntador:boolean = false
       if (info_get.uid) {
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_Actualizar);
         campos_permitidos_Actualizar.forEach(campo=>{
@@ -400,7 +403,8 @@ export class ClienteComponent implements OnInit, OnChanges {
       }else{
         const informacion_recuperada = this._publicos.nuevaRecuperacionData(info_get,campos_permitidos_new_register);
         nueva_clave_generada = this._publicos.generaClave()
-
+        apuntador = true
+      
         campos_permitidos_new_register.forEach(campo=>{
           if (informacion_recuperada [campo]) {
             updates[`clientes/${ nueva_clave_generada }/${campo}`] = informacion_recuperada [campo]
@@ -414,13 +418,40 @@ export class ClienteComponent implements OnInit, OnChanges {
        
       }
 
-      const existen_campos_update = Object.keys(updates)
-      if (existen_campos_update.length) {
+
+
+      console.log('es registro nuenvo ', apuntador) ;
+      
+      if (apuntador) {
+        const claves_encontradas = await this.simula_inserccion()
+
+        let nuevas_claves = [...claves_encontradas, nueva_clave_generada ]
+
+        updates['claves_clientes'] = nuevas_claves
+
+        this._security.guarda_informacion({nombre:'claves_clientes', data: nuevas_claves})
+
+        
         try {
           await update(ref(db), updates);
           setTimeout(() => {
             this.salvando = false
           }, 1000);
+
+
+          
+
+          
+          
+          
+          // this._security.guarda_informacion({nombre:'claves_clientes', data: nuevas_claves})
+
+          // const clientes = await  this._publicos.revisar_cache2('clientes')
+          // clientes[nueva_clave_generada] = info_get
+
+          // this._security.guarda_informacion({nombre:'clientes', data: clientes})
+
+          // const claves_updates{[`claves_clientes`]: nuevas_claves } 
          
           this._publicos.mensajeSwal(`${mensaje}`,1, true, `...`);
           info_get.id = nueva_clave_generada
@@ -433,9 +464,41 @@ export class ClienteComponent implements OnInit, OnChanges {
           this._publicos.mensajeSwal(`Ocurrió un error`,0, true, `...`);
         }
       }else{
-        this.heroeSlec.emit( {cliente:'', status: true})
+        const existen_campos_update = Object.keys(updates)
+        if (existen_campos_update.length) {
+          try {
+            await update(ref(db), updates);
+            setTimeout(() => {
+              this.salvando = false
+            }, 1000);
+           
+            this._publicos.mensajeSwal(`${mensaje}`,1, true, `...`);
+            info_get.id = nueva_clave_generada
+            this.heroeSlec.emit(info_get);
+            this.resetForm()
+          } catch (err) {
+            console.log(err);
+            
+            this.heroeSlec.emit(Object({ cliente: null, status: false }));
+            this._publicos.mensajeSwal(`Ocurrió un error`,0, true, `...`);
+          }
+        }else{
+          this.heroeSlec.emit( {cliente:'', status: true})
+        }
       }
+
+
+      
     }
+  }
+  // async obtener_clavesgg(){
+  //   const claves_encontradas = await this.simula_inserccion()
+  //   console.log(claves_encontradas); 
+  // }
+  async simula_inserccion(){
+    const claves_nombre = await  this._automaticos.consulta_ruta('claves_clientes')
+    let arreglo_claves = [...claves_nombre]      
+    return arreglo_claves.filter(clave=>clave)
   }
   emiteFalse(){
     this.heroeSlec.emit( Object({CerrarModal: false}) )

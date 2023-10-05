@@ -1964,7 +1964,7 @@ export class ServiciosPublicosService {
     transformaDataCliente(data){
       const nuevos = [...data]
       const retornados = nuevos.map(cli=>{
-        const {sucursal, nombre, apellidos } = cli
+        const {sucursal, nombre, apellidos} = cli
         cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
         cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
         return cli
@@ -2115,6 +2115,53 @@ export class ServiciosPublicosService {
       
       // Devolvemos la última parte de la ruta (que suele ser la más relevante)
       return `${partesDeRuta.pop()}`.toString();
+    }
+
+    async simular_observacion_informacion_firebase_nombre(data){
+      const {ruta_observacion, nombre} = data
+      console.log({ruta_observacion, nombre});
+      
+      const claves_nombre:any[] = await this.revisar_cache(nombre)
+
+      console.log(claves_nombre);
+      
+      const resultados = await this.revisar_cache2(ruta_observacion)
+
+      console.log(resultados);
+      
+      let claves_faltantes = []
+      claves_nombre.forEach(async (clave, index) => {
+
+        if (!resultados[clave]) {
+          claves_faltantes.push(clave)
+        }else{
+          const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
+          onChildChanged(commentsRef, (data) => {
+            const key = data.key
+            const valor =  data.val()
+            console.log(key);
+            if (resultados[clave]) {
+              const nueva_data = this.crear_new_object(resultados[clave])
+                nueva_data[key] = valor
+                resultados[clave] = nueva_data
+                console.log(nueva_data);
+                this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
+            }
+          });
+        }
+      });
+      claves_faltantes.forEach(async (clav)=>{
+        const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}}/${clav}`)
+        const {no_cliente} = this.crear_new_object(data_cliente)
+        if (no_cliente) {
+          resultados[clav] = data_cliente
+        }
+      })
+      setTimeout(() => {
+        this._security.guarda_informacion({nombre: ruta_observacion, data: resultados}) 
+      }, 2000);
+      
+      
     }
   
       
