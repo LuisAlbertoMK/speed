@@ -20,9 +20,10 @@ export class VehiculosComponent implements OnInit {
   vehiculos_arr:any[]=[]
   _rol:string
   _sucursal:string
+  objecto_actual:any ={}
   ngOnInit(): void {
     this.roles()
-    
+    this.primer_comprobacion_resultados()
   }
   roles(){
     const { rol, sucursal } = this._security.usuarioRol()
@@ -30,32 +31,51 @@ export class VehiculosComponent implements OnInit {
     this._rol = rol
     this._sucursal = sucursal
 
-    this.vigila_hijo()
   }
-  async lista_vehiculos(){
-    console.time('Execution Time');
-    const clientes = await this._publicos.revisar_cache2('clientes')
-    const vehiculos = await this._publicos.revisar_cache2('vehiculos')
-    
-    console.log(clientes)
-    console.log(vehiculos)
-       
-    
-    const nuevos_vehiculos = this._publicos.transformaDataVehiculo({clientes, vehiculos: this._publicos.crearArreglo2(vehiculos)})
-    setTimeout(() => {
-      this.vehiculos_arr = nuevos_vehiculos
-    }, 1000);
-    console.timeEnd('Execution Time');
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
-  
-  async vigila_hijo(){
-    this.lista_vehiculos()
-    const commentsRef = ref(db, `vehiculos`);
-      onChildChanged(commentsRef, (data) => {
-        setTimeout(() => {
-          this.lista_vehiculos()
-        }, 500);
-      })
+  primer_comprobacion_resultados(){
+    this.asiganacion_resultados()
+    this.segundo_llamado()
+  }
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+        this.asiganacion_resultados()
+      }
+    },1500)
+  }
+  asiganacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    // const vehiculos_para_tabla = this._publicos.transformaDataCliente(objecto_recuperdado)
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', 'Todas');
+    const data_recuperda_arr = this._publicos.crearArreglo2(objetoFiltrado)
+
+    const campos = [
+      'anio',
+      'categoria',
+      'cilindros',
+      'color',
+      'engomado',
+      'marca',
+      'marcaMotor',
+      'modelo',
+      'no_motor',
+      'placas',
+      'transmision',
+      'vinChasis'
+    ]
+    this.objecto_actual = objecto_recuperdado
+
+    this.vehiculos_arr = (!this.vehiculos_arr.length) 
+    ? data_recuperda_arr
+    :  this._publicos.actualizarArregloExistente(this.vehiculos_arr, data_recuperda_arr, campos )
+
   }
 
 }

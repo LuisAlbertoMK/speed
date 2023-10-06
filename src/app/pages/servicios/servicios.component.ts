@@ -1,27 +1,16 @@
 
-import { Component, OnInit, ViewChild, OnDestroy, AfterContentChecked, AfterViewInit } from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import {FormGroup, FormControl} from '@angular/forms';
 
-//paginacion
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
-import { EmailsService } from 'src/app/services/emails.service';
-import { child, get, getDatabase, onValue, ref, set, push , update, onChildChanged} from 'firebase/database';
+import {  getDatabase, ref } from 'firebase/database';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
-import { ExporterService } from 'src/app/services/exporter.service';
+
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
-import { SucursalesService } from 'src/app/services/sucursales.service';
-import { ClientesService } from 'src/app/services/clientes.service';
-import { CotizacionesService } from 'src/app/services/cotizaciones.service';
-import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { ServiciosService } from 'src/app/services/servicios.service';
-import { CamposSystemService } from '../../services/campos-system.service';
 import { Router } from '@angular/router';
 
 interface ServicioEditar {
@@ -39,11 +28,10 @@ interface ServicioEditar {
   descuento: number;
 }
 
-const db = getDatabase()
-const dbRef = ref(getDatabase());
+// const db = getDatabase()
+// const dbRef = ref(getDatabase());
 
-import { CitaComponent } from '../cita/cita.component';
-import { ReporteGastosService } from 'src/app/services/reporte-gastos.service';
+
 @Component({
   selector: 'app-servicios',
   templateUrl: './servicios.component.html',
@@ -64,17 +52,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   
   constructor( 
     private _publicos: ServiciosPublicosService, 
-    private _email:EmailsService, 
     private _security:EncriptadoService,
-    private _export_excel: ExporterService,
-    private _sucursales: SucursalesService,
-    private _clientes: ClientesService,
-    private _cotizaciones: CotizacionesService,
-    private _vehiculos: VehiculosService,
-    private _servicios: ServiciosService,
-    private _campos: CamposSystemService,
     private router: Router,
-    private _reporte_gastos: ReporteGastosService
 
     ) {
       // this.columnasRecepcionesExtended[6] = 'expand';
@@ -82,10 +61,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      miniColumnas:number = 100
      _rol:string; _sucursal:string
      
-     recepciones_arr=[]
-     recepciones_arr_antes_filtro=[]
-  
-   
+
      fechas_filtro = new FormGroup({
       start: new FormControl(new Date()),
       end: new FormControl(new Date()),
@@ -95,8 +71,19 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      hora_start = '00:00:01';
      hora_end = '23:59:59';
 
-     array_recepciones = []
+     recepciones_arr=[]
+     objecto_actual:any ={}
+     objecto_actuales:any = {
+      recepciones:{},
+      historial_gastos_orden:{},
+      historial_pagos_orden:{},
+     }
 
+     campo_vigilar = [
+      'recepciones',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+    ]
  
      ngOnDestroy(){
      
@@ -104,7 +91,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
       this.rol()
       this.vigila_calendario()
-      this.vigila_hijo()
+      
     }
 
   rol(){
@@ -113,63 +100,82 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
     this._rol = rol
     this._sucursal = sucursal 
+
+    // this.primer_comprobacion_resultados()
+    this.primer_comprobacion_resultados_multiple()
     
   }
-  async vigila_hijo(){
-    this.lista_cotizaciones()
-    const commentsRef = ref(db, `recepciones`);
-      onChildChanged(commentsRef, (data) => {
-        setTimeout(() => {
-          this.lista_cotizaciones()
-        }, 500);
-      })
-  }
-  // vigila_hijo(){
-  //   const rutas_vigila = [
-  //     'clientes',
-  //     'vehiculos',
-  //     'recepciones',
-  //     'historial_gastos_orden',
-  //     'historial_pagos_orden',
-  //   ]
-  //   rutas_vigila.forEach(nombre=>{
-  //     const starCountRef = ref(db, `${nombre}`)
-  //     onValue(starCountRef, (snapshot) => {
-  //       if (snapshot.exists()) {
-  //         this.lista_cotizaciones()
-  //       }
-  //     })
-  //   })
-    
+  // comprobacion_resultados(){
+  //   const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+  //   return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   // }
+  // primer_comprobacion_resultados(){
+  //   this.asiganacion_resultados()
+  //   this.segundo_llamado()
+  // }
+  // segundo_llamado(){
+  //   setInterval(()=>{
+  //     if (!this.comprobacion_resultados()) {
+  //       console.log('recuperando data');
+  //       const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+  //       this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+  //       this.asiganacion_resultados()
+  //     }
+  //   },1500)
+  // }
+  
+  // asiganacion_resultados(){
+  //   const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
 
-  async lista_cotizaciones(){
-    console.log('aqui');
+  //   const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this._sucursal);
+
+  //   const {start, end }= this.fecha_formateadas
+
+  //   const objeto_filtrado_fecha = this._publicos.filtrarObjetoPorPropiedad_fecha(objetoFiltrado, start, end)
+
+  //   const data_recuperda_arr = this._publicos.crearArreglo2(objeto_filtrado_fecha)
+
+  //   const recepciones_completas =this._publicos.nueva_asignacion_recepciones(data_recuperda_arr)
+
+  //   // console.log(recepciones_completas);
     
-    console.time('Execution Time');
+  //   const campos = [
+  //     'data_cliente',
+  //     'data_sucursal',
+  //     'data_vehiculo',
+  //     'diasSucursal',
+  //     'fecha_entregado',
+  //     'fecha_promesa',
+  //     'fecha_recibido',
+  //     'fullname',
+  //     'notifico',
+  //     'status',
+  //     'tecnico',
+  //     'tecnicoShow',
+  //     // 'cliente',
+  //     // 'descuento',
+  //     // 'elementos',
+  //     // 'formaPago',
+  //     // 'iva',
+  //     // 'margen',
+  //     // 'no_cotizacion',
+  //     // 'nota',
+  //     // 'pdf',
+  //     // 'promocion',
+  //     // 'reporte',
+  //     // 'servicio',
+  //     // 'sucursal',
+  //     // 'vehiculo',
+  //     // 'vehiculos',
+  //     // 'vencimiento',
+  //   ]
 
-    const recepciones = await this._publicos.revisar_cache2('recepciones')
-    const recepciones_arr = this._publicos.crearArreglo2(recepciones)
+  //   this.objecto_actual = objecto_recuperdado
+  //   this.recepciones_arr = (!this.recepciones_arr.length) 
+  //   ? recepciones_completas
+  //   :  this._publicos.actualizarArregloExistente(this.recepciones_arr, recepciones_completas, campos )
 
-    const clientes = await this._publicos.revisar_cache2('clientes')
-    const vehiculos = await this._publicos.revisar_cache2('vehiculos')
-
-    const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache2('historial_gastos_orden'))
-    const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache2('historial_pagos_orden'))
-
-    const cotizaciones_completas =this._publicos.asigna_datos_recepcion({
-      bruto:recepciones_arr, clientes, vehiculos,
-      historial_gastos_orden, historial_pagos_orden
-    })
-
-    const ordenar = (this._sucursal === 'Todas') ? cotizaciones_completas : this._publicos.filtra_campo(cotizaciones_completas,'sucursal',this._sucursal)
-    
-    this.recepciones_arr_antes_filtro = this._publicos.ordenamiento_fechas(ordenar,'fecha_recibido',false)
-
-    this.resetea_horas_admin()
-    console.timeEnd('Execution Time');
-  }
-
+  // }
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
       if (start_ && start_['_d'] && end_ && end_['_d'] ) {
@@ -185,15 +191,89 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
     this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end),this.hora_end)
 
-    const {start:start_, end: end_} = this.fecha_formateadas
-
-    const filtro_fechas = this._publicos.filtro_fechas(this.recepciones_arr_antes_filtro,'fecha_recibido',start_,end_)
-
-    setTimeout(() => {
-      this.recepciones_arr = filtro_fechas
-    }, 1000);
+    this.genera_resultados()
     
   }
+  
+  comprobacion_resultados_multiple(campo){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
+  }
+  primer_comprobacion_resultados_multiple(){
+    this.campo_vigilar.forEach(campo_vigila=>{
+      this.asiganacion_resultados_multiples(campo_vigila)
+    })
+    this.segundo_llamado_multiple()
+  }
+  segundo_llamado_multiple(){
+    setInterval(()=>{
+      this.campo_vigilar.forEach(campo_vigila=>{
+        if (!this.comprobacion_resultados_multiple(campo_vigila)) {
+          console.log(`recuperando data ${campo_vigila}`);
+          // const objecto_recuperdado = 
+          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
+          this.asiganacion_resultados_multiples(this.campo_vigilar)
+        }
+      })
+
+    },1500)
+  }
+  asiganacion_resultados_multiples(campo_vigila){
+    this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
+    this.genera_resultados()
+  }
+  genera_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this._sucursal);
+
+    const {start, end }= this.fecha_formateadas
+
+    const objeto_filtrado_fecha = this._publicos.filtrarObjetoPorPropiedad_fecha(objetoFiltrado, start, end)
+
+    const data_recuperda_arr = this._publicos.crearArreglo2(objeto_filtrado_fecha)
+
+    const recepciones_completas =this._publicos.nueva_asignacion_recepciones(data_recuperda_arr)
+
+    const campos = [
+      'data_cliente',
+      'data_sucursal',
+      'data_vehiculo',
+      'diasSucursal',
+      'fecha_entregado',
+      'fecha_promesa',
+      'fecha_recibido',
+      'fullname',
+      'notifico',
+      'status',
+      'tecnico',
+      'tecnicoShow',
+      // 'cliente',
+      // 'descuento',
+      // 'elementos',
+      // 'formaPago',
+      // 'iva',
+      // 'margen',
+      // 'no_cotizacion',
+      // 'nota',
+      // 'pdf',
+      // 'promocion',
+      // 'reporte',
+      // 'servicio',
+      // 'sucursal',
+      // 'vehiculo',
+      // 'vehiculos',
+      // 'vencimiento',
+    ]
+
+    this.objecto_actual = objecto_recuperdado
+    this.recepciones_arr = (!this.recepciones_arr.length) 
+    ? recepciones_completas
+    :  this._publicos.actualizarArregloExistente(this.recepciones_arr, recepciones_completas, campos )
+
+
+  }
+  
   irPagina(pagina, data){
     const anterior = this._publicos.extraerParteDeURL()
 
@@ -209,7 +289,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       });
     }
   }
-  
 
  
 }

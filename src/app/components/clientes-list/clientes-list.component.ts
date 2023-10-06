@@ -38,86 +38,70 @@ export class ClientesListComponent implements OnInit {
 
   _rol:string; _sucursal:string
   empresas_alls= {}
-
-  clientes_arr=[]
-
+  clientes_arr:any =[]
+  objecto_actual:any ={}
   ngOnInit(): void {
     this.rol()
     this.listaEmpresas()
     this.vigila()
     this.automaticos()
   }
-
+  
   rol(){
     
     const { rol, sucursal } = this._security.usuarioRol()
-
+    
     this._rol = rol
     this._sucursal = sucursal
-
-    this.vigila_hijo()
+    
+    this.primer_comprobacion_resultados()
 
   }
-  async vigila_hijo(){
-    this.lista_clientes()
-    // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
-  async simular_observacion_informacion_firebase_nombre(data){
-    const {ruta_observacion, nombre} = data
-    console.log({ruta_observacion, nombre});
-    
-    const claves_nombre:any[] = await this._publicos.revisar_cache(nombre)
-
-    console.log(claves_nombre);
-    
-    const resultados = await this._publicos.revisar_cache2(ruta_observacion)
-
-    console.log(resultados);
-    
-    claves_nombre.forEach(clave => {
-      const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
-      // console.log(`${ruta_observacion}/${clave}`);
-      
-      onChildChanged(commentsRef, (data) => {
-        const key = data.key
-        const valor =  data.val()
-        console.log(key);
-        // console.log(resultados[clave]);
-        
-        // resultados[clave][key] = valor
-        if (resultados[clave]) {
-          // console.log(resultados[clave]);
-          const nueva_data = this._publicos.crear_new_object(resultados[clave])
-            nueva_data[key] = valor
-            resultados[clave] = nueva_data
-            // console.log(clave);
-            console.log(nueva_data);
-            this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
-        }
-        
-        
-        
-      });
-    });
-
-    
+  primer_comprobacion_resultados(){
+    this.asiganacion_resultados()
+    this.segundo_llamado()
   }
-  async lista_clientes(){
-    // console.log('revisando cambios');
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+        this.asiganacion_resultados()
+      }
+    },1500)
+  }
+  
+  asiganacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+    const clientes_para_tabla = this._publicos.transformaDataCliente(objecto_recuperdado)
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(clientes_para_tabla, 'sucursal', this._sucursal);
+    const data_recuperda_arr = this._publicos.crearArreglo2(objetoFiltrado)
 
-    const clientes = await this._publicos.revisar_cache2('clientes')
-    
-    const clientes_arr = this._publicos.crearArreglo2(clientes)
+    const campos = [
+      'apellidos',
+      'correo_sec',
+      'correo',
+      'fullname',
+      'no_cliente',
+      'nombre',
+      'sucursal',
+      'sucursalShow',
+      'telefono_movil',
+      'tipo'
+    ]
+    this.objecto_actual = objecto_recuperdado
 
-
-    const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
-    
-    const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
-
-    
-    this.listaClientes_arr = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
+    this.clientes_arr = (!this.clientes_arr.length) 
+    ? data_recuperda_arr
+    :  this._publicos.actualizarArregloExistente(this.clientes_arr, data_recuperda_arr, campos )
 
   }
+ 
   vigila(){
     this.myControl.valueChanges.subscribe(cliente=>{
       if (cliente instanceof Object) {
@@ -144,11 +128,16 @@ export class ClientesListComponent implements OnInit {
     }else{
       const filterValue = value.toLowerCase();
       let resultados = []
-      resultados = this.listaClientes_arr.filter(option => option['fullname'].toLowerCase().includes(filterValue));
+      
+      resultados = this.clientes_arr.filter(option => option['fullname'].toLowerCase().includes(filterValue));
       if (!resultados.length) {
-        let filtrados = this.listaClientes_arr.filter(c=>c.correo)
+        resultados = this.clientes_arr.filter(option => option['no_cliente'].toLowerCase().includes(filterValue));
+      }
+      if (!resultados.length) {
+        let filtrados = this.clientes_arr.filter(c=>c.correo)
         resultados = filtrados.filter(option => option['correo'].toLowerCase().includes(filterValue));
       }
+     
       data = resultados
     }
     return data

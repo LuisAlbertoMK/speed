@@ -436,7 +436,6 @@ export class ClienteComponent implements OnInit, OnChanges {
 
         this._security.guarda_informacion({nombre:'claves_clientes', data: nuevas_claves})
 
-        
         try {
           await update(ref(db), updates);
           setTimeout(() => {

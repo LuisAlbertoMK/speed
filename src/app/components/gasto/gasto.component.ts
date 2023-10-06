@@ -10,6 +10,7 @@ import { DateAdapter } from '@angular/material/core';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
 import { ServiciosService } from 'src/app/services/servicios.service';
 import { ReporteGastosService } from 'src/app/services/reporte-gastos.service';
+import { AutomaticosService } from 'src/app/services/automaticos.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -24,7 +25,8 @@ export class GastoComponent implements OnInit, OnChanges {
   
   constructor(private fb: FormBuilder, private _publicos: ServiciosPublicosService,
     private _campos: CamposSystemService, private _servicios: ServiciosService, private _reporte_gastos: ReporteGastosService,
-    private _security:EncriptadoService, private _sucursales: SucursalesService, private dateAdapter: DateAdapter<Date>) {
+    private _security:EncriptadoService, private _sucursales: SucursalesService, private dateAdapter: DateAdapter<Date>, 
+    private _automaticos: AutomaticosService) {
       this.showGastoHide = new EventEmitter()
       this.dateAdapter.getFirstDayOfWeek = () => 0;
       const currentYear = new Date().getFullYear();
@@ -311,21 +313,35 @@ export class GastoComponent implements OnInit, OnChanges {
 
     const fecha_muestra = this.transform_fecha(nueva_fecha, true)
     // console.log(recuperada);
-    this._publicos.mensaje_pregunta('Realizar gasto de fecha '+ fecha_muestra).then(({respuesta})=>{
+    this._publicos.mensaje_pregunta('Realizar gasto de fecha '+ fecha_muestra).then(async ({respuesta})=>{
       if (respuesta) {
 
         const clave_ = this._publicos.generaClave()
 
         // const solo_numeros_fecha_hoy = this._reporte_gastos.fecha_numeros_sin_Espacions(new Date(nueva_fecha))
+        const updates = { }
+        if(info_get.tipo === 'orden') {
+        
+          const claves_encontradas = await this._automaticos.consulta_ruta('claves_historial_gastos_orden')
 
+          let nuevas_claves = [...claves_encontradas, clave_ ]
+          
+          updates['claves_historial_gastos_orden'] = nuevas_claves
+
+          this._security.guarda_informacion({nombre:'claves_historial_gastos_orden', data: nuevas_claves})
+        }
+        // console.log(updates);
+        
+
+        // return 
         let ruta = (info_get.tipo === 'orden') ?
         `historial_gastos_orden/${clave_}` : 
         `historial_gastos_operacion/${clave_}`
         recuperada.status = true
         // console.log(ruta);
         recuperada.fecha_recibido = nueva_fecha
+        updates[ruta] = recuperada
         
-        const updates = {[ruta]: recuperada }
         update(ref(db), updates).then(()=>{
           const titulo = (info_get.tipo === 'orden') ? 'Orden' :'Operacion'
           this._publicos.swalToast(`Registro de gasto ${titulo}`, 1, 'top-start')

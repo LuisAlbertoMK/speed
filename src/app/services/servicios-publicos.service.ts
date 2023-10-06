@@ -1712,60 +1712,7 @@ export class ServiciosPublicosService {
     }
 
     //TODO revision de cache
-    async vigila_hijo(arreglo:any[]){
-      
-      let nombre  = 'clientes'
-  
-
-      arreglo.forEach(campo=>{
-        console.log(campo);
-        
-      })
-
-      const commentsRef = ref(db, `${nombre}` );
-  
-      const variable_busqueda = await this.revisar_cache(`${nombre}`)      
-  
-      const variable_busqueda_arr = this.crearArreglo2(variable_busqueda)
-  
-      const nueva_data_clientes = JSON.parse(JSON.stringify(variable_busqueda));
-  
-      // if (variable_busqueda) {
-      //   onChildAdded(commentsRef, (data) => {
-      //     // console.log('nuevos');
-      //     const key = data.key
-      //     const valor = data.val()
-  
-      //     if (!nueva_data_clientes[key]) {
-      //         nueva_data_clientes[key] = valor
-      //         console.log('verifica informacion de nodo secundario NO EXISTE' + {key, valor});
-              
-      //         this._security.guarda_informacion({nombre, data: nueva_data_clientes })
-      //     }else{
-      //       console.log('verifica informacion de nodo secundario EXISTENTE ' + {key, valor});
-      //       nueva_data_clientes[key] = valor
-      //       this._security.guarda_informacion({nombre, data: nueva_data_clientes })
-      //     }          
-      //   });
-      // }
-      variable_busqueda_arr.forEach(cliente=>{
-        const {id:id_nombre} = cliente
-        const commentsRef_childs = ref(db, `${nombre}/${id_nombre}` );
-        onChildChanged(commentsRef_childs, (data) => {
-          const key_child = data.key
-          const valor = data.val()
-          // console.log(id_nombre);
-          // console.log(key_child);
-          // console.log(valor);
-          if (nueva_data_clientes[id_nombre]) {
-            nueva_data_clientes[id_nombre][key_child] = valor
-            // console.log(nueva_data_clientes[id_nombre]);
-            // console.log(nueva_data_clientes);
-            this._security.guarda_informacion({nombre, data: nueva_data_clientes })
-          }
-        });
-      })
-    }
+    
     crear_new_object(objecto){
       return JSON.parse(JSON.stringify(objecto));
     }
@@ -1822,6 +1769,17 @@ export class ServiciosPublicosService {
         return {}
       }
     }
+    nueva_revision_cache(nombre:string){
+      // const objeto_desencriptado = 
+      // if (localStorage.getItem(`${nombre}`)) {
+      //   const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
+      //   return this.crear_new_object(desc)
+      // }else{
+      //   return {}
+      // }
+
+      return (localStorage.getItem(`${nombre}`)) ? this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`)) : {}
+    }
     consulta_ruta(ruta): Promise<any> {
       return new Promise((resolve, reject) => {
         // const {ruta} = data
@@ -1849,9 +1807,7 @@ export class ServiciosPublicosService {
       const filtro_cotizaciones = this.filtra_campo(this.crearArreglo2(cotizaciones_object),'cliente', cliente)
       const filtro_recepciones = this.filtra_campo(this.crearArreglo2(recepciones_object),'cliente', cliente)
 
-      cotizaciones_arr = this.asigna_datos_cotizaciones({
-          bruto: filtro_cotizaciones , clientes: data_cliente, vehiculos
-        })
+      cotizaciones_arr = this.nueva_asignacion_cotizaciones( filtro_cotizaciones )
       recepciones_arr = this.asigna_datos_recepcion({
           bruto: filtro_recepciones , clientes: data_cliente, vehiculos,
           historial_gastos_orden, historial_pagos_orden
@@ -1888,31 +1844,88 @@ export class ServiciosPublicosService {
         return recepcion
       })
     }
-    asigna_datos_cotizaciones(data){
-      const {bruto, clientes, vehiculos} = data
-      const nuevos_ordenamiento =this.ordenamiento_fechas(bruto,'fecha_recibido',false)
-      return nuevos_ordenamiento.map(cotizacion=>{
+    nueva_asignacion_recepciones(data:any[]){
+
+      const clientes = this.nueva_revision_cache('clientes')
+      const vehiculos = this.nueva_revision_cache('vehiculos')
+     
+      const clientes_tranformacion_data = this.transformaDataCliente(clientes)
+      const historial_gastos_orden = this.nueva_revision_cache('historial_gastos_orden')
+      // console.log(historial_gastos_orden);
+      const historial_pagos_orden = this.nueva_revision_cache('historial_pagos_orden')
+      // console.log(historial_pagos_orden);
+
+      return this.ordenamiento_fechas(data,'fecha_recibido',true)
+      .map(recepcion=>{
+
+        const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal} = recepcion;
+        
+        recepcion.data_cliente = clientes_tranformacion_data[cliente] || {}
+        recepcion.data_vehiculo = vehiculos[vehiculo] || {} ;
+        recepcion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal) || {};
+
+        if (recepcion.data_cliente  && recepcion.data_cliente.nombre) {
+          const { nombre, apellidos } = recepcion.data_cliente
+          recepcion.fullname = `${nombre} ${apellidos}`.toLowerCase()
+        }
+        if (recepcion.data_vehiculo && recepcion.data_vehiculo.placas) {
+          const { placas } = recepcion.data_vehiculo
+          recepcion.placas = `${placas}`.toUpperCase()
+        }
+        
+        const objetoFiltrado_historial_gastos_orden = this.filtrarObjetoPorPropiedad(historial_gastos_orden, 'id_os', id);
+        // console.log(objetoFiltrado_historial_gastos_orden);
+        recepcion.historial_gastos_orden = this.crearArreglo2(objetoFiltrado_historial_gastos_orden)
+       
+        const objetoFiltrado_historial_pagos_orden = this.filtrarObjetoPorPropiedad(historial_pagos_orden, 'id_os', id);
+        // console.log(objetoFiltrado_historial_pagos_orden);
+        recepcion.historial_pagos_orden = this.crearArreglo2(objetoFiltrado_historial_pagos_orden)
+
+        recepcion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
+
+        const total_gastos = this.sumatorias_aprobados(recepcion.historial_gastos_orden)
+
+        const nuevo = JSON.parse(JSON.stringify(recepcion.reporte));
+
+        nuevo.refaccion = total_gastos
+
+        recepcion.reporte_real = this.sumatoria_reporte(nuevo, margen, iva)
+
+        return recepcion
+      })
+    }
+    nueva_asignacion_cotizaciones(data:any[]){
+
+      const clientes = this.nueva_revision_cache('clientes')
+      const vehiculos = this.nueva_revision_cache('vehiculos')
+      const clientes_tranformacion_data = this.transformaDataCliente(clientes)
+
+      return this.ordenamiento_fechas(data,'fecha_recibido',true)
+      .map(cotizacion=>{
+
         const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal} = cotizacion;
-        const data_cliente = clientes[cliente]
+        
+        const data_cliente = clientes_tranformacion_data[cliente]
+        const data_vehiculo = vehiculos[vehiculo]
+
+        cotizacion.data_cliente = data_cliente || {};
+        cotizacion.data_vehiculo = data_vehiculo || {};
+        cotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal) || {};
+        
         if (data_cliente) {
-          const {nombre, apellidos} = data_cliente
+          const { nombre, apellidos } = data_cliente
           cotizacion.fullname = `${nombre} ${apellidos}`.toLowerCase()
         }
-        const data_vehiculo = vehiculos[vehiculo]
         if (data_vehiculo) {
-          const {placas} = data_vehiculo
+          const { placas } = data_vehiculo
           cotizacion.placas = `${placas}`.toUpperCase()
         }
-        cotizacion.data_cliente = {...clientes[cliente], id: cliente}
-        cotizacion.data_vehiculo = {...vehiculos[vehiculo], id: vehiculo}
 
-        // cotizacion.data_cliente = data_cliente
-        // cotizacion.data_vehiculo = data_vehiculo
-        cotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
         cotizacion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
         return cotizacion
       })
     }
+   
     asigna_data_diarios(data){
       const {bruto, recepciones} = data
       let nuevas = [...bruto]
@@ -1976,17 +1989,7 @@ export class ServiciosPublicosService {
         return vehiculo
       })
     }
-    transformaDataCliente(data){
-      const nuevos = [...data]
-      const retornados = nuevos.map(cli=>{
-        const {sucursal, nombre, apellidos, id} = cli
-        cli.id = id
-        cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
-        cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
-        return cli
-      })
-      return retornados
-    }
+    
     suma_refacciones_os_cerradas(arreglo:any[]):number{
       let refacciones = 0
       arreglo.forEach(recep=>{
@@ -2148,5 +2151,69 @@ export class ServiciosPublicosService {
       return resultado;
     }
   
+    sonObjetosIgualesConJSON(objeto1, objeto2) {
+      // Convierte los objetos a cadenas JSON
+      const jsonString1 = JSON.stringify(objeto1);
+      const jsonString2 = JSON.stringify(objeto2);
+    
+      // Analiza las cadenas JSON nuevamente para obtener objetos
+      const parsedObjeto1 = JSON.parse(jsonString1);
+      const parsedObjeto2 = JSON.parse(jsonString2);
+    
+      // Compara los objetos analizados
+      return JSON.stringify(parsedObjeto1) === JSON.stringify(parsedObjeto2);
+    }
+    transformaDataCliente(objeto_recuperado){
+      const nueva_data = {};
+      for (const cliente in objeto_recuperado) {
+        if (Object.hasOwnProperty.call(objeto_recuperado, cliente)) {
+          const nueva_data_cliente = this.crear_new_object(objeto_recuperado[cliente]);
+          const { sucursal, nombre, apellidos } = nueva_data_cliente;
+    
+          nueva_data_cliente.id = cliente;
+          nueva_data_cliente.sucursalShow = this.sucursales_array.find(s => s.id === sucursal)?.sucursal || '';
+          nueva_data_cliente.fullname = `${nombre.toLowerCase()} ${apellidos.toLowerCase()}`;
+    
+          nueva_data[cliente] = nueva_data_cliente;
+        }
+      }
+    
+      return nueva_data;
+  
+    }
+    filtrarObjetoPorPropiedad(objeto, propiedad, valor) {
+      const resultado = {};
+        for (const clave in objeto) {
+          if (valor === 'Todas') {
+            resultado[clave] = objeto[clave];
+          }else{
+            if (objeto.hasOwnProperty(clave) && objeto[clave][propiedad] === valor) {
+              resultado[clave] = objeto[clave];
+            }
+          }
+        }
+      return resultado;
+    }
+    filtrarObjetoPorPropiedad_fecha(objeto, start, end) {
+      const resultado = {};
+        const fecha_start = new Date(start)
+        const fecha_end = new Date(end)
+        for (const clave in objeto) {
+          if (objeto.hasOwnProperty(clave) && objeto[clave].fecha_recibido ){
+            const fecha_compara = new Date( objeto[clave].fecha_recibido)
+              if (fecha_compara > fecha_start && fecha_compara < fecha_end) {
+                resultado[clave] = objeto[clave];
+              }
+          }
+          // if (valor === 'Todas') {
+          //   resultado[clave] = objeto[clave];
+          // }else{
+          //   if (objeto.hasOwnProperty(clave) && objeto[clave][propiedad] === valor) {
+          //     resultado[clave] = objeto[clave];
+          //   }
+          // }
+        }
+      return resultado;
+    }
       
  }

@@ -72,25 +72,17 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     start: new FormControl(new Date()),
     end: new FormControl(new Date()),
    });
+
+  objecto_actual:any ={}
   async ngOnInit() {
     this.rol()
     this.vigila_calendario()
-    this.vigila_hijo()
+    // this.vigila_hijo()
+    this.resetea_horas_admin()
   }
   ngAfterViewInit(): void { 
   }
   ngOnDestroy(): void {}
-  rol() {
-    const { rol, sucursal } = this._security.usuarioRol()
-
-    this._rol = rol
-    this._sucursal = sucursal
-
-    this.rutaActiva.queryParams.subscribe((params:any) => {
-      this.enrutamiento = params
-    });
-    this.lista_cotizaciones()
-  }
   irPagina(pagina, data){
     // console.log(data);
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
@@ -109,43 +101,85 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }
+  rol() {
+    const { rol, sucursal } = this._security.usuarioRol()
 
-  async vigila_hijo(){
-    this.lista_cotizaciones()
-    const commentsRef = ref(db, `recepciones`);
-      onChildChanged(commentsRef, (data) => {
-        setTimeout(() => {
-          this.lista_cotizaciones()
-        }, 500);
-      })
-  }
+    this._rol = rol
+    this._sucursal = sucursal
 
-  // async vigila_hijo(){
-  //   const starCountRef = ref(db, `cotizaciones`)
-  //   onValue(starCountRef, (snapshot) => {
-  //     if (snapshot.exists()) {
-  //       this.lista_cotizaciones()
-  //     }
-  //   })
-  // }
-  async lista_cotizaciones(){
-    const cotizaciones = await this._publicos.revisar_cache('cotizaciones')
-    const cotizaciones_arr = this._publicos.crearArreglo2(cotizaciones)
-
-    const clientes = await this._publicos.revisar_cache('clientes')
-    const vehiculos = await this._publicos.revisar_cache('vehiculos')
-
-    // console.log(cotizaciones_arr);
+    this.rutaActiva.queryParams.subscribe((params:any) => {
+      this.enrutamiento = params
+    });
     
-
-    const cotizaciones_completas =this._publicos.asigna_datos_cotizaciones({bruto:cotizaciones_arr, clientes, vehiculos})
-
-    const ordenar = (this._sucursal === 'Todas') ? cotizaciones_completas : this._publicos.filtra_campo(cotizaciones_completas,'sucursal',this._sucursal)
-
-    this.cotizaciones_arr_antes_filtro = this._publicos.ordenamiento_fechas(ordenar,'fecha_recibido',false)
-
-    this.resetea_horas_admin()
+    this.primer_comprobacion_resultados()
   }
+
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
+  }
+  primer_comprobacion_resultados(){
+    this.asiganacion_resultados()
+    this.segundo_llamado()
+  }
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+        this.asiganacion_resultados()
+      }
+    },1500)
+  }
+  asiganacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this._sucursal);
+
+    const {start, end }= this.fecha_formateadas
+
+    const objeto_filtrado_fecha = this._publicos.filtrarObjetoPorPropiedad_fecha(objetoFiltrado, start, end)
+
+    const data_recuperda_arr = this._publicos.crearArreglo2(objeto_filtrado_fecha)
+
+    const cotizaciones_completas =this._publicos.nueva_asignacion_cotizaciones(data_recuperda_arr)
+
+    const campos = [
+      // 'cliente',
+      'data_cliente',
+      // 'vehiculo',
+      'data_vehiculo',
+      // 'vehiculos',
+      // 'elementos',
+      // 'sucursal',
+      // 'reporte',
+      // 'iva',
+      // 'formaPago',
+      // 'descuento',
+      // 'margen',
+      // 'promocion',
+      // 'fecha_recibido',
+      // 'no_cotizacion',
+      // 'vencimiento',
+      // 'nota',
+      // 'servicio',
+      // 'pdf',
+      // 'data_sucursal',
+    ]
+    this.objecto_actual = objecto_recuperdado
+    this.cotizaciones_arr = (!this.cotizaciones_arr.length) 
+    ? data_recuperda_arr
+    :  this._publicos.actualizarArregloExistente(this.cotizaciones_arr, cotizaciones_completas, campos )
+
+  }
+  
+
+
+  
+
+
+
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
       if (start_ && start_['_d'] && end_ && end_['_d'] ) {
@@ -160,14 +194,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
     this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end),this.hora_end)
-
-    const {start:start_, end: end_} = this.fecha_formateadas
-
-    const filtro_fechas = this._publicos.filtro_fechas(this.cotizaciones_arr_antes_filtro,'fecha_recibido',start_,end_)
-
-    setTimeout(() => {
-      this.cotizaciones_arr = filtro_fechas
-    }, 1000);
+    this.asiganacion_resultados()
     
   }
   

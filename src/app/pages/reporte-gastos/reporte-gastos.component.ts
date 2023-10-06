@@ -84,8 +84,8 @@ export class ReporteGastosComponent implements OnInit {
 
   ngOnInit(): void {
     this.rol()
-    this.vigila_calendario()
-    this.resetea_horas_admin()
+    // this.vigila_calendario()
+    // this.resetea_horas_admin()
   }
   
   rol(){
@@ -94,7 +94,7 @@ export class ReporteGastosComponent implements OnInit {
     this._sucursal = sucursal
     this._usuario = usuario
     this.filtro_sucursal = sucursal
-    this.vigila_hijo()
+    // this.vigila_hijo()
   }
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{

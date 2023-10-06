@@ -19,7 +19,7 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
-
+import { claves } from './ayuda';
 
 import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue, update, push } from 'firebase/database';
 
@@ -52,18 +52,18 @@ export class AutomaticosComponent implements OnInit {
    
   
    campos = [
-    {ruta_observacion: 'clientes', nombre:'claves_clientes'},
+    // {ruta_observacion: 'clientes', nombre:'claves_clientes'},
+    // {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
     // {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
     // {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
-    // {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
     // {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
     // {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
     // {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
-    // {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
+    {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
     // {ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'},
   ]
 
-  busqueda:any = {ruta_observacion: 'clientes', nombre:'claves_clientes'}
+  busqueda:any = {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'}
   ngOnInit(): void {
     this.rol()
 
@@ -167,76 +167,67 @@ vigila_nodos(){
     console.log({nombre, ruta_observacion});
 
 
-    const claves_supervisa = this._publicos.revisar_cache2(nombre)
+    // const claves_supervisa = this._publicos.revisar_cache2(nombre)
+    const claves_supervisa = await this._automaticos.consulta_ruta(nombre)
 
+    let resultados = [...claves_supervisa]
+    console.log(resultados);
+
+    const vigila_claves = ref(db, `${nombre}`);
+    let temporales_claves = []
+    onChildAdded(vigila_claves, async (data) => {
+      const valor = data.val();
+      console.log(valor);
+      
+      temporales_claves.push(valor)
+      const valorNoDuplicado = await [...new Set([...claves_supervisa, ...temporales_claves])]
+      console.log(valorNoDuplicado);
+    });
+
+    
     // console.log(claves_supervisa);
 
-    claves_supervisa.forEach(element => {
-      // const commentsRef = ref(db, `${ruta_observacion}/${nombre}`);
-      console.log(`${ruta_observacion}/${element}`);
-      
-    });
-    
-    return
+    // const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
 
-    const commentsRef = ref(db, `${nombre}`);
-      const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
-      let temporales = []
-      const onChildAddedCallback = async (data) => {
-        const valor = data.val();
-        if (!localhost_nombre[valor]) {
-          // console.log(`valor no encontrado: ${valor}`);
-          temporales.push(valor)
-
-          const claves_encontradas = await this._publicos.revisar_cache2(nombre)
-          const valorNoDuplicado = await [...new Set([...claves_encontradas, ...temporales])];
-          // console.log(valorNoDuplicado);
+    let temporales = []
+    resultados.forEach(async (clave_vigilar) => {
+      const commentsRef = ref(db, `${ruta_observacion}/${clave_vigilar}`);
+      // console.log(`${ruta_observacion}/${clave_vigilar}`);
+      // const valor = data.val();
+      // if (!localhost_nombre[valor] ) {
+      //   temporales.push(valor)
+      //   const claves_encontradas = await this._publicos.revisar_cache2(nombre)
+      //   const valorNoDuplicado = await [...new Set([...claves_encontradas, ...temporales])];
+      //   this._security.guarda_informacion({nombre, data: valorNoDuplicado})
+      //   if (temporales.length) {
+      //     console.log('no encontrada en clientes '+ valor);
           
-          this._security.guarda_informacion({nombre, data: valorNoDuplicado})
-          // localStorage.setItem('faltantes',JSON.stringify([...temporales]))
-          // console.log(temporales);
-          this._security.guarda_informacion({nombre:`faltantes_${nombre}`, data: [...temporales]})
-          // this.simular_2({nombre, ruta_observacion})
-          // this.simular_observacion_informacion_firebase_nombre({nombre, ruta_observacion})
-        }
-      };
-      // console.log(temporales);
-      
+      //   }
+      //   this._security.guarda_informacion({nombre:`faltantes_${nombre}`, data: [...temporales]})
+      // }
 
-      
       onChildChanged(commentsRef, async (data) => {
-        console.log('actualizacion');
         const valor =  data.val()
         const key = data.key
-        console.log(key);
-        console.log(valor);
-        
-        const claves_encontradas = await this._publicos.revisar_cache2(nombre)
-        const valorNoDuplicado = await [...new Set([...claves_encontradas, valor])];
-        // let nuevas_claves = obtenerElementosUnicos([...claves_encontradas, valor])
-        console.log(valorNoDuplicado);
-        this._security.guarda_informacion({nombre, data: valorNoDuplicado})
-      })
-      onChildRemoved(commentsRef, async (data) => {
-        console.log('eliminacion');
-        const valor =  data.val()
-        console.log(`Valor a eliminar: ${valor}`);
+        console.log(`actualizacion ${key}: ${valor}`);
+        console.log(`Se descargo`, this._publicos.saber_pesos(data));
+        const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
 
-        function eliminarValorDelArray(arr, valor) {
-          return arr.filter((elemento) => elemento !== valor);
+        if (localhost_nombre[clave_vigilar]) {
+          // console.log(localhost_nombre[clave_vigilar]);
+          const nueva_data_clave = this._publicos.crear_new_object(localhost_nombre[clave_vigilar])
+          nueva_data_clave[key] = valor
+          localhost_nombre[clave_vigilar] = nueva_data_clave
+          this._security.guarda_informacion({nombre: ruta_observacion, data: localhost_nombre})
+        }else{
+          console.log(`la informacion del cliente no se encuentra`);
         }
-
-        const localhost_claves_nombre_1 = await this._publicos.revisar_cache_real_time(nombre)
-        const nuevas_claves = eliminarValorDelArray(localhost_claves_nombre_1, valor);
-        await this._security.guarda_informacion({nombre, data: nuevas_claves})
-        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
-      });
-
-      // await Promise.all([
-      onChildAdded(commentsRef, onChildAddedCallback)
-
-        
-      // ]); 
+      })
+      
+    });
+    // console.log(temporales);
+    
+    
     
   }
 
@@ -281,6 +272,11 @@ vigila_nodos(){
     }));
   
     return resultados_new;
+  }
+
+  obtener_claves(){
+    console.log(Object.keys(claves));
+    
   }
 }
 function obtenerElementosUnicos(arr) {

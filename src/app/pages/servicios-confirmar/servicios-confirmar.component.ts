@@ -208,9 +208,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       
       const campos_recupera_cotizacion = ["cliente","elementos","formaPago","iva","margen","servicio","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal","reporte"]
       if(cotizaciones[cotizacion]){
-        const cotizacion_completa = this._publicos.asigna_datos_cotizaciones(
-          {bruto: [cotizaciones[cotizacion]], clientes, vehiculos}
-        )
+        const cotizacion_completa = this._publicos.nueva_asignacion_recepciones(cotizaciones[cotizacion])
         console.log(cotizacion_completa);
         const data_cotizacion = this._publicos.crear_new_object(cotizacion_completa[0])
         // console.log(Object.keys(cotizacion_completa[0]));
@@ -227,9 +225,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       console.log(recepcion);
       if(recepciones[recepcion]){
         const campos_recupera_recepcion = ["cliente","elementos","formaPago","id","iva","margen","servicio","status","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal"]
-        const recepcion_completa = this._publicos.asigna_datos_cotizaciones(
-          {bruto: [recepciones[recepcion]], clientes, vehiculos}
-        )
+        const recepcion_completa = this._publicos.nueva_asignacion_recepciones(recepciones[recepcion])
         // console.log(Object.keys(recepcion_completa[0]));
         const data_cotizacion = this._publicos.crear_new_object(recepcion_completa[0])
         console.log(data_cotizacion);

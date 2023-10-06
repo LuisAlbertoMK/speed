@@ -14,6 +14,7 @@ import { ClientesService } from 'src/app/services/clientes.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
+// import { setInterval } from 'timers';
 
 
 const db = getDatabase()
@@ -41,7 +42,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     _rol:string; _sucursal:string;
   
     clientes_arr:any =[]
-    clientes_actual = []
+    objecto_actual:any ={}
   ngOnInit() {
     this.rol()
   }
@@ -52,76 +53,53 @@ export class ClientesComponent implements AfterViewInit, OnInit {
 
     this._rol = rol
     this._sucursal = sucursal
-    this.vigila_hijo({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+    this.primer_comprobacion_resultados()
+  }
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
+  }
+  primer_comprobacion_resultados(){
+    this.asiganacion_resultados()
+    this.segundo_llamado()
+  }
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+        this.asiganacion_resultados()
+      }
+    },1500)
+  }
+  
+  asiganacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+    const clientes_para_tabla = this._publicos.transformaDataCliente(objecto_recuperdado)
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(clientes_para_tabla, 'sucursal', this._sucursal);
+    const data_recuperda_arr = this._publicos.crearArreglo2(objetoFiltrado)
+
+    const campos = [
+      'apellidos',
+      'correo_sec',
+      'correo',
+      'fullname',
+      'no_cliente',
+      'nombre',
+      'sucursal',
+      'sucursalShow',
+      'telefono_movil',
+      'tipo'
+    ]
+    this.objecto_actual = objecto_recuperdado
+
+    this.clientes_arr = (!this.clientes_arr.length) 
+    ? data_recuperda_arr
+    :  this._publicos.actualizarArregloExistente(this.clientes_arr, data_recuperda_arr, campos )
 
   }
-  async lista_clientes(){
-    const clientes = await this._publicos.revisar_cache2('clientes')
-    
-    // console.log(clientes);
-    
-    const clientes_arr = this._publicos.crearArreglo2(clientes)
-    // console.log(clientes_arr);
-    
-    
-    const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
-
-    const ordenar = (this._sucursal === 'Todas') ? clientes_trasnform : this._publicos.filtra_campo(clientes_trasnform,'sucursal',this._sucursal)
-    
-    const campos_cliente = ['id','no_cliente','nombre','apellidos','correo','correo_sec','telefono_fijo','telefono_movil','tipo','sucursal','empresa','usuario']
-
-    setTimeout(() => {
-      this.clientes_actual = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
-      this.clientes_arr = this._publicos.actualizarArregloExistente(this.clientes_actual,ordenar, campos_cliente)
-    }, 600);
-  }
-  // this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
-  async vigila_hijo(data){
-
-    this.lista_clientes()
-    
-    const {ruta_observacion, nombre} = data
-
-    const commentsRef = ref(db, `${nombre}`);
-    // const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
-    let temporales = []
-    const onChildAddedCallback = async (data) => {
-      const valor = data.val();
-      // console.log(valor);
-      // console.log(this._publicos.saber_pesos(valor));
-      
-      
-      // if (!localhost_nombre[valor]) {
-        // console.log(`valor no encontrado: ${valor}`);
-        // temporales.push(valor)
-
-        // const claves_encontradas = await this._publicos.revisar_cache2(nombre)
-        // const valorNoDuplicado = await [...new Set([...claves_encontradas, ...temporales])];
-        // console.log(valorNoDuplicado);
-        
-        // this._security.guarda_informacion({nombre, data: valorNoDuplicado})
-        // localStorage.setItem('faltantes',JSON.stringify([...temporales]))
-        // console.log(temporales);
-        // this._security.guarda_informacion({nombre:`faltantes_${nombre}`, data: [...temporales]})
-        // this.simular_2({nombre, ruta_observacion})
-        // this.simular_observacion_informacion_firebase_nombre({nombre, ruta_observacion})
-        this.lista_clientes()
-      // }
-    };
-
-    onChildAdded(commentsRef, onChildAddedCallback)
-    // const starCountRef = ref(db, `${nombre}`)
-    // onValue(starCountRef, async (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     // const nuevos_claves = Object.values(snapshot.val())
-    //     // this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
-    //     // this._publicos.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
-    //     this.lista_clientes()
-    //   } else {
-    //     console.log("No data available");
-    //   }
-    // })
-  }
+  
 }
 
 

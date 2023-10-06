@@ -192,13 +192,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       'promocion'
     ]
 
+    const clientes = this._publicos.nueva_revision_cache('clientes')
+    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+
     if (recepcion){
 
-      const recepciones_object = await this._publicos.revisar_cache('recepciones')
-      const clientes = await this._publicos.revisar_cache('clientes')
-      const vehiculos = await this._publicos.revisar_cache('vehiculos')
-      const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
-      const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
+      const recepciones_object = this._publicos.nueva_revision_cache('cotizaciones')
+      
+      const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.nueva_revision_cache('historial_gastos_orden'))
+      const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.nueva_revision_cache('historial_pagos_orden'))
 
       const data_recepcion = recepciones_object[recepcion]
       
@@ -219,14 +221,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       })
       this.extra = cotizaciones_arregladas[0].vehiculo
     }else if (cotizacion){
+      const cotizaciones_object = this._publicos.nueva_revision_cache('cotizaciones')
 
-      const cotizaciones_object = await this._publicos.revisar_cache('cotizaciones')
-      const clientes = await this._publicos.revisar_cache('clientes')
-      const vehiculos = await this._publicos.revisar_cache('vehiculos')
-      
       const data_cotizacion = cotizaciones_object[cotizacion]
 
-      const cotizaciones_arregladas = this._publicos.asigna_datos_cotizaciones({bruto: [data_cotizacion], clientes, vehiculos})
+      const cotizaciones_arregladas = this._publicos.nueva_asignacion_recepciones(data_cotizacion)
       
       const nueva_data_cotizacion = cotizaciones_arregladas[0]
       
@@ -237,18 +236,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       campos.forEach(campo=>{
         this.infoCotizacion[campo] = nueva_data_cotizacion[campo]
       })
-
-
       this.extra = cotizaciones_arregladas[0].vehiculo
     } else if(cliente){
-      const clientes = await this._publicos.revisar_cache('clientes')
+      
       this.infoCotizacion.cliente = cliente
       const data_cliente_new = this._publicos.crear_new_object(clientes[cliente])
       data_cliente_new.id = cliente
       this.infoCotizacion.data_cliente = data_cliente_new
     } else if(vehiculo){
-      const clientes = await this._publicos.revisar_cache('clientes')
-      const vehiculos = await this._publicos.revisar_cache('vehiculos')
       const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
       const data_cliente_new = this._publicos.crear_new_object(clientes[data_vehiculo.cliente])
       data_cliente_new.id = data_vehiculo.cliente
@@ -262,9 +257,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     this.vigila_vehiculos_cliente()
 
   }
-  async vigila_vehiculos_cliente(){
+  vigila_vehiculos_cliente(){
     const {cliente: id_cliente} = this.infoCotizacion
-    const vehiculos_object = await this._publicos.revisar_cache('vehiculos')
+    const vehiculos_object = this._publicos.nueva_revision_cache('vehiculos')
     const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
     const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
     this.infoCotizacion.vehiculos = vehiculos_cliente
