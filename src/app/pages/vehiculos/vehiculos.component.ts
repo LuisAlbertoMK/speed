@@ -37,6 +37,10 @@ export class VehiculosComponent implements OnInit {
     const clientes = await this._publicos.revisar_cache2('clientes')
     const vehiculos = await this._publicos.revisar_cache2('vehiculos')
     
+    console.log(clientes)
+    console.log(vehiculos)
+       
+    
     const nuevos_vehiculos = this._publicos.transformaDataVehiculo({clientes, vehiculos: this._publicos.crearArreglo2(vehiculos)})
     setTimeout(() => {
       this.vehiculos_arr = nuevos_vehiculos

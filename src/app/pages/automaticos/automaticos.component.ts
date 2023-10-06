@@ -49,460 +49,347 @@ export class AutomaticosComponent implements OnInit {
   _sucursal:string
   _rol:string
   paquetes_arr:any[] = []
+
+   
+  
+   campos = [
+    {ruta_observacion: 'clientes', nombre:'claves_clientes'},
+    // {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
+    // {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
+    // {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
+    // {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
+    // {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
+    // {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
+    // {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
+    // {ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'},
+  ]
+
+  busqueda:any = {ruta_observacion: 'clientes', nombre:'claves_clientes'}
   ngOnInit(): void {
     this.rol()
-    // const n = this._publicos.crearArreglo2(this._vehiculos.marcas_vehiculos)
-    // this.marcas_vehiculos_id = n.map(c=>{
-    //   return c.id
-    // })
-    // this.obtener_claves()
-    // this.observar_nombre()
-    // this.obtener_info_nombre()
-    // this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
 
-    // this.obtener_clavesgg()
-    this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
+   
   }
-  supervisar_claves(data){
-    const {ruta_observacion, nombre} = data
-    const starCountRef = ref(db, `${nombre}`)
-    onValue(starCountRef, async (snapshot) => {
-      if (snapshot.exists()) {
-        const nuevos_claves = Object.values(snapshot.val())
-        this._security.guarda_informacion({nombre, data: nuevos_claves})
-        // this._security.guarda_informacion({nombre: ruta_observacion, data: snapshot.val()})
-      } else {
-        console.log("No data available");
-      }
-    })
+  
+  
+  rol(){
+    const { rol, sucursal, usuario } = this._security.usuarioRol()
+    this._sucursal = sucursal
+    // this.cache_tiempo_real()
+    this.vigila_nodos()
   }
-    rol(){
-        const { rol, sucursal, usuario } = this._security.usuarioRol()
-        this._sucursal = sucursal
-        // this.acciones()
-        // this.nuevos_id_save()
-        // this.simular_descara_informacion_firebase_nombre()
-        // this.simular_observacion_informacion_firebase_nombre('claves_clientes')
-        this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'clientes', nombre:'claves_clientes'})
-        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'})
-        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'recepciones', nombre:'claves_recepciones'})
-        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'})
-        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'})
-        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'})
-    }
-    acciones(){
-        
-        // let campo = 'nombre'
-        // const encontrados = eliminarElementosRepetidos(data, campo)
-        // // const arr= this._publicos.crearArreglo2(encontrados)
-        // console.log('informacion depurada');
-        // console.log(encontrados);
-        
-        // const depurados= this._publicos.crearArreglo2(encontrados)
-        // console.log('depurados');
-        // console.log('depurados.length', depurados.length);
-        // console.log(encontrarElementosRepetidos(depurados,campo));
-        
+  async cache_tiempo_real(){
+    
+  this.campos.forEach(async (g)=>{
+    const {ruta_observacion, nombre} = g
+    const real = await this._automaticos.consulta_ruta(ruta_observacion)
+    this._security.guarda_informacion({nombre: ruta_observacion, data: real})
+    this._security.guarda_informacion({nombre, data: Object.keys(real)})
+    console.log(saber_pesos(real));
+    
+  })
+    
+  }
+  // registra_cache(data){
+  //   const {ruta_observacion, nombre} = data
+  //   this._security.guarda_informacion({nombre: ruta_observacion, data: vehiculos})
+  //   this._security.guarda_informacion({nombre, data: Object.keys(vehiculos)})
+  // }
+  async obtener_informacion_cache(){
+    const {ruta_observacion, nombre} = this.busqueda
+    console.log({ruta_observacion, nombre});
+    const data_claves = await this._publicos.revisar_cache2(ruta_observacion)
+    console.log(saber_pesos(data_claves));
+    console.log(data_claves);
+      // console.log(this._publicos.crearArreglo2(data_claves));
+    const claves_keys = await this._publicos.revisar_cache2(nombre)
+    console.log(claves_keys);
+    console.log(saber_pesos(claves_keys));
+}
+ async faltantes(){
 
-        // const sindepurar= this._publicos.crearArreglo2(data)
-        // console.log('sindepurar')
-        // console.log('sindepurar.length', sindepurar.length);
-        // console.log(encontrarElementosRepetidos(sindepurar,campo));
+  const {ruta_observacion, nombre} = this.busqueda
+  const data_claves_faltantes = this._publicos.revisar_cache2(`faltantes_${nombre}`)
+  console.log(data_claves_faltantes);
+  console.log(saber_pesos(data_claves_faltantes));
 
+  const data_actuales = this._publicos.revisar_cache2(ruta_observacion)
+  console.log(data_actuales);
 
-        console.log(`###### informacion xxx #`);
-        
+  
+  console.log(saber_pesos(data_actuales));
+//TODO: agregar informacion
+this.obtenerInformacionDeClientes(data_claves_faltantes, ruta_observacion)
+  .then(async (resultados_promesa) => {
+        console.log({...data_actuales, ...resultados_promesa });
+        this._security.guarda_informacion({nombre: ruta_observacion, data: {...data_actuales, ...resultados_promesa } })
+  })
 
-        // console.log(morefacciones);
-        // const arreglo_morefacciones= this._publicos.crearArreglo2(morefacciones)
-        // console.log('arreglo_morefacciones');
-        // console.log(arreglo_morefacciones.length);
-        // console.log(arreglo_morefacciones);
-        
-        
+  
+}
+vigila_nodos(){
+  this.campos.forEach(async (g)=>{
+    // const {ruta_observacion, nombre} = g
+    this.vigila_nodo_principal(g)
+  })
+}
+  async vigila_nodo_principal(data){
+    const {nombre, ruta_observacion} = data
 
-        // let nuevos_paquetes = {}
+    // this.simular_observacion_informacion_firebase_nombre(this.busqueda)
+    console.log({nombre, ruta_observacion});
 
-      
-        // sindepurar.forEach((paquete, index)=>{
-        //   const {id, elementos} = paquete
-        //     paquete.elementos = nuevo_data_elemento({morefacciones, elementos})
-        //   nuevos_paquetes[id] = paquete
-        // })
+    const commentsRef = ref(db, `${nombre}`);
+      const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
+      let temporales = []
+      const onChildAddedCallback = async (data) => {
+        const valor = data.val();
+        if (!localhost_nombre[valor]) {
+          // console.log(`valor no encontrado: ${valor}`);
+          temporales.push(valor)
 
-
-        // console.log(nuevos_paquetes);
-        const paquetes_armados  = this._publicos.crearArreglo2(this.armar_paquetes({morefacciones, paquetes: data}))
-        console.log(paquetes_armados);
-        this.paquetes_arr = paquetes_armados
-        
-        
-        function nuevo_data_elemento(data){
-          const {morefacciones, elementos} = data
-          // console.log(elementos);
-
-          let nuevos_elementos:any[] = [...elementos]
-
-          const afhgj = nuevos_elementos.map(elemento=>{
-            const {id:id_elemento, costo:costo_elemento, cantidad: cantidad_elemento} = elemento
-            // console.log(id_elemento);
-            let data_elemento_return
-            if (morefacciones[id_elemento]) {
-              // console.log(morefacciones[id_elemento]);
-              const data_elemento = JSON.parse(JSON.stringify(morefacciones[id_elemento]));
-              data_elemento.costo =  (data_elemento.costo < 1) ? 0 : data_elemento.costo;
-              const nuevo_costo = (costo_elemento > 0) ? costo_elemento : data_elemento.costo
-              const nueva_cantidad = (cantidad_elemento > 0) ? cantidad_elemento : 1
-              data_elemento_return =  {
-                id:id_elemento,
-                aprobado: true,
-                costo: nuevo_costo,
-                cantidad: nueva_cantidad
-              }
-              // console.log('regreso');
-              
-            }else{
-              data_elemento_return = elemento
-            }
-            return data_elemento_return
-          })
-
-          return afhgj
+          const claves_encontradas = await this._publicos.revisar_cache2(nombre)
+          const valorNoDuplicado = await [...new Set([...claves_encontradas, ...temporales])];
+          // console.log(valorNoDuplicado);
           
+          this._security.guarda_informacion({nombre, data: valorNoDuplicado})
+          // localStorage.setItem('faltantes',JSON.stringify([...temporales]))
+          // console.log(temporales);
+          this._security.guarda_informacion({nombre:`faltantes_${nombre}`, data: [...temporales]})
+          // this.simular_2({nombre, ruta_observacion})
+          // this.simular_observacion_informacion_firebase_nombre({nombre, ruta_observacion})
+        }
+      };
+      // console.log(temporales);
+      
+
+      
+      // onChildChanged(commentsRef, async (data) => {
+      //   console.log('actualizacion');
+      //   const valor =  data.val()
+      //   const key = data.key
+      //   console.log(key);
+      //   console.log(valor);
+      //   const claves_encontradas = await this._publicos.revisar_cache2(nombre)
+      //   let nuevas_claves = obtenerElementosUnicos([...claves_encontradas, valor])
+      //   console.log(nuevas_claves);
+      // })
+      onChildRemoved(commentsRef, async (data) => {
+        console.log('eliminacion');
+        const valor =  data.val()
+        console.log(`Valor a eliminar: ${valor}`);
+
+        function eliminarValorDelArray(arr, valor) {
+          return arr.filter((elemento) => elemento !== valor);
         }
 
-        // console.log(data);
-        
-        // let nuevas_recepciones = {}
+        const localhost_claves_nombre_1 = await this._publicos.revisar_cache_real_time(nombre)
+        const nuevas_claves = eliminarValorDelArray(localhost_claves_nombre_1, valor);
+        await this._security.guarda_informacion({nombre, data: nuevas_claves})
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
+      });
 
-        // depurados.forEach(rececpion=>{
-        //   const {id, checkList, detalles} = rececpion
-        //   const otros = purifica_informacion(rececpion)
-        //   const filtrados = otros.filter((element) => {
-        //     if (element.tipo === "paquete") {
-        //       return element.elementos.length > 0;
-        //     }
-        //     return true;
-        //   });
-        //   rececpion.elementos= filtrados
-        //   rececpion.checkList = purifica_checkList(checkList)
-        //   rececpion.detalles = purifica_checkList(detalles)
-        //   delete rececpion.fullname
-        //   delete rececpion.placas
-        //   nuevas_recepciones[id] = rececpion
+      // await Promise.all([
+      onChildAdded(commentsRef, onChildAddedCallback)
+
+        
+      // ]); 
+    
+  }
+  async simular_2(data){
+    const {ruta_observacion, nombre} = data
+    const faltantes = await this._publicos.revisar_cache2(`faltantes_${nombre}`)
+    const actuales = await this._publicos.revisar_cache2(ruta_observacion)
+    console.log(faltantes);
+
+    if (faltantes.length) {
+      // faltantes.forEach(async(faltante)=>{
+      //   const data_encontrada = await this._automaticos.consulta_ruta(`${ruta_observacion}/${faltante}`);
+      //   console.log(data_encontrada);
+      //   const { id } = this._publicos.crear_new_object(data_encontrada);
+      //   if (id) {
+      //     actuales[faltante] = data_encontrada;
+      //     this._security.guarda_informacion({ruta_observacion, data: actuales})
+      //     // console.log({...actuales});
+          
+      //   }
+      // })
+      // console.log(nuevos);
+      
+        // this.obtenerInformacionDeClientes(faltantes, ruta_observacion)
+        // .then(async (resultados_promesa) => {
+        //   console.log(resultados_promesa);
         // })
-
-
-        // console.log(nuevas_recepciones);
-        
-        
-
-
-        function eliminarElementosRepetidos(objeto: Record<string, any>, campo: string): Record<string, any> {
-          const conteo = {};
-          const nuevoObjeto: Record<string, any> = {};
-        
-          for (const key in objeto) {
-            if (objeto.hasOwnProperty(key)) {
-              const elemento = objeto[key];
-              const valorCampo = elemento[campo];
-        
-              if (!conteo[valorCampo]) {
-                nuevoObjeto[key] = elemento;
-                conteo[valorCampo] = true;
-              }
-            }
-          }
-        
-          return nuevoObjeto;
-        }
-        function encontrarElementosRepetidos(arr: any[], campo: string): any[] {
-          const conteo = {};
-          const elementosRepetidos = [];
-        
-          for (const elemento of arr) {
-            const valorCampo = elemento[campo];
-            
-            if (conteo[valorCampo]) {
-              elementosRepetidos.push(valorCampo);
-            } else {
-              conteo[valorCampo] = 1;
-            }
-          }
-        
-          return elementosRepetidos;
-        }
-        function reemplazarUltimosCaracteres(cadena: string, caracteresNuevos: string): string {
-          const inciio_cadena = cadena.substring(0, 8);
-          return `${inciio_cadena}${caracteresNuevos}`
-        }
-        function reemplazarUltimosCaracteres_morefacciones(cadena: string, caracteresNuevos: string): string {
-          const inciio_cadena = cadena.substring(0, 6);
-          return `${inciio_cadena}${caracteresNuevos}`
-        }
-
-        // const nueva_data = (nueva_data: any) => () => {
-        //   console.log("Este es el valor de nueva_data:", nueva_data);
-        // };
-
-        function purifica_informacion(data){
-          const nueva_ = JSON.parse(JSON.stringify(data));
-          const {elementos} = nueva_
-          const _elementos_purifica = (elementos) ? elementos : []
-          const registra = _elementos_purifica.map(element => {
-            const {tipo } = element
-            const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
-            const campos_refaccion = [ ...campos_mo, 'marca']
-            const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo' ]
-            let nueva 
-            switch (tipo) {
-              case 'paquete':
-                nueva = nuevaRecuperacionData(element,campos_paquete)
-                const info_su = purifica_informacion_interna(nueva.elementos)
-                // console.log(info_su);
-                nueva.elementos = info_su
-                
-                break;
-              case 'mo':
-                nueva = nuevaRecuperacionData(element,campos_mo)
-                break;
-              case 'refaccion':
-                nueva = nuevaRecuperacionData(element,campos_refaccion)
-                break;
-            }
-      
-            //primera recuperacion 
-            // console.log(nueva);
-            return nueva
-          });
-          // console.log(registra);
-          return registra
-        }
-        function purifica_informacion_interna(elementos:any[]){
-          const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status','tipo']
-          const campos_refaccion = [ ...campos_mo, 'marca']
-      
-          const nuevos_elementos = elementos.map(e=>{
-            const {tipo} = e
-            e.nombre = String(e.nombre).toLowerCase()
-            switch (tipo) {
-              case 'mo':
-              case 'MO':
-                e.id = e.IDreferencia
-                e.tipo = String(tipo).toLowerCase()
-                
-                return nuevaRecuperacionData(e,campos_mo)
-              case 'refaccion':
-                return nuevaRecuperacionData(e,campos_refaccion)
-            }
-          })
-      
-          return nuevos_elementos 
-      
-        }
-        function nuevaRecuperacionData(data: any, camposRecuperar: any[]) {
-          const necessary: any = {};
-          camposRecuperar.forEach((recupera) => {
-              if(typeof data[recupera] === 'string'){
-                  const evalua = String(data[recupera]).trim()
-                  if (evalua !== undefined && evalua !== null && evalua !== "") {
-                      necessary[recupera] = evalua;
-                  }
-              }else{
-                  if (data[recupera] !== undefined && data[recupera] !== null && data[recupera] !== "") {
-                      necessary[recupera] = data[recupera];
-                  }
-              }
-          });
-          return necessary;
-        }
-        function purifica_checkList(arreglo:any[]){
-            let nuevo = {}
-            arreglo
-            .forEach(ele=>{
-              const {valor, status} = ele
-              nuevo[valor] = status
-            })
-            return nuevo
-        }
-        function crearArreglo2(arrayObj: Record<string, any> | null): any[] {
-          if (!arrayObj) return []; 
-          return Object.entries(arrayObj).map(([key, value]) => ({ ...value, id: key }));
-        }  
-    }
-
-    armar_paquetes(data){
-      const {morefacciones, paquetes} = data
-      const nuevos_paquetes = JSON.parse(JSON.stringify(paquetes));
-      Object.keys(nuevos_paquetes).forEach(paquete=>{
-        const {elementos, id} = nuevos_paquetes[paquete]
-        const nuevos_elementos = [...elementos]
-        const nuevos = nuevos_elementos.map(elemento=>{
-          const {id: id_elemento} = elemento
-          if (id_elemento) {
-            return {...morefacciones[id_elemento], ...elemento}
-          }else{
-            return elemento
-          }
-        })
-        nuevos_paquetes[id].elementos = nuevos;
-        nuevos_paquetes[id] = this._publicos.reporte_paquetes(nuevos_paquetes[id])
-      })
-      return nuevos_paquetes
-    }
-    async obtener_clavesgg(){
-      const claves_encontradas = await this.simula_inserccion()
-      console.log(claves_encontradas); 
-    }
-    async simula_inserccion(){
-      const claves_nombre = await  this._automaticos.consulta_ruta('claves_clientes')
-      let arreglo_claves = [...claves_nombre]      
-      return arreglo_claves.filter(clave=>clave)
     }
     
-    obtener_info_nombre(){
-      const buscar_cache = [
-        // 'clientes'
-        // 'vehiculos',
-        // 'recepciones',
-        // 'cotizaciones',
-        // 'historial_gastos_operacion',
-        // 'historial_gastos_orden',
-        // 'historial_pagos_orden',
-        // 'historial_gastos_diarios'
-      ]
-      buscar_cache.forEach(async (nombre)=>{
-        console.log('buscando ' + nombre);
+    // let faltantes = []
+    // const {ruta_observacion, nombre} = data
+    // const claves_nombre:any[] = await this._publicos.revisar_cache2(nombre)
+    // const data_ruta_observacion:any[] = await this._publicos.revisar_cache2(ruta_observacion)
+    // // console.log(claves_nombre);
+    // // console.log(data_ruta_observacion);
+    // claves_nombre.forEach(clave=>{
+    //   if (!data_ruta_observacion[clave]) {
+    //     faltantes.push(clave);
+    //   }
+    // })
+    // console.log(faltantes);
+    // if (faltantes.length) {
+    //   this.obtenerInformacionDeClientes(faltantes, ruta_observacion)
+    //   .then(async (resultados_promesa) => {
+    //     console.log(resultados_promesa);
+    //     // const actuales = this._publicos.revisar_cache2(ruta_observacion)
+    //     // console.log(actuales);
         
-        const resultados = await this._automaticos.consulta_ruta(nombre)
-        console.log(resultados);
-        this._security.guarda_informacion({nombre: `claves_${nombre}`, data: Object.keys(resultados)})
-        this._security.guarda_informacion({nombre: `${nombre}`, data: resultados})
-      })
-    }
+    //     // console.log({...actuales, ...resultados_promesa });
+        
+    //     // this._security.guarda_informacion({nombre: ruta_observacion, data: {...actuales, ...resultados_promesa } })
+    //   })
+    // }
+    
+  }
 
-    obtener_claves(){
-      // console.log(Object.keys(vehiculos));
-      this._security.guarda_informacion({nombre: 'claves_vehiculos', data: Object.keys(vehiculos)})
-      this._security.guarda_informacion({nombre: 'claves_recepciones', data: Object.keys(recepciones)})
-      this._security.guarda_informacion({nombre: 'claves_clientes', data: Object.keys(clientes)})
-      this._security.guarda_informacion({nombre: 'claves_cotizaciones', data: Object.keys(cotizaciones)})
-      this._security.guarda_informacion({nombre: 'claves_historial_gastos_orden', data: Object.keys(historial_gastos_orden)})
-      this._security.guarda_informacion({nombre: 'claves_historial_pagos_orden', data: Object.keys(historial_pagos_orden)})
-      this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
-      this._security.guarda_informacion({nombre: 'historial_gastos_orden', data: historial_gastos_orden})
-      this._security.guarda_informacion({nombre: 'historial_pagos_orden', data: historial_pagos_orden})
+  
+  async simular_observacion_informacion_firebase_nombre(data){
+    const {ruta_observacion, nombre} = data
+    console.log({ruta_observacion, nombre});
+    
+    const claves_nombre:any[] = await this._publicos.revisar_cache2(nombre)
 
-      this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
-      this._security.guarda_informacion({nombre: 'cotizaciones', data: recepciones})
-    }
 
-    async simular_observacion_informacion_firebase_nombre(data){
-      const {ruta_observacion, nombre} = data
-      console.log({ruta_observacion, nombre});
-      
-      const claves_nombre:any[] = await this._publicos.revisar_cache(nombre)
-
-      console.log(claves_nombre);
-      
-      const resultados = await this._publicos.revisar_cache2(ruta_observacion)
-
-      console.log(resultados);
-      
-      let claves_faltantes = []
-      let claves_existentes = []
-      claves_nombre.forEach(async (clave, index) => {
-
+    const resultados = await this._publicos.revisar_cache2(ruta_observacion)
+    console.log(resultados);
+    
+    let claves_faltantes = []
+    let claves_existentes = []
+    claves_nombre.forEach(async (clave, index) => {
+        // console.log(!resultados[clave]);
         if (!resultados[clave]) {
           claves_faltantes.push(clave)
         }else{
           claves_existentes.push(clave)
-          const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
-          onChildChanged(commentsRef, (data) => {
-            const key = data.key
-            const valor =  data.val()
-            console.log(key);
-            if (resultados[clave]) {
-              const nueva_data = this._publicos.crear_new_object(resultados[clave])
-                nueva_data[key] = valor
-                resultados[clave] = nueva_data
-                console.log(nueva_data);
-                this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
-            }
-          });
         }
-      });
-      console.log(claves_faltantes);
-      console.log(claves_existentes);
-      
-      claves_faltantes.forEach(async (clav)=>{
-        const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clav}`)
-        const {no_cliente} = this._publicos.crear_new_object(data_cliente)
-        if (no_cliente) resultados[clav] = data_cliente
-      })
-      setTimeout(() => {
-        this._security.guarda_informacion({nombre: ruta_observacion, data: resultados}) 
-      }, 2000);
-      
-      // this._security.guarda_informacion({nombre: ruta_observacion, data: clientes})
-      
-      // const clientes = await this._publicos.revisar_cache2(ruta_observacion)
-      //     const data_cliente = await this._automaticos.consulta_ruta(`clientes/${clave}`)
-      //     if (data_cliente) {
-      //       console.log(index);
-      //       clientes[clave] = data_cliente
-      //       console.log(data_cliente);
-      //       console.log(clientes);
-
-      //       console.log('no existe la clave de cliente', clave);
-            
-      //       await this._security.guarda_informacion({ruta_observacion, clientes})
-      //     }
-
-      
-    }
-    async simular_descara_informacion_firebase_nombre(){
-      // let nombre = 'claves_clientes'
-      // const claves_clientes:any[] = await this.obtener_claves_cache(nombre)
-      // console.log(claves_clientes);
-      
-      // // const clave_cliente_new = `-clavegenerada-${claves_clientes.length}`
-      // // claves_clientes.push(clave_cliente_new)
-      
-      // // this.registra_clave_nombre(nuevas_claves)
-      // this._security.guarda_informacion({nombre, data: claves_clientes})
-
-      // const claves_clientes_cache = await this._publicos.revisar_cache(nombre)
-      // console.log(claves_clientes_cache);
-      // // // 439: "-NeekzgvHBHAnRgY7M-A"
-    }
-    async obtener_claves_cache(nombre){
-      const claves_clientes = await this._publicos.revisar_cache(nombre)
-      let nuevas_claves = [...claves_clientes]
-      return nuevas_claves
-    }
-    async registra_clave_nombre(arreglo_claves:any[], nombre:string){
-      const updates = {};
-      updates[`${nombre}`] = arreglo_claves;
-      update(ref(db), updates).then(()=>{
-        console.log('finalizo');
-      })
-      .catch(err=>{
-        console.log(err);
-      })
-    }
-
-    observar_nombre(){
-      console.log('revisando_clientes_genera');
-      
-      const commentsRef = ref(db, `clientes`);
-      onChildChanged(commentsRef, (data) => {
-        const key = data.key
-        const valor =  data.val()
-        console.log(key);
-        console.log(valor);
+      // if (!resultados[clave]) {
+      //   if (clave === '-NEvKbMFVN9-fmmc6e1F') {
+      //     console.log('NOOO encontrado: '+ clave);
+      //   }
+      //   claves_faltantes.push(clave)
+      // }else{
+      //   if (clave === '-NEvKbMFVN9-fmmc6e1F') {
+      //     console.log('====encontrado: '+ clave);
+      //   }
         
-      })
-    }
+      //   claves_existentes.push(clave)
+      //   const commentsRef = ref(db, `${nombre}/${clave}`);
+      //   onChildChanged(commentsRef, async (data) => {
+      //     const key = data.key
+      //     const valor =  data.val()
+      //     if (resultados[clave]) {
+      //       const nueva_data = this._publicos.crear_new_object(resultados[clave])
+      //         nueva_data[key] = valor
+      //         resultados[clave] = nueva_data
+      //         console.log(valor);
+              
+      //         const actuales = await this._publicos.revisar_cache2(ruta_observacion)
+      //         this._security.guarda_informacion({nombre: ruta_observacion, data: {...actuales, ...resultados } })
+      //     }
+      //   });
+      // }
+    });
+    let nuevas_faltantes = obtenerElementosUnicos(claves_faltantes)
+    let nuevas_existentes = obtenerElementosUnicos(claves_existentes)
 
+    console.log(nuevas_faltantes);
+    console.log(nuevas_existentes);
+    
+    // this.coloca_claves_faltantes_en_cache_y_firebase({
+    //   claves_faltantes: nuevas_faltantes,
+    //   claves_existentes: nuevas_existentes,
+    //   nombre,
+    //   ruta_observacion,
+    //   data: resultados
+    // })
+  }
+  coloca_claves_faltantes_en_cache_y_firebase(data){
+
+    const {ruta_observacion, nombre, claves_faltantes, claves_existentes} = data
+    
+    let nuevas_claves = [...claves_existentes, ...claves_faltantes]
+    console.log(claves_faltantes);
+    // console.log(claves_existentes);
+
+    const purificadas = obtenerElementosUnicos(nuevas_claves)
+    const claves_faltantes_ = obtenerElementosUnicos(claves_faltantes)
+
+    this._security.guarda_informacion({nombre, data: purificadas })
+
+    this.obtenerInformacionDeClientes(claves_faltantes_, ruta_observacion)
+    .then(async (resultados_promesa) => {
+      const actuales = await this._publicos.revisar_cache2(ruta_observacion)
+      // console.log(resultados_promesa);
+      const claves_registradas =  Object.keys(resultados_promesa)
+      
+      // if (claves_registradas.length) {
+        this._security.guarda_informacion({nombre: ruta_observacion, data: {...actuales, ...resultados_promesa } })
+        this.remover_claves_e_informacion({nombre, ruta_observacion})
+      // }else{
+        // this.remover_claves_e_informacion({nombre, ruta_observacion})
+      // }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+  async remover_claves_e_informacion(data){
+    // console.log('remover data no existe');
+    const {nombre, ruta_observacion} = data
+    // console.log({nombre, ruta_observacion});
+    
+    
+    
+    const claves_ = await this._publicos.revisar_cache2(nombre)
+    const claves_data = await this._publicos.revisar_cache2(ruta_observacion)
+    const claves_supervisa = [...claves_]
+
+    let nueva_si_existe = {}
+
+    claves_supervisa.forEach(clave=>{
+      if (claves_data[clave]) {
+        nueva_si_existe[clave] = claves_data[clave]
+      }
+    })
+    // console.log(nueva_si_existe);
+    this._security.guarda_informacion({nombre: ruta_observacion, data: nueva_si_existe})
+    
+    // let 
+    // console.log(claves_);
+    
+  }
+  async obtenerInformacionDeClientes(claves_faltantes, ruta_observacion) {
+    const resultados_new = {};
+  
+    await Promise.all(claves_faltantes.map(async (clave) => {
+      const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clave}`);
+      console.log('pesos data_cliente');
+      
+      console.log(saber_pesos(data_cliente));
+      
+      const { no_cliente } = this._publicos.crear_new_object(data_cliente);
+      if (no_cliente) resultados_new[clave] = data_cliente;
+    }));
+  
+    return resultados_new;
+  }
+}
+function obtenerElementosUnicos(arr) {
+  return [...new Set(arr)];
+}
+function saber_pesos(data){
+  const jsonString = JSON.stringify(data);
+  const encoder = new TextEncoder();
+  const encodedData = encoder.encode(jsonString);
+  const tamanioEnBytes = encodedData.length;
+  const tamanioEnKilobytes = tamanioEnBytes / 1024;
+  const tamanioEnMegabytes = tamanioEnKilobytes / 1024;
+  return {tamanioEnBytes, tamanioEnKilobytes, tamanioEnMegabytes}
 }

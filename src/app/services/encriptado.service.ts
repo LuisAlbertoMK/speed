@@ -23,6 +23,7 @@ export class EncriptadoService {
     const {nombre, data} = data_gif
     const encriptado_sucursales = this.servicioEncriptado_objetc(data)
     localStorage.setItem(`${nombre}`, encriptado_sucursales)
+    console.log('se registro '+ nombre);
   }
 
 

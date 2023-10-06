@@ -298,12 +298,16 @@ export class ClienteComponent implements OnInit, OnChanges {
    
       if (!uid && nombre_purificado?.length >= 2 && apellidos_purificado?.length >= 2 && sucursal) {
         try {
-          await this.constverifica(sucursal)
+          const claves_clientes = this._publicos.revisar_cache2('claves_clientes')
+          // await this.constverifica(sucursal)
+          console.log(claves_clientes);
+          
+          let neuvo_contador = [...claves_clientes]
           const nombre_sucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
           const date = new Date();
           const mes = (date.getMonth() + 1).toString().padStart(2, '0');
           const anio = date.getFullYear().toString().slice(-2);
-          const secuencia = this.contadroClientes.toString().padStart(4, '0');
+          const secuencia = (neuvo_contador.length + 1).toString().padStart(5, '0');
           const nombreCotizacion = `${nombre_purificado?.slice(0, 2)}${apellidos_purificado?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`.toUpperCase();
           
           this.form_cliente.controls['no_cliente'].setValue(nombreCotizacion);
@@ -540,13 +544,13 @@ export class ClienteComponent implements OnInit, OnChanges {
   displayFn(user: any): any {
     return user && user.empresa ? user.empresa : '';
   }
-  constverifica(sucursal){
-    const postRef = ref(db, `clientes`);
-    runTransaction(postRef, (post) => {
-      if (post) {
-        this.contadroClientes = this._publicos.crearArreglo2(post).length + 1
-      }
-    })
-  }
+  // constverifica(sucursal){
+  //   const postRef = ref(db, `clientes`);
+  //   runTransaction(postRef, (post) => {
+  //     if (post) {
+  //       this.contadroClientes = this._publicos.crearArreglo2(post).length + 1
+  //     }
+  //   })
+  // }
   
 }

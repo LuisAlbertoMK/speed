@@ -30,16 +30,6 @@ export class AutomaticosService {
       }, {
         onlyOnce: true
       })
-      // const dbRef = ref(getDatabase());
-      // get(child(dbRef, `${ruta}`)).then((snapshot) => {
-      //   if (snapshot.exists()) {
-      //     resolve(snapshot.val())
-      //   } else {
-      //     resolve({});
-      //   }
-      // }).catch((error) => {
-      //   console.error(error);
-      // });
     });
   }
   // async vigila_hijo(arreglo:any[]){

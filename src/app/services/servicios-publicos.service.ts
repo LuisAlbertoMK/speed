@@ -1769,6 +1769,21 @@ export class ServiciosPublicosService {
     crear_new_object(objecto){
       return JSON.parse(JSON.stringify(objecto));
     }
+    revisar_cache_real_time(ruta): Promise<any> {
+      return new Promise((resolve, reject) => {
+        // const {ruta} = data
+        const starCountRef = ref(db, `${ruta}`);
+        onValue(starCountRef, (snapshot) => {
+          if (snapshot.exists()) {
+            resolve(snapshot.val())
+          } else {
+            resolve({});
+          }
+        }, {
+          onlyOnce: true
+        })
+      });
+    }
     async revisar_cache(nombre:string){
       // const claves_extradidas = localStorage.getItem(`${nombre}`)
       // let nueva 
@@ -1798,10 +1813,10 @@ export class ServiciosPublicosService {
         return []
       }
     }
-    async revisar_cache2(nombre:string){
+    revisar_cache2(nombre:string){
       const objeto_desencriptado = localStorage.getItem(`${nombre}`)
       if (objeto_desencriptado) {
-        const desc = await this._security.servicioDecrypt_object(objeto_desencriptado)
+        const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
         return this.crear_new_object(desc)
       }else{
         return {}
