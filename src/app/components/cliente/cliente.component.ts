@@ -300,7 +300,7 @@ export class ClienteComponent implements OnInit, OnChanges {
         try {
           const claves_clientes = this._publicos.revisar_cache2('claves_clientes')
           // await this.constverifica(sucursal)
-          console.log(claves_clientes);
+          // console.log(claves_clientes);
           
           let neuvo_contador = [...claves_clientes]
           const nombre_sucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
@@ -427,7 +427,8 @@ export class ClienteComponent implements OnInit, OnChanges {
       console.log('es registro nuenvo ', apuntador) ;
       
       if (apuntador) {
-        const claves_encontradas = await this.simula_inserccion()
+        // const claves_encontradas = await this.simula_inserccion()
+        const claves_encontradas = await this._automaticos.consulta_ruta('claves_clientes')
 
         let nuevas_claves = [...claves_encontradas, nueva_clave_generada ]
 

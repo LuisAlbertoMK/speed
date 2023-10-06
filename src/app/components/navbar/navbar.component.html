@@ -13,13 +13,14 @@
       </li> -->
     </ul>
     <ul class="navbar-nav ml-auto mr-3">
-      <ng-container *ngIf="numero !== 0 && (ROL ==='SuperSU' || ROL==='Administrador')">
+      <!-- <ng-container *ngIf="numero !== 0 && (ROL ==='SuperSU' || ROL==='Administrador')">
         <li class="nav-item" >
           <a [routerLink]="'/recordatorios'" class="nav-link"  role="button">
             <span class="badge badge-ligth text-primary"> <i class="fad fa-envelope"></i> {{numero}} </span>
           </a>
         </li>
-      </ng-container>
+      </ng-container> -->
+      <button class="btn btn-success m-2" (click)="faltantes()">faltantes</button>
       <ng-container *ngIf="!sesion">
         <li class="nav-item"  >
           <a  class="nav-link"  role="button" data-widget="control-sidebar" data-controlsidebar-slide="true" >

@@ -4,7 +4,7 @@ import * as CryptoJS from 'crypto-js'
 
 import { InicioComponent } from 'src/app/pages/inicio/inicio.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { child, get, getDatabase, onChildAdded, onValue, ref, set, update } from 'firebase/database';
+import { child, get, getDatabase, onChildAdded, onChildChanged, onChildRemoved, onValue, ref, set, update } from 'firebase/database';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged,  signOut  } from "firebase/auth";
 
 import Swal from 'sweetalert2';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
+import { AutomaticosService } from 'src/app/services/automaticos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 const auth = getAuth();
@@ -27,52 +28,50 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   @ViewChild(InicioComponent) child;
   constructor(private _auth:AuthService, private router : Router, private _email:EmailsService, 
     private _sucursales: SucursalesService, private _publicos:ServiciosPublicosService, private _security:EncriptadoService,
-    public _router: Router, public _location: Location) { }
+    public _router: Router, public _location: Location, private _automaticos: AutomaticosService) { }
   
     sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
 
     @Input() childMessage: string
 
   
-  maniana:string = ''
-  citasManiana:any =[]
-  userToken:string
+  // userToken:string
 
-  decPassword:string = 'SpeedProSecureCondifidential' 
+  // decPassword:string = 'SpeedProSecureCondifidential' 
 
-  SUCURSAL:string =''
-  STATUS:string =''
-  USUARIO:string =''
-  CORREO:string =''
-  PASSWORD:string =''
+  // SUCURSAL:string =''
+  // STATUS:string =''
+  // USUARIO:string =''
+  // CORREO:string =''
+  // PASSWORD:string =''
 
-  SUCURSALUnico:string =''
-  STATUSUnico:string =''
-  USUARIOUnico:string =''
-  CORREOUnico:string =''
-  PASSWORDUnico:string =''
+  // SUCURSALUnico:string =''
+  // STATUSUnico:string =''
+  // USUARIOUnico:string =''
+  // CORREOUnico:string =''
+  // PASSWORDUnico:string =''
   
   nombreSucursalMuestra:string =''
   recomendacion:string = ''
   navegador:string=''
-  numero:number = 0
-  infoUsuario:any =[]
+  // numero:number = 0
+  // infoUsuario:any =[]
   //citas con recordatorio 
-  listRecorEnviado:any =[]
-  listRecorEnviar:any =[]
-  listSucursales:any=[]
+  // listRecorEnviado:any =[]
+  // listRecorEnviar:any =[]
+  // listSucursales:any=[]
   sesion:boolean = false
 
   ///para recordatorios
-  listPlacas:any=[]
-  dataPlacas:any =[]
-  fecha:string=''
-  hora:string=''
-  anio:string = ''
-  mes:number= 0
+  // listPlacas:any=[]
+  // dataPlacas:any =[]
+  // fecha:string=''
+  // hora:string=''
+  // anio:string = ''
+  // mes:number= 0
   
-  clientes:any=[]
-  vehiculos:any=[]
+  // clientes:any=[]
+  // vehiculos:any=[]
   //roles
   ROL:string = ''
   update:boolean = false
@@ -87,6 +86,19 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
   _rol:string
   _sucursal:string
+
+  campos = [
+    {ruta_observacion: 'clientes', nombre:'claves_clientes'},
+    // {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
+    // {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
+    // {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
+    // {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
+    // {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
+    // {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
+    // {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
+    // {ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'},
+  ]
+  busqueda:any = {ruta_observacion: 'clientes', nombre:'claves_clientes'}
   ngOnInit(): void {
     // console.log('llamado');
     this.rol()
@@ -94,7 +106,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     
     this.nombreSucursal()
 
-    this.AsiganacionVariablesSesion()
+    // this.AsiganacionVariablesSesion()
 
     this.comprobarTimeExpira()
     this.comprobarTema()
@@ -103,39 +115,15 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     
   }
   rol(){
-    const { rol, sucursal } = this._security.usuarioRol()
+    const { rol, sucursal, usuario } = this._security.usuarioRol()
 
     this._rol = rol
     this._sucursal = sucursal
+
+    // this.vigila_nodos()
   }
 
-  async vigila_hijo(){
-    
-    const rutas_vigila = [
-      'clientes',
-      'vehiculos',
-      'recepciones',
-      'moRefacciones',
-      'cotizacionesRealizadas',
-      'historial_gastos_diarios',
-      'historial_gastos_operacion',
-      'historial_gastos_orden',
-      'historial_pagos_orden',
-      'sucursales',
-      'metas_sucursales'
-    ]
-    rutas_vigila.forEach(nombre=>{
-      const starCountRef = ref(db, `${nombre}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          this._security.guarda_informacion({nombre, data: snapshot.val()})
-        } else {
-          console.log("No data available");
-        }
-      })
-    })
-    
-  }
+ 
  
 
   //TODO aqui las nuevas funciones
@@ -199,6 +187,137 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
       this.theme = 'dark';
     }
   }
+
+  ///TODO accione_revisa 
+  vigila_nodos(){
+    this.campos.forEach(async (g)=>{
+      this.vigila_nodo_principal(g)
+    })
+  }
+  async vigila_nodo_principal(data){
+    const {nombre, ruta_observacion} = data
+
+    // this.simular_observacion_informacion_firebase_nombre(this.busqueda)
+    console.log({nombre, ruta_observacion});
+
+    const commentsRef = ref(db, `${nombre}`);
+      const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
+
+      let temporales = []
+      const onChildAddedCallback = async (data) => {
+        const valor = data.val();
+        temporales.push(valor)
+        // console.log(temporales);
+        
+        // if (!localhost_nombre[valor]) {
+          // console.log(`valor no encontrado: ${valor}`);
+          // temporales.push(valor)
+
+          const claves_encontradas = await this._publicos.revisar_cache2(nombre)
+          const valorNoDuplicado = await [...new Set([...claves_encontradas,...temporales])];
+          // console.log(valorNoDuplicado);
+          
+          // // console.log(valorNoDuplicado);
+          
+          this._security.guarda_informacion({nombre, data: valorNoDuplicado})
+          // // localStorage.setItem('faltantes',JSON.stringify([...temporales]))
+          // // console.log(temporales);
+          // this._security.guarda_informacion({nombre:`faltantes_${nombre}`, data: [...temporales]})
+          // this.simular_2({nombre, ruta_observacion})
+          // this.simular_observacion_informacion_firebase_nombre({nombre, ruta_observacion})
+        // }
+      };
+      // console.log(temporales);
+      
+
+      
+      onChildChanged(commentsRef, async (data) => {
+        console.log('actualizacion');
+        const valor =  data.val()
+        const key = data.key
+        console.log(key);
+        console.log(valor);
+        
+        const claves_encontradas = await this._publicos.revisar_cache2(nombre)
+        const valorNoDuplicado = await [...new Set([...claves_encontradas, valor])];
+        // let nuevas_claves = obtenerElementosUnicos([...claves_encontradas, valor])
+        // console.log(valorNoDuplicado);
+        this._security.guarda_informacion({nombre, data: valorNoDuplicado})
+      })
+      onChildRemoved(commentsRef, async (data) => {
+        console.log('eliminacion');
+        const valor =  data.val()
+        console.log(`Valor a eliminar: ${valor}`);
+
+        function eliminarValorDelArray(arr, valor) {
+          return arr.filter((elemento) => elemento !== valor);
+        }
+
+        const localhost_claves_nombre_1 = await this._publicos.revisar_cache_real_time(nombre)
+        const nuevas_claves = eliminarValorDelArray(localhost_claves_nombre_1, valor);
+        await this._security.guarda_informacion({nombre, data: nuevas_claves})
+        // this.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
+      });
+
+      // await Promise.all([
+      onChildAdded(commentsRef, onChildAddedCallback)
+
+        
+      // ]); 
+    
+  }
+  async faltantes(){
+
+    const {ruta_observacion, nombre} = this.busqueda
+    const data_claves_faltantes = this._publicos.revisar_cache2(`faltantes_${nombre}`)
+  
+    const data_actuales = this._publicos.revisar_cache2(ruta_observacion)
+    
+    let nuevo_arreglo_faltantes = this._publicos.crear_new_object(data_claves_faltantes)
+  
+    let entradas = [...nuevo_arreglo_faltantes]
+  
+    
+    // console.log(nuevo_arreglo_faltantes);
+  
+    if (entradas.length) {
+      //TODO: agregar informacion
+    this.obtenerInformacionDeClientes(data_claves_faltantes, ruta_observacion)
+    .then(async (resultados_promesa) => {
+          // let aclarados =[...nuevo_arreglo_faltantes]
+          const resultados_arr = Object.keys(resultados_promesa)
+          const resultado = this._publicos.eliminarElementosRepetidos(nuevo_arreglo_faltantes, resultados_arr);
+          // console.log(resultado);
+          
+          // console.log({...data_actuales, ...resultados_promesa });
+          this._security.guarda_informacion({nombre: ruta_observacion, data: {...data_actuales, ...resultados_promesa } })
+          this._security.guarda_informacion({nombre:`faltantes_${nombre}`, data: resultado})
+    })
+  
+    }else{
+      console.log('ninguna accion realizadas');
+      
+    }
+  
+  
+    
+  }
+  async obtenerInformacionDeClientes(claves_faltantes, ruta_observacion) {
+    const resultados_new = {};
+  
+    await Promise.all(claves_faltantes.map(async (clave) => {
+      const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clave}`);
+      console.log('pesos data_cliente');
+      
+      console.log(this._publicos.saber_pesos(data_cliente));
+      
+      const { no_cliente } = this._publicos.crear_new_object(data_cliente);
+      if (no_cliente) resultados_new[clave] = data_cliente;
+    }));
+  
+    return resultados_new;
+  }
+  ///TODO accione_revisa 
   //TODO aqui las nuevas funciones
 
 
@@ -234,18 +353,18 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 		});
   }
   
-  AsiganacionVariablesSesion(){
-    const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-    this.ROL = this._security.servicioDecrypt(variableX['rol'])
-    this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
+//   AsiganacionVariablesSesion(){
+//     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
+//     this.ROL = this._security.servicioDecrypt(variableX['rol'])
+//     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
     
-    // console.log(variableX);
+//     // console.log(variableX);
     
-// console.log(this._security.servicioDecrypt(variableX['usuario']));
+// // console.log(this._security.servicioDecrypt(variableX['usuario']));
 
-    this.sesion = Boolean(variableX['sesion'])
-    //  CryptoJS.AES.decrypt(localStorage.getItem('email').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8)
-  }
+//     this.sesion = Boolean(variableX['sesion'])
+//     //  CryptoJS.AES.decrypt(localStorage.getItem('email').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8)
+//   }
   //cerrar sesion
   // logout(){ this._auth.logout('cerrar') }
   logout(){
@@ -263,7 +382,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     });
   }
   //monitorear si hay un cambio en la informacion de cliente y si el cliente esta habilto
-  MonitoreUsuario(){
+  // MonitoreUsuario(){
     // const starCountRef = ref(db, `usuarios/${this.USUARIO}`)
     //     onValue(starCountRef, (snapshot) => {
 
@@ -279,17 +398,17 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     //       this.PASSWORD = localStorage.getItem('password_mon')
     //         this.verificar()
     //     })
-  }
+  // }
   
   nombreSucursal(){
     const { rol, sucursal } = this._security.usuarioRol()
 
-    this.ROL = rol
-    this.SUCURSAL = sucursal
+    // this.ROL = rol
+    // this.SUCURSAL = sucursal
     
-    if (this.SUCURSAL!=='Todas' ) {
-      this.nombreSucursalMuestra = this.sucursales_array.find(s=>s.id === this.SUCURSAL).sucursal
-    }
+    // if (this.SUCURSAL!=='Todas' ) {
+    //   this.nombreSucursalMuestra = this.sucursales_array.find(s=>s.id === this.SUCURSAL).sucursal
+    // }
   }
 
 

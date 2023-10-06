@@ -218,13 +218,13 @@
       <div class="card-body text-success ">
         <h5 class="card-title"></h5>
         <div class="row">
-          <ng-container *ngFor="let campo of camposDesgloce">
+          <!-- <ng-container *ngFor="let campo of camposDesgloce">
             <ng-container *ngIf="infoConfirmar.reporte[campo['valor']] > 0">
               <div class="col-lg-8 col-md-8 col-sm-6 col-6">{{campo['show'] | capitalizarUno}}</div>
               <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoConfirmar.reporte[campo.valor]  | monedas}}</strong></div>
             </ng-container>
             
-          </ng-container>
+          </ng-container> -->
           <ng-container *ngIf="infoConfirmar.reporte['meses'] > 0">
             <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6">Total a {{meses}} meses</div> -->
             <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{infoConfirmar.reporte['meses'] | monedas}}</strong></div>

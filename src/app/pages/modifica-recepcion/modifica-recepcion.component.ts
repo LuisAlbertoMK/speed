@@ -62,7 +62,7 @@ export class ModificaRecepcionComponent implements OnInit {
     
     camposCliente  =    [ ...this._clientes.camposCliente_show ]
     camposVehiculo =    [ ...this._vehiculos.camposVehiculo_ ]
-    camposDesgloce =    [ ...this._cotizaciones.camposDesgloce ]
+    // camposDesgloce =    [ ...this._cotizaciones.camposDesgloce ]
 
     paquete: string     =   this._campos.paquete
     refaccion: string   =   this._campos.refaccion

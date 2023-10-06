@@ -34,8 +34,8 @@ export class HistorialClienteVehiculoComponent implements OnInit {
     private _servicios: ServiciosService, private _cotizaciones: CotizacionesService, private _publicos: ServiciosPublicosService) { }
   enrutamiento = {vehiculo:'', cliente:'', anterior:''}
 
-  camposDesgloce    =  [  ...this._cotizaciones.camposDesgloce ]
-  camposVehiculo    =  [  ...this._cotizaciones.camposVehiculo ]
+  // camposDesgloce    =  [  ...this._cotizaciones.camposDesgloce ]
+  // camposVehiculo    =  [  ...this._cotizaciones.camposVehiculo ]
   camposGastos      =  [  ...this._servicios.camposGastos ]
   camposGastos_show =  [  ...this._servicios.camposGastos_show ]
   camposPagos       =  [  ...this._servicios.camposPagos ]
@@ -71,12 +71,12 @@ export class HistorialClienteVehiculoComponent implements OnInit {
   recupera_enrutamiento(){
     this.rutaActiva.queryParams.subscribe(params => {
       const { vehiculo, cliente, anterior } = params
-      if(vehiculo && cliente){
-        this.enrutamiento.vehiculo = vehiculo
-        this.enrutamiento.cliente = cliente
-        this.vigila_cotizaciones_servicios(cliente, vehiculo)
-      }
-      this.enrutamiento.anterior = anterior
+      // if(vehiculo && cliente){
+      //   this.enrutamiento.vehiculo = vehiculo
+      //   this.enrutamiento.cliente = cliente
+      //   this.vigila_cotizaciones_servicios(cliente, vehiculo)
+      // }
+      // this.enrutamiento.anterior = anterior
     });
   }
   irPagina(pagina,vehiculo){
@@ -91,61 +91,6 @@ export class HistorialClienteVehiculoComponent implements OnInit {
   regresar(){
     const { anterior } = this.enrutamiento
     this.router.navigate([`/${anterior}`], { queryParams: {} });
-  }
-
-  async cotizaciones_get(cliente, vehiculo){
-
-      const cotizaciones = await this._cotizaciones.consulta_cotizaciones_new()
-      const cotizaciones_filtro = cotizaciones.filter(c=>c.vehiculo.id === vehiculo && c.cliente.id === cliente )
-      // console.log(cotizaciones_filtro);
-      if (!this.lista_cotizaciones_arr.length) {
-        this.lista_cotizaciones_arr = cotizaciones_filtro
-      }else{
-        this.lista_cotizaciones_arr = this._publicos.actualizarArregloExistente(this.lista_cotizaciones_arr,cotizaciones_filtro,[...this._cotizaciones.camposCotizaciones])
-      }
-      this.dataSourceCotizaciones.data = this.lista_cotizaciones_arr
-      this.newPagination('cotizaciones')
-  }
-  async recepciones_get(cliente, vehiculo){
-      
-      const recepciones = await this._servicios.consulta_recepciones_new();
-      const recepciones_filtro = recepciones.filter(c=>c.vehiculo.id === vehiculo && c.cliente.id === cliente )
-      // console.log(recepciones_filtro);
-      if (!this.lista_recepciones_arr.length) {
-        this.lista_recepciones_arr = recepciones_filtro
-      }else{
-        this.lista_recepciones_arr = this._publicos.actualizarArregloExistente(this.lista_recepciones_arr,recepciones_filtro,[...this._servicios.campos_servicios_hard])
-      }
-      this.dataSourceRecepciones.data = this.lista_recepciones_arr
-      this.newPagination('recepciones')
-  }
-  vigila_cotizaciones_servicios(cliente, vehiculo){
-      const starCountRef_cotizaciones = ref(db, `cotizacionesRealizadas`)
-      onValue(starCountRef_cotizaciones, async () => {
-        this.cotizaciones_get(cliente, vehiculo)
-      })
-      const starCountRef_recepciones = ref(db, `recepciones`)
-      onValue(starCountRef_recepciones, async () => {
-        this.recepciones_get(cliente, vehiculo)
-      })    
-  }
-  newPagination(tabla){
-    let dataSource, paginator, sort
-    if (tabla === 'cotizaciones' ) {
-      dataSource = this.dataSourceCotizaciones;
-      paginator = this.paginatorCotizaciones;
-      sort = this.sortCotizaciones;
-    } else if (tabla === 'recepciones' ) {
-      dataSource = this.dataSourceRecepciones;
-      paginator = this.paginatorRecepciones;
-      sort = this.sortRecepciones;
-    }
-    setTimeout(() => {
-      if (dataSource && paginator && sort) {
-        dataSource.paginator = paginator;
-        dataSource.sort = sort;
-      }
-    },500)
   }
 
 }

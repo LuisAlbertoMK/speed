@@ -59,7 +59,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false, kms:0
   }
 
-  camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
+  // camposDesgloce   =  [ ...this._cotizaciones.camposDesgloce ]
   camposCliente    =  [ ...this._clientes.camposCliente_show ]
   camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
   formasPago       =  [ ...this._cotizaciones.formasPago ]
@@ -220,11 +220,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.extra = cotizaciones_arregladas[0].vehiculo
     }else if (cotizacion){
 
-      const cotizacionesRealizadas_object = await this._publicos.revisar_cache('cotizacionesRealizadas')
+      const cotizaciones_object = await this._publicos.revisar_cache('cotizaciones')
       const clientes = await this._publicos.revisar_cache('clientes')
       const vehiculos = await this._publicos.revisar_cache('vehiculos')
       
-      const data_cotizacion = cotizacionesRealizadas_object[cotizacion]
+      const data_cotizacion = cotizaciones_object[cotizacion]
 
       const cotizaciones_arregladas = this._publicos.asigna_datos_cotizaciones({bruto: [data_cotizacion], clientes, vehiculos})
       
@@ -574,9 +574,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     
     const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
-    await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
-      this.infoCotizacion.no_cotizacion = ans
-    })
+    // await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
+    //   this.infoCotizacion.no_cotizacion = ans
+    // })
 
     const filtro_conceptos = this._publicos.obtenerNombresElementos(this.infoCotizacion.elementos)
 
@@ -679,7 +679,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                       return `${placas}`.toUpperCase()
                   }
                   
-                  updates[`cotizacionesRealizadas/${this._publicos.generaClave()}`] = infoSave;
+                  updates[`cotizaciones/${this._publicos.generaClave()}`] = infoSave;
                 
                   update(ref(db), updates)
                   .then(() => {

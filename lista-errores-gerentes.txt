@@ -28,3 +28,42 @@
 48.4 = 48400
 48.5 = 47400
 48.6 = 48600
+73.6
+
+
+se registro clientes
+se registro claves_clientes
+
+ {tamanioEnBytes: 99907, tamanioEnKilobytes: 97.5654296875, tamanioEnMegabytes: 0.09527873992919922}
+se registro recepciones
+se registro claves_recepciones
+
+ {tamanioEnBytes: 48240, tamanioEnKilobytes: 47.109375, tamanioEnMegabytes: 0.0460052490234375}
+se registro cotizaciones
+se registro claves_cotizaciones
+
+ {tamanioEnBytes: 1202702, tamanioEnKilobytes: 1174.513671875, tamanioEnMegabytes: 1.1469860076904297}
+se registro vehiculos
+se registro claves_vehiculos
+
+ {tamanioEnBytes: 126050, tamanioEnKilobytes: 123.095703125, tamanioEnMegabytes: 0.12021064758300781}
+se registro sucursales
+se registro claves_sucursales
+
+ {tamanioEnBytes: 2300, tamanioEnKilobytes: 2.24609375, tamanioEnMegabytes: 0.002193450927734375}
+se registro historial_gastos_diarios
+se registro claves_historial_gastos_diarios
+
+ {tamanioEnBytes: 4721, tamanioEnKilobytes: 4.6103515625, tamanioEnMegabytes: 0.004502296447753906}
+se registro historial_gastos_operacion
+se registro claves_historial_gastos_operacion
+
+ {tamanioEnBytes: 540, tamanioEnKilobytes: 0.52734375, tamanioEnMegabytes: 0.000514984130859375}
+se registro historial_gastos_orden
+se registro claves_historial_gastos_orden
+
+ {tamanioEnBytes: 6444, tamanioEnKilobytes: 6.29296875, tamanioEnMegabytes: 0.006145477294921875}
+se registro historial_pagos_orden
+se registro claves_historial_pagos_orden
+
+ {tamanioEnBytes: 2082, tamanioEnKilobytes: 2.033203125, tamanioEnMegabytes: 0.0019855499267578125}

@@ -71,8 +71,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   sucursales_array  =   [ ...this._sucursales.lista_en_duro_sucursales]
   camposCliente     =   [ ...this._clientes.camposCliente_show ]
   camposVehiculo    =   [ ...this._vehiculos.camposVehiculo_ ]
-  camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce ]
-  formasPago        =   [ ...this._cotizaciones.formasPago ]
+  // camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce ]
+  // formasPago        =   [ ...this._cotizaciones.formasPago ]
   coloresPluma      =   [ ...this._campos.coloresPluma ]
   detalles_rayar    =   [...this._servicios.detalles_rayar]
   checkList         =   [...this._servicios.checkList]
@@ -204,12 +204,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const clientes = await this._publicos.revisar_cache('clientes')
 
     if (cotizacion) {
-      const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
+      const cotizaciones = await this._publicos.revisar_cache('cotizaciones')
       
       const campos_recupera_cotizacion = ["cliente","elementos","formaPago","iva","margen","servicio","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal","reporte"]
-      if(cotizacionesRealizadas[cotizacion]){
+      if(cotizaciones[cotizacion]){
         const cotizacion_completa = this._publicos.asigna_datos_cotizaciones(
-          {bruto: [cotizacionesRealizadas[cotizacion]], clientes, vehiculos}
+          {bruto: [cotizaciones[cotizacion]], clientes, vehiculos}
         )
         console.log(cotizacion_completa);
         const data_cotizacion = this._publicos.crear_new_object(cotizacion_completa[0])
@@ -1064,140 +1064,5 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     }
   }
 
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
 
-    const campos_mo = ['aprobado','cantidad','costo','descripcion','enCatalogo','id','nombre','precio','status"','subtotal','tipo','total']
-    const campos_refaccion = [ ...campos_mo, 'marca']
-    const campos_paquete = [ 'aprobado', 'cantidad', 'cilindros', 'costo', 'elementos', 'enCatalogo', 'id', 'marca', 'modelo', 'nombre', 'status', 'tipo','reporte' ]
-    // let refacciones_new = 0
-    const nuevos_elementos = (servicios_) ? servicios_ : []
-    const elementos = [...nuevos_elementos] 
-    let new_ele
-    const margen = 1 + (new_margen / 100)
-    elementos.map(ele=>{
-      const {cantidad, costo} = ele
-      if (ele.tipo === 'paquete') {
-        ele.elementos = (ele.elementos) ? ele.elementos : []
-        const report = this.total_paquete(ele)
-        const {mo, refacciones} = report
-        if (ele.aprobado) {
-          reporte.mo += mo
-          reporte.refacciones += refacciones
-        }
-        ele.costo = costo || 0
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad
-        ele.reporte = report
-        const serviciosConIndices = ele.elementos.map((s, index) => {
-          const servicioConIndice = { ...s };
-          servicioConIndice.index = index;
-          return servicioConIndice;
-        })
-        const nuevos_subelementos = this.remplaza_informacion_subelementos(serviciosConIndices, margen)
-        ele.elementos = nuevos_subelementos
-
-        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_paquete)
-      }else if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          reporte.mo += operacion
-        }
-        ele.subtotal = operacion
-        ele.total = operacion
-        ele.costo = costo || 0
-        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_mo)
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        if (ele.aprobado) {
-          // refacciones_new += operacion
-          reporte.refacciones += operacion
-        }
-        ele.subtotal = operacion
-        ele.total = operacion * margen
-        ele.costo = costo || 0
-        new_ele = this._publicos.nuevaRecuperacionData(ele, campos_refaccion)
-      }
-      return new_ele
-    })
-    let descuento = parseFloat(descuento_) || 0
-
-    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
-
-    const {mo, refacciones} = reporte
-
-    reporte.refacciones_v = reporte.refacciones * margen
-
-    let nuevo_total = mo + reporte.refacciones_v
-    
-    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
-
-    let iva =  _iva ? nuevo_total * .16 : 0;
-
-    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
-    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
-    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
-
-    reporte.descuento = descuentoshow
-    reporte.iva = iva
-    reporte.subtotal = nuevo_total
-    reporte.total = newTotal
-    reporte.meses = total_meses
-
-    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, elementos}
-    
-  }
-  mano_refaccion(ele){
-    const {costo, precio, cantidad} = ele
-    const mul = (costo > 0 ) ? costo : precio
-    return cantidad * mul
-  }
-  total_paquete(data){
-    const {elementos} = data
-    const reporte = {mo:0, refacciones:0}
-    const nuevos_elementos = [...elementos]
-    nuevos_elementos.forEach(ele=>{
-      if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.mo += operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.refacciones += operacion
-      }
-    })
-    return reporte
-  }
-  remplaza_informacion_subelementos(arreglo:any[], margen){
-    const nuevos_subelementos = arreglo.map(elemento=>{
-      const {tipo} = elemento
-      let operacion = this.mano_refaccion(elemento)
-      let subtotal = operacion, total = operacion
-      const all = JSON.parse(JSON.stringify(elemento));
-      
-      if (tipo === 'refaccion') total = total * margen 
-      const nueva_info = {...all,
-        subtotal,
-        total
-      }     
-      return nueva_info
-    })
-    return nuevos_subelementos
-  }
-  nueva_data_cliente(cliente){
-    const nombres = [
-      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
-      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
-      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
-      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
-      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
-      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
-    ]
-    const {sucursal, nombre, apellidos} = cliente
-    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
-    cliente.fullname = `${nombre} ${apellidos}`
-    return cliente
-  }
 }

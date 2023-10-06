@@ -47,7 +47,7 @@ export class HistorialVehiculoComponent implements OnInit {
     
     camposCliente   =  [ ...this._clientes.camposCliente_show ]
     camposVehiculo  =  [ ...this._vehiculos.camposVehiculo_ ]
-    camposDesgloce  =  [ ...this._cotizaciones.camposDesgloce ]
+    // camposDesgloce  =  [ ...this._cotizaciones.camposDesgloce ]
     sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
   
     paquete: string     =  this._campos.paquete
@@ -83,7 +83,6 @@ export class HistorialVehiculoComponent implements OnInit {
   rol(){
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
-      this.acciones()
     });
   }
   regresar(){
@@ -95,59 +94,6 @@ export class HistorialVehiculoComponent implements OnInit {
       queryParams
     });
   }
-  async acciones(){
-
-    console.time('Execution Time');
-    
-    const {vehiculo, cliente, sucursal} = this.enrutamiento
-    // console.log( this.enrutamiento);
-    // const ruta_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
-    const data_cliente  = await this._clientes.consulta_cliente_new({sucursal, cliente})
-    // console.log(data_cliente);
-    const data_vehiculo = await this._vehiculos.consulta_vehiculo_new({sucursal, cliente, vehiculo})
-
-    // console.log(this.enrutamiento);
-    
-    if (sucursal && vehiculo && cliente) {
-
-      const ruta_cotizaciones = `cotizacionesRealizadas/${sucursal}/${cliente}`
-      const ruta_recepciones = `recepciones/${sucursal}/${cliente}`
-
-      const todas_cotizaciones = await this._cotizaciones.conslta_cotizaciones_cliente({ruta: ruta_cotizaciones})
-      const todas_recepciones= await this._servicios.conslta_recepciones_cliente({ruta: ruta_recepciones})
-      // console.log(todas_recepciones);
-      
-      const filtro_cotizaciones_vehiculo = todas_cotizaciones.filter(cot=>cot.vehiculo === vehiculo ).map(cot=>{
-        cot.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
-        cot.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-        cot.data_vehiculo = data_vehiculo
-        const {placas}= data_vehiculo
-        cot.placas = placas
-        return cot
-      })
-
-      const filtro_recepciones_vehiculo = todas_recepciones.filter(recep=>recep.vehiculo === vehiculo ).map(recep=>{
-        recep.data_cliente = this._clientes.formatea_info_cliente_2(data_cliente)
-        recep.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
-        recep.data_vehiculo = data_vehiculo
-        const {placas}= data_vehiculo
-        recep.placas = placas
-        return recep
-      })
-
-      // console.log(filtro_recepciones_vehiculo);
-            
-      this.cotizaciones_arr = filtro_cotizaciones_vehiculo
-      this.recepciones_arr = filtro_recepciones_vehiculo
-    }
- 
-
-    this.data_cliente = data_cliente
-    this.data_vehiculo = data_vehiculo
-
-    console.timeEnd('Execution Time');
-  }
-
   
 
 }

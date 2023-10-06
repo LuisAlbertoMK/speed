@@ -121,7 +121,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   // async vigila_hijo(){
-  //   const starCountRef = ref(db, `cotizacionesRealizadas`)
+  //   const starCountRef = ref(db, `cotizaciones`)
   //   onValue(starCountRef, (snapshot) => {
   //     if (snapshot.exists()) {
   //       this.lista_cotizaciones()
@@ -129,8 +129,8 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   //   })
   // }
   async lista_cotizaciones(){
-    const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
-    const cotizaciones_arr = this._publicos.crearArreglo2(cotizacionesRealizadas)
+    const cotizaciones = await this._publicos.revisar_cache('cotizaciones')
+    const cotizaciones_arr = this._publicos.crearArreglo2(cotizaciones)
 
     const clientes = await this._publicos.revisar_cache('clientes')
     const vehiculos = await this._publicos.revisar_cache('vehiculos')

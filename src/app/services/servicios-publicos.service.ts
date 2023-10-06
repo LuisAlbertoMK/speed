@@ -1840,7 +1840,7 @@ export class ServiciosPublicosService {
     async buscar_data_realcionada_con_cliente(cliente:string, data_cliente){
       let cotizaciones_arr = [], recepciones_arr = [], vehiculos_arr = []
       const recepciones_object = await this.revisar_cache('recepciones')
-      const cotizaciones_object = await this.revisar_cache('cotizacionesRealizadas')
+      const cotizaciones_object = await this.revisar_cache('cotizaciones')
       const vehiculos = await this.revisar_cache('vehiculos')
 
       const historial_gastos_orden = this.crearArreglo2(await this.revisar_cache('historial_gastos_orden'))
@@ -1979,7 +1979,8 @@ export class ServiciosPublicosService {
     transformaDataCliente(data){
       const nuevos = [...data]
       const retornados = nuevos.map(cli=>{
-        const {sucursal, nombre, apellidos} = cli
+        const {sucursal, nombre, apellidos, id} = cli
+        cli.id = id
         cli.sucursalShow = this.sucursales_array.find(s=>s.id === sucursal).sucursal
         cli.fullname = `${String(nombre).toLowerCase()} ${String(apellidos).toLowerCase()}`
         return cli
@@ -2132,51 +2133,19 @@ export class ServiciosPublicosService {
       return `${partesDeRuta.pop()}`.toString();
     }
 
-    async simular_observacion_informacion_firebase_nombre(data){
-      const {ruta_observacion, nombre} = data
-      console.log({ruta_observacion, nombre});
-      
-      const claves_nombre:any[] = await this.revisar_cache(nombre)
-
-      console.log(claves_nombre);
-      
-      const resultados = await this.revisar_cache2(ruta_observacion)
-
-      console.log(resultados);
-      
-      let claves_faltantes = []
-      claves_nombre.forEach(async (clave, index) => {
-
-        if (!resultados[clave]) {
-          claves_faltantes.push(clave)
-        }else{
-          const commentsRef = ref(db, `${ruta_observacion}/${clave}`);
-          onChildChanged(commentsRef, (data) => {
-            const key = data.key
-            const valor =  data.val()
-            console.log(key);
-            if (resultados[clave]) {
-              const nueva_data = this.crear_new_object(resultados[clave])
-                nueva_data[key] = valor
-                resultados[clave] = nueva_data
-                console.log(nueva_data);
-                this._security.guarda_informacion({nombre: ruta_observacion, data: resultados})
-            }
-          });
-        }
-      });
-      claves_faltantes.forEach(async (clav)=>{
-        const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}}/${clav}`)
-        const {no_cliente} = this.crear_new_object(data_cliente)
-        if (no_cliente) {
-          resultados[clav] = data_cliente
-        }
-      })
-      setTimeout(() => {
-        this._security.guarda_informacion({nombre: ruta_observacion, data: resultados}) 
-      }, 2000);
-      
-      
+    saber_pesos(data){
+      const jsonString = JSON.stringify(data);
+      const encoder = new TextEncoder();
+      const encodedData = encoder.encode(jsonString);
+      const tamanioEnBytes = encodedData.length;
+      const tamanioEnKilobytes = tamanioEnBytes / 1024;
+      const tamanioEnMegabytes = tamanioEnKilobytes / 1024;
+      return {tamanioEnBytes, tamanioEnKilobytes, tamanioEnMegabytes}
+    }
+    eliminarElementosRepetidos(arregloOriginal, elementosAEliminar) {
+      // Filtrar los elementos del segundo arreglo que no están en el primer arreglo
+      const resultado = elementosAEliminar.filter((elemento) => !arregloOriginal.includes(elemento));
+      return resultado;
     }
   
       

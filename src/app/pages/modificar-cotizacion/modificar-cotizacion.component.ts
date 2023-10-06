@@ -237,7 +237,7 @@ venatanaModalRecacciones:boolean = false
      }, 1000)
   }
   informacionCotizacion(){
-    const starCountRef = ref(db, `cotizacionesRealizadas/${this.idCotizacion}`)
+    const starCountRef = ref(db, `cotizaciones/${this.idCotizacion}`)
         onValue(starCountRef, (snapshot) => {
 	        let arreglo= snapshot.val()
           this.dataRecepcion = snapshot.val()
@@ -422,7 +422,7 @@ venatanaModalRecacciones:boolean = false
         if (this.idCotizacion==='newCotizacion') {
             const newPostKey = push(child(ref(db), 'posts')).key
             tempData.aprobada = false
-            set(ref(db, `cotizacionesRealizadas/${tempData.cliente}/${tempData.vehiculo}/${newPostKey}`), tempData )
+            set(ref(db, `cotizaciones/${tempData.cliente}/${tempData.vehiculo}/${newPostKey}`), tempData )
             .then(() => {
               // Data saved successfully!
               this.tempdataCotizacion=[]
@@ -444,7 +444,7 @@ venatanaModalRecacciones:boolean = false
           let vehiculoCliente = this.clienteExiste.vehiculo
           set(ref(db, `recepcion/${this.idCotizacion}/cotizacion`), true )
           // set(ref(db, `recepcionStatus/${tempData.cliente}/${this.idVehiculo}/${this.idCotizacion}/status`), 'recibido' )
-          set(ref(db, `cotizacionesRealizadas/${this.idCotizacion}`), tempData )
+          set(ref(db, `cotizaciones/${this.idCotizacion}`), tempData )
           .then(() => {
             // Data saved successfully!
             this.tempdataCotizacion=[]

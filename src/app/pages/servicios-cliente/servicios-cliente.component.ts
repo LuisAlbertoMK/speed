@@ -39,7 +39,7 @@ export class ServiciosClienteComponent implements OnInit {
 
   rol_cliente:string = 'cliente'
 
-  camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce  ]
+  // camposDesgloce    =   [ ...this._cotizaciones.camposDesgloce  ]
   camposVehiculo    =   [ ...this._vehiculos.camposVehiculo_  ]
 
   paquete: string     =   this._campos.paquete

@@ -1,26 +1,15 @@
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0"></h1>
-      </div>
-      <div class="col-sm-6">
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="">
-  <div class="row ">
+<app-template-navegacion></app-template-navegacion>
+
+  <div class="row">
     <ng-container *ngIf="Gerente_rol || SuperSU_rol">
-      <div class="col-sm-6 col-md-4 col-lg-4  text-center pointer " aria-current="page" *ngFor="let gerente of asigancion_roles_gerente"
+      <div class="col-12 col-sm-4 col-md-4 col-lg-3  pointer "  *ngFor="let gerente of asigancion_roles_gerente"
       [routerLink]="['/'+ gerente.path]">
-       <div class="info-box">
-         <div class="info-box-content text-center">
-           <h3 class="card-title fw-bold">{{gerente.show}}</h3>
-           <p class="card-text"><i class="fa  fa-2x" [class]="'fa-'+gerente.icono"></i></p>
-         </div>
-       </div>
+        <div class="info-box">
+          <div class="info-box-content text-center">
+            <p class="card-text"><i class="fa  fa-2x" [class]="'fa-'+gerente.icono"></i></p>
+            <strong><small>{{gerente.show}}</small></strong>
+          </div>
+        </div>
      </div>
     </ng-container>
     <ng-container *ngIf="Cliente_rol">
@@ -35,6 +24,3 @@
      </div>
     </ng-container>
     
-    
-
-</div>

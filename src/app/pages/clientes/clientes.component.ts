@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 
 
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { child, get, getDatabase, onChildChanged, onValue, push, ref, set, update } from "firebase/database";
+import { child, get, getDatabase, onChildAdded, onChildChanged, onValue, push, ref, set, update } from "firebase/database";
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
 import {MatPaginator} from '@angular/material/paginator';
@@ -58,10 +58,10 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   async lista_clientes(){
     const clientes = await this._publicos.revisar_cache2('clientes')
     
-    console.log(clientes);
+    // console.log(clientes);
     
     const clientes_arr = this._publicos.crearArreglo2(clientes)
-    console.log(clientes_arr);
+    // console.log(clientes_arr);
     
     
     const clientes_trasnform = this._publicos.transformaDataCliente(clientes_arr)
@@ -73,22 +73,54 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     setTimeout(() => {
       this.clientes_actual = this._publicos.ordenamiento_fechas_x_campo(ordenar,'id',true)
       this.clientes_arr = this._publicos.actualizarArregloExistente(this.clientes_actual,ordenar, campos_cliente)
-    }, 1000);
+    }, 600);
   }
   // this.supervisar_claves({ruta_observacion: 'clientes', nombre:'claves_clientes'})
-  vigila_hijo(data){
+  async vigila_hijo(data){
+
+    this.lista_clientes()
+    
     const {ruta_observacion, nombre} = data
-    const starCountRef = ref(db, `${nombre}`)
-    onValue(starCountRef, async (snapshot) => {
-      if (snapshot.exists()) {
-        const nuevos_claves = Object.values(snapshot.val())
-        // this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
-        // this._publicos.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
+
+    const commentsRef = ref(db, `${nombre}`);
+    // const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
+    let temporales = []
+    const onChildAddedCallback = async (data) => {
+      const valor = data.val();
+      // console.log(valor);
+      // console.log(this._publicos.saber_pesos(valor));
+      
+      
+      // if (!localhost_nombre[valor]) {
+        // console.log(`valor no encontrado: ${valor}`);
+        // temporales.push(valor)
+
+        // const claves_encontradas = await this._publicos.revisar_cache2(nombre)
+        // const valorNoDuplicado = await [...new Set([...claves_encontradas, ...temporales])];
+        // console.log(valorNoDuplicado);
+        
+        // this._security.guarda_informacion({nombre, data: valorNoDuplicado})
+        // localStorage.setItem('faltantes',JSON.stringify([...temporales]))
+        // console.log(temporales);
+        // this._security.guarda_informacion({nombre:`faltantes_${nombre}`, data: [...temporales]})
+        // this.simular_2({nombre, ruta_observacion})
+        // this.simular_observacion_informacion_firebase_nombre({nombre, ruta_observacion})
         this.lista_clientes()
-      } else {
-        console.log("No data available");
-      }
-    })
+      // }
+    };
+
+    onChildAdded(commentsRef, onChildAddedCallback)
+    // const starCountRef = ref(db, `${nombre}`)
+    // onValue(starCountRef, async (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     // const nuevos_claves = Object.values(snapshot.val())
+    //     // this._security.guarda_informacion({nombre: ruta_observacion, data: nuevos_claves})
+    //     // this._publicos.simular_observacion_informacion_firebase_nombre({ruta_observacion, nombre})
+    //     this.lista_clientes()
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // })
   }
 }
 
