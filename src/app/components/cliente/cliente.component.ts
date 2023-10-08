@@ -430,11 +430,13 @@ export class ClienteComponent implements OnInit, OnChanges {
         // const claves_encontradas = await this.simula_inserccion()
         const claves_encontradas = await this._automaticos.consulta_ruta('claves_clientes')
 
-        let nuevas_claves = [...claves_encontradas, nueva_clave_generada ]
+        // let nuevas_claves = [...claves_encontradas, nueva_clave_generada ]
 
-        updates['claves_clientes'] = nuevas_claves
+        const valorNoDuplicado = await [...new Set([...claves_encontradas, nueva_clave_generada])];
 
-        this._security.guarda_informacion({nombre:'claves_clientes', data: nuevas_claves})
+        updates['claves_clientes'] = valorNoDuplicado
+
+        this._security.guarda_informacion({nombre:'claves_clientes', data: valorNoDuplicado})
 
         try {
           await update(ref(db), updates);
