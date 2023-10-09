@@ -143,7 +143,7 @@ export class Loginv1Component implements OnInit {
           
         }
         // console.log(usuario_econtrado);
-        if (usuario_econtrado['correo']) {
+        if (usuario_econtrado && usuario_econtrado['correo']) {
           dataSecurity['status'] = usuario_econtrado['status']
           asiganaData_usuario.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(usuario_econtrado[c]) })
           camposFirebase.forEach((c)=>{ dataSecurity[c] = this._security.servicioEncriptado(user[c]) })

@@ -83,7 +83,7 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    }, 500);
+    }, 600);
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

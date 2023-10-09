@@ -329,6 +329,13 @@ export class GastoComponent implements OnInit, OnChanges {
           updates['claves_historial_gastos_orden'] = nuevas_claves
 
           this._security.guarda_informacion({nombre:'claves_historial_gastos_orden', data: nuevas_claves})
+        }else{
+          const claves_encontradas = await this._automaticos.consulta_ruta('claves_historial_gastos_operacion')
+          let nuevas_claves = [...claves_encontradas, clave_ ]
+          
+          updates['claves_historial_gastos_operacion'] = nuevas_claves
+
+          this._security.guarda_informacion({nombre:'claves_historial_gastos_operacion', data: nuevas_claves})
         }
         // console.log(updates);
         

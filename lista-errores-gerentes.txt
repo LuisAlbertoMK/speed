@@ -21,15 +21,21 @@
 
 1M = 1000000 Byte
 
-47.2 =  47200
-47.4 =  47400
-48 =  48000
-48.1 = 48100
-48.4 = 48400
-48.5 = 47400
-48.6 = 48600
-73.6
+47.20 MB =  47200
+47.40 MB =  47400
+48.00 MB  48000
+48.10 MB = 48100
+48.40 MB = 48400
+48.50 MB = 47400
+48.60 MB = 48600
+73.60 MB
 
+09102023 => dia
+109.5 KB
+132.9 KB
+295.9 KB
+303.5
+307.KB
 
 se registro clientes
 se registro claves_clientes
@@ -67,3 +73,13 @@ se registro historial_pagos_orden
 se registro claves_historial_pagos_orden
 
  {tamanioEnBytes: 2082, tamanioEnKilobytes: 2.033203125, tamanioEnMegabytes: 0.0019855499267578125}
+
+
+ elementos_con_cache = [
+  clientes,
+  clientes_list,
+  sucursales,
+  servicios,
+  cotizacion,
+  
+ ]

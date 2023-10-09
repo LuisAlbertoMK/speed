@@ -105,77 +105,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this.primer_comprobacion_resultados_multiple()
     
   }
-  // comprobacion_resultados(){
-  //   const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
-  //   return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
-  // }
-  // primer_comprobacion_resultados(){
-  //   this.asiganacion_resultados()
-  //   this.segundo_llamado()
-  // }
-  // segundo_llamado(){
-  //   setInterval(()=>{
-  //     if (!this.comprobacion_resultados()) {
-  //       console.log('recuperando data');
-  //       const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
-  //       this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
-  //       this.asiganacion_resultados()
-  //     }
-  //   },1500)
-  // }
-  
-  // asiganacion_resultados(){
-  //   const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
-
-  //   const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this._sucursal);
-
-  //   const {start, end }= this.fecha_formateadas
-
-  //   const objeto_filtrado_fecha = this._publicos.filtrarObjetoPorPropiedad_fecha(objetoFiltrado, start, end)
-
-  //   const data_recuperda_arr = this._publicos.crearArreglo2(objeto_filtrado_fecha)
-
-  //   const recepciones_completas =this._publicos.nueva_asignacion_recepciones(data_recuperda_arr)
-
-  //   // console.log(recepciones_completas);
-    
-  //   const campos = [
-  //     'data_cliente',
-  //     'data_sucursal',
-  //     'data_vehiculo',
-  //     'diasSucursal',
-  //     'fecha_entregado',
-  //     'fecha_promesa',
-  //     'fecha_recibido',
-  //     'fullname',
-  //     'notifico',
-  //     'status',
-  //     'tecnico',
-  //     'tecnicoShow',
-  //     // 'cliente',
-  //     // 'descuento',
-  //     // 'elementos',
-  //     // 'formaPago',
-  //     // 'iva',
-  //     // 'margen',
-  //     // 'no_cotizacion',
-  //     // 'nota',
-  //     // 'pdf',
-  //     // 'promocion',
-  //     // 'reporte',
-  //     // 'servicio',
-  //     // 'sucursal',
-  //     // 'vehiculo',
-  //     // 'vehiculos',
-  //     // 'vencimiento',
-  //   ]
-
-  //   this.objecto_actual = objecto_recuperdado
-  //   this.recepciones_arr = (!this.recepciones_arr.length) 
-  //   ? recepciones_completas
-  //   :  this._publicos.actualizarArregloExistente(this.recepciones_arr, recepciones_completas, campos )
-
-  // }
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
       if (start_ && start_['_d'] && end_ && end_['_d'] ) {
@@ -210,7 +139,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.campo_vigilar.forEach(campo_vigila=>{
         if (!this.comprobacion_resultados_multiple(campo_vigila)) {
           console.log(`recuperando data ${campo_vigila}`);
-          // const objecto_recuperdado = 
           this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
           this.asiganacion_resultados_multiples(this.campo_vigilar)
         }
@@ -274,20 +202,11 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
   }
   
-  irPagina(pagina, data){
+  irPagina(pagina){
     const anterior = this._publicos.extraerParteDeURL()
-
-    const {id: id_recepcion} = this._publicos.crear_new_object(data)
-
-    if (id_recepcion) {
-      const queryParams = {
-        recepcion: id_recepcion,
-        anterior
-      }
-      this.router.navigate([`/${pagina}`], { 
-        queryParams
-      });
-    }
+    const queryParams = {}
+    queryParams['anterior'] = anterior
+    this.router.navigate([`/${pagina}`], { queryParams });
   }
 
  

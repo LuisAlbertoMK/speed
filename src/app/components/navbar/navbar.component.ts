@@ -104,19 +104,19 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this.rol()
     // this.vigila_hijo()
     
-    this.nombreSucursal()
-
+    
     // this.AsiganacionVariablesSesion()
-
+    
     this.comprobarTimeExpira()
     this.comprobarTema()
+    this.nombreSucursal()
   }
   ngAfterViewInit() {
     
   }
   rol(){
-    const { rol, sucursal, usuario } = this._security.usuarioRol()
-
+    const { rol, sucursal, usuario , sesion} = this._security.usuarioRol()
+    this.sesion = sesion
     this._rol = rol
     this._sucursal = sucursal
 
@@ -226,18 +226,6 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 		});
   }
   
-//   AsiganacionVariablesSesion(){
-//     const variableX = JSON.parse(localStorage.getItem('dataSecurity'))
-//     this.ROL = this._security.servicioDecrypt(variableX['rol'])
-//     this.SUCURSAL = this._security.servicioDecrypt(variableX['sucursal'])
-    
-//     // console.log(variableX);
-    
-// // console.log(this._security.servicioDecrypt(variableX['usuario']));
-
-//     this.sesion = Boolean(variableX['sesion'])
-//     //  CryptoJS.AES.decrypt(localStorage.getItem('email').trim(), this.decPassword.trim()).toString(CryptoJS.enc.Utf8)
-//   }
   //cerrar sesion
   // logout(){ this._auth.logout('cerrar') }
   logout(){
@@ -274,14 +262,8 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   // }
   
   nombreSucursal(){
-    const { rol, sucursal } = this._security.usuarioRol()
-
-    // this.ROL = rol
-    // this.SUCURSAL = sucursal
-    
-    // if (this.SUCURSAL!=='Todas' ) {
-    //   this.nombreSucursalMuestra = this.sucursales_array.find(s=>s.id === this.SUCURSAL).sucursal
-    // }
+    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    if (this._sucursal !=='Todas')  this.nombreSucursalMuestra = sucursales[this._sucursal].sucursal
   }
 
 

@@ -88,6 +88,8 @@ export class SucursalesComponent implements OnInit {
   formaSucursal: FormGroup
   formaUploadFile: FormGroup
   desactivaGuardar:boolean = false
+
+  objecto_actual:any ={}
   constructor(private fb: FormBuilder,
     private _publicos:ServiciosPublicosService,
     private _sucursal: SucursalesService, private _uploadImagen: UploadFileService,
@@ -97,28 +99,13 @@ export class SucursalesComponent implements OnInit {
     this.rol()
     this.crearFormularioSucursal()
     this.brow()
+    
    
   }
   ngAfterViewInit() {
 
   }
-  vigila_hijo(){
-    const starCountRef = ref(db, `sucursales`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        this.lista_sucursales()
-      }
-    })
-  }
-  async lista_sucursales(){
-    console.time('Execution Time');
-    const sucursales = await this._publicos.revisar_cache('sucursales')
-    // console.log(sucursales);
-    const sucursales_arr = this._publicos.crearArreglo2(sucursales)
-    // console.log(sucursales_arr);
-    this.sucursales_array = sucursales_arr
-    console.timeEnd('Execution Time');
-  }
+  
   async rol(){
    
     const { rol, sucursal } = this._security.usuarioRol()
@@ -126,7 +113,48 @@ export class SucursalesComponent implements OnInit {
     this._rol = rol
     this.sucursal_ = sucursal
 
-    this.vigila_hijo()
+    // this.vigila_hijo()
+    this.primer_comprobacion_resultados()
+  }
+
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('sucursales')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
+  }
+  primer_comprobacion_resultados(){
+    this.asiganacion_resultados()
+    this.segundo_llamado()
+  }
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        const objecto_recuperdado = this._publicos.nueva_revision_cache('sucursales')
+        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+        this.asiganacion_resultados()
+      }
+    },1500)
+  }
+
+  asiganacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('sucursales')
+    const data_recuperda_arr = this._publicos.crearArreglo2(objecto_recuperdado)
+
+    const campos = [
+      'direccion',
+      'imagen',
+      'status',
+      'fullname',
+      'sucursal',
+      'nombre',
+      'telefono','correo'
+    ]
+    this.objecto_actual = objecto_recuperdado
+
+    this.sucursales_array = (!this.sucursales_array.length) 
+    ? data_recuperda_arr
+    :  this._publicos.actualizarArregloExistente(this.sucursales_array, data_recuperda_arr, campos )
+
   }
   getInformacionSucursal(id:string){
     //priemro obtener informacion de sucursal

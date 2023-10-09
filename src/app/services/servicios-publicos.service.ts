@@ -2143,6 +2143,8 @@ export class ServiciosPublicosService {
       const tamanioEnBytes = encodedData.length;
       const tamanioEnKilobytes = tamanioEnBytes / 1024;
       const tamanioEnMegabytes = tamanioEnKilobytes / 1024;
+      console.log({tamanioEnBytes, tamanioEnKilobytes, tamanioEnMegabytes});
+      
       return {tamanioEnBytes, tamanioEnKilobytes, tamanioEnMegabytes}
     }
     eliminarElementosRepetidos(arregloOriginal, elementosAEliminar) {
@@ -2165,13 +2167,14 @@ export class ServiciosPublicosService {
     }
     transformaDataCliente(objeto_recuperado){
       const nueva_data = {};
+      const sucursales = this.nueva_revision_cache('sucursales');
       for (const cliente in objeto_recuperado) {
         if (Object.hasOwnProperty.call(objeto_recuperado, cliente)) {
           const nueva_data_cliente = this.crear_new_object(objeto_recuperado[cliente]);
           const { sucursal, nombre, apellidos } = nueva_data_cliente;
     
           nueva_data_cliente.id = cliente;
-          nueva_data_cliente.sucursalShow = this.sucursales_array.find(s => s.id === sucursal)?.sucursal || '';
+          nueva_data_cliente.sucursalShow = `${sucursales[sucursal].sucursal}`
           nueva_data_cliente.fullname = `${nombre.toLowerCase()} ${apellidos.toLowerCase()}`;
     
           nueva_data[cliente] = nueva_data_cliente;

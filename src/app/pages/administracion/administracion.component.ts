@@ -64,6 +64,17 @@ export class AdministracionComponent implements OnInit {
      filtro_sucursal:string
      realizaGasto:string = 'gasto'
   
+     objecto_actual:any ={}
+     objecto_actuales:any = {
+      recepciones:{},
+      historial_gastos_orden:{},
+      historial_pagos_orden:{},
+     }
+     campo_vigilar = [
+      'recepciones',
+      'historial_gastos_orden',
+      'historial_pagos_orden',
+    ]
   ngOnInit(): void {
     this.rol()
     this.vigila_calendario()
@@ -74,79 +85,114 @@ export class AdministracionComponent implements OnInit {
     this._rol = rol
     this._sucursal = sucursal
     this.filtro_sucursal = sucursal
-    this.vigila_hijo()
+    this.primer_comprobacion_resultados_multiple()
+  }
+  comprobacion_resultados_multiple(campo){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
+  }
+  primer_comprobacion_resultados_multiple(){
+    this.campo_vigilar.forEach(campo_vigila=>{
+      this.asiganacion_resultados_multiples(campo_vigila)
+    })
+    this.segundo_llamado_multiple()
   }
 
-  vigila_hijo(){
-    const rutas_vigila = [
-      'clientes',
-      'vehiculos',
-      'recepciones',
-      'historial_gastos_operacion',
-      'historial_gastos_orden',
-      'historial_pagos_orden',
-    ]
-    rutas_vigila.forEach(nombre=>{
-      const starCountRef = ref(db, `${nombre}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          this.lista_gastos_administracion()
+  segundo_llamado_multiple(){
+    setInterval(()=>{
+      this.campo_vigilar.forEach(campo_vigila=>{
+        if (!this.comprobacion_resultados_multiple(campo_vigila)) {
+          console.log(`recuperando data ${campo_vigila}`);
+          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
+          this.asiganacion_resultados_multiples(this.campo_vigilar)
         }
       })
-    })
-    
+
+    },1500)
   }
+  asiganacion_resultados_multiples(campo_vigila){
+    this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
+    this.genera_resultados()
+  }
+  genera_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
 
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this.filtro_sucursal);
 
-  async lista_gastos_administracion(){
+    const {start, end }= this.fecha_formateadas
+
+    const objeto_filtrado_fecha = this._publicos.filtrarObjetoPorPropiedad_fecha(objetoFiltrado, start, end)
+
+    const data_recuperda_arr = this._publicos.crearArreglo2(objeto_filtrado_fecha)
+
+    const recepciones_completas =this._publicos.nueva_asignacion_recepciones(data_recuperda_arr)
+
+    // console.log(recepciones_completas);
+
+    //obeterner los gastos de operacion 
+
+    // console.log('==========><==========');
     
-    console.time('Execution Time');
-      const recepciones_object = await this._publicos.revisar_cache('recepciones')
-      const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
-      const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
-
-      const gastos_operacion_object = await this._publicos.revisar_cache('historial_gastos_operacion')
-      const gastos_operacion_array = this._publicos.crearArreglo2(gastos_operacion_object)
-
-      const clientes = await this._publicos.revisar_cache('clientes')
-      const vehiculos = await this._publicos.revisar_cache('vehiculos')
-
-      const entregadas = this._publicos.filtra_campo(this._publicos.crearArreglo2(recepciones_object),'status','entregado')
-
-      const enviar_recepciones = {
-        bruto: entregadas, 
-        clientes, 
-        vehiculos, 
-        historial_gastos_orden, 
-        historial_pagos_orden
-      }
-
-      const antes_filtro_recepciones = this._publicos.asigna_datos_recepcion(enviar_recepciones)
-      // console.log(antes_filtro_recepciones);
-      const {start:start_, end: end_} = this.fecha_formateadas
-      const filtro_sucursales = this._publicos.filtro_fechas(antes_filtro_recepciones,'fecha_recibido',start_,end_)
-      // console.log(recepciones_arr);
-      const recepciones_arr = (this.filtro_sucursal === 'Todas') 
-        ?  filtro_sucursales 
-        : this._publicos.filtra_campo(filtro_sucursales,'sucursal',this.filtro_sucursal)
+    const gastos_operacion = this._publicos.nueva_revision_cache('historial_gastos_operacion')
+    // console.log(gastos_operacion);
+    // console.log(this.filtro_sucursal);
+    const objetoFiltrado_operacion = this._publicos.filtrarObjetoPorPropiedad(gastos_operacion, 'sucursal', this.filtro_sucursal);
+    // console.log(objetoFiltrado_operacion);
+    const objeto_filtrado_fecha_operacion = this._publicos.filtrarObjetoPorPropiedad_fecha(objetoFiltrado_operacion, start, end)
+    // console.log(objeto_filtrado_fecha_operacion);
+    const array_operacion = this._publicos.crearArreglo2(objeto_filtrado_fecha_operacion)
+    // console.log(array_operacion);
     
-      const filtro_fechas_operacion = this._publicos.filtro_fechas(gastos_operacion_array,'fecha_recibido',start_,end_)
-      // console.log(filtro_fechas_operacion);
-      const total_gastos_operacion = this._publicos.sumatorias_aprobados(filtro_fechas_operacion)
-      // console.log(total_gastos_operacion);
-      const total_refacciones = this._publicos.suma_refacciones_os_cerradas_reales(recepciones_arr)
-      // console.log(total_refacciones);
-      const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales_reales(recepciones_arr)
-      // console.log(total_subtotales_ventas);
-      let margen:number = 0, por_margen:number = 0, total_ordenes:number =0
-      total_ordenes = recepciones_arr.length
+    const campos = [
+      'data_cliente',
+      'data_sucursal',
+      'data_vehiculo',
+      'diasSucursal',
+      'fecha_entregado',
+      'fecha_promesa',
+      'fecha_recibido',
+      'fullname',
+      'notifico',
+      'status',
+      'tecnico',
+      'tecnicoShow',
+      // 'cliente',
+      // 'descuento',
+      // 'elementos',
+      // 'formaPago',
+      // 'iva',
+      // 'margen',
+      // 'no_cotizacion',
+      // 'nota',
+      // 'pdf',
+      // 'promocion',
+      // 'reporte',
+      // 'servicio',
+      // 'sucursal',
+      // 'vehiculo',
+      // 'vehiculos',
+      // 'vencimiento',
+    ]
+
+    const total_gastos_operacion = this._publicos.sumatorias_aprobados(array_operacion)
+    // console.log(total_gastos_operacion);
+    
+
+    this.objecto_actual = objecto_recuperdado
+    this.recepciones_arr = (!this.recepciones_arr.length) 
+    ? recepciones_completas
+    :  this._publicos.actualizarArregloExistente(this.recepciones_arr, recepciones_completas, campos )
+
+    
+    let margen:number = 0, por_margen:number = 0, total_ordenes:number =0
+      total_ordenes = this.recepciones_arr.length
+      // const total_gastos_operacion = this._publicos.sumatorias_aprobados(filtro_fechas_operacion)
+      const total_refacciones = this._publicos.suma_refacciones_os_cerradas_reales(this.recepciones_arr)
+      const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales_reales(this.recepciones_arr)
       if (total_subtotales_ventas > 0) {
         margen = total_subtotales_ventas - total_refacciones
         por_margen = (margen / total_subtotales_ventas) * 100
       }
-
-      // console.log(recepciones_arr);
-      
       this.reporteAdministracion.cantidad = total_ordenes
       this.reporteAdministracion.margen = margen
       this.reporteAdministracion.operacion = total_gastos_operacion
@@ -154,9 +200,9 @@ export class AdministracionComponent implements OnInit {
       this.reporteAdministracion.refacciones = total_refacciones
       this.reporteAdministracion.subtotal = total_subtotales_ventas
 
-      this.recepciones_arr = recepciones_arr
-      console.timeEnd('Execution Time');
+
   }
+
 
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
@@ -173,9 +219,7 @@ export class AdministracionComponent implements OnInit {
     this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
     this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end),this.hora_end)
 
-    setTimeout(() => {
-      this.lista_gastos_administracion()
-    }, 500);
+    this.genera_resultados()
   }
 
   data_deposito(event){
