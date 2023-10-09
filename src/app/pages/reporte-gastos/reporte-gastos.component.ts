@@ -14,6 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import { AutomaticosService } from 'src/app/services/automaticos.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -37,7 +38,7 @@ const dbRef = ref(getDatabase());
 export class ReporteGastosComponent implements OnInit {
   
   constructor(
-    private _security:EncriptadoService,private _publicos: ServiciosPublicosService, 
+    private _security:EncriptadoService,private _publicos: ServiciosPublicosService, private _automaticos: AutomaticosService,
     private _reporte_gastos: ReporteGastosService, private _sucursales: SucursalesService) { 
         const currentYear = new Date().getFullYear();
         // this.minDate = new Date(currentYear , 0, 1);
@@ -82,9 +83,22 @@ export class ReporteGastosComponent implements OnInit {
 
   realizaGasto:string = 'gasto'
 
+  objecto_actual:any ={}
+  objecto_actuales:any = {
+    recepciones:{},
+    historial_gastos_orden:{},
+    historial_pagos_orden:{},
+   }
+   campo_vigilar = [
+    'recepciones',
+    'historial_gastos_orden',
+    'historial_pagos_orden',
+  ]
+
+  gastos_diarios_table = []
   ngOnInit(): void {
     this.rol()
-    // this.vigila_calendario()
+    this.vigila_calendario()
     // this.resetea_horas_admin()
   }
   
@@ -95,7 +109,132 @@ export class ReporteGastosComponent implements OnInit {
     this._usuario = usuario
     this.filtro_sucursal = sucursal
     // this.vigila_hijo()
+    this.primer_comprobacion_resultados_multiple()
   }
+  comprobacion_resultados_multiple(campo){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
+  }
+  primer_comprobacion_resultados_multiple(){
+    this.campo_vigilar.forEach(campo_vigila=>{
+      this.asiganacion_resultados_multiples(campo_vigila)
+    })
+    this.segundo_llamado_multiple()
+  }
+  segundo_llamado_multiple(){
+    setInterval(()=>{
+      this.campo_vigilar.forEach(campo_vigila=>{
+        if (!this.comprobacion_resultados_multiple(campo_vigila)) {
+          console.log(`recuperando data ${campo_vigila}`);
+          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
+          this.asiganacion_resultados_multiples(this.campo_vigilar)
+        }
+      })
+    },1500)
+  }
+  asiganacion_resultados_multiples(campo_vigila){
+    this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
+    this.genera_resultados()
+  }
+  genera_resultados(){
+    const historial_gastos_diarios = this._publicos.nueva_revision_cache('historial_gastos_diarios')
+    const historial_gastos_operacion = this._publicos.nueva_revision_cache('historial_gastos_operacion')
+    const historial_gastos_orden = this._publicos.nueva_revision_cache('historial_gastos_orden')
+
+    const objetoFiltradohistorial_gastos_diarios = this._publicos.filtrarObjetoPorPropiedad(historial_gastos_diarios, 'sucursal', this.filtro_sucursal);
+    const objetoFiltradohistorial_gastos_operacion = this._publicos.filtrarObjetoPorPropiedad(historial_gastos_operacion, 'sucursal', this.filtro_sucursal);
+    const objetoFiltradohistorial_gastos_orden = this._publicos.filtrarObjetoPorPropiedad(historial_gastos_orden, 'sucursal', this.filtro_sucursal);
+
+    // console.log('===><===');
+    
+    // console.log(objetoFiltradohistorial_gastos_diarios);
+    // console.log(objetoFiltradohistorial_gastos_operacion);
+    // console.log(objetoFiltradohistorial_gastos_orden);
+    const {start, end }= this.fecha_formateadas
+
+    // console.log({start, end });
+    
+
+    //  const arreglo_historial_gastos_diarios = this._publicos.crearArreglo2(objetoFiltradohistorial_gastos_diarios)
+    //  const arreglo_historial_gastos_operacion = this._publicos.crearArreglo2(objetoFiltradohistorial_gastos_operacion)
+    //  const arreglo_historial_gastos_orden = this._publicos.crearArreglo2(objetoFiltradohistorial_gastos_orden)
+
+    //  console.log(arreglo_historial_gastos_diarios);
+    //  console.log(arreglo_historial_gastos_operacion);
+    //  console.log(arreglo_historial_gastos_orden);
+
+     const objeto_todas = this._publicos.crear_new_object({
+        ...objetoFiltradohistorial_gastos_diarios,
+        ...objetoFiltradohistorial_gastos_operacion,
+        ...objetoFiltradohistorial_gastos_orden
+      })
+
+      // console.log(objeto_todas);
+      
+
+      const objeto_filtrado_fecha_operacion = this._publicos.filtrarObjetoPorPropiedad_fecha(objeto_todas, start, end)
+      
+      const data_completa = this._publicos.arregla_data_completa(objeto_filtrado_fecha_operacion)
+      // console.log(data_completa);
+      
+      const arreglo_Actual = this._publicos.crearArreglo2(data_completa)
+      
+      const campos = [
+        'concepto',
+        'fecha_recibido',
+        'metodo',
+        'monto',
+        'rol',
+        'status',
+        'sucursal',
+        'tipo',
+        'usuario',
+      ]
+    let arreglo = []
+    this.gastos_diarios_table = (!this.gastos_diarios_table.length) 
+    ? arreglo_Actual
+    :  this._publicos.actualizarArregloExistente(this.gastos_diarios_table, arreglo_Actual, campos )
+
+    arreglo = (!arreglo.length) 
+    ? arreglo_Actual
+    :  this._publicos.actualizarArregloExistente(arreglo, arreglo_Actual, campos )
+
+    // console.log(arreglo);
+
+    this.dataSource.data = arreglo
+    
+    this.newPagination()
+
+    const hoy = this._publicos.verificarFechasIgualesHoy(start, end)
+
+      const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(arreglo_Actual)
+      const {restante} = reporte;
+
+      this.reporte = reporte;
+
+      // console.log(objeto_filtrado_fecha_operacion);
+
+      if (hoy && this.filtro_sucursal !== 'Todas' && restante >0) {
+        const filtro_fechas_diarios = this._publicos.filtrarObjetoPorPropiedad_fecha(objetoFiltradohistorial_gastos_diarios, start, end)
+        const bruto = this._publicos.crearArreglo2(filtro_fechas_diarios)
+        this.registro_sobrante_hoy({
+          start, restante, bruto,
+          filtro_sucursal: this.filtro_sucursal
+        })
+      }
+      
+     
+    
+  }
+
+
+  
+
+
+
+
+
+
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{
       if (start_ && start_['_d'] && end_ && end_['_d'] ) {
@@ -105,101 +244,24 @@ export class ReporteGastosComponent implements OnInit {
       }
     })
   }
-  async resetea_horas_admin(){
+  resetea_horas_admin(){
     const {start, end } = this.fechas_filtro.value
 
     this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
     this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end),this.hora_end)
 
-    // const {start:start_, end: end_} = this.fecha_formateadas
-
-    // const filtro_fechas = this._publicos.filtro_fechas(this.recepciones_arr_antes_filtro,'fecha_recibido',start_,end_)
-
-    setTimeout(() => {
-      // this.recepciones_arr = filtro_fechas
-      this.listado_corte_ingresos()
-    }, 1000);
-    
+    this.genera_resultados()
   }
-  vigila_hijo(){
-    const rutas_vigila = [
-      'clientes',
-      'vehiculos',
-      'recepciones',
-      'historial_gastos_operacion',
-      'historial_gastos_orden',
-      'historial_pagos_orden',
-      'historial_gastos_diarios'
-    ]
-    rutas_vigila.forEach(nombre=>{
-      const starCountRef = ref(db, `${nombre}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          this.listado_corte_ingresos()
-        }
-      })
-    })
-    
-  }
-  async listado_corte_ingresos(){
-    
-    // console.time('Execution Time');
 
-    const recepciones_object = await this._publicos.revisar_cache('recepciones')
-
-      const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
-
-      const gastos_operacion_object = await this._publicos.revisar_cache('historial_gastos_operacion')
-      const gastos_operacion_array = this._publicos.crearArreglo2(gastos_operacion_object)
-
-      const historial_gastos_diarios_object = await this._publicos.revisar_cache('historial_gastos_diarios')
-      const historial_gastos_diarios_array = this._publicos.crearArreglo2(historial_gastos_diarios_object)
-
-      const {start:start_, end: end_} = this.fecha_formateadas
-      
-      const filtro_fechas_operacion= this._publicos.filtro_fechas(gastos_operacion_array,'fecha_recibido',start_,end_)
-      // console.log(filtro_fechas_operacion);
-
-      const filtro_fechas_diarios= this._publicos.filtro_fechas(historial_gastos_diarios_array,'fecha_recibido',start_,end_)
-      // console.log(filtro_fechas_diarios);
-
-      const filtro_fechas_orden= this._publicos.filtro_fechas(historial_gastos_orden,'fecha_recibido',start_,end_)
-      // console.log(filtro_fechas_orden);
-      
-      const nuevos_diarios = [...filtro_fechas_operacion, ...filtro_fechas_diarios,...filtro_fechas_orden]
-      const arreglar_nuevos_diarios = this._publicos.asigna_data_diarios({
-        bruto: nuevos_diarios, recepciones: recepciones_object
-      })
-      const nuevos_diarios_ordenados = this._publicos.ordenamiento_fechas(arreglar_nuevos_diarios,'fecha_recibido', false)
-
-      const _filtros_sucursal = 
-      (this.filtro_sucursal === 'Todas') ? nuevos_diarios_ordenados 
-      : this._publicos.filtra_campo(nuevos_diarios_ordenados, 'sucursal', this.filtro_sucursal)
-
-      const hoy = this._publicos.verificarFechasIgualesHoy(start_, end_)
-
-      const reporte = this._reporte_gastos.reporte_gastos_sucursal_unica(_filtros_sucursal)
-      const {restante} = reporte;
-
-      this.dataSource.data = _filtros_sucursal
-      this.newPagination()
-
-      if (hoy && this.filtro_sucursal !== 'Todas') {
-        this.registro_sobrante_hoy({
-          start: start_, restante, bruto: filtro_fechas_diarios,
-          filtro_sucursal: this.filtro_sucursal
-        })
-      }
-      this.reporte = reporte;
-      // console.timeEnd('Execution Time');
-  }
   newPagination(){
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }, 500);
   }
-  registro_sobrante_hoy(data){
+  async registro_sobrante_hoy(data){
+    console.log('registro_sobrante_hoy');
+    
     const {start, restante, bruto, filtro_sucursal} = data
     let nuevos_bruto = [...bruto]
     const simular_fecha = this._publicos.sumarRestarDiasFecha(start, 1)
@@ -223,15 +285,20 @@ export class ReporteGastosComponent implements OnInit {
       const nueva_fecha_maniana = this._publicos.sumarRestarDiasFecha(new Date(), 1)
       const clave_fecha = genera_clave_diario(nueva_fecha_maniana, filtro_sucursal)
       const clave_encontrada = nuevos_bruto.find(c=>c.id === clave_fecha)
-
+      let valorNoDuplicado
       if (clave_encontrada) {
         updates[`historial_gastos_diarios/${clave_fecha}/monto`] = restante
         updates[`historial_gastos_diarios/${clave_fecha}/status`] = true
       }else{
+        const claves_encontradas = await this._automaticos.consulta_ruta('claves_clientes')
+        valorNoDuplicado = await [...new Set([...claves_encontradas, clave_fecha])];
         updates[`historial_gastos_diarios/${clave_fecha}`] = save
+        updates['claves_historial_gastos_diarios'] = valorNoDuplicado
+
       }
       update(ref(db), updates).then(()=>{
         console.log(`se actualizo ${clave_fecha}`);
+        this._security.guarda_informacion({nombre:'claves_historial_gastos_diarios', data: valorNoDuplicado})
       })
       .catch(err=>{
         console.log(err);

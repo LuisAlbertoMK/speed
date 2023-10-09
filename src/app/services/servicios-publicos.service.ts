@@ -2218,5 +2218,20 @@ export class ServiciosPublicosService {
         }
       return resultado;
     }
+    arregla_data_completa(object){
+      const sucursales = this.nueva_revision_cache('sucursales')
+      const recepciones = this.nueva_revision_cache('recepciones')
+      let nueva_data = this.crear_new_object(object)
+      Object.keys(object).forEach(clave=>{
+        const {sucursal, tipo, id_os} = nueva_data[clave]
+        nueva_data[clave].sucursalShow = sucursales[sucursal].sucursal
+        if (tipo === 'orden') {
+          nueva_data[clave].no_os = recepciones[id_os].no_os
+        }else{
+          nueva_data[clave].no_os = ''
+        }
+      })
+      return nueva_data
+    }
       
  }

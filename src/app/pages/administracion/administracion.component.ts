@@ -213,7 +213,7 @@ export class AdministracionComponent implements OnInit {
       }
     })
   }
-  async resetea_horas_admin(){
+  resetea_horas_admin(){
     const {start, end } = this.fechas_filtro.value
 
     this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 

@@ -30,6 +30,8 @@ import { ExporterService } from 'src/app/services/exporter.service';
 import { app } from "../../../environments/environment";
 import Swal from 'sweetalert2';
 
+import {  BD } from "./BD_completa";
+
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -78,6 +80,10 @@ export class AutomaticosComponent implements OnInit {
     this._sucursal = sucursal
     // this.vigila_nodos()
     this.revision_existe_cache()
+    this.revisar_peso_BD()
+  }
+  revisar_peso_BD(){
+    this._publicos.saber_pesos(BD)
   }
   revision_existe_cache(){
     const faltantes = {}
