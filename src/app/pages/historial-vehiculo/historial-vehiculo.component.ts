@@ -41,34 +41,10 @@ export class HistorialVehiculoComponent implements OnInit {
     ROL:string;SUCURSAL:string;
 
     miniColumnas:number = this._campos.miniColumnas
-    reporte_Cotizaciones={subtotal:0, iva:0, total:0}
-    reporte_Recepciones={subtotal:0, iva:0, total:0}
-    campos_reportes = ['subtotal','iva','total']
+    // reporte_Cotizaciones={subtotal:0, iva:0, total:0}
+    // reporte_Recepciones={subtotal:0, iva:0, total:0}
+    // campos_reportes = ['subtotal','iva','total']
     
-    camposCliente   =  [ ...this._clientes.camposCliente_show ]
-    camposVehiculo  =  [ ...this._vehiculos.camposVehiculo_ ]
-    // camposDesgloce  =  [ ...this._cotizaciones.camposDesgloce ]
-    sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
-  
-    paquete: string     =  this._campos.paquete
-    refaccion: string   =  this._campos.refaccion
-    mo: string          =  this._campos.mo
-    // tabla
-    dataSourceCotizaciones = new MatTableDataSource(); //elementos
-    cotizaciones =  ['index','no_cotizacion','placas','fecha_recibido']; //cotizaciones
-    columnsToDisplayWithExpandCotizaciones = [...this.cotizaciones, 'opciones', 'expand']; //elementos
-    expandedElementCotizaciones: any | null; //elementos
-    @ViewChild('CotizacionesPaginator') paginatorCotizaciones: MatPaginator //elementos
-    @ViewChild('Cotizaciones') sortCotizaciones: MatSort //elementos
-  
-    // tabla
-    dataSourceRecepciones = new MatTableDataSource(); //elementos
-    recepciones = ['id','no_os','placas','fecha_recibido','fecha_entregado'];//recepciones
-    columnsToDisplayWithExpandRecepciones = [...this.recepciones, 'opciones', 'expand']; //elementos
-    expandedElementRecepciones: any | null; //elementos
-    @ViewChild('RecepcionesPaginator') paginatorRecepciones: MatPaginator //elementos
-    @ViewChild('Recepciones') sortRecepciones: MatSort //elementos
-  
     anterior:string
     enrutamiento = {vehiculo:'', cliente:'', anterior:'', sucursal:''}
 
@@ -83,17 +59,31 @@ export class HistorialVehiculoComponent implements OnInit {
   rol(){
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
+
+      const data_enrutamiento = this._publicos.crear_new_object(params)
+      // console.log(data_enrutamiento);
+      const {vehiculo} = data_enrutamiento
+      if (data_enrutamiento && vehiculo) {
+        this.consulta_info_vehiculo(vehiculo)
+      }
     });
   }
-  regresar(){
-    // this.enrutamiento.anterior = ''
-    const {vehiculo, cliente, anterior, sucursal} = this.enrutamiento
+  consulta_info_vehiculo(id_vehiculo){
+    // {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr}
+    const {data_vehiculo, data_cliente, cotizaciones_arr} = this._publicos.data_relacionada_id_vehiculo(id_vehiculo)
+    this.data_cliente = data_cliente
+    this.data_vehiculo = data_vehiculo
+    this.cotizaciones_arr = cotizaciones_arr
+  }
+  // regresar(){
+  //   // this.enrutamiento.anterior = ''
+  //   const {vehiculo, cliente, anterior, sucursal} = this.enrutamiento
   
-    const queryParams = {vehiculo, cliente, sucursal}
-    this.router.navigate([`/historial-cliente`], { 
-      queryParams
-    });
-  }
+  //   const queryParams = {vehiculo, cliente, sucursal}
+  //   this.router.navigate([`/historial-cliente`], { 
+  //     queryParams
+  //   });
+  // }
   
 
 }

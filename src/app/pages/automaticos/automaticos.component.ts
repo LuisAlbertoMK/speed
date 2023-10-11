@@ -19,7 +19,6 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
-import { claves } from './ayuda';
 
 import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue, update, push } from 'firebase/database';
 
@@ -27,7 +26,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiciosService } from 'src/app/services/servicios.service';
 import { ExporterService } from 'src/app/services/exporter.service';
 
-import { app } from "../../../environments/environment";
 import Swal from 'sweetalert2';
 
 import {  BD } from "./BD_completa";
@@ -63,9 +61,10 @@ export class AutomaticosComponent implements OnInit {
     {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
     {ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'},
     {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
+    {ruta_observacion: 'metas_sucursales', nombre:'claves_metas_sucursales'},
   ]
 
-  busqueda:any = {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'}
+  busqueda:any = {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'}
   contador_observados: number = 8
   contador_recorridos:number = 0
   informar_cliente_termino: boolean = false
@@ -78,9 +77,9 @@ export class AutomaticosComponent implements OnInit {
   rol(){
     const { rol, sucursal, usuario } = this._security.usuarioRol()
     this._sucursal = sucursal
+    // this.revision_existe_cache()
+    // this.revisar_peso_BD()
     // this.vigila_nodos()
-    this.revision_existe_cache()
-    this.revisar_peso_BD()
   }
   revisar_peso_BD(){
     this._publicos.saber_pesos(BD)
@@ -94,7 +93,7 @@ export class AutomaticosComponent implements OnInit {
     this.campos.forEach(campo=>{
         const {ruta_observacion, nombre} = campo
 
-        // console.log({ruta_observacion, nombre});
+        console.log({ruta_observacion, nombre});
 
         if (localStorage[nombre] && localStorage[ruta_observacion]) {
             existentes[ruta_observacion] =nombre
@@ -776,10 +775,6 @@ vigila_nodos(){
   
     await Promise.all(claves_faltantes.map(async (clave) => {
       const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clave}`);
-      // console.log('pesos data_cliente');
-      
-      // console.log(this._publicos.saber_pesos(data_cliente));
-      
       const { no_cliente } = this._publicos.crear_new_object(data_cliente);
       if (no_cliente) resultados_new[clave] = data_cliente;
     }));
@@ -788,7 +783,36 @@ vigila_nodos(){
   }
 
   obtener_claves(){
-    console.log(Object.keys(claves));
+    console.log(Object.keys(BD.historial_pagos_orden));
+  }
+  crear_cache_claves(){
+    // this._security.guarda_informacion({nombre: 'metas_sucursales', data: 
+    //   {
+    //     "-NgPvfWwbjDRVHd33L57": {
+    //       "fecha_recibido": "Fri Sep 01 2023 00:00:00 GMT-0600 (hora estándar central)",
+    //       "objetivo": 255,
+    //       "sucursal": "-N2glF34lV3Gj0bQyEWK"
+    //     },
+    //     "-NgPvxXk3B8vgl-xoPBI": {
+    //       "fecha_recibido": "Fri Sep 01 2023 00:00:00 GMT-0600 (hora estándar central)",
+    //       "objetivo": 4554,
+    //       "sucursal": "-N2gkzuYrS4XDFgYciId"
+    //     },
+    //     "-NgPwKKOkByuTrzXdFnW": {
+    //       "fecha_recibido": "Fri Sep 01 2023 00:00:00 GMT-0600 (hora estándar central)",
+    //       "objetivo": 1200,
+    //       "sucursal": "-N2glQ18dLQuzwOv3Qe3"
+    //     },
+    //     "-NgQ4S6UichfsohfS_UX": {
+    //       "sucursal": "-N2glF34lV3Gj0bQyEWK",
+    //       "fecha_recibido": "Sun Oct 01 2023 00:00:00 GMT-0600 (hora estándar central)",
+    //       "objetivo": 6000
+    //     }
+      
+    // }})
+  }
+  
+  genera_claves(){
     
   }
 }

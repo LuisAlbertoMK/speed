@@ -54,47 +54,22 @@ export class HistorialClienteComponent implements OnInit {
     this.ROL = rol
     this.SUCURSAL = sucursal
     this.rutaActiva.queryParams.subscribe((params:any) => {
-      console.log(params);
+      // console.log(params);
       const data_enrutamiento = JSON.parse(JSON.stringify(params))
       const {cliente} = data_enrutamiento
-      if (cliente) this.vigila_hijo(cliente)
+      if (cliente) this.consulta_info_cliente(cliente)
       
     });
     
   }
-  vigila_hijo(cliente){
-    const rutas_vigila = [
-      'clientes',
-      'vehiculos',
-      'recepciones',
-      'historial_gastos_operacion',
-      'historial_gastos_orden',
-      'historial_pagos_orden',
-      'historial_gastos_diarios'
-    ]
-    rutas_vigila.forEach(nombre=>{
-      const starCountRef = ref(db, `${nombre}`)
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          this.consulta_info_cliente(cliente)
-        }
-      })
-    })
-  }
+  
  
-  async consulta_info_cliente(id_cliente:string){
-    const clientes = await this._publicos.revisar_cache('clientes')
-    const data_cliente = clientes[id_cliente]
+  consulta_info_cliente(id_cliente:string){
 
-    // console.log(data_cliente);
+    console.log(id_cliente);
     
-
-    this.data_cliente  = data_cliente
-
-    const info = { [id_cliente]: data_cliente }
-
-    const {cotizaciones_arr, recepciones_arr, vehiculos_arr} = await this._publicos.buscar_data_realcionada_con_cliente(id_cliente,info)
-   
+    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(id_cliente)
+    this.data_cliente = data_cliente
     this.cotizaciones_arr = cotizaciones_arr
     this.recepciones_arr = recepciones_arr
     this.vehiculos_arr = vehiculos_arr

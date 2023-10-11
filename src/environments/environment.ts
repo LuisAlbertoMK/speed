@@ -23,7 +23,7 @@ export const environment = {
   clave_publica: 'pk_test_51NOlofEg8nFeK6NC5vc2fyMVer0VolgF93B3sk60HbPUzPM0p93nQLAoxJuoXr00c0DDVJ6iU55NdOMYiTgeB8hy00KurfK9Is',
   clave_secreta: 'sk_test_51NOlofEg8nFeK6NCYFm9FST2EY3m3PbUkEXJgIOEdF8WJ44UtQtZtry1wCK1MIQrAQmiQWbp8zTYQSqWazh88al80091NAHBAc'
 }
-export const app = initializeApp(environment.firebaseConfig);
+const app = initializeApp(environment.firebaseConfig);
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

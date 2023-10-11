@@ -89,14 +89,15 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
   campos = [
     {ruta_observacion: 'clientes', nombre:'claves_clientes'},
-    // {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
-    // {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
-    // {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
-    // {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
-    // {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
-    // {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
-    // {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
-    // {ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'},
+    {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
+    {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
+    {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
+    {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
+    {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
+    {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
+    {ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'},
+    {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
+    {ruta_observacion: 'metas_sucursales', nombre:'claves_metas_sucursales'},
   ]
   busqueda:any = {ruta_observacion: 'clientes', nombre:'claves_clientes'}
   ngOnInit(): void {
@@ -120,8 +121,244 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this._rol = rol
     this._sucursal = sucursal
 
-    // this.vigila_nodos()
+    // this.revision_existe_cache()
+    
   }
+  revision_existe_cache(){
+    const faltantes = {}
+    const existentes = {}
+    let timer:number = 100
+    
+
+    this.campos.forEach(campo=>{
+        const {ruta_observacion, nombre} = campo
+
+        console.log({ruta_observacion, nombre});
+
+        if (localStorage[nombre] && localStorage[ruta_observacion]) {
+            existentes[ruta_observacion] =nombre
+        }else{
+            timer+=1000
+            faltantes[ruta_observacion] = nombre; 
+        }
+    })
+
+    console.log(existentes);
+    console.log(faltantes);
+    
+
+    function tieneElementos(objeto) {
+        const  faltantes_cout = Object.keys(objeto).length
+        const faltantes_ruta_observacion = objeto
+        return {faltantes_cout, faltantes_ruta_observacion}
+    }
+
+    const {faltantes_cout, faltantes_ruta_observacion} = tieneElementos(faltantes)
+
+    
+    if (faltantes_cout > 0) {
+        console.log('El objeto faltantes tiene elementos.');
+        Object.entries(faltantes_ruta_observacion).forEach( async ([ruta_observacion, nombre])=>{
+            const data = await this._automaticos.consulta_ruta(ruta_observacion)
+            this._publicos.saber_pesos(data)
+            this._security.guarda_informacion({nombre: ruta_observacion, data: data})
+            this._security.guarda_informacion({nombre, data: Object.keys(data)})
+        })
+    }else{
+        timer = 100
+    }
+
+    Swal.fire({
+        title: 'Cargando data ',
+        html: 'Espere ...',
+        timer,
+        // timerProgressBar: true,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading()
+        },
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        // if (result.dismiss === Swal.DismissReason.timer) {
+        //   console.log('I was closed by the timer')
+        // }
+      })
+      this.vigila_nodos()
+  }
+  vigila_nodos(){
+    this.campos.forEach((g)=>{
+      this.vigila_nodo_principal(g)
+    })
+  }
+  async vigila_nodo_principal(data){
+
+    
+    const {nombre, ruta_observacion} = data
+
+    // this.simular_observacion_informacion_firebase_nombre(this.busqueda)
+    console.log({nombre, ruta_observacion});
+
+
+    const en_cloud = await this._automaticos.consulta_ruta(nombre)
+    // const claves_supervisa = await this._automaticos.consulta_ruta(nombre)
+   
+    // console.log(this._publicos.saber_pesos(en_cloud));
+    // console.log(nombre);
+    
+    const en_local = this._publicos.nueva_revision_cache(nombre)
+    // console.log(this._publicos.saber_pesos(en_local));
+    // console.log(nombre);
+    
+    // console.log(en_cloud);
+    let resultados_real_time = [...en_cloud]
+    let resultados_en_local = [...en_local]
+
+    // console.log(resultados_real_time);
+    
+    // console.log(resultados_en_local);
+
+    const valorNoDuplicado = await [...new Set([...resultados_real_time, ...resultados_en_local])];
+
+    // console.log(this._publicos.saber_pesos(valorNoDuplicado));
+
+    function arrayAObjeto(arr, valorInicial) {
+      const objeto = {};
+      for (const elemento of arr) {
+        objeto[elemento] = valorInicial !== undefined ? valorInicial : null;
+      }
+      return objeto;
+    }
+
+    const miObjeto = arrayAObjeto(valorNoDuplicado,{});
+
+    // console.log(miObjeto);
+    
+
+    const vigila_claves_cloud = ref(db, `${nombre}`);
+    
+    onChildAdded(vigila_claves_cloud, async (data) => {
+      const valor = data.val();
+      // console.log('clave que verifica su agregacion: ',valor);
+      
+      if (!miObjeto[valor]) {
+        // console.log(valor);
+        console.log('NO_LOCAL_HOST ==>', valor);
+
+        let locales_nuevas = this._publicos.nueva_revision_cache(nombre)
+        let resultados_en_local_nuevas = [...locales_nuevas]
+        const valorNoDuplicado = [...new Set([...resultados_en_local_nuevas, valor])];
+        this._security.guarda_informacion({nombre, data: valorNoDuplicado})
+        this.nueva_verificacion_informacion_claves_nombre({ruta_observacion,bruto_arr: valorNoDuplicado})
+      }
+        
+    })
+
+    this.nueva_verificacion_informacion_claves_nombre({ruta_observacion,bruto_arr: valorNoDuplicado})
+
+
+  }
+  nueva_verificacion_informacion_claves_nombre(data){
+    const {ruta_observacion, bruto_arr }= data
+    let resultados = [...new Set([...bruto_arr])];
+
+    let faltantes = []
+    const actuales_nombres = this._publicos.nueva_revision_cache(ruta_observacion)
+    // console.log(actuales_nombres);
+    
+    resultados.forEach((clave_vigilar) => {
+      const commentsRef = ref(db, `${ruta_observacion}/${clave_vigilar}`);
+      onChildChanged(commentsRef, async (data) => {
+        const valor =  data.val()
+        const key = data.key
+        console.log(`actualizacion key=> [${key}]: valor =>{${valor}}`);
+        this._publicos.saber_pesos(data)
+
+        const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
+
+        if (localhost_nombre[clave_vigilar]) {
+          const nueva_data_clave = this._publicos.crear_new_object(localhost_nombre[clave_vigilar])
+          nueva_data_clave[key] = valor
+          localhost_nombre[clave_vigilar] = nueva_data_clave
+          this._security.guarda_informacion({nombre: ruta_observacion, data: localhost_nombre})
+        }else{
+          // console.log(`la informacion del cliente no se encuentra`);
+          this.obtenerInformacion_unico(clave_vigilar, ruta_observacion)
+          .then((resultados_promesa) => {
+            let actuales  = this._publicos.nueva_revision_cache(ruta_observacion)
+            actuales[clave_vigilar] = resultados_promesa
+            this._security.guarda_informacion({nombre: ruta_observacion, data: actuales})
+          })
+          .catch(error=>{
+            console.log(error);
+          })
+        }
+      })
+      if (!actuales_nombres[clave_vigilar]) {
+        faltantes.push(clave_vigilar)
+      }
+    })
+
+
+    // console.log(faltantes);
+    if (faltantes.length) {
+      // console.log('realiza la consulta de la informacion', faltantes);
+      this.obtenerInformacion(faltantes, ruta_observacion)
+      .then((resultados_promesa) => {
+        // console.log(resultados_promesa);
+
+        const claves_obtenidas = Object.keys(resultados_promesa)
+
+        let actuales  = this._publicos.nueva_revision_cache(ruta_observacion)
+        claves_obtenidas.forEach(clave_obtenida=>{
+          actuales[clave_obtenida] = resultados_promesa[clave_obtenida]
+        })
+        // console.log(actuales);
+        this._security.guarda_informacion({nombre: ruta_observacion, data: actuales})
+
+
+      })
+      .catch(error=>{
+        console.log(error);
+      })
+    }
+    
+  }
+  async obtenerInformacion_unico(claves_faltante, ruta_observacion) {
+    let resultados_new = {};
+  
+    const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${claves_faltante}`);
+
+    const { no_cliente } = this._publicos.crear_new_object(data_cliente);
+    if (no_cliente) resultados_new = data_cliente;  
+    return resultados_new;
+  }
+  async obtenerInformacion(claves_faltantes, ruta_observacion) {
+    const resultados_new = {};
+  
+    await Promise.all(claves_faltantes.map(async (clave) => {
+      const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clave}`);
+      const { no_cliente } = this._publicos.crear_new_object(data_cliente);
+      if (no_cliente) resultados_new[clave] = data_cliente;
+    }));
+  
+    return resultados_new;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
  

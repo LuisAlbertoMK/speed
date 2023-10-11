@@ -30,6 +30,7 @@ import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { ServiciosService } from '../../services/servicios.service';
 import { CamposSystemService } from '../../services/campos-system.service';
+import { AutomaticosService } from 'src/app/services/automaticos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 export interface User {nombre: string, apellidos:string}
@@ -48,12 +49,13 @@ export interface User {nombre: string, apellidos:string}
 export class CotizacionNewComponent implements OnInit,AfterViewInit {
   
   constructor(
+    private _automaticos:AutomaticosService,
     private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
     private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
     private router: Router, private _sucursales: SucursalesService, private _clientes: ClientesService, private _cotizacion: CotizacionService,
     private _cotizaciones: CotizacionesService, private _vehiculos: VehiculosService, private _servicios: ServiciosService, private _campos: CamposSystemService) { }
     
-  ROL:string; SUCURSAL:string
+  _rol:string; _sucursal:string
   
   infoCotizacion   = {
     cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false, kms:0
@@ -139,8 +141,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     
 
-    this.ROL = rol
-    this.SUCURSAL = sucursal
+    this._rol = rol
+    this._sucursal = sucursal
     
     this.rutaActiva.queryParams.subscribe((params:any) => {
       this.enrutamiento = params
@@ -572,6 +574,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     // await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
     //   this.infoCotizacion.no_cotizacion = ans
     // })
+    
+    this.infoCotizacion.no_cotizacion = this.generaNombreCotizacion(this._rol, this.infoCotizacion)
+   
 
     const filtro_conceptos = this._publicos.obtenerNombresElementos(this.infoCotizacion.elementos)
 
@@ -638,9 +643,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
           // si presiono guardar y enviar obtenemos el blob del pdf para poder subirlo a firebasecloud
           pdfDocGenerator.getBlob(async (blob) => {
             //una vez tenemos el blob realizamos la peticion de subida del pdf
-            await this._uploadPDF.upload(blob,tempData.filename).then((answer:any)=>{
+            await this._uploadPDF.upload(blob,tempData.filename).then(async(answer:any)=>{
               //cuando se tenga la respuesta  de subida del pdf la ruta al mismo verificamos que efectivamente exista esta ruta
-              const intervalo = setInterval(() => {
+              const intervalo = setInterval(async () => {
                 if(answer['ruta']){
                   this.infoCotizacion.pdf = answer['ruta']
                   //limpiamos el intervalo ya que tenemos la ruta y realizamos depuracion de informacion
@@ -673,9 +678,13 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                       const {placas} = data_vehiculo
                       return `${placas}`.toUpperCase()
                   }
-                  
-                  updates[`cotizaciones/${this._publicos.generaClave()}`] = infoSave;
-                
+                  const clave_ = this._publicos.generaClave()
+                  updates[`cotizaciones/${clave_}`] = infoSave;
+
+                  const claves_encontradas = await this._automaticos.consulta_ruta('claves_cotizaciones')
+                  const valorNoDuplicado = await [...new Set([...claves_encontradas, clave_])];
+                  updates['claves_cotizaciones'] = valorNoDuplicado
+
                   update(ref(db), updates)
                   .then(() => {
                     // realizamos la descarga del pdf
@@ -687,6 +696,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
                     //mensaje de correcto aunque no se envie email
                     this._publicos.swalToast('Cotizacion realizada!!', 1, 'top-start')
                     //limpiamos la informacion para nueva cotizacion
+                    this._security.guarda_informacion({nombre:'claves_cotizaciones', data: valorNoDuplicado})
                     
                     this.infoCotizacion = {
                       cliente:'', data_cliente:{},vehiculo:'', data_vehiculo:{},vehiculos:[],elementos:[],sucursal:'',reporte:null, iva:true, formaPago: '1', descuento: 0, margen: 25,promocion:'',fecha_recibido:'', no_cotizacion:null, vencimiento:'', nota:null, servicio: '1', pdf:null, data_sucursal: {}, showDetalles:false, kms:0
@@ -728,20 +738,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }, 500)
   }
 
-  nueva_data_cliente(cliente){
-    const nombres = [
-      {clave: '-N2gkVg1RtSLxK3rTMYc',nombre:'Polanco'},
-      {clave: '-N2gkzuYrS4XDFgYciId',nombre:'Toreo'},
-      {clave: '-N2glF34lV3Gj0bQyEWK',nombre:'Culhuacán'},
-      {clave: '-N2glQ18dLQuzwOv3Qe3',nombre:'Circuito'},
-      {clave: '-N2glf8hot49dUJYj5WP',nombre:'Coapa'},
-      {clave: '-NN8uAwBU_9ZWQTP3FP_',nombre:'lomas'},
-    ]
-    const {sucursal, nombre, apellidos} = cliente
-    cliente.sucursalShow = nombres.find(s=>s.clave === sucursal).nombre
-    cliente.fullname = `${nombre} ${apellidos}`
-    return cliente
-  }
+
 
 
   purifica_informacion(data){
@@ -799,4 +796,18 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     return nuevos_elementos 
 
   }
+  generaNombreCotizacion(rol:string, data){
+    const nueva_data = this._publicos.crear_new_object(data)
+    const  {sucursal, data_cliente} = nueva_data
+    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    const date: Date = new Date()
+    const year = date.getFullYear().toString().slice(-2)
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const nombreSucursal:string = sucursales[sucursal].sucursal.slice(0,2).toUpperCase()
+    const nuevoRol:string = rol.slice(0,2).toUpperCase()
+    const no_cotizacion:any[]  = this._publicos.nueva_revision_cache('claves_cotizaciones')
+    const secuencia = (no_cotizacion.length + 1).toString().padStart(4, '0')
+    return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
+  }
+  
 }

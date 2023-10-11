@@ -32,6 +32,7 @@ import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { CamposSystemService } from '../../services/campos-system.service';
 import { UploadPDFService } from '../../services/upload-pdf.service';
+import { AutomaticosService } from 'src/app/services/automaticos.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 const db = getDatabase()
@@ -52,6 +53,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   
   constructor(
+    private _automaticos: AutomaticosService,
     private router: Router, private rutaActiva: ActivatedRoute, 
     private _clientes:ClientesService, private _vehiculos: VehiculosService, private _cotizaciones: CotizacionesService,
     private _sucursales: SucursalesService, private _campos: CamposSystemService,
@@ -153,7 +155,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   enrutamiento = {cliente:null, sucursal:null, cotizacion:null, tipo:null, anterior:null, vehiculo:null, recepcion:null, nueva:true}
   ParamsGet:any = {}
   
-  faltante_s
+  faltante_s:string
 
   reporte_totales = {
     mo:0,
@@ -171,7 +173,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   modelo:string
   ngOnInit(): void {
     this.rol()
-    
   }
   ngAfterViewInit() {
     this.SignaturePad = new SignaturePad(this.signatureElement.nativeElement)
@@ -941,106 +942,114 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         iva: reporte['iva'],
         total: reporte['total'],
       }
-      this._servicios.generateOSNumber(this.infoConfirmar,this._rol).then((no_os)=>{
-        const dataMail = {
-          correos: this._publicos.dataCorreo(data_sucursal, data_cliente),
-          no_os,
-          filename : `${no_os}.pdf`,
-          cliente: data_cliente,
-          vehiculo:data_vehiculo,
-          arregloString: this._publicos.obtenerNombresElementos(elementos),
-          desgloce: this._publicos.construyeDesgloceEmail(nueva)
-        }
-        this.infoConfirmar.no_os = no_os
-        // console.log(dataMail);
-        // console.log(this.infoConfirmar);
-        Swal.fire({
-          title: 'Opciones de recepcion',
-          html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
-          showDenyButton: true,
-          showCancelButton: false,
-          confirmButtonText: 'Previsualizar PDF recepción',
-          denyButtonText: `Guardar y enviar correo`,
-          cancelButtonText:`cancelar`,
-        }).then((result) => {
-          // si se confirma previsualizacion genera pdf en nueva ventana del navegador
-          if (result.isConfirmed) {
-            
-            pdfDocGenerator.open()
-            // console.log(this.infoConfirmar.personalizados);
-          } else if (result.isDenied) {
-            Swal.fire({
-              title: 'Espere por favor...',
-              showConfirmButton: false,
-              icon:'info',
-              allowOutsideClick: false
-            })
-            
-            Swal.isLoading()
-            // console.log(this.infoConfirmar.personalizados);            
-            // si presiono guardar y enviar obtenemos el blob del pdf para poder subirlo a firebasecloud
-            pdfDocGenerator.getBlob(async (blob) => {
-              //una vez tenemos el blob realizamos la peticion de subida del pdf
-              this._pdf.uploadRecepcion(blob, dataMail.filename).then((ans)=>{
-                let intervalo = setInterval(()=>{
-                  // console.log(ans);
-                  if (ans.ruta) {
-                    clearInterval(intervalo)
-                    this.infoConfirmar.pathPDF = ans.ruta
-                    dataMail['pathPDF'] = ans.ruta
-                    const updates = {}
+      this.infoConfirmar.no_os = this.generateOSNumber(this.infoConfirmar, this._rol)
+      const dataMail = {
+        correos: this._publicos.dataCorreo(data_sucursal, data_cliente),
+        no_os: this.infoConfirmar.no_os,
+        filename : `${this.infoConfirmar.no_os}.pdf`,
+        cliente: data_cliente,
+        vehiculo:data_vehiculo,
+        arregloString: this._publicos.obtenerNombresElementos(elementos),
+        desgloce: this._publicos.construyeDesgloceEmail(nueva)
+      }
+      this.infoConfirmar.no_os = this.infoConfirmar.no_os
+      // console.log(dataMail);
+      // console.log(this.infoConfirmar);
+      Swal.fire({
+        title: 'Opciones de recepcion',
+        html:`<strong class='text-danger'>Se recomienda visualizar pdf antes de enviar</strong>`,
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Previsualizar PDF recepción',
+        denyButtonText: `Guardar y enviar correo`,
+        cancelButtonText:`cancelar`,
+      }).then((result) => {
+        // si se confirma previsualizacion genera pdf en nueva ventana del navegador
+        if (result.isConfirmed) {
+          
+          pdfDocGenerator.open()
+          // console.log(this.infoConfirmar.personalizados);
+        } else if (result.isDenied) {
+          Swal.fire({
+            title: 'Espere por favor...',
+            showConfirmButton: false,
+            icon:'info',
+            allowOutsideClick: false
+          })
+          
+          Swal.isLoading()
+          // console.log(this.infoConfirmar.personalizados);            
+          // si presiono guardar y enviar obtenemos el blob del pdf para poder subirlo a firebasecloud
+          pdfDocGenerator.getBlob(async (blob) => {
+            //una vez tenemos el blob realizamos la peticion de subida del pdf
+            this._pdf.uploadRecepcion(blob, dataMail.filename).then((ans)=>{
+              let intervalo = setInterval(async ()=>{
+                // console.log(ans);
+                if (ans.ruta) {
+                  clearInterval(intervalo)
+                  this.infoConfirmar.pathPDF = ans.ruta
+                  dataMail['pathPDF'] = ans.ruta
+                  const updates = {}
 
-                    this.infoConfirmar.status = 'recibido'
-                    this.infoConfirmar.diasSucursal = 0
-                    
-                    this.infoConfirmar.notifico = true
+                  this.infoConfirmar.status = 'recibido'
+                  this.infoConfirmar.diasSucursal = 0
+                  
+                  this.infoConfirmar.notifico = true
 
-                    const clave =this._publicos.generaClave()
-                    let guardar_ = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
-                    guardar_.id = clave
-                    guardar_.fullname = fullname(this.infoConfirmar.data_cliente)
-                    guardar_.placas = placas(this.infoConfirmar.data_vehiculo)
-                    
-                    function fullname(data_cliente){
-                      const {nombre, apellidos} = data_cliente
-                      return `${nombre} ${apellidos}`.toUpperCase()
-                    }
-                    function placas(data_vehiculo){
-                      const {placas} = data_vehiculo
-                      return `${placas}`.toUpperCase()
-                    }
-                    guardar_.checkList = this._servicios.purifica_checklist(this.infoConfirmar.checkList)
-                    guardar_.detalles =  this._servicios.purifica_detalles(this.infoConfirmar.detalles)
-                    updates[`recepciones/${clave}`] = guardar_
-
-                    this._mail.EmailRecepcion(dataMail)
-                    // if (this.ParamsGet.tipo === 'cita') {
-                    //   updates[`${this.ParamsGet.ruta}/status`] = 'concretada'
-                    // }
-                    update(ref(db), updates).then(()=>{
-                      pdfDocGenerator.download(`Recepcion_${this.infoConfirmar.no_os}`)
-                      Swal.close()
-                      this.files = []
-                      this.archivos = []
-                      this.nombre = null
-                      this.numeroDias = 0
-                      // this.infoConfirmar= this._servicios.infoConfirmar
-                      this.infoConfirmar = JSON.parse(JSON.stringify(this._servicios.infoConfirmar));
-
-                      this.infoConfirmar.elementos = []
-                      this.limpiarFirma()
-                      this.realizaOperaciones()
-                      
-
-                      this.router.navigateByUrl('/servicios')
-                    })
+                  const clave =this._publicos.generaClave()
+                  let guardar_ = this._publicos.nuevaRecuperacionData(this.infoConfirmar,this.camposGuardar)
+                  guardar_.id = clave
+                  guardar_.fullname = fullname(this.infoConfirmar.data_cliente)
+                  guardar_.placas = placas(this.infoConfirmar.data_vehiculo)
+                  
+                  function fullname(data_cliente){
+                    const {nombre, apellidos} = data_cliente
+                    return `${nombre} ${apellidos}`.toUpperCase()
                   }
-                },100)
-              })
+                  function placas(data_vehiculo){
+                    const {placas} = data_vehiculo
+                    return `${placas}`.toUpperCase()
+                  }
+                  guardar_.checkList = this._servicios.purifica_checklist(this.infoConfirmar.checkList)
+                  guardar_.detalles =  this._servicios.purifica_detalles(this.infoConfirmar.detalles)
+                  updates[`recepciones/${clave}`] = guardar_
+
+                  this._mail.EmailRecepcion(dataMail)
+                  // if (this.ParamsGet.tipo === 'cita') {
+                  //   updates[`${this.ParamsGet.ruta}/status`] = 'concretada'
+                  // }
+
+                  const claves_encontradas = await this._automaticos.consulta_ruta('claves_recepciones')
+                  const valorNoDuplicado = await [...new Set([...claves_encontradas, clave])];
+                  updates['claves_recepciones'] = valorNoDuplicado
+
+
+                  update(ref(db), updates).then(()=>{
+                    pdfDocGenerator.download(`Recepcion_${this.infoConfirmar.no_os}`)
+                    Swal.close()
+                    this.files = []
+                    this.archivos = []
+                    this.nombre = null
+                    this.numeroDias = 0
+                    // this.infoConfirmar= this._servicios.infoConfirmar
+                    this.infoConfirmar = JSON.parse(JSON.stringify(this._servicios.infoConfirmar));
+
+                    this.infoConfirmar.elementos = []
+                    this.limpiarFirma()
+                    this.realizaOperaciones()
+                    this._security.guarda_informacion({nombre:'claves_recepciones', data: valorNoDuplicado})
+
+                    this.router.navigateByUrl('/servicios')
+                  })
+                }
+              },100)
             })
-          }
-        })
+          })
+        }
       })
+      // this._servicios.generateOSNumber(this.infoConfirmar,this._rol).then((no_os)=>{
+        
+      // })
     })
   }
 
@@ -1058,6 +1067,22 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.infoConfirmar.vehiculo = null
       
     }
+  }
+  generateOSNumber(data, rol: string) {
+
+    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    const claves_recepciones:any[] = this._publicos.nueva_revision_cache('claves_recepciones')
+
+    const {sucursal} = data
+    const date = new Date();
+    const anio = date.getFullYear().toString().slice(-2);
+    const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+    // const {sucursal, cliente}= data
+    const nombreSucursal = sucursales[sucursal].sucursal.slice(0, 2).toUpperCase();
+    const nuevoRol = rol.slice(0, 2).toUpperCase();
+    const secuencia = (claves_recepciones.length + 1).toString().padStart(5, '0');
+    // console.log(`${nombreSucursal}${mes}${anio}${nuevoRol}${secuencia}`);
+    return `${nombreSucursal}${mes}${anio}${nuevoRol}${secuencia}`;
   }
 
 

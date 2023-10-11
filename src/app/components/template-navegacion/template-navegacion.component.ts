@@ -18,6 +18,7 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
 
   donde:string
   donde_pura:string
+  donde_show:string
   ngOnInit(): void {
     this.obtener_rutas_navegacion()
   }
@@ -30,6 +31,13 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
       this.enrutamiento = JSON.parse(JSON.stringify(params))
     });
     this.donde = this._publicos.extraerParteDeURL()
+    // console.log(show_donde(this.donde));
+    this.donde_show = show_donde(this.donde)
+    
+
+    function show_donde(cadena){
+      return cadena.replace('-',' ')
+    }
   }
   regresar(){
     const query_params =
@@ -41,8 +49,16 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
     }, {});
     const {anterior} = this._publicos.crear_new_object( this.enrutamiento )
 
-    const queryParams = (queryParams_verifica(anterior)) ? query_params : {}
+    // console.log(query_params);
+    const queryParams = (queryParams_verifica(anterior)) ?  {}: query_params
 
+    const cliente = this.obtener_querys(anterior)
+    
+    if (cliente) {
+      query_params['cliente'] = cliente
+      query_params['anterior'] = 'clientes'
+      delete  queryParams['vehiculo']
+    }
     this.router.navigate([`/${anterior}`], { 
       queryParams
     });
@@ -67,5 +83,29 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
       ]
       return rutas_sin_queryParams.includes(ruta_regresar)
     }    
+  }
+  obtener_querys(ruta_regresar){
+    const rutas_busqueda_params = [
+      'historial-cliente'
+    ]
+
+    const ruta_valida = rutas_busqueda_params.includes(ruta_regresar)
+
+    const {vehiculo} = this.enrutamiento
+    let cliente_id:string = ''
+    if (ruta_valida) {
+      if (vehiculo) {
+        const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+        const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
+        const {cliente} = data_vehiculo
+        cliente_id = cliente
+      }
+      return cliente_id
+    }else{
+      return null
+    }
+
+    
+    
   }
 }

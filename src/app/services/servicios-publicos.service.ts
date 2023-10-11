@@ -1160,6 +1160,18 @@ export class ServiciosPublicosService {
       });
       return reporte
     }
+    new_obtenerPrimerUltimoDiaMes(start, end){
+      const fecha_start = new Date(start)
+      const month = fecha_start.getMonth() 
+      const year = fecha_start.getFullYear()
+      const primerDia = new Date(year, month, 1);
+
+      const fecha_end = new Date(end)
+      const month_end = fecha_end.getMonth() 
+      const year_end = fecha_end.getFullYear()
+      const ultimoDia = new Date(year_end, month_end + 1, 0);
+      return {primerDia, ultimoDia}
+    }
     obtenerPrimerUltimoDiaMes(mes, anio) {
       const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ];
       const fecha = new Date(anio, mes - 1, 1); // Crear una fecha con el primer día del mes
@@ -1795,6 +1807,63 @@ export class ServiciosPublicosService {
         })
       });
     }
+
+    data_relacionada_id_cliente(id_cliente:string ){
+      const clientes = this.nueva_revision_cache('clientes')
+      // const data_cliente = clientes[id_cliente]
+      const asiganacion_data_cliente = this.crear_new_object(clientes[id_cliente])
+      if (Object.keys(asiganacion_data_cliente).length) asiganacion_data_cliente.id = id_cliente
+      
+      const data_cliente = asiganacion_data_cliente
+      const vehiculos = this.nueva_revision_cache('vehiculos')
+      const vehiculos_arr =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(vehiculos,'cliente', id_cliente))
+
+      const cotizaciones = this.nueva_revision_cache('cotizaciones')
+      const cotizaciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(cotizaciones,'cliente', id_cliente))
+      const cotizaciones_arr = this.nueva_asignacion_cotizaciones(cotizaciones_antes)
+
+      const recepciones = this.nueva_revision_cache('recepciones')
+      const recepciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(recepciones,'cliente', id_cliente))
+      const recepciones_arr = this.nueva_asignacion_recepciones(recepciones_antes)
+      
+      return {cotizaciones_arr, recepciones_arr, vehiculos_arr, data_cliente}
+    }
+    data_relacionada_id_vehiculo(id_vehiculo:string ){
+      
+
+      const vehiculos = this.nueva_revision_cache('vehiculos')
+      const clientes = this.nueva_revision_cache('clientes')
+
+      const asiganacion_data_vehiculo = this.crear_new_object(vehiculos[id_vehiculo])
+      let data_vehiculo, data_cliente
+
+      if (Object.keys(asiganacion_data_vehiculo).length) {
+        asiganacion_data_vehiculo.id = id_vehiculo
+        data_vehiculo = asiganacion_data_vehiculo
+
+        const {cliente} = asiganacion_data_vehiculo
+
+        
+        const asiganacion_data_cliente = this.crear_new_object(clientes[cliente])
+        if (Object.keys(asiganacion_data_cliente).length) asiganacion_data_cliente.id = cliente
+        data_cliente = asiganacion_data_cliente
+
+      }
+
+
+      // let cotizaciones_arr = [],
+      // let recepciones_arr = []
+
+      const cotizaciones = this.nueva_revision_cache('cotizaciones')
+      const cotizaciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(cotizaciones,'vehiculo', id_vehiculo))
+      const cotizaciones_arr = this.nueva_asignacion_cotizaciones(cotizaciones_antes)
+
+      const recepciones = this.nueva_revision_cache('recepciones')
+      const recepciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(recepciones,'vehiculo', id_vehiculo))
+      const recepciones_arr = this.nueva_asignacion_recepciones(recepciones_antes)
+      
+      return {data_vehiculo, data_cliente, cotizaciones_arr, recepciones_arr}
+    }
     async buscar_data_realcionada_con_cliente(cliente:string, data_cliente){
       let cotizaciones_arr = [], recepciones_arr = [], vehiculos_arr = []
       const recepciones_object = await this.revisar_cache('recepciones')
@@ -2204,17 +2273,10 @@ export class ServiciosPublicosService {
         for (const clave in objeto) {
           if (objeto.hasOwnProperty(clave) && objeto[clave].fecha_recibido ){
             const fecha_compara = new Date( objeto[clave].fecha_recibido)
-              if (fecha_compara > fecha_start && fecha_compara < fecha_end) {
+              if (fecha_compara >= fecha_start && fecha_compara <= fecha_end) {
                 resultado[clave] = objeto[clave];
               }
           }
-          // if (valor === 'Todas') {
-          //   resultado[clave] = objeto[clave];
-          // }else{
-          //   if (objeto.hasOwnProperty(clave) && objeto[clave][propiedad] === valor) {
-          //     resultado[clave] = objeto[clave];
-          //   }
-          // }
         }
       return resultado;
     }
@@ -2223,13 +2285,10 @@ export class ServiciosPublicosService {
       const recepciones = this.nueva_revision_cache('recepciones')
       let nueva_data = this.crear_new_object(object)
       Object.keys(object).forEach(clave=>{
-        const {sucursal, tipo, id_os} = nueva_data[clave]
+        const {sucursal, tipo, id_os, metodo } = nueva_data[clave]
         nueva_data[clave].sucursalShow = sucursales[sucursal].sucursal
-        if (tipo === 'orden') {
-          nueva_data[clave].no_os = recepciones[id_os].no_os
-        }else{
-          nueva_data[clave].no_os = ''
-        }
+        nueva_data[clave].no_os =  (tipo === 'orden') ? recepciones[id_os].no_os : ''
+        nueva_data[clave].metodoShow = this.metodospago.find(met=>met.valor === String(metodo)).show
       })
       return nueva_data
     }

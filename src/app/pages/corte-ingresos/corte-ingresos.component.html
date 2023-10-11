@@ -9,8 +9,16 @@
     <button class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"  (click)="realizaGasto = 'gasto'" data-bs-toggle="modal"  data-bs-target="#modalGasto">Nuevo gasto</button>
     <button class="btn btn-sm btn-success m-1" (click)="realizaGasto = 'pago'" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" data-bs-toggle="modal"  data-bs-target="#modalGasto"
         >Registra pago</button>
+    <ng-container *ngIf="_sucursal === 'Todas'">
+      <button aria-label="Registro de objetivos" class="btn btn-sm btn-warning m-1" data-bs-toggle="modal" data-bs-target="#modal-registro-metas" #tooltip="matTooltip" matTooltip="Registro objetivo mes">
+        <i class="fa fa-keyboard"></i>
+      </button>
+    </ng-container>
+    
   </div>
 </div>
+
+
 <div class="row">
   <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end">
     <div class="input-group mb-3 ">
@@ -42,24 +50,24 @@
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">Total ordenes </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.total_ordenes}}</strong></div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporte.total_ordenes}}</strong></div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">Total ordenes </div>
             </div>
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="row">
               <ng-container *ngFor="let item of camposReporte">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">{{item.show}}</div>
-                <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporte[item.valor] | monedas}}</strong></div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">{{item.show}}</div>
             </ng-container>
             </div>
           </div>
           
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">% GM </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentajeGM | monedas:'%'}}</strong></div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporte.porcentajeGM | monedas:'%'}}</strong></div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">% GM </div>
     
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">% Cumplido </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-end"><strong>{{reporte.porcentaje | monedas:'%'}}</strong></div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><strong>{{reporte.porcentaje | monedas:'%'}}</strong></div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start">% Cumplido </div>
         </div>
       </div>
     </div>
@@ -69,7 +77,7 @@
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
   <!-- <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false" [muestra_cliente]="true"></app-template-tabla-recepciones> -->
-  <button class="btn btn-sm btn-success m-1" (click)="generaExcel_corte_ingresos()"> generaExcel_corte_ingresos()</button>
+  <button class="btn btn-sm btn-success m-1" (click)="generaExcel_corte_ingresos()"> Genera reporte de corte ingresos</button>
   <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [reales]="true" [muestra_desgloce]="false" [muestra_cliente]="true"> </app-template-tabla-recepciones>
 </div>
 
@@ -110,4 +118,20 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     </div>
   </div>
 </div>
+</div>
+<div class="modal fade" id="modal-registro-metas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body m-2">
+        <app-registra-objetivo ></app-registra-objetivo>
+      </div>
+    </div>
+  </div>
 </div>

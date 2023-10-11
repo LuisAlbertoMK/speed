@@ -269,7 +269,7 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
 
-  <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  <mat-paginator #elementsPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
 </div>
 
 <div class="row mt-2">
@@ -284,6 +284,13 @@
     <button class="btn btn-sm btn-primary" [disabled]="enProceso" (click)="continuarCotizacion()"> Realizar cotizacion</button>
   </div>
 </div>
+<!-- <button class="btn btn-sm btn-light" (click)="generaNombreCotizacion(this._rol, this.infoCotizacion)">
+  sdgfdgfd
+</button>
+
+<pre>
+  {{infoCotizacion.no_cotizacion | json}}
+</pre> -->
 
 <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
 

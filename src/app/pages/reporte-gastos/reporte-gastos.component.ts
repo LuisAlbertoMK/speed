@@ -173,7 +173,7 @@ export class ReporteGastosComponent implements OnInit {
       
 
       const objeto_filtrado_fecha_operacion = this._publicos.filtrarObjetoPorPropiedad_fecha(objeto_todas, start, end)
-      
+
       const data_completa = this._publicos.arregla_data_completa(objeto_filtrado_fecha_operacion)
       // console.log(data_completa);
       

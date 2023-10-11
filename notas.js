@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "correccion de consulta de datos en cache 8  (proceso)"
+git commit -m "revision de modulos part-1 documento Revisión plataforma docs google  (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

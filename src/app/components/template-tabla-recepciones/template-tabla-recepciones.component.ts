@@ -50,7 +50,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
    
    formasPago = [...this._campos.formasPago]
    sucursales_array = [...this._sucursales.lista_en_duro_sucursales]
-  reporte_totales = {
+   reporte_totales = {
     mo:0,
     refaccion:0,
     refaccionVenta:0,
@@ -58,23 +58,13 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     iva:0,
     descuento:0,
     total:0,
-    meses:0,
+    // meses:0,
     ub:0,
   }
-  campos_reporte_show = [
-    {valor: 'mo', show:'mo'},
-    {valor: 'refaccion', show:'refacciones'},
-    {valor: 'refaccionVenta', show:'refacciones venta'},
-    {valor: 'subtotal', show:'subtotal'},
-    {valor: 'iva', show:'iva'},
-    {valor: 'descuento', show:'descuento'},
-    {valor: 'total', show:'total'},
-    {valor: 'meses', show:'meses'},
-  ]
+
   miniColumnas:number = 100
 
-
-  servicio_editar
+  // servicio_editar
   contador_resultados:number = 0
 
   _rol:string
@@ -129,40 +119,26 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
 
     queryParams['anterior'] = ruta_anterior[0]
     
-    
-    
     this.router.navigate([`/${pagina}`], { queryParams });
   }
   obtener_total_cotizaciones(){
 
-    const reporte_totales = {
-      mo:0,
-      refacciones:0,
+    this.reporte_totales = suma_reportes(this.recepciones_arr)
+    function suma_reportes  (cotizaciones) {
+      const sumas = {mo:0,refaccion: 0,refaccionVenta: 0,subtotal: 0,total: 0,iva: 0,ub: 0,descuento: 0}
+      const campos = ['mo','refaccion','refaccionVenta','subtotal','total','iva','ub','descuento']
+      let nuevas = [...cotizaciones]
+      nuevas.forEach(coti=>{
+        const {reporte} = coti
+        campos.forEach(campo=>{
+          sumas[campo] += parseInt(reporte[campo])
+        })
+      })
+      sumas.ub = sumas.ub / nuevas.length
+      return sumas
     }
-    let margen_ = 0
-
-    const nuevas = [...this.recepciones_arr]
-
-    this.recepciones_arr = nuevas
-    this.dataSource.data = nuevas
+    this.dataSource.data = this.recepciones_arr
     this.newPagination()
-
-    const nuevo_margen = margen_ / nuevas.length
-
-    let subtotal = reporte_totales.mo + reporte_totales.refacciones
-
-    const margen = 1 + (nuevo_margen / 100)
-    
-    let nueva_utilidad_operacion = (subtotal - reporte_totales.refacciones) * (100 / subtotal)
-
-    this.reporte_totales.mo = reporte_totales.mo
-    this.reporte_totales.refaccion = reporte_totales.refacciones
-    this.reporte_totales.refaccionVenta = reporte_totales.refacciones * margen
-    this.reporte_totales.subtotal = subtotal
-    let total = reporte_totales.mo +  this.reporte_totales.refaccionVenta
-    this.reporte_totales.total = total
-    this.reporte_totales.ub = nueva_utilidad_operacion
-
   }
   newPagination(){
     setTimeout(() => {

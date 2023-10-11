@@ -432,12 +432,14 @@ obtenerTotalesHistoriales(pagos, gastos){
     return no_OS
   }
   async generateOSNumber(data, rol: string) {
+
+    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    const {sucursal} = data
     const date = new Date();
     const anio = date.getFullYear().toString().slice(-2);
     const mes = (date.getMonth() + 1).toString().padStart(2, '0');
-    const {sucursal, cliente}= data
-    const nameSucursal = this.sucursales_array.find(s=>s.id === sucursal).sucursal
-    const nombreSucursal = nameSucursal.slice(0, 2).toUpperCase();
+    // const {sucursal, cliente}= data
+    const nombreSucursal = sucursales[sucursal].sucursal.slice(0, 2).toUpperCase();
     const nuevoRol = rol.slice(0, 2).toUpperCase();
     const cuantos = (await this.consulta_cantidad_servicios()).length
     const secuencia = (cuantos + 1).toString().padStart(5, '0');
