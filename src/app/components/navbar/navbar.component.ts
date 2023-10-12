@@ -98,6 +98,8 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     {ruta_observacion: 'historial_pagos_orden', nombre:'claves_historial_pagos_orden'},
     {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
     {ruta_observacion: 'metas_sucursales', nombre:'claves_metas_sucursales'},
+    {ruta_observacion: 'paquetes', nombre:'claves_paquetes'},
+    {ruta_observacion: 'moRefacciones', nombre:'claves_moRefacciones'},
   ]
   busqueda:any = {ruta_observacion: 'clientes', nombre:'claves_clientes'}
   ngOnInit(): void {
@@ -121,30 +123,30 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this._rol = rol
     this._sucursal = sucursal
 
-    // this.revision_existe_cache()
+    this.revision_existe_cache()
     
   }
   revision_existe_cache(){
     const faltantes = {}
     const existentes = {}
-    let timer:number = 100
+    let timer:number = 2000
     
 
     this.campos.forEach(campo=>{
         const {ruta_observacion, nombre} = campo
 
-        console.log({ruta_observacion, nombre});
+        // console.log({ruta_observacion, nombre});
 
         if (localStorage[nombre] && localStorage[ruta_observacion]) {
             existentes[ruta_observacion] =nombre
         }else{
-            timer+=1000
+            timer+=1500
             faltantes[ruta_observacion] = nombre; 
         }
     })
 
-    console.log(existentes);
-    console.log(faltantes);
+    // console.log(existentes);
+    // console.log(faltantes);
     
 
     function tieneElementos(objeto) {
@@ -165,7 +167,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
             this._security.guarda_informacion({nombre, data: Object.keys(data)})
         })
     }else{
-        timer = 100
+        timer = 2500
     }
 
     Swal.fire({
@@ -196,7 +198,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     const {nombre, ruta_observacion} = data
 
     // this.simular_observacion_informacion_firebase_nombre(this.busqueda)
-    console.log({nombre, ruta_observacion});
+    // console.log({nombre, ruta_observacion});
 
 
     const en_cloud = await this._automaticos.consulta_ruta(nombre)
@@ -205,7 +207,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     // console.log(this._publicos.saber_pesos(en_cloud));
     // console.log(nombre);
     
-    const en_local = this._publicos.nueva_revision_cache(nombre)
+    const en_local:any[] = this._publicos.nueva_revision_cache(nombre)
     // console.log(this._publicos.saber_pesos(en_local));
     // console.log(nombre);
     
@@ -303,23 +305,19 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     if (faltantes.length) {
       // console.log('realiza la consulta de la informacion', faltantes);
       this.obtenerInformacion(faltantes, ruta_observacion)
-      .then((resultados_promesa) => {
-        // console.log(resultados_promesa);
+        .then((resultados_promesa) => {
 
-        const claves_obtenidas = Object.keys(resultados_promesa)
+          const claves_obtenidas = Object.keys(resultados_promesa)
 
-        let actuales  = this._publicos.nueva_revision_cache(ruta_observacion)
-        claves_obtenidas.forEach(clave_obtenida=>{
-          actuales[clave_obtenida] = resultados_promesa[clave_obtenida]
+          let actuales  = this._publicos.nueva_revision_cache(ruta_observacion)
+          claves_obtenidas.forEach(clave_obtenida=>{
+            actuales[clave_obtenida] = resultados_promesa[clave_obtenida]
+          })
+          this._security.guarda_informacion({nombre: ruta_observacion, data: actuales})
         })
-        // console.log(actuales);
-        this._security.guarda_informacion({nombre: ruta_observacion, data: actuales})
-
-
-      })
-      .catch(error=>{
-        console.log(error);
-      })
+        .catch(error=>{
+          console.log(error);
+        })
     }
     
   }
@@ -336,11 +334,12 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     const resultados_new = {};
   
     await Promise.all(claves_faltantes.map(async (clave) => {
-      const data_cliente = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clave}`);
-      const { no_cliente } = this._publicos.crear_new_object(data_cliente);
-      if (no_cliente) resultados_new[clave] = data_cliente;
+      const data_obtenida = await this._automaticos.consulta_ruta(`${ruta_observacion}/${clave}`);
+      resultados_new[clave] = data_obtenida;
     }));
   
+    console.log(resultados_new);
+    
     return resultados_new;
   }
 

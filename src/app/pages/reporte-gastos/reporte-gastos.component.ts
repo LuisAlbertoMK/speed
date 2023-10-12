@@ -15,6 +15,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { AutomaticosService } from 'src/app/services/automaticos.service';
+import { ExporterService } from 'src/app/services/exporter.service';
+import { CamposSystemService } from 'src/app/services/campos-system.service';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -39,7 +41,8 @@ export class ReporteGastosComponent implements OnInit {
   
   constructor(
     private _security:EncriptadoService,private _publicos: ServiciosPublicosService, private _automaticos: AutomaticosService,
-    private _reporte_gastos: ReporteGastosService, private _sucursales: SucursalesService) { 
+    private _reporte_gastos: ReporteGastosService, private _sucursales: SucursalesService, private _export: ExporterService,
+    private _campo: CamposSystemService) { 
         const currentYear = new Date().getFullYear();
         // this.minDate = new Date(currentYear , 0, 1);
         // this.maxDate = new Date(currentYear , 11, 31);
@@ -66,7 +69,7 @@ export class ReporteGastosComponent implements OnInit {
     {valor:'sobrante', show:'Suma de sobrantes'},
     {valor:'operacion', show:'Gastos de operación'},
     {valor:'orden', show:'Gastos de ordenes'},
-    {valor:'restante', show:'Sobrante op'},
+    {valor:'restante', show:'Sobrante del dia'},
   ]
 
   dataSource = new MatTableDataSource(); //elementos
@@ -195,9 +198,11 @@ export class ReporteGastosComponent implements OnInit {
     ? arreglo_Actual
     :  this._publicos.actualizarArregloExistente(this.gastos_diarios_table, arreglo_Actual, campos )
 
+    const nuevos = this._publicos.asigna_data_reporte_gastos(arreglo_Actual)
     arreglo = (!arreglo.length) 
     ? arreglo_Actual
-    :  this._publicos.actualizarArregloExistente(arreglo, arreglo_Actual, campos )
+    :  this._publicos.actualizarArregloExistente(nuevos, arreglo_Actual, campos )
+
 
     // console.log(arreglo);
 
@@ -227,7 +232,59 @@ export class ReporteGastosComponent implements OnInit {
     
   }
 
+  genera_excel(){
+    // console.log(this.dataSource.data);
+    const enviar_totales_orden = []
+    // const metodospago = this._campo.metodospago
+    // const nuevos = this._publicos.asigna_data_reporte_gastos(this.dataSource.data)
+    console.log(this.dataSource.data);
+    const historial_gastos_orden = this._publicos.nueva_revision_cache('historial_gastos_orden')
+    const nuevas_ = [...this.dataSource.data]
 
+    const aplicadas = nuevas_.map((os_especifica:any)=>{
+      const {tipo, id_os, no_os, descripcion} = this._publicos.crear_new_object(os_especifica)
+      if (tipo === 'orden') {
+        const reporte = {total:0, subtotal:0, iva:0}
+        const pertenecientes_orden = this._publicos.crearArreglo2(this._publicos.filtrarObjetoPorPropiedad(historial_gastos_orden,'id_os',id_os))
+        pertenecientes_orden.forEach(element => {
+          reporte.total += element.monto
+        });
+        if (reporte.total >0 ) {
+          enviar_totales_orden.push({
+              no_os,
+              descripcion, 
+              total_gastado: reporte.total,
+            })
+        }
+      }
+      return os_especifica
+    })
+    
+    function calculos_facturas_notas(arreglo){
+      let total_facturas =0, total_notas = 0
+      let nuevos = [...arreglo]
+      let filtrados_aprobados = nuevos.filter(s=>s.status)
+      filtrados_aprobados.forEach(co=>{
+        const {monto, facturaRemision} = co
+        if (facturaRemision === 'factura') {
+          total_facturas += parseFloat(monto)
+        }else{
+          total_notas += parseFloat(monto)
+        }
+      })
+      return {total_facturas, total_notas}
+    }
+    // this.dataSource.data, this.reporte, enviar_totales_orden
+    const {total_facturas, total_notas} = calculos_facturas_notas(aplicadas)
+    this._export.generaReporteGastosExcel({
+      arreglo: aplicadas,
+      data_reporte_general: this.reporte,
+      total_factura: total_facturas, 
+      total_notas: total_notas, 
+      restante_dia: total_facturas + total_notas
+    })
+
+  }
   
 
 

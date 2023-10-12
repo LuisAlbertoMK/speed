@@ -171,8 +171,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
   // }
   async cargaDataCliente_new(){
-    console.log('aqui');
-    
+
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
     
     
@@ -471,17 +470,21 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   }
   asignar_nuevos_elementos(nuevos:any[]){
     let indexados = nuevos.map((elemento, index)=> {
-      // console.log(elemento);
+      console.log(elemento);
       const {costo, precio, cantidad, tipo} = elemento
       const {margen} = this.infoCotizacion
-      if (tipo !== 'mo') {
+      if (tipo !== 'mo' && tipo !=='paquete') {
         const margen_new = 1 +(margen / 100)
         const precioShow = (cantidad * ( (costo>0) ? costo : precio)) * margen_new
         elemento.total = precioShow
         elemento.precioShow = ( (costo>0) ? costo : precio) * margen_new
-      }else{
+      }else if(tipo === 'mo') {
         elemento.total = (cantidad * ( (costo>0) ? costo : precio))
         elemento.precioShow = ( (costo>0) ? costo : precio)
+      }else{
+        const {reporte} = elemento
+        // const {mo, }
+        elemento.total
       }
      
       elemento.index = index
@@ -535,7 +538,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
     const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
 
-    // console.log(reporte);
+    console.log(reporte);
     
     this.infoCotizacion.reporte = reporte
     this.infoCotizacion.elementos = elementos
@@ -550,6 +553,16 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       this.vigila_vehiculos_cliente()
   }
   async continuarCotizacion(){
+    const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
+    if (cliente && !sucursal && data_cliente) {
+      const dat_cliente = this._publicos.crear_new_object(data_cliente)
+      const sucursales = this._publicos.nueva_revision_cache('sucursales')
+      // const {}
+      const {sucursal: cliente_sucursal} = dat_cliente
+      this.infoCotizacion.sucursal = cliente_sucursal
+      this.infoCotizacion.data_sucursal = sucursales[cliente_sucursal]
+    }
+
     this.enProceso = false
     const obligatorios = ['sucursal','cliente','vehiculo','elementos','servicio', 'margen','formaPago']
     // const opcionales = ['promocion','descuento','nota','iva']
@@ -561,7 +574,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     this.enProceso = true
     const {promocion, descuento, nota} = this._publicos.recuperaDatos(this.formPlus)
-
+    
     this.infoCotizacion.descuento = descuento
     this.infoCotizacion.nota = nota
     this.infoCotizacion.promocion = promocion
@@ -570,7 +583,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     
     
-    const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
+    
     // await this._cotizaciones.generaNombreCotizacion(this.ROL, {sucursal, cliente, data_sucursal, data_cliente}).then(ans=>{
     //   this.infoCotizacion.no_cotizacion = ans
     // })

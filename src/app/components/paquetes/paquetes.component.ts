@@ -47,7 +47,7 @@ export class PaquetesComponent implements OnInit, OnChanges {
    }
 
   ngOnInit(): void {
-    this.consultaMO()
+    // this.consultaMO()
     // this.modelo = 'Fiesta'
   }
   ngOnChanges(changes: SimpleChanges) {
@@ -66,76 +66,13 @@ export class PaquetesComponent implements OnInit, OnChanges {
     }
   }
 
-  consultaMO(){
-    const starCountRef = ref(db, `manos_obra`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const mo= this._publicos.crearArreglo2(snapshot.val())
-        mo.map(r=>{ r['tipo'] = 'mo' })
-        this.listaMO = mo
-        this.refacciones()
-      } else {
-        this.refacciones()
-      }
-    })
-  }
-  refacciones(){
-    const starCountRef = ref(db, `refacciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const refacciones= this._publicos.crearArreglo2(snapshot.val())
-        refacciones.map(r=>{ r['tipo'] = 'refaccion' })
-        this.listaRefacciones = refacciones
-        this.consultaPaquetes()
-      } else {
-        this.consultaPaquetes()
-      }
-    })
-  }
+  
 
 
   consultaPaquetes(){
-    const unidos = this.listaMO.concat(this.listaRefacciones)
-    // const aqui = unidos.filter(u=>u['id']  === '-NE2JJZu_LtUYJXSBola')
-    // console.log(unidos);
+    const paquetes = this._publicos.nueva_revision_cache('paquetes')
+    console.log(paquetes);
     
-    const starCountRef = ref(db, `paquetes`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const paquetes= this._publicos.crearArreglo2(snapshot.val())
-            for (const [index, p] of paquetes.entries()) {
-              const {elementos, reporte} = this._publicos.reportePaquete(p.elementos, 1.25);
-              const elementosActualizados = elementos.map((e) => {
-                if (e.catalogo || e.enCatalogo) {
-                  const info = unidos.find((u) => u.id === e.IDreferencia) ?? {};
-                  const camposNuevos = ['id', 'nombre', 'tipo'];
-          
-                  camposNuevos.forEach((c) => {
-                    e[c] = info[c] ?? '';
-                  });
-                }
-                return e;
-              });
-          
-              paquetes[index] = {
-                ...p,
-                elementos: elementosActualizados,
-                reporte,
-                precio: reporte.total,
-                total: reporte.total,
-                tipo: 'paquete',
-                aprobado: true,
-                cantidad: 1,
-              };
-            }
-        this.listaPaquetes_arr = paquetes.filter((p) => p.elementos.length);
-        // this.listaPaquetes_arr = paquetes.filter(p=>p['elementos'].length);
-        // (this.modelo) ? this.aplicaFiltro(true) : this.aplicaFiltro(false)
-        this.aplicaFiltro()
-      } else {
-        this.newPagination('paquetes')
-      }
-    })
   }
   
   aplicaFiltro(){

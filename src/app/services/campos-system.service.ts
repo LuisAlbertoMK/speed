@@ -119,6 +119,7 @@ export class CamposSystemService {
     {campos:'numero_os', reemplaza:'No. OS'},
     {campos:'anio_inicial', reemplaza:'Año inicial'},
     {campos:'anio_final', reemplaza:'Año final'},
+    {campos:'id_os', reemplaza:'# O.S'},
   ]
   campos_navegacion= [
     {campos:'inicio', reemplaza:'Inicio'},
@@ -183,5 +184,16 @@ export class CamposSystemService {
         interes: 24.,
         numero: 24
     }
+    ]
+    metodospago = [
+      {valor:'1', show:'Efectivo', ocupa:'Efectivo'},
+      {valor:'2', show:'Cheque', ocupa:'Cheque'},
+      {valor:'3', show:'Tarjeta', ocupa:'Tarjeta'},
+      {valor:'4', show:'Transferencia', ocupa:'Transferencia'},
+      {valor:'5', show:'Credito', ocupa:'credito'},
+      // {valor:4, show:'OpenPay', ocupa:'OpenPay'},
+      // {valor:5, show:'Clip / Mercado Pago', ocupa:'Clip'},
+      {valor:'6', show:'Terminal BBVA', ocupa:'BBVA'},
+      {valor:'7', show:'Terminal BANAMEX', ocupa:'BANAMEX'}
     ]
 }

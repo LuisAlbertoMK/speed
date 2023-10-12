@@ -17,34 +17,31 @@
           </ng-container>
       </ng-container>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card border-success mb-3">
           <div class="card-header text-center"></div>
           <div class="card-body text-success ">
               <div class="row">
-
-                
-
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase">
                   con margen inicial de 25 % para las refacciones
                 </div>
                 
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">U.B</div>
+                <!-- <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">U.B</div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end" [ngClass]="paquete.reporte.ub >= 55 ? 'text-success': 'text-danger'">
                   <strong>{{paquete.reporte.ub  | monedas:'%'}}</strong>
-                </div>
+                </div> -->
 
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">MO</div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{paquete.reporte.mo  | monedas}}</strong></div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">MO</div>
                 
+                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{paquete.reporte.refaccionVenta  | monedas}}</strong></div>
                 <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">Refacciones</div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{paquete.reporte.refacciones  | monedas}}</strong></div>
                 
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">Subtotal sin margen</div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{paquete.reporte.subtotal  | monedas}}</strong></div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">Subtotal sin margen</div>
                 
-                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">Total con margen</div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-6 text-end"><strong>{{paquete.reporte.total  | monedas}}</strong></div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-6 text-start text-uppercase">Total con margen</div>
                 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase">
                   {{paquete.reporte.total  | numerosLetras}} 

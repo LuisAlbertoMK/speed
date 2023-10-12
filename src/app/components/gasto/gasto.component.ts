@@ -156,13 +156,16 @@ export class GastoComponent implements OnInit, OnChanges {
   }
 
   vigila(){
+
+    this.muestra_claves_recepciones(this._sucursal)
     if (this._sucursal !== 'Todas')  this.formGasto.get('sucursal').disable()
     this.formGasto.get('tipo').valueChanges.subscribe(async (tipo: string) => {
-        this.muestra_claves_recepciones()
+        // this.muestra_claves_recepciones()
+        this.muestraLista = (tipo === 'orden') ? true : false
     })
-    this.formGasto.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
+    this.formGasto.get('sucursal').valueChanges.subscribe((sucursal: string) => {
       if (sucursal) {
-        this.muestra_claves_recepciones()
+        this.muestra_claves_recepciones(sucursal)
       }
     })
     this.formGasto.get('tipo').valueChanges.subscribe(async (tipo: string) => {
@@ -188,74 +191,21 @@ export class GastoComponent implements OnInit, OnChanges {
     }
   }
   
-  async muestra_claves_recepciones(){
+  async muestra_claves_recepciones(sucursal:string){
 
-    const {tipo, sucursal} = this._publicos.recuperaDatos(this.formGasto)
+    const {tipo } = this._publicos.recuperaDatos(this.formGasto)
     this.muestraLista = (tipo === 'orden') ? true : false
-
-    const recepciones = await this._publicos.revisar_cache('recepciones')
-    const recepciones_arr = this._publicos.crearArreglo2(recepciones)
-
-    const clientes = await this._publicos.revisar_cache('clientes')
-    const vehiculos = await this._publicos.revisar_cache('vehiculos')
-
-    const historial_gastos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_gastos_orden'))
-    const historial_pagos_orden = this._publicos.crearArreglo2(await this._publicos.revisar_cache('historial_pagos_orden'))
-
-    const cotizaciones_completas =this._publicos.asigna_datos_recepcion({
-      bruto:recepciones_arr, clientes, vehiculos,
-      historial_gastos_orden, historial_pagos_orden
-    })
-
-    // console.log(cotizaciones_completas);
-    // console.log(this._rol);
-    // console.log(this._sucursal);
-
     
+      const recepciones = this._publicos.nueva_revision_cache('recepciones')
+      if (sucursal !== 'Todas') {
+        const filtro_recepciones = this._publicos.filtrarObjetoPorPropiedad(recepciones, 'sucursal', sucursal)
+        const filtro_recepciones_new = this._publicos.filtrarObjetoPorPropiedades_arr(
+          filtro_recepciones, 
+          ['cancelado','entregado', 'espera']
+          )
+        this.claves_ordenes = this._publicos.crearArreglo2(filtro_recepciones_new)
+      }
     
-   
-
-    // const {tipo, sucursal} = this._publicos.recuperaDatos(this.formGasto)
-    // this.muestraLista = (tipo === 'orden') ? true : false
-    // if (tipo === 'orden' && sucursal) {
-    //     this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
-    // }else{
-    //   this.claves_ordenes = []
-    // }
-    
-    const filtro_sucursal = (sucursal === 'Todas') 
-    ? cotizaciones_completas
-    : this._publicos.filtra_informacion(cotizaciones_completas,'sucursal',sucursal)
-
-    const filtro_status = 
-    filtro_sucursal.filter(status => status.status !== 'cancelado' && status.status !== 'entregado')
-    // console.log(filtro_sucursal);
-    // console.log(filtro_status);
-    
-
-    this.claves_ordenes = filtro_sucursal
-
-    // const {tipo, sucursal} = this._publicos.recuperaDatos(this.formGasto)
-    // this.muestraLista = (tipo === 'orden') ? true : false
-    // const starCountRef = ref(db, `recepciones`)
-    // onValue(starCountRef, (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     const todas = this._publicos.crearArreglo2(snapshot.val());
-    //     const filtradas = todas.filter(recep=>recep.sucursal === sucursal)
-    //     const claves_show = solo_claves(filtradas)
-    //     this.claves_ordenes  = solo_claves(filtradas)
-    //     function solo_claves(arreglo){
-    //       let nuevos = [...arreglo]
-    //       return nuevos.map(n=>{
-    //         const {id, no_os} = n
-    //         return {id, no_os}
-    //       })
-    //     }
-        
-    //   } else {
-    //     console.log("No data available");
-    //   }
-    // })
   }
 
   myFilter = (d: Date | null): boolean => {
@@ -370,7 +320,7 @@ export class GastoComponent implements OnInit, OnChanges {
   async reseteaForm(){
     if (this.id_os && this.id_os['id']) {
       this.formGasto.get('sucursal').setValue(this.id_os['sucursal'])
-      await this.muestra_claves_recepciones()
+      // await this.muestra_claves_recepciones()
       this.carga_data_gasto(this.id_os)
     }else{
       const sucursal = (this._sucursal ==='Todas') ? '': this._sucursal

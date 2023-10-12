@@ -13,7 +13,7 @@
     <form (ngSubmit)="registroPago()" [formGroup]="formPago" class="m-2">
       <div class="row">
 
-            <ng-container *ngIf="SUCURSAL ==='Todas' && !id_os">
+            <ng-container *ngIf="_sucursal ==='Todas' && !id_os">
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start">
                 <div class="mb-1 row text-start">
                   <label [ngClass]="{'text-danger': validaCampo('sucursal'),'text-success': !validaCampo('sucursal')}"
@@ -36,7 +36,7 @@
                   <label [ngClass]="{'text-danger': validaCampo('id_os'),'text-success': !validaCampo('id_os')}" for="id_os"
                     class="col-sm-6 col-md-6 col-lg-6 col-12 col-form-label" for="os"># O.S  [ ordenes: {{ claves_ordenes.length }} ]</label>
                   <div class="col-sm-6 col-md-6 col-lg-6 col-12">
-                    <select id="os" class="form-select form-select-sm" formControlName="id_os" >
+                    <select id="os" class="form-select form-select-sm" formControlName="id_os" aria-label="Search">
                       <option value="">Selecciona</option>
                       <option [value]="s.id" *ngFor="let s of claves_ordenes">
                         {{s['no_os']}}
@@ -75,20 +75,20 @@
                 <label [ngClass]="{'text-danger': validaCampo('concepto'),'text-success': !validaCampo('concepto')}"
                   for="concepto" class="col-sm-3 col-md-3 col-lg-3 col-form-label">Concepto </label>
                 <div class="col-sm-9 col-md-9 col-lg-9">
-                  <textarea style="width: 100%" formControlName="concepto" id="concepto"></textarea>
+                  <textarea [style]="'width: 100%'" formControlName="concepto" id="concepto"></textarea>
                 </div>
               </div>
             </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" *ngIf="SUCURSAL === 'Todas'">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-start" *ngIf="_sucursal === 'Todas'">
           <div class="input-group mb-3 ">
             <form  [formGroup]="fecha_recibido">
-              <input (click)="pickerBarrido.open()" id="pickerBarrido" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
+              <input aria-label="calendario" (click)="pickerBarrido.open()" id="pickerBarrido" [matDatepickerFilter]="myFilter" formControlName="start" class="form-control" [matDatepicker]="pickerBarrido" >
             </form>
             <!-- <input (click)="pickerBarrido.open()" [min]="minDate"  [max]="maxDate" [matDatepickerFilter]="myFilter"  
             class="form-control" [matDatepicker]="pickerBarrido" (dateChange)="addEvent('change', $event)"> -->
             <mat-datepicker #pickerBarrido class="mat-datepicker-overlay"></mat-datepicker>
             <div class="input-group-append">
-              <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
+              <button aria-label="calendario" class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBarrido.open()">
                 <i class="fa fa-calendar-alt"></i>
               </button>
             </div>

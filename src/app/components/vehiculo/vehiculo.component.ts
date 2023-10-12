@@ -9,6 +9,7 @@ import { child, getDatabase, onValue, push, ref, update } from "firebase/databas
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
+import { AutomaticosService } from 'src/app/services/automaticos.service';
 const db = getDatabase()
 const dbRef = ref(getDatabase());
 
@@ -23,7 +24,8 @@ export class VehiculoComponent implements OnInit, OnChanges  {
 
   
   constructor(private fb: FormBuilder, private _vehiculos: VehiculosService, private _clientes : ClientesService,
-    private _publicos: ServiciosPublicosService, private _security:EncriptadoService,private _campos: CamposSystemService,) {
+    private _publicos: ServiciosPublicosService, private _security:EncriptadoService,private _campos: CamposSystemService,
+    private _automaticos: AutomaticosService) {
       this.dataVehiculo = new EventEmitter()
     }
 
@@ -199,7 +201,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       this.form_vehiculo.controls['cliente'].setValue(id_cliente)
     })
   }
-  guardarLlenadoManual(){
+  async guardarLlenadoManual(){
     this.salvando = true
     const camposRecupera = [ 'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','sucursal','transmision','marcaMotor','vinChasis','no_motor','id']
     const info_get = this._publicos.recuperaDatos(this.form_vehiculo);
@@ -230,6 +232,10 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     }else{
       // const {sucursal, id } = this.data_cliente
       const clave_nueva = this._publicos.generaClave()
+      const claves_encontradas = await this._automaticos.consulta_ruta('claves_vehiculos')
+      const valorNoDuplicado = await [...new Set([...claves_encontradas, clave_nueva])];
+      updates['claves_vehiculos'] = valorNoDuplicado
+
       updates[`vehiculos/${clave_nueva}`] = saveInfo;
       this.listaPlacas.push(String(saveInfo.placas).toLowerCase())
       updates[`placas`] = this.listaPlacas;
@@ -243,7 +249,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       setTimeout(() => {
         this.salvando = false
       }, 1000);
-     
+      
 
       this.form_vehiculo.reset({sucursal, cliente})
       this._publicos.swalToast('Se registro vehiculo!!',1,'top-start')

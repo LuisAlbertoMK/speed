@@ -1567,6 +1567,8 @@ export class ServiciosPublicosService {
       const elementos_ = this.filtro_elementos(elementos, false)
 
       const otro = this.nuevo_reporte(elementos_)
+      console.log(otro);
+      
 
       const aplicado = paquetes.map(paquete=>{
         const {elementos} = paquete
@@ -2185,9 +2187,9 @@ export class ServiciosPublicosService {
         reporte.refaccionVenta = reporte.refaccion *  (1 +(margen/ 100))
         reporte.subtotal = reporte.mo + reporte.refaccionVenta
         reporte.total = reporte.subtotal
-        if (reporte.subtotal > 0) {
-          reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
-        }
+        // if (reporte.subtotal > 0) {
+        //   reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
+        // }
         return reporte
     }
     extraerParteDeURL() {
@@ -2266,6 +2268,21 @@ export class ServiciosPublicosService {
         }
       return resultado;
     }
+    filtrarObjetoPorPropiedades_arr(objeto:any, restricciones:any[]) {
+      const resultado = {};
+      // const restricciones = ['cancelado','entregado', 'espera']
+        for (const clave in objeto) {
+          if (objeto.hasOwnProperty(clave)) {
+            const elemento = objeto[clave];
+            if (restricciones.includes(elemento.status)) {
+              
+            }else{
+              resultado[clave] = elemento;
+            }
+          }
+        }
+      return resultado;
+    }
     filtrarObjetoPorPropiedad_fecha(objeto, start, end) {
       const resultado = {};
         const fecha_start = new Date(start)
@@ -2291,6 +2308,51 @@ export class ServiciosPublicosService {
         nueva_data[clave].metodoShow = this.metodospago.find(met=>met.valor === String(metodo)).show
       })
       return nueva_data
+    }
+    asigna_data_reporte_gastos(data){
+
+      const nuevas_ = [...data]
+
+      const metodospago = this._campos.metodospago
+
+      const recepciones = this.nueva_revision_cache('recepciones')
+      const sucursales = this.nueva_revision_cache('sucursales')
+      const vehiculos = this.nueva_revision_cache('vehiculos')
+      const historial_gastos_orden = this.nueva_revision_cache('historial_gastos_orden')
+
+      return nuevas_.map((os_especifica:any)=>{
+        const {tipo, id_os, sucursal, metodo} = this.crear_new_object(os_especifica)
+        if (tipo === 'orden') {
+        
+          const nueva_data_os = this.crear_new_object(recepciones[id_os])
+
+          const {no_os, vehiculo} = nueva_data_os
+          os_especifica.no_os = no_os
+          const descripcion = this.extrar_string(nueva_data_os)
+          os_especifica.descripcion = descripcion
+          const data_vehiculo = this.crear_new_object(vehiculos[vehiculo])
+          const {marca, modelo, placas}= data_vehiculo
+          os_especifica.marca = marca
+          os_especifica.modelo = modelo
+          os_especifica.placas = String(placas).toUpperCase()
+        }
+        os_especifica.metodoShow = metodospago.find(me=>me.valor === String(metodo)).show
+        os_especifica.sucursalShow = sucursales[sucursal].sucursal
+        return os_especifica
+      })
+
+    }
+    extrar_string(data){
+      const {elementos} = data
+      let string_enviar = []
+      let nuevos_elementos = [...elementos]
+      nuevos_elementos.forEach((elemeto):any=>{
+        const {nombre } = elemeto
+        if (nombre) {
+          string_enviar.push(`${nombre}`.toLowerCase()) 
+        }
+      })
+      return string_enviar.join(', ')
     }
       
  }

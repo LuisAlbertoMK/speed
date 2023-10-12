@@ -136,20 +136,20 @@
                     
                   </ng-container> -->
                   <!-- <i class="fa fa-plus btn btn-sm btn-primary" aria-hidden="true" (click)="dataElement( element)"></i> -->
-                  <i class="fa fa-eye text-info pointer"  data-bs-toggle="modal" data-bs-target="#modalDetallesPaquete" (click)="detalles = element"></i>
+                  <!-- <i class="fa fa-eye text-info pointer"  data-bs-toggle="modal" data-bs-target="#modalDetallesPaquete" (click)="detalles = element"></i> -->
                 </td>
               </ng-container>
               <ng-container matColumnDef="expand">
                 <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
                 <td mat-cell *matCellDef="let element">
-                  <ng-container *ngIf="element.tipo === 'paquete'">
+                  <!-- <ng-container *ngIf="element.tipo === 'paquete'"> -->
                     <!-- {{ expandedElement | json }} -->
                     <button mat-icon-button aria-label="expand row"
                       (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
                       <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
                       <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
                     </button>
-                  </ng-container>
+                  <!-- </ng-container> -->
                 </td>
               </ng-container>
       
@@ -160,8 +160,7 @@
                   [attr.colspan]="columnsToDisplayWithExpand.length">
                   
                   <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-                   
-      
+                    <app-detalles-paquete [paquete]="element"></app-detalles-paquete>
                     <!-- <pre>{{element.elementos | json}}</pre> -->
                   </div>
                 </td>

@@ -41,7 +41,7 @@ export class PagoComponent implements OnInit, OnChanges {
       this.minDate = new Date(currentYear , 0, 1);
       this.maxDate = new Date(currentYear , 11, 31);
     }
-    ROL:string; SUCURSAL:string
+    ROL:string; _sucursal:string
     
     sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
 
@@ -130,12 +130,13 @@ export class PagoComponent implements OnInit, OnChanges {
     const { rol, sucursal } = this._security.usuarioRol()
 
     this.ROL = rol
-    this.SUCURSAL = sucursal
+    this._sucursal = sucursal
   }
   
   crearFormPago(){
     this.formPago = this.fb.group({
       id_os:['',[Validators.required]],
+      sucursal:['',[Validators.required]],
       monto:['',[Validators.required,Validators.min(1),Validators.pattern("^[+]?([0-9]+([.][0-9]*)?|[.][0-9]{1,2})")]],
       metodo:['',[Validators.required]],
       concepto:['',[Validators.required,Validators.minLength(5), Validators.maxLength(250)]],
@@ -147,13 +148,14 @@ export class PagoComponent implements OnInit, OnChanges {
   }
   vigila(){
 
-    if (this.SUCURSAL !== 'Todas')  this.muestra_claves_recepciones()
+    // if (this.SUCURSAL !== 'Todas')  
+    this.muestra_claves_recepciones(this._sucursal)
 
-    // this.formPago.get('sucursal').valueChanges.subscribe(async (sucursal: string) => {
-    //   if (sucursal) {
-    //     this.muestra_claves_recepciones()
-    //   }
-    // })
+    this.formPago.get('sucursal').valueChanges.subscribe((sucursal: string) => {
+      if (sucursal) {
+        this.muestra_claves_recepciones(sucursal)
+      }
+    })
     // this.formPago.get('id_os').valueChanges.subscribe(async (id_os: string) => {
     //   if (id_os) {
     //     const no_os = this.claves_ordenes.find(clave => clave.id === id_os)
@@ -181,28 +183,16 @@ export class PagoComponent implements OnInit, OnChanges {
   //   const {tipo, sucursal} = this._publicos.recuperaDatos(this.formPago)
   //   this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
   // }
-  async muestra_claves_recepciones(){
-    const {tipo, sucursal} = this._publicos.recuperaDatos(this.formPago)
-    // this.muestraLista = (tipo === 'orden') ? true : false
-    const starCountRef = ref(db, `recepciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const todas = this._publicos.crearArreglo2(snapshot.val());
-        const filtradas = todas.filter(recep=>recep.sucursal === sucursal)
-        const claves_show = solo_claves(filtradas)
-        this.claves_ordenes  = solo_claves(filtradas)
-        function solo_claves(arreglo){
-          let nuevos = [...arreglo]
-          return nuevos.map(n=>{
-            const {id, no_os} = n
-            return {id, no_os}
-          })
-        }
-        
-      } else {
-        console.log("No data available");
-      }
-    })
+  muestra_claves_recepciones(sucursal){
+    const recepciones = this._publicos.nueva_revision_cache('recepciones')
+    if (sucursal !== 'Todas') {
+      const filtro_recepciones = this._publicos.filtrarObjetoPorPropiedad(recepciones, 'sucursal', sucursal)
+      const filtro_recepciones_new = this._publicos.filtrarObjetoPorPropiedades_arr(
+        filtro_recepciones, 
+        ['cancelado','entregado', 'espera']
+        )
+      this.claves_ordenes = this._publicos.crearArreglo2(filtro_recepciones_new)
+    }
   }
   validaCampo(campo: string){
     return this.formPago.get(campo).invalid && this.formPago.get(campo).touched
@@ -210,9 +200,7 @@ export class PagoComponent implements OnInit, OnChanges {
 
   async registroPago(){
     const info_get = this._publicos.recuperaDatos(this.formPago)
- 
-    
-    
+
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get, ['id_os','monto','metodo','concepto'])
     this.faltante_s = faltante_s
     if(!ok) {this._publicos.swalToast('Llenar datos de formulario',0); return} 
@@ -257,7 +245,7 @@ export class PagoComponent implements OnInit, OnChanges {
     if (this.id_os && this.id_os['id']) {
       this.carga_data_gasto(this.id_os)
     }else{
-      const sucursal = (this.SUCURSAL ==='Todas') ? '': this.SUCURSAL
+      const sucursal = (this._sucursal ==='Todas') ? '': this._sucursal
       this.formPago.reset({sucursal, tipo:'operacion'})
     }
   }

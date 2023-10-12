@@ -406,13 +406,15 @@ export class ExporterService {
         monto,
         status,
         tipo,
+        metodoShow,
         placas,
         gasto_tipo,
-        status_orden
+        status_orden,
+        sucursalShow
       } = r
       const temp_colocar = {
         'no O.S': no_os, 
-        'Sucursal': sucursal, 
+        'Sucursal': sucursalShow, 
         'descripcion servicio': descripcion,
         'Fecha registro': this.transform_fecha(fecha_recibido, true), 
         'Referencia': referencia,
@@ -421,7 +423,7 @@ export class ExporterService {
         'Modelo': modelo,
         'Placas': placas,
         'nota / factura': facturaRemision,
-        'metodo pago': metodo, 
+        'metodo pago': metodoShow, 
         'Monto': monto,
         'Status': status,
         'Gasto tipo': gasto_tipo,
@@ -431,82 +433,6 @@ export class ExporterService {
       colocada.push({ ...lieneaBlanca, ...temp_colocar });
 
     })
-
-    let nuevo___ = 
-    [
-      {
-          "no_os": "CU0123GE00007",
-          "sucursal": "Culhuacán",
-          "descripcion": "cambio de aceite y filtro",
-          "fecha_recibido": "Thu Jul 27 2023 17:32:11 GMT-0600 (GMT-06:00)",
-          "referencia": "asdsad",
-          "concepto": "asdas",
-          "marca": "Infiniti",
-          "modelo": "QX30",
-          "placas": "abc123",
-          "facturaRemision": "nota",
-          "metodo": "Cheque",
-          "monto": 22,
-          "status": "aprobado",
-          "tipo": "orden",
-          "gasto_tipo": "refaccion",
-          "status_orden": "recibido"
-      },
-      {
-          "no_os": "CU0123GE00008",
-          "sucursal": "Culhuacán",
-          "descripcion": "cambio de focos fundidos convencionales",
-          "fecha_recibido": "Thu Jul 27 2023 17:29:08 GMT-0600 (GMT-06:00)",
-          "referencia": "64545",
-          "concepto": "1212121",
-          "marca": "Alfa Romeo",
-          "modelo": "Giulia",
-          "placas": "1540wc",
-          "facturaRemision": "factura",
-          "metodo": "Efectivo",
-          "monto": 1212,
-          "status": "aprobado",
-          "tipo": "orden",
-          "gasto_tipo": "refaccion",
-          "status_orden": "recibido"
-      },
-      {
-          "no_os": "",
-          "sucursal": "Culhuacán",
-          "descripcion": "",
-          "fecha_recibido": "Thu Jul 27 2023 16:24:03 GMT-0600 (GMT-06:00)",
-          "referencia": "",
-          "concepto": "cubrie  los 1995",
-          "marca": "",
-          "modelo": "",
-          "placas": "",
-          "facturaRemision": "",
-          "metodo": "Efectivo",
-          "monto": 1000,
-          "status": "aprobado",
-          "tipo": "deposito",
-          "gasto_tipo": "",
-          "status_orden": ""
-      },
-      {
-          "no_os": "",
-          "sucursal": "Culhuacán",
-          "descripcion": "",
-          "fecha_recibido": "Thu Jul 27 2023 16:00:01 GMT-0600 (GMT-06:00)",
-          "referencia": "dfgdfg",
-          "concepto": "dfgdfgdf",
-          "marca": "",
-          "modelo": "",
-          "placas": "",
-          "facturaRemision": "factura",
-          "metodo": "Efectivo",
-          "monto": 388,
-          "status": "aprobado",
-          "tipo": "operacion",
-          "gasto_tipo": "",
-          "status_orden": ""
-      }
-  ]
 
     function lineas_blancas(numero){
       for (let index = 0; index < numero; index++) {
