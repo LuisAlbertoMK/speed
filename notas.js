@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "arreglar problemas de catalogos sumatorias paquetes  (proceso)"
+git commit -m "arreglar reporte de gastos  (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

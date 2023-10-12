@@ -144,146 +144,49 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
     // console.log(moRefacciones);
     const paquetes = this._publicos.nueva_revision_cache('paquetes')
-    console.log(paquetes);
-    // const sindepurar = this._publicos.crearArreglo2(paquetes)
+    // console.log(paquetes);
 
-    const campos_moRefacciones = [
-      'cantidad',
-      'costo',
-      'descripcion',
-      'id_publico',
-      'nombre',
-      'precio',
-      'status',
-      'tipo',
-    ]
-
+    this.paquetes_({moRefacciones, paquetes})
     
-    
-    // let nuevos_paquetes = {}
-
-    // sindepurar.forEach((paquete, index)=>{
-    //   const {id, elementos} = paquete
-    //   paquete.elementos = this.limpiar_paquetes({moRefacciones, elementos})
-    //   nuevos_paquetes[id] = paquete
-    // })
-    // console.log(nuevos_paquetes);
-    
-    const paquetes_armados  = this.armar_paquetes({moRefacciones, paquetes})
-    const campos = [
-      'enCatalogo',
-      // 'id',
-      'marca',
-      'modelo',
-      'nombre',
-      'precio',
-      'status',
-      'tipo',
-      'total',
-      'cilindros',
-      'elementos',
-      'reporte'
-    ]
-
-    const paquetes_final = this._publicos.crearArreglo2(paquetes_armados)
-    this.paquetes_arr = (!this.paquetes_arr.length) 
-    ? paquetes_final
-    :  this._publicos.actualizarArregloExistente(this.paquetes_arr, paquetes_final, campos )
-
-
-    // console.log(paquetes_armados);
-    this.dataSourcePaquetes.data = this.paquetes_arr
-    this.newPagination('paquetes')
-    
+    const campos_moRefacciones = ['cantidad','costo','descripcion','id_publico','nombre','precio','status','tipo']
 
     const mo = this._publicos.filtrarObjetoPorPropiedad(moRefacciones, 'tipo','mo')
 
     const mo_final = this._publicos.crearArreglo2(mo)
+
     this.mo_arr = (!this.mo_arr.length) 
     ? mo_final
-    :  this._publicos.actualizarArregloExistente(this.mo_arr, mo_final, campos )
+    :  this._publicos.actualizarArregloExistente(this.mo_arr, mo_final, campos_moRefacciones )
 
     this.dataSourceMO.data = this.mo_arr
     this.newPagination('mo')
 
     const refacciones = this._publicos.filtrarObjetoPorPropiedad(moRefacciones, 'tipo','refaccion')
-    // refacciones_arr
-
+    
     const refacciones_final = this._publicos.crearArreglo2(refacciones)
     this.refacciones_arr = (!this.refacciones_arr.length) 
     ? refacciones_final
-    :  this._publicos.actualizarArregloExistente(this.refacciones_arr, refacciones_final, campos )
+    :  this._publicos.actualizarArregloExistente(this.refacciones_arr, refacciones_final, campos_moRefacciones )
 
     this.dataSourceRefacciones.data = this.refacciones_arr
     this.newPagination('refacciones')
   }
-  limpiar_paquetes(data){
-    const {moRefacciones, elementos} = data
-    // console.log(elementos);
 
-    let nuevos_elementos:any[] = [...elementos]
-
-    const afhgj = nuevos_elementos.map(elemento=>{
-      const {id:id_elemento, costo:costo_elemento, cantidad: cantidad_elemento} = elemento
-      // console.log(id_elemento);
-      let data_elemento_return
-      if (moRefacciones[id_elemento]) {
-        // console.log(moRefacciones[id_elemento]);
-        const data_elemento = JSON.parse(JSON.stringify(moRefacciones[id_elemento]));
-        data_elemento.costo =  (data_elemento.costo < 1) ? 0 : data_elemento.costo;
-        const nuevo_costo = (costo_elemento > 0) ? costo_elemento : data_elemento.costo
-        const nueva_cantidad = (cantidad_elemento > 0) ? cantidad_elemento : 1
-        data_elemento_return =  {
-          id:id_elemento,
-          aprobado: true,
-          costo: nuevo_costo,
-          cantidad: nueva_cantidad
-        }
-      }else{
-        data_elemento_return = elemento
-      }
-      return data_elemento_return
-    })
-
-    return afhgj
-    
-  }
-  armar_paquetes(data){
+  paquetes_(data){
     const {moRefacciones, paquetes} = data
-    const nuevos_paquetes = JSON.parse(JSON.stringify(paquetes));
-    let nuevos_ ={}
-    Object.entries(nuevos_paquetes).forEach(([key, entrie])=>{
-      console.log(key);
-      // console.log(entrie);
-      const data_new_paquete = this._publicos.crear_new_object(entrie)
-      const {elementos, costo} = data_new_paquete
-      const nuevos = elementos.map(elemento=>{
-            const {id: id_elemento} = elemento
-            if (id_elemento) {
-              return { ...elemento,...moRefacciones[id_elemento], aprobado: true}
-            }else{
-              return {...elemento, aprobado: true, status:true}
-            }
-          })
-      console.log(nuevos);
-      
-      const reporte = this._publicos.sumatoria_reporte_paquete(nuevos, 25)
-      // console.log(reporte);
-      const {total} = reporte
-      
-      const temp_data = {
-        ...data_new_paquete,
-        elementos: nuevos,
-        total: (parseFloat(costo)>0 ) ? parseFloat(costo) : total,
-        precio: total,
-        reporte
-      }
-      nuevos_[key] = temp_data
-    })
-    console.log(nuevos_);
+    const campos_paquete = ['enCatalogo','marca','modelo','nombre','precio','status','tipo','total','cilindros','elementos','reporte']
+    const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
+    const paquetes_final = this._publicos.crearArreglo2(paquetes_armados)
+    this.paquetes_arr = (!this.paquetes_arr.length) 
+    ? paquetes_final
+    :  this._publicos.actualizarArregloExistente(this.paquetes_arr, paquetes_final, campos_paquete )
+
+    this.dataSourcePaquetes.data = this.paquetes_arr
+    this.newPagination('paquetes')
     
-    return nuevos_
   }
+  
+ 
   
  
 

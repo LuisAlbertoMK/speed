@@ -265,7 +265,9 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
     this.infoCotizacion.vehiculos = vehiculos_cliente
     if (this.extra) {
-      this.infoCotizacion.data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
+      const data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
+      this.infoCotizacion.data_vehiculo = data_vehiculo
+      this.modelo = data_vehiculo.modelo
     }
   }
 
@@ -537,8 +539,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
     const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
-
-    console.log(reporte);
     
     this.infoCotizacion.reporte = reporte
     this.infoCotizacion.elementos = elementos

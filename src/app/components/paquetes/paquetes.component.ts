@@ -56,26 +56,17 @@ export class PaquetesComponent implements OnInit, OnChanges {
       const valorAnterior = changes['modelo'].previousValue;
       // console.log({nuevoValor, valorAnterior});
       // console.log(nuevoValor);
-      if (nuevoValor) {
-        this.modelo_temp = nuevoValor
-      }else{
-        this.modelo_temp = null
-      }
+      this.modelo_temp = (nuevoValor) ?  nuevoValor : null
+
       this.aplicaFiltro()
-      
     }
-  }
-
-  
-
-
-  consultaPaquetes(){
-    const paquetes = this._publicos.nueva_revision_cache('paquetes')
-    console.log(paquetes);
-    
   }
   
   aplicaFiltro(){
+    const paquetes = this._publicos.nueva_revision_cache('paquetes');
+    
+    const paquetes_filtrados = (this.modelo_temp) ? this._publicos.filtrarObjetoPorPropiedad(paquetes, 'modelo', this.modelo):  paquetes
+    this.listaPaquetes_arr = this._publicos.crearArreglo2(paquetes_filtrados)
     let data = (this.modelo_temp) ? this.listaPaquetes_arr.filter((paquete) => paquete.modelo === this.modelo) : this.listaPaquetes_arr
     this.dataSourcePaquetes.data = data;
     this.newPagination('paquetes')

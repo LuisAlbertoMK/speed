@@ -251,13 +251,23 @@ export class MoRefaccionesComponent implements OnInit  {
   }
 
   listadoRefacciones_moRefacciones(){
-    const starCountRef = ref(db, `moRefacciones`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const arreglo = this._publicos.crearArreglo2(snapshot.val())
-        this.lista_moRefacciones = arreglo
-      }
-    })
+
+    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+
+    const arreglo = this._publicos.crearArreglo2(moRefacciones)
+    const campos_moRefacciones = ['cantidad','costo','descripcion','id_publico','nombre','precio','status','tipo']
+
+    this.lista_moRefacciones = (!this.lista_moRefacciones.length) 
+    ? arreglo
+    :  this._publicos.actualizarArregloExistente(this.lista_moRefacciones, arreglo, campos_moRefacciones )
+    
+    // const starCountRef = ref(db, `moRefacciones`)
+    // onValue(starCountRef, (snapshot) => {
+    //   if (snapshot.exists()) {
+    //     const arreglo = this._publicos.crearArreglo2(snapshot.val())
+    //     this.lista_moRefacciones = arreglo
+    //   }
+    // })
   }
   //para que se inicie el autocompleado
   automaticos(){
@@ -275,8 +285,8 @@ export class MoRefaccionesComponent implements OnInit  {
     }else{
       const filterValue = value.toLowerCase();
       const nuevos = [...this.lista_moRefacciones]
-      const ordenado = this._publicos.ordernarPorCampo(nuevos,'nombre')
-      data = ordenado.filter(option => option['nombre'].toLowerCase().includes(filterValue));
+      const ordenamiento = this._publicos.ordenarData(nuevos,'nombre', true)
+      data = ordenamiento.filter(option => option['nombre'].toLowerCase().includes(filterValue));
     }
     
     return data

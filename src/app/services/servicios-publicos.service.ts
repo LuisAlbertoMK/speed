@@ -1567,8 +1567,6 @@ export class ServiciosPublicosService {
       const elementos_ = this.filtro_elementos(elementos, false)
 
       const otro = this.nuevo_reporte(elementos_)
-      console.log(otro);
-      
 
       const aplicado = paquetes.map(paquete=>{
         const {elementos} = paquete
@@ -2177,20 +2175,30 @@ export class ServiciosPublicosService {
       return paquete
     }
     sumatoria_reporte_paquete(elementos:any[], margen){
+      // Inicializamos el objeto de reporte con valores iniciales
       const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0,ub:0}
+      // Iteramos a través de los elementos del arreglo
         elementos.forEach(elemento=>{
-          const {tipo, costo, precio} = elemento
-          const nuevo_costo_elemento = (costo > 0) ? costo : precio 
-          const new_tipo = `${tipo}`.toLowerCase().trim()
-          reporte[new_tipo] = nuevo_costo_elemento
+          const costoElemento = obtenerCostoValido(elemento);
+          const tipoNormalizado = normalizarTipo(elemento.tipo);
+          reporte[tipoNormalizado] += costoElemento;
         })
-        reporte.refaccionVenta = reporte.refaccion *  (1 +(margen/ 100))
-        reporte.subtotal = reporte.mo + reporte.refaccionVenta
-        reporte.total = reporte.subtotal
-        // if (reporte.subtotal > 0) {
-        //   reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
-        // }
-        return reporte
+        // Calculamos el valor de refaccionVenta y subtotal
+        reporte.refaccionVenta = reporte.refaccion * (1 + margen / 100);
+        reporte.subtotal = reporte.mo + reporte.refaccionVenta;
+      
+        // El total es igual al subtotal
+        reporte.total = reporte.subtotal;
+      
+        return reporte;
+        // Función auxiliar para obtener el costo válido de un elemento
+        function obtenerCostoValido(elemento) {
+          return elemento.costo > 0 ? elemento.costo : elemento.precio;
+        }
+        // Función auxiliar para normalizar el tipo
+        function normalizarTipo(tipo) {
+          return tipo.toString().toLowerCase().trim();
+        }
     }
     extraerParteDeURL() {
       const urlCompleta = window.location.href;
@@ -2353,6 +2361,43 @@ export class ServiciosPublicosService {
         }
       })
       return string_enviar.join(', ')
+    }
+    armar_paquetes(data){
+      const { moRefacciones, paquetes } = data;
+      const nuevosPaquetes = JSON.parse(JSON.stringify(paquetes));
+      const nuevosPaquetesProcesados = {};
+  
+      for (const [key, entrada] of Object.entries(nuevosPaquetes)) {
+        const dataNuevoPaquete = this.crear_new_object(entrada);
+        const { elementos, costo } = dataNuevoPaquete;
+        
+        // Mapear elementos y agregar información de moRefacciones si existe
+        const nuevosElementos = elementos.map(elemento => {
+          const { id: id_elemento } = elemento;
+    
+          if (id_elemento && moRefacciones[id_elemento]) {
+            return { ...elemento, ...moRefacciones[id_elemento], aprobado: true };
+          } else {
+            return { ...elemento, aprobado: true, status: true };
+          }
+        });
+  
+        // Calcular el reporte y obtener el total
+        const reporte = this.sumatoria_reporte_paquete(nuevosElementos, 25);
+        const { total } = reporte;
+  
+        // Crear el nuevo objeto de paquete
+        const nuevoPaquete = {
+          ...dataNuevoPaquete,
+          elementos: nuevosElementos,
+          total: (parseFloat(costo) > 0) ? parseFloat(costo) : total,
+          precio: total,
+          reporte
+        };
+  
+        nuevosPaquetesProcesados[key] = nuevoPaquete;
+      }
+      return nuevosPaquetesProcesados;
     }
       
  }

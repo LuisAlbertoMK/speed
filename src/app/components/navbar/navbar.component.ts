@@ -123,7 +123,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this._rol = rol
     this._sucursal = sucursal
 
-    this.revision_existe_cache()
+    // this.revision_existe_cache()
     
   }
   revision_existe_cache(){

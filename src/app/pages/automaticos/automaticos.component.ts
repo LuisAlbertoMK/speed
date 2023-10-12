@@ -308,7 +308,7 @@ vigila_nodos(){
   }
 
   obtener_claves(){
-    console.log(Object.keys(BD.historial_pagos_orden));
+    // console.log(Object.keys(BD.historial_pagos_orden));
   }
   
   async obtener_informacion_cache(){
@@ -325,7 +325,7 @@ vigila_nodos(){
     // {ruta_observacion: 'metas_sucursales', nombre:'claves_metas_sucursales'},
     // {ruta_observacion: 'paquetes', nombre:'claves_paquetes'},
     
-    const {ruta_observacion, nombre} = {ruta_observacion: 'moRefacciones', nombre:'claves_moRefacciones'}
+    const {ruta_observacion, nombre} = {ruta_observacion: 'paquetes', nombre:'claves_paquetes'}
     console.log({ruta_observacion, nombre});
     const data_claves = await this._publicos.revisar_cache2(ruta_observacion)
     this._publicos.saber_pesos(data_claves)
@@ -351,612 +351,7 @@ vigila_nodos(){
 }
 
   crear_cache_claves(){
-    const dadsdgk = {
-      "-NXpvKAAGvHgD31bk8oQ": {
-          "cilindros": "4",
-          "elementos": [
-              {
-                  "id": "-NXpufTa9W5CBZXq5Vp6",
-                  "aprobado": true,
-                  "costo": 0,
-                  "cantidad": 1
-              }
-          ],
-          "enCatalogo": true,
-          "id": "-NXpvKAAGvHgD31bk8oQ",
-          "marca": "Audi",
-          "modelo": "A3",
-          "nombre": "computadora chasis",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-NXq3BcKzlcRXzFp46DT": {
-          "cilindros": "8",
-          "elementos": [
-              {
-                  "id": "-NXpyKfCYJ5fNTd8TO5R",
-                  "aprobado": true,
-                  "costo": 0,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NXpyYexFpD1LjMYuDy4",
-                  "aprobado": true,
-                  "costo": 6400,
-                  "cantidad": 1
-              }
-          ],
-          "enCatalogo": true,
-          "id": "-NXq3BcKzlcRXzFp46DT",
-          "marca": "BMW",
-          "modelo": "Serie 7",
-          "nombre": "cambio cadena distribucion",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-NXqIwcwRkg1Szsrbjjz": {
-          "cilindros": "4",
-          "elementos": [
-              {
-                  "aprobado": true,
-                  "cantidad": 1,
-                  "costo": 0,
-                  "id": "-NXqI8eB8kyjlmNKADzk",
-                  "nombre": "mano de obra",
-                  "precio": 6500,
-                  "status": true,
-                  "tipo": "mo"
-              }
-          ],
-          "enCatalogo": true,
-          "id": "-NXqIwcwRkg1Szsrbjjz",
-          "marca": "Honda",
-          "modelo": "Civic",
-          "nombre": "cambio juntas de motor",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-NXqKcSDU7B4iYIGdzlV": {
-          "cilindros": "4",
-          "elementos": [
-              {
-                  "aprobado": true,
-                  "cantidad": 1,
-                  "costo": 0,
-                  "id": "-NXqI8eB8kyjlmNKADzk",
-                  "nombre": "mano de obra",
-                  "precio": 6500,
-                  "status": true,
-                  "tipo": "mo"
-              },
-              {
-                  "id": "-NQbJyuAvZOQ6NRf2HCW",
-                  "aprobado": true,
-                  "costo": 0,
-                  "cantidad": 1
-              }
-          ],
-          "enCatalogo": true,
-          "id": "-NXqKcSDU7B4iYIGdzlV",
-          "marca": "Honda",
-          "modelo": "Civic",
-          "nombre": "cambio juntas de motor",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-N_4oFIgb0RSeHpuHYYz": {
-          "cilindros": "4",
-          "elementos": [
-              {
-                  "aprobado": true,
-                  "cantidad": 1,
-                  "costo": 1300,
-                  "id": "-N_4mvJyu-chz3GhIrAv",
-                  "nombre": "cambio de aceite y filtro",
-                  "precio": 900,
-                  "status": true,
-                  "tipo": "refaccion"
-              },
-              {
-                  "id": "-NE32XkfMPHMcMXOiOio",
-                  "aprobado": true,
-                  "costo": 600,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE2OUuZ2lh5DhXHHeBL",
-                  "aprobado": true,
-                  "costo": 350,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NQBYCB5Eojp02pxdHdl",
-                  "aprobado": true,
-                  "costo": 600,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NWoPCGvjvv_Ehi8TSwS",
-                  "aprobado": true,
-                  "costo": 120,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsduKTIhhpSrAJKS-",
-                  "aprobado": true,
-                  "costo": 180,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsiafAdRrmZsuD-fs",
-                  "aprobado": true,
-                  "costo": 180,
-                  "cantidad": 1
-              }
-          ],
-          "id": "-N_4oFIgb0RSeHpuHYYz",
-          "marca": "Fiat",
-          "modelo": "Ducato",
-          "nombre": "servicio menor diesel",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-N__00FKRVgZyykKEDqv": {
-          "cilindros": "4",
-          "elementos": [
-              {
-                  "aprobado": true,
-                  "cantidad": 2,
-                  "costo": 0,
-                  "descripcion": "ford focus año 2017 sedan",
-                  "id": "-N_ZyfLEXZJL-r5DhJTK",
-                  "nombre": "amortiguadores delanteros",
-                  "precio": 2250,
-                  "status": true,
-                  "tipo": "refaccion"
-              },
-              {
-                  "id": "-N_ZyxwWB9dVKsBehEts",
-                  "aprobado": true,
-                  "costo": 0,
-                  "cantidad": 2
-              },
-              {
-                  "aprobado": true,
-                  "cantidad": 1,
-                  "costo": 0,
-                  "id": "-N_ZzbdsHOnE8znAxR-8",
-                  "nombre": "mano de obra",
-                  "precio": 2000,
-                  "status": true,
-                  "tipo": "mo"
-              }
-          ],
-          "enCatalogo": true,
-          "id": "-N__00FKRVgZyykKEDqv",
-          "marca": "Audi",
-          "modelo": "A3",
-          "nombre": "amortiguadores y rotulas focus",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-NaICs6mEz_D2MvWldRE": {
-          "cilindros": "",
-          "elementos": [
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "cambio de aceite y filtro",
-                  "precio": 120,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "reemplazar filtro de aire",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "rev. y corregir niveles",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "lavar inyectores",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "C",
-                  "nombre": "lavar cpo de aceleracion",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "scaneo por computadora",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "rev. 25 puntos de seguridad",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "cambio de focos fundidos convencionales",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "rotacion de llantas",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "regimen de carga de bateria",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "lavar motor",
-                  "precio": 150,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "lavar carroceria",
-                  "precio": 150,
-                  "tipo": "mo"
-              }
-          ],
-          "enCatalogo": true,
-          "id": "-NaICs6mEz_D2MvWldRE",
-          "marca": "Mazda",
-          "modelo": "3",
-          "nombre": "servicio mayor",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-NbFbXehy1ft8gN1g2CS": {
-          "cilindros": "",
-          "elementos": [
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "cambio de aceite y filtro",
-                  "precio": 120,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "reemplazar filtro de aire",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "rev. y corregir niveles",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "lavar inyectores",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "C",
-                  "nombre": "lavar cpo de aceleracion",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "scaneo por computadora",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "rev. 25 puntos de seguridad",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "cambio de focos fundidos convencionales",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "rotacion de llantas",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "regimen de carga de bateria",
-                  "precio": 300,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "lavar motor",
-                  "precio": 150,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "N",
-                  "nombre": "lavar carroceria",
-                  "precio": 150,
-                  "tipo": "mo"
-              },
-              {
-                  "cantidad": 1,
-                  "costo": 0,
-                  "descripcion": "ninguna",
-                  "nombre": "reemplazar bujias",
-                  "precio": 300,
-                  "tipo": "mo"
-              }
-          ],
-          "enCatalogo": true,
-          "id": "-NbFbXehy1ft8gN1g2CS",
-          "marca": "Ford",
-          "modelo": "Edge",
-          "nombre": "servicio mayor",
-          "status": true,
-          "tipo": "paquete"
-      },
-      "-Nc3SuVRdFB1DCgC6ib8": {
-          "cilindros": "",
-          "elementos": [
-              {
-                  "id": "-NE2JJZu_LtUYJXSBola",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE32XkfMPHMcMXOiOio",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE2OUuZ2lh5DhXHHeBL",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE78vEAujLp8QfcIAtl",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFGEgUK6OVe2fEDvCgS",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFUnhpeX47MLHgB4zr6",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFyxBy74ehhZxnHrZ8Q",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsW7Y5RzRrbI_F9dB",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFzjXL2niDv6QlUz8hi",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsMnQWQWQsj2ChYfI",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsduKTIhhpSrAJKS-",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsiafAdRrmZsuD-fs",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE3nrow7Ol7iyGtRzO3",
-                  "aprobado": true,
-                  "cantidad": 1
-              }
-          ],
-          "enCatalogo": true,
-          "marca": "Ford",
-          "modelo": "Figo",
-          "nombre": "SERVICIO MAYOR",
-          "status": true,
-          "tipo": "paquete",
-          "id": "-Nc3SuVRdFB1DCgC6ib8"
-      },
-      "-Nd6lQrvaUZNARc9e2ng": {
-          "cilindros": "5",
-          "costo": 3654,
-          "elementos": [
-              {
-                  "id": "-NM_TK5u-YtvZKTFrlYc",
-                  "aprobado": true,
-                  "cantidad": 1
-              }
-          ],
-          "marca": "Alfa Romeo",
-          "modelo": "Giulietta",
-          "nombre": "prueba",
-          "status": true,
-          "tipo": "paquete",
-          "vehiculos_compatibles": [
-              {
-                  "anio_final": "1999",
-                  "anio_inicial": "1999",
-                  "marca": "Chevrolet",
-                  "modelo": "Camaro ZL1"
-              },
-              {
-                  "anio_final": "2001",
-                  "anio_inicial": "1996",
-                  "marca": "Pontiac",
-                  "modelo": "Matiz"
-              },
-              {
-                  "anio_final": "1996",
-                  "anio_inicial": "1996",
-                  "marca": "Aston Martín",
-                  "modelo": "DBX"
-              },
-              {
-                  "anio_final": "2022",
-                  "anio_inicial": "2000",
-                  "marca": "Toyota ",
-                  "modelo": "Celica"
-              }
-          ],
-          "id": "-Nd6lQrvaUZNARc9e2ng"
-      },
-      "-NeUXvdr4gbbK4LJtzNz": {
-          "cilindros": "4",
-          "elementos": [
-              {
-                  "id": "-NE2JJZu_LtUYJXSBola",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE32XkfMPHMcMXOiOio",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE2OUuZ2lh5DhXHHeBL",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NE78vEAujLp8QfcIAtl",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFGEgUK6OVe2fEDvCgS",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFUnhpeX47MLHgB4zr6",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFyxBy74ehhZxnHrZ8Q",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsW7Y5RzRrbI_F9dB",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NFzjXL2niDv6QlUz8hi",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsMnQWQWQsj2ChYfI",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsduKTIhhpSrAJKS-",
-                  "aprobado": true,
-                  "cantidad": 1
-              },
-              {
-                  "id": "-NIXsiafAdRrmZsuD-fs",
-                  "aprobado": true,
-                  "cantidad": 1
-              }
-          ],
-          "enCatalogo": true,
-          "marca": "Acura",
-          "modelo": "Acura ILX",
-          "nombre": "SERVICIO MAYOR",
-          "status": true,
-          "tipo": "paquete",
-          "id": "-NeUXvdr4gbbK4LJtzNz"
-      }
-      }
+    const dadsdgk = {}
     // this._security.guarda_informacion({nombre: 'paquetes', data: dadsdgk })
     // this._security.guarda_informacion({nombre: 'claves_paquetes', data:  Object.keys(dadsdgk)})
   }
@@ -964,4 +359,215 @@ vigila_nodos(){
   genera_claves(){
     
   }
+
+  comprueba_Reporte_paquet(){
+    
+    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+
+    const paquete = {
+        "cilindros": "",
+        "elementos": [
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "cambio de aceite y filtro",
+                "precio": 120,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "reemplazar filtro de aire",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "rev. y corregir niveles",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "lavar inyectores",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "C",
+                "nombre": "lavar cpo de aceleracion",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "ninguna",
+                "nombre": "scaneo por computadora",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rev. 25 puntos de seguridad",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "cambio de focos fundidos convencionales",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "rotacion de llantas",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "regimen de carga de bateria",
+                "precio": 300,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar motor",
+                "precio": 150,
+                "tipo": "mo"
+            },
+            {
+                "aprobado": true,
+                "cantidad": 1,
+                "costo": 0,
+                "descripcion": "N",
+                "nombre": "lavar carroceria",
+                "precio": 150,
+                "tipo": "mo"
+            }
+        ],
+        "enCatalogo": true,
+        "marca": "Mazda",
+        "modelo": "3",
+        "nombre": "servicio mayor",
+        "status": true,
+        "tipo": "paquete"
+    }
+
+
+    const {elementos} = paquete
+    //TODO
+    const nuevos = elementos.map((elemento: any)=>{
+        const {id: id_elemento} = elemento
+        if (id_elemento) {
+          return { ...elemento,...moRefacciones[id_elemento], aprobado: true}
+        }else{
+          return {...elemento, aprobado: true, status:true}
+        }
+      })
+
+  }
+  sumatoria_reporte_paquete(elementos:any[], margen){
+    // Inicializamos el objeto de reporte con valores iniciales
+    const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0,ub:0}
+    // Iteramos a través de los elementos del arreglo
+      elementos.forEach(elemento=>{
+        const costoElemento = obtenerCostoValido(elemento);
+        const tipoNormalizado = normalizarTipo(elemento.tipo);
+        reporte[tipoNormalizado] += costoElemento;
+      })
+      // Calculamos el valor de refaccionVenta y subtotal
+      reporte.refaccionVenta = reporte.refaccion * (1 + margen / 100);
+      reporte.subtotal = reporte.mo + reporte.refaccionVenta;
+    
+      // El total es igual al subtotal
+      reporte.total = reporte.subtotal;
+    
+      return reporte;
+      // Función auxiliar para obtener el costo válido de un elemento
+      function obtenerCostoValido(elemento) {
+        return elemento.costo > 0 ? elemento.costo : elemento.precio;
+      }
+      // Función auxiliar para normalizar el tipo
+      function normalizarTipo(tipo) {
+        return tipo.toString().toLowerCase().trim();
+      }
+  }
+
+  sanitizar_paquetes(paquetes){
+      const nuevosPaquetes = {};
+      const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+      for (const [key, entry] of Object.entries(paquetes)) {
+        const nuevoPaquete = this.crearNuevoObjeto(entry,moRefacciones);
+        nuevosPaquetes[key] = nuevoPaquete;
+      }
+      this._encript.guarda_informacion({nombre: 'paquetes',data: nuevosPaquetes})
+      return nuevosPaquetes
+  }
+  crearNuevoObjeto(entry, moRefacciones) {
+    const { elementos, cilindros, costo, marca, modelo, nombre, status, tipo } = entry;
+    const elementosLimpios = this.limpiarElementos(elementos, moRefacciones);
+    const costoValidado = parseFloat(costo) || 0;
+    return {
+      cilindros, marca, modelo, nombre, status, tipo,
+      elementos: elementosLimpios,
+      costo: costoValidado
+    };
+  }
+  limpiarElementos(elementos, moRefacciones){
+    
+    const afhgj = elementos.map(elemento=>{
+        const {id:id_elemento, costo:costo_elemento, cantidad: cantidad_elemento} = elemento
+        let data_elemento_return
+        if (moRefacciones[id_elemento]) {
+          const data_elemento = JSON.parse(JSON.stringify(moRefacciones[id_elemento]));
+          data_elemento.costo =  (data_elemento.costo > 0) ? parseInt( data_elemento.costo ) : 0
+          const nuevo_costo = (costo_elemento > 0) ? parseInt( costo_elemento ) : parseInt( data_elemento.costo )
+          const nueva_cantidad = (cantidad_elemento > 0) ? cantidad_elemento : 1
+          data_elemento_return =  {
+            id:id_elemento,
+            aprobado: true,
+            costo: nuevo_costo,
+            cantidad: nueva_cantidad
+          }
+        }else{
+          data_elemento_return = elemento
+        }
+        return data_elemento_return
+      })
+      return afhgj
+  }
+  
+
 }
+
