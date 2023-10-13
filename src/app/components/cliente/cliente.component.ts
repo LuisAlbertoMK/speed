@@ -298,7 +298,7 @@ export class ClienteComponent implements OnInit, OnChanges {
    
       if (!uid && nombre_purificado?.length >= 2 && apellidos_purificado?.length >= 2 && sucursal) {
         try {
-          const claves_clientes = this._publicos.revisar_cache2('claves_clientes')
+          const claves_clientes = await this._automaticos.consulta_ruta('claves_clientes')
           // await this.constverifica(sucursal)
           // console.log(claves_clientes);
           

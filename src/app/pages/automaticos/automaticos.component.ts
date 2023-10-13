@@ -15,7 +15,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { cotizaciones } from "./ayuda";
+import { clientes_vehiculos } from "./ayuda";
 
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
@@ -29,7 +29,7 @@ import { ExporterService } from 'src/app/services/exporter.service';
 
 import Swal from 'sweetalert2';
 
-import {  BD } from "./BD_completa";
+import {  BD, claves_vehiculos } from "./BD_completa";
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -574,11 +574,11 @@ vigila_nodos(){
   sanitizar_cotizaciones(){
    
 
-    const nuevas_Cotizaciones = {}
-    Object.entries(cotizaciones).forEach(([key, entrie])=>{
-      nuevas_Cotizaciones[key] = this.sanitiza_informacionCotizacion(entrie)
-    })
-    console.log(nuevas_Cotizaciones);
+    // const nuevas_Cotizaciones = {}
+    // Object.entries(cotizaciones).forEach(([key, entrie])=>{
+    //   nuevas_Cotizaciones[key] = this.sanitiza_informacionCotizacion(entrie)
+    // })
+    // console.log(nuevas_Cotizaciones);
     
   }
 
@@ -638,6 +638,269 @@ vigila_nodos(){
     return nuevo_costo
   }
 
+
+  asign_id_cliente_id_vehiculos(){
+    console.log(clientes_vehiculos);
+    let arreglo_placas = {}
+    clientes_vehiculos.forEach(element => {
+      const {placas} = element
+      const placas_sanitizadas = sanitiza_placas(placas)
+      const filter = clientes_vehiculos.filter(registro=>{
+        const {placas:new_placas} = registro
+        const estas = sanitiza_placas(new_placas)
+        return (estas === placas_sanitizadas) ? registro: null
+      })
+      arreglo_placas[placas_sanitizadas] = filter
+    });
+
+    console.log(arreglo_placas);
+    let nuevos_clientes = {}
+    let nuevos_vehiculos = {}
+    let contador = 458
+    // let claves_firebase = []
+    // Object.entries(arreglo_placas).forEach(cl=>{
+    //     claves_firebase.push(this._publicos.generaClave())
+    // })
+    // console.log(claves_firebase);
+    
+
+    Object.entries(arreglo_placas).forEach(([key, entrie], index)=>{
+      contador++
+      // console.log(index);
+      const clave_cliente = BD[index]
+      const clave_vehiculo = claves_vehiculos[index]
+      if (!key) {
+        console.log(entrie);
+        const nueva_entrie:any[] = this._publicos.crear_new_object(entrie)
+        nueva_entrie.forEach(cli=>{
+          const nueva_entrie2 = this._publicos.crear_new_object(cli)
+          const nnn =  sanitiza_info_cliente(nueva_entrie2)
+          const data_cliente =  this._publicos.crear_new_object(nnn)
+          data_cliente.no_cliente = genera_no_cliente(contador, data_cliente)
+          data_cliente.sucursal = '-N2glF34lV3Gj0bQyEWK'
+          // nuevos_clientes[clave_cliente] = data_cliente
+          let clave = return_fullname(data_cliente)
+          nuevos_clientes[clave] = data_cliente
+        })
+      }else{
+        const nueva_entrie = this._publicos.crear_new_object(entrie)
+        const nnn =  sanitiza_info_cliente(toma_campo_mas_largo([...nueva_entrie]))
+        const data_cliente =  this._publicos.crear_new_object(nnn)
+        data_cliente.no_cliente = genera_no_cliente(contador, data_cliente)
+        data_cliente.sucursal = '-N2glF34lV3Gj0bQyEWK'
+        // nuevos_clientes[clave_cliente] = clave_cliente
+        let clave = return_fullname(data_cliente)
+        nuevos_clientes[clave] = data_cliente
+        const data_vehiculo = sanitiza_info_vehiculo(toma_campo_mas_largo_vehiculo([...nueva_entrie]))
+        // nuevos_vehiculos[clave_vehiculo] = {...data_vehiculo, cliente: clave_cliente, placas: key }
+        nuevos_vehiculos[clave_vehiculo] = {...data_vehiculo, cliente: clave, placas: key }
+      }
+    })
+    console.log(nuevos_vehiculos);
+    console.log(nuevos_clientes);
+    const clientes_arr = this._publicos.crearArreglo2(nuevos_clientes)
+    const con_correos = clientes_arr.filter(cli=>cli.correo)
+    console.log(con_correos);
+    
+    const duplicados = encontrarDuplicados(con_correos, 'correo');
+      console.log(duplicados);
+
+    function encontrarDuplicados(arr, campo) {
+      const valores = new Set();
+      const duplicados = [];
+      arr.forEach((elemento, index) => {
+        if (valores.has(elemento[campo])) {
+          duplicados.push({ índice: index, valor: elemento[campo], nombre: `${elemento['nombre']}`, apellidos: `${elemento['apellidos']}` });
+        } else {
+          valores.add(elemento[campo]);
+        }
+      });
+      return duplicados;
+    }
+    
+
+    function genera_no_cliente(contador,data_cliente){
+      const {nombre, apellidos} = data_cliente
+      const nombre_purificado = quitarAcentos(eliminarEspacios(dejarUnEspacio(nombre))).trim()
+      let apellidos_purificado 
+      if (`${apellidos}`.length > 1 && apellidos) {
+        apellidos_purificado = quitarAcentos(eliminarEspacios(dejarUnEspacio(apellidos))).trim()
+      }else{
+        apellidos_purificado = nombre_purificado
+      }
+      const nombre_sucursal = 'Culhuacán'
+      const date = new Date();
+      const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+      const anio = date.getFullYear().toString().slice(-2);
+      const secuencia = (contador).toString().padStart(5, '0');
+      return  `${nombre_purificado?.slice(0, 2)}${apellidos_purificado?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`
+              .toUpperCase();
+    }
+    function quitarAcentos(texto) {
+      if (!`${texto}`.length) return ''
+      return texto
+        .normalize("NFD") // Normalizamos el texto en Unicode
+        .replace(/[\u0300-\u036f]/g, "") // Eliminamos los caracteres diacríticos
+        .replace(/[^\w\s]/gi, "") // Eliminamos caracteres especiales excepto letras y espacios
+        .replace(/\s+/g, " ") // Reemplazamos múltiples espacios en blanco por uno solo
+        .trim(); // Quitamos espacios en blanco al principio y al final
+    }
+    function eliminarEspacios(cadena) {
+      if (!`${cadena}`.length) return ''
+      return cadena.replace(/\s+/g, '');
+    }
+    function dejarUnEspacio(cadena:string) {
+      if (!`${cadena}`.length) return ''
+      return cadena.replace(/\s+/g, ' ');
+    }
+    
+    // clientes_vehiculos.forEach(registro =>{
+    //   const {placas} = registro
+    //   const placas_sanitizadas = sanitiza_placas(placas)
+
+    //   if (arreglo_placas[placas_sanitizadas]) {
+        
+    //   }
+
+    // })
+
+    
+
+  // toma_campo_mas_largo(placs)
+    function toma_campo_mas_largo_vehiculo(data_placas:any[]){
+      let nueva_data = {anio:'',marca:'',modelo:'',placas:'',vinchasis:''}
+      const campos = ['anio','marca','modelo','placas','vinchasis']
+      data_placas.forEach(registro=>{
+        campos.forEach(campo=>{
+          if (registro[campo] &&  `${registro[campo]}`.length > `${nueva_data[campo]}`.length) {
+            if (campo === 'vinchasis' ) {
+              nueva_data[campo] = sanitiza_placas(registro[campo])
+            }else{
+              nueva_data[campo] = registro[campo]
+            }
+          }
+        })
+      })      
+      return nueva_data
+    }
+    function toma_campo_mas_largo(data_placas:any[]){
+      let nueva_data = {nombre:'',apellidos:'',correo:'',telefono:''}
+      const campos = ['nombre','apellidos','correo','telefono']
+      data_placas.forEach(registro=>{
+        // const { anio, apellidos, correo, marca, modelo, nombre, placas, telefono, vinchasis } = placas
+        campos.forEach(campo=>{
+          if (`${registro[campo]}`.length > nueva_data[campo].length) {
+            if (campo === 'telefono' ) {
+              nueva_data[campo] = sanitiza_placas(registro[campo])
+            }else{
+              nueva_data[campo] = registro[campo]
+            }
+          }
+        })
+      })      
+      return nueva_data
+    }
+
+
+    //sfdsgjfgdñfgfdlgjdfgldjfgjdlfjgkldjfklgjdfjgjdfjgjdfj
+    
+    //sfdsgjfgdñfgfdlgjdfgldjfgjdlfjgkldjfklgjdfjgjdfjgjdfj
+
+    // console.log(arreglo_paclas);
+    
+
+    function corrobora_vehiculo_cliente(vehiculos:any[], clientes:any){
+      let no_existen = []
+      vehiculos.forEach(vehiculo=>{
+        const {cliente, placas} = vehiculo
+        if (!clientes[cliente]) {
+          no_existen.push({cliente, placas})
+        }
+      })
+      return no_existen
+    }
+    
+    
+    function crea_object(arreglo:any[]){
+      let nuevos_retorna = {}
+      arreglo.forEach(elemento=>{
+        const {id} = elemento
+        nuevos_retorna[id] = elemento
+      })
+      return nuevos_retorna
+    }
+    
+    // this._publicos.nuevaRecuperacionData()
+    function sanitiza_info_cliente(data){
+      const necessary: any = {};
+      const campos = ['nombre','apellidos','correo','telefono','id']
+      campos.forEach(campo=>{
+        if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "") {
+          if (campo === 'telefono') {
+            necessary[campo] = sanitiza_placas( data[campo] )
+          }else{
+            necessary[campo] = data[campo];
+          }
+        }
+      })
+      return necessary
+    }
+    function sanitiza_info_vehiculo(data){
+      const necessary: any = {};
+      const campos = ['anio','marca','modelo','placas','vinchasis']
+      campos.forEach(campo=>{
+        if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "") {
+          if (campo === 'telefono' || campo === 'vinchasis') {
+            necessary[campo] = sanitiza_placas( data[campo] )
+          }else if(campo === 'anio'){
+            necessary[campo] = parseInt(data[campo])
+          }else{
+            necessary[campo] = data[campo]
+          }
+        }
+      })
+      return necessary
+    }
+
+    function sanitiza_placas(placas){
+      return `${placas}`
+      .toUpperCase()
+      .trim() //elimina los espacion exteriores
+      .replace(/\s/g, "") // Eliminamos los espacios en blanco
+      .replace(/\(/g, "") // Elimina todos los paréntesis abiertos
+      .replace(/\)/g, "") // Elimina todos los paréntesis cerrados
+      .replace(/-/g, ""); // Elimina todos los guiones
+    }
+    function  return_fullname(data){
+      const {nombre, apellidos} = data
+      const nuevos_apellidos = (!apellidos) ? nombre : apellidos
+
+        return `${nombre} ${nuevos_apellidos}`
+          .toLowerCase() //convierte todo a minusculas
+          .trim() //elimina los espacion exteriores
+          .normalize("NFD") // Normalizamos el texto en Unicode
+          .replace(/[\u0300-\u036f]/g, "") // Eliminamos los caracteres diacríticos (acentos)
+          .replace(/\s/g, "") // Eliminamos los espacios en blanco
+          .replace(/_/g, "") // Elimina todos los guiones
+          .replace(/-/g, ""); // Elimina todos los guiones
+          
+    }
+    function obtenerElementosUnicosPorCampo(objetos, campo) {
+      const elementosUnicos = {};
+      const resultado = [];
+    
+      objetos.forEach((objeto) => {
+        const valorCampo = objeto[campo];
+        if (!elementosUnicos[valorCampo]) {
+          elementosUnicos[valorCampo] = true;
+          resultado.push(objeto);
+        }
+
+      });
+    
+      return resultado;
+    }
+  }
   
 
 }
