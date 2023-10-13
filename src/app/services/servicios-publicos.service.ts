@@ -1990,24 +1990,24 @@ export class ServiciosPublicosService {
       const clientes = this.nueva_revision_cache('clientes')
       const vehiculos = this.nueva_revision_cache('vehiculos')
       const paquetes = this.nueva_revision_cache('paquetes')
+      const moRefacciones = this.nueva_revision_cache('moRefacciones')
+
       const clientes_tranformacion_data = this.transformaDataCliente(clientes)
 
       return this.ordenamiento_fechas(data,'fecha_recibido',true)
       .map(cotizacion=>{
 
-        const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal} = cotizacion;
+        const { cliente, vehiculo,elementos,no_cotizacion, margen, iva, descuento, formaPago, id, sucursal} = cotizacion;
+
+        const neuvos_ = this.asignacion_nuevos_elementos(elementos,paquetes, moRefacciones)
         
-        // if (!elementos) {
-        //   const nueva_info_paquete = this.crear_new_object(paquetes_c[id])
-        //   const {elementos: new_elements_c } = nueva_info_paquete
-        //   new_elements = new_elements_c
-        // }else{
-        //   new_elements = elementos
-        // }
-        console.log(elementos);
-        // console.log(this.asiganacion_nuevos_elementos(elementos,paquetes ));
+        cotizacion.elementos = neuvos_
+
+        console.log(id);
+        console.log(no_cotizacion);
         
-        cotizacion.elementos = this.asiganacion_nuevos_elementos(elementos,paquetes )
+        console.log(neuvos_);
+        
 
         const data_cliente = clientes_tranformacion_data[cliente]
         const data_vehiculo = vehiculos[vehiculo]
@@ -2025,30 +2025,128 @@ export class ServiciosPublicosService {
           cotizacion.placas = `${placas}`.toUpperCase()
         }
 
-        cotizacion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
+        cotizacion.reporte = this.genera_reporte({elementos: neuvos_, margen, iva, descuento, formaPago})
         return cotizacion
       })
     }
-    asiganacion_nuevos_elementos(elementos:any[], paquetes){
-      
+    nuevo_reporte_paquete(reporte_get, cantidad) {
+      const reporte ={mo: 0,refaccion: 0,refaccionVenta: 0,subtotal: 0,total: 0,ub: 0, }
+      Object.entries(reporte_get).forEach(([key, valor])=>{
+        reporte[key] += parseInt(`${valor}`) * parseInt(cantidad)
+      })
+      return reporte
+    }
+    asiganacion_nuevos_elementos(elementos:any[], paquetes, moRefacciones){
 
       const regresa = elementos.map(elemento=>{
-        console.log(elemento);
-        const {tipo, id, cantidad} = elemento
-        let nueva_data = {...elemento}
+        // console.log(elemento);
+        const {tipo, id, cantidad, costo} = elemento
+        let nueva_data = {}
         if(tipo === 'paquete'){
+          // console.log(id);
           const {elementos: elementos_int} = paquetes[id]
+          const aqui = elementos_int.map(element => {
+            let data_elemento = {}
+            const {id: id_elemento} = element
+            if (moRefacciones[id_elemento]) {
+              data_elemento = {
+                ...moRefacciones[id_elemento],
+                ...element
+              }
+            }
+            return data_elemento
+          });
+          const reporte = this.sumatoria_reporte_paquete(aqui, 25);
+
+          const nuevo_Reporte = this.nuevo_reporte_paquete(reporte, cantidad)
+
+          const {subtotal, total} = nuevo_Reporte
+          const {total: total_reporte} = reporte
+
           const temp = {
             ...elemento,
-            elementos: elementos_int,
+            ...paquetes[id],
+            elementos: aqui,
             tipo,
+            reporte,
+            subtotal,
+            total,
             cantidad,
+            precio: total_reporte,
+            nuevo_Reporte
           }
           nueva_data = temp
+        }else{
+
+          if (moRefacciones[id]) {
+            const {costo: costo_id, precio: precio_id} = moRefacciones[id]
+            const nuevos_costo = (parseInt(`${costo}`) > 0) ? costo : parseFloat(costo_id)
+            const nuevos_costo2 = (parseInt(`${nuevos_costo}`) > 0) ? nuevos_costo : parseFloat(precio_id)
+            const subtotal = nuevos_costo2 * cantidad
+            const total = nuevos_costo2 * cantidad
+            nueva_data = {
+              ...moRefacciones[id],
+              ...elemento,
+              subtotal,
+              total
+            }
+          }
         }
         return nueva_data
       })
       return regresa
+    }
+    asignacion_nuevos_elementos(elementos, paquetes, moRefacciones) {
+      return elementos.map((elemento) => {
+        const { tipo, id, cantidad, costo } = elemento;
+        let nueva_data = {};
+    
+        if (tipo === 'paquete' && paquetes[id]) {
+          const { elementos: elementos_int } = paquetes[id];
+          const aqui = elementos_int.map((element) => {
+            const { id: id_elemento } = element;
+            const data_elemento = moRefacciones[id_elemento]
+              ? { ...moRefacciones[id_elemento], ...element }
+              : {};
+            return data_elemento;
+          });
+    
+          const reporte = this.sumatoria_reporte_paquete(aqui, 25);
+          const nuevo_Reporte = this.nuevo_reporte_paquete(reporte, cantidad);
+    
+          const { subtotal, total } = nuevo_Reporte;
+          const { total: total_reporte } = reporte;
+    
+          nueva_data = {
+            ...elemento,
+            ...paquetes[id],
+            elementos: aqui,
+            tipo,
+            reporte,
+            subtotal,
+            total,
+            cantidad,
+            precio: total_reporte,
+            nuevo_Reporte,
+          };
+        } else if (moRefacciones[id]) {
+          const { costo: costo_id, precio: precio_id } = moRefacciones[id];
+          const nuevos_costo = parseInt(costo) > 0 ? parseFloat(costo) : parseFloat(costo_id);
+          const nuevos_costo2 = nuevos_costo > 0 ? nuevos_costo : parseFloat(precio_id);
+          const subtotal = nuevos_costo2 * cantidad;
+          const total = nuevos_costo2 * cantidad;
+          nueva_data = {
+            ...moRefacciones[id],
+            ...elemento,
+            subtotal,
+            total,
+          };
+        } else if(tipo === 'mo' || tipo === 'refaccion' && !moRefacciones[id]){
+          nueva_data = elemento
+        }
+    
+        return nueva_data;
+      });
     }
    
     asigna_data_diarios(data){
@@ -2236,7 +2334,7 @@ export class ServiciosPublicosService {
       // Iteramos a través de los elementos del arreglo
         elementos.forEach(elemento=>{
           const costoElemento = obtenerCostoValido(elemento);
-          const tipoNormalizado = normalizarTipo(elemento.tipo);
+          const tipoNormalizado = elemento.tipo // normalizarTipo(elemento.tipo);
           reporte[tipoNormalizado] += costoElemento;
         })
         // Calculamos el valor de refaccionVenta y subtotal

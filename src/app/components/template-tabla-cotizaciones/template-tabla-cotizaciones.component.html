@@ -94,7 +94,7 @@
                             <app-reporte-desgloce-tarjeta [reporte]="row.reporte" [title]="'Flotilla'"></app-reporte-desgloce-tarjeta>
                           </div>
                           <div class="table-responsive">
-                            <table class="table table-sm">
+                            <table class="table table-sm table-bordered">
                               <thead>
                                 <tr>
                                   <th scope="text-start">Nombre</th>
@@ -107,9 +107,10 @@
                               </thead>
                               <tbody>
                                 <ng-container *ngFor="let item of row.elementos">
-                                  <tr [ngClass]="'tipo-'+item.tipo" >
+                                  <tr  >
                                     <td class="text-start">
-                                      {{item.nombre}} &nbsp;
+                                      
+                                      <strong [ngClass]="'tipo-'+item.tipo">{{item.nombre}} &nbsp;</strong>
                                       <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
                                       <span class="badge badge-info m-1">{{item.status}}</span>
                                     </td>
