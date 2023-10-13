@@ -165,6 +165,8 @@ import { NuevoCreditoClienteComponent } from './components/nuevo-credito-cliente
 import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
 import { TemplatePaquetesComponent } from './components/template-paquetes/template-paquetes.component';
 import { TarjetaPaquetesReporteComponent } from './components/tarjeta-paquetes-reporte/tarjeta-paquetes-reporte.component';
+import { VehiculosClienteComponent } from './pages/vehiculos-cliente/vehiculos-cliente.component';
+import { MorefaccionesListComponent } from './components/morefacciones-list/morefacciones-list.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -263,6 +265,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     VehiculosComponent,
     TemplatePaquetesComponent,
     TarjetaPaquetesReporteComponent,
+    VehiculosClienteComponent,
+    MorefaccionesListComponent,
   ],
   imports: [
     BrowserModule,

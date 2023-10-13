@@ -1,0 +1,23 @@
+.tipo-paquete {
+    color: #5ca04a !important;
+  }
+  
+  .tipo-refaccion {
+    color: #FF8623 !important;
+  }
+  
+  .tipo-mo {
+    color: #3574FA;
+  }
+
+  .compatibles{
+    font-size: 16px;
+    background-color: rgb(50, 146, 202);
+    color: white; /* Cambia el color del texto según tus preferencias */
+    padding: 4px 8px; /* Ajusta el espaciado según tus preferencias */
+    border-radius: 4px; /* Agrega esquinas redondeadas */
+    margin-right: 8px; /* Agrega un margen derecho para separar etiquetas */
+    margin-top: 4px; /* Agrega un margen arriba */
+    margin-bottom: 4px; /* Agrega un margen abajo */
+    display: inline-block; /* Hace que las etiquetas ocupen solo el ancho necesario */
+  }

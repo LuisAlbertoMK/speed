@@ -1,0 +1,122 @@
+<form class="example-form ">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            Elementos disponibles: <strong> {{moRefacciones.length}}</strong>
+        </div>
+        <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="mb-3">
+                <label for="cantidad" class="form-label">Cantidad</label>
+                <input type="number"
+                    min="1"
+                    minlength="1"
+                    aria-label="cantidad"
+                    class="form-control form-control-sm"
+                    [formControl]="myControl_cantidad"
+                    onkeypress="soloNumeros(event)"
+                    id="cantidad_elemento">
+              </div>
+        </div>
+        <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+            <div class="mb-3">
+                <label for="Elemento" class="form-label">Elemento</label>
+                <div class="input-group mb-3">
+                    <input type="text"
+                    placeholder="Buscar elemento por clave / nombre"
+                    aria-label="Nombre"
+                    class="form-control form-control-sm"
+                    [formControl]="myControl"
+                    [matAutocomplete]="auto"
+                    id="busqueda_elemento">
+                </div>
+    
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [ngClass]="'tipo-'+option['tipo']">
+                        {{option['id_publico'] }} {{option['nombre'] }}
+                    </mat-option>
+                </mat-autocomplete>
+              </div>
+            
+            
+        </div>
+    </div>
+    
+
+    
+
+    
+</form>
+    <div class="row" *ngIf="info_elemento && !info_elemento['id']">
+        <div class="alert alert-info text-center">
+            <h2>
+                <p >No hay ningún elemento seleccionado</p>
+            </h2>
+        </div>
+    </div>
+    <div class="row" *ngIf="info_elemento && info_elemento['id']">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title"> <strong>Información básica del elemento</strong></h3>
+                    <div class="card-text">
+                        <ul class="list-group list-group-flush">
+                            <div class="row">
+                                <div class="list-group-item col-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-capitalize">Clave</div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto">{{info_elemento['id_publico'] | uppercase}}</div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item col-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-capitalize">nombre</div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto">{{info_elemento['nombre'] | capitalizarUno}}</div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item col-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-capitalize">tipo</div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto">{{info_elemento['tipo'] | uppercase}}</div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item col-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-capitalize">precio</div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto">{{info_elemento['new_precio'] | monedas}}</div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-capitalize">descripcion</div>
+                                        <div class="col-auto col-sm-auto col-md-auto col-lg-auto">{{info_elemento['descripcion'] | capitalizarUno}}</div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-12">vehiculos compatibles</div>
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                            <ng-container *ngIf="info_elemento['compatibles']">
+                                                <ng-container *ngFor="let item of info_elemento['compatibles']; let i = index">
+                                                    <span class="compatibles">{{item.marca}} - {{item.modelo}}, {{item.anio_inicial}} a {{item.anio_final}} 
+                                                    </span>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                            <button class="btn btn-sm btn-danger m-1" (click)="enviar_elemento()">
+                                Agregar a cotizacion
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+              </div>
+        </div>
+    </div>
+
+  

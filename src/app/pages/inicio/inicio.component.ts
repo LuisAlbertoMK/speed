@@ -36,7 +36,8 @@ export class InicioComponent implements OnInit {
   ]
   asigancion_roles_cliente = [
     {path:'miPerfil', show:'Mi informacion',icono:'book'},
-    // {path:'vehiculos', show:'Mis vehiculos',icono:'cars'},
+    {path:'vehiculos-cliente', show:'Mis vehiculos',icono:'cars'},
+    {path:'cotizacion-new-cliente', show:'Nueva cotizacion',icono:'calculator'},
     {path:'estadisticasCliente', show:'Mis estadisticas',icono:'chart-pie'},
     {path:'cotizacionesCliente', show:'Historial cotizaciones',icono:'book-user'},
     {path:'serviciosCliente', show:'Historial servicios',icono:'car-garage'},

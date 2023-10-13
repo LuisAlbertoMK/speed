@@ -410,7 +410,8 @@ export class ExporterService {
         placas,
         gasto_tipo,
         status_orden,
-        sucursalShow
+        sucursalShow,
+        total_gastado
       } = r
       const temp_colocar = {
         'no O.S': no_os, 
@@ -429,6 +430,7 @@ export class ExporterService {
         'Gasto tipo': gasto_tipo,
         'Tipo': tipo,
         'Status orden': status_orden,
+        'total_gastado': total_gastado
       }
       colocada.push({ ...lieneaBlanca, ...temp_colocar });
 

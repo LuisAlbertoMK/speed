@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onChildChanged, onChildRemoved, query, orderByChild, startAt, equalTo} from "firebase/database";
+import {  getDatabase, ref, update} from "firebase/database";
 
 
 import pdfMake from "pdfmake/build/pdfmake";
@@ -49,11 +49,12 @@ export interface User {nombre: string, apellidos:string}
 export class CotizacionNewComponent implements OnInit,AfterViewInit {
   
   constructor(
-    private _automaticos:AutomaticosService,
-    private _security:EncriptadoService, private rutaActiva: ActivatedRoute, private _publicos: ServiciosPublicosService,
-    private _formBuilder: FormBuilder, private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
-    private router: Router, private _sucursales: SucursalesService, private _clientes: ClientesService, private _cotizacion: CotizacionService,
-    private _cotizaciones: CotizacionesService, private _vehiculos: VehiculosService, private _servicios: ServiciosService, private _campos: CamposSystemService) { }
+    private _automaticos:AutomaticosService, private _security:EncriptadoService, private rutaActiva: ActivatedRoute, 
+    private _publicos: ServiciosPublicosService, private _formBuilder: FormBuilder, 
+    private _email: EmailsService, private _pdf: PdfService, private _uploadPDF: UploadPDFService,
+    private router: Router, private _sucursales: SucursalesService, private _clientes: ClientesService, 
+    private _cotizacion: CotizacionService, private _cotizaciones: CotizacionesService, 
+    private _vehiculos: VehiculosService, private _servicios: ServiciosService, private _campos: CamposSystemService) { }
     
   _rol:string; _sucursal:string
   

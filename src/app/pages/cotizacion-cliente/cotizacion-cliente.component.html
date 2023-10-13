@@ -1,1 +1,172 @@
 <app-template-navegacion></app-template-navegacion>
+
+<app-cliente-tarjeta [cliente]="infoCotizacion.data_cliente"></app-cliente-tarjeta>
+
+<ng-container *ngIf="infoCotizacion.cliente">
+    <div class="card border-dark">
+      <div class="card-body">
+          <label for="vehiculos-lista">Placas de vehiculos disponibles</label>
+          <div class="input-group mb-3">
+            <select id="vehiculos-lista" class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
+              <option  value="">Selecciona placas</option>
+              <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
+            </select>
+            <button aria-label="modalVehiculo" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
+              <i class="fa fa-car"></i>
+            </button>
+          </div>
+        
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+          <app-vehiculo-tarjeta [vehiculo]="infoCotizacion.data_vehiculo"></app-vehiculo-tarjeta>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <form [formGroup]="formPlus">
+    <div class="row text-start">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="mb-1 row">
+          <label for="servicio" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Servicio</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <select class=" form-select  form-select-sm" formControlName="servicio" 
+              [class.is-invalid]="validaCampo('servicio')" id="servicio">
+              <option [selected]="servicio.valor  === infoCotizacion.servicio" *ngFor="let servicio of servicios" [value]="servicio.valor">{{servicio.nombre}}</option>
+            </select>
+            <small *ngIf="validaCampo('servicio')" class="text-danger">Seleccionar servicio</small>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="mb-1 row">
+          <label for="margen" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Margen</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <input type="number" min="25" onkeypress="soloNumeros(event)" class="form-control form-control-sm" formControlName="margen" [class.is-invalid]="validaCampo('margen')" id="margen" >
+            <small *ngIf="validaCampo('margen')" class="text-danger">Seleccionar margen menor a 100 y mayor a 24</small>
+            <span>
+              Margen aplicado: {{infoCotizacion.margen}}
+            </span>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="mb-1 row">
+          <label for="formaPago" class="col-sm-3 col-md-4 col-lg-3 col-form-label" >Método pago</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <select class=" form-select  form-select-sm" formControlName="formaPago" (ngModelChange)="realizaOperaciones()"
+              [class.is-invalid]="validaCampo('formaPago')" id="formaPago">
+              <option *ngFor="let val of formasPago" [value]="val.id" class="text-capitalize" >
+                {{val.pago | capitalizarUno}}</option>
+            </select>
+            <small *ngIf="validaCampo('formaPago')" class="text-danger">Seleccionar tipo de cliente</small>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="mb-1 row">
+          <label for="promocion" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Promoción</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <select class=" form-select  form-select-sm" formControlName="promocion" 
+              [class.is-invalid]="validaCampo('promocion')" id="promocion">
+              <option *ngFor="let promo of promociones" [value]="promo">{{promo | capitalizarUno}}</option>
+            </select>
+            <small *ngIf="validaCampo('promocion')" class="text-danger">Seleccionar tipo de cliente</small>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="mb-1 row">
+          <label for="descuento" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Descuento</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <input type="number" min="0" onkeypress="validarDecimal(event)" class="form-control form-control-sm" formControlName="descuento"   id="descuento" >
+            <small *ngIf="validaCampo('descuento')" class="text-danger">Introduce descuento valido</small>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="mb-1 row">
+          <label for="kms" class="col-sm-3 col-md-4 col-lg-3 col-form-label">KMS</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <input type="number" min="0" onkeypress="soloNumeros(event)" class="form-control form-control-sm" formControlName="kms" id="kms">
+            <small *ngIf="validaCampo('kms')" class="text-danger">Introduce KMS</small>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="mb-1 row">
+          <label for="nota" class="col-sm-3 col-md-4 col-lg-3 col-form-label">Nota</label>
+          <div class="col-sm-9 col-md-8 col-lg-9 ">
+            <textarea cols="3" rows="3" style="width: 100%;" [value]="infoCotizacion.nota" id="nota" formControlName="nota" ></textarea>
+            <!-- <small *ngIf="validaCampo('nota')" class="text-danger">Seleccionar tipo de cliente</small> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12 alert alert-info text-center">La nota se muestra en el PDF</div>
+    </div>
+  </form>
+  <div class="card border-dark">
+    <div class="card-body text-end">
+      <button  data-bs-toggle="modal" data-bs-target="#modalPaquetes" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="idPaqueteEditar = -1">Agregar paquete</button>
+      <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="idPaqueteEditar = -1; ">Agregar elemento</button>
+      <!-- <button   class="btn btn-sm btn-success m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}" (click)="mensajePaquete()">Nuevo paquete</button> -->
+      <!-- <button  data-bs-toggle="modal" data-bs-target="#modalElemento" class="btn btn-sm btn-primary">Elemento</button> -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-end">
+      <section class="example-section " [formGroup]="checksBox" id="checks" >
+        <mat-checkbox class="m-1" formControlName="iva" checked="true" name="iva" >IVA</mat-checkbox>
+        <!-- <mat-checkbox class="m-1" formControlName="detalles"  name="detalles">Mostrar costos en PDF </mat-checkbox> -->
+      </section>
+    </div>
+  </div>
+
+  <app-tabla-elementos [elementos]="infoCotizacion.elementos" (elementos_Actuales)="nuevos_elementos( $event )"></app-tabla-elementos>
+
+  <div class="row mt-2">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="infoCotizacion.reporte">
+      <app-reporte-desgloce-tarjeta [reporte]="infoCotizacion.reporte" [title]="'Desgloce'" [muestra_normal]="true"></app-reporte-desgloce-tarjeta>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1 text-center">
+      <button class="btn btn-sm btn-primary" [disabled]="enProceso" (click)="continuarCotizacion()"> Realizar cotizacion</button>
+    </div>
+  </div>
+
+
+
+<app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+
+
+
+
+
+  <div class="modal fade" id="modalPaquetes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Agregar paquete</h1>
+        <button id="buscar-paquete" type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+            <i class="fas fa-times"></i>
+        </button>
+        </div>
+        <div class="modal-body m-2">
+        <app-paquetes [modelo]="modelo" (infoPaquete)="agrega_principal( $event)" ></app-paquetes>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="modal fade" id="modalElemento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+  <div class="modal-content">
+    <div class="modal-header ml-3">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body m-2">
+        <app-morefacciones-list (data_elemento)="agrega_principal( $event )"></app-morefacciones-list>
+    </div>
+  </div>
+</div>
+</div>

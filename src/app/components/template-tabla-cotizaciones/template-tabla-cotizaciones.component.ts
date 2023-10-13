@@ -83,7 +83,7 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
   }
 
   asignacion_calculos(){
-    console.log(this.cotizaciones_arr);
+    // console.log(this.cotizaciones_arr);
 
     // console.log(suma_reportes(this.cotizaciones_arr));
     this.reporte_totales = suma_reportes(this.cotizaciones_arr)

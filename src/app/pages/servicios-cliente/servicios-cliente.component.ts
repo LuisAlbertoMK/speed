@@ -58,89 +58,59 @@ export class ServiciosClienteComponent implements OnInit {
   
 
   recepciones_arr= []
-  SUCURSAL:string
-
+  _sucursal:string
+  _rol:string
+  _uid:string
+  objecto_actual:any ={}
   ngOnInit(): void {
     this.rol()
   }
   rol(){
-    const { rol, sucursal, uid} = this._security.usuarioRol()
-    this.SUCURSAL = sucursal
 
-    if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
-  }
-  async obtenerInformacion_cliente(cliente:string){
+    const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
     
-
-    const starCountRef_recpciones = ref(db, `recepciones`)
-    onValue(starCountRef_recpciones, async (snapshot) => {
-      if (snapshot.exists()) {
-        const _orden = this._publicos.crearArreglo2( await this._reporte_gastos.consulta_orden())
-        const _pagos = this._publicos.crearArreglo2( await this._servicios.consulta_pagos())
-    
-        const _recepciones = this._publicos.crearArreglo2( await this._servicios.consulta_recepciones_())
-        const recepciones_filtrados = this._publicos.filtra_informacion(_recepciones,'cliente',cliente)
-        
-        const nuevas_recepciones  = [...recepciones_filtrados].map(recepcion=>{
-          const {elementos, margen, iva, descuento, formaPago} = recepcion
-          const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
-          recepcion.reporte = reporte
-          recepcion.historial_gastos_orden = filtra_orden(_orden, cliente)
-          recepcion.historial_pagos_orden = filtra_orden(_pagos, cliente)
-          return recepcion
-        })
-        function filtra_orden(arreglo, id_orden){
-          return [...arreglo].filter(f=>f.id_os === id_orden)
-        }
-        const campos_recpciones = [
-          'checkList',
-          'detalles',
-          'diasEntrega',
-          'diasSucursal',
-          'elementos',
-          'fecha_promesa',
-          'fecha_recibido',
-          'formaPago',
-          'iva',
-          'margen',
-          'no_os',
-          'notifico',
-          'pathPDF',
-          'servicio',
-          'status',
-          'reporte',
-          'historial_gastos_orden',
-          'historial_pagos_orden',
-        ]
-        // console.log(nuevas_recepciones);
-
-        this.recepciones_arr = (!this.recepciones_arr.length)  ? nuevas_recepciones :
-        this._publicos.actualizarArregloExistente(this.recepciones_arr,nuevas_recepciones,campos_recpciones)
-      }
-      else {
-        // console.log("No data available");
-        this.recepciones_arr = []
-      }
-    })
-    
-    
-    
-
-    
-
-    
-
-    
-    // if (!this.recepciones_arr.length) {
-    //   this.recepciones_arr = filtro_recepciones;
-    //   // this.cargandoInformacion = false
-    // } else {
-    //   this.recepciones_arr = this._publicos.actualizarArregloExistente(this.recepciones_arr,filtro_recepciones,[...this._cotizaciones.camposCotizaciones])
-    //   // this.cargandoInformacion = false
-    // }
+    this._sucursal = sucursal
+    this._rol = rol
+    // if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
+    if (uid) {
+      this._uid = uid
+      this.primer_comprobacion_resultados()
+    }
   }
 
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
+  }
+  primer_comprobacion_resultados(){
+    this.asiganacion_resultados()
+    this.segundo_llamado()
+  }
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+        this.asiganacion_resultados()
+      }
+    },1500)
+  }
+  asiganacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
 
+    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
+
+    const campos_recpciones = [
+      'checkList','detalles','diasEntrega','diasSucursal','elementos','fecha_promesa','fecha_recibido','formaPago','iva','margen','no_os','notifico','pathPDF','servicio','status','reporte','historial_gastos_orden','historial_pagos_orden'
+    ]
+    this.objecto_actual = objecto_recuperdado
+
+    this.recepciones_arr = (!this.recepciones_arr.length)  ? recepciones_arr :
+    this._publicos.actualizarArregloExistente(this.recepciones_arr,recepciones_arr,campos_recpciones)
+  }
+  
+ 
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

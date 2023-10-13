@@ -76,11 +76,19 @@ se registro claves_historial_pagos_orden
  {tamanioEnBytes: 2082, tamanioEnKilobytes: 2.033203125, tamanioEnMegabytes: 0.0019855499267578125}
 
 
- elementos_con_cache = [
+ elementos_con_cache_sucursal_Gerente_SU = [
   clientes,
   clientes_list,
   sucursales,
   servicios,
   cotizacion,
-  
+  catalogos ==>,
+  administracion,
+  reporteGastos,
+  corteGastos,
+  vehiculos,
+ ]
+
+ elementos_cache_cliente =[
+  miPerfil
  ]

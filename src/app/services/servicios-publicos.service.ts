@@ -1558,6 +1558,7 @@ export class ServiciosPublicosService {
     }
 
     genera_reporte(data){
+      const paquetes_c = this.nueva_revision_cache('paquetes')
 
       const {margen, iva, elementos, descuento, formaPago } = data
       
@@ -1569,10 +1570,31 @@ export class ServiciosPublicosService {
       const otro = this.nuevo_reporte(elementos_)
 
       const aplicado = paquetes.map(paquete=>{
-        const {elementos} = paquete
-        const filtro_aprobado_internos = elementos.filter(e=>e.aprobado)
-        return this.nuevo_reporte(filtro_aprobado_internos) 
+        // const {elementos, cantidad, id} = paquete
+        const data_aplicada = this.crear_new_object(paquete)
+        const {elementos, cantidad, id} = data_aplicada
+
+        let new_elements = []
+
+        if (!elementos) {
+          const nueva_info_paquete = this.crear_new_object(paquetes_c[id])
+          const {elementos: new_elements_c } = nueva_info_paquete
+          new_elements = new_elements_c
+        }else{
+          new_elements = elementos
+        }
+        let nuevos_elementos:any[] = [...new_elements]
+        const filtro_aprobado_internos = nuevos_elementos.filter(e=>e.aprobado)
+        return nuevo_reporte_paquete(this.nuevo_reporte(filtro_aprobado_internos), cantidad) 
       })
+
+      function nuevo_reporte_paquete(reporte_get, cantidad) {
+        const reporte ={mo: 0,refaccion: 0,refaccionVenta: 0,subtotal: 0,total: 0,ub: 0, }
+        Object.entries(reporte_get).forEach(([key, valor])=>{
+          reporte[key] += parseInt(`${valor}`) * parseInt(cantidad)
+        })
+        return reporte
+      }
 
       const sumatoria_paquetes = this.sumatorio_reportes(aplicado)
 
@@ -1620,11 +1642,11 @@ export class ServiciosPublicosService {
     nuevo_reporte(elementos){
       const reporte = {mo:0,refaccion:0}
       const nuevos = [...elementos].forEach(elemento =>{
-        const { costo, precio, status, tipo} = elemento
+        const { costo, precio, status, tipo, cantidad} = elemento
           if (costo > 0 ) {
-            reporte[tipo] += costo
+            reporte[tipo] += costo * cantidad
           }else{
-            reporte[tipo] += precio
+            reporte[tipo] += precio * cantidad
           }
       })
       return reporte
@@ -1967,6 +1989,7 @@ export class ServiciosPublicosService {
 
       const clientes = this.nueva_revision_cache('clientes')
       const vehiculos = this.nueva_revision_cache('vehiculos')
+      const paquetes = this.nueva_revision_cache('paquetes')
       const clientes_tranformacion_data = this.transformaDataCliente(clientes)
 
       return this.ordenamiento_fechas(data,'fecha_recibido',true)
@@ -1974,6 +1997,18 @@ export class ServiciosPublicosService {
 
         const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal} = cotizacion;
         
+        // if (!elementos) {
+        //   const nueva_info_paquete = this.crear_new_object(paquetes_c[id])
+        //   const {elementos: new_elements_c } = nueva_info_paquete
+        //   new_elements = new_elements_c
+        // }else{
+        //   new_elements = elementos
+        // }
+        console.log(elementos);
+        // console.log(this.asiganacion_nuevos_elementos(elementos,paquetes ));
+        
+        cotizacion.elementos = this.asiganacion_nuevos_elementos(elementos,paquetes )
+
         const data_cliente = clientes_tranformacion_data[cliente]
         const data_vehiculo = vehiculos[vehiculo]
 
@@ -1993,6 +2028,27 @@ export class ServiciosPublicosService {
         cotizacion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
         return cotizacion
       })
+    }
+    asiganacion_nuevos_elementos(elementos:any[], paquetes){
+      
+
+      const regresa = elementos.map(elemento=>{
+        console.log(elemento);
+        const {tipo, id, cantidad} = elemento
+        let nueva_data = {...elemento}
+        if(tipo === 'paquete'){
+          const {elementos: elementos_int} = paquetes[id]
+          const temp = {
+            ...elemento,
+            elementos: elementos_int,
+            tipo,
+            cantidad,
+          }
+          nueva_data = temp
+        }
+        return nueva_data
+      })
+      return regresa
     }
    
     asigna_data_diarios(data){
@@ -2398,6 +2454,114 @@ export class ServiciosPublicosService {
         nuevosPaquetesProcesados[key] = nuevoPaquete;
       }
       return nuevosPaquetesProcesados;
+    }
+    obtenerMaximoMinimoYSimilitudes(arreglo) {
+      if (arreglo.length === 0) {
+        return {
+          maximo: 0,
+          minimo: 0,
+          similitudesMaximo: [],
+          similitudesMinimo: [],
+          contadorMaximo: 0,
+          contadorMinimo: 0
+        };
+      }
+    
+      let maximo = arreglo[0].reporte.total;
+      let minimo = arreglo[0].reporte.total;
+      let similitudesMaximo = [arreglo[0].no_cotizacion];
+      let similitudesMinimo = [arreglo[0].no_cotizacion];
+      let contadorMaximo = 1;
+      let contadorMinimo = 1;
+    
+      for (let i = 1; i < arreglo.length; i++) {
+        const valorActual = arreglo[i].reporte.total;
+        const no_cotizacion = arreglo[i].no_cotizacion;
+    
+        if (valorActual > maximo) {
+          maximo = valorActual;
+          similitudesMaximo = [no_cotizacion];
+          contadorMaximo = 1;
+        } else if (valorActual === maximo) {
+          similitudesMaximo.push(no_cotizacion);
+          contadorMaximo++;
+        }
+    
+        if (valorActual < minimo) {
+          minimo = valorActual;
+          similitudesMinimo = [no_cotizacion];
+          contadorMinimo = 1;
+        } else if (valorActual === minimo) {
+          similitudesMinimo.push(no_cotizacion);
+          contadorMinimo++;
+        }
+      }
+    
+      return [
+        {
+          maximo,
+          similitudesMaximo: similitudesMaximo.join(', '),
+          contadorMaximo,
+        },
+        {
+          minimo,
+          similitudesMinimo: similitudesMinimo.join(', '),
+          contadorMinimo
+        }
+      ]
+        ;
+    }
+    sanitizar_paquetes(paquetes){
+      const nuevosPaquetes = {};
+      const moRefacciones = this.nueva_revision_cache('moRefacciones')
+      for (const [key, entry] of Object.entries(paquetes)) {
+        const nuevoPaquete = this.crearNuevoObjeto(entry,moRefacciones);
+        nuevosPaquetes[key] = nuevoPaquete;
+      }
+      // this._encript.guarda_informacion({nombre: 'paquetes',data: nuevosPaquetes})
+      return nuevosPaquetes
+    }
+    sanitizar_paquete(paquete, moRefacciones){
+      const nuevo_paquete = {};
+        const {id} = paquete
+        const nuevoPaquete = this.crearNuevoObjeto(paquete,moRefacciones);
+        nuevo_paquete[id] = nuevoPaquete;
+      return nuevoPaquete
+    }
+    
+    crearNuevoObjeto(entry, moRefacciones) {
+      const { elementos, cilindros, costo, marca, modelo, nombre, status, tipo, cantidad } = entry;
+      const elementosLimpios = this.limpiarElementos(elementos, moRefacciones);
+      const costoValidado = parseFloat(costo) || 0;
+      return {
+        cilindros, marca, modelo, nombre, status, tipo,
+        elementos: elementosLimpios,
+        costo: costoValidado,
+        cantidad: (parseInt(cantidad) >= 1 ) ? parseInt(cantidad) : 1
+      };
+    }
+    limpiarElementos(elementos, moRefacciones){
+      
+      const afhgj = elementos.map(elemento=>{
+          const {id:id_elemento, costo:costo_elemento, cantidad: cantidad_elemento} = elemento
+          let data_elemento_return
+          if (moRefacciones[id_elemento]) {
+            const data_elemento = JSON.parse(JSON.stringify(moRefacciones[id_elemento]));
+            data_elemento.costo =  (data_elemento.costo > 0) ? parseInt( data_elemento.costo ) : 0
+            const nuevo_costo = (costo_elemento > 0) ? parseInt( costo_elemento ) : parseInt( data_elemento.costo )
+            const nueva_cantidad = (cantidad_elemento > 0) ? cantidad_elemento : 1
+            data_elemento_return =  {
+              id:id_elemento,
+              aprobado: true,
+              costo: nuevo_costo,
+              cantidad: nueva_cantidad
+            }
+          }else{
+            data_elemento_return = elemento
+          }
+          return data_elemento_return
+        })
+        return afhgj
     }
       
  }

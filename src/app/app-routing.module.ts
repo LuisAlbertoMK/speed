@@ -44,6 +44,7 @@ import { MiperfilComponent } from './pages/miperfil/miperfil.component';
 import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-cliente.component';
 import { VehiculoComponent } from './components/vehiculo/vehiculo.component';
 import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
+import { VehiculosClienteComponent } from './pages/vehiculos-cliente/vehiculos-cliente.component';
 
 const routes: Routes = [];
 
@@ -91,6 +92,7 @@ const APP_ROUTES: Routes = [
   { path: 'comentarios', component: ComentariosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'cotizacion-new-cliente', component: CotizacionClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'historial-vehiculo-cliente', component: HistorialVehiculoClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'vehiculos-cliente', component: VehiculosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
 
   { path: 'home', component: HomeComponent },
 

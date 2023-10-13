@@ -1,4 +1,5 @@
-<button (click)="realizaOperaciones()" class="btn btn-danger">realizaOperaciones()</button>
+<!-- <button (click)="realizaOperaciones()" class="btn btn-danger">realizaOperaciones()</button> -->
+
 <div class="mat-elevation-z8 table-responsive">
     <table mat-table #elementos="matSort" matSort
     [dataSource]="dataSource" multiTemplateDataRows
@@ -10,7 +11,10 @@
     <ng-container matColumnDef="cantidad">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
         <td mat-cell *matCellDef="let row">
-            <input  type="number" min="0" [value]="row.cantidad" maxlength="5" onkeypress="validarDecimal(event)" (change)="editar('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput">
+            <input  type="number" min="0" [value]="row.cantidad" maxlength="5" onkeypress="solonumeros(event)" 
+            (change)="editar_cantidad_elemento('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" 
+            >
+            <!-- (change)="editar('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" -->
         </td>
     </ng-container>
     <ng-container matColumnDef="precio">
@@ -20,16 +24,18 @@
     <ng-container matColumnDef="costo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo </th>
         <td mat-cell *matCellDef="let row"> 
-            <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput">
+            <!-- <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput"> -->
         </td>
     </ng-container>
     <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
-        <td mat-cell *matCellDef="let row"> {{ row.total | monedas}}   </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> P.U </th>
+        <td mat-cell *matCellDef="let row"> {{ row.precio | monedas}}   </td>
     </ng-container>
     <ng-container matColumnDef="opciones">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
-        <td mat-cell *matCellDef="let row"> options   </td>
+        <td mat-cell *matCellDef="let row"> 
+            <i class="fa fa-trash pointer text-danger" (click)="eliminaElemento(row)"></i>
+        </td>
     </ng-container>
     <ng-container matColumnDef="expand">
     <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>

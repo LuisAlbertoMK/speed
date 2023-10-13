@@ -14,7 +14,7 @@ export class UploadPDFService {
   constructor(private http: HttpClient,private _email:EmailsService) { }
   async upload(file:Blob,nombre:string){
     let answer = {ruta:'',error:[],progreso:0}
-    const storageRef = ref(storage, 'PDF/cotizacionesRealizadas/'+nombre);
+    const storageRef = ref(storage, 'PDF/cotizaciones/'+nombre);
     const uploadTask = uploadBytesResumable(storageRef, file)
     await  uploadTask.on('state_changed',
       (snapshot) => {

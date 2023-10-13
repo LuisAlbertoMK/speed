@@ -140,15 +140,7 @@ export class SucursalesComponent implements OnInit {
     const objecto_recuperdado = this._publicos.nueva_revision_cache('sucursales')
     const data_recuperda_arr = this._publicos.crearArreglo2(objecto_recuperdado)
 
-    const campos = [
-      'direccion',
-      'imagen',
-      'status',
-      'fullname',
-      'sucursal',
-      'nombre',
-      'telefono','correo'
-    ]
+    const campos = ['direccion','imagen','status','fullname','sucursal','nombre','telefono','correo']
     this.objecto_actual = objecto_recuperdado
 
     this.sucursales_array = (!this.sucursales_array.length) 

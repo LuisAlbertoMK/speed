@@ -41,7 +41,7 @@ export class ReporteDesgloceTarjetaComponent implements OnInit, OnChanges {
     if (changes['reporte']) {
       const nuevoValor = changes['reporte'].currentValue;
       const valorAnterior = changes['reporte'].previousValue;
-      // return
+      
       if (this.reales) {
         let refacciones = 0
         // if (this.historial_gastos.length) {

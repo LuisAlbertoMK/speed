@@ -63,7 +63,8 @@ export class MiperfilComponent implements OnInit {
   editar:boolean = false
   cargando:boolean = true
   uid: string =  null
-  SUCURSAL:string
+  _sucursal:string
+  _rol:string
   data_cliente:any
   vehiculos_arr:any[] = []
 
@@ -77,9 +78,22 @@ export class MiperfilComponent implements OnInit {
   }
   rol(){
     const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
-    // console.log(uid);
     
-    this.SUCURSAL = sucursal
+    this._sucursal = sucursal
+    this._rol = rol
+    if (uid) {
+      this.consulta_info_cliente(uid)
+    }
     
+  }
+  consulta_info_cliente(id_cliente:string){
+
+    console.log(id_cliente);
+    
+    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(id_cliente)
+    this.data_cliente = data_cliente
+    this.cotizaciones_arr = cotizaciones_arr
+    this.recepciones_arr = recepciones_arr
+    this.vehiculos_arr = vehiculos_arr
   }
 }

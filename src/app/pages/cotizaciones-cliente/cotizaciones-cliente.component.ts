@@ -97,7 +97,12 @@ export class CotizacionesClienteComponent implements OnInit {
     {valor:'similitudesMinimo', show:'cotizaciones minimas'},
   ]
   valores_tabla_minimos = { minimo: 0,contadorMinimo: 0,similitudesMinimo: '' }
-  SUCURSAL:string
+  _sucursal:string
+  _rol:string
+  _uid:string
+
+  objecto_actual:any ={}
+
   cotizaciones_arr= []
   collapse_maximos_class:string = 'collapse'
   collapse_maximo_b:boolean = false
@@ -108,10 +113,92 @@ export class CotizacionesClienteComponent implements OnInit {
 
   rol(){
 
-    // const { rol,  uid } = this._security.usuarioRol()
     const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
-    this.SUCURSAL = sucursal
-    // if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
     
+    this._sucursal = sucursal
+    this._rol = rol
+    // if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
+    if (uid) {
+      this._uid = uid
+      this.primer_comprobacion_resultados()
+    }
+  }
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
+  }
+  primer_comprobacion_resultados(){
+    this.asiganacion_resultados()
+    this.segundo_llamado()
+  }
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
+        this.asiganacion_resultados()
+      }
+    },1500)
+  }
+  asiganacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+
+    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
+
+    const campos_recpciones = [
+      'checkList','detalles','diasEntrega','diasSucursal','elementos','fecha_promesa','fecha_recibido','formaPago','iva','margen','no_os','notifico','pathPDF','servicio','status','reporte','historial_gastos_orden','historial_pagos_orden'
+    ]
+    this.objecto_actual = objecto_recuperdado
+
+    this.cotizaciones_arr = (!this.cotizaciones_arr.length)  ? cotizaciones_arr :
+    this._publicos.actualizarArregloExistente(this.cotizaciones_arr,cotizaciones_arr,campos_recpciones)
+
+    const promedios_ticket = this._publicos.ticket_promedio(cotizaciones_arr)
+    Object.keys(promedios_ticket).forEach(c=>{
+      this.valores_promedios[c] = promedios_ticket[c]
+    })
+
+    const resultados_comparados = this._publicos.obtenerMaximoMinimoYSimilitudes(cotizaciones_arr)
+
+    this.tabla_maximos.forEach(element => {
+      const {valor} = element
+      this.valores_tabla_maximos[valor] = resultados_comparados[0][valor]
+    });
+    this.tabla_minimos.forEach(element => {
+      const {valor} = element
+      this.valores_tabla_minimos[valor] = resultados_comparados[1][valor]
+    })
+  }
+
+
+
+  consulta_info_cliente(id_cliente:string){
+
+    console.log(id_cliente);
+    
+    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(id_cliente)
+    // this.data_cliente = data_cliente
+    this.cotizaciones_arr = cotizaciones_arr
+    const promedios_ticket = this._publicos.ticket_promedio(cotizaciones_arr)
+    Object.keys(promedios_ticket).forEach(c=>{
+      this.valores_promedios[c] = promedios_ticket[c]
+    })
+
+    const resultados_comparados = this._publicos.obtenerMaximoMinimoYSimilitudes(cotizaciones_arr)
+
+    // console.log(resultados_comparados);
+
+    this.tabla_maximos.forEach(element => {
+      const {valor} = element
+      this.valores_tabla_maximos[valor] = resultados_comparados[0][valor]
+    });
+    this.tabla_minimos.forEach(element => {
+      const {valor} = element
+      this.valores_tabla_minimos[valor] = resultados_comparados[1][valor]
+    });
+    
+    // this.recepciones_arr = recepciones_arr
+    // this.vehiculos_arr = vehiculos_arr
   }
 }
