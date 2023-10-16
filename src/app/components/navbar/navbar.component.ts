@@ -338,7 +338,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
       resultados_new[clave] = data_obtenida;
     }));
   
-    console.log(resultados_new);
+    // console.log(resultados_new);
     
     return resultados_new;
   }

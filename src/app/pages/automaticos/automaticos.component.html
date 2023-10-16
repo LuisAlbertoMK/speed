@@ -22,7 +22,7 @@
     </div> -->
     <!-- <app-template-paquetes [paquetes_arr]="paquetes_arr"></app-template-paquetes> -->
 </div>
-<button class="btn btn-danger m-2" (click)="obtener_informacion_cache()">obtener_informacion_cache</button>
+<!-- <button class="btn btn-danger m-2" (click)="obtener_informacion_cache()">obtener_informacion_cache</button> -->
 <!-- <button class="btn btn-success m-2" (click)="faltantes()">faltantes</button> -->
 <!-- <button class="btn btn-warning m-2" (click)="obtener_claves()">obtener_claves</button> -->
 <!-- <button class="btn btn-info m-2" (click)="guarda_nueva_cache()">guarda_nueva_cache</button> -->
@@ -40,12 +40,20 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
     <app-template-tabla-cotizaciones [cotizaciones_arr]="cotizaciones_arr" [muestra_desgloce]="false"></app-template-tabla-cotizaciones>
 </div> -->
-<button class="m-1 btn btn-sm btn-default" (click)="obtener_claves()">obtener_claves</button>
+<!-- <button class="m-1 btn btn-sm btn-default" (click)="obtener_claves()">obtener_claves</button>
 <button class="m-1 btn btn-sm btn-primary" (click)="crear_cache_claves()">crear_cache_claves</button>
 <button class="m-1 btn btn-sm btn-warning" (click)="comprueba_Reporte_paquet()">comprueba_Reporte_paquet</button>
 <button class="m-1 btn btn-sm btn-danger" (click)="sanitizar_paquetes({})">sanitizar_paquetes</button>
-<button class="m-1 btn btn-sm btn-success" (click)="sanitizar_cotizaciones()">sanitizar_cotizaciones</button>
-<button class="m1 btn-sm btn btn-dark" (click)="asign_id_cliente_id_vehiculos()">asign_id_cliente_id_vehiculos</button>
+<button class="m-1 btn btn-sm btn-success" (click)="sanitizar_cotizaciones()">sanitizar_cotizaciones</button> -->
+<!-- <button class="m1 btn-sm btn btn-dark" (click)="sanitiza_informacion()">sanitiza_informacion</button>
+<button class="m1 btn-sm btn btn-dark" (click)="asign_id_cliente_id_vehiculos()">asign_id_cliente_id_vehiculos</button> -->
 
 
 
+
+<input aria-label="Search" type="file" (change)="handleFileInput($event.target['files'])" accept=".xlsx" />
+<button class="m-2 btn btn-sm btn-success" (click)="generateJSON()">Generar JSON</button>
+<div *ngIf="jsonData">
+  <h2>Datos JSON generados:</h2>
+  <pre>{{ jsonData | json }}</pre>
+</div>

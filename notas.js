@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "arreglar BD clientes y vehiculos  (proceso)"
+git commit -m "empezar con la creacion de ordenes de servicio  (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'
