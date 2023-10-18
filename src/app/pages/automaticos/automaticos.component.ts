@@ -15,7 +15,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import { ClientesService } from 'src/app/services/clientes.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { claves_clientes, clientes_vehiculos } from "./ayuda";
+// import { claves_clientes, clientes_bd, clientes_f, clientes_nuevos_bd, clientes_vehiculos, correos_bd, vehiculos_actuales } from "./ayuda";
 
 import * as XLSX from 'xlsx';
 
@@ -74,6 +74,8 @@ export class AutomaticosComponent implements OnInit {
 
   jsonData: any;
 
+  vehiculos_arr = []
+  clientes_arr = []
   ngOnInit(): void {
     this.rol()
   }
@@ -644,229 +646,345 @@ vigila_nodos(){
     // for (let index = 0; index <= cantidad; index++) {
     //   claves.push(this._publicos.generaClave())
     // }
-    // console.log(claves);
+    console.log(claves);
   
   }
   
   sanitiza_informacion(){
-    const arr_ = this._publicos.crearArreglo2(clientes_vehiculos)
-  
-    const nueva_sanitizada = arr_.map(reg=>{
+    // console.log(clientes_vehiculos);
+    const  clientes_vehiculos = {}
+    
+    const arr_ = this._publicos.crearArreglo(clientes_vehiculos)
+    console.log(arr_);
+    
+    let contador  = 1
+    const nueva_sanitizada = arr_.map((reg)=>{
       delete reg.id
-      const cliente = sanitiza_info_cliente(reg)
-      const vehiculo = sanitiza_info_vehiculo(reg)
-      return {...cliente, ...vehiculo}
+      const clave = `clave_${contador}`
+      contador++
+      const cliente = this.sanitiza_info_cliente(reg)
+      const vehiculo = this.sanitiza_info_vehiculo(reg)
+      return {...cliente, ...vehiculo, clave}
     })
+    // this.centraliza_informacion()
+    console.log(nueva_sanitizada);
 
-    // console.log(nueva_sanitizada);
+    const {clientes_unicos_por_correo, vehiculos_unicos_por_placas } = this.unicos_por_correo(nueva_sanitizada)
+    // console.log(clientes_unicos_por_correo);
+    
+    // console.log(vehiculos_unicos_por_placas);
+    
     
 
 
-    function sanitiza_info_cliente(data){
-      const necessary: any = {};
-      const campos = ['nombre','apellidos','correo','telefono','id']
-      campos.forEach(campo=>{
-        if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "") {
-          if (campo === 'telefono') {
-            necessary[campo] = sanitiza_placas( data[campo] )
-          }else{
-            necessary[campo] = `${data[campo]}`.toLowerCase();
-          }
-        }
-      })
-      return necessary
-    }
-    function sanitiza_info_vehiculo(data){
-      const necessary: any = {};
-      const campos = ['anio','marca','modelo','placas','vinchasis','cliente']
-      campos.forEach(campo=>{
-        if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "" && data[campo] && `${data[campo]}`.length) {
-          if (campo === 'placas' || campo === 'vinchasis') {
-            necessary[campo] = sanitiza_placas( data[campo] )
-          }else if(campo === 'anio'){
-            necessary[campo] = parseInt(data[campo])
-          }else{
-            necessary[campo] = `${data[campo]}`.toUpperCase()
-          }
-        }
-      })
-      return necessary
-    }
+    const {clientes, vehiculos} = this.centraliza_informacion(nueva_sanitizada, clientes_unicos_por_correo, vehiculos_unicos_por_placas)
+    // console.log(cetralizada);
 
-    function sanitiza_placas(placas){
-      // if (!`${placas}`.length)  return null 
-      return `${placas}`
-      .toUpperCase()
-      .trim() //elimina los espacion exteriores
-      .replace(/\s/g, "") // Eliminamos los espacios en blanco
-      .replace(/\(/g, "") // Elimina todos los paréntesis abiertos
-      .replace(/\)/g, "") // Elimina todos los paréntesis cerrados
-      .replace(/-/g, ""); // Elimina todos los guiones
-    }
+    console.log(vehiculos);
+    
+
+    const armada = this.arma_data_sincorreo(arr_)
+    // console.log(armada);
+    
+    const nuevos_clientes ={}
+    const nuevos_vehiculos ={}
+    let contador_v = 1
+    
+    nueva_sanitizada.forEach(reg=>{
+      const {correo, placas, clave } = reg
+      const new_correo = `${correo}`.toLowerCase()
+
+      if (new_correo.length > 0 && new_correo!== 'undefined') {
+        const data_cliente = clientes[new_correo]
+        nuevos_clientes[clave] = {...data_cliente, sucursal: '-N2glF34lV3Gj0bQyEWK'}
+      }else{
+        const clve_se = this.return_fullname(reg)
+        if (armada[clve_se]) {
+          const data_cliente = armada[clve_se]
+          nuevos_clientes[clave] = {...data_cliente, clave, sucursal: '-N2glF34lV3Gj0bQyEWK'}
+        }
+      }
+      if (placas) {
+        const clave_v = `clave_v_${contador_v}`
+        contador_v++
+        nuevos_vehiculos[clave_v] = {...vehiculos[placas], cliente: clave}
+      }
+    })
+
+    // console.log(nuevos_clientes);
+    // console.log(nuevos_vehiculos);
+
+    //primemro traer los elementos sin correo
+    const arreglado = this._publicos.crearArreglo2(nuevos_clientes)
+    const sin_correo = arreglado.filter(reg=>!reg.correo)
+    const con_correo = arreglado.filter(reg=>reg.correo)
+    // console.log(sin_correo);
+    // console.log(con_correo);
+    
+    const {objetosUnicos,elementosEliminados} = this.obtenerObjetosUnicos(con_correo, 'correo')
+    // console.log(objetosUnicos);
+    const si_ = this._publicos.crearArreglo(objetosUnicos)
+    // console.log(si_);
+    
+    console.log(elementosEliminados);
+
+    const sin_ = this._publicos.crearArreglo(sin_correo)
+    const todos = [...si_, ...sin_]
+    //ahora si asignamos la informacio nueva_clientes como no_cliente && ID
+    let contador_clientes = 459
+    let actuales = {}
+    console.log(contador_clientes);
+    
+    todos.forEach(reg=>{
+      contador_clientes++
+      const data_cliente = reg
+      const {id} = reg
+      const no_cliente = this.genera_no_cliente(contador_clientes,data_cliente)
+      const temp = {
+        ...data_cliente,
+        no_cliente
+      }
+      actuales[id] = temp
+      return temp
+    })
+    // console.log(contador_clientes);
+    
+    // console.log(nueasfj.length);
+    // console.log(nueasfj);
+    console.log(actuales);
+
+    const objetoEliminados = this.convierte_aobjeto(elementosEliminados,'id')
+    console.log(objetoEliminados);
+    const objetoActuales = this.convierte_aobjeto(this._publicos.crearArreglo(actuales),'correo')
+    console.log(objetoActuales);
+    
+    
+    
+    let actuales_vehiculos = {}
+    let contador_ve = 1
+    Object.entries(nuevos_vehiculos).forEach(([key, entrie], index)=>{
+      // if (index >= 50 && index <=100) {
+        // console.log('key: '+ key);
+        // console.log('entrie: ', entrie);
+        const data_vehiculo = this._publicos.crear_new_object(entrie)
+        const {cliente: cliete_v, anio ,cliente, marca,modelo ,placas, vinChasis} = data_vehiculo
+        if (actuales[cliete_v]) {
+          // console.log('G se encontro cliente' + index);
+          // console.log(actuales[cliete_v]);
+          
+          const data_cliente = actuales[cliete_v] //this._publicos.transformaDataCliente(actuales[cliete_v])
+          // zdfgds
+          const data_vehiculo = this.sanitiza_info_vehiculo( {anio ,cliente: cliete_v, marca,modelo ,placas, vinChasis})
+          actuales_vehiculos[`cv_${index + 100}`] = data_vehiculo
+        }else{
+          if (objetoEliminados[cliete_v]) {
+            // console.log('A sin cliente buscar en eliminados: ' + index);
+            const {correo} = objetoEliminados[cliete_v]
+            // console.log(correo);
+            const incluye = this._publicos.filtrarObjetoPorPropiedad(actuales,'correo',correo)
+            // console.log(incluye);
+            // console.log(this._publicos.crearArreglo2(incluye));
+            const enc =this._publicos.crearArreglo2(incluye)
+            if (enc.length) {
+              
+              // console.log('buscar en actuales por correo ');
+              // console.log(enc[0]);
+              
+              const {correo:corre_en } = this._publicos.crear_new_object(enc[0])
+              if (objetoActuales[corre_en]) {
+                // console.log(objetoActuales[corre_en]);
+                const data_cliente = objetoActuales[corre_en]//this._publicos.transformaDataCliente(objetoActuales[corre_en])
+                const data_vehiculo = this.sanitiza_info_vehiculo( {anio ,cliente: cliete_v, marca,modelo ,placas, vinChasis})
+                actuales_vehiculos[`cv_${index + 100}`] = data_vehiculo
+              }
+            }
+            
+          }else{
+            console.log(' H ');
+            
+          }
+        }
+
+        
+      // }
+    })
+
+    console.log(actuales_vehiculos);
+    
+    
+    const clientes_para_tabla = this._publicos.transformaDataCliente(actuales)
+    
+    this.clientes_arr = this._publicos.crearArreglo2(clientes_para_tabla)
+    this.vehiculos_arr = this._publicos.crearArreglo2(actuales_vehiculos)
+    
+    
+    
+  }
+
+  depura(){
+
+    // const clientes_dep = {}
+    // const campos = ['no_cliente','nombre','apellidos','correo','tipo','sucursal','telefono_movil']
+    // Object.entries(clientes_f).forEach(([key, entrie])=>{
+    //   clientes_dep[key] = this._publicos.nuevaRecuperacionData(entrie, campos)
+    // })
+
+    // console.log(clientes_dep);
+    // console.log(vehiculos_actuales);
+    
+    // console.log(Object.keys(clientes_dep));
+    // console.log(Object.keys(vehiculos_actuales));
+    
 
   }
 
+
   asign_id_cliente_id_vehiculos(){
     // this.nuevas_claves_firebase(181)
+    const clientes_vehiculos = []
     
-    console.log(clientes_vehiculos);
+    console.log('clientes_vehiculos: ' + clientes_vehiculos.length);
     
     const arr_ = this._publicos.crearArreglo2(clientes_vehiculos)
-    let correos = []
-    let placas = []
-   
-    arr_.forEach(reg=>{
-      const  {placas:plas_get, correo} = reg
-      const placas_sanitizadas = sanitiza_placas(plas_get)
-      const corr= `${correo}`.toLowerCase()
-     
-      correos.push(corr)
-      placas.push(placas_sanitizadas)
+
+    
+    const data_work = obser(arr_)
+
+    const claves = [ 'clientes_sin_correo_sin_vehiculo','clientes_sin_vehiculo', 'clientes_sin_correo_con_vehiculo','clientes_con_ambos']
+ 
+    const construye =  claves.map(clave=>{
+      return this._publicos.crearArreglo(data_work[clave])
     })
+    .flat()
 
+    const datagh = obtenerObjetosUnicos(construye, 'id');
+    console.log(datagh);
 
-    const filtro_sin_correo_vehiculo = arr_.filter(reg=>!reg.correo && !reg.placas)
-    
-    const filtro_sin_vehiculo= arr_.filter(reg=>reg.correo && !reg.placas)
-   
-    const filtro_sin_correo_con_vehiculo= arr_.filter(reg=>!reg.correo && reg.placas)
-    
-
-    const filtro_con_ambos= arr_.filter(reg=>reg.correo && reg.placas)
-   
-    
-    const con_corre=  [...filtro_sin_vehiculo, ...filtro_con_ambos]
-    const con_vehiculo = [...filtro_sin_correo_con_vehiculo, ...filtro_con_ambos]
-
-    let clientes_unicos_por_correo = {}
-    let vehiculos_unicos_por_placas = {}
-    arr_.forEach(cor=>{
-      const {correo, placas } = cor
+    const correos = arr_.map(reg=>{
+      const {correo, placas } = reg
       const new_correo = `${correo}`.toLowerCase()
-      clientes_unicos_por_correo[new_correo] = arr_.filter(c=>`${c.correo}`.toLowerCase() === new_correo)
-      vehiculos_unicos_por_placas[placas] =  arr_.filter(c=>c.placas === placas)
-    })
-
-    const clientes = {}
-    con_corre.forEach(reg=>{
-      const {correo} = reg
-      const new_correo = `${correo}`.toLowerCase()
-      if (new_correo) {
-        clientes[new_correo] = 
-        sanitiza_info_cliente(
-          toma_campo_mas_largo( 
-            con_corre.filter(c=>`${c.correo}`.toLowerCase() === new_correo
-          ))
-        )
+      if (new_correo.length > 0 && new_correo!== 'undefined') {
+        return new_correo
+      }else{
+        return null
       }
     })
+    .filter(reg=>reg)
+    const correosUnicos = [...new Set(correos)];
 
-    let vehiculos = {}
-    con_vehiculo.forEach(cor=>{
-      const {placas, correo } = cor
-      const placas_sanitizadas = sanitiza_placas(placas)
-      vehiculos[placas_sanitizadas] = 
-      {
-        correo,
-        ...sanitiza_info_vehiculo(
-          toma_campo_mas_largo_vehiculo( 
-            con_vehiculo.filter(c=>`${c.placas}`.toUpperCase() === placas_sanitizadas
-          ))
-        )
-      }
-    })
-
-
-    const clientes_arr = this._publicos.crearArreglo2(clientes)
-    const alls_cliente =  [...new Set([...clientes_arr, ...filtro_sin_correo_vehiculo])]; 
-
-
-    const vehiculos_arr = this._publicos.crearArreglo2(vehiculos)
-    const alls_vehiculos =  [...new Set([...vehiculos_arr])]; 
-  
-
-    const BD = []
-    const claves_vehiculos = []
-    // console.log(alls_cliente);
+    console.log(correosUnicos);
     
-    const clientes_ids = {}
-    let contador = 458
-    alls_cliente.forEach((reg, index)=>{
-      const clave_cliente = BD[index]
-      const no_cliente = genera_no_cliente(contador, reg)
-      const data_clie = this._publicos.crear_new_object(reg)
-      const {apellidos, nombre} = data_clie
-      const asigana_apellidos = (!apellidos) ? nombre: apellidos
-      contador++
-      clientes_ids[clave_cliente] = {...reg, id: clave_cliente, no_cliente, sucursal: '-N2glF34lV3Gj0bQyEWK', apellidos: asigana_apellidos}
-    })
-    // console.log(clientes_ids);
-    const vehiculos_id = {}
-    alls_vehiculos.forEach((reg, index)=>{
-      const clave_vehiculo = claves_vehiculos[index]
-      vehiculos_id[clave_vehiculo] = {...reg, id: clave_vehiculo}
-    })
-    // console.log(vehiculos_id);
-    const clientes_ids_arr = this._publicos.crearArreglo2(clientes_ids)
-    const vehiculos_ids_arr = this._publicos.crearArreglo2(vehiculos_id)
-    let actuales = []
-    arr_.forEach((reg, index )=>{
-      const {placas, correo} = reg
-      if (index <50) {
-        if (correo && placas) {
-          const data_cliente = clientes_ids_arr.find(g=>g.correo === correo)
-          const data_vehiculo = vehiculos_ids_arr.find(g=>g.placas === placas)
-          // actuales.push({...data_cliente, ...data_vehiculo})
+
+    // const {objetosUnicos}  = datagh
+   
+    function asiganacion_data(arr_, centralizada_correos, correosUnicos, objetosUnicos){
+      let nueva_clientes = {}
+      arr_.forEach(reg=>{
+        const {correo, placas } = reg
+        const new_correo = `${correo}`.toLowerCase()
+        if (centralizada_correos[new_correo] && correosUnicos.includes(new_correo)) {
+          // nueva_clientes[]
         }
-      }
-    }) 
-    const vehiculos_con_cliente = {}
-    vehiculos_ids_arr.forEach(reg=>{
-      const {placas, correo} = reg
-      if (correo && placas) {
-        const data_cliente = clientes_ids_arr.find(g=>g.correo === correo)
-        const data_vehiculo = vehiculos_ids_arr.find(g=>g.placas === placas)
-        const {id} = data_cliente
-        const {id: id_vehiculo} = data_vehiculo
-        actuales.push({ ...data_vehiculo, cliente: id })
-        delete data_vehiculo.id
-        vehiculos_con_cliente[id_vehiculo] = { ...data_vehiculo, cliente: id }
-      }
-    })
-    // console.log(actuales);
-    // console.log(vehiculos_con_cliente);
-    
-    const clientes_actuales = this._publicos.nueva_revision_cache('clientes')
-    
-    // console.log('clientes_actuales');
-    // console.log(clientes_actuales);
-    const claves_actuales = Object.keys(clientes_actuales)
-    const unicos = [...new Set([...claves_actuales, ...claves_clientes])]
-    // console.log(unicos);
-    
-    
-    const nuevos = {...clientes_actuales, ...clientes_ids}
-    // console.log(nuevos);
-    
-    // this._security.guarda_informacion({nombre: 'clientes', data: nuevos} )
-    
-    const vehiculos_actuales = this._publicos.nueva_revision_cache('vehiculos')
+      })
+      console.log(nueva_clientes);
+      
+    }
 
-    // console.log('vehiculos_actuales');
-    // console.log(vehiculos_actuales);
+    function unicos_por_correo(arr_){
+      const clientes_unicos_por_correo = {}, vehiculos_unicos_por_placas = {}
+      arr_.forEach(cor=>{
+        const {correo, placas } = cor
+        const new_correo = `${correo}`.toLowerCase()
+        if (new_correo.length) {
+          clientes_unicos_por_correo[new_correo] = arr_.filter(c=>`${c.correo}`.toLowerCase() === new_correo)
+        }
+        vehiculos_unicos_por_placas[placas] =  arr_.filter(c=>c.placas === placas)
+      })
+      return {clientes_unicos_por_correo, vehiculos_unicos_por_placas}
+    }
 
-    const claves_actuales_vehiculos = Object.keys(vehiculos_actuales)
-    const unicos_vehiculos = [...new Set([...claves_actuales_vehiculos, ...claves_vehiculos])]
 
-    // console.log(unicos_vehiculos);
     
-    // console.log(vehiculos_actuales);
-    
+    function obser ( arr_:any[]  ){
+      const clientes_sin_correo_sin_vehiculo = {}
+      const clientes_sin_vehiculo = {}
+      const vehiculos_sin_correo_con_vehiculo = {}
+      const vehiculos_con_ambos = {}
+      const clientes_sin_correo_con_vehiculo = {}
+      const clientes_con_ambos = {}
+      let contador = 0
+      arr_.forEach((reg) => {
+        const { placas: plas_get, correo, nombre, apellidos, telefono_movil, marca, modelo, vinChasis, anio } = reg;
+        const placas_sanitizadas = sanitiza_placas(plas_get);
+        const clave = `clave_${contador}`
+        const no_cliente = genera_no_cliente(contador, {nombre, apellidos})
+        contador++
+        const id_por_nombre_apellidos = return_fullname({ nombre, apellidos });
+        const temp_cliente = { nombre, apellidos, telefono_movil, id: id_por_nombre_apellidos, clave, no_cliente, correo}
+        if (!correo && !plas_get) {
+          clientes_sin_correo_sin_vehiculo[clave] = sanitiza_info_cliente(temp_cliente);
+        }
+        if (correo && !plas_get) {
+          clientes_sin_vehiculo[clave] = sanitiza_info_cliente(temp_cliente);
+        }
+        if (!correo && plas_get) {
+          clientes_sin_correo_con_vehiculo[clave] = sanitiza_info_cliente(temp_cliente);
+          vehiculos_sin_correo_con_vehiculo[placas_sanitizadas] = sanitiza_info_vehiculo({ placas: placas_sanitizadas, marca, modelo, vinChasis, anio, cliente: clave });
+        }
+        if (correo && plas_get) {
+          clientes_con_ambos[clave] = sanitiza_info_cliente(temp_cliente);
+          vehiculos_con_ambos[placas_sanitizadas] = sanitiza_info_vehiculo({ placas: placas_sanitizadas, marca, modelo, vinChasis, anio, cliente: clave });
+        }
+      })
+    return {
+      clientes_sin_correo_sin_vehiculo,
+      clientes_sin_vehiculo,
+      clientes_sin_correo_con_vehiculo,
+      clientes_con_ambos,
+      vehiculos_sin_correo_con_vehiculo,
+      
+    }
+  }
+    function centraliza_informacion(con_corre, clientes_unicos_por_correo){
+      const clientes = {}
+      con_corre.forEach(reg=>{
+        const {correo} = reg
+        const new_correo = `${correo}`.toLowerCase()
+        if (new_correo.length) {
+          clientes[new_correo] = 
+          sanitiza_info_cliente(
+            toma_campo_mas_largo( 
+              clientes_unicos_por_correo[new_correo]//.filter(c=>`${c.correo}`.toLowerCase() === new_correo
+            )
+          )
+        }
+      })
+      return clientes
+    }
 
-    const nuevos_vehiculos = {...vehiculos_actuales, ...vehiculos_con_cliente}
+    function obtenerObjetosUnicos(data:any[], campo){
+      const objetosUnicos = {};
+      const elementosEliminados = [];
 
-    // this._security.guarda_informacion({nombre: 'vehiculos', data: nuevos_vehiculos} )
-
+      data.forEach((reg, index)=>{
+        const identificador = reg[campo]
+        if (!objetosUnicos[identificador]) {
+          objetosUnicos[identificador] = reg
+        }else{
+          elementosEliminados.push(reg)
+        }
+      })
+      const contador_unicos = Object.keys(objetosUnicos).length
+      const contador_eliminados = elementosEliminados.length
+      const total = contador_unicos+ contador_eliminados
+      return { 
+        objetosUnicos, 
+        contador_unicos,
+        elementosEliminados, 
+        contador_eliminados,
+        total
+       };
+    }
 
     function reverti_campo (data){
       const new_data = {}
@@ -934,12 +1052,12 @@ vigila_nodos(){
 
   // toma_campo_mas_largo(placs)
     function toma_campo_mas_largo_vehiculo(data_placas:any[]){
-      let nueva_data = {anio:'',marca:'',modelo:'',placas:'',vinchasis:''}
-      const campos = ['anio','marca','modelo','placas','vinchasis']
+      let nueva_data = {anio:'',marca:'',modelo:'',placas:'',vinChasis:''}
+      const campos = ['anio','marca','modelo','placas','vinChasis']
       data_placas.forEach(registro=>{
         campos.forEach(campo=>{
           if (registro[campo] &&  `${registro[campo]}`.length > `${nueva_data[campo]}`.length) {
-            if (campo === 'vinchasis' ) {
+            if (campo === 'vinChasis' ) {
               nueva_data[campo] = sanitiza_placas(registro[campo])
             }else{
               nueva_data[campo] = registro[campo]
@@ -950,12 +1068,12 @@ vigila_nodos(){
       return nueva_data
     }
     function toma_campo_mas_largo(data_placas:any[]){
-      let nueva_data = {nombre:'',apellidos:'',correo:'',telefono:''}
-      const campos = ['nombre','apellidos','correo','telefono']
+      let nueva_data = {nombre:'',apellidos:'',correo:'',telefono_movil:''}
+      const campos = ['nombre','apellidos','correo','telefono_movil']
       data_placas.forEach(registro=>{
         campos.forEach(campo=>{
           if (registro[campo] && `${registro[campo]}`.length > nueva_data[campo].length) {
-            if (campo === 'telefono' ) {
+            if (campo === 'telefono_movil' ) {
               nueva_data[campo] = sanitiza_placas(registro[campo])
             }else{
               nueva_data[campo] = `${registro[campo]}`.toLowerCase()
@@ -998,10 +1116,10 @@ vigila_nodos(){
     // this._publicos.nuevaRecuperacionData()
     function sanitiza_info_cliente(data){
       const necessary: any = {};
-      const campos = ['nombre','apellidos','correo','telefono','id']
+      const campos = ['nombre','apellidos','correo','telefono_movil','id','clave','no_cliente']
       campos.forEach(campo=>{
         if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "") {
-          if (campo === 'telefono') {
+          if (campo === 'telefono_movil') {
             necessary[campo] = sanitiza_placas( data[campo] )
           }else{
             necessary[campo] = `${data[campo]}`.toLowerCase();
@@ -1012,10 +1130,10 @@ vigila_nodos(){
     }
     function sanitiza_info_vehiculo(data){
       const necessary: any = {};
-      const campos = ['anio','marca','modelo','placas','vinchasis','cliente']
+      const campos = ['anio','marca','modelo','placas','vinChasis','cliente']
       campos.forEach(campo=>{
         if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "") {
-          if (campo === 'telefono' || campo === 'vinchasis') {
+          if (campo === 'placas' || campo === 'vinChasis') {
             necessary[campo] = sanitiza_placas( data[campo] )
           }else if(campo === 'anio'){
             necessary[campo] = parseInt(data[campo])
@@ -1068,6 +1186,7 @@ vigila_nodos(){
     }
   }
   
+
   handleFileInput(files: FileList) {
     const file = files[0];
     if (file) {
@@ -1093,6 +1212,195 @@ vigila_nodos(){
 
     
   }
+  sanitiza_info_cliente(data){
+    const necessary: any = {};
+    const campos = ['nombre','apellidos','correo','telefono_movil','id']
+    campos.forEach(campo=>{
+      if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "") {
+        if (campo === 'telefono_movil') {
+          necessary[campo] = this.sanitiza_placas( data[campo] )
+        }else{
+          necessary[campo] = `${data[campo]}`.toLowerCase();
+        }
+      }
+    })
+    return necessary
+  }
+  sanitiza_info_vehiculo(data){
+    const necessary: any = {};
+    const campos = ['anio','marca','modelo','placas','vinChasis','cliente']
+    campos.forEach(campo=>{
+      if (data[campo] !== undefined && data[campo] !== null && data[campo] !== "" && data[campo] && `${data[campo]}`.length) {
+        if (campo === 'placas' || campo === 'vinChasis') {
+          necessary[campo] = this.sanitiza_placas( data[campo] )
+        }else if(campo === 'anio'){
+          necessary[campo] = parseInt(data[campo])
+        }else  if(campo === 'cliente'){
+          necessary[campo] = data[campo]
+        }else {
+          necessary[campo] = `${data[campo]}`.toUpperCase()
+        }
+      }
+    })
+    return necessary
+  }
+  sanitiza_placas(placas){
+    // if (!`${placas}`.length)  return null 
+    return `${placas}`
+    .toUpperCase()
+    .trim() //elimina los espacion exteriores
+    .replace(/\s/g, "") // Eliminamos los espacios en blanco
+    .replace(/\(/g, "") // Elimina todos los paréntesis abiertos
+    .replace(/\)/g, "") // Elimina todos los paréntesis cerrados
+    .replace(/-/g, ""); // Elimina todos los guiones
+  }
+  genera_no_cliente(contador,data_cliente){
+    const {nombre, apellidos} = data_cliente
+    const nombre_purificado = this.quitarAcentos(this.eliminarEspacios(this.dejarUnEspacio(nombre))).trim()
+    let apellidos_purificado 
+    if (`${apellidos}`.length > 1 && apellidos) {
+      apellidos_purificado = this.quitarAcentos(this.eliminarEspacios(this.dejarUnEspacio(apellidos))).trim()
+    }else{
+      apellidos_purificado = nombre_purificado
+    }
+    const nombre_sucursal = 'Culhuacán'
+    const date = new Date();
+    const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+    const anio = date.getFullYear().toString().slice(-2);
+    const secuencia = (contador).toString().padStart(5, '0');
+    return  `${nombre_purificado?.slice(0, 2)}${apellidos_purificado?.slice(0, 2)}${nombre_sucursal?.slice(0, 2)}${mes}${anio}${secuencia}`
+            .toUpperCase();
+  }
+  quitarAcentos(texto) {
+    if (!`${texto}`.length) return ''
+    return texto
+      .normalize("NFD") // Normalizamos el texto en Unicode
+      .replace(/[\u0300-\u036f]/g, "") // Eliminamos los caracteres diacríticos
+      .replace(/[^\w\s]/gi, "") // Eliminamos caracteres especiales excepto letras y espacios
+      .replace(/\s+/g, " ") // Reemplazamos múltiples espacios en blanco por uno solo
+      .trim(); // Quitamos espacios en blanco al principio y al final
+  }
+  eliminarEspacios(cadena) {
+    if (!`${cadena}`.length) return ''
+    return cadena.replace(/\s+/g, '');
+  }
+  dejarUnEspacio(cadena:string) {
+    if (!`${cadena}`.length) return ''
+    return cadena.replace(/\s+/g, ' ');
+  }
+  arma_data_sincorreo(arr_){
+    const filtro_sin_correo = arr_.filter(reg=>!reg.correo)
+    const nueva = {}
+    filtro_sin_correo.map(reg=>{
+      const { nombre, apellidos, correo } = reg
+      
+      const clave = this.return_fullname(reg)
+      nueva[clave] = {nombre, apellidos, correo}
+    })
+    return nueva
+  }
+  return_fullname(data){
+    const {nombre, apellidos} = data
+    const nuevos_apellidos = (!apellidos) ? nombre : apellidos
+      return `${nombre} ${nuevos_apellidos}`
+        .toLowerCase() //convierte todo a minusculas
+        .trim() //elimina los espacion exteriores
+        .normalize("NFD") // Normalizamos el texto en Unicode
+        .replace(/[\u0300-\u036f]/g, "") // Eliminamos los caracteres diacríticos (acentos)
+        .replace(/\s/g, "") // Eliminamos los espacios en blanco
+        .replace(/_/g, "") // Elimina todos los guiones
+        .replace(/-/g, ""); // Elimina todos los guiones
+        
+  }
+  centraliza_informacion(arr_, unicos, vehiculos_unicos){
+    const clientes = {}, vehiculos = {}
+    arr_.forEach(reg=>{
+      const {correo, placas} = reg
+      const new_correo = `${correo}`.toLowerCase()
+      if (new_correo.length && new_correo!=='undefined') {
+        clientes[new_correo] = 
+        this.sanitiza_info_cliente(
+          this.toma_campo_mas_largo( 
+            unicos[new_correo]//.filter(c=>`${c.correo}`.toLowerCase() === new_correo
+          )
+        )
+      }
+      if(placas){
+        vehiculos[placas] = 
+        this.sanitiza_info_vehiculo(
+          this.toma_campo_mas_largo_vehiculo( 
+            vehiculos_unicos[placas]//.filter(c=>`${c.correo}`.toLowerCase() === new_correo
+          )
+        )
+      }
+    })
+    return {clientes, vehiculos}
+  }
+  unicos_por_correo(arr_){
+    const clientes_unicos_por_correo = {}, vehiculos_unicos_por_placas = {}
+    arr_.forEach(cor=>{
+      const {correo, placas } = cor
+      const new_correo = `${correo}`.toLowerCase()
+      if (new_correo.length && new_correo !== 'undefined') {
+        clientes_unicos_por_correo[new_correo] = arr_.filter(c=>`${c.correo}`.toLowerCase() === new_correo)
+      }
+      vehiculos_unicos_por_placas[placas] =  arr_.filter(c=>c.placas === placas)
+    })
+    return {clientes_unicos_por_correo, vehiculos_unicos_por_placas}
+  }
+  toma_campo_mas_largo(data_placas:any[]){
+    let nueva_data = {nombre:'',apellidos:'',correo:'',telefono_movil:''}
+    const campos = ['nombre','apellidos','correo','telefono_movil']
+    data_placas.forEach(registro=>{
+      campos.forEach(campo=>{
+        if (registro[campo] && `${registro[campo]}`.length > nueva_data[campo].length && registro[campo] !== 'undefined') {
+          if (campo === 'telefono_movil' ) {
+            nueva_data[campo] = this.sanitiza_placas(registro[campo])
+          }else{
+            nueva_data[campo] = `${registro[campo]}`.toLowerCase()
+          }
+        }
+      })
+    })
+    return nueva_data
+  }
+  toma_campo_mas_largo_vehiculo(data_placas:any[]){
+    let nueva_data = {anio:'',marca:'',modelo:'',placas:'',vinChasis:''}
+    const campos = ['anio','marca','modelo','placas','vinChasis']
+    data_placas.forEach(registro=>{
+      campos.forEach(campo=>{
+        if (registro[campo] &&  `${registro[campo]}`.length > `${nueva_data[campo]}`.length) {
+          if (campo === 'vinChasis' ) {
+            nueva_data[campo] = this.sanitiza_placas(registro[campo])
+          }else{
+            nueva_data[campo] = registro[campo]
+          }
+        }
+      })
+    })      
+    return nueva_data
+  }
+  obtenerObjetosUnicos(data:any[], campo){
+    const objetosUnicos = {};
+    const elementosEliminados = [];
 
+    data.forEach((reg, index)=>{
+      const identificador = reg[campo]
+      if (!objetosUnicos[identificador]) {
+        objetosUnicos[identificador] = reg
+      }else{
+        elementosEliminados.push(reg)
+      }
+    })
+    return {objetosUnicos, elementosEliminados}
+  }
+  convierte_aobjeto(arr_, campo){
+    let regresa = {}
+    arr_.forEach(reg=>{
+      const id_gen= reg[campo]
+      regresa[id_gen] = reg
+    })
+    return regresa
+  }
 
 }

@@ -2406,9 +2406,10 @@ export class ServiciosPublicosService {
           const nueva_data_cliente = this.crear_new_object(objeto_recuperado[cliente]);
           const { sucursal, nombre, apellidos } = nueva_data_cliente;
     
+          const new_apellidos = (!apellidos) ? nombre: apellidos
           nueva_data_cliente.id = cliente;
           nueva_data_cliente.sucursalShow = `${sucursales[sucursal].sucursal}`
-          nueva_data_cliente.fullname = `${nombre.toLowerCase()} ${apellidos.toLowerCase()}`;
+          nueva_data_cliente.fullname = `${nombre.toLowerCase()} ${new_apellidos.toLowerCase()}`;
     
           nueva_data[cliente] = nueva_data_cliente;
         }

@@ -45,10 +45,20 @@
 <button class="m-1 btn btn-sm btn-warning" (click)="comprueba_Reporte_paquet()">comprueba_Reporte_paquet</button>
 <button class="m-1 btn btn-sm btn-danger" (click)="sanitizar_paquetes({})">sanitizar_paquetes</button>
 <button class="m-1 btn btn-sm btn-success" (click)="sanitizar_cotizaciones()">sanitizar_cotizaciones</button> -->
-<!-- <button class="m1 btn-sm btn btn-dark" (click)="sanitiza_informacion()">sanitiza_informacion</button>
-<button class="m1 btn-sm btn btn-dark" (click)="asign_id_cliente_id_vehiculos()">asign_id_cliente_id_vehiculos</button> -->
+<button class="m-2 btn-sm btn btn-dark" (click)="sanitiza_informacion()">sanitiza_informacion</button>
+<button class="m-2 btn-sm btn btn-dark" (click)="asign_id_cliente_id_vehiculos()">asign_id_cliente_id_vehiculos</button> 
+<button class="m-2 btn-sm btn btn-danger" (click)="depura()">depura</button> 
 
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
+    <app-template-clientes-tabla [clientes_arr]="clientes_arr"></app-template-clientes-tabla>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
+    <app-template-tabla-vehiculos [show_cliente]="true" [vehiculos_arr]="vehiculos_arr"></app-template-tabla-vehiculos>
+</div>
 
+<br>
+<br>
+<br>
 
 
 <input aria-label="Search" type="file" (change)="handleFileInput($event.target['files'])" accept=".xlsx" />

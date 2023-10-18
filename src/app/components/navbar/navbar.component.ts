@@ -122,8 +122,9 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this.sesion = sesion
     this._rol = rol
     this._sucursal = sucursal
-
-    // this.revision_existe_cache()
+    // console.log(this._sucursal);
+    
+    this.revision_existe_cache()
     
   }
   revision_existe_cache(){

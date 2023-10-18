@@ -51,6 +51,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     
     const { rol, sucursal } = this._security.usuarioRol()
 
+    console.log(this._security.usuarioRol());
+    
     this._rol = rol
     this._sucursal = sucursal
     this.primer_comprobacion_resultados()
@@ -76,6 +78,8 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   
   asiganacion_resultados(){
     const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+    console.log(objecto_recuperdado);
+    
     const clientes_para_tabla = this._publicos.transformaDataCliente(objecto_recuperdado)
     const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(clientes_para_tabla, 'sucursal', this._sucursal);
     const data_recuperda_arr = this._publicos.crearArreglo2(objetoFiltrado)
