@@ -51,7 +51,7 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
     const { rol } = this._security.usuarioRol()
     this.rol_ = rol
     // console.log(rol);
-    
+    this.newPagination()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -83,7 +83,7 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    }, 600);
+    }, 1000);
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

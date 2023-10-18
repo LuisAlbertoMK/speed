@@ -132,7 +132,7 @@
                                             <div class="mb-1 row">
                                             <label for="comentario" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Comentario</label>
                                             <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                <textarea  style="width: 100%;" formControlName="comentario" id="comentario"></textarea>
+                                                <textarea  [style]="'width: 100%;'" formControlName="comentario" id="comentario"></textarea>
                                                 <small *ngIf="validarCampo('comentario')" class="text-danger">campo requerido</small>
                                             </div>
                                             </div>
@@ -159,7 +159,7 @@
                                                 <div class="mb-1 row">
                                                 <label for="direccion" class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">Link de dirección</label>
                                                 <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                    <textarea  style="width: 100%;" formControlName="direccion" id="direccion"></textarea>
+                                                    <textarea  [style]="'width: 100%;'" formControlName="direccion" id="direccion"></textarea>
                                                     <!-- <input type="text"  formControlName="direccion"> -->
                                                     <small *ngIf="validarCampo('direccion')" class="text-danger">campo requerido</small>
                                                 </div>
@@ -190,7 +190,7 @@
                             <!-- {{infoCita | json}} -->
                             <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                <ul class="list-group">
+                                <ul  class="list-group">
                                 <div class="row">
                                     <li class="list-group-item col-lg-12 col-md-12 col-sm-12 col-12 text-center text-uppercase fs-5 text-body">Confirma información</li>
                                     <ng-container *ngFor="let campo of camposInfoCita">

@@ -1,23 +1,21 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import { Form } from '@angular/forms';
-import { child, get, set, getDatabase, ref, onValue, onChildAdded, onChildChanged, onChildRemoved, push } from "firebase/database";
+
+import { child, getDatabase, ref, onValue, push } from "firebase/database";
 import Swal from 'sweetalert2';
 import { CamposSystemService } from './campos-system.service';
-import { map } from 'rxjs/operators';
 import { EncriptadoService } from './encriptado.service';
 import { AutomaticosService } from './automaticos.service';
 
 
 const db = getDatabase()
-const dbRef = ref(getDatabase());
 
 @Injectable({providedIn: 'root'})
 export class ServiciosPublicosService {
     
     constructor(
-      private http : HttpClient, private _campos:CamposSystemService,
-      private _security: EncriptadoService, private _automaticos:AutomaticosService) {}
+       private _campos:CamposSystemService,
+      private _security: EncriptadoService) {}
 
     sucursales_array = 
     [
@@ -99,12 +97,8 @@ export class ServiciosPublicosService {
     camposReporte = [ 'descuento','iva','meses','mo','refacciones_a','refacciones_v','sobrescrito','sobrescrito_mo','sobrescrito_paquetes','sobrescrito_refaccion','subtotal','total']
     camposReporte_show2 = {
       mo: 0,
-      // refacciones_a: 0,
       refacciones_v: 0,
       sobrescrito: 0,
-      // sobrescrito_mo: 0,
-      // sobrescrito_refaccion: 0,
-      // sobrescrito_paquetes: 0,
       meses: 0,
       descuento: 0,
       iva: 0,
@@ -151,27 +145,15 @@ export class ServiciosPublicosService {
     ]
 
 
-    
-    convierteFecha(fecha : string) {
-     if (!fecha) return '';
-  
-      const [dia, mes, anio] = fecha.split('/');
-      
-      const diaFormateado = dia.padStart(2, '0');
-      const mesFormateado = mes.padStart(2, '0');
-      
-      return `${diaFormateado}/${mesFormateado}/${anio}`;
-    }
+
     restaFechasTaller = function (f1) {
       const dateHoy: Date = new Date()
       var aFecha1 = f1.split('/');
-      // var aFecha2 = f2.split('/');
       var fFecha1 = new Date(aFecha1[2], aFecha1[1], aFecha1[0]).getTime();
 
       var fFecha2 = new Date( dateHoy.getFullYear(), dateHoy.getMonth() + 1, dateHoy.getDate() ).getTime();
       var dif = fFecha2 - fFecha1;
       var dias = Math.floor(dif / (1000 * 60 * 60 * 24));
-      // console.log(dias);
       return dias;
     }
     getFechaHora(fechaa? : Date) {
@@ -1750,68 +1732,9 @@ export class ServiciosPublicosService {
     crear_new_object(objecto){
       return JSON.parse(JSON.stringify(objecto));
     }
-    revisar_cache_real_time(ruta): Promise<any> {
-      return new Promise((resolve, reject) => {
-        // const {ruta} = data
-        const starCountRef = ref(db, `${ruta}`);
-        onValue(starCountRef, (snapshot) => {
-          if (snapshot.exists()) {
-            resolve(snapshot.val())
-          } else {
-            resolve({});
-          }
-        }, {
-          onlyOnce: true
-        })
-      });
-    }
-    async revisar_cache(nombre:string){
-      // const claves_extradidas = localStorage.getItem(`${nombre}`)
-      // let nueva 
-      // console.log(localStorage.getItem(`${nombre}`));
-      
-      if (localStorage.getItem(`${nombre}`)) {
-        // console.log('existe en localHost '+ nombre);
-        // const snap = await this._automaticos.consulta_ruta(nombre)
-        // await this._security.guarda_informacion({nombre, data: snap})
+    
 
-        // const claves_extradidas = localStorage.getItem(`${nombre}`)
-
-        // const desc = 
-        // console.log(desc);
-        
-        // nueva = this.crear_new_object(desc)// JSON.parse(JSON.stringify(desc));
-        // return (nueva) ? nueva: []
-        return await this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`))
-      }else{
-        // const info_ruta = await this.consulta_ruta(nombre)
-        // // console.log(`se creo cache ${nombre} de la APP`);
-        // this._security.guarda_informacion({nombre, data: info_ruta})
-        // let obtenida_cero = localStorage.getItem(`${nombre}`)
-        // const desc = this._security.servicioDecrypt_object(obtenida_cero)
-        // nueva = JSON.parse(JSON.stringify(desc));
-        // return nueva
-        return []
-      }
-    }
-    revisar_cache2(nombre:string){
-      const objeto_desencriptado = localStorage.getItem(`${nombre}`)
-      if (objeto_desencriptado) {
-        const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
-        return this.crear_new_object(desc)
-      }else{
-        return {}
-      }
-    }
     nueva_revision_cache(nombre:string){
-      // const objeto_desencriptado = 
-      // if (localStorage.getItem(`${nombre}`)) {
-      //   const desc = this._security.servicioDecrypt_object(objeto_desencriptado)
-      //   return this.crear_new_object(desc)
-      // }else{
-      //   return {}
-      // }
-
       return (localStorage.getItem(`${nombre}`)) ? this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`)) : {}
     }
     consulta_ruta(ruta): Promise<any> {
@@ -1886,27 +1809,7 @@ export class ServiciosPublicosService {
       
       return {data_vehiculo, data_cliente, cotizaciones_arr, recepciones_arr}
     }
-    async buscar_data_realcionada_con_cliente(cliente:string, data_cliente){
-      let cotizaciones_arr = [], recepciones_arr = [], vehiculos_arr = []
-      const recepciones_object = await this.revisar_cache('recepciones')
-      const cotizaciones_object = await this.revisar_cache('cotizaciones')
-      const vehiculos = await this.revisar_cache('vehiculos')
-
-      const historial_gastos_orden = this.crearArreglo2(await this.revisar_cache('historial_gastos_orden'))
-      const historial_pagos_orden = this.crearArreglo2(await this.revisar_cache('historial_pagos_orden'))
-      
-      const filtro_cotizaciones = this.filtra_campo(this.crearArreglo2(cotizaciones_object),'cliente', cliente)
-      const filtro_recepciones = this.filtra_campo(this.crearArreglo2(recepciones_object),'cliente', cliente)
-
-      cotizaciones_arr = this.nueva_asignacion_cotizaciones( filtro_cotizaciones )
-      recepciones_arr = this.asigna_datos_recepcion({
-          bruto: filtro_recepciones , clientes: data_cliente, vehiculos,
-          historial_gastos_orden, historial_pagos_orden
-        })
-      vehiculos_arr = this.filtra_campo(this.crearArreglo2(vehiculos),'cliente',cliente)
-
-      return {cotizaciones_arr, recepciones_arr, vehiculos_arr}
-    }
+    
     asigna_datos_recepcion(data){
       const {bruto, clientes, vehiculos, historial_gastos_orden, historial_pagos_orden} = data
 

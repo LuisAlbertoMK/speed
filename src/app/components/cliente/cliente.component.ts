@@ -227,7 +227,7 @@ export class ClienteComponent implements OnInit, OnChanges {
       if (correo) {
 
         let nuevo_correo_ = this._publicos.quitarAcentos(correo)
-        const clientes = await this._publicos.revisar_cache('clientes')
+        const clientes = await this._publicos.nueva_revision_cache('clientes')
         const clientes_arr = this._publicos.crearArreglo2(clientes)
         const existe = clientes_arr.find(c=>c.correo === nuevo_correo_)
         this.correoExistente = (existe) ? true : false

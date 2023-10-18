@@ -123,10 +123,28 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this._rol = rol
     this._sucursal = sucursal
     // console.log(this._sucursal);
-    
-    this.revision_existe_cache()
-    
+    const primeraRevision = localStorage.getItem('primera_revision');
+
+    if (!primeraRevision) {
+      console.log('eliminar variables actuales y crear las nuevas');
+      this.campos.forEach(campo=>{
+        const {ruta_observacion, nombre } = campo
+        console.log('eliminando ', {ruta_observacion, nombre });
+        localStorage.removeItem(nombre)
+        localStorage.removeItem(ruta_observacion)
+      })
+      localStorage.setItem('primera_revision', 'ok')
+      const nuevaPrimeraRevision = localStorage.getItem('primera_revision');
+      if (!nuevaPrimeraRevision) {
+        this.revision_existe_cache()
+      }
+    } else {
+      console.log('existe la primera revision');
+      // La revisión ya existe en la caché, realizar otras acciones necesarias.
+      this.revision_existe_cache()
+    }
   }
+  
   revision_existe_cache(){
     const faltantes = {}
     const existentes = {}
@@ -135,9 +153,6 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
     this.campos.forEach(campo=>{
         const {ruta_observacion, nombre} = campo
-
-        // console.log({ruta_observacion, nombre});
-
         if (localStorage[nombre] && localStorage[ruta_observacion]) {
             existentes[ruta_observacion] =nombre
         }else{
@@ -276,7 +291,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
         console.log(`actualizacion key=> [${key}]: valor =>{${valor}}`);
         this._publicos.saber_pesos(data)
 
-        const localhost_nombre = await this._publicos.revisar_cache2(ruta_observacion)
+        const localhost_nombre = await this._publicos.nueva_revision_cache(ruta_observacion)
 
         if (localhost_nombre[clave_vigilar]) {
           const nueva_data_clave = this._publicos.crear_new_object(localhost_nombre[clave_vigilar])

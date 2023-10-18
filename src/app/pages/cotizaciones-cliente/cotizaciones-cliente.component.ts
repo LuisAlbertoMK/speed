@@ -154,21 +154,26 @@ export class CotizacionesClienteComponent implements OnInit {
     this.cotizaciones_arr = (!this.cotizaciones_arr.length)  ? cotizaciones_arr :
     this._publicos.actualizarArregloExistente(this.cotizaciones_arr,cotizaciones_arr,campos_recpciones)
 
-    const promedios_ticket = this._publicos.ticket_promedio(cotizaciones_arr)
-    Object.keys(promedios_ticket).forEach(c=>{
-      this.valores_promedios[c] = promedios_ticket[c]
-    })
+    // console.log(cotizaciones_arr);
 
-    const resultados_comparados = this._publicos.obtenerMaximoMinimoYSimilitudes(cotizaciones_arr)
+    if (cotizaciones_arr.length) {
+      const promedios_ticket = this._publicos.ticket_promedio(cotizaciones_arr)
+      Object.keys(promedios_ticket).forEach(c=>{
+        this.valores_promedios[c] = promedios_ticket[c]
+      })
+  
+      const resultados_comparados = this._publicos.obtenerMaximoMinimoYSimilitudes(cotizaciones_arr)
 
-    this.tabla_maximos.forEach(element => {
-      const {valor} = element
-      this.valores_tabla_maximos[valor] = resultados_comparados[0][valor]
-    });
-    this.tabla_minimos.forEach(element => {
-      const {valor} = element
-      this.valores_tabla_minimos[valor] = resultados_comparados[1][valor]
-    })
+      this.tabla_maximos.forEach(element => {
+        const {valor} = element
+        this.valores_tabla_maximos[valor] = resultados_comparados[0][valor]
+      });
+      this.tabla_minimos.forEach(element => {
+        const {valor} = element
+        this.valores_tabla_minimos[valor] = resultados_comparados[1][valor]
+      })
+    }
+    
   }
 
 

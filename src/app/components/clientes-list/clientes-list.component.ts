@@ -110,8 +110,9 @@ export class ClientesListComponent implements OnInit {
     })
   }
   async listaEmpresas(){
-    const empresas = await this._clientes.consulta_empresas_new()
-    this.empresas_alls = empresas
+    // const empresas = await this._clientes.consulta_empresas_new()
+    // this.empresas_alls = empresas
+    this.empresas_alls = []
     
   }
 

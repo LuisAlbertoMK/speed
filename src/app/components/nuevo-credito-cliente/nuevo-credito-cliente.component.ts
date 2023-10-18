@@ -79,7 +79,8 @@ export class NuevoCreditoClienteComponent implements OnInit, OnChanges {
       mes: parseInt(mes)
     }
 
-    const existe_credito = await this._clientes.consulta_credito_cliente(clave_credito)
+    // const existe_credito = await this._clientes.consulta_credito_cliente(clave_credito)
+    const existe_credito = true
     // console.log(existe_credito);
     if (existe_credito) {
       // console.log('existe el registro de credito preguntar si quiere reempkazar');

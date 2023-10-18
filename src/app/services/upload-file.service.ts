@@ -4,7 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
 import { FileItem } from 'src/app/models/FileItem.model';
-//import * as firebase from 'firebase'
+
 const urlServer = environment.firebaseConfig.databaseURL
 @Injectable({
   providedIn: 'root'

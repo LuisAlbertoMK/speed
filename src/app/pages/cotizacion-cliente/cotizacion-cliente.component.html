@@ -140,7 +140,19 @@
 <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
 
 
+<div class="modal fade" id="modalNewVehiculo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
 
+        <app-vehiculo [data_cliente]="infoCotizacion.data_cliente" (dataVehiculo)="vehiculo_registrado( $event )" ></app-vehiculo>
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
   <div class="modal fade" id="modalPaquetes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

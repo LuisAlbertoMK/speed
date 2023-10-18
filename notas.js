@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "verificar la informacion de vehiculos y clientes  (proceso)"
+git commit -m "algunas correciones comentarios ing genaro  (proceso)"
 git push -u origin
 
 shutdown -s -t 300 -c 'XD'

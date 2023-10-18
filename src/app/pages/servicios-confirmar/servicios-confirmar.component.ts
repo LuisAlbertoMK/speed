@@ -201,11 +201,11 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   async acciones(){
     console.log(this.enrutamiento);
     const {cotizacion, recepcion, cliente, vehiculo} = this.enrutamiento
-    const vehiculos = await this._publicos.revisar_cache('vehiculos')
-    const clientes = await this._publicos.revisar_cache('clientes')
+    const vehiculos = await this._publicos.nueva_revision_cache('vehiculos')
+    const clientes = await this._publicos.nueva_revision_cache('clientes')
 
     if (cotizacion) {
-      const cotizaciones = await this._publicos.revisar_cache('cotizaciones')
+      const cotizaciones = await this._publicos.nueva_revision_cache('cotizaciones')
       
       const campos_recupera_cotizacion = ["cliente","elementos","formaPago","iva","margen","servicio","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal","reporte"]
       if(cotizaciones[cotizacion]){
@@ -222,7 +222,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.extra = data_cotizacion.vehiculo
       }
     }else if(recepcion){
-      const recepciones = await this._publicos.revisar_cache('recepciones')
+      const recepciones = await this._publicos.nueva_revision_cache('recepciones')
       console.log(recepcion);
       if(recepciones[recepcion]){
         const campos_recupera_recepcion = ["cliente","elementos","formaPago","id","iva","margen","servicio","status","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal"]
@@ -240,15 +240,15 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.extra = data_cotizacion.vehiculo
       }
     }else if(cliente){
-      // const clientes = await this._publicos.revisar_cache('clientes')
+      // const clientes = await this._publicos.nueva_revision_cache('clientes')
       this.infoConfirmar.cliente = cliente
       const data_cliente_new = this._publicos.crear_new_object(clientes[cliente])
       data_cliente_new.id = cliente
       this.infoConfirmar.data_cliente = data_cliente_new
       this.infoConfirmar.sucursal = data_cliente_new.sucursal
     }else if(vehiculo){
-      // const clientes = await this._publicos.revisar_cache('clientes')
-      // const vehiculos = await this._publicos.revisar_cache('vehiculos')
+      // const clientes = await this._publicos.nueva_revision_cache('clientes')
+      // const vehiculos = await this._publicos.nueva_revision_cache('vehiculos')
       const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
       const data_cliente_new = this._publicos.crear_new_object(clientes[data_vehiculo.cliente])
       data_cliente_new.id = data_vehiculo.cliente
@@ -265,7 +265,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   async vigila_vehiculos_cliente(){
     const {cliente: id_cliente} = this.infoConfirmar
-    const vehiculos_object = await this._publicos.revisar_cache('vehiculos')
+    const vehiculos_object = await this._publicos.nueva_revision_cache('vehiculos')
     const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
     const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
     this.infoConfirmar.vehiculos = vehiculos_cliente
@@ -884,7 +884,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     const {cliente, sucursal, vehiculo} = this.infoConfirmar
 
-    const recepciones:any[] = await this._publicos.revisar_cache('recepciones')//this._servicios.consulta_recepciones_cliente_satus({ruta: `recepciones`})
+    const recepciones:any[] = await this._publicos.nueva_revision_cache('recepciones')//this._servicios.consulta_recepciones_cliente_satus({ruta: `recepciones`})
     const recepciones_existentes = this._publicos.crearArreglo2(recepciones)
     
     const verificacion = recepciones_existentes

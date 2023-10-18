@@ -17,12 +17,14 @@ export class VehiculosClienteComponent implements OnInit {
   objecto_actual:any ={}
 
   vehiculos_arr:any[] = []
+  data_cliente:any ={} 
   ngOnInit(): void {
     this.rol()
   }
   rol(){
 
     const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
+    console.log(this._security.usuarioRol());
     
     this._sucursal = sucursal
     this._rol = rol
@@ -30,6 +32,10 @@ export class VehiculosClienteComponent implements OnInit {
     if (uid) {
       this._uid = uid
       this.primer_comprobacion_resultados()
+    }
+    const clientes = this._publicos.nueva_revision_cache('clientes')
+    if (clientes[this._uid]) {
+      this.data_cliente = clientes[this._uid]
     }
   }
   comprobacion_resultados(){
@@ -75,5 +81,15 @@ export class VehiculosClienteComponent implements OnInit {
 
     
   }
+
+   
+  vehiculo_registrado(event){
+    if (event) {
+      console.log(event);
+      
+    //  this.extra = event
+    //  this.vigila_vehiculos_cliente()
+   }
+ }
 
 }

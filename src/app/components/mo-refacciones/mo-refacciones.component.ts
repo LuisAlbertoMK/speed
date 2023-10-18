@@ -1,13 +1,12 @@
-import { Component, OnInit,Input, OnChanges, SimpleChanges,ChangeDetectionStrategy, Output, EventEmitter,} from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter,} from '@angular/core';
 
-import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import {  getDatabase, ref, update } from "firebase/database"
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {  FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MorefaccionesService } from 'src/app/services/morefacciones.service';
 const db = getDatabase()
-const dbRef = ref(getDatabase());
 
 
 @Component({
@@ -16,11 +15,10 @@ const dbRef = ref(getDatabase());
   styleUrls: ['./mo-refacciones.component.css']
 })
 export class MoRefaccionesComponent implements OnInit  {
-  // lista_arr_mo = []
+
   lista_arr_refacciones = []; lista_arr_mo =[]
   lista_moRefacciones = []
   
-  // @Input() 
   myControl = new FormControl('');
   filteredOptions: Observable<string[]>;
   formElemento: FormGroup;
@@ -54,8 +52,6 @@ export class MoRefaccionesComponent implements OnInit  {
   }
 
   ngOnInit(): void {
-    // this.listadoMO()
-    // this.listadoRefacciones()
     this.listadoRefacciones_moRefacciones()
     this.automaticos()
     this.crearFormElemento()
@@ -66,15 +62,11 @@ export class MoRefaccionesComponent implements OnInit  {
     
     
     this.myControl.valueChanges.subscribe(cambio=>{
-      // console.log(cambio);
-      // const unidos = [...this.lista_arr_mo,...this.lista_arr_refacciones]
       const unidos = [...this.lista_moRefacciones]
-      // console.log(unidos);
+
       this.faltantes_string = null
       const valor = this.myControl.value
       if (typeof valor === 'string') {
-        // console.log('compara el strign recibido');
-        //primero saber si el nombre ya esta registrado
         const encontrado = unidos.find(option => option.nombre.trim().toLowerCase() === valor.trim().toLowerCase());
         this.encontrado = (encontrado) ? true: false
         
@@ -129,13 +121,11 @@ export class MoRefaccionesComponent implements OnInit  {
     this.formElemento.get('id').valueChanges.subscribe((id: string) => {
       if (id) {
         this.registro_flag= true
-        // this.formElemento.get('nombre').disable();
         this.formElemento.get('tipo').disable();
         this.formElemento.get('precio').disable();
         this.formElemento.get('descripcion').disable();
       }else{
         this.registro_flag= false
-        // this.formElemento.get('nombre').enable();
         this.formElemento.get('tipo').enable();
         this.formElemento.get('precio').enable();
         this.formElemento.get('descripcion').enable();
@@ -146,7 +136,6 @@ export class MoRefaccionesComponent implements OnInit  {
     });
 
     this.formElemento.get('tipo').valueChanges.subscribe((tipo: string) => {
-      // console.log(tipo);
       if (tipo ==='refaccion') {
         this.marca = true;
         this.formElemento.get('marca').enable();
@@ -179,7 +168,7 @@ export class MoRefaccionesComponent implements OnInit  {
         if (marca === marca_element && modelo === modelo_element) {
           existe = true
           index_encontrado = index
-          // console.log('ya se encuentra registrado');
+
           valores_anios.push(anio_inicial)
           valores_anios.push(anio_final)
           const {anio_inicial:dta_form_inicial, anio_final: dta_form_final} = data_form
@@ -261,13 +250,7 @@ export class MoRefaccionesComponent implements OnInit  {
     ? arreglo
     :  this._publicos.actualizarArregloExistente(this.lista_moRefacciones, arreglo, campos_moRefacciones )
     
-    // const starCountRef = ref(db, `moRefacciones`)
-    // onValue(starCountRef, (snapshot) => {
-    //   if (snapshot.exists()) {
-    //     const arreglo = this._publicos.crearArreglo2(snapshot.val())
-    //     this.lista_moRefacciones = arreglo
-    //   }
-    // })
+
   }
   //para que se inicie el autocompleado
   automaticos(){
@@ -314,14 +297,7 @@ export class MoRefaccionesComponent implements OnInit  {
         compatibles: recuperada.compatibles || []
       })
       this.elementos_actuales_compatibles = recuperada.compatibles
-      // this.elementos_actuales_compatibles = [
-      //   {
-      //     "marca": "Alfa Romeo",
-      //     "modelo": "Stelvio",
-      //     "anio_inicial": "1992",
-      //     "anio_final": "1994"
-      //   }
-      // ]
+  
     }
   }
 

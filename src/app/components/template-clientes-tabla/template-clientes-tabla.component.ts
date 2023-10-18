@@ -90,6 +90,7 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
 
     this._rol = rol
     this._sucursal = sucursal
+    this.newPagination()
     
   }
   newPagination(){

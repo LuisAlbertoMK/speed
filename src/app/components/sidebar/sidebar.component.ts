@@ -52,7 +52,8 @@ export class SidebarComponent implements OnInit {
     {path:'serviciosCliente', show:'Mis servicios',icono:'car-garage'},
     {path:'sucursales', show:'Lista sucursales',icono:'landmark'},
     {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
-    // {path:'citasCliente', show:'Mis citas',icono:'debug'}
+    {path:'vehiculos-cliente', show:'Mis ehiculos',icono:'user'},
+    {path:'citas-cliente', show:'Citas Cliente',icono:'user'},
   ]
   ngOnInit(): void {
     this.rol()

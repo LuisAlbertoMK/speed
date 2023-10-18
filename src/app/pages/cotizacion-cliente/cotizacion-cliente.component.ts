@@ -63,7 +63,8 @@ export class CotizacionClienteComponent implements OnInit {
     iva: true,
     detalles: false
   });
-  servicios        =  [ ...this._servicios.servicios ]
+  // servicios        =  [ ...this._servicios.servicios ]
+  servicios        =  [ {valor:'5',nombre:'preventivo'} ]
   formasPago       =  [ ...this._cotizaciones.formasPago ]
   promociones      =  [ ...this._campos.promociones ]
 
@@ -301,7 +302,7 @@ export class CotizacionClienteComponent implements OnInit {
   }
 
   async continuarCotizacion(){
-    console.log('acciones guardar depurar etc');
+    // console.log('acciones guardar depurar etc');
     const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
     if (cliente && !sucursal && data_cliente) {
       const dat_cliente = this._publicos.crear_new_object(data_cliente)
@@ -489,5 +490,12 @@ export class CotizacionClienteComponent implements OnInit {
     const secuencia = (no_cotizacion.length + 1).toString().padStart(4, '0')
     return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
   }
-  
+   
+  vehiculo_registrado(event){
+    if (event) {
+     this.extra = event
+     this.vigila_vehiculos_cliente()
+   }
+ }
+
 }

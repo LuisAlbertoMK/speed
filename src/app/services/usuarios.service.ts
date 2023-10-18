@@ -50,21 +50,7 @@ export class UsuariosService {
       });
     });
   }
-  consulta_tecnico(data): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const {ruta} = data
-      const starCountRef = ref(db, `usuarios/${ruta}/usuario`);
-      onValue(starCountRef, (snapshot) => {
-        if (snapshot.exists()) {
-          resolve(snapshot.val());
-        } else {
-          resolve(null);
-        }
-      }, {
-        onlyOnce: true
-      });
-    });
-  }
+
   update_data_usuario(usuario) {
     let token = localStorage.getItem('tokenTemporal')
     const dataReset={
@@ -74,48 +60,8 @@ export class UsuariosService {
       returnSecureToken: true
     }
     return this.http.post(`${usuarios}/accounts:update?key=${apiKey}`,dataReset)
-    // resolve this.http.post(`${usuarios}/accounts:update?key=${apiKey}`,dataReset)
-    // return new Promise((resolve, reject) => {
-    //   const starCountRef = ref(db, 'usuarios');
-    //   onValue(starCountRef, (snapshot) => {
-    //     if (snapshot.exists()) {
-    //       const clientes = this._publicos.crearArreglo2(snapshot.val());
-    //       clientes.map(c=>{
-    //         c.fullname = `${c.nombre} ${c.apellidos}`
-    //         const vehiculos = (c['vehiculos']) ? this._publicos.crearArreglo2(c['vehiculos']) : []
-    //         c.vehiculos = vehiculos
-    //       })
-    //       resolve(clientes);
-    //     } else {
-    //       resolve([]);
-    //     }
-    //   });
-    // });
+
   }
-
-  
-  async listatecnicos(){
-    const ans= {contenido:false, data:[]}
-    await get(child(dbRef, `usuarios`)).then(async (snapshot) => {
-      if (snapshot.exists()) {        
-        const tecnicos =  await this._publicos.crearArreglo2(snapshot.val())
-        const filtro = tecnicos.filter(o=>o.rol === 'tecnico')
-        let dataShow=[]
-        for (let index = 0; index < filtro.length; index++) {
-          const element = filtro[index];
-          dataShow.push({rol: element.rol, id:element.id,usuario: element.usuario,sucursal:element.sucursal})
-        }
-        ans.data = dataShow
-        ans.contenido = true
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    return ans
-  }
-  
-
-
 
 
   async nuevoUsuario(data: any){
@@ -136,48 +82,9 @@ export class UsuariosService {
     return ans
     // return this.http.post(`${usuarios}/accounts:signUp?key=${apiKey}`,authData)
   }
-  guardaUsuarioData(sucursal_get:string,dataUsuario:any){
-    const temp = {
-      correo: dataUsuario.correo,
-      password: dataUsuario.password,
-      rol: dataUsuario.rol,
-      status: dataUsuario.status,
-      usuario: dataUsuario.usuario,
-      sucursal: dataUsuario.sucursal
-    }
-    set(ref(db, `usuarios/${sucursal_get}/`), temp )
-          .then(() => {
-            // Data saved successfully!
-          })
-          .catch((error) => {
-            // The write failed...
-          });
-    
-    // return this.http.post(`${urlServer}/usuarios/${sucursal_get}.json`,temp)
-  }
-  guardaUsuarioDataSuperUsuarioAdministrador(sucursal_get:string,dataUsuario:any){
-    const temp = {
-      correo: dataUsuario.correo,
-      password: dataUsuario.password,
-      rol: dataUsuario.rol,
-      status: dataUsuario.status,
-      usuario: dataUsuario.usuario,
-      sucursal: dataUsuario.sucursal
-    }
-    // return this.http.post(`${urlServer}/usuarios/${sucursal_get}.json`,temp)
-  }
-  getUsuarios(){
-    return this.http.get(`${urlServer}/usuarios.json`)
-    .pipe(
-       map(this.crearArreglo2)
-    )
-  }
-  getListaUsuario(sucursal:string){
-    return this.http.get(`${urlServer}/usuarios/${sucursal}.json`)
-    .pipe(
-       map(this.crearArreglo2)
-    )
-  }
+
+ 
+
   getDataUser(){
     return this.http.get(`${urlServer}/usuarios.json`)
   }
@@ -236,57 +143,7 @@ export class UsuariosService {
 
 
 
-  getInfoSuperSU(){
-    return this.http.get(`${urlServer}/usuarios/SuperSU.json`)
-    .pipe(
-       map(this.crearArreglo2)
-    )
-  }
-  actualizaUsuario(IDUsuario:string, dataUsuario:any){
-    let sucursal = dataUsuario.sucursal
-    const temp={
-      ...dataUsuario
-    }
-    if (sucursal === 'Todas') {
-      sucursal = 'SuperSU'
-    }
-    return this.http.put(`${urlServer}/usuarios/${sucursal}/${IDUsuario}.json`,temp)
-  }
-  actualizaStatus(data:any,status:boolean){
-    const tempData={
-      ...data,
-      status
-    }
-    return this.http.put(`${urlServer}/usuarios/SuperSU/${data.id}.json`,tempData)
-  }
-  actualizaStatusSucursal(data:any,status:boolean){
-    const tempData={
-      ...data,
-      status
-    }
-    return this.http.put(`${urlServer}/usuarios/${data.sucursal}/${data.id}.json`,tempData)
-  }
 
-  crearArreglo2(arrayObj: object) {
-    const arrayGet: any[] = [];
-    if (arrayObj === null) {
-      return [];
-    }
-    Object.keys(arrayObj).forEach((key) => {
-      const arraypush: any = arrayObj[key];
-      arraypush.id = key;
-      arrayGet.push(arraypush);
-    });
-    return arrayGet;
-  }
-  crearArreglo(clientesObj:object){
-    const clientes:any[]=[]
-    if (clientesObj===null) { return [] }
-    Object.keys(clientesObj).forEach(key=>{
-      const cliente: any = clientesObj[key]
-      clientes.push(cliente )
-    })
-    return clientes
-  }
+ 
 
 }

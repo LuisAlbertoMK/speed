@@ -229,7 +229,7 @@ export class PagoComponent implements OnInit, OnChanges {
 
     update(ref(db), updates).then(async ()=>{
 
-      const historial_pagos_orden = await this._publicos.revisar_cache('historial_pagos_orden')
+      const historial_pagos_orden = await this._publicos.nueva_revision_cache('historial_pagos_orden')
       historial_pagos_orden[clave_] = info_get
       this._security.guarda_informacion({nombre:'historial_pagos_orden', data: historial_pagos_orden})
       this.pago_registrado.emit(true);

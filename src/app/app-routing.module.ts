@@ -45,6 +45,7 @@ import { ServiciosClienteComponent } from './pages/servicios-cliente/servicios-c
 import { VehiculoComponent } from './components/vehiculo/vehiculo.component';
 import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
 import { VehiculosClienteComponent } from './pages/vehiculos-cliente/vehiculos-cliente.component';
+import { CitasClienteComponent } from './pages/citas-cliente/citas-cliente.component';
 
 const routes: Routes = [];
 
@@ -93,6 +94,7 @@ const APP_ROUTES: Routes = [
   { path: 'cotizacion-new-cliente', component: CotizacionClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'historial-vehiculo-cliente', component: HistorialVehiculoClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
   { path: 'vehiculos-cliente', component: VehiculosClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
+  { path: 'citas-cliente', component: CitasClienteComponent, canActivate:[GuardCliente2Guard,AuthGuard]},
 
   { path: 'home', component: HomeComponent },
 

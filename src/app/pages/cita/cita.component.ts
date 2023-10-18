@@ -46,37 +46,7 @@ export class CitaComponent implements OnInit {
     this.opciones_menu = filter
   }
   citaAccion(status){
-    if (this.info) {
-      const mensaje = this.colores_citas.find(c=>c.valor === status).mensaje
-      this._publicos.mensaje_pregunta(`Desea que la cita sea ${mensaje}`).then(({respuesta})=>{
-        if (respuesta) {
-          const updates = {[`${this.info.ruta}/status`] : status}
-            update(ref(db), updates).then(async ()=>{
-              this._publicos.mensajeSwal(`Cita ${mensaje}`, 1)
-              const {mensaje: newmensaje}= this.colores_citas.find(c=>c.valor === status)
-              this.info.status = status
-              this.info.mensajeStatus = newmensaje
-              this.opcionesMenu()
-              const sucursal_Info = this.lista_sucursale_arr.find(s=>s.id === this.info.sucursal)
-              const dataCliente:any = await this._cliente.consulta_cliente_new(this.info.cliente)
-              // console.log(updates);
-              const correos = this._publicos.dataCorreo(sucursal_Info, dataCliente)
-
-              this._email.cancelaRecoleccion({
-                correos,
-                fullname: dataCliente.fullname,
-                dia: `${this.info.dia} ${this.info.horario}`,
-                placas: this.info.placas,
-                motivo: `${mensaje}`,
-                subject: 'Su cita cambio su status'
-              })
-            })
-            .catch(err=>{
-              this._publicos.mensajeSwal(`Error al cambiar el status de la cita`,0)
-            })
-        }
-      })
-    }
+    
   }
   nuevoComentario(){
     if (String(this.comentario).length > 10 && this.info.id) {
@@ -97,35 +67,7 @@ export class CitaComponent implements OnInit {
       this._publicos.mensajeSwal(`El comentario no es valido`,0)
     }
   }
-  aceptarRecoleccion(){
-    // const mensaje  = (false) ? 'Aceptar recoleccion a domicilio?' : 'Negar recoleccion a domicilio?'
-    const mensaje = 'Aceptar recoleccion a domicilio?' 
-    this._publicos.mensaje_pregunta(mensaje).then(async ({respuesta})=>{
-      if (respuesta) {
-        const updates = {[`${this.info.ruta}/recoleccion}`]: true}
-        const sucursal_Info = this.lista_sucursale_arr.find(s=>s.id === this.info.sucursal)
-        const dataCliente:any = await this._cliente.consulta_cliente_new(this.info.cliente)
-        // console.log(updates);
-        const correos = this._publicos.dataCorreo(sucursal_Info, dataCliente)
-        update(ref(db), updates).then(()=>{
-          this.info.recoleccion = true
-          this._email.cancelaRecoleccion({
-            correos,
-            fullname: dataCliente.fullname,
-            dia: `${this.info.dia} ${this.info.horario}`,
-            placas: this.info.placas,
-            motivo: 'ha sido confirmada',
-            subject: 'Confirmación de cita'
-          })
-        })
-        .catch(err=>{
-          this._publicos.mensajeSwal(`ocurrio un error`,0)
-        })
-      }
-    })
-    
-    
-  }
+  
 
   async negarRecoleccion() {
     const { value, isConfirmed } = await Swal.fire({
@@ -151,26 +93,7 @@ export class CitaComponent implements OnInit {
       const motivoRecuperado = this.motivoForm.value.motivo;
       const updates = {[`${this.info.ruta}/recoleccion}`]: false}
       const sucursal_Info = this.lista_sucursale_arr.find(s=>s.id === this.info.sucursal)
-      const dataCliente:any = await this._cliente.consulta_cliente_new(this.info.cliente)
-
-      const correos = this._publicos.dataCorreo(sucursal_Info, dataCliente)
-      // console.log(correos);
-      update(ref(db), updates).then(()=>{
-        this.info.recoleccion = false
-        if (correos.length >= 2) {
-          this._email.cancelaRecoleccion({
-            correos,
-            fullname: dataCliente.fullname,
-            dia: `${this.info.dia} ${this.info.horario}`,
-            placas: this.info.placas,
-            motivo: `no habra recoleccion motivo ${motivoRecuperado}`,
-            subject: 'No recoleccion a domicilio'
-          })
-        }
-      })
-      .catch(err=>{
-        this._publicos.mensajeSwal(`ocurrio un error`, 0)
-      })
+      
     }
   }
   

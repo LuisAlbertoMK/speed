@@ -51,7 +51,7 @@ export class TablaElementosComponent implements OnInit, OnChanges {
   }
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
-    console.log(this._security.usuarioRol());
+    
     if (rol === 'cliente') {
     }else{
       this.cotizaciones = ['nombre','cantidad','precio','costo','total']

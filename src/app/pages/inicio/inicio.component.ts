@@ -44,6 +44,7 @@ export class InicioComponent implements OnInit {
     {path:'sucursales', show:'Lista sucursales',icono:'landmark'},
     {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
     {path:'comentarios', show:'Comentarios',icono:'comments'},
+    {path:'citas-cliente', show:'Citas Cliente',icono:'user'},
     // {path:'citasCliente', show:'Mis citas',icono:'debug'}
   ]
   Gerente_rol: boolean = false

@@ -159,15 +159,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
   }
   horariosSucursal(){
-    if (this.SUCURSAL === '-N2glF34lV3Gj0bQyEWK') {
-      this._citas.consulta_horarios_sucursal_new(this.SUCURSAL).then((horarios)=>{
-        this.horariosDisponibles = horarios
-      })
-    }else{
-      this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
-        this.horariosDisponibles = horarios
-      })
-    }
+   
     
   }
 
@@ -254,7 +246,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   }
   async vigila_vehiculos_cliente(){
     const {id: id_cliente} = this.data_cliente
-    const vehiculos_object = await this._publicos.revisar_cache('vehiculos')
+    const vehiculos_object = await this._publicos.nueva_revision_cache('vehiculos')
     const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
     const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
     this.arr_vehiculos = vehiculos_cliente
@@ -293,15 +285,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     this.vigilaDia()
   }
   horarios_new (sucursal){
-    if (sucursal === '-N2glF34lV3Gj0bQyEWK') {
-      this._citas.consulta_horarios_sucursal_new(sucursal).then((horarios)=>{
-        this.horariosDisponibles = horarios
-      })
-    }else{
-      this._citas.consulta_horarios_sucursal_new('otras').then((horarios)=>{
-        this.horariosDisponibles = horarios
-      })
-    }
+    
   }
   vigilaDia(){
     this.citaForm.get('cotizacion_utiliza').valueChanges.subscribe(async (cotizacion_utiliza: string) => {
@@ -310,7 +294,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       console.log(cliente);
       
       if (cotizacion_utiliza && cliente) {
-          const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
+          const cotizacionesRealizadas = await this._publicos.nueva_revision_cache('cotizacionesRealizadas')
           const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizacionesRealizadas)
           const filtro_cotizaciones_cliente = this._publicos.filtra_informacion(arreglo_cotizaciones,'cliente',cliente)
           const ordenedas = this._publicos.ordenamiento_fechas_x_campo(filtro_cotizaciones_cliente,'no_cotizacion',false)
@@ -323,7 +307,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     this.citaForm.get('cliente').valueChanges.subscribe(async (cliente: string) => {
       const cotizacion_utiliza = this.citaForm.get('cotizacion_utiliza').value;
       if (cotizacion_utiliza && cliente) {
-        const cotizacionesRealizadas = await this._publicos.revisar_cache('cotizacionesRealizadas')
+        const cotizacionesRealizadas = await this._publicos.nueva_revision_cache('cotizacionesRealizadas')
           const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizacionesRealizadas)
           const filtro_cotizaciones_cliente = this._publicos.filtra_informacion(arreglo_cotizaciones,'cliente',cliente)
           const ordenedas = this._publicos.ordenamiento_fechas_x_campo(filtro_cotizaciones_cliente,'no_cotizacion',false)
@@ -339,58 +323,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
   }
   async addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-    // console.log(event.value);
-    const date = event.value
-    if (date && date['_d']) {
-      const saber_dia = new Date(date['_d'])
-      // console.log(this.horarios);
-      // console.log(saber_dia.getDay())
-      const numeroDia = saber_dia.getDay()
-      const sucursal = this.citaForm.get('sucursal').value;
-
-      const cita_search  = this.ruta_guardar_cita(new Date(saber_dia))
-      
-      const data_cliente = this._publicos.crear_new_object( this.data_cliente )
-
-      const citas_dia = `Citas/${cita_search}/${data_cliente.sucursal}`
-
-      const citas_dia_ans = await this._citas.consulta_citas_dia(`${citas_dia}`)
-
-      const citas_dia_ans_arr = this._publicos.crearArreglo2(citas_dia_ans)
-
-      const arreglo_citas_dias_ans = citas_dia_ans_arr.map(c=> {return c.horario})
-
-      
-    let horarios_libres = []
-      if (sucursal && sucursal==='-N2glF34lV3Gj0bQyEWK') {
-        if (numeroDia <=5 ) {
-          horarios_libres = this.horarios[sucursal]['lunesViernes']
-        }else{
-          horarios_libres = this.horarios[sucursal]['sabado']
-        }
-      }else if (sucursal && sucursal !=='-N2glF34lV3Gj0bQyEWK') {
-        if (numeroDia <=5 ) {
-          horarios_libres = this.horarios['otras']['lunesViernes']
-        }else{
-          horarios_libres = this.horarios['otras']['sabado']
-        }
-      }
-
-      const diferencias = encontrarDiferencias(arreglo_citas_dias_ans, horarios_libres)
-      
-      this.horarios_show = diferencias
-      
-
-      function encontrarDiferencias(arr1, arr2) {
-        const set1 = new Set(arr1);
-        const set2 = new Set(arr2);
-      
-        const diferencias1 = [...arr1.filter((item) => !set2.has(item))];
-        const diferencias2 = [...arr2.filter((item) => !set1.has(item))];
-      
-        return [...diferencias1, ...diferencias2];
-      }
-    }
+  
   }
   validarCampo(campo: string){
     return this.citaForm.get(campo).invalid && this.citaForm.get(campo).touched

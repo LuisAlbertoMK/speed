@@ -67,7 +67,7 @@
                 <span class="titulo">Recoleccion a domicilio: </span> <strong>{{ info.recoleccion ? 'SI' : 'NO' }}</strong>
                 <br>
                   <button class="btn btn-sm btn-danger  m-1" (click)="negarRecoleccion()" *ngIf="info.recoleccion">No, Negar recolección</button>
-                  <button class="btn btn-sm btn-primary  m-1" (click)="aceptarRecoleccion()" *ngIf="!info.recoleccion">SI, Aceptar recolección</button>
+                  <!-- <button class="btn btn-sm btn-primary  m-1" (click)="aceptarRecoleccion()" *ngIf="!info.recoleccion">SI, Aceptar recolección</button> -->
               </div>
               <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta" *ngIf="info.direccion">
                 <span class="titulo">Direccion de recoleccion</span>
@@ -104,7 +104,7 @@
               <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
                 <h1>Comentarios de cita</h1>
                 <ng-container *ngIf="info.status !== 'cancelada' && info.status !== 'concretada'">
-                  <textarea style="width: 100%;" [(ngModel)]="comentario"></textarea>
+                  <textarea aria-label="comentario" [style]="'width: 100%;'" [(ngModel)]="comentario"></textarea>
                   <span class="comentario">Caracteres minimos 10</span>
                   <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                     <button class="btn btn-sm btn-primary m-1" (click)="nuevoComentario()">Guardar comentario</button>

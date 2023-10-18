@@ -70,6 +70,9 @@
                       <ng-container *ngIf="row.data_cliente">
                           <app-cliente-tarjeta [cliente]="row.data_cliente"></app-cliente-tarjeta>
                       </ng-container>
+                      <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+                        <app-vehiculo-tarjeta [vehiculo]="row"></app-vehiculo-tarjeta>
+                      </div>
                   </div>
               </td>
           </ng-container>

@@ -1,18 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged,signOut, updateCurrentUser, updateProfile  } from "firebase/auth";
 
-import { child, get, getDatabase, onValue, ref, set, update } from "firebase/database"
-const db = getDatabase()
-const dbRef = ref(getDatabase());
 const auth = getAuth();
 
 
 import Swal from 'sweetalert2';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { UsuarioModel } from 'src/app/models/usuario.model';
 import { ClientesService } from '../../services/clientes.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -40,7 +36,7 @@ export class Loginv1Component implements OnInit {
   miniColumnas:number = 100
 
   constructor(private fb: FormBuilder,private _publicos:ServiciosPublicosService, 
-    private _security:EncriptadoService,private _auth:AuthService,
+    private _security:EncriptadoService,
     private _clientes: ClientesService, private _usuarios: UsuariosService
     ) { }
 
@@ -78,32 +74,23 @@ export class Loginv1Component implements OnInit {
           const errorCode = error.code;
           const errorMessage = error.message;
           this.intentos ++
-        // console.log(error);
-        
           switch (error.code) {
             case 'auth/user-not-found':
-              // this._publicos.mensajeIncorrecto('UsuarioCorreo incorrecto')
               this.apuntadores.usuario = false
               this.apuntadores.password = true
               break;
             case 'auth/wrong-password':
-              // this._publicos.mensajeIncorrecto('error de contraseña')
               this.apuntadores.usuario = true
               this.apuntadores.password = false
               break;
             case 'auth/user-disabled':
-              // this._publicos.mensajeIncorrecto('error de contraseña')
-              // this.apuntadores.usuario = true
-              // this.apuntadores.password = false
               break;
           
             default:
-              // this.apuntadores.usuario = false
               break;
           }
           this._publicos.swalToast('Error de autenticacion',0)
-          // console.log(errorCode);
-          // console.log(errorMessage);
+
           
         });
     }
@@ -114,15 +101,6 @@ export class Loginv1Component implements OnInit {
     onAuthStateChanged(auth, async (user) => {
       
       if(user){
-        // console.log('esta logeado');
-        // console.log(user);
-        // user.providerData.forEach((profile) => {
-        //   console.log("Sign-in provider: " + profile.providerId);
-        //   console.log("  Provider-specific UID: " + profile.uid);
-        //   console.log("  Name: " + profile.displayName);
-        //   console.log("  Email: " + profile.email);
-        //   console.log("  Photo URL: " + profile.photoURL);
-        // });
 
         let dataSecurity = { sesion: true }
 

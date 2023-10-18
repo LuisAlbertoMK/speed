@@ -1,17 +1,14 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { getStorage,ref, uploadBytes,uploadBytesResumable,getDownloadURL  } from "firebase/storage";
 
-import { environment } from "../../environments/environment";
-import { EmailsService } from './emails.service';
-const urlServer = environment.firebaseConfig.databaseURL
+import { Injectable } from '@angular/core';
+import { getStorage,ref,uploadBytesResumable,getDownloadURL  } from "firebase/storage";
+
 const storage = getStorage()
 @Injectable({
   providedIn: 'root'
 })
 export class UploadPDFService {
  
-  constructor(private http: HttpClient,private _email:EmailsService) { }
+  constructor() { }
   async upload(file:Blob,nombre:string){
     let answer = {ruta:'',error:[],progreso:0}
     const storageRef = ref(storage, 'PDF/cotizaciones/'+nombre);

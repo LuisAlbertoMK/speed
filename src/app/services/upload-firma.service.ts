@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { getStorage,ref, uploadBytes,uploadBytesResumable,getDownloadURL  } from "firebase/storage";
+import { getStorage,ref, uploadBytesResumable,getDownloadURL  } from "firebase/storage";
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
 
@@ -8,10 +8,10 @@ import { environment } from "../../environments/environment";
 
 
 const storage = getStorage()
-const metadata = {
-  contentType: 'image/png'
-}
-const urlServer = environment.firebaseConfig.databaseURL
+// const metadata = {
+//   contentType: 'image/png'
+// }
+// const urlServer = environment.firebaseConfig.databaseURL
 @Injectable({
   providedIn: 'root'
 })

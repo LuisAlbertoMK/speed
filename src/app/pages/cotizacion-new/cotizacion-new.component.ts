@@ -450,10 +450,10 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     if (id) {
       if (this.idPaqueteEditar >=0 ) {
           nuevos[this.idPaqueteEditar].elementos.push(event)
-          this.asignar_nuevos_elementos(nuevos)
+          this.nuevos_elementos(nuevos)
       }else{
         nuevos.push(event)
-        this.asignar_nuevos_elementos(nuevos)
+        this.nuevos_elementos(nuevos)
       }
     }
   }
@@ -461,7 +461,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     const { index:index_elimina } = data
     let nuevos = [...this.infoCotizacion.elementos]
     nuevos = nuevos.filter((elemento, index) => index !== index_elimina);
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
   editar(donde:string , data , cantidad){
     const nueva_cantidad = parseFloat(cantidad)
@@ -469,14 +469,21 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
 
     let nuevos = [...this.infoCotizacion.elementos]
     nuevos[index_editar][donde] = nueva_cantidad
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
   asignar_nuevos_elementos(nuevos:any[]){
+    const paquetes = this._publicos.nueva_revision_cache('paquetes')
+    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
+    // console.log(paquetes_armados);
+    
     let indexados = nuevos.map((elemento, index)=> {
-      console.log(elemento);
-      const {costo, precio, cantidad, tipo} = elemento
+      // console.log(elemento);
+      const {costo, precio, cantidad, tipo, id} = elemento
+      // console.log(id);
+      
       const {margen} = this.infoCotizacion
-      if (tipo !== 'mo' && tipo !=='paquete') {
+      if (tipo === 'refaccion' ) {
         const margen_new = 1 +(margen / 100)
         const precioShow = (cantidad * ( (costo>0) ? costo : precio)) * margen_new
         elemento.total = precioShow
@@ -485,14 +492,27 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
         elemento.total = (cantidad * ( (costo>0) ? costo : precio))
         elemento.precioShow = ( (costo>0) ? costo : precio)
       }else{
-        const {reporte} = elemento
-        // const {mo, }
-        elemento.total
+        if (paquetes_armados[id]) {
+          const data_paquete = paquetes_armados[id]
+          const {reporte} = data_paquete
+          data_paquete.cantidad = (parseInt(cantidad) >= 1) ? parseInt(cantidad) : 1
+          data_paquete.reporte = nuevo_reporte_paquete(reporte, data_paquete.cantidad)
+          elemento = data_paquete
+        }
       }
      
       elemento.index = index
       return elemento
     })
+
+    function nuevo_reporte_paquete(reporte_get, cantidad) {
+      const reporte ={mo: 0,refaccion: 0,refaccionVenta: 0,subtotal: 0,total: 0,ub: 0, }
+      Object.entries(reporte_get).forEach(([key, valor])=>{
+        reporte[key] += parseInt(`${valor}`) * parseInt(cantidad)
+      })
+      return reporte
+    }
+
     this.infoCotizacion.elementos = indexados
     
     this.realizaOperaciones()
@@ -513,7 +533,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     nuevos[index_editar].elementos = internos_n
 
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
 
   eliminar_subelemento_paquete(data,item){
@@ -533,13 +553,21 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     
     // nuevos[index_editar].elementos = nuevos_
 
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
-
+  nuevos_elementos(event){
+    this.asignar_nuevos_elementos([...new Set([...event])])
+  }
   realizaOperaciones(){
 
+    console.log(this.infoCotizacion);
+    
+
     const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
+    
     const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+    
+    
     
     this.infoCotizacion.reporte = reporte
     this.infoCotizacion.elementos = elementos

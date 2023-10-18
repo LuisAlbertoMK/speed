@@ -72,6 +72,9 @@ export class VehiculosComponent implements OnInit {
     ]
     this.objecto_actual = objecto_recuperdado
 
+    // console.log(data_recuperda_arr);
+    
+
     this.vehiculos_arr = (!this.vehiculos_arr.length) 
     ? data_recuperda_arr
     :  this._publicos.actualizarArregloExistente(this.vehiculos_arr, data_recuperda_arr, campos )
