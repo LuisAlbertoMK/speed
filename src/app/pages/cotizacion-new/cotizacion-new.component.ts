@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, Component, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {  getDatabase, ref, update} from "firebase/database";
 
@@ -46,7 +46,7 @@ export interface User {nombre: string, apellidos:string}
     ]),
   ],
 })
-export class CotizacionNewComponent implements OnInit,AfterViewInit {
+export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
   
   constructor(
     private _automaticos:AutomaticosService, private _security:EncriptadoService, private rutaActiva: ActivatedRoute, 
@@ -128,12 +128,26 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   modelo:string
 
   enProceso:boolean = false
+
+  vehiculos_arr= []
+  vehiculo_cache 
   ngOnInit() {
     this.rol()
     this.crearFormPlus()
   }
   ngAfterViewInit(): void {
     // this.crearFormPlus()
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['vehiculos_arr']) {
+
+      const nuevoValor = changes['vehiculos_arr'].currentValue;
+      const valorAnterior = changes['vehiculos_arr'].previousValue;
+      
+      console.log(nuevoValor);
+      console.log(valorAnterior);
+      
+    }
   }
   
   rol(){
@@ -150,6 +164,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
       // this.vigila_hijo()
       this.cargaDataCliente_new()
     });
+
+    this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
     
   }
   // vigila_hijo(){
@@ -256,19 +272,26 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
     }
 
     this.asignar_nuevos_elementos(this.infoCotizacion.elementos)
-    this.vigila_vehiculos_cliente()
+    const {cliente: id_cliente} = this.infoCotizacion
+    if (id_cliente) {
+      this.vigila_vehiculos_cliente()
+    }
 
   }
   vigila_vehiculos_cliente(){
+
     const {cliente: id_cliente} = this.infoCotizacion
-    const vehiculos_object = this._publicos.nueva_revision_cache('vehiculos')
-    const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
-    const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
-    this.infoCotizacion.vehiculos = vehiculos_cliente
-    if (this.extra) {
-      const data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
-      this.infoCotizacion.data_vehiculo = data_vehiculo
-      this.modelo = data_vehiculo.modelo
+    
+    const vehiculos_cliente = this._publicos.filtrarObjetoPorPropiedad(this.vehiculo_cache,'cliente',id_cliente)
+
+    if (Object.keys(vehiculos_cliente).length) {
+      this.vehiculos_arr = this._publicos.crearArreglo2(vehiculos_cliente)
+
+      if (this.extra) {
+        const data_vehiculo = this.vehiculos_arr.find(v=>v.id === this.extra)
+        this.infoCotizacion.data_vehiculo = data_vehiculo
+        this.modelo = data_vehiculo.modelo
+      }
     }
   }
 
@@ -377,17 +400,20 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit {
   // REEMPLAZAR REFRIGERANTE Y PURGAR SISTEMA DE ENFRIAMIENTO
   //aqui la informacion del clienyte
   async infoCliente(cliente){
-
     if (cliente) {
-      const {id, sucursal} = cliente
+      const {id} = cliente
       this.infoCotizacion.cliente = id
       this.infoCotizacion.data_cliente = cliente
-      this.infoCotizacion.sucursal = sucursal
-      this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      // this.infoCotizacion.sucursal = sucursal
+      // this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
       this.extra = null
       this.infoCotizacion.data_vehiculo = {}
       this.infoCotizacion.vehiculo = null
-      this.vigila_vehiculos_cliente()
+      
+      const {cliente: id_cliente} = this.infoCotizacion
+      if (id_cliente) {
+        this.vigila_vehiculos_cliente()
+      }
     }
   }
 

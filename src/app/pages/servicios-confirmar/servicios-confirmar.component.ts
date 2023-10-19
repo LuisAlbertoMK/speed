@@ -171,6 +171,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   editar_cliente:boolean = true
 
   modelo:string
+
+  vehiculo_cache
+  vehiculos_arr= []
   ngOnInit(): void {
     this.rol()
   }
@@ -195,6 +198,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
      this.acciones()
     });
     this.cambiaTodosCheckA(true)
+    this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
   }
  
 
@@ -218,7 +222,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
             this.infoConfirmar[campo] = data_cotizacion[campo]
           }
         })
-        this.asignar_nuevos_elementos(data_cotizacion.elementos)
+        this.nuevos_elementos(data_cotizacion.elementos)
         this.extra = data_cotizacion.vehiculo
       }
     }else if(recepcion){
@@ -236,7 +240,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
             this.infoConfirmar[campo] = data_cotizacion[campo]
           }
         })
-        this.asignar_nuevos_elementos(data_cotizacion.elementos)
+        this.nuevos_elementos(data_cotizacion.elementos)
         this.extra = data_cotizacion.vehiculo
       }
     }else if(cliente){
@@ -265,12 +269,17 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
   async vigila_vehiculos_cliente(){
     const {cliente: id_cliente} = this.infoConfirmar
-    const vehiculos_object = await this._publicos.nueva_revision_cache('vehiculos')
-    const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
-    const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
-    this.infoConfirmar.vehiculos = vehiculos_cliente
-    if (this.extra) {
-      this.infoConfirmar.data_vehiculo = this.infoConfirmar.vehiculos.find(v=>v.id === this.extra)
+    
+    const vehiculos_cliente = this._publicos.filtrarObjetoPorPropiedad(this.vehiculo_cache,'cliente',id_cliente)
+
+    if (Object.keys(vehiculos_cliente).length) {
+      this.vehiculos_arr = this._publicos.crearArreglo2(vehiculos_cliente)
+
+      if (this.extra) {
+        const data_vehiculo = this.vehiculos_arr.find(v=>v.id === this.extra)
+        this.infoConfirmar.data_vehiculo = data_vehiculo
+        this.modelo = data_vehiculo.modelo
+      }
     }
   }
 
@@ -304,14 +313,14 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     const {id} = event
     if (id) {
       nuevos.push(event)
-      this.asignar_nuevos_elementos(nuevos)
+      this.nuevos_elementos(nuevos)
     }
   }
   eliminaElemento(data){
     const { index:index_elimina } = data
     let nuevos = [...this.infoConfirmar.elementos]
     nuevos = nuevos.filter((elemento, index) => index !== index_elimina);
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
   editar(donde:string , data , cantidad){
     const nueva_cantidad = parseFloat(cantidad)
@@ -319,7 +328,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     let nuevos = [...this.infoConfirmar.elementos]
     nuevos[index_editar][donde] = nueva_cantidad
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
   editar_subelemento_paquete(donde:string ,data , item ,cantidad){
     const nueva_cantidad = parseFloat(cantidad)
@@ -333,7 +342,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     nuevos[index_editar].elementos = nuevos_internos
 
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
 
   eliminar_subelemento_paquete(data,item){
@@ -348,17 +357,53 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     nuevos[index_editar].elementos = nuevos_internos
 
-    this.asignar_nuevos_elementos(nuevos)
+    this.nuevos_elementos(nuevos)
   }
 
   asignar_nuevos_elementos(nuevos:any[]){
+    const paquetes = this._publicos.nueva_revision_cache('paquetes')
+    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
+    // console.log(paquetes_armados);
+    
     let indexados = nuevos.map((elemento, index)=> {
-      const {cantidad, precio, costo} = elemento
-      elemento.total = cantidad * ( (costo>0) ? costo : precio)
+      // console.log(elemento);
+      const {costo, precio, cantidad, tipo, id} = elemento
+      // console.log(id);
+      
+      const {margen} = this.infoConfirmar
+      if (tipo === 'refaccion' ) {
+        const margen_new = 1 +(margen / 100)
+        const precioShow = (cantidad * ( (costo>0) ? costo : precio)) * margen_new
+        elemento.total = precioShow
+        elemento.precioShow = ( (costo>0) ? costo : precio) * margen_new
+      }else if(tipo === 'mo') {
+        elemento.total = (cantidad * ( (costo>0) ? costo : precio))
+        elemento.precioShow = ( (costo>0) ? costo : precio)
+      }else{
+        if (paquetes_armados[id]) {
+          const data_paquete = paquetes_armados[id]
+          const {reporte} = data_paquete
+          data_paquete.cantidad = (parseInt(cantidad) >= 1) ? parseInt(cantidad) : 1
+          data_paquete.reporte = nuevo_reporte_paquete(reporte, data_paquete.cantidad)
+          elemento = data_paquete
+        }
+      }
+     
       elemento.index = index
       return elemento
     })
+
+    function nuevo_reporte_paquete(reporte_get, cantidad) {
+      const reporte ={mo: 0,refaccion: 0,refaccionVenta: 0,subtotal: 0,total: 0,ub: 0, }
+      Object.entries(reporte_get).forEach(([key, valor])=>{
+        reporte[key] += parseInt(`${valor}`) * parseInt(cantidad)
+      })
+      return reporte
+    }
+
     this.infoConfirmar.elementos = indexados
+    
     this.realizaOperaciones()
   }
   cambiaAprobado(index, aprobado){
@@ -367,9 +412,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       this.infoConfirmar.reporte = this._publicos.realizarOperaciones_2(this.infoConfirmar).reporte
     }, 100);
   }
-  cambiarCheck(index, status){
+  cambiarCheck(index: any, checked: boolean){    
     setTimeout(() => {
-      this.infoConfirmar.checkList[index].status = status
+      this.infoConfirmar.detalles[index].status = checked
     }, 100)
   }
   cambiaTodosCheckA(status){
@@ -392,15 +437,17 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.fecha_promesa = this._publicos.retorna_fechas_hora({fechaString: sumaDias}).toString_completa
   }
 
- 
 
-
- 
-
-
+  nuevos_elementos(event){
+    this.asignar_nuevos_elementos([...new Set([...event])])
+  }
   realizaOperaciones(){
+    // const { elementos, margen, iva, descuento, formaPago} = this.infoConfirmar
+
     const { elementos, margen, iva, descuento, formaPago} = this.infoConfirmar
+
     const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
+    
 
     this.infoConfirmar.reporte = reporte
     this.infoConfirmar.elementos = elementos
@@ -858,8 +905,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   async continuar(){
 
-    
-
 
     // if (this.infoConfirmar.checkList) {
       const checklist_campos = this.infoConfirmar.checkList.some(item => {
@@ -893,7 +938,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       return r.status
     })
     const status_encontrado = verificacion.includes('entregado');
-    console.log(status_encontrado);
+    // console.log(status_encontrado);
     
     if (status_encontrado){
       this._publicos.mensajeSwal('El vehiculo cuenta con orden abierta ',0, true ,`Cerrar / modificar orden del vehiculo que se encuentra en la sucursal`)
@@ -926,9 +971,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.infoConfirmar.personalizados = arregloPer
     this.infoConfirmar.observaciones = this.observaciones || ''
     this.infoConfirmar.fecha_recibido = this._publicos.retorna_fechas_hora({fechaString: new Date()}).toString_completa
-    
 
     this.infoConfirmar.data_vehiculo = this._vehiculos.verificaInfo_vehiculo(this.infoConfirmar.data_vehiculo)
+
     this._pdfRecepcion.obtenerImege(this.infoConfirmar).then((pdfReturn:any) => {
       const pdfDocGenerator = pdfMake.createPdf(pdfReturn);
 

@@ -14,15 +14,23 @@
 <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
 <app-cliente-tarjeta [cliente]="infoCotizacion.data_cliente" [editar]="true"></app-cliente-tarjeta>
 
-<ng-container *ngIf="infoCotizacion.cliente">
+<!-- <ng-container *ngIf="infoCotizacion.cliente"> -->
   <div class="card border-dark">
     <div class="card-body">
+      <!-- <pre>
+        {{vehiculos_arr | json}}
+      </pre> -->
         <label for="vehiculos-lista">Placas de vehiculos disponibles</label>
         <div class="input-group mb-3">
-          <select id="vehiculos-lista" class=" form-select  form-select-sm text-uppercase"  [ngModel]="extra" #valV (change)="vehiculo( valV.value )">
+          <!-- <select id="vehiculos-lista" class=" form-select  form-select-sm text-uppercase"  #valV (change)="vehiculo( valV.value )">
             <option  value="">Selecciona placas</option>
-            <option [value]="v.id" *ngFor="let v of infoCotizacion.vehiculos">{{v.placas}}</option>
+            <option [selected]="v.id === extra" [value]="v.id" *ngFor="let v of vehiculos_arr">{{v.placas}}</option>
+          </select> -->
+          <select id="vehiculos-lista" class="form-select form-select-sm text-uppercase" #valV (change)="vehiculo(valV.value)">
+            <option value="" selected>Selecciona placas</option>
+            <option  *ngFor="let v of vehiculos_arr" [value]="v.id"  [selected]="v.id === extra">{{v.placas}}</option>
           </select>
+          
           <button aria-label="modalVehiculo" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
             <i class="fa fa-car"></i>
           </button>
@@ -33,7 +41,7 @@
       </div>
     </div>
   </div>
-</ng-container>
+<!-- </ng-container> -->
 
 
 <div class="alert alert-info text-center">Precio de promoción solo aplica pagando de contado</div>

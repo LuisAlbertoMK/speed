@@ -72,8 +72,6 @@ export class ServiciosService {
       {valor:'faros_frontales', show:'faros frontales',status:false},
       {valor:'faros_posteriores', show:'faros posteriores',status:false},
       {valor:'parabrisas_posterior', show:'parabrisas posterior',status:false},
-      {valor:'paragolpes_frontal', show:'paragolpes frontal',status:false},
-      {valor:'paragolpes_posterior', show:'paragolpes posterior',status:false},
       {valor:'puerta_lateral_derecha_1', show:'puerta lateral derecha 1',status:false},
       {valor:'puerta_lateral_derecha_2', show:'puerta lateral derecha 2',status:false},
       {valor:'puerta_lateral_izquierda_1', show:'puerta lateral izquierda 1',status:false},

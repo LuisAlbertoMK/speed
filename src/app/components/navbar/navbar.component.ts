@@ -124,20 +124,25 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this._sucursal = sucursal
     // console.log(this._sucursal);
     const primeraRevision = localStorage.getItem('primera_revision');
-
+    const totales = this.campos.length
+    
     if (!primeraRevision) {
-      console.log('eliminar variables actuales y crear las nuevas');
+      let contador_eliminados = 0      
       this.campos.forEach(campo=>{
         const {ruta_observacion, nombre } = campo
-        console.log('eliminando ', {ruta_observacion, nombre });
         localStorage.removeItem(nombre)
         localStorage.removeItem(ruta_observacion)
+        contador_eliminados++
       })
-      localStorage.setItem('primera_revision', 'ok')
-      const nuevaPrimeraRevision = localStorage.getItem('primera_revision');
-      if (!nuevaPrimeraRevision) {
-        this.revision_existe_cache()
-      }
+
+      const intervalo = setInterval(() => {
+        if (totales >= contador_eliminados) {
+          console.log('estan todos eliminados');
+          clearInterval(intervalo)
+          localStorage.setItem('primera_revision', 'ok')
+          this.revision_existe_cache()
+        }
+      }, 500);
     } else {
       console.log('existe la primera revision');
       // La revisión ya existe en la caché, realizar otras acciones necesarias.
