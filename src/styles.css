@@ -18,3 +18,17 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.tipo-paquete {
+    color: #5ca04a !important;
+}
+  
+.tipo-refaccion {
+    color: #FF8623 !important;
+}
+  
+.tipo-mo {
+    color: #3574FA;
+}
+.pointer{
+    cursor: pointer;
+}

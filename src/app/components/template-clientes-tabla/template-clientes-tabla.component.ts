@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 
 
 import {MatTableDataSource} from '@angular/material/table';
@@ -33,7 +33,7 @@ const dbRef = ref(getDatabase());
     ]),
   ],
 })
-export class TemplateClientesTablaComponent implements OnInit, OnChanges {
+export class TemplateClientesTablaComponent implements OnInit, OnChanges, AfterViewInit {
   
   @Input() clientes_arr:any[] = []
 
@@ -77,11 +77,8 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['clientes_arr']) {
       const nuevoValor = changes['clientes_arr'].currentValue;
-      const valorAnterior = changes['clientes_arr'].previousValue;
-      // console.log({nuevoValor, valorAnterior});
-        this.dataSourceClientes.data = this.clientes_arr
-        this.contador_resultados = this.clientes_arr.length
-        this.newPagination()
+      const asignado = [...new Set([...nuevoValor])]
+      if (asignado.length) this.newPagination()
     }
   }
   rol(){
@@ -90,14 +87,15 @@ export class TemplateClientesTablaComponent implements OnInit, OnChanges {
 
     this._rol = rol
     this._sucursal = sucursal
+  }
+  ngAfterViewInit() {
     this.newPagination()
-    
   }
   newPagination(){
-    setTimeout(() => {
-      this.dataSourceClientes.paginator = this.paginatorClientes;
-      this.dataSourceClientes.sort = this.sortClientes;
-    }, 500);
+    this.contador_resultados = this.clientes_arr.length
+    this.dataSourceClientes.data = this.clientes_arr
+    this.dataSourceClientes.paginator = this.paginatorClientes;
+    this.dataSourceClientes.sort = this.sortClientes;
   }
 
   irPagina(pagina, cliente){

@@ -6,7 +6,7 @@ import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 import { CitasService } from 'src/app/services/citas.service';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ClientesService } from 'src/app/services/clientes.service';

@@ -100,17 +100,15 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
       this.enrutamiento = params
     });
     
-    this.primer_comprobacion_resultados()
+    this.asiganacion_resultados()
+    this.segundo_llamado()
   }
 
   comprobacion_resultados(){
     const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
-  primer_comprobacion_resultados(){
-    this.asiganacion_resultados()
-    this.segundo_llamado()
-  }
+
   segundo_llamado(){
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
@@ -119,12 +117,12 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
         this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asiganacion_resultados()
       }
-    },1500)
+    },500)
   }
   asiganacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+    this.objecto_actual = this._publicos.nueva_revision_cache('cotizaciones')
 
-    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this._sucursal);
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(this.objecto_actual, 'sucursal', this._sucursal);
 
     const {start, end }= this.fecha_formateadas
 
@@ -156,10 +154,15 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
       // 'pdf',
       // 'data_sucursal',
     ]
-    this.objecto_actual = objecto_recuperdado
-    this.cotizaciones_arr = (!this.cotizaciones_arr.length) 
-    ? data_recuperda_arr
-    :  this._publicos.actualizarArregloExistente(this.cotizaciones_arr, cotizaciones_completas, campos )
+     
+
+    setTimeout(() => {
+      this.cotizaciones_arr = this.cotizaciones_arr.length ? this._publicos.actualizarArregloExistente(this.cotizaciones_arr, cotizaciones_completas, campos) : cotizaciones_completas;
+    }, 100);
+
+    // this.cotizaciones_arr = (!this.cotizaciones_arr.length) 
+    // ? data_recuperda_arr
+    // :  this._publicos.actualizarArregloExistente(this.cotizaciones_arr, cotizaciones_completas, campos )
 
   }
   

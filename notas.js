@@ -2,10 +2,10 @@
 /*
 
 git add .
-git commit -m "algunas correciones comentarios ing genaro part-2 (proceso)"
+git commit -m "algunas correciones comentarios ing genaro part-3 (proceso)"
 git push -u origin
 
-shutdown -s -t 300 -c 'XD'
+shutdown -s -t 600 -c 'XD'
 ls
 ls
 

@@ -1,13 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 
 
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { child, get, getDatabase, onChildAdded, onChildChanged, onValue, push, ref, set, update } from "firebase/database";
+import {  getDatabase, ref } from "firebase/database";
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { ClientesService } from 'src/app/services/clientes.service';
@@ -15,13 +12,6 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
 // import { setInterval } from 'timers';
-
-
-const db = getDatabase()
-const dbRef = ref(getDatabase());
-export interface User {nombre: string}
-
-
 
 @Component({
   selector: 'app-clientes',
@@ -45,23 +35,21 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     objecto_actual:any ={}
   ngOnInit() {
     this.rol()
+    this.asignacion_resultados()
+    this.segundo_llamado()
   }
   ngAfterViewInit(): void {  }
+ 
   rol(){
     
     const { rol, sucursal } = this._security.usuarioRol()
 
     this._rol = rol
     this._sucursal = sucursal
-    this.primer_comprobacion_resultados()
   }
   comprobacion_resultados(){
     const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
-  }
-  primer_comprobacion_resultados(){
-    this.asiganacion_resultados()
-    this.segundo_llamado()
   }
   segundo_llamado(){
     setInterval(()=>{
@@ -69,15 +57,14 @@ export class ClientesComponent implements AfterViewInit, OnInit {
         console.log('recuperando data');
         const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
         this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
-        this.asiganacion_resultados()
+        this.asignacion_resultados()
       }
-    },1500)
+    },500)
   }
   
-  asiganacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
-
-    const clientes_para_tabla = this._publicos.transformaDataCliente(objecto_recuperdado)
+  asignacion_resultados(){
+    this.objecto_actual = this._publicos.nueva_revision_cache('clientes')
+    const clientes_para_tabla = this._publicos.transformaDataCliente(this.objecto_actual)
     const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(clientes_para_tabla, 'sucursal', this._sucursal);
     const data_recuperda_arr = this._publicos.crearArreglo2(objetoFiltrado)
 
@@ -93,11 +80,11 @@ export class ClientesComponent implements AfterViewInit, OnInit {
       'telefono_movil',
       'tipo'
     ]
-    this.objecto_actual = objecto_recuperdado
+    
+    setTimeout(() => {
+      this.clientes_arr = this.clientes_arr.length ? this._publicos.actualizarArregloExistente(this.clientes_arr, data_recuperda_arr, campos) : data_recuperda_arr;
+    }, 100);
 
-    this.clientes_arr = (!this.clientes_arr.length) 
-    ? data_recuperda_arr
-    :  this._publicos.actualizarArregloExistente(this.clientes_arr, data_recuperda_arr, campos )
 
   }
   

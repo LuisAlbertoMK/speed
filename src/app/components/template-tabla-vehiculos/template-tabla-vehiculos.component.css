@@ -1,6 +1,11 @@
 table {
     width: 100%;
   }
+  th{
+    font-weight: bold;
+    font-size: 14px;
+    color: blue;
+  }
   
   tr.example-detail-row {
     height: 0;

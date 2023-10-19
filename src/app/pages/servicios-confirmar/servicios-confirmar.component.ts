@@ -5,7 +5,7 @@ import { getDatabase, ref, update } from 'firebase/database';
 import SignaturePad from 'signature_pad';
 
 import { EmailsService } from 'src/app/services/emails.service';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
@@ -88,11 +88,11 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     cliente:'', data_cliente:{}, vehiculo:'', data_vehiculo:{},sucursal:'', data_sucursal:{}, reporte:{}, no_os:'', dataFacturacion: {},observaciones:'',
     checkList:[], vehiculos:[], elementos:[], iva:true, formaPago:'1', margen: 25, personalizados: [],
     detalles:[],diasEntrega: 0, fecha_promesa: '', firma_cliente:null, pathPDF:'', status:null, diasSucursal:0,
-    fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: '', descuento:0
+    fecha_recibido:'', notifico:true,servicio:'1', tecnico:'', showNameTecnico: '', descuento:0, kilometraje: 0
   }
 
   sinDetalles: boolean = false
-  kilometraje:number =0; diasEntrega:number = null
+   diasEntrega:number = null
 
   
   colorPluma:string = '#010101'
@@ -200,7 +200,9 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.cambiaTodosCheckA(true)
     this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
   }
- 
+  asignaKilometraje(valor){
+    this.infoConfirmar.kilometraje =  (parseInt(valor)<0) ? 0 : parseInt(valor)
+  }
 
   async acciones(){
     console.log(this.enrutamiento);
@@ -574,6 +576,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     mainCanvas.addEventListener('touchend',touchUp)
 
   }
+ 
   limpiarCanvas() {
     const mainCanvas = <HTMLCanvasElement> document.getElementById('main-canvas');
     if (!mainCanvas) return
@@ -581,56 +584,101 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     context.clearRect(0,0,700,500);
   }
 
-  primeraAccion(){
-    Swal.fire(
-      {
-        icon: 'info',
-        title: 'Generando...',
-        text: 'Espere porfavor',
-        // footer: '<a href="">Why do I have this issue?</a>'
-        allowOutsideClick: false,
-        showConfirmButton: false
-      }
-    )
-    Swal.isLoading()
-    setTimeout(()=>{
-      this.guardarImagenCanvas()
-    },100)
-  }
-  guardarImagenCanvas(){
-    html2canvas(document.querySelector("#main-canvas")).then((canvas) => {
-      const datURL = canvas.toDataURL()
-      const blob = this.UrltoBlob(datURL)
-      
-      const file = new File([blob], `detallespersonalizado.png`,{
-        type: blob.type,
-      })
-      // this.blobDetallesPersonalizado = blob
-      this.archTemp = {
-        archivo: blob,
-        nombreArchivo: 'detallespersonalizado.png',
-        estaSubiendo: false,
-        progreso: 0
-      };
-      
-      this.nombre = 'detallespersonalizado.png';
-      
-      const existe = this.archivos.some(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
-      
-      if (existe) {
-        const archIndex = this.archivos.findIndex(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
-        this.archivos[archIndex] = this.archTemp;
-      
-        const fileIndex = this.files.findIndex(f => f.name === 'detallespersonalizado.png');
-        this.files[fileIndex] = file;
-      } else {
-        this.archivos.push(this.archTemp);
-        this.files.push(file);
-      }
-      Swal.close();
+  
+
+  async primeraAccion() {
+    Swal.fire({
+      icon: 'info',
+      title: 'Generando...',
+      text: 'Espere por favor',
+      allowOutsideClick: false,
+      showConfirmButton: false
     });
+    console.time('Execution Time');
+
+    await this.guardarImagenCanvas();
+  
+    Swal.close();
+    console.timeEnd('Execution Time');
+  }
+  async generateBlobFromImage(imageURL) {
+    try {
+      const response = await fetch(imageURL);
+      if (!response.ok) {
+        throw new Error('Error al descargar la imagen');
+      }
+      
+      const blob = await response.blob();
+      
+      return blob;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  async guardarImagenCanvas() {
+    const canvas = await html2canvas(document.querySelector('#main-canvas'));
+    const datURL = canvas.toDataURL();
+    const blob = this.UrltoBlob(datURL);
+    
+    const file = new File([blob], 'detallespersonalizado.png', { type: blob.type });
+  
+    this.archTemp = {
+      archivo: blob,
+      nombreArchivo: 'detallespersonalizado.png',
+      estaSubiendo: false,
+      progreso: 0
+    };
+  
+    this.nombre = 'detallespersonalizado.png';
+  
+    const existe = this.archivos.some(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
+  
+    if (existe) {
+      const archIndex = this.archivos.findIndex(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
+      this.archivos[archIndex] = this.archTemp;
+  
+      const fileIndex = this.files.findIndex(f => f.name === 'detallespersonalizado.png');
+      this.files[fileIndex] = file;
+    } else {
+      this.archivos.push(this.archTemp);
+      this.files.push(file);
+    }
+  }
+  // guardarImagenCanvas(){
+  //   html2canvas(document.querySelector("#main-canvas")).then((canvas) => {
+  //     const datURL = canvas.toDataURL()
+  //     const blob = this.UrltoBlob(datURL)
+      
+  //     const file = new File([blob], `detallespersonalizado.png`,{
+  //       type: blob.type,
+  //     })
+  //     // this.blobDetallesPersonalizado = blob
+  //     this.archTemp = {
+  //       archivo: blob,
+  //       nombreArchivo: 'detallespersonalizado.png',
+  //       estaSubiendo: false,
+  //       progreso: 0
+  //     };
+      
+  //     this.nombre = 'detallespersonalizado.png';
+      
+  //     const existe = this.archivos.some(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
+      
+  //     if (existe) {
+  //       const archIndex = this.archivos.findIndex(a => a.nombreArchivo === 'detallespersonalizado' || a.nombreArchivo === 'detallespersonalizado.png');
+  //       this.archivos[archIndex] = this.archTemp;
+      
+  //       const fileIndex = this.files.findIndex(f => f.name === 'detallespersonalizado.png');
+  //       this.files[fileIndex] = file;
+  //     } else {
+  //       this.archivos.push(this.archTemp);
+  //       this.files.push(file);
+  //     }
+  //     Swal.close();
+  //   });
    
-   }
+  //  }
   ///accciones con el drop zone
   onSelect(event) {
     this.archivos =[]

@@ -45,11 +45,9 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <button class="btn btn-sm btn-success" (click)="genera_excel()">genera_excel</button>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end mb-2">
+      <button class="btn btn-sm btn-success" (click)="genera_excel()">Genera excel reporte de gastos</button>
     </div>
-  </div>
   <div class="mat-elevation-z8 table-responsive">
     <table #elements="matSort" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
       <ng-container matColumnDef="id">

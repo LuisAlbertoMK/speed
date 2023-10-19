@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
 
@@ -26,14 +26,14 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
     ]),
   ],
 })
-export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
+export class TemplateTablaVehiculosComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit  {
 
   @Input() vehiculos_arr:any[] = []
   @Input() show_cliente:boolean = false
   
 
   constructor(private router: Router, private _campos: CamposSystemService, private _security:EncriptadoService,
-    private _publicos:ServiciosPublicosService) { }
+    private _publicos:ServiciosPublicosService, private cdref: ChangeDetectorRef) { }
 
 
   dataSource = new MatTableDataSource(); //elementos
@@ -46,23 +46,37 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
   
   miniColumnas:number = 100
   rol_:string
+  contador_resultados:number = 0
 
   ngOnInit(): void {
     const { rol } = this._security.usuarioRol()
     this.rol_ = rol
-    // console.log(rol);
-    this.newPagination()
   }
+  
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['vehiculos_arr']) {
       const nuevoValor = changes['vehiculos_arr'].currentValue;
-      const valorAnterior = changes['vehiculos_arr'].previousValue;
-      // console.log({nuevoValor, valorAnterior});
-        this.dataSource.data = this.vehiculos_arr
-        this.newPagination()
+      // const valorAnterior = changes['vehiculos_arr'].previousValue;
+      const asignado = [...new Set([...nuevoValor])]
+      if (asignado.length) this.newPagination()
     }
   }
+  ngAfterViewInit() {
+    this.newPagination()
+  }
+
+  ngOnDestroy(): void {
+
+  }
+
+  newPagination(){
+    this.contador_resultados = this.vehiculos_arr.length
+    this.dataSource.data = this.vehiculos_arr
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  
   irPagina(pagina, data){
 
     const anterior = this._publicos.extraerParteDeURL()
@@ -79,12 +93,7 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges {
     }
   }
 
-  newPagination(){
-    setTimeout(() => {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, 1000);
-  }
+ 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -5,7 +5,6 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged,signOut, update
 
 const auth = getAuth();
 
-
 import Swal from 'sweetalert2';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';

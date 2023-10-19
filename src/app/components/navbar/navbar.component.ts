@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { child, get, getDatabase, onChildAdded, onChildChanged, onChildRemoved, onValue, ref, set, update } from 'firebase/database';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged,  signOut  } from "firebase/auth";
 
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 import { EmailsService } from '../../services/emails.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 
@@ -140,13 +140,13 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
           console.log('estan todos eliminados');
           clearInterval(intervalo)
           localStorage.setItem('primera_revision', 'ok')
-          this.revision_existe_cache()
+          // this.revision_existe_cache()
         }
       }, 500);
     } else {
       console.log('existe la primera revision');
       // La revisión ya existe en la caché, realizar otras acciones necesarias.
-      this.revision_existe_cache()
+      // this.revision_existe_cache()
     }
   }
   

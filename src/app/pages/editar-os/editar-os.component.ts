@@ -17,7 +17,7 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 import { child, get, getDatabase, onValue, push, ref, update, onChildAdded, onChildChanged, onChildRemoved, query, orderByChild, startAt, equalTo} from "firebase/database";
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 
 import SignaturePad from 'signature_pad';
 import { PdfRecepcionService } from 'src/app/services/pdf-recepcion.service';

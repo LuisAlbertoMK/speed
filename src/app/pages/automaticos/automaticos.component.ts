@@ -27,7 +27,7 @@ import { FormBuilder } from '@angular/forms';
 import { ExporterService } from 'src/app/services/exporter.service';
 import { ServiciosService } from 'src/app/services/servicios.service';
 
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 
 
 import * as XLSX from 'xlsx';

@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import { child, getDatabase, ref, onValue, push } from "firebase/database";
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 import { CamposSystemService } from './campos-system.service';
 import { EncriptadoService } from './encriptado.service';
 import { AutomaticosService } from './automaticos.service';
@@ -1904,13 +1904,7 @@ export class ServiciosPublicosService {
 
         const neuvos_ = this.asignacion_nuevos_elementos(elementos,paquetes, moRefacciones)
         
-        cotizacion.elementos = neuvos_
-
-        console.log(id);
-        console.log(no_cotizacion);
-        
-        console.log(neuvos_);
-        
+        cotizacion.elementos = neuvos_        
 
         const data_cliente = clientes_tranformacion_data[cliente]
         const data_vehiculo = vehiculos[vehiculo]

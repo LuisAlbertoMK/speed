@@ -15,7 +15,6 @@ import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 //animaciones
 
-import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
 import { child, get, getDatabase, onValue, ref, set, push, update } from 'firebase/database';
 import { EncriptadoService } from 'src/app/services/encriptado.service';

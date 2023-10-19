@@ -3,7 +3,7 @@ import { getDatabase, onValue, ref } from 'firebase/database';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
-import Swal from 'sweetalert2';
+
 const db = getDatabase()
 @Component({
   selector: 'app-home',

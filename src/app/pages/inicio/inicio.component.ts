@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-inicio',
@@ -26,23 +26,23 @@ export class InicioComponent implements OnInit {
     {path:'cotizacion', show:'Cotizaciones',icono:'folder'},
     {path:'eliminarEmpresa', show:'Elimina empresa',icono:'ban'},
     {path:'facturacion', show:'Facturación',icono:'file-contract'},
-    {path:'recordatorios', show:'Recordatorios',icono:'alarm-exclamation'},
-    {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
+    {path:'recordatorios', show:'Recordatorios',icono:'bell'},
+    {path:'registraProblemas', show:'Registra problemas',icono:'bug'},
     {path:'reporteGastos', show:'Reporte de gastos',icono:'book'},
-    {path:'servicios', show:'Órdenes de servicio',icono:'car-building'},
+    {path:'servicios', show:'Órdenes de servicio',icono:'toolbox'},
     {path:'sucursales', show:'Sucursales',icono:'landmark'},
-    {path:'usuarios', show:'Usuarios y roles',icono:'user'},
-    {path:'vehiculos', show:'Vehiculos',icono:'user'},
+    {path:'usuarios', show:'Usuarios y roles',icono:'user-shield'},
+    {path:'vehiculos', show:'Vehiculos',icono:'car-alt'},
   ]
   asigancion_roles_cliente = [
     {path:'miPerfil', show:'Mi informacion',icono:'book'},
-    {path:'vehiculos-cliente', show:'Mis vehiculos',icono:'cars'},
+    {path:'vehiculos-cliente', show:'Mis vehiculos',icono:'car-side'},
     {path:'cotizacion-new-cliente', show:'Nueva cotizacion',icono:'calculator'},
     {path:'estadisticasCliente', show:'Mis estadisticas',icono:'chart-pie'},
-    {path:'cotizacionesCliente', show:'Historial cotizaciones',icono:'book-user'},
-    {path:'serviciosCliente', show:'Historial servicios',icono:'car-garage'},
+    {path:'cotizacionesCliente', show:'Historial cotizaciones',icono:'book-open'},
+    {path:'serviciosCliente', show:'Historial servicios',icono:'toolbox'},
     {path:'sucursales', show:'Lista sucursales',icono:'landmark'},
-    {path:'registraProblemas', show:'Registra problemas',icono:'debug'},
+    {path:'registraProblemas', show:'Registra problemas',icono:'bug'},
     {path:'comentarios', show:'Comentarios',icono:'comments'},
     {path:'citas-cliente', show:'Citas Cliente',icono:'user'},
     // {path:'citasCliente', show:'Mis citas',icono:'debug'}

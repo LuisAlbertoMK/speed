@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit, Output, ViewChild,EventEmitter, Input 
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { SucursalesService } from 'src/app/services/sucursales.service';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 
 //aqui importaciones de tables y paginacion
 import {MatPaginator} from '@angular/material/paginator';

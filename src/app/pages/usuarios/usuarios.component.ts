@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import 'animate.css';
+
+import Swal from 'sweetalert2'
 
 import { child, get, getDatabase, onValue, push, ref, set } from "firebase/database";
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
@@ -13,7 +14,7 @@ const dbRef = ref(getDatabase());
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import Swal from 'sweetalert2';
+
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { CamposSystemService } from '../../services/campos-system.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -65,6 +66,7 @@ export class UsuariosComponent implements OnInit {
     const starCountRef = ref(db, `usuarios`)
     onValue(starCountRef, (snapshot) => {
       if (snapshot.exists()) {
+        this._publicos.saber_pesos(snapshot.val())
         const usuarios = this._publicos.crearArreglo2(snapshot.val())
         const nuevos = usuarios.map(a=>{
           if(a.sucursal !=='Todas'){
@@ -84,10 +86,10 @@ export class UsuariosComponent implements OnInit {
           }
         })
         // console.log(nuevos);
-        setTimeout(() => {
+        // setTimeout(() => {
           this.dataSource.data = nuevos
           this.newPagination()
-        }, 1000);
+        // }, 1000);
       }
     }, {
         onlyOnce: true

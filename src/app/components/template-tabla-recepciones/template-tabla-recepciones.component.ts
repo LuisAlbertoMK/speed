@@ -140,21 +140,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     this.dataSource.data = this.recepciones_arr
     this.newPagination()
   }
-  newPagination(){
-    setTimeout(() => {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }, 500);
-  }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
+  
   filtra_informacion(){
     
     const nuevas = [...this.recepciones_arr]
@@ -165,6 +151,21 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
     this.dataSource.data = resultados
     this.newPagination()
   }
+  newPagination(){
+    // setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    // }, 500);
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
 
 
 

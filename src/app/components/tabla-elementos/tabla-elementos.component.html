@@ -11,7 +11,7 @@
     <ng-container matColumnDef="cantidad">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
         <td mat-cell *matCellDef="let row">
-            <input  type="number" min="0" [value]="row.cantidad" maxlength="5" onkeypress="solonumeros(event)" 
+            <input  aria-label="cantidad" type="number" min="0" [value]="row.cantidad" maxlength="5" onkeypress="solonumeros(event)" 
             (change)="editar_cantidad_elemento('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" 
             >
             <!-- (change)="editar('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" -->

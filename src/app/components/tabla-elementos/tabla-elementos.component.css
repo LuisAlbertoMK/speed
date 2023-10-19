@@ -1,7 +1,11 @@
 table {
     width: 100%;
   }
-  
+  th{
+    font-weight: bold;
+    font-size: 14px;
+    color: blue;
+  }
   tr.example-detail-row {
     height: 0;
   }
@@ -47,17 +51,7 @@ table {
   }
   
 
-  .tipo-paquete {
-    color: #5ca04a !important;
-  }
-  
-  .tipo-refaccion {
-    color: #FF8623 !important;
-  }
-  
-  .tipo-mo {
-    color: #3574FA;
-  }
+ 
 
   input.smallInput {
     max-width: 80px;

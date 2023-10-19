@@ -21,7 +21,7 @@ import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { PdfService } from 'src/app/services/pdf.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 import { ClientesService } from '../../services/clientes.service';
 import { CotizacionService } from '../../services/cotizacion.service';
 import { EmailsService } from '../../services/emails.service';

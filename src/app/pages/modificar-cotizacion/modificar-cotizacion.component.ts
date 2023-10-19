@@ -2,7 +2,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getDatabase, onValue, ref, set, push, child, get } from 'firebase/database';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 
 import { UploadFirmaService } from 'src/app/services/upload-firma.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';

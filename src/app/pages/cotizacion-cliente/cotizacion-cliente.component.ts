@@ -24,7 +24,7 @@ import { ServiciosService } from 'src/app/services/servicios.service';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PdfService } from 'src/app/services/pdf.service';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
 import { UploadPDFService } from 'src/app/services/upload-pdf.service';
 import { AutomaticosService } from 'src/app/services/automaticos.service';
 import { EmailsService } from 'src/app/services/emails.service';

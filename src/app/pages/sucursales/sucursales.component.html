@@ -1,6 +1,7 @@
 <app-template-navegacion></app-template-navegacion>
 
 
+
   <!-- <pre>{{listaArrarySucursales }}</pre> -->
   <div class="row col-lg-12 col-md-12 col-sm-12 ">
     <div class="card">
@@ -47,7 +48,9 @@
                         <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1">
                           <div class="d-grid gap-2">
                             <button aria-label="boton mostrar sucursal mas grande" class="btn verImagen btn-sm" type="button" alt="info" id="btncorreo"
-                              (click)="verImagen(sucursal)" [style]="'cursor: pointer'"><i class="fad fa-expand"></i></button>
+                              (click)="verImagen(sucursal)" [style]="'cursor: pointer'">
+                              <i class="fas fa-expand"></i> H
+                            </button>
                           </div>
                         </div>
                       </ng-container>
@@ -61,13 +64,13 @@
                           <div class="d-grid gap-2">
                             <button aria-label="boton de informacion" class="btn btn-primary btn-sm" type="button" (click)="getInformacionSucursal(sucursal.id)"
                               data-bs-toggle="modal" data-bs-target="#detallesSucursal"
-                              [style]="'cursor: pointer'"><i class="fad fa-edit"></i></button>
+                              [style]="'cursor: pointer'"><i class="fas fa-edit"></i></button>
                           </div>
                         </div>
                         <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
                           <div class="d-grid gap-2">
                             <button aria-label="boton cambio de status" class="btn btn-danger btn-sm" type="button"
-                              (click)="changeStatus(sucursal,false)"><i class="fad fa-trash"></i></button>
+                              (click)="changeStatus(sucursal,false)"><i class="fas fa-trash"></i></button>
                           </div>
                         </div>
                         </div>
@@ -76,13 +79,13 @@
                           <div class="d-grid gap-2">
                             <button aria-label="boton de sucursal" class="btn btn-success btn-sm" type="button"
                               (click)="getInforSucursalNew(sucursal.id, sucursal.sucursal)" data-bs-toggle="modal"
-                              data-bs-target="#cargaImagen"><i class="fad fa-images"></i></button>
+                              data-bs-target="#cargaImagen"><i class="fas fa-images"></i></button>
                           </div>
                         </div>
                         <div class="col col-lg-6 col-md-6 col-sm-6 col-6 m-0 mt-1">
                           <div class="d-grid gap-2">
                             <button aria-label="boton ver imagen sucursal" class="btn verImagen btn-sm" type="button" alt="info"
-                              (click)="verImagen(sucursal)"><i class="fad fa-expand"></i></button>
+                              (click)="verImagen(sucursal)"><i class="fas fa-expand"></i></button>
                           </div>
                         </div>
       
@@ -91,7 +94,7 @@
                         <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1 ">
                           <div class="d-grid gap-2">
                             <button aria-label="boton de change status" class="btn btn-success btn-sm text-white" type="button"
-                              (click)="changeStatus(sucursal,true)"><i class="fad fa-check-circle"></i></button>
+                              (click)="changeStatus(sucursal,true)"><i class="fas fa-check-circle"></i></button>
                           </div>
                         </div>
       

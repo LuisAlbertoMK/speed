@@ -102,7 +102,10 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     this._sucursal = sucursal 
 
     // this.primer_comprobacion_resultados()
-    this.primer_comprobacion_resultados_multiple()
+    this.campo_vigilar.forEach(campo_vigila=>{
+      this.asiganacion_resultados_multiples(campo_vigila)
+    })
+    this.segundo_llamado_multiple()
     
   }
   vigila_calendario(){
@@ -128,12 +131,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
   }
-  primer_comprobacion_resultados_multiple(){
-    this.campo_vigilar.forEach(campo_vigila=>{
-      this.asiganacion_resultados_multiples(campo_vigila)
-    })
-    this.segundo_llamado_multiple()
-  }
+
   segundo_llamado_multiple(){
     setInterval(()=>{
       this.campo_vigilar.forEach(campo_vigila=>{
@@ -143,17 +141,16 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           this.asiganacion_resultados_multiples(this.campo_vigilar)
         }
       })
-
-    },1500)
+    },500)
   }
   asiganacion_resultados_multiples(campo_vigila){
     this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
     this.genera_resultados()
   }
   genera_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+    this.objecto_actual = this._publicos.nueva_revision_cache('recepciones')
 
-    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this._sucursal);
+    const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(this.objecto_actual, 'sucursal', this._sucursal);
 
     const {start, end }= this.fecha_formateadas
 
@@ -194,11 +191,11 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       // 'vencimiento',
     ]
 
-    this.objecto_actual = objecto_recuperdado
-    this.recepciones_arr = (!this.recepciones_arr.length) 
-    ? recepciones_completas
-    :  this._publicos.actualizarArregloExistente(this.recepciones_arr, recepciones_completas, campos )
+    
 
+    setTimeout(() => {
+      this.recepciones_arr = this.recepciones_arr.length ? this._publicos.actualizarArregloExistente(this.recepciones_arr, recepciones_completas, campos) : recepciones_completas;
+    }, 100);
 
   }
   
