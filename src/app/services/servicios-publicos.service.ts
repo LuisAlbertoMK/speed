@@ -1540,49 +1540,51 @@ export class ServiciosPublicosService {
     }
 
     genera_reporte(data){
-      const paquetes_c = this.nueva_revision_cache('paquetes')
+      // const paquetes_c = this.nueva_revision_cache('paquetes')
 
       const {margen, iva, elementos, descuento, formaPago } = data
-      
-      const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
 
+      const enCaso_meses = this.formasPAgo.find(f=>f.id === String(formaPago))
+      
       const paquetes = this.filtro_elementos(elementos, true)
       const elementos_ = this.filtro_elementos(elementos, false)
 
       const otro = this.nuevo_reporte(elementos_)
 
-      const aplicado = paquetes.map(paquete=>{
-        // const {elementos, cantidad, id} = paquete
-        const data_aplicada = this.crear_new_object(paquete)
-        const {elementos, cantidad, id} = data_aplicada
-
-        let new_elements = []
-
-        if (!elementos) {
-          const nueva_info_paquete = this.crear_new_object(paquetes_c[id])
-          const {elementos: new_elements_c } = nueva_info_paquete
-          new_elements = new_elements_c
-        }else{
-          new_elements = elementos
-        }
-        let nuevos_elementos:any[] = [...new_elements]
-        const filtro_aprobado_internos = nuevos_elementos.filter(e=>e.aprobado)
-        return nuevo_reporte_paquete(this.nuevo_reporte(filtro_aprobado_internos), cantidad) 
+      // const new_reporte = this.sumatoria_reporte_paquete(nuevosElementos, 25);
+      // genera_nuevo_reporte de paquete
+      const nuevos_paquetes = paquetes.map(paquete=>{
+        const {elementos} = paquete
+        paquete.reporte = this.sumatoria_reporte_paquete(elementos, 25);
+        return paquete
       })
 
-      function nuevo_reporte_paquete(reporte_get, cantidad) {
-        const reporte ={mo: 0,refaccion: 0,refaccionVenta: 0,subtotal: 0,total: 0,ub: 0, }
-        Object.entries(reporte_get).forEach(([key, valor])=>{
-          reporte[key] += parseInt(`${valor}`) * parseInt(cantidad)
+      const sobrescrito = nuva(nuevos_paquetes)
+      function nuva (paquetes:any[]){
+
+        let total_f = 0
+        paquetes.forEach(paquete=>{
+          const {reporte, costo} = paquete
+          if (parseFloat(costo)>0) {
+            total_f += costo
+          }
         })
-        return reporte
+        return total_f
       }
+
+      const aplicado = nuevos_paquetes
+      .filter(paquete => paquete.costo <= 0)
+      .map(paquete=>{
+        const {reporte} = paquete
+        return reporte 
+      })
+
 
       const sumatoria_paquetes = this.sumatorio_reportes(aplicado)
 
       const reporte_sum = this.sumatorio_reportes([sumatoria_paquetes, otro])
 
-      const reporte:any = this.sumatoria_reporte(reporte_sum, margen, iva)
+      const reporte:any = this.sumatoria_reporte(reporte_sum, margen, iva, sobrescrito )
 
         if (enCaso_meses.id === '1') {
           reporte.descuento = Number(descuento)
@@ -1611,7 +1613,6 @@ export class ServiciosPublicosService {
       }
     }
 
-    
     sumatorio_reportes(arreglo_sumatorias){
       const reporte = {mo:0,refaccion:0}
       arreglo_sumatorias.forEach(a=>{
@@ -1623,7 +1624,8 @@ export class ServiciosPublicosService {
     }
     nuevo_reporte(elementos){
       const reporte = {mo:0,refaccion:0}
-      const nuevos = [...elementos].forEach(elemento =>{
+      const nuevos = [...elementos]
+      nuevos.forEach(elemento =>{
         const { costo, precio, status, tipo, cantidad} = elemento
           if (costo > 0 ) {
             reporte[tipo] += costo * cantidad
@@ -1831,7 +1833,7 @@ export class ServiciosPublicosService {
         // console.log(`recepcion: ${id}`);
         // console.log(`reporte:` ,recepcion.reporte);
         
-        const reporte_real = this.sumatoria_reporte(nuevo, margen, iva)
+        const reporte_real = this.sumatoria_reporte(nuevo, margen, iva,0)
         recepcion.reporte_real = reporte_real
         // console.log(`reporte_real: `, reporte_real);
     
@@ -1883,7 +1885,7 @@ export class ServiciosPublicosService {
 
         nuevo.refaccion = total_gastos
 
-        recepcion.reporte_real = this.sumatoria_reporte(nuevo, margen, iva)
+        recepcion.reporte_real = this.sumatoria_reporte(nuevo, margen, iva, 0)
 
         return recepcion
       })
@@ -2086,18 +2088,21 @@ export class ServiciosPublicosService {
       })
       return sumatoria_montos_historial
     }
-    sumatoria_reporte(data, margen, iva){
+    sumatoria_reporte(data, margen, iva, sobrescrito){
       const {mo,refaccion} = data
-      const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0}
+
+      const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0, iva:0,ub:0,sobrescrito:0}
+      reporte.sobrescrito = sobrescrito
       reporte.mo = mo 
       reporte.refaccion = refaccion
       reporte.refaccionVenta = refaccion * (1 +(margen/ 100))
-      reporte.subtotal = reporte.mo + reporte.refaccionVenta
+      reporte.subtotal = reporte.mo + reporte.refaccionVenta + reporte.sobrescrito
       reporte.iva = (iva) ? reporte.subtotal * .16 : 0
       reporte.total = reporte.subtotal + reporte.iva
       if (reporte.subtotal) {
         reporte.ub = (reporte.total - reporte.refaccionVenta) * (100 / reporte.total)
       }
+      
       return reporte
     }
     transformaDataVehiculo(data){
@@ -2230,9 +2235,10 @@ export class ServiciosPublicosService {
       const reporte = {mo:0,refaccion:0, refaccionVenta:0, subtotal:0, total:0,ub:0}
       // Iteramos a través de los elementos del arreglo
         elementos.forEach(elemento=>{
-          const costoElemento = obtenerCostoValido(elemento);
+          const costoElemento = obtenerCostoValido(elemento)
+          const {cantidad} = elemento
           const tipoNormalizado = elemento.tipo // normalizarTipo(elemento.tipo);
-          reporte[tipoNormalizado] += costoElemento;
+          reporte[tipoNormalizado] += costoElemento * cantidad;
         })
         // Calculamos el valor de refaccionVenta y subtotal
         reporte.refaccionVenta = reporte.refaccion * (1 + margen / 100);
@@ -2422,15 +2428,24 @@ export class ServiciosPublicosService {
       for (const [key, entrada] of Object.entries(nuevosPaquetes)) {
         const dataNuevoPaquete = this.crear_new_object(entrada);
         const { elementos, costo } = dataNuevoPaquete;
-        
+        const nuevo_costo = parseFloat(costo) > 0 ? costo : 0 
+        dataNuevoPaquete.costo = nuevo_costo
         // Mapear elementos y agregar información de moRefacciones si existe
-        const nuevosElementos = elementos.map(elemento => {
-          const { id: id_elemento } = elemento;
-    
+        const nuevosElementos = elementos.map((elemento, index) => {
+          const { id: id_elemento, cantidad, costo } = elemento;
+          
           if (id_elemento && moRefacciones[id_elemento]) {
-            return { ...elemento, ...moRefacciones[id_elemento], aprobado: true };
+            const data_ele = moRefacciones[id_elemento]
+            const {precio, tipo} = data_ele
+            const subtotal  = (parseFloat(costo) > 0) ? cantidad * costo : cantidad * precio
+            const total =  (tipo === 'refaccion') ? subtotal * 1.25 : subtotal
+            return { ...elemento, ...moRefacciones[id_elemento], aprobado: true, total,index};
           } else {
-            return { ...elemento, aprobado: true, status: true };
+            const data_ele = elemento
+            const {precio, tipo} = data_ele
+            const subtotal  = (parseFloat(costo) > 0) ? cantidad * costo : cantidad * precio
+            const total =  (tipo === 'refaccion') ? subtotal * 1.25 : subtotal
+            return { ...elemento, aprobado: true, status: true, total, index};
           }
         });
   
@@ -2442,7 +2457,7 @@ export class ServiciosPublicosService {
         const nuevoPaquete = {
           ...dataNuevoPaquete,
           elementos: nuevosElementos,
-          total: (parseFloat(costo) > 0) ? parseFloat(costo) : total,
+          total: (parseFloat(costo) > 0) ? costo : total,
           precio: total,
           reporte
         };

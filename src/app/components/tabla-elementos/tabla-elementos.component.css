@@ -1,7 +1,7 @@
 table {
     width: 100%;
   }
-  th{
+  th.principal{
     font-weight: bold;
     font-size: 14px;
     color: blue;
@@ -50,7 +50,9 @@ table {
     opacity: 0.5;
   }
   
-
+  .btn-usm{
+    --bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .55rem;
+  }
  
 
   input.smallInput {

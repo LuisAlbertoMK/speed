@@ -33,29 +33,36 @@ export class TablaElementosComponent implements OnInit, OnChanges {
   @Input() data_editar
   @Input() elementos
   @Output() elementos_Actuales : EventEmitter<any>
-  dataSource = new MatTableDataSource(); //elementos
-  //  'clienteShow'
-   cotizaciones = ['nombre','cantidad','total']; 
-   columnsToDisplayWithExpand = [...this.cotizaciones, 'opciones', 'expand']; 
-   expandedElement: any | null; 
-   @ViewChild('elementos') sort: MatSort 
-   @ViewChild('elementosPaginator') paginator: MatPaginator
+    dataSource = new MatTableDataSource(); //elementos
+    displayedColumns: string[] = ['nombre','cantidad','total'];
+    // columnsToDisplay: string[] = this.displayedColumns.slice();
+    columnsToDisplayWithExpand = [...this.displayedColumns, 'xcolumn', 'ycolumn']; 
+    expandedElement: any | null; 
+    @ViewChild('elementos') sort: MatSort 
+    @ViewChild('elementosPaginator') paginator: MatPaginator
 
    formasPago        =   [ ...this._cotizaciones.formasPago ]
 
    elementos_internos= []
-
+  _rol:string
   ngOnInit(): void {
-    // this.realizaOperaciones()
     this.rol()
   }
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
+    // console.log(this._security.usuarioRol());
+    this._rol = rol
+    if (rol !== 'cliente') this.addColumn(['precio','costo'])
+  }
+  addColumn(arreglo:any[]){
+    const ordenDeseado = ['nombre', 'cantidad','precio', 'costo', 'total','xcolumn','ycolumn'];
+
+    const arrayOriginal = [...new Set([...this.columnsToDisplayWithExpand, ...arreglo])]
+
+    const arrayOrdenado = ordenDeseado.filter(item => arrayOriginal.includes(item));
+
+    this.columnsToDisplayWithExpand = arrayOrdenado
     
-    if (rol === 'cliente') {
-    }else{
-      this.cotizaciones = ['nombre','cantidad','precio','costo','total']
-    }
   }
  
   ngOnChanges(changes: SimpleChanges) {
@@ -64,43 +71,102 @@ export class TablaElementosComponent implements OnInit, OnChanges {
       const valorAnterior = changes['elementos'].previousValue;
       // console.log({nuevoValor, valorAnterior});
       // console.log('hubo cambio en al informacion de los elementos');
-      
-      this.asigancion_elementos()
+      // console.log(nuevoValor);
+      this.newPagination()
+      // this.asigancion_elementos()
     }
   }
-  asigancion_elementos(){
-    this.elementos_internos = ([...new Set([...this.elementos])])
-    this.dataSource.data = this.elementos
-    this.newPagination()
-  }
+  // asigancion_elementos(){
+  //   const espera = this._publicos.crear_new_object([...new Set([...this.elementos])])
+  //   this.elementos_internos = espera
+  //   this.dataSource.data = this.elementos
+  //   this.newPagination()
+  // }
+  
 
-  elementos_internos_actuales(){
-    this.elementos_Actuales.emit( this.elementos_internos )
-  }
+  
   editar_cantidad_elemento(donde:string, elemento_data ,valor){
     const nueva_cantidad = parseFloat(valor)
     const { index:index_editar } = elemento_data
 
-    let nuevos = [...this.elementos_internos]
-    nuevos[index_editar][donde] = nueva_cantidad
-    // this.asignar_nuevos_elementos(nuevos)
-    this.elementos_internos = nuevos
-    this.elementos_internos_actuales()
+    let nuevos = [...new Set([...this.elementos])]
+    const elemento_edit = this._publicos.crear_new_object(nuevos[index_editar])
+    elemento_edit[donde] = nueva_cantidad
+
+    nuevos[index_editar]= {...elemento_edit}
+    this.elementos_internos_actuales(nuevos)
   }
+  editarSubelemento(donde:string, padre, hijo ,valor){
+    const nueva_cantidad = parseFloat(valor)
+
+    // console.log(donde, padre, hijo ,valor);
+    const { index:index_editar } = padre
+    const { index:index_hijo } = hijo
+    
+
+    let nuevos = [...new Set([...this.elementos])]
+    const elemento_edit = this._publicos.crear_new_object(nuevos[index_editar])
+    const {elementos} = elemento_edit
+    
+    
+    const elemento_hijo = this._publicos.crear_new_object(elementos[index_hijo])
+
+    elemento_hijo[donde] = nueva_cantidad
+    elementos[index_hijo] = elemento_hijo
+
+    nuevos[index_editar] = {...elemento_edit}
+    
+    this.elementos_internos_actuales(nuevos)
+  }
+
   eliminaElemento(data){
     const { index:index_elimina } = data
-    let nuevos = [...this.elementos_internos]
+    let nuevos = [... new Set([...this.elementos])]
     nuevos = nuevos.filter((elemento, index) => index !== index_elimina);
     this.elementos_internos = nuevos
-    this.elementos_internos_actuales()
+    this.elementos_internos_actuales(nuevos)
+  }
+  elementos_internos_actuales(nuevos){
+    // const filtro_paquetes = nuevos.filter(ele=>ele.tipo === 'paquete')
+    // const filtro_elementos = nuevos.filter(ele=>ele.tipo === 'paquete')
+    const nuevos_elementos = nuevos.map(elemento=>{
+      if (elemento.tipo === 'paquete') {
+        const {elementos} = elemento
+        
+        const reporte = this._publicos.sumatoria_reporte_paquete(elementos, 25);
+        // console.log(reporte);
+        const {subtotal} = reporte
+        elemento.total = subtotal
+        elemento.reporte = reporte
+        elemento.elementos = sustitulle_infor(elementos)
+      }
+      return elemento
+    })
+
+    function sustitulle_infor(nuevos_elementos:any[]){
+      nuevos_elementos.map(elemento=>{
+        const {cantidad, tipo} = elemento
+        const costoElemento = obtenerCostoValido(elemento)
+        let subtotal =  cantidad * costoElemento;
+        const total = (tipo === 'refaccion') ? subtotal * 1.25 : subtotal
+        elemento.total = total
+        return elemento
+      })
+      return nuevos_elementos
+    }
+    function obtenerCostoValido(elemento) {
+      return elemento.costo > 0 ? elemento.costo : elemento.precio;
+    }
+      this.elementos_Actuales.emit( nuevos_elementos )
   }
   
 
   newPagination(){
-    setTimeout(() => {
+    // setTimeout(() => {
+      this.dataSource.data = this.elementos
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-    }, 500);
+    // }, 500);
   }
 
 }

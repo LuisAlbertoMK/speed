@@ -71,3 +71,6 @@ a {
   tr.anima{
     height: 35px;
   }  
+  .btn-usm{
+    --bs-btn-padding-y: .05rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .55rem;
+  }

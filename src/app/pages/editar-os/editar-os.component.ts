@@ -488,7 +488,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
     this.data_editar.reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
     const nuevo = JSON.parse(JSON.stringify(this.data_editar.reporte));
       nuevo['refaccion'] = total_gastos
-    const reporte_real = this._publicos.sumatoria_reporte(nuevo, margen, iva)
+    const reporte_real = this._publicos.sumatoria_reporte(nuevo, margen, iva, 0)
     this.data_editar.reporte_real = reporte_real
     this.data_editar.elementos = elementos
     this.dataSource.data = elementos

@@ -1,49 +1,55 @@
-<!-- <button (click)="realizaOperaciones()" class="btn btn-danger">realizaOperaciones()</button> -->
 
 <div class="mat-elevation-z8 table-responsive">
     <table mat-table #elementos="matSort" matSort
     [dataSource]="dataSource" multiTemplateDataRows
     class="mat-elevation-z8">
     <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-        <td mat-cell *matCellDef="let row" [ngClass]="'tipo-'+ row.tipo"> {{ row.nombre}} </td>
-    </ng-container>
-    <ng-container matColumnDef="cantidad">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </th>
-        <td mat-cell *matCellDef="let row">
-            <input  aria-label="cantidad" type="number" min="0" [value]="row.cantidad" maxlength="5" onkeypress="solonumeros(event)" 
-            (change)="editar_cantidad_elemento('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" 
-            >
-            <!-- (change)="editar('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" -->
-        </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Nombre </th>
+        <td mat-cell *matCellDef="let row" [ngClass]="'tipo-'+ row.tipo"> {{ row.nombre | capitalizarUno}} </td>
     </ng-container>
     <ng-container matColumnDef="precio">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Precio </th>
         <td mat-cell *matCellDef="let row"> {{ row.precio | monedas}}   </td>
     </ng-container>
+    <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Cantidad </th>
+        <td mat-cell *matCellDef="let row">
+            <input  aria-label="cantidad" type="number" min="1" [value]="row.cantidad" maxlength="5" onkeypress="soloNumeros(event)" 
+            (change)="editar_cantidad_elemento('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" 
+            >
+        </td>
+    </ng-container>
+    
     <ng-container matColumnDef="costo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Costo </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Costo </th>
         <td mat-cell *matCellDef="let row"> 
-            <!-- <input  type="number" min="0" [value]="row.costo" maxlength="5" onkeypress="validarDecimal(event)" (change)="editar('costo',row, costoSobre.value)" #costoSobre class="smallInput"> -->
+            <input  aria-label="costo" type="number" min="0" [value]="row.costo" maxlength="6" onkeypress="validarDecimal(event)" 
+            (change)="editar_cantidad_elemento('costo',row, costoNuevo.value)" #costoNuevo class="smallInput" 
+            >
         </td>
     </ng-container>
     <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> P.U </th>
-        <td mat-cell *matCellDef="let row"> {{ row.precio | monedas}}   </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Total </th>
+        <td mat-cell *matCellDef="let row"> {{ row.total | monedas}}   </td>
     </ng-container>
-    <ng-container matColumnDef="opciones">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+    <ng-container matColumnDef="xcolumn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Opciones </th>
         <td mat-cell *matCellDef="let row"> 
-            <i class="fa fa-trash pointer text-danger" (click)="eliminaElemento(row)"></i>
+            <!-- <i class="fa fa-trash pointer text-danger" (click)="eliminaElemento(row)"></i> -->
+            <button type="button" class="btn btn-danger btn-usm" (click)="eliminaElemento(row)">
+                <i class="fas fa-trash pointer" ></i> Eliminar
+              </button>
         </td>
     </ng-container>
-    <ng-container matColumnDef="expand">
+    <ng-container matColumnDef="ycolumn">
     <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
     <td mat-cell *matCellDef="let element">
-    <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
-    </button>
+        <ng-container *ngIf="element.tipo === 'paquete'">
+            <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+            </button>
+        </ng-container>
     </td>
     </ng-container>
 
@@ -52,16 +58,51 @@
     <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
     <div class="example-element-detail"
             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-        <div class="example-element-diagram">
-        <div class="example-element-position"> {{element.position}} </div>
-        <div class="example-element-symbol"> {{element.symbol}} </div>
-        <div class="example-element-name"> {{element.name}} </div>
-        <div class="example-element-weight"> {{element.weight}} </div>
-        </div>
-        <div class="example-element-description">
-        {{element.description}}
-        <span class="example-element-description-attribution"> -- Wikipedia </span>
-        </div>
+            <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th class="text-start">Nombre</th>
+                      <th class="text-start">Descripcion</th>
+                      <th class="text-start">Cantidad</th>
+                      <th class="text-end" *ngIf="_rol !== 'cliente'">Costo sobrescrito</th>
+                      <th class="text-end" *ngIf="_rol !== 'cliente'">Costo</th>
+                      <th class="text-end">Total</th>
+                      <th >&nbsp;</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of element.elementos; let i = index">
+                      <th scope="row">{{i +  1 }}</th>
+                      <td class="text-start" [ngClass]="'tipo-'+ item.tipo">
+                        {{item.nombre | capitalizarUno}}
+                      </td>
+                      <td>
+                        {{item.descripcion}}
+                      </td>
+                      <td class="text-center" >
+                        <ng-container *ngIf="_rol !== 'cliente'; else readonlyContent">
+                            <input aria-label="cantidad" type="number" min="1" [value]="item.cantidad" maxlength="6" (change)="editarSubelemento('cantidad', element, item, subCantidad.value)" #subCantidad class="smallInput">
+                        </ng-container>
+                        <ng-template #readonlyContent>
+                            <span>{{ item.cantidad }}</span>
+                        </ng-template>
+                      </td>
+                      <td class="text-end" *ngIf="_rol !== 'cliente'">
+                        {{item.costo}}
+                        <input aria-label="costo" type="number" min="0" [value]="item.costo" maxlength="6" (change)="editarSubelemento('costo', element, item, subcosto.value)" #subcosto class="smallInput">
+                      </td>
+                      <td class="text-end" *ngIf="_rol !== 'cliente'">{{item.precio | monedas}}</td>
+                      <td class="text-end">{{item.total | monedas}}</td>
+                      <td class="text-end">
+                        <!-- (click)="eliminaElemento(row)" -->
+                        <!-- <i class="fa fa-trash pointer btn btn-sm btn-danger" (click)="eliminaSubElemento(row,item)" ></i> -->
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
     </div>
     </td>
     </ng-container>
@@ -75,6 +116,6 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
 
-    <mat-paginator #elementosPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <mat-paginator #elementosPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
 </div>
 

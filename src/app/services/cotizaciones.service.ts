@@ -42,7 +42,7 @@ export class CotizacionesService {
 
   camposDesgloce = [
     {valor:'mo', show:'mo'},
-    // {valor:'refacciones_a', show:'refacciones a'},
+    {valor:'sobrescrito', show:'sobrescrito'},
     {valor:'refaccionVenta', show:'refacciones'},
     {valor:'descuento', show:'descuento'},
     {valor:'subtotal', show:'subtotal'},
@@ -59,6 +59,8 @@ export class CotizacionesService {
     {valor:'total', show:'total'},
   ]
   camposDesgloce_cliente = [
+    {valor:'refaccionVenta', show:'refacciones'},
+    {valor:'mo', show:'mo'},
     {valor:'subtotal', show:'subtotal'},
     {valor:'iva', show:'iva'},
     {valor:'total', show:'total'},

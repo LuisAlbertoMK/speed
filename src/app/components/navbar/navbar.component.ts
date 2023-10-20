@@ -140,17 +140,19 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
           console.log('estan todos eliminados');
           clearInterval(intervalo)
           localStorage.setItem('primera_revision', 'ok')
-          // this.revision_existe_cache()
+          this.revision_existe_cache()
         }
       }, 500);
     } else {
       console.log('existe la primera revision');
       // La revisión ya existe en la caché, realizar otras acciones necesarias.
-      // this.revision_existe_cache()
+      this.revision_existe_cache()
     }
   }
   
   revision_existe_cache(){
+    console.log('aqui');
+    
     const faltantes = {}
     const existentes = {}
     let timer:number = 2000

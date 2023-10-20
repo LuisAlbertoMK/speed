@@ -1046,6 +1046,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         desgloce: this._publicos.construyeDesgloceEmail(nueva)
       }
       this.infoConfirmar.no_os = this.infoConfirmar.no_os
+
       // console.log(dataMail);
       // console.log(this.infoConfirmar);
       Swal.fire({

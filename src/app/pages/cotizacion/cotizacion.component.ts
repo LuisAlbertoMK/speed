@@ -1,19 +1,6 @@
 import {AfterViewInit,Component,OnDestroy,OnInit,ViewChild,} from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { SucursalesService } from 'src/app/services/sucursales.service';
-
-import { getDatabase, onValue, ref, set, push, get, child, limitToFirst, onChildChanged } from 'firebase/database';
-import { CotizacionService } from 'src/app/services/cotizacion.service';
-
-const db = getDatabase()
-const dbRef = ref(getDatabase());
-export interface User {
-  nombre: string;
-}
 
 export interface Item { id: string; name: string; }
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -22,12 +9,7 @@ import localeES from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { ServiciosPublicosService } from '../../services/servicios-publicos.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
-import { CamposSystemService } from '../../services/campos-system.service';
-import { ServiciosService } from 'src/app/services/servicios.service';
-import { CotizacionesService } from 'src/app/services/cotizaciones.service';
-import { ClientesService } from 'src/app/services/clientes.service';
-import { VehiculosService } from 'src/app/services/vehiculos.service';
-import { ExporterService } from '../../services/exporter.service';
+
 import { FormControl, FormGroup } from '@angular/forms';
 
 registerLocaleData(localeES, 'es');
@@ -49,14 +31,9 @@ registerLocaleData(localeES, 'es');
 export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   
   constructor(
-    private _publicos: ServiciosPublicosService, private _security:EncriptadoService, private _campos: CamposSystemService,
-    private router: Router, private _sucursales: SucursalesService, private _cotizacion: CotizacionService,
-    private _servicios: ServiciosService, private _cotizaciones: CotizacionesService, private _clientes: ClientesService,
-    private _vehiculos: VehiculosService, private rutaActiva: ActivatedRoute, private _exporter_excel: ExporterService
+    private _publicos: ServiciosPublicosService, private _security:EncriptadoService,private router: Router, 
+    private rutaActiva: ActivatedRoute
   ) {
-    // this.itemsCollection = this.afs.collection<Item>('partesAuto');
-    // this.items = this.itemsCollection.valueChanges()
-   
   }
   miniColumnas:number = 100
   
@@ -77,7 +54,6 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   async ngOnInit() {
     this.rol()
     this.vigila_calendario()
-    // this.vigila_hijo()
     this.resetea_horas_admin()
   }
   ngAfterViewInit(): void { 
@@ -165,12 +141,6 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     // :  this._publicos.actualizarArregloExistente(this.cotizaciones_arr, cotizaciones_completas, campos )
 
   }
-  
-
-
-  
-
-
 
   vigila_calendario(){
     this.fechas_filtro.valueChanges.subscribe(({start:start_, end: end_})=>{

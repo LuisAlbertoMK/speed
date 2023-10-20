@@ -24,11 +24,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   
 .tipo-refaccion {
     color: #FF8623 !important;
+    font-weight: bold;
 }
   
 .tipo-mo {
     color: #3574FA;
+    font-weight: bold;
 }
 .pointer{
     cursor: pointer;
+    font-weight: bold;
 }

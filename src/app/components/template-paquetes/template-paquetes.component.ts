@@ -36,9 +36,9 @@ export class TemplatePaquetesComponent implements OnInit,OnChanges {
       const nuevoValor = changes['paquetes_arr'].currentValue;
       const valorAnterior = changes['paquetes_arr'].previousValue;
       console.log({nuevoValor, valorAnterior});
-      // console.log(nuevoValor);
-      this.dataSourcePaquetes.data = nuevoValor
-      this.newPagination()
+      console.log(nuevoValor);
+      // this.dataSourcePaquetes.data = nuevoValor
+      // this.newPagination()
     }
   }
 

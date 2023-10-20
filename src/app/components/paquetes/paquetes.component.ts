@@ -4,10 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
-const db = getDatabase()
-const dbRef = ref(getDatabase());
+
 
 @Component({
   selector: 'app-paquetes',
@@ -54,31 +52,22 @@ export class PaquetesComponent implements OnInit, OnChanges {
     if (changes['modelo']) {
       const nuevoValor = changes['modelo'].currentValue;
       const valorAnterior = changes['modelo'].previousValue;
-      // console.log({nuevoValor, valorAnterior});
-      // console.log(nuevoValor);
       this.modelo_temp = (nuevoValor) ?  nuevoValor : null
-
       this.aplicaFiltro()
     }
   }
   
   aplicaFiltro(){
-    // console.log('aplicando filtro');
-    
+
     const paquetes = this._publicos.nueva_revision_cache('paquetes');
     const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
     const armadfos =this._publicos.armar_paquetes({moRefacciones, paquetes} )
     
     const paquetes_filtrados = (this.modelo_temp) ? this._publicos.filtrarObjetoPorPropiedad(armadfos, 'modelo', this.modelo):  armadfos
     this.listaPaquetes_arr = this._publicos.crearArreglo2(paquetes_filtrados)
-    // console.log(paquetes_filtrados);
-    // moRefacciones, paquetes
-
     
-    
-    let data = (this.modelo_temp) ? this.listaPaquetes_arr.filter((paquete) => paquete.modelo === this.modelo) : this.listaPaquetes_arr
-    this.dataSourcePaquetes.data = data;
-    this.newPagination('paquetes')
+    this.dataSourcePaquetes.data = (this.modelo_temp) ? this.listaPaquetes_arr.filter((paquete) => paquete.modelo === this.modelo) : this.listaPaquetes_arr
+    this.newPagination()
   }
 
   dataElement(data:any){
@@ -95,12 +84,8 @@ export class PaquetesComponent implements OnInit, OnChanges {
       this.dataSourcePaquetes.paginator.firstPage();
     }
   }
-  newPagination(tabla:String){
-    setTimeout(() => {
-      if (tabla === 'paquetes') {
-        this.dataSourcePaquetes.paginator = this.paginator
-        this.dataSourcePaquetes.sort = this.sort
-      }
-    }, 500);
+  newPagination(){
+    this.dataSourcePaquetes.paginator = this.paginator
+    this.dataSourcePaquetes.sort = this.sort
   }
 }

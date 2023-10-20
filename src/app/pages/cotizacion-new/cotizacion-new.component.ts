@@ -75,12 +75,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
   mo: string          =  this._campos.mo
   miniColumnas:number =  this._campos.miniColumnas
    // tabla
-   dataSource = new MatTableDataSource(); //elementos
-   elementos = ['nombre','cantidad','sobrescrito','precio','total']; //elementos
-   columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
-   expandedElement: any | null; //elementos
-   @ViewChild('elementsPaginator') paginator: MatPaginator //elementos
-   @ViewChild('elements') sort: MatSort //elementos
+   
 
 
   checksBox = this._formBuilder.group({
@@ -473,12 +468,14 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
   agrega_principal(event){
     let nuevos = [...this.infoCotizacion.elementos]
     const {id} = event
+    const actual_elemento = this._publicos.crear_new_object(event)
+    // actual_elemento.costo = (parseFloat(actual_elemento.costo) > 0 ) ? actual_elemento.costo : 0
     if (id) {
       if (this.idPaqueteEditar >=0 ) {
-          nuevos[this.idPaqueteEditar].elementos.push(event)
+          nuevos[this.idPaqueteEditar].elementos.push(actual_elemento)
           this.nuevos_elementos(nuevos)
       }else{
-        nuevos.push(event)
+        nuevos.push(actual_elemento)
         this.nuevos_elementos(nuevos)
       }
     }
@@ -498,13 +495,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
     this.nuevos_elementos(nuevos)
   }
   asignar_nuevos_elementos(nuevos:any[]){
-    const paquetes = this._publicos.nueva_revision_cache('paquetes')
-    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
-    const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
+    // const paquetes = this._publicos.nueva_revision_cache('paquetes')
+    // const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    // const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
     // console.log(paquetes_armados);
     
     let indexados = nuevos.map((elemento, index)=> {
       // console.log(elemento);
+      elemento.costo = (parseFloat(elemento.costo) > 0) ? elemento.costo :0
+      elemento.cantidad = (parseFloat(elemento.cantidad) > 0) ? elemento.cantidad : 1
       const {costo, precio, cantidad, tipo, id} = elemento
       // console.log(id);
       
@@ -518,15 +517,16 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
         elemento.total = (cantidad * ( (costo>0) ? costo : precio))
         elemento.precioShow = ( (costo>0) ? costo : precio)
       }else{
-        if (paquetes_armados[id]) {
-          const data_paquete = paquetes_armados[id]
-          const {reporte} = data_paquete
-          data_paquete.cantidad = (parseInt(cantidad) >= 1) ? parseInt(cantidad) : 1
-          data_paquete.reporte = nuevo_reporte_paquete(reporte, data_paquete.cantidad)
-          elemento = data_paquete
-        }
+        // if (paquetes_armados[id]) {
+        //   const data_paquete = paquetes_armados[id]
+        //   const {reporte} = data_paquete
+        //   data_paquete.cantidad = (parseInt(cantidad) >= 1) ? parseInt(cantidad) : 1
+        //   data_paquete.reporte = nuevo_reporte_paquete(reporte, data_paquete.cantidad)
+        //   elemento = data_paquete
+        // }
       }
-     
+
+      elemento.costo = (parseFloat(elemento.costo) > 0) ? elemento.costo :0
       elemento.index = index
       return elemento
     })
@@ -539,9 +539,11 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
       return reporte
     }
 
-    this.infoCotizacion.elementos = indexados
+    this.infoCotizacion.elementos = this._publicos.crear_new_object(indexados)
     
     this.realizaOperaciones()
+
+    
   }
 
   editar_subelemento_paquete(donde:string ,data , item ,cantidad){
@@ -582,23 +584,20 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
     this.nuevos_elementos(nuevos)
   }
   nuevos_elementos(event){
-    this.asignar_nuevos_elementos([...new Set([...event])])
+      const espera = this._publicos.crear_new_object([...new Set([...event])])
+      this.asignar_nuevos_elementos(espera)
   }
   realizaOperaciones(){
-
-    console.log(this.infoCotizacion);
-    
-
     const { elementos, margen, iva, descuento, formaPago} = this.infoCotizacion
     
+    
     const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
-    
-    
+    // console.log(reporte);
     
     this.infoCotizacion.reporte = reporte
-    this.infoCotizacion.elementos = elementos
-    this.dataSource.data = elementos
-    this.newPagination()
+    // this.infoCotizacion.elementos = elementos
+    // this.dataSource.data = elementos
+    // this.newPagination()
 
   }
   //verificamos que existe el vehiculo seleccionado y que este tenga un id de lo contrario colocamos la informacion en null
@@ -797,16 +796,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
       this.enProceso = false
     })
   }
-  newPagination(){
-    setTimeout(() => {
-    // if (data==='elementos') {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort
-    // }
-    }, 500)
-  }
-
-
 
 
   purifica_informacion(data){

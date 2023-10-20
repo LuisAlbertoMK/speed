@@ -23,7 +23,8 @@ export class MorefaccionesListComponent implements OnInit {
   info_elemento = {}
   info_elemento_temp = {}
   ngOnInit(): void {
-    this.primer_comprobacion_resultados()
+    this.asiganacion_resultados()
+    this.segundo_llamado()
     this.automaticos()
     this.vigila()
   }
@@ -31,26 +32,19 @@ export class MorefaccionesListComponent implements OnInit {
     const objecto_recuperdado = this._publicos.nueva_revision_cache('moRefacciones')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
-  primer_comprobacion_resultados(){
-    this.asiganacion_resultados()
-    this.segundo_llamado()
-  }
+
   segundo_llamado(){
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
         console.log('recuperando data');
-        const objecto_recuperdado = this._publicos.nueva_revision_cache('moRefacciones')
-        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asiganacion_resultados()
       }
-    },1500)
+    },500)
   }
   asiganacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('moRefacciones')
-    const filtrados = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'status', true)
-    // console.log(filtrados);
+    this.objecto_actual = this._publicos.nueva_revision_cache('moRefacciones')
+    const filtrados = this._publicos.filtrarObjetoPorPropiedad(this.objecto_actual, 'status', true)
     this.moRefacciones = this._publicos.crearArreglo2(filtrados)
-    
   }
   vigila(){
     this.myControl.valueChanges.subscribe(elemento=>{

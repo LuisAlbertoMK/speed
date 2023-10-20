@@ -55,8 +55,6 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
         console.log('recuperando data');
-        const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
-        this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asignacion_resultados()
       }
     },500)

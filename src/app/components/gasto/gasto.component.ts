@@ -272,7 +272,7 @@ export class GastoComponent implements OnInit, OnChanges {
         const updates = { }
         if(info_get.tipo === 'orden') {
         
-          const claves_encontradas = await this._automaticos.consulta_ruta('claves_historial_gastos_orden')
+          const claves_encontradas = this._publicos.nueva_revision_cache('claves_historial_gastos_orden')
 
           let nuevas_claves = [...claves_encontradas, clave_ ]
           
@@ -280,7 +280,7 @@ export class GastoComponent implements OnInit, OnChanges {
 
           this._security.guarda_informacion({nombre:'claves_historial_gastos_orden', data: nuevas_claves})
         }else{
-          const claves_encontradas = await this._automaticos.consulta_ruta('claves_historial_gastos_operacion')
+          const claves_encontradas = this._publicos.nueva_revision_cache('claves_historial_gastos_operacion')
           let nuevas_claves = [...claves_encontradas, clave_ ]
           
           updates['claves_historial_gastos_operacion'] = nuevas_claves
