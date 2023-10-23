@@ -897,6 +897,18 @@ export class ServiciosPublicosService {
         fecha.setSeconds(parseInt(segundos, 10));
       return fecha;
     }
+    restarHorasAFecha(fecha, horasARestar) {
+      const milisegundosPorHora = 60 * 60 * 1000;
+      const fechaOriginal = new Date(fecha);
+      const fechaRestada = new Date(fechaOriginal.getTime() - horasARestar * milisegundosPorHora);
+      return fechaRestada;
+    }
+    obtenerHoraDeFecha(fecha) {
+      const hora = fecha.getHours();
+      const minutos = fecha.getMinutes();
+      const segundos = fecha.getSeconds();
+      return `${hora}:${minutos}:${segundos}`;
+    }
     asignarHoraAFecha_new(fecha:string): Date{
       const fechaObj = new Date(fecha);
       return fechaObj;
@@ -1171,6 +1183,9 @@ export class ServiciosPublicosService {
         diaIniciail: dias2[DiaPrimero],
         diaFinal: dias2[DiaFinal],
       };
+    }
+    obtener_difrencias(arreglo, arreglo2){
+      return arreglo.filter(elemento => !arreglo2.includes(elemento))
     }
     obtenerDiferencias(array1, elimina) {
       // const nuevo = 

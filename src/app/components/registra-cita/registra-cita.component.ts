@@ -273,6 +273,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       correo:['',[Validators.required,Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]],
       sucursal: [sucursal, Validators.required],
       horario: ['', Validators.required],
+      fecha: ['', [Validators.required]],
       vehiculo: ['', Validators.required],
       servicio: ['', Validators.required],
       comentario: ['', Validators.required],
@@ -288,6 +289,69 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     
   }
   vigilaDia(){
+    this.citaForm.get('fecha').valueChanges.subscribe((fecha: string) => {
+      console.log(fecha);
+      const hora = `${new Date().getHours()}: ${new Date().getMinutes()}:00`
+      const resetea1 = this._publicos.resetearHoras_horas(new Date(fecha),hora)
+
+      const horas_resta = 6
+      const horarioRecibido = this._publicos.restarHoras(resetea1, horas_resta)
+      horarioRecibido.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+      const hoyDIa = this._publicos.resetearHoras(new Date())
+      const seleccionado = this._publicos.resetearHoras(new Date(fecha))
+
+      const dia_Actual = new Date(fecha).toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
+      console.log(dia_Actual);
+      const horarios_ocupados = []
+        const sucursal = this.citaForm.get('sucursal').value
+        if (sucursal) {
+          if (hoyDIa.getTime() === seleccionado.getTime()) {
+            const toma_hora_actual = new Date()
+           
+            const horarioInicial = `${toma_hora_actual.getHours()}:${toma_hora_actual.getMinutes()}`
+            if (dia_Actual === 'sáb') {
+              console.log('sabado');
+              
+              const horariosValidos = this.horarios['-N2glF34lV3Gj0bQyEWK'].sabado.filter(horario => horario >= horarioInicial);
+              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
+            }else{
+              console.log('lunesViernes');
+              
+              const limite_hoy = this._publicos.resetearHoras_horas(new Date(),'18:20:00')
+              const limite_inicial = this._publicos.obtenerHoraDeFecha(this._publicos.restarHorasAFecha(limite_hoy, 6))
+
+              const horariosValidos = this.horarios['-N2glF34lV3Gj0bQyEWK'].lunesViernes.filter(horario => horario >= horarioInicial && horario <= limite_inicial );
+              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
+            }
+          }else{
+            const horarioInicial = `${horarioRecibido.getHours()}:${horarioRecibido.getMinutes()}`
+            if (dia_Actual === 'sáb') {
+              const horariosValidos = this.horarios['otras'].sabado.filter(horario => horario >= horarioInicial);
+              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
+            }else{
+              const horariosValidos = this.horarios['otras'].lunesViernes.filter(horario => horario >= horarioInicial);
+              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
+            }
+          }          
+        }else{
+          this._publicos.mensajeSwal('Seleccionar sucursal',0)
+        }
+      
+      
+      // console.log(sucursal);
+      // console.log(this.horarios);
+      // const fecha_gem = this._publicos.convertirFecha(dia)
+      // const bu = fecha_gem .toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
+      // if (sucursal === '-N2glF34lV3Gj0bQyEWK') {
+      //   console.log(this.horarios['-N2glF34lV3Gj0bQyEWK']);
+        
+      // }else{
+      //   console.log(this.horarios.otras);
+        
+      // }
+      
+    })
     this.citaForm.get('cotizacion_utiliza').valueChanges.subscribe(async (cotizacion_utiliza: string) => {
       // console.log(cotizacion_utiliza);
       const cliente = this.citaForm.get('cliente').value;
@@ -307,7 +371,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     this.citaForm.get('cliente').valueChanges.subscribe(async (cliente: string) => {
       const cotizacion_utiliza = this.citaForm.get('cotizacion_utiliza').value;
       if (cotizacion_utiliza && cliente) {
-        const cotizacionesRealizadas = await this._publicos.nueva_revision_cache('cotizacionesRealizadas')
+        const cotizacionesRealizadas = this._publicos.nueva_revision_cache('cotizacionesRealizadas')
           const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizacionesRealizadas)
           const filtro_cotizaciones_cliente = this._publicos.filtra_informacion(arreglo_cotizaciones,'cliente',cliente)
           const ordenedas = this._publicos.ordenamiento_fechas_x_campo(filtro_cotizaciones_cliente,'no_cotizacion',false)
@@ -323,7 +387,9 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
   }
   async addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-  
+    const start = this._publicos.crear_new_object(event.value)
+    const  fecha = this._publicos.retorna_fechas_hora({fechaString: start.toString()}).toString
+    this.citaForm.get('fecha').setValue(fecha)
   }
   validarCampo(campo: string){
     return this.citaForm.get(campo).invalid && this.citaForm.get(campo).touched
@@ -356,20 +422,20 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     this.faltante_s = faltante_s
     if (!ok) return
 
-    const fecha_ruta = this.ruta_guardar_cita(new Date())
+    
     const updates = {}
-    // `Citas/${cita_search}/${sucursal}}`
-
     const data_cliente = this._publicos.crear_new_object( this.data_cliente )
-    updates[`Citas/${fecha_ruta}/${data_cliente.sucursal}/${this._publicos.generaClave()}`] = recuperda
-      update(ref(db), updates).then(()=>{
-        this.citaForm.reset()
-        this.inicioDetenerCita(false)
-        this._publicos.mensajeSwal('se registro cita correctamente',1)
-      })
-      .catch(err=>{
-        console.log(err);
-      })
+    updates[`Citas/${this._publicos.generaClave()}`] = recuperda
+    console.log(updates);
+    
+      // update(ref(db), updates).then(()=>{
+      //   this.citaForm.reset()
+      //   this.inicioDetenerCita(false)
+      //   this._publicos.mensajeSwal('se registro cita correctamente',1)
+      // })
+      // .catch(err=>{
+      //   console.log(err);
+      // })
   }
   
   ConfirmaCita(){

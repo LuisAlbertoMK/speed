@@ -79,6 +79,8 @@ export class TemplateTablaVehiculosComponent implements OnInit, OnChanges, OnDes
   
   irPagina(pagina, data){
 
+    if (this.rol_ === 'cliente')  pagina = 'cotizacion-new-cliente' 
+    
     const anterior = this._publicos.extraerParteDeURL()
     
     const {id: id_vehiculo} = this._publicos.crear_new_object(data)

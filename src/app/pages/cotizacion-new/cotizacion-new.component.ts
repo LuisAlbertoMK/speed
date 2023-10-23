@@ -8,11 +8,6 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts.js";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
-//paginacion
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-
 
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -185,8 +180,6 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
   async cargaDataCliente_new(){
 
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
-    
-    
 
     const campos = [
       'cliente',
@@ -268,10 +261,12 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
 
     this.asignar_nuevos_elementos(this.infoCotizacion.elementos)
     const {cliente: id_cliente} = this.infoCotizacion
-    if (id_cliente) {
-      this.vigila_vehiculos_cliente()
-    }
-
+    setTimeout(() => {
+      if (id_cliente) {
+        this.vigila_vehiculos_cliente()
+      }
+    }, 1000);
+    
   }
   vigila_vehiculos_cliente(){
 

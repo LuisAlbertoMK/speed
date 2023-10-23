@@ -99,17 +99,17 @@
           <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
           <ng-container matColumnDef="expandedDetail">
               <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
-                  <div class="example-element-detail row mr-1" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+                  <div class="example-element-detail row m-2" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
                       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
-                          <mat-tab label="Elementos">
+                          <mat-tab label="Elementos" class="m-1">
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1 mt-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1 ">
                               Dias en sucursal: {{row.diasSucursal}}
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1 mt-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 mb-1">
                               Status orden: {{row.status}}
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-1 mt-1" *ngIf="row.reporte">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12" *ngIf="row.reporte">
                               <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                   <app-reporte-desgloce-tarjeta [historial_gastos]="row.historial_gastos_orden" [reporte]="row.reporte" [title]="'Espectativa'"></app-reporte-desgloce-tarjeta>
@@ -123,34 +123,58 @@
                               </div>
 
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
                               <div class="table-responsive">
-                                <table class="table table-sm">
+                                <table class="table table-sm  table-bordered table-con">
                                   <thead>
-                                    <tr>
-                                      <th scope="text-start">Nombre</th>
-                                      <th scope="text-center">Cantidad</th>
-                                      <th scope="text-end">Precio</th>
-                                      <th scope="text-end">Costo</th>
-                                      <th scope="text-end">Subtotal</th>
-                                      <th scope="text-end">Total</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <ng-container *ngFor="let item of row.elementos">
-                                      <tr  >
-                                        <td class="text-start" [ngClass]="'tipo-'+item.tipo">
-                                          {{item.nombre}} &nbsp;
-                                          <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
-                                          <span class="badge badge-info m-1">{{item.status}}</span>
-                                        </td>
-                                        <td class="text-center">{{item.cantidad}}</td>
-                                        <td class="text-end">{{item.precio | monedas}}</td>
-                                        <td class="text-end">{{item.costo | monedas}}</td>
-                                        <td class="text-end">{{item.subtotal | monedas}}</td>
-                                        <td class="text-end">{{item.total | monedas}}</td>
+                                    <ng-container *ngIf="_rol !== 'cliente'; else readonlyHeaders">
+                                      <tr>
+                                        <th scope="text-start">Nombre</th>
+                                        <th scope="text-center">Cantidad</th>
+                                        <th scope="text-end">Precio</th>
+                                        <th scope="text-end">Costo</th>
+                                        <th scope="text-end">Subtotal</th>
+                                        <th scope="text-end">Total</th>
                                       </tr>
                                     </ng-container>
+                                    <ng-template #readonlyHeaders>
+                                      <tr>
+                                        <th scope="text-start">Nombre</th>
+                                        <th scope="text-end">Cantidad</th>
+                                      </tr>
+                                    </ng-template>
+                                    
+                                  </thead>
+                                  <tbody>
+                                    <ng-container *ngIf="_rol !== 'cliente'; else readonlyContent">
+                                      <ng-container *ngFor="let item of row.elementos">
+                                        <tr  >
+                                          <td class="text-start" [ngClass]="'tipo-'+item.tipo">
+                                            {{item.nombre}} &nbsp;
+                                            <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
+                                            <span class="badge badge-info m-1">{{item.status}}</span>
+                                          </td>
+                                          <td class="text-center">{{item.cantidad}}</td>
+                                          <td class="text-end">{{item.precio | monedas}}</td>
+                                          <td class="text-end">{{item.costo | monedas}}</td>
+                                          <td class="text-end">{{item.subtotal | monedas}}</td>
+                                          <td class="text-end">{{item.total | monedas}}</td>
+                                        </tr>
+                                      </ng-container>
+                                    </ng-container>
+                                    <ng-template #readonlyContent>
+                                      <ng-container *ngFor="let item of row.elementos">
+                                        <tr  >
+                                          <td class="text-start" [ngClass]="'tipo-'+item.tipo">
+                                            {{item.nombre}} &nbsp;
+                                            <span class="badge m-1" [ngClass]="item.aprobado ? 'badge-success': 'badge-danger'">{{ (item.aprobado) ? 'SI': 'NO'}}</span>
+                                            <span class="badge badge-info m-1">{{item.status}}</span>
+                                          </td>
+                                          <td class="text-end">{{item.cantidad}}</td>
+                                        </tr>
+                                      </ng-container>
+                                    </ng-template>
+                                    
                                   </tbody>
                                 </table>
                               </div>

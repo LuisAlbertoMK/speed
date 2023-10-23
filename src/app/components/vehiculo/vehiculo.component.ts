@@ -29,7 +29,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       this.dataVehiculo = new EventEmitter()
     }
 
-    ROL:string; SUCURSAL:string
+    _rol:string; SUCURSAL:string
 
     miniColumnas:number = 100
 
@@ -56,6 +56,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     salvando:boolean
 
     sonPlacasIguales: boolean = false
+    cliente_actual:string
     
   ngOnInit(): void {
     this.rol()
@@ -63,7 +64,6 @@ export class VehiculoComponent implements OnInit, OnChanges  {
     this.automaticos()
     
     this.consultaPlacas()
-    this.ListadoClientes()
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data_cliente']) {
@@ -91,27 +91,12 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       } 
     })
   }}
-  ListadoClientes(){
-    const starCountRef = ref(db, `clientes`)
-    onValue(starCountRef, async (snapshot) => {
-      if (snapshot.exists()) {
-        // console.time('Execution Time');
-        // const busqueda = (this.SUCURSAL === 'Todas') ? 'clientes' : `clientes/${this.SUCURSAL}`
-        // const clientes = await this._clientes.consulta_clientes__busqueda(busqueda, this.SUCURSAL)
-        // const camposRecu = [...this._clientes.camposCliente,'fullname']
-        // const nueva  = (!this.clientes.length) ?  clientes :  this._publicos. actualizarArregloExistente(this.clientes, clientes,camposRecu);
-        
-        // console.timeEnd('Execution Time');
-        // this.clientes = nueva
-      }
-    },{
-      onlyOnce: true
-    })
-  }
-  rol(){
-    const { rol, sucursal} = this._security.usuarioRol()
 
-    this.ROL = rol
+  rol(){
+    const { rol, sucursal, uid} = this._security.usuarioRol()
+    if (rol === 'cliente')  this.cliente_actual = uid
+    
+    this._rol = rol
     this.SUCURSAL = sucursal;
   }
   cargaDataVehiculo(nuevoValor){
@@ -135,7 +120,9 @@ export class VehiculoComponent implements OnInit, OnChanges  {
         vinChasis:[''],
         marca:['',[Validators.required]],
         modelo:['',[Validators.required]],
+        modelo_extra:['',[]],
         categoria:['',[Validators.required]],
+        categoria_extra:['',[]],
         anio:['',[Validators.required]],
         cilindros:['',[Validators.required]],
         no_motor:[''],
@@ -177,13 +164,18 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       return valor
     }
 
-
     this.form_vehiculo.get('modelo').valueChanges.subscribe((modelo: string) => {
       let modelo_ = ''
-      if (modelo) {
-         modelo_ = this.array_modelos.find(m=>m.modelo === modelo).categoria
-      }
-      this.form_vehiculo.controls['categoria'].setValue(modelo_)
+      if (modelo === 'otro') {
+        console.log('muestra campo extra');
+        
+      } else if (modelo) {
+        this.form_vehiculo.controls['modelo_extra'].setValue('')
+        this.form_vehiculo.controls['categoria_extra'].setValue('')
+        modelo_ = this.array_modelos.find(m=>m.modelo === modelo).categoria
+        this.form_vehiculo.controls['categoria'].setValue(modelo_)
+      } 
+      
     })
     this.form_vehiculo.get('placas').valueChanges.subscribe(async (placas: string) => {
       if (placas) {        
@@ -200,13 +192,25 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       this.form_vehiculo.controls['sucursal'].setValue(sucursal)
       this.form_vehiculo.controls['cliente'].setValue(id_cliente)
     })
+    setTimeout(() => {
+      let cliente =(this._rol === 'cliente') ? this.cliente_actual : ''
+      this.form_vehiculo.get('cliente').setValue(cliente)
+    }, 1000);
   }
   async guardarLlenadoManual(){
     this.salvando = true
-    const camposRecupera = [ 'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','sucursal','transmision','marcaMotor','vinChasis','no_motor','id']
-    const info_get = this._publicos.recuperaDatos(this.form_vehiculo);
-    const saveInfo:any = this._publicos.nuevaRecuperacionData(info_get, camposRecupera)
+    const  camposRecupera = [ 'cliente','placas','marca','modelo','categoria','anio','cilindros','color','engomado','sucursal','transmision','marcaMotor','vinChasis','no_motor','id']
 
+    const info_get = this._publicos.recuperaDatos(this.form_vehiculo);
+    if (info_get.modelo === 'otro') {
+      console.log('aqui nueva');
+      info_get.modelo = this.form_vehiculo.get('modelo_extra').value 
+      info_get.categoria = this.form_vehiculo.get('categoria_extra').value 
+    }
+    const saveInfo:any = this._publicos.nuevaRecuperacionData(info_get, camposRecupera)
+    console.log(saveInfo);
+    
+    
     const {ok, faltante_s}  =this._publicos.realizavalidaciones_new(saveInfo, this._vehiculos.obligatorios)
     
     this.faltante_s = faltante_s

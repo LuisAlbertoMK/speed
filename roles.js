@@ -172,4 +172,11 @@ getUserMedia({
     this.newPagination()
   }
 
+  <ng-container *ngIf="_rol !== 'cliente'; else readonlyContent">
+    
+  </ng-container>
+  <ng-template #readonlyContent>
+    
+  </ng-template>
+
         */

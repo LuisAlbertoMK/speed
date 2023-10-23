@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "algunas correciones comentarios ing genaro part-4 (proceso)"
+git commit -m "arreglando modulo citas part-1 (proceso)"
 git push -u origin
 
 shutdown -s -t 600 -c 'XD'

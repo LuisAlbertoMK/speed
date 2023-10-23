@@ -14,8 +14,8 @@
             </ng-template> -->
           </div>
         </div>
-        <!-- <pre>{{form_vehiculo.value | json}}</pre>
-        {{vehiculo}} -->
+       <!-- <pre>{{form_vehiculo.value | json}}</pre>  -->
+        
         <form (ngSubmit)="guardarLlenadoManual()" [formGroup]="form_vehiculo" class="mt-2">
             <div class="row">
                 <ng-container *ngIf="!data_cliente; else elseCliente">
@@ -34,7 +34,7 @@
                                 #tooltip="matTooltip"
                                 [matTooltip]="'Nombre: '+option.fullname +', Sucursal: '+ '' +', Correo: '+option.correo"
                                 matTooltipPosition="right"
-                                aria-tooltip="Button that displays and hides a tooltip triggered by other buttons">
+                                >
                                 {{option.fullname}}
                               </mat-option>
                             </mat-autocomplete>                      
@@ -93,6 +93,7 @@
                       [class.is-invalid]="validaCampo('modelo')">
                       <option [defaultSelected]="" value="" >Seleccione ...</option>
                       <option  [value]="modelo.modelo" *ngFor="let modelo of array_modelos" >{{modelo.modelo}}</option>
+                      <option  value="otro" >otro...</option>
                     </select>
                   <!-- </ng-container> -->
                 </div>
@@ -100,19 +101,36 @@
                   Campo requerido
                 </small>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-6 col-12">
-                <div class="mb-1 ">
-                  <label for="categoria" class="form-label">Categoria</label>
-                  <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="categoria" id="categoria">
-                  <!-- <select class="form-select form-select-sm"  readonly formControlName=""
-                    [class.is-invalid]="validaCampo('categoria')" [attr.disabled]="true">
-                    <option value="{{categoria}}" *ngFor="let categoria of categorias">{{categoria}}</option>
-                  </select> -->
+              <ng-container *ngIf="form_vehiculo.get('modelo').value === 'otro' ">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="modelo_extra" class="form-label ">modelo asignado <span class="obligatorio">*</span></label>
+                    <input type="text" aria-label="modelo asignado" formControlName="modelo_extra" class="form-control form-control-sm" onkeypress="sinEspeciales(event)" maxlength="50">
+                  </div>
+                  <small *ngIf="validaCampo('modelo_extra')" class="text-danger">
+                    Campo requerido
+                  </small>
                 </div>
-                <!-- <small *ngIf="validaCampo('categoria')" class="text-danger">
-                  Campo requerido
-                </small> -->
-              </div>
+              </ng-container>
+              <ng-container *ngIf="form_vehiculo.get('modelo').value !== 'otro' ">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="categoria" class="form-label">Categoria</label>
+                    <input type="text" readonly class="form-control form-control-sm text-uppercase" formControlName="categoria" id="categoria">
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="form_vehiculo.get('modelo').value === 'otro' ">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+                  <div class="mb-1 ">
+                    <label for="categoria_extra" class="form-label ">categoria asignada <span class="obligatorio">*</span></label>
+                    <input aria-label="categoria asignada" type="text" formControlName="categoria_extra" class="form-control form-control-sm" onkeypress="sinEspeciales(event)" maxlength="50">
+                  </div>
+                  <small *ngIf="validaCampo('categoria_extra')" class="text-danger">
+                    Campo requerido
+                  </small>
+                </div>
+              </ng-container>
               <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="mb-1">
                   <label for="anio" class="form-label ">Año <span class="obligatorio">*</span></label>

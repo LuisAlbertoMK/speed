@@ -11,11 +11,6 @@ import pdfFonts from "pdfmake/build/vfs_fonts.js";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
-//paginacion
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
@@ -28,7 +23,7 @@ import Swal from 'sweetalert2'
 import { UploadPDFService } from 'src/app/services/upload-pdf.service';
 import { AutomaticosService } from 'src/app/services/automaticos.service';
 import { EmailsService } from 'src/app/services/emails.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { getDatabase, ref, update } from 'firebase/database';
 
 const db = getDatabase()
@@ -78,12 +73,14 @@ export class CotizacionClienteComponent implements OnInit {
   faltante_s:string
 
   enProceso:boolean = false
+  enrutamiento = {cliente:'', sucursal:'', cotizacion:'', tipo:'', anterior:'', vehiculo:'', recepcion:''}
 
+  vehiculo_cache
   constructor(
     private _publicos: ServiciosPublicosService, private _security: EncriptadoService, private _formBuilder: FormBuilder,
     private _campos: CamposSystemService, private _cotizaciones: CotizacionesService, private _servicios: ServiciosService,
     private _pdf: PdfService, private _uploadPDF: UploadPDFService, private _automaticos: AutomaticosService, 
-    private _email: EmailsService,  private router: Router,
+    private _email: EmailsService,  private router: Router, private rutaActiva: ActivatedRoute,
     ) { }
  
   ngOnInit(): void {
@@ -93,15 +90,44 @@ export class CotizacionClienteComponent implements OnInit {
   rol(){
 
     const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
-    
+
     this._sucursal = sucursal
     this._rol = rol
-    // if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
+    // if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid)
     if (uid) {
       this._uid = uid
       this.infoCotizacion.cliente = uid
       this.primer_comprobacion_resultados()
+      this.rutaActiva.queryParams.subscribe((params:any) => {
+        this.enrutamiento = params
+        this.cargaDataCliente_new()
+      });
     }
+
+  }
+  async cargaDataCliente_new(){
+
+    const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
+
+    const clientes = this._publicos.nueva_revision_cache('clientes')
+    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+    this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
+    if(vehiculo){
+      const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
+      const data_cliente_new = this._publicos.crear_new_object(clientes[data_vehiculo.cliente])
+      data_cliente_new.id = data_vehiculo.cliente
+      this.infoCotizacion.data_cliente = data_cliente_new
+      this.infoCotizacion.cliente = data_vehiculo.cliente
+      this.extra = vehiculo
+      this.infoCotizacion.vehiculo = vehiculo
+    }
+    const {cliente: id_cliente} = this.infoCotizacion
+    setTimeout(() => {
+      if (id_cliente) {
+        this.vigila_vehiculos_cliente()
+      }
+    }, 1000);
+
   }
   comprobacion_resultados(){
     const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
@@ -156,16 +182,21 @@ export class CotizacionClienteComponent implements OnInit {
     this.infoCotizacion.vehiculo = IDVehiculo
     this.vigila_vehiculos_cliente()
   }
+
   vigila_vehiculos_cliente(){
-    // const {cliente: id_cliente} = this.infoCotizacion
-    // const vehiculos_object = this._publicos.nueva_revision_cache('vehiculos')
-    // const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
-    // const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
-    this.infoCotizacion.vehiculos = this.vehiculos_arr
-    if (this.extra) {
-      const data_vehiculo = this.infoCotizacion.vehiculos.find(v=>v.id === this.extra)
-      this.infoCotizacion.data_vehiculo = data_vehiculo
-      this.modelo = data_vehiculo.modelo
+
+    const {cliente: id_cliente} = this.infoCotizacion
+    
+    const vehiculos_cliente = this._publicos.filtrarObjetoPorPropiedad(this.vehiculo_cache,'cliente',id_cliente)
+
+    if (Object.keys(vehiculos_cliente).length) {
+      this.vehiculos_arr = this._publicos.crearArreglo2(vehiculos_cliente)
+
+      if (this.extra) {
+        const data_vehiculo = this.vehiculos_arr.find(v=>v.id === this.extra)
+        this.infoCotizacion.data_vehiculo = data_vehiculo
+        this.modelo = data_vehiculo.modelo
+      }
     }
   }
   validaCampo(campo: string){
@@ -296,8 +327,6 @@ export class CotizacionClienteComponent implements OnInit {
     
     this.infoCotizacion.reporte = reporte
     this.infoCotizacion.elementos = elementos
-    // this.dataSource.data = elementos
-    // this.newPagination()
 
   }
 

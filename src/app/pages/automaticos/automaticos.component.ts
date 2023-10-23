@@ -319,7 +319,7 @@ vigila_nodos(){
     // console.log(Object.keys(BD.historial_pagos_orden));
   }
   
-  async obtener_informacion_cache(){
+  async obtener_informacion_cache(cual){
 
     // {ruta_observacion: 'clientes', nombre:'claves_clientes'},
     // {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
@@ -333,28 +333,30 @@ vigila_nodos(){
     // {ruta_observacion: 'metas_sucursales', nombre:'claves_metas_sucursales'},
     // {ruta_observacion: 'paquetes', nombre:'claves_paquetes'},
     
-    const {ruta_observacion, nombre} = {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'}
-    console.log({ruta_observacion, nombre});
-    const data_claves = await this._publicos.nueva_revision_cache(ruta_observacion)
+    // const {ruta_observacion, nombre} = cual
+    // console.log({ruta_observacion, nombre});
+    console.log(cual);
+    
+    const data_claves = await this._publicos.nueva_revision_cache(cual)
     this._publicos.saber_pesos(data_claves)
     console.log(data_claves);
       
-    const claves_keys = await this._publicos.nueva_revision_cache(nombre)
-    console.log(claves_keys);
-    this._publicos.saber_pesos(claves_keys)
+    // const claves_keys = await this._publicos.nueva_revision_cache(nombre)
+    // console.log(claves_keys);
+    // this._publicos.saber_pesos(claves_keys)
 
-    let nuesdg = [...claves_keys]
-    const inicio = nuesdg.length -5
-    const final = nuesdg.length
+    // let nuesdg = [...claves_keys]
+    // const inicio = nuesdg.length -5
+    // const final = nuesdg.length
 
-    let ultimos_5 = []
+    // let ultimos_5 = []
 
-    for (let index = inicio; index < final; index++) {
-      ultimos_5.push(nuesdg[index])
-    }
-    console.log(`Totales ${nuesdg.length}`);
+    // for (let index = inicio; index < final; index++) {
+    //   ultimos_5.push(nuesdg[index])
+    // }
+    // console.log(`Totales ${nuesdg.length}`);
     
-    console.log(`Ultimos 5 registros encontrados en ${nombre} `,ultimos_5);
+    // console.log(`Ultimos 5 registros encontrados en ${nombre} `,ultimos_5);
 
 }
 
