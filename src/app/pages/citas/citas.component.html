@@ -1,13 +1,13 @@
 <app-template-navegacion></app-template-navegacion>
 
-<div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <h1 class="display-4 animate__animated animate__bounce">SpeedPro</h1>
     <p class="lead texto-justificado">
       Actualmente trabajando en modulo de citas ....
     </p>
   </div>
-</div>
+</div> -->
 
 <div class="row mb-2">
   <div class="col-lg-5 col-md-5 col-sm-12 col-12">
@@ -20,7 +20,7 @@
         <input matStartDate formControlName="start" placeholder="Inicial" readonly  class="pointer form-control-plaintext" id="Inicial"> 
         <input matEndDate formControlName="end" placeholder="Final" readonly class="pointer form-control-plaintext" id="Final">
       </mat-date-range-input>
-      <button aria-label="limpiar rango de fechas" class="btn btn-sm btn-danger" (click)="reseteaHoras()" #tooltip="matTooltip"
+      <button aria-label="limpiar rango de fechas" class="btn btn-sm btn-danger" #tooltip="matTooltip"
       matTooltip="limpiar rango de fechas">
         <i class="fa fa-trash"></i>
       </button>
@@ -33,8 +33,7 @@
             <span class="input-group-text pointer text-danger" id="basic-addon1">
               <i class="fa fa-filter"></i>
             </span>
-            <select aria-label="lista de sucursales" [(ngModel)]="sucursalCalendario" class="form-control form-control-sm" id="sucursal-filtro"
-             (ngModelChange)="addEvent(range.controls['start'].value, range.controls['end'].value)">
+            <select aria-label="lista de sucursales" [(ngModel)]="sucursalCalendario" class="form-control form-control-sm" id="sucursal-filtro">
               <option value="Todas" >Todas</option>
               <option [value]="s.id" *ngFor="let s of sucursales_array">{{s.sucursal}}</option>
             </select>
@@ -69,8 +68,8 @@
             <div class="scroll-wrapper">
               <ol class="list-group list-group-numbered text-start">
                 <li class="list-group-item" *ngFor="let cita of lista_citas_proximas">
-                  <strong>{{cita.horario}}</strong> {{cita.placas | uppercase }} {{cita.fullname | slice:0:15}} ...
-                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <strong>{{cita.horario}}</strong> {{cita.data_vehiculo.placas | uppercase }} {{cita.data_cliente.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" ></i>
                   <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
                 </li>
               </ol>
@@ -89,8 +88,8 @@
             <div class="scroll-wrapper">
               <ol class="list-group list-group-numbered text-start">
                 <li class="list-group-item" *ngFor="let cita of filtro_citas_mes_all">
-                  <strong>{{cita.horario}}</strong> {{cita.placas | uppercase }} {{cita.fullname | slice:0:15}} ...
-                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <strong>{{cita.horario}}</strong> {{cita.data_vehiculo.placas | uppercase }} {{cita.data_cliente.fullname | slice:0:15}} ...
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" ></i>
                   <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
                   <!-- <i class="fa fa-calendar-exclamation text-danger m-1 pointer" matTooltip="Reagendar cita" matTooltipPosition="above"
                     data-bs-toggle="modal" data-bs-target="#modalCita" (click)="nuevaCita = false; info_cita= cita; id_cita = cita.id"></i> -->
@@ -115,7 +114,7 @@
               <ol class="list-group list-group-numbered text-start">
                 <li class="list-group-item" *ngFor="let cita of citas_mes_all">
                   <strong>{{cita.horario}}</strong> {{cita.placas | uppercase }} {{cita.fullname | slice:0:15}} ...
-                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above" (click)="eliminaCita(cita)"></i>
+                  <i class="fa fa-ban text-danger m-1 pointer" matTooltip="Cancelar cita" matTooltipPosition="above"></i>
                   <i class="fa fa-eye text-primary m-1 pointer" matTooltip="Detalles" matTooltipPosition="above" (click)="infoCitaUnica = cita; openBottomSheet(false)"></i>
                 </li>
               </ol>

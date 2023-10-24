@@ -100,6 +100,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     {ruta_observacion: 'metas_sucursales', nombre:'claves_metas_sucursales'},
     {ruta_observacion: 'paquetes', nombre:'claves_paquetes'},
     {ruta_observacion: 'moRefacciones', nombre:'claves_moRefacciones'},
+    {ruta_observacion: 'citas', nombre:'claves_citas'},
   ]
   busqueda:any = {ruta_observacion: 'clientes', nombre:'claves_clientes'}
   ngOnInit(): void {

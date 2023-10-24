@@ -9,6 +9,7 @@ import { CotizacionService } from 'src/app/services/cotizacion.service';
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 import { SucursalesService } from 'src/app/services/sucursales.service';
+import Swal from 'sweetalert2';
 
 const db = getDatabase()
 const dbRef = ref(getDatabase());
@@ -62,7 +63,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       {valor:'2',nombre:'garantia'},
       // {valor:'3',nombre:'retorno'},
       // {valor:'4',nombre:'venta'},
-      // {valor:'5',nombre:'preventivo'},
+      {valor:'5',nombre:'preventivo'},
       // {valor:'6',nombre:'correctivo'},
       {valor:'7',nombre:'rescate vial'},
       {valor:'8',nombre:'frenos'},
@@ -86,10 +87,14 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     extra:string
     faltante_s:string
 
-    cotizacionesRealizadas:any[]=[]
+    cotizaciones:any[]=[]
 
-
+    hora_start = '00:00:01';
+    hora_end = '23:59:59';
+  
     horarios =  this._citas.horarios_citas
+
+    faltantes_horarios:string
   ngOnInit(): void {
     this.rol()
     this.creaFormCitas()
@@ -290,101 +295,126 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   }
   vigilaDia(){
     this.citaForm.get('fecha').valueChanges.subscribe((fecha: string) => {
-      console.log(fecha);
-      const hora = `${new Date().getHours()}: ${new Date().getMinutes()}:00`
-      const resetea1 = this._publicos.resetearHoras_horas(new Date(fecha),hora)
-
-      const horas_resta = 6
-      const horarioRecibido = this._publicos.restarHoras(resetea1, horas_resta)
-      horarioRecibido.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-
-      const hoyDIa = this._publicos.resetearHoras(new Date())
-      const seleccionado = this._publicos.resetearHoras(new Date(fecha))
-
-      const dia_Actual = new Date(fecha).toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
-      console.log(dia_Actual);
-      const horarios_ocupados = []
-        const sucursal = this.citaForm.get('sucursal').value
-        if (sucursal) {
-          if (hoyDIa.getTime() === seleccionado.getTime()) {
-            const toma_hora_actual = new Date()
-           
-            const horarioInicial = `${toma_hora_actual.getHours()}:${toma_hora_actual.getMinutes()}`
-            if (dia_Actual === 'sáb') {
-              console.log('sabado');
-              
-              const horariosValidos = this.horarios['-N2glF34lV3Gj0bQyEWK'].sabado.filter(horario => horario >= horarioInicial);
-              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
-            }else{
-              console.log('lunesViernes');
-              
-              const limite_hoy = this._publicos.resetearHoras_horas(new Date(),'18:20:00')
-              const limite_inicial = this._publicos.obtenerHoraDeFecha(this._publicos.restarHorasAFecha(limite_hoy, 6))
-
-              const horariosValidos = this.horarios['-N2glF34lV3Gj0bQyEWK'].lunesViernes.filter(horario => horario >= horarioInicial && horario <= limite_inicial );
-              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
-            }
-          }else{
-            const horarioInicial = `${horarioRecibido.getHours()}:${horarioRecibido.getMinutes()}`
-            if (dia_Actual === 'sáb') {
-              const horariosValidos = this.horarios['otras'].sabado.filter(horario => horario >= horarioInicial);
-              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
-            }else{
-              const horariosValidos = this.horarios['otras'].lunesViernes.filter(horario => horario >= horarioInicial);
-              this.horarios_show = this._publicos.obtener_difrencias(horariosValidos, horarios_ocupados)
-            }
-          }          
-        }else{
-          this._publicos.mensajeSwal('Seleccionar sucursal',0)
-        }
-      
-      
-      // console.log(sucursal);
-      // console.log(this.horarios);
-      // const fecha_gem = this._publicos.convertirFecha(dia)
-      // const bu = fecha_gem .toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
-      // if (sucursal === '-N2glF34lV3Gj0bQyEWK') {
-      //   console.log(this.horarios['-N2glF34lV3Gj0bQyEWK']);
-        
-      // }else{
-      //   console.log(this.horarios.otras);
-        
-      // }
-      
+      this.obtenerCitas_horarios()
     })
+    this.citaForm.get('vehiculo').valueChanges.subscribe((vehiculo: string) => {
+      this.obtenerCitas_horarios()
+    })
+    this.citaForm.get('servicio').valueChanges.subscribe((servicio: string) => {
+      this.obtenerCitas_horarios()
+    })
+    // this.citaForm.get('horario').valueChanges.subscribe((horario: string) => {
+    //   if (horario) {
+        
+    //   }
+    // })
     this.citaForm.get('cotizacion_utiliza').valueChanges.subscribe(async (cotizacion_utiliza: string) => {
       // console.log(cotizacion_utiliza);
       const cliente = this.citaForm.get('cliente').value;
       console.log(cliente);
       
       if (cotizacion_utiliza && cliente) {
-          const cotizacionesRealizadas = await this._publicos.nueva_revision_cache('cotizacionesRealizadas')
-          const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizacionesRealizadas)
+          const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
+          const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizaciones)
           const filtro_cotizaciones_cliente = this._publicos.filtra_informacion(arreglo_cotizaciones,'cliente',cliente)
           const ordenedas = this._publicos.ordenamiento_fechas_x_campo(filtro_cotizaciones_cliente,'no_cotizacion',false)
           console.log(ordenedas);
-          this.cotizacionesRealizadas = ordenedas
+          this.cotizaciones = ordenedas
       }else{
-        this.cotizacionesRealizadas = []
+        this.cotizaciones = []
       }
     })
     this.citaForm.get('cliente').valueChanges.subscribe(async (cliente: string) => {
+      this.obtenerCitas_horarios()
       const cotizacion_utiliza = this.citaForm.get('cotizacion_utiliza').value;
       if (cotizacion_utiliza && cliente) {
-        const cotizacionesRealizadas = this._publicos.nueva_revision_cache('cotizacionesRealizadas')
-          const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizacionesRealizadas)
-          const filtro_cotizaciones_cliente = this._publicos.filtra_informacion(arreglo_cotizaciones,'cliente',cliente)
+        const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
+          // const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizaciones)
+          const filtro_cotizaciones_cliente = this._publicos.filtrarObjetoPorPropiedad(cotizaciones,'cliente',cliente)
           const ordenedas = this._publicos.ordenamiento_fechas_x_campo(filtro_cotizaciones_cliente,'no_cotizacion',false)
-          console.log(ordenedas);
-          this.cotizacionesRealizadas = ordenedas
+          // console.log(ordenedas);
+          this.cotizaciones = ordenedas
       }else{
-        this.cotizacionesRealizadas = []
+        this.cotizaciones = []
       }
     })
     // this.myControl.valueChanges.subscribe(dia=>{
     //   console.log(dia);
     // })
 
+  }
+  obtenerCitas_horarios(){
+    const data_form = this._publicos.getRawValue(this.citaForm)
+    const {fecha, hora, sucursal, cliente, servicio, vehiculo} = data_form
+
+    const citas = this._publicos.nueva_revision_cache('citas')
+    const seleccionado = this._publicos.resetearHoras(new Date(fecha))
+    console.log(citas);
+    
+    const apuntadores = ['cliente','sucursal','vehiculo', 'servicio','fecha']
+
+    const {faltante_s} =this._publicos.realizavalidaciones_new(data_form, apuntadores)
+
+    this.faltantes_horarios = faltante_s
+    
+    if (vehiculo && sucursal && servicio) {
+
+      // const data_vehiculo = this.arr_vehiculos.find(v=>v.id === vehiculo)
+      // const { placas } = data_vehiculo
+      const filtrado_placas = this._publicos.filtrarObjetoPorPropiedad(citas, 'vehiculo', vehiculo)
+
+      const nueva_fe = new Date(this._publicos.crear_new_object(seleccionado))
+
+      const start = this._publicos.resetearHoras_horas(nueva_fe,this.hora_start)
+      const end = this._publicos.resetearHoras_horas(seleccionado,this.hora_end)
+      
+      const filtrado_fechas = this._publicos.filtrarObjetoPorPropiedad_fecha(filtrado_placas, start, end)
+      
+      if (this._publicos.tiene_data(filtrado_fechas)) {
+        this._publicos.mensajeSwal('El vehiculo ya cuenta cin cita',0,false, 'selecciona otro dia para tu cita!!')
+      }else{
+        const donde = (this._publicos.dia_string(fecha) === 'sáb') ? 'sabado' : 'lunesViernes'
+        const nueva_sucursal = (sucursal === '-N2glF34lV3Gj0bQyEWK') ? '-N2glF34lV3Gj0bQyEWK' : 'otras'
+        // const horarios_ocupados = ['09:10','10:00','11:50','15:20','16:40','17:50']
+        const horarios_ocupados = this.regresa_horarios(this._publicos.crearArreglo(filtrado_fechas))
+        
+        const horariosValidos = [...new Set(this.horarios[nueva_sucursal][donde])]
+        const horas_quitar = (servicio === '5') ? 3.5 : 2
+          
+        const limiteHoras = `${horariosValidos[ horariosValidos.length - 1 ]}:00`
+
+        const limite_hoy = this._publicos.resetearHoras_horas(seleccionado,limiteHoras)
+
+        const limite_permitido = this._publicos.obtenerHoraDeFecha(this._publicos.restarHorasAFecha(limite_hoy, horas_quitar))
+
+        const limitePermitidoHora = this.parse_hora(seleccionado,limite_permitido)
+
+        const mus = horariosValidos.filter(horario => this.parse_hora(seleccionado,horario) <= limitePermitidoHora);
+        this.horarios_show = this._publicos.obtener_diferencias(mus, horarios_ocupados)
+      }
+
+    }
+  }
+  parse_hora(fecha?,hora?) {
+    const fechaActual = (fecha) ?  new Date(fecha): new Date();
+    let [horas, minutos, segundos] = hora ? hora.split(':') : [fechaActual.getHours(), fechaActual.getMinutes(), 0];
+    
+    return new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate(), horas, minutos, 0);
+  }
+  regresa_horarios(arreglo){
+    let fechas = []
+    arreglo.forEach(cita=>{
+      const {fecha} = cita
+      fechas.push(this.obtenerHoraCompleta(fecha))
+    })
+    return [...new Set(fechas)]
+  }
+  obtenerHoraCompleta(fecha) {
+    const horas = fecha.getHours().toString().padStart(2, '0');
+    const minutos = fecha.getMinutes().toString().padStart(2, '0');
+    const segundos = fecha.getSeconds().toString().padStart(2, '0');
+    
+    return `${horas}:${minutos}:${segundos}`;
   }
   async addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     const start = this._publicos.crear_new_object(event.value)
@@ -424,9 +454,46 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
     
     const updates = {}
-    const data_cliente = this._publicos.crear_new_object( this.data_cliente )
-    updates[`Citas/${this._publicos.generaClave()}`] = recuperda
+    // const data_cliente = this._publicos.crear_new_object( this.data_cliente )
+    // updates[`Citas/${this._publicos.generaClave()}`] = recuperda
     console.log(updates);
+    console.log();
+    
+    Swal.fire({
+      title: 'Confirmar cita',
+      html:`Desea confirmar el registro de cita?`,
+      showDenyButton: true,
+      // showCancelButton: true,
+      confirmButtonText: 'Confirmar',
+      denyButtonText: `Cancelar`,
+      // cancelButtonText:`Cancelar`,
+      allowOutsideClick: false,
+      cancelButtonColor: '#5a5952'
+    }).then((result) => {
+      // si se confirma previsualizacion genera pdf en nueva ventana del navegador
+      if (result.isConfirmed) {
+        const updates = {}
+        const clave = this._publicos.generaClave()
+        updates[`citas/${clave}`] = this.purifica_data_cita(recuperda)
+        const claves_encontradas = this._publicos.nueva_revision_cache('claves_citas')
+        const valorNoDuplicado = [...new Set([...this._publicos.crearArreglo(claves_encontradas), clave])];
+        updates['claves_citas'] = valorNoDuplicado
+           update(ref(db), updates).then(()=>{
+            this.citaForm.reset()
+            this.inicioDetenerCita(false)
+            this._publicos.mensajeSwal('se registro cita correctamente',1)
+            this._security.guarda_informacion({nombre:'claves_citas', data: valorNoDuplicado})
+          })
+          .catch(err=>{
+            console.log(err);
+          })
+        
+      } else if (result.isDenied) {
+
+      }
+    })
+    
+    
     
       // update(ref(db), updates).then(()=>{
       //   this.citaForm.reset()
@@ -437,7 +504,29 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       //   console.log(err);
       // })
   }
-  
+  purifica_data_cita(recuperda){
+
+    const data_form = this._publicos.getRawValue(this.citaForm)
+    const {fecha, horario, sucursal, cliente, servicio, vehiculo, comentario, id_cotizacion, recoleccion, direccion} = data_form
+
+    const fechaa = this._publicos.resetearHoras_horas(new Date(fecha), `${horario}:00`) 
+
+    const temp = {
+      sucursal,
+      cliente,
+      servicio,
+      vehiculo,
+      comentario,
+      fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: fechaa.toString()}).toString
+    }
+    if (id_cotizacion) temp['id_cotizacion'] = id_cotizacion
+    if (recoleccion) {
+      temp['recoleccion'] = recoleccion; 
+      temp['direccion'] = direccion
+    }
+    
+    return temp
+  }
   ConfirmaCita(){
    
     

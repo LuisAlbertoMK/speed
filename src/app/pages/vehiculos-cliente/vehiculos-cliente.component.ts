@@ -57,7 +57,7 @@ export class VehiculosClienteComponent implements OnInit {
     },1500)
   }
   asiganacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    // const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
     const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
 
     const campo_vehiculo = [

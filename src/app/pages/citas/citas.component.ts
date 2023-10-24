@@ -70,6 +70,7 @@ export class CitasComponent implements OnInit {
     // calendario
     calendarVisible = true;
     calendarOptions: CalendarOptions = {
+      timeZone: 'local',
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -90,7 +91,9 @@ export class CitasComponent implements OnInit {
       },
       locale:'es',
       initialView: 'dayGridMonth',
-      initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
+      initialEvents: [
+       
+      ], // alternatively, use the `events` setting to fetch from a feed
       weekends: true,
       editable: true,
       selectable: true,
@@ -122,6 +125,13 @@ export class CitasComponent implements OnInit {
   
   
     panelOpenState = false;
+
+    objecto_actual:any ={}
+    objecto_actual_data:any ={}
+    fecha_formateadas = {start:new Date(), end:new Date() }
+    fecha_formateadas_unico_dia = {start:new Date(), end:new Date() }
+    hora_start = '00:00:01';
+    hora_end = '23:59:59';
   ngOnInit(): void {
     this.rol()
   }
@@ -129,64 +139,121 @@ export class CitasComponent implements OnInit {
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
 
+    
+    // this.segundo_llamado()
+
     this.ROL = rol
     this.SUCURSAL = sucursal
-    this.vigilaCitas()
     this.vigilaCalendario()
+    this.asignacion_resultados()
+
+  }
+  contruye(citas){
+    const camposServicios = [
+      {valor:'1',nombre:'servicio'},
+      {valor:'2',nombre:'garantia'},
+      // {valor:'3',nombre:'retorno'},
+      // {valor:'4',nombre:'venta'},
+      {valor:'5',nombre:'preventivo'},
+      // {valor:'6',nombre:'correctivo'},
+      {valor:'7',nombre:'rescate vial'},
+      {valor:'8',nombre:'frenos'},
+      {valor:'9',nombre:'afinación'},
+      {valor:'10',nombre:'cambio de aceite'},
+      {valor:'11',nombre:'revisión general'},
+      {valor:'12',nombre:'revisión de falla'},
+      {valor:'13',nombre:'escaneo vehículo'},
+    ]
+    const nuevas_citas = {}
+    const clientes = this._publicos.nueva_revision_cache('clientes')
+    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    Object.keys(citas).forEach(cita=>{
+      const {id, cliente, vehiculo, sucursal, servicio} = citas[cita]
+      const data_cliente = clientes[cliente]
+      const fullname = `${data_cliente.nombre} ${data_cliente.apellidos}`
+      data_cliente.fullname = fullname
+      const data_vehiculo = vehiculos[vehiculo]
+      const data_sucursal = sucursales[sucursal]
+      const servicio_show = camposServicios.find(ser=>ser.valor === servicio).nombre
+      nuevas_citas[cita] = {...citas[cita], data_cliente, data_vehiculo, data_sucursal, servicio_show}
+    })
+    return nuevas_citas
+  }
+  asignacion_resultados(){
+    this.objecto_actual = this._publicos.nueva_revision_cache('citas')
+    const citas = this._publicos.nueva_revision_cache('citas')
+    const citas_all_data = this.contruye(citas)
+    this.objecto_actual_data = citas_all_data
+
+    const {start, end} = this.fecha_formateadas
+
+    const data_filtrada = this._publicos.filtrarObjetoPorPropiedad_fecha(citas_all_data,start, end)
+
+    // this.lista_citas_proximas = []
+
+    this.citas_hoy()
+
+    const nuevas_citas = []
+    Object.keys(data_filtrada).forEach(cita => {
+ 
+      const {comentario,fecha_recibido} = data_filtrada[cita]
+    
+      const sdfghj = this._publicos.obtenerHoraDeFecha(this._publicos.sumarMinutosAFecha(new Date(fecha_recibido), 10 ) )
+      const end = this._publicos.resetearHoras_horas(new Date(fecha_recibido), sdfghj)
+
+      nuevas_citas.push({
+        id: cita,
+        title: comentario,
+        startStr: new Date(fecha_recibido),
+        endStr: new Date(end),
+        start: this._publicos.convertirFecha_1(fecha_recibido), 
+        end: this._publicos.convertirFecha_1(end),
+        extendedProps: {
+          lasol: 'XDDD'
+        },
+        description: comentario
+      })
+    });
+    this.calendarOptions.events = nuevas_citas
+
   }
   handleDateClick(arg) {
-    // alert('date click! ' + arg.dateStr)
-    // this.calendarOptions.initialDate = arg.dateStr
-    // this.calendarOptions.now = arg.dateStr
-    // this.calendarOptions.allDayContent = arg.dateStr
-    // console.log(arg);
+    const { date } = arg
+    if (date) {
+      this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(date), this.hora_start)
+      this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(date), this.hora_end)
+      this.asignacion_resultados()
+   }
   }
   handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;
   }
-
   handleWeekendsToggle() {
     const { calendarOptions } = this;
     calendarOptions.weekends = !calendarOptions.weekends;
   }
 //cuando selecciona un dia del calendario
   handleDateSelect(selectInfo: DateSelectArg) {
-    
-    const fechaInicial_dia = this._publicos.resetearHoras_horas(new Date(selectInfo['start']), '08:30:00')
-    const fechafinal_dia = this._publicos.resetearHoras_horas(new Date(selectInfo['start']), '18:30:00')
+    const {start, end} = selectInfo
+    if (start && end) {
+       this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start), this.hora_start)
+       this.fecha_formateadas.end = this._publicos.sumarRestarDiasFecha(this._publicos.resetearHoras_horas(new Date(end), this.hora_end), -1) 
+       this.asignacion_resultados()
 
-    const citasDiaSelect =this.citas_mes_all.filter(c=>
-      c.fecha_compara >= fechaInicial_dia && c.fecha_compara <= fechafinal_dia
-    )
-    const fecha_muestra = this._publicos.convierte_fechaString_personalizada(fechaInicial_dia).string_fecha
-    this.fecha_muestra = fecha_muestra
-    
-    this.filtro_citas_mes_all = this._publicos.ordenarData(citasDiaSelect,'horario',true)
-    // this.calendarOptions.initialDate = new Date('06/24/2023')
-    // this.calendarOptions.now = new Date(selectInfo['start'])
-    
-    
+       this.fecha_formateadas_unico_dia.start = this._publicos.resetearHoras_horas(new Date(start), this.hora_start)
+       this.fecha_formateadas_unico_dia.end = this._publicos.sumarRestarDiasFecha(this._publicos.resetearHoras_horas(new Date(end), this.hora_end), -1)
+
+       this.citas_dia_seleccionado()
+    }
   }
 //cuando selecciona un evento de calendario
   handleEventClick(clickInfo: EventClickArg) {
     const id = clickInfo.event.id
     if (id) {
-
-      // (click)="infoCitaUnica = cita; openBottomSheet()"
-      const info_ = this.citas_mes_all.find(c=>c.id === id)
-      // this.infoCita = info_
-      this.infoCitaUnica = info_
-      // console.log(info_);
-      
-      setTimeout(()=>{ this.openBottomSheet(false) },100)
-      // const dialogRef: MatDialogRef<CitaComponent> = this.dialog.open(CitaComponent, {
-      //   width: 'vh(100%)',
-      //   data: info_ // Puedes pasar datos del evento al cuadro de diálogo
-      // });
-      // dialogRef.afterClosed().subscribe(result => {
-      //   // Lógica a realizar después de cerrar el cuadro de diálogo
-      //   // console.log('Cuadro de diálogo cerrado');
-      // });
+        if (this.objecto_actual_data[id]) {
+          console.log(this.objecto_actual_data[id]);
+        }
     }
   }
 //ecento cambio de informacion en los eventos asiganados al calendario
@@ -194,30 +261,7 @@ export class CitasComponent implements OnInit {
     this.currentEvents = events;
   }
   
-  //verificar si cambia la informacion de las citas
-  vigilaCitas(){
-    const {mes,anio}  = this._publicos.conveirtefecha_2(new Date());
-    const starCountRef = ref(db, `Citas/${anio}/${mes}`)
-    onValue(starCountRef, (snapshot) => {
-      setTimeout(()=>{
-        this.addEvent(this.range.controls['start'].value, this.range.controls['end'].value)
-      },500)
-    })
-  }
-  //elimina la cita recibiendo la informacion de la cita
-  eliminaCita(data){
-    if (data.id) {
-      this._publicos.mensaje_pregunta(`Desea cancelar la cita`).then(({respuesta})=>{
-        if (respuesta) {
-          const updates = {[`${data.ruta}`] : null}
-          // console.log(updates);
-          update(ref(db), updates).then(()=>{
-            this._publicos.mensajeSwal('Cita cancelada', 1)
-          })
-        }
-      })
-    }
-  }
+
   //reagdendar cita recibiendo la informacion de la cita
   reagendarCita(data){
     // if (data.id) {
@@ -234,20 +278,38 @@ export class CitasComponent implements OnInit {
     //   })
     // }
   }
+
+  citas_hoy(){
+    const fecha_hoy  = new Date()
+    const nuevo_data = this._publicos.crear_new_object(fecha_hoy)
+    const start_hoy = this._publicos.resetearHoras_horas(new Date(nuevo_data), this.hora_start)
+    const end_hoy = this._publicos.resetearHoras_horas(new Date(nuevo_data), this.hora_end)
+
+    const data_filtrada_hoy = this._publicos.filtrarObjetoPorPropiedad_fecha(this.objecto_actual_data, start_hoy, end_hoy)
+
+    this.lista_citas_proximas = this._publicos.crearArreglo2(data_filtrada_hoy)
+  }
+  citas_dia_seleccionado(){
+    const {start, end} = this.fecha_formateadas_unico_dia
+    const nuevo_data = this._publicos.crear_new_object(start)
+    const start_hoy = this._publicos.resetearHoras_horas(new Date(nuevo_data), this.hora_start)
+    const end_hoy = this._publicos.resetearHoras_horas(new Date(nuevo_data), this.hora_end)
+
+    const data_filtrada_hoy = this._publicos.filtrarObjetoPorPropiedad_fecha(this.objecto_actual_data, start_hoy, end_hoy)
+
+    this.filtro_citas_mes_all = this._publicos.crearArreglo2(data_filtrada_hoy)
+  }
 vigilaCalendario(){
   this.range.valueChanges.subscribe(({start, end}) => {
     if (start && end) {
-      this.addEvent(start, end)
+      // this.addEvent(start, end)
+      this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start), this.hora_start)
+      this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end), this.hora_end)
+      this.asignacion_resultados()
     }
   })
 }
-  //evento de cuando cambia la fecha de busqueda en caso de no existe dia busca en todo el mes actual
-  async addEvent(start, end) {
-    
-  }
-  reseteaHoras(){
-    this.addEvent(null,null)
-  }
+
   openBottomSheet(valor): void {
     const bottomSheetRef = this._bottomSheet.open(CitaComponent,{
       data: {info: this.infoCitaUnica, editar:valor} ,

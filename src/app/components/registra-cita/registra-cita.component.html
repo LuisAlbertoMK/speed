@@ -115,9 +115,9 @@
                                                 <div class="mb-1 row">
                                                     <strong  class="text-end col-sm-3 col-md-4 col-lg-3 col-form-label">id_cotizacion</strong>
                                                     <div class="col-sm-9 col-md-8 col-lg-9 ">
-                                                        <select aria-label="cotizacionesRealizadas" formControlName="id_cotizacion" class="form-select  form-select-sm" id="id_cotizacion">
+                                                        <select aria-label="cotizaciones" formControlName="id_cotizacion" class="form-select  form-select-sm" id="id_cotizacion">
                                                             <option value="" >Selecciona</option>
-                                                            <option [value]="item.id" *ngFor="let item of cotizacionesRealizadas">{{item.no_cotizacion}}</option>
+                                                            <option [value]="item.id" *ngFor="let item of cotizaciones">{{item.no_cotizacion}}</option>
                                                         </select>
                                                     </div>
                                                     </div>
@@ -168,6 +168,12 @@
                                         </ng-container>
                                         </div>
                                         <div class="row">
+                                            <ng-container *ngIf="faltantes_horarios">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                                                    <h3>Para obtener horarios</h3>
+                                                    <app-tarjeta-faltantes [faltante_s]="faltantes_horarios"></app-tarjeta-faltantes>
+                                                </div>
+                                            </ng-container>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
                                             <button type="submit" class="btn btn-primary btn-sm text-uppercase m-1" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}">
                                                 <i class="fas fa-file-alt"></i> Genera cita

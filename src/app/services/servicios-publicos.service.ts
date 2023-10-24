@@ -607,6 +607,9 @@ export class ServiciosPublicosService {
     generaClave() {
         return push(child(ref(db), 'posts')).key
     }
+    dia_string(fecha){
+      return new Date(fecha).toLocaleDateString('es-ES', { weekday: 'long' }).slice(0,3).toLowerCase()
+    }
     realizavalidaciones_new(data, campos:any[]){
       const answer = {faltante_s:null, ok:true}
       let faltantes = []
@@ -903,12 +906,37 @@ export class ServiciosPublicosService {
       const fechaRestada = new Date(fechaOriginal.getTime() - horasARestar * milisegundosPorHora);
       return fechaRestada;
     }
+    sumaRestaHoras(fecha, horasARestar) {
+      const milisegundosPorHora = 60 * 60 * 1000;
+      const fechaOriginal = new Date(fecha);
+      const fechaRestada = new Date(fechaOriginal.getTime() + horasARestar * milisegundosPorHora);
+      return fechaRestada;
+    }
+    sumarMinutosAFecha(fecha, minutosASumar) {
+      const milisegundosPorMinuto = 60 * 1000;
+      const fechaOriginal = new Date(fecha);
+      const fechaSumada = new Date(fechaOriginal.getTime() + minutosASumar * milisegundosPorMinuto);
+      return fechaSumada;
+    }
     obtenerHoraDeFecha(fecha) {
       const hora = fecha.getHours();
       const minutos = fecha.getMinutes();
       const segundos = fecha.getSeconds();
       return `${hora}:${minutos}:${segundos}`;
     }
+    convertirFecha_1(fechaTexto) {
+      const fechaOriginal = new Date(fechaTexto);
+    
+      const año = fechaOriginal.getFullYear();
+      const mes = (fechaOriginal.getMonth() + 1).toString().padStart(2, '0');
+      const dia = fechaOriginal.getDate().toString().padStart(2, '0');
+      const horas = fechaOriginal.getHours().toString().padStart(2, '0');
+      const minutos = fechaOriginal.getMinutes().toString().padStart(2, '0');
+      const segundos = fechaOriginal.getSeconds().toString().padStart(2, '0');
+    
+      return `${año}-${mes}-${dia}T${horas}:${minutos}:${segundos}`;
+    }
+    
     asignarHoraAFecha_new(fecha:string): Date{
       const fechaObj = new Date(fecha);
       return fechaObj;
@@ -1184,8 +1212,11 @@ export class ServiciosPublicosService {
         diaFinal: dias2[DiaFinal],
       };
     }
-    obtener_difrencias(arreglo, arreglo2){
+    obtener_diferencias(arreglo, arreglo2){
       return arreglo.filter(elemento => !arreglo2.includes(elemento))
+    }
+    tiene_data(data){
+      return Object.keys(data).length
     }
     obtenerDiferencias(array1, elimina) {
       // const nuevo = 
