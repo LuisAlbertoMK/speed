@@ -1,14 +1,100 @@
-<ng-container *ngIf="vehiculo">
+<ng-container *ngIf="vehiculo && vehiculo.id">
   <div class="card">
-    <div class="card-body">
-      <h1>Información de vehículo</h1>
-      <div class="row" *ngIf="vehiculo">
-        <ng-container *ngFor="let item of camposVehiculo">
-          <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-uppercase text-start" *ngIf="vehiculo[item.valor]">
-            <strong >{{item.show}} </strong>: {{vehiculo[item.valor]}}
+      <div class="card-body">
+          <h5 class="card-title">
+              <figure>
+                <blockquote class="blockquote">
+                  <p>{{title}}  {{vehiculo['placas'] | uppercase}}</p>
+                  <small>Placas</small>
+                </blockquote>
+              </figure>
+          </h5>
+          <div class="card-text">
+            <div class="list-group">
+                <div class="row ">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">marca</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1">{{vehiculo['marca']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">modelo</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1">{{vehiculo['modelo']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">categoria</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1">{{vehiculo['categoria']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">anio</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1">{{vehiculo['anio']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">engomado</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1 text-capitalize">{{vehiculo['engomado']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">cilindros</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1">{{vehiculo['cilindros']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">transmision</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1">{{vehiculo['transmision']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                            <h5 class="mb-1 text-capitalize">color</h5>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                            <h5 class="mb-1">{{vehiculo['color']}}</h5>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>
-        </ng-container>
       </div>
-    </div>
   </div>
 </ng-container>

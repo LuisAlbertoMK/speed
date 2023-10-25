@@ -1,17 +1,83 @@
 
 
+<ng-container *ngIf="cliente && cliente.id ">
+  <div class="card">
+      <div class="card-body">
+          <h5 class="card-title">
+              <figure>
+                <blockquote class="blockquote">
+                  <p>{{title}} {{cliente['no_cliente'] | uppercase}}</p>
+                  <small>No. Cliente</small>
+                  <ng-container *ngIf="editar">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-capitalize text-end" *ngIf="cliente.id" >
+                      <i class="fa fa-edit text-primary pointer" data-bs-target="#modal-editar-info" data-bs-toggle="modal"></i>
+                    </div>
+                  </ng-container>
+                </blockquote>
+              </figure>
+            </h5>
+            <div class="card-text">
+              <div class="list-group">
+                  <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                          <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">Nombre</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{cliente['fullname']}}</h5>
+                          </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                          <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">Correo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{cliente['correo']}}</h5>
+                          </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                          <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">Telefono cel.</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1 ">{{cliente['telefono_movil']}}</h5>
+                          </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                          <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">Tipo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1 ">{{cliente['tipo'] | uppercase}}</h5>
+                          </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>              
+          </div>
+      </div>
+  </div>
+</ng-container>
 
-<ng-container *ngIf="cliente && cliente.id; else elseTemplateRegistroCliente">
+
+<!-- <ng-container *ngIf="cliente && cliente.id; else elseTemplateRegistroCliente">
   <div class="card">
     <div class="card-body">
       <div class="row">
         <ng-container *ngIf="editar">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-uppercase text-end" *ngIf="cliente.id" >
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-capitalize text-end" *ngIf="cliente.id" >
             <i class="fa fa-edit text-primary pointer" data-bs-target="#modal-editar-info" data-bs-toggle="modal"></i>
           </div>
         </ng-container>
         <ng-container *ngFor="let item of camposCliente">
-          <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-uppercase text-start" *ngIf="cliente[item.valor]">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-12 text-capitalize text-start" *ngIf="cliente[item.valor]">
             <strong >{{item.show}} </strong>: {{cliente[item.valor]}}
           </div>
         </ng-container>
@@ -24,7 +90,7 @@
 
 <ng-template #elseTemplateRegistroCliente>
 
-</ng-template>
+</ng-template> -->
 
 
 

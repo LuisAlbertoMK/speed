@@ -1,31 +1,26 @@
 
-import { Component, OnInit, ViewChild, forwardRef, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CitasService } from 'src/app/services/citas.service';
-import { ClientesService } from 'src/app/services/clientes.service';
+
 import { SucursalesService } from 'src/app/services/sucursales.service';
 
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi, Calendar, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
 
-// import esLocale from '@fullcalendar/core/locales/es';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 
 //animaciones
 
-import '@fortawesome/fontawesome-free/css/all.css'; // needs additional webpack config!
-import { child, get, getDatabase, onValue, ref, set, push, update } from 'firebase/database';
+
 import { EncriptadoService } from 'src/app/services/encriptado.service';
 import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.service';
 
-const db = getDatabase()
-const dbRef = ref(getDatabase());
+
 
 import { CitaComponent } from '../cita/cita.component';
-import { EmailsService } from 'src/app/services/emails.service';
-import { ActivatedRoute } from '@angular/router';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
 
@@ -40,7 +35,7 @@ export class CitasComponent implements OnInit {
   
   constructor(private _publicos: ServiciosPublicosService, private _citas: CitasService, private _campos: CamposSystemService,
     private _security:EncriptadoService, private _sucursales: SucursalesService, public dialog: MatDialog,
-    private _email: EmailsService, private rutaActiva: ActivatedRoute, private _bottomSheet: MatBottomSheet) { }
+     private _bottomSheet: MatBottomSheet) { }
     ROL:string; SUCURSAL:string;
 
     camposInfoCita    =  [ ...this._citas.camposInfoCita ]
@@ -65,10 +60,13 @@ export class CitasComponent implements OnInit {
     id_cita = null
     info_cita = null
     
-    sucursalCalendario = 'Todas'
+    sucursalFiltro = 'Todas'
     citas_no_asistencia = []
     // calendario
     calendarVisible = true;
+
+    
+
     calendarOptions: CalendarOptions = {
       timeZone: 'local',
       headerToolbar: {
@@ -91,9 +89,7 @@ export class CitasComponent implements OnInit {
       },
       locale:'es',
       initialView: 'dayGridMonth',
-      initialEvents: [
-       
-      ], // alternatively, use the `events` setting to fetch from a feed
+      initialEvents: [], // alternatively, use the `events` setting to fetch from a feed
       weekends: true,
       editable: true,
       selectable: true,
@@ -103,6 +99,10 @@ export class CitasComponent implements OnInit {
       eventClick: this.handleEventClick.bind(this),
       eventsSet: this.handleEvents.bind(this),
       dateClick: this.handleDateClick.bind(this),
+      initialDate: new Date(),
+
+      
+      
       /* you can update a remote database when these fire:
       eventAdd:
       eventChange:
@@ -123,6 +123,7 @@ export class CitasComponent implements OnInit {
     fecha_muestra:string = '' || 'dia seleccionado'
     rango_select: string = '' || 'rango seleccionado'
   
+    cita_unica
   
     panelOpenState = false;
 
@@ -133,12 +134,30 @@ export class CitasComponent implements OnInit {
     hora_start = '00:00:01';
     hora_end = '23:59:59';
   ngOnInit(): void {
+    this.obtener_fecha()
     this.rol()
   }
+  obtener_fecha(){
+    const fecha = new Date()
+    const {primerDia, ultimoDia} = this._publicos.obtenerPrimerUltimoDiaMes(fecha.getMonth()+1, fecha.getFullYear())
+    this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(primerDia), this.hora_start)
+    this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(ultimoDia), this.hora_end)
+  }
+  resetea_fechas(){
+    const fecha = new Date()
+    const {primerDia, ultimoDia} = this._publicos.obtenerPrimerUltimoDiaMes(fecha.getMonth()+1, fecha.getFullYear())
+    this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(primerDia), this.hora_start)
+    this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(ultimoDia), this.hora_end)
+    this.asignacion_resultados()
+  }
+  
   //obtener informacion basica para consulta de informacion de cualquier indele y permisos de usuario
   rol(){
     const { rol, sucursal } = this._security.usuarioRol()
-
+    
+    if (sucursal !=='Todas') {
+      this.sucursalFiltro = sucursal
+    }
     
     // this.segundo_llamado()
 
@@ -146,6 +165,7 @@ export class CitasComponent implements OnInit {
     this.SUCURSAL = sucursal
     this.vigilaCalendario()
     this.asignacion_resultados()
+    this.segundo_llamado()
 
   }
   contruye(citas){
@@ -173,12 +193,27 @@ export class CitasComponent implements OnInit {
       const data_cliente = clientes[cliente]
       const fullname = `${data_cliente.nombre} ${data_cliente.apellidos}`
       data_cliente.fullname = fullname
+      data_cliente.id = cliente
       const data_vehiculo = vehiculos[vehiculo]
+      data_vehiculo.id = vehiculo
       const data_sucursal = sucursales[sucursal]
+      data_sucursal.id = sucursal
       const servicio_show = camposServicios.find(ser=>ser.valor === servicio).nombre
       nuevas_citas[cita] = {...citas[cita], data_cliente, data_vehiculo, data_sucursal, servicio_show}
     })
     return nuevas_citas
+  }
+  comprobacion_resultados(){
+    const objecto_recuperdado = this._publicos.nueva_revision_cache('citas')
+    return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
+  }
+  segundo_llamado(){
+    setInterval(()=>{
+      if (!this.comprobacion_resultados()) {
+        console.log('recuperando data');
+        this.asignacion_resultados()
+      }
+    },500)
   }
   asignacion_resultados(){
     this.objecto_actual = this._publicos.nueva_revision_cache('citas')
@@ -188,19 +223,20 @@ export class CitasComponent implements OnInit {
 
     const {start, end} = this.fecha_formateadas
 
-    const data_filtrada = this._publicos.filtrarObjetoPorPropiedad_fecha(citas_all_data,start, end)
 
-    // this.lista_citas_proximas = []
+    const data_filtrada = this._publicos.filtrarObjetoPorPropiedad_fecha(citas_all_data,start, end)
+    const data_filtrada_sucursal = this._publicos.filtrarObjetoPorPropiedad(data_filtrada,'sucursal', this.sucursalFiltro)
 
     this.citas_hoy()
+    this.citas_rango_seleccionado()
 
     const nuevas_citas = []
-    Object.keys(data_filtrada).forEach(cita => {
+    Object.keys(data_filtrada_sucursal).forEach(cita => {
  
-      const {comentario,fecha_recibido} = data_filtrada[cita]
+      const {comentario,fecha_recibido} = data_filtrada_sucursal[cita]
     
-      const sdfghj = this._publicos.obtenerHoraDeFecha(this._publicos.sumarMinutosAFecha(new Date(fecha_recibido), 10 ) )
-      const end = this._publicos.resetearHoras_horas(new Date(fecha_recibido), sdfghj)
+      const hora_inicio = this._publicos.obtenerHoraDeFecha(this._publicos.sumarMinutosAFecha(new Date(fecha_recibido), 10 ) )
+      const end = this._publicos.resetearHoras_horas(new Date(fecha_recibido), hora_inicio)
 
       nuevas_citas.push({
         id: cita,
@@ -253,6 +289,8 @@ export class CitasComponent implements OnInit {
     if (id) {
         if (this.objecto_actual_data[id]) {
           console.log(this.objecto_actual_data[id]);
+          this.cita_unica = id
+          this.openBottomSheet(id)
         }
     }
   }
@@ -289,8 +327,15 @@ export class CitasComponent implements OnInit {
 
     this.lista_citas_proximas = this._publicos.crearArreglo2(data_filtrada_hoy)
   }
+  citas_rango_seleccionado(){
+    const {start, end} = this.fecha_formateadas
+    const data_filter = this._publicos.filtrarObjetoPorPropiedad_fecha(this.objecto_actual_data, start, end)
+
+    this.citas_mes_all = this._publicos.crearArreglo2(data_filter)
+  }
+  
   citas_dia_seleccionado(){
-    const {start, end} = this.fecha_formateadas_unico_dia
+    const {start} = this.fecha_formateadas_unico_dia
     const nuevo_data = this._publicos.crear_new_object(start)
     const start_hoy = this._publicos.resetearHoras_horas(new Date(nuevo_data), this.hora_start)
     const end_hoy = this._publicos.resetearHoras_horas(new Date(nuevo_data), this.hora_end)
@@ -305,6 +350,7 @@ vigilaCalendario(){
       // this.addEvent(start, end)
       this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start), this.hora_start)
       this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end), this.hora_end)
+      
       this.asignacion_resultados()
     }
   })
@@ -312,7 +358,7 @@ vigilaCalendario(){
 
   openBottomSheet(valor): void {
     const bottomSheetRef = this._bottomSheet.open(CitaComponent,{
-      data: {info: this.infoCitaUnica, editar:valor} ,
+      data: valor ,
     });
     // bottomSheetRef.afterDismissed().subscribe(() => {
     //   console.log('Bottom sheet has been dismissed.');

@@ -13,13 +13,20 @@ export class FormateHoraPipe implements PipeTransform {
     const anio = fechaObj.getFullYear();
     const hora = fechaObj.getHours();
     const minutos = fechaObj.getMinutes();
+    const segundos = fechaObj.getSeconds();
       let fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
     
       if (incluirHora) {
-        fechaFormateada += ` ${hora.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+        fechaFormateada += ` ${padStartNumber(hora)}:${padStartNumber(minutos)}: ${padStartNumber(segundos)}`;
+      }
+
+      function padStartNumber(cadena, number?){
+        number = (!number) ? 2 : number
+        return cadena.toString().padStart(number, '0')
       }
     
       return fechaFormateada;
   }
+  
 
 }

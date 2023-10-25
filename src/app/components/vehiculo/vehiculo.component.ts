@@ -72,7 +72,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       // console.log({nuevoValor, valorAnterior});
       
         setTimeout(()=>{
-          if (nuevoValor['id']) {
+          if (nuevoValor && nuevoValor['id']) {
            this.cargaDataVehiculo(nuevoValor)
           } else  if (nuevoValor === valorAnterior) {
             this.cargaDataVehiculo(valorAnterior)

@@ -26,8 +26,7 @@ const auth = getAuth();
 })
 export class NavbarComponent implements AfterViewInit ,OnInit {
   @ViewChild(InicioComponent) child;
-  constructor(private _auth:AuthService, private router : Router, private _email:EmailsService, 
-    private _sucursales: SucursalesService, private _publicos:ServiciosPublicosService, private _security:EncriptadoService,
+  constructor(private _auth:AuthService, private _sucursales: SucursalesService, private _publicos:ServiciosPublicosService, private _security:EncriptadoService,
     public _router: Router, public _location: Location, private _automaticos: AutomaticosService) { }
   
     sucursales_array =  [...this._sucursales.lista_en_duro_sucursales]
@@ -141,19 +140,17 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
           console.log('estan todos eliminados');
           clearInterval(intervalo)
           localStorage.setItem('primera_revision', 'ok')
-          // this.revision_existe_cache()
+          this.revision_existe_cache()
         }
       }, 500);
     } else {
       console.log('existe la primera revision');
       // La revisión ya existe en la caché, realizar otras acciones necesarias.
-      // this.revision_existe_cache()
+      this.revision_existe_cache()
     }
   }
   
   revision_existe_cache(){
-    console.log('aqui');
-    
     const faltantes = {}
     const existentes = {}
     let timer:number = 2000
@@ -372,19 +369,6 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
- 
- 
 
   //TODO aqui las nuevas funciones
 

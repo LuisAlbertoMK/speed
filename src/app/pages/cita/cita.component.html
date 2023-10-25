@@ -1,144 +1,59 @@
 
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1 text-end">
+    
+    <button type="button" aria-label="Status cita" [matMenuTriggerFor]="menuCita" class="btn btn-sm btn-light">
+      <i class="fas fa-exchange-alt"></i> <strong [ngClass]="data_cita['status']"> {{ data_cita['show'] | uppercase}}</strong>
+    </button>
+    <mat-menu #menuCita="matMenu">
+      <button mat-menu-item *ngFor="let status of status_cita" (click)="change_statusCita(status)">{{status.show | capitalizarUno}}</button>
+    </mat-menu>
+  </div>
 
-<ng-container *ngIf="editar; else elseEditar">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-        <button class="btn btn-sm btn-danger m-1" (click)="editar = false">
-            <i class="fa fa-calendar-exclamation"></i> Cancelar cita
-        </button>
+  <div class="col m-1">
+  <div class="list-group">
+    <div class="row ">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+        <div class="row">
+          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+            <h4 class="mb-1 text-capitalize">Fecha agendado</h4>
+          </div>
+          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+            <h4 class="mb-1">{{data_cita['fecha_recibido'] | formateHora:true}}</h4>
+          </div>
+        </div>
       </div>
-    editar la informacion de la cita
-    <app-registra-cita [id_cita]="info.id" [info_cita]="info" [nuevaCita]="false"></app-registra-cita>
-</ng-container>
-<ng-template #elseEditar>
-    <ng-container *ngIf="info; else elseTemplate">
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-          <h1>Cita {{ info.title }}</h1>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+        <div class="row">
+          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between ">
+            <h4 class="mb-1 text-capitalize">servicio</h4>
+          </div>
+          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+            <h4 class="mb-1 ">{{data_cita['servicio_show'] | uppercase}}</h4>
+          </div>
         </div>
-        <!-- <pre>
-          {{info | json}}
-        </pre> -->
-        <ng-container>
-          
-          <ng-container *ngIf="info.status !== 'cancelada' && info.status !== 'concretada'">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-              <button class="btn btn-sm btn-primary  m-1" [matMenuTriggerFor]="menuCita">Status de cita</button>
-              <mat-menu #menuCita="matMenu">
-                <button mat-menu-item  (click)="citaAccion(item.valor)" *ngFor="let item of opciones_menu">
-                  {{item.mensaje}}
-                </button>
-              </mat-menu>
-              <button class="btn btn-sm btn-primary  m-1" (click)="irPagina()">Realizar O.S</button>
-            </div>
-          </ng-container>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta text-center">
-                <span class="titulo">Status:</span>
-                <span [ngClass]="info.status" class="text-uppercase"><strong>{{info.mensajeStatus}}</strong></span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta" >
-                <span class="titulo">Cliente:</span>
-                <span class="informacion">{{info.fullname}}</span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Correo:</span>
-                <span class="informacion">{{info.correo}}</span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Placas:</span>
-                <span class="informacion">{{info.placas}}</span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Dia:</span>
-                <span class="informacion">{{info.dia}} {{info.horario}}</span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Sucursal:</span>
-                <span class="informacion">{{info.sucursalShow}}</span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta" *ngIf="info.cotizacionShow">
-                <span class="titulo">No cotización:</span>
-                <span class="informacion">{{info.cotizacionShow}}</span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta" *ngIf="info.cotizacionShow">
-                <span class="titulo">Total de la cotización:</span>
-                <span class="informacion">{{info.cotizacionCosto | monedas}}</span>
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta" *ngIf="info.direccion">
-                <span class="titulo">Recoleccion a domicilio: </span> <strong>{{ info.recoleccion ? 'SI' : 'NO' }}</strong>
-                <br>
-                  <button class="btn btn-sm btn-danger  m-1" (click)="negarRecoleccion()" *ngIf="info.recoleccion">No, Negar recolección</button>
-                  <!-- <button class="btn btn-sm btn-primary  m-1" (click)="aceptarRecoleccion()" *ngIf="!info.recoleccion">SI, Aceptar recolección</button> -->
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta" *ngIf="info.direccion">
-                <span class="titulo">Direccion de recoleccion</span>
-                <!-- <span class=""> -->
-                  <a [href]="info.direccion" class="direccion " target="_blank">{{info.direccion }}</a>
-                <!-- </span> -->
-              </div>
-              <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Concretada:</span>
-                <span class="informacion">{{info.asistenciaShow}}</span>
-              </div> -->
-              <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Recordatorio:</span>
-                <span class="informacion">{{info.recordatorioShow}}</span>
-              </div>
-              <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-12 cita-tarjeta">
-                <span class="titulo">Confirmada:</span>
-                <span class="informacion">{{info.confirmadaShow}}</span>
-              </div> -->
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="card border-dark">
-                  <div class="card-body">
-                    <h1>Informacion de vehiculo</h1>
-                    <div class="row">
-                      <ng-container *ngFor="let item of camposVehiculo">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 text-uppercase" *ngIf="info.dataVehiculo[item.valor]">
-                          <strong class="text-uppercase">{{item.show}} </strong>: {{info.dataVehiculo[item.valor]}}
-                        </div>
-                      </ng-container>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                <h1>Comentarios de cita</h1>
-                <ng-container *ngIf="info.status !== 'cancelada' && info.status !== 'concretada'">
-                  <textarea aria-label="comentario" [style]="'width: 100%;'" [(ngModel)]="comentario"></textarea>
-                  <span class="comentario">Caracteres minimos 10</span>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                    <button class="btn btn-sm btn-primary m-1" (click)="nuevoComentario()">Guardar comentario</button>
-                  </div>
-                </ng-container>
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Comentario</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let item of info.comentarios; let i = index">
-                        <th scope="row">{{i + 1}}</th>
-                        <td>{{item.comentario}}</td>
-                      </tr>
-                    </tbody>
-                  </table>  
-                </div>   
-              </div>
-        </ng-container>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item ">
+        <div class="row">
+          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between ">
+            <h4 class="mb-1 text-capitalize">comentario</h4>
+          </div>
+          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+            <h4 class="mb-1">{{data_cita['comentario'] | capitalizarUno}}</h4>
+          </div>
+        </div>
+      </div>
     </div>
-    </ng-container>
-    <ng-template #elseTemplate>
-        <div class="alert alert-info col-lg-12 col-md-12 col-sm-12 col-12">
-            <p>Se elimino cita</p>
-        </div>
-    </ng-template>
-</ng-template>
-<div class="row mb-5 mt-5">
-  <div class="col">
-
   </div>
 </div>
+</div>
 
+<app-cliente-tarjeta [cliente]="data_cita.data_cliente" [editar]="false" [title]="'Información cliente'"></app-cliente-tarjeta>
+
+<app-vehiculo-tarjeta [vehiculo]="data_cita.data_vehiculo" [title]="'Información vehículo'"></app-vehiculo-tarjeta>
+
+<app-sucursal-tarjeta [sucursal]="data_cita.data_sucursal" [title]="'Información sucursal'"></app-sucursal-tarjeta>
+
+<div class="row mb-5">
+  &nbsp;
+</div>

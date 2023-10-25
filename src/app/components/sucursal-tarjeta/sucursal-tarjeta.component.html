@@ -1,0 +1,64 @@
+<ng-container *ngIf="sucursal.id">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <figure>
+                  <blockquote class="blockquote">
+                    <p>{{title}} {{sucursal.sucursal | uppercase}}</p>
+                  </blockquote>
+                </figure>
+              </h5>
+              <div class="card-text">
+                <div class="list-group">
+                    <div class="row ">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                            <div class="row">
+                            <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                                <h5 class="mb-1 text-capitalize">Direccion</h5>
+                            </div>
+                            <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                                <h5 class="mb-1">{{sucursal['direccion']}}</h5>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                            <div class="row">
+                            <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                                <h5 class="mb-1 text-capitalize">correo</h5>
+                            </div>
+                            <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                                <h5 class="mb-1 ">{{sucursal['correo']}}</h5>
+                            </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="sucursal['telefono']">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                                <div class="row">
+                                <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                                    <h5 class="mb-1 text-capitalize">Telefono</h5>
+                                </div>
+                                <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                                    <h5 class="mb-1 ">{{sucursal['telefono']}}</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="sucursal['telefono2']">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                                <div class="row">
+                                <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                                    <h5 class="mb-1 text-capitalize">telefono2</h5>
+                                </div>
+                                <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                                    <h5 class="mb-1">{{sucursal['telefono2']}}</h5>
+                                </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>              
+            </div>
+        </div>
+    </div>
+</ng-container>
+

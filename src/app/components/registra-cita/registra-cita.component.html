@@ -42,9 +42,9 @@
                                               <option  value="">Selecciona placas</option>
                                               <option [value]="v.id" *ngFor="let v of arr_vehiculos">{{v.placas}}</option>
                                             </select>
-                                            <button aria-label="modalVehiculo" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalNewVehiculo" #tooltip="matTooltip" matTooltip="Registra nuevo vehiculo">
-                                              <i class="fa fa-car"></i>
-                                            </button>
+                                            
+                                            <!-- <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button> -->
+                                           
                                           </div>
                                         
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
@@ -93,6 +93,7 @@
                                                     <option [value]="hora" *ngFor="let hora of horarios_show">{{hora }}</option>
                                                 </select>
                                                 <small *ngIf="validarCampo('horario')" class="text-danger">campo requerido</small>
+                                                
                                             </div>
                                             </div>
                                         </div>
@@ -187,6 +188,12 @@
                                             </button>
                                         </div>
                                         </div>
+                                        <ng-container *ngIf="!horarios_show.length && citaForm.get('fecha').value">
+                                            <div class="alert alert-info">
+                                                Sin horarios disponibles, las citas deben ser al menos con una hora de anticipación
+                                            </div>
+                                        </ng-container>
+    
                                         <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
                                     </form>
                                 </div>
@@ -241,3 +248,18 @@
   <pre>
     {{citaForm.value | json}}
 </pre>
+
+
+<div class="modal fade" id="modalNewVehiculo" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal-dialog modal-xl modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
+    <div class="modal-content">
+      <div class="modal-body m-2">
+
+        <app-vehiculo [data_cliente]="citaForm.get('cliente').value" (dataVehiculo)="vehiculo_registrado( $event )" ></app-vehiculo>
+        
+      </div>
+    </div>
+  </div>
+</div>

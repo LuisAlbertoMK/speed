@@ -69,6 +69,7 @@ export class AutomaticosComponent implements OnInit {
     {ruta_observacion: 'sucursales', nombre:'claves_sucursales'},
     {ruta_observacion: 'metas_sucursales', nombre:'claves_metas_sucursales'},
     {ruta_observacion: 'moRefacciones', nombre:'claves_moRefacciones'},
+    {ruta_observacion: 'citas', nombre:'claves_citas'},
   ]
 
   busqueda:any = {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'}
@@ -337,11 +338,11 @@ vigila_nodos(){
     // console.log({ruta_observacion, nombre});
     console.log(cual);
     
-    const data_claves = await this._publicos.nueva_revision_cache(cual)
+    const data_claves = this._publicos.nueva_revision_cache(cual)
     this._publicos.saber_pesos(data_claves)
     console.log(data_claves);
       
-    // const claves_keys = await this._publicos.nueva_revision_cache(nombre)
+    // const claves_keys = this._publicos.nueva_revision_cache(nombre)
     // console.log(claves_keys);
     // this._publicos.saber_pesos(claves_keys)
 

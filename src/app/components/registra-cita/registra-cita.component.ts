@@ -246,6 +246,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.citaForm.get('sucursal').setValue(sucursal)
       this.citaForm.get('cliente').setValue(id)
       this.citaForm.get('correo').setValue(correo)
+      this.citaForm.get('vehiculo').setValue(null)
+      this.extra = null
     }
     this.vigila_vehiculos_cliente()
   }
@@ -349,8 +351,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
 
     const citas = this._publicos.nueva_revision_cache('citas')
     const seleccionado = this._publicos.resetearHoras(new Date(fecha))
-    console.log(citas);
-    
+
     const apuntadores = ['cliente','sucursal','vehiculo', 'servicio','fecha']
 
     const {faltante_s} =this._publicos.realizavalidaciones_new(data_form, apuntadores)
@@ -369,30 +370,58 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       const end = this._publicos.resetearHoras_horas(seleccionado,this.hora_end)
       
       const filtrado_fechas = this._publicos.filtrarObjetoPorPropiedad_fecha(filtrado_placas, start, end)
-      
+
       if (this._publicos.tiene_data(filtrado_fechas)) {
         this._publicos.mensajeSwal('El vehiculo ya cuenta cin cita',0,false, 'selecciona otro dia para tu cita!!')
+        console.log('cuenta cita');
+        
+        this.horarios_show = []
       }else{
         const donde = (this._publicos.dia_string(fecha) === 'sáb') ? 'sabado' : 'lunesViernes'
         const nueva_sucursal = (sucursal === '-N2glF34lV3Gj0bQyEWK') ? '-N2glF34lV3Gj0bQyEWK' : 'otras'
-        // const horarios_ocupados = ['09:10','10:00','11:50','15:20','16:40','17:50']
-        const horarios_ocupados = this.regresa_horarios(this._publicos.crearArreglo(filtrado_fechas))
+
+        const filtrado_fechaDs = this._publicos.filtrarObjetoPorPropiedad_fecha(citas, start, end)
+
+        const filtrados = Object.keys(filtrado_fechaDs)
+        .filter(key => filtrado_fechaDs[key].status === 'confirmada' || filtrado_fechaDs[key].status === 'noConfirmada' || filtrado_fechaDs[key].status === 'sinConfirmarDomicilio')
+  
+        .map(key => ({ ... filtrado_fechaDs[key], id: key }));
         
         const horariosValidos = [...new Set(this.horarios[nueva_sucursal][donde])]
-        const horas_quitar = (servicio === '5') ? 3.5 : 2
-          
+
+        const horas_quitar =  (servicio === '5') ? 2 : 1
+
         const limiteHoras = `${horariosValidos[ horariosValidos.length - 1 ]}:00`
-
-        const limite_hoy = this._publicos.resetearHoras_horas(seleccionado,limiteHoras)
-
+        
+        const limite_hoy = this._publicos.resetearHoras_horas(new Date(seleccionado),limiteHoras)
+        
         const limite_permitido = this._publicos.obtenerHoraDeFecha(this._publicos.restarHorasAFecha(limite_hoy, horas_quitar))
 
         const limitePermitidoHora = this.parse_hora(seleccionado,limite_permitido)
 
-        const mus = horariosValidos.filter(horario => this.parse_hora(seleccionado,horario) <= limitePermitidoHora);
-        this.horarios_show = this._publicos.obtener_diferencias(mus, horarios_ocupados)
-      }
+        const horarios_ocupados = this.regresa_horarios(filtrados)
 
+        const hrs_antes = 1
+
+        let mus = horariosValidos.filter(horario => {
+          const horario_new = this.parse_hora(seleccionado,horario)
+          const {horas} = this._publicos.diferenciaHorasMinutos(horario_new, limitePermitidoHora)
+          return horario_new <= limitePermitidoHora && horas >= hrs_antes
+        });
+        
+        if (this._publicos.esFechaHoy(seleccionado)) {
+
+          mus = horariosValidos.filter(horario => {
+            const horario_new = this.parse_hora(seleccionado,horario)
+            const {horas} = this._publicos.diferenciaHorasMinutos(horario_new, limitePermitidoHora)
+             return  horario_new <= limitePermitidoHora && horario_new >= new Date() && horas >= hrs_antes
+          });
+
+        }
+
+        this.horarios_show = this._publicos.obtener_diferencias(mus, horarios_ocupados)
+
+      }
     }
   }
   parse_hora(fecha?,hora?) {
@@ -404,17 +433,18 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   regresa_horarios(arreglo){
     let fechas = []
     arreglo.forEach(cita=>{
-      const {fecha} = cita
-      fechas.push(this.obtenerHoraCompleta(fecha))
+      const {fecha_recibido} = cita
+      fechas.push(this.obtenerHoraCompleta( fecha_recibido))
     })
     return [...new Set(fechas)]
   }
   obtenerHoraCompleta(fecha) {
-    const horas = fecha.getHours().toString().padStart(2, '0');
-    const minutos = fecha.getMinutes().toString().padStart(2, '0');
-    const segundos = fecha.getSeconds().toString().padStart(2, '0');
+    const new_date = new Date(fecha)
+    const horas = new_date.getHours().toString().padStart(2, '0');
+    const minutos = new_date.getMinutes().toString().padStart(2, '0');
+    const segundos = new_date.getSeconds().toString().padStart(2, '0');
     
-    return `${horas}:${minutos}:${segundos}`;
+    return `${horas}:${minutos}`;
   }
   async addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
     const start = this._publicos.crear_new_object(event.value)
@@ -435,6 +465,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       'servicio',
       'comentario',
       'sucursal',
+      'status'
     ]
 
     // 'cotizacion_utiliza',
@@ -445,7 +476,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       'direccion',
       'sucursal',
     ]
-
+    info_get.status = 'confirmada'
     const {ok, faltante_s} = this._publicos.realizavalidaciones_new(info_get,campos )
     const recuperda = this._publicos.nuevaRecuperacionData(info_get,campos)
 
@@ -517,6 +548,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       servicio,
       vehiculo,
       comentario,
+      status: 'confirmada',
       fecha_recibido: this._publicos.retorna_fechas_hora({fechaString: fechaa.toString()}).toString
     }
     if (id_cotizacion) temp['id_cotizacion'] = id_cotizacion
@@ -531,6 +563,12 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
    
     
   }
+  vehiculo_registrado(event){
+    if (event) {
+     this.extra = event
+     this.vigila_vehiculos_cliente()
+   }
+ }
   ruta_guardar_cita(fecha_get) {
     let fecha = new Date(fecha_get)
     const dia = fecha.getDate().toString().padStart(2, '0');

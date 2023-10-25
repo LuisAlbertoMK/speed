@@ -893,7 +893,15 @@ export class ServiciosPublicosService {
       fecha.setHours(0, 0, 0, 0);
       return fecha;
     }
-    resetearHoras_horas(fecha: Date, hora){
+    esFechaHoy(fecha: Date): boolean {
+      const fechaActual = new Date(); // Obtiene la fecha y hora actual
+      fechaActual.setHours(0, 0, 0, 0); // Establece la hora actual a las 00:00:00.000
+    
+      fecha.setHours(0, 0, 0, 0); // Establece la hora de la fecha recibida a las 00:00:00.000
+    
+      return fecha.getTime() === fechaActual.getTime();
+    }
+    resetearHoras_horas(fecha: Date, hora:string){
       const [horas, minutos, segundos] = hora.split(':');
         fecha.setHours(parseInt(horas, 10));
         fecha.setMinutes(parseInt(minutos, 10));
@@ -923,6 +931,14 @@ export class ServiciosPublicosService {
       const minutos = fecha.getMinutes();
       const segundos = fecha.getSeconds();
       return `${hora}:${minutos}:${segundos}`;
+    }
+    diferenciaHorasMinutos(fechaInicial: Date, fechaFinal: Date): { horas: number; minutos: number } {
+      const diferenciaMilisegundos = fechaFinal.getTime() - fechaInicial.getTime();
+      const minutos = Math.floor(diferenciaMilisegundos / 60000); // 1 minuto = 60000 milisegundos
+      const horas = Math.floor(minutos / 60);
+      const minutosRestantes = minutos % 60;
+    
+      return { horas, minutos: minutosRestantes };
     }
     convertirFecha_1(fechaTexto) {
       const fechaOriginal = new Date(fechaTexto);
@@ -2402,9 +2418,7 @@ export class ServiciosPublicosService {
         for (const clave in objeto) {
           if (objeto.hasOwnProperty(clave) && objeto[clave].fecha_recibido ){
             const fecha_compara = new Date( objeto[clave].fecha_recibido)
-              if (fecha_compara >= fecha_start && fecha_compara <= fecha_end) {
-                resultado[clave] = objeto[clave];
-              }
+            if (fecha_compara >= fecha_start && fecha_compara <= fecha_end) resultado[clave] = objeto[clave];
           }
         }
       return resultado;

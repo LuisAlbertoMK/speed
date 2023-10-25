@@ -37,6 +37,7 @@ export class ClienteTarjetaComponent implements OnInit, OnChanges {
     
   @Input() cliente = null
   @Input() editar:boolean  = false
+  @Input() title
   
   camposCliente    =  [ ...this._clientes.camposCliente_show ]
 

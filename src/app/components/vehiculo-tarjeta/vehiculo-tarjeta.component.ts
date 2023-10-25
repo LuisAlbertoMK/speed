@@ -9,7 +9,8 @@ import { VehiculosService } from 'src/app/services/vehiculos.service';
 export class VehiculoTarjetaComponent implements OnInit {
 
   constructor(private _vehiculos: VehiculosService,) { }
-  @Input() vehiculo:any = null
+  @Input() vehiculo
+  @Input() title
   camposVehiculo   =  [ ...this._vehiculos.camposVehiculo_ ]
 
   ngOnInit(): void {
