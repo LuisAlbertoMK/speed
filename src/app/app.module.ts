@@ -169,6 +169,7 @@ import { VehiculosClienteComponent } from './pages/vehiculos-cliente/vehiculos-c
 import { MorefaccionesListComponent } from './components/morefacciones-list/morefacciones-list.component';
 import { CitasClienteComponent } from './pages/citas-cliente/citas-cliente.component';
 import { SucursalTarjetaComponent } from './components/sucursal-tarjeta/sucursal-tarjeta.component';
+import { JumbotronComponent } from './components/jumbotron/jumbotron.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -271,6 +272,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MorefaccionesListComponent,
     CitasClienteComponent,
     SucursalTarjetaComponent,
+    JumbotronComponent,
   ],
   imports: [
     BrowserModule,

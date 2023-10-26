@@ -218,7 +218,7 @@ export class CitasComponent implements OnInit {
   asignacion_resultados(){
     this.objecto_actual = this._publicos.nueva_revision_cache('citas')
     const citas = this._publicos.nueva_revision_cache('citas')
-    const citas_all_data = this.contruye(citas)
+    const citas_all_data = this._publicos.contruye_citas(citas)
     this.objecto_actual_data = citas_all_data
 
     const {start, end} = this.fecha_formateadas
@@ -288,7 +288,6 @@ export class CitasComponent implements OnInit {
     const id = clickInfo.event.id
     if (id) {
         if (this.objecto_actual_data[id]) {
-          console.log(this.objecto_actual_data[id]);
           this.cita_unica = id
           this.openBottomSheet(id)
         }

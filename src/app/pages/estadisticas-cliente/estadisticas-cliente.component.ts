@@ -60,7 +60,7 @@ export class EstadisticasClienteComponent implements OnInit{
     {valor: 'ticketPromedioFinal', show:'Ticket promedio servicios', symbol:'$'},
     {valor: 'gasto_gen', show:'Gasto total', symbol:'$'},
   ]
-  campos_estadisticas = { ticketPromedioFinal:0 ,servicios_totales:0,ticketGeneral:0 }
+  campos_estadisticas = { ticketPromedioFinal:0 ,servicios_totales:0,ticketGeneral:0, servicios_gen:0}
 
   clavesVehiculos = []
   calves_vehiculos_new = []
@@ -137,10 +137,36 @@ export class EstadisticasClienteComponent implements OnInit{
 
   fechas_busqueda = {inicio: this._publicos.resetearHoras(new Date()), final: this._publicos.resetearHoras(new Date())}
 
-  SUCURSAL:string
+  _sucursal:string
+  _uid:string
 
+  recepciones_arr=[]
+  fecha_formateadas = {start:new Date(), end:new Date() }
+  hora_start = '00:00:01';
+  hora_end = '23:59:59';
+
+  pertenecientes
+  data_seleccionada
   ngOnInit(): void {
     this.rol()
+    this.vigila_calendario()
+  }
+  vigila_calendario(){
+    this.range_busqueda.valueChanges.subscribe(({start:start_, end: end_})=>{
+      if (start_ && start_['_d'] && end_ && end_['_d'] ) {
+        if (end_['_d'] >= start_['_d']) {
+          this.resetea_horas_admin()
+        }
+      }
+    })
+  }
+  resetea_horas_admin(){
+    const {start, end } = this.range_busqueda.value
+
+    this.fecha_formateadas.start = this._publicos.resetearHoras_horas(new Date(start),this.hora_start) 
+    this.fecha_formateadas.end = this._publicos.resetearHoras_horas(new Date(end),this.hora_end)
+    this.onSelect_busqueda('')
+
   }
   OnAfterContentChecked() {
     console.log("Sent from Ng After View Init");
@@ -149,22 +175,92 @@ export class EstadisticasClienteComponent implements OnInit{
   rol(){
   
     const { rol, sucursal, uid } = this._security.usuarioRol()
-    this.SUCURSAL = sucursal
+    this._sucursal = sucursal
+    if (uid) {
+      this._uid = uid
+      this.asiganacion_resultados()
+    }
+    this.ajustado_automatico()
     // if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
   }
+  ajustado_automatico(){
+    setInterval(() => {
+      this.applyDimensions()
+    }, 1000);
+  }
   
+  asiganacion_resultados(){
+    // const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
+  
+    this.recepciones_arr = recepciones_arr
+
+    let finales = []
+    let totales = 0
+    recepciones_arr.forEach(cot=>{
+      const {reporte } = cot
+      const {total} = reporte
+      totales+= total
+      
+    })
+   
+
+    const {
+      maximo,
+      no_maximo,
+      contadorMaximo,
+      arreglo_maximo,
+      minimo,
+      no_minimo,
+      contadorMinimo,
+      arreglo_minimo
+    } = this._publicos.obtenerValorMaximoMinimo(recepciones_arr)
+    
+    finales.push({ name: 'Monto total invertido', value: totales })
+    finales.push({ name: 'Ticket promedio servicios', value: totales / recepciones_arr.length })
+
+    finales.push({ name: 'Monto mas grande en una orden', value: maximo })
+    finales.push({ name: 'Monto mas pequeño en en servicios', value: minimo })
+
+    this.clonado = [
+      {
+        name: "Monto total invertido",
+        value: totales,
+        contador: 0,
+        arreglo:[]
+      },
+      {
+        name: "Monto mas grande en una orden",
+        value: maximo,
+        no_os: no_maximo,
+        contador: contadorMaximo,
+        arreglo: arreglo_maximo
+      },
+      {
+        name: "Ticket promedio servicios",
+        value: totales / recepciones_arr.length,
+        contador: 0,
+        arreglo:[]
+      },
+      {
+        name: "Monto mas pequeño en en servicios",
+        value: minimo,
+        no_os: no_minimo,
+        contador: contadorMinimo,
+        arreglo: arreglo_minimo
+      },
+    ]
+
+    
+    
+    this.single_generales = finales
+
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  newPagination(){
-    setTimeout(() => {
-    // if (data==='elementos') {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort
-    // }
-    }, 500)
-  }
+
 
   irPagina(pagina,vehiculo){
     const  { usuario } = this._security.usuarioRol() 
@@ -180,6 +276,7 @@ export class EstadisticasClienteComponent implements OnInit{
     if (event) {
       const busqueda = (typeof event === 'object') ? event.name : event
       this.infoSelect  = this.clonado.find(c=>c.name === busqueda)
+     
       
       const findIndex = (array, predicate) => {
         for (let i = 0; i < array.length; i++) {
@@ -227,6 +324,7 @@ export class EstadisticasClienteComponent implements OnInit{
     // this.colorScheme.domain[0] = '#5ca04a'
   }
   valueFormatting(value: number): string {
+
     const isNegative = value < 0;
     const [integerPart, decimalPart = '00'] = Math.abs(value)
       .toFixed(2)
@@ -247,9 +345,11 @@ export class EstadisticasClienteComponent implements OnInit{
     return formattedValue;
   }
   axisTickFormatting(value):string{
-    const enteros = value.split(',');
-    const numero_1 = enteros[0].replace('.', '');
-    const nuevoNumero = !enteros[1] ? numero_1 : `${numero_1}.${enteros[1]}`;
+
+    const enteros = value.split('.');
+    const numero_1 = enteros[0].replace(',', '');
+
+    const nuevoNumero = !enteros[1] ? numero_1: `${numero_1}.${enteros[1]}`;
 
     const isNegative = nuevoNumero < 0;
     const [integerPart, decimalPart = '00'] = Math.abs(nuevoNumero).toFixed(2).split('.');
@@ -260,10 +360,8 @@ export class EstadisticasClienteComponent implements OnInit{
         const isThousands = index % 3 === 0 && index !== 0;
         return `${digit}${isThousands ? ',' : ''}${result}`;
       }, '');
-  
-    const formattedValue = ` $ ${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
-      
-    return formattedValue;
+
+    return ` $ ${isNegative ? '-' : ''} ${formattedIntegerPart}.${decimalPart}`;
   }
   tooltipText(velue_get){
     // console.log(velue_get);
@@ -287,191 +385,74 @@ export class EstadisticasClienteComponent implements OnInit{
   
   onSelect_busqueda(event){
     // console.log(event);
-    
-    if (event) {
-      const busqueda = (typeof event === 'object') ? event.name : event
-      this.infoSelect_busqueda  = this.clonado_busqueda.find(c=>c.name === busqueda)
-      // console.log('aqui');
-      const encontrado = this.seleciona.find(c=>c === busqueda)
-      // console.log(encontrado);
-      // this.colorScheme = {
-      //   group: ScaleType.Ordinal, 
-      //   selectable: true, 
-      //   name: 'Customer Usage', 
-      //   domain: ['#FF8623', '#FF8623', '#6fd5a4', '#FF8623']
-      // };
-      this.muestra_busqueda = encontrado
-      this.cambiosFechas()
-      
-    }else{
-      this.infoSelect_busqueda = {value: 0, name:'--------',contador: 0,arreglo:[]}
-    }
-    // console.log(this.infoSelect_busqueda);
-    
-  }
-  cambiosFechas(){
+    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+    // if (event) {
+      // const busqueda = (typeof event === 'object') ? event.name : event
+      // this.infoSelect_busqueda  = this.clonado.find(c=>c.name === busqueda)
 
-    const {start, end} = this.range_busqueda.value
-    if (start && end && (start['_d'] && end['_d'] ) && this.muestra_busqueda) {
-      
-      // console.log('si es fecha');
-      // console.log(this.muestra_busqueda);
-      
-      const fechaAsigan = {inicio: this._publicos.resetearHoras(start['_d']), final: this._publicos.resetearHoras(end['_d'])}
-      this.fechas_busqueda = fechaAsigan
-      // console.log(this.fechas_busqueda);
-      // console.log(this.recepciones_generales);
-      const filtro_entregado = 
-      // this.recepciones_generales.filter(
-      //   r=>r.status === 'entregado' && (fechaAsigan.inicio >= r.fechaEntregado && fechaAsigan.final <= r.fechaEntregado)
-      // )
-       this.recepciones_generales.filter(r => {
-        const fechaEntregado = new Date(r.fechaEntregado);
-        return r.status === 'entregado' && fechaEntregado >= fechaAsigan.inicio && fechaEntregado <= fechaAsigan.final;
-      });
-      //TODO CONTINUAR CON LA MUESTRA DE INFORMACION EN ESTADISTICAS DE CLIENTE
-      // console.log(filtro_entregado);
+      const { recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
+      const {start, end} = this.fecha_formateadas
+
+      const filtro_fechas = recepciones_arr.filter(recep=> new Date(recep.fecha_recibido) >= start && new Date(recep.fecha_recibido) <= end)
+
       let pertenecientes = {}
-      const clonar = []
-      this.calves_vehiculos_new.forEach(c=>{
-        const recepciones       = filtro_entregado.filter(re=>re.vehiculo.id === c)
-        const max_min           = this._publicos.obtenerValorMaximoMinimo(recepciones)
-        const data_vehiculo     = this.vehiculos_new.find(v=>v.id === c)
-        const {ticketGeneral, ticketPromedio}= this._publicos.obtener_ticketPromedioFinal(recepciones)
-
-        let ocupado, contador=0, arreglo = [], servicios = recepciones.length
-        switch (this.muestra_busqueda) {
-          case 'Monto total invertido':
-            ocupado = ticketGeneral
-            break;
-          case 'Monto mas grande en una orden':
-            ocupado = max_min.maximo
-            arreglo = max_min.arreglo_maximo
-            contador = max_min.contadorMaximo
-            break;
-          case 'Ticket promedio servicios':
-            ocupado = ticketPromedio
-            break;
-          case 'Monto mas pequeño en en servicios':
-            ocupado = max_min.minimo
-            arreglo = max_min.arreglo_minimo
-            contador = max_min.contadorMinimo
-            break;
+      
+      let data = []
+       vehiculos_arr.forEach(v=>{
+        const {id, placas} = v
+        const recepciones_vehiculo = filtro_fechas.filter(recp=>recp.vehiculo === id)
+        const {
+          maximo,
+          no_maximo,
+          contadorMaximo,
+          arreglo_maximo,
+          minimo,
+          no_minimo,
+          contadorMinimo,
+          arreglo_minimo
+        } = this._publicos.obtenerValorMaximoMinimo(recepciones_vehiculo)
+        const {ticketGeneral, ticketPromedio}= this._publicos.obtener_ticketPromedioFinal(recepciones_vehiculo)
+        let servicios = recepciones_vehiculo.length
         
-          default:
-            
-            break;
-        }
-        const objeto =  {data_max_min: max_min, vehiculo: data_vehiculo}    
-        pertenecientes[c] = Object(objeto)
-        
-        clonar.push(Object({name: ' '+String(data_vehiculo.placas).toUpperCase(), value: ocupado, contador, arreglo, servicios_totales: servicios}))
+        const objeto =  {data_max_min: {
+          maximo,
+          no_maximo,
+          contadorMaximo,
+          arreglo_maximo,
+          minimo,
+          no_minimo,
+          contadorMinimo,
+          arreglo_minimo
+        }, data_vehiculo: vehiculos[id]}    
+        pertenecientes[placas.toUpperCase()] = {...Object(objeto), servicios, ticketGeneral, ticketPromedio}
+        // clonar.push(Object({name: placas.toUpperCase(), value: ocupado}))
+        let tota_vehiculo = total_ordenes(recepciones_vehiculo)
+        data.push({name: placas.toUpperCase(), value: tota_vehiculo})
       })
-      this.clonado_busqueda = [...clonar]
-      this.single = [...clonar]
-      // console.log(pertenecientes);
-      // console.log(this.single);
-      
-      
-    }else{
-      // console.log('no es fecha');
-      
+      this.pertenecientes = pertenecientes
+
+      function total_ordenes(filtro_fechas:any[]){
+        let totales = 0
+        filtro_fechas.forEach(cot=>{
+          const {reporte } = cot
+          const {total} = reporte
+          totales+= total
+        })
+        return totales
+      }
+      this.single = data
+    // }else{
+    //   this.infoSelect_busqueda = {value: 0, name:'--------',contador: 0,arreglo:[]}
+    // }
+    
+  }
+  vehiculo_fd(event){
+    const {name} = event
+    if (this.pertenecientes[name]) {
+      this.data_seleccionada = this.pertenecientes[name]
     }
   }
 
-  calcularTotales(data) {
-    const {margen: new_margen, formaPago, elementos: servicios_, iva:_iva, descuento:descuento_} = data
-    const reporte = {mo:0, refacciones:0, refacciones_v:0, subtotal:0, iva:0, descuento:0, total:0, meses:0, ub:0}
-    const elementos =  [...servicios_]
-    const margen = 1 + (new_margen / 100)
-    elementos.map(ele=>{
-      const {cantidad, costo, tipo} = ele
-      if (tipo === 'paquete') {
-        const report = this.total_paquete(ele)
-        const {mo, refacciones} = report
-        if (ele.aprobado) {
-          reporte.mo += mo
-          reporte.refacciones += refacciones
-          reporte.refacciones_v += refacciones * margen
-        }
-        ele.precio = mo + (refacciones * margen)
-        ele.total = (mo + (refacciones * margen)) * cantidad
-        if (costo > 0 ) ele.total = costo * cantidad 
-      }else if (tipo === 'mo' || tipo === 'refaccion') {
-
-        const operacion = this.mano_refaccion(ele)
-
-        if (ele.aprobado) reporte[tipo] += operacion
-
-        ele.subtotal = operacion;
-        ele.total = operacion;
-        if (tipo === 'refaccion') {
-          // reporte.refacciones += operacion;
-          reporte.refacciones_v += operacion * margen;
-          ele.total = operacion * margen;
-        }
-
-        
-        // if (ele.aprobado) {
-        //   reporte.mo += operacion
-        // }
-        // ele.subtotal = operacion
-        // ele.total = operacion
-      }
-      // else if (ele.tipo === 'refaccion') {
-      //   const operacion = this.mano_refaccion(ele)
-      //   if (ele.aprobado) {
-      //     reporte.refacciones += operacion
-      //     reporte.refacciones_v += operacion * margen
-      //   }
-      //   ele.subtotal = operacion
-      //   ele.total = operacion * margen
-      // }
-      return ele
-    })
-    let descuento = parseFloat(descuento_) || 0
-    const enCaso_meses = this.formasPago.find(f=>f.id === String(formaPago))
-    const {mo, refacciones_v, refacciones} = reporte
-
-    let nuevo_total = mo + refacciones_v
-
-    let total_iva = _iva ? nuevo_total * 1.16 : nuevo_total;
-
-    let iva =  _iva ? nuevo_total * .16 : 0;
-
-    let total_meses = (enCaso_meses.id === '1') ? 0 : total_iva * (1 + (enCaso_meses.interes / 100))
-    let newTotal = (enCaso_meses.id === '1') ?  total_iva -= descuento : total_iva
-    let descuentoshow = (enCaso_meses.id === '1') ? descuento : 0
-
-    reporte.descuento = descuentoshow
-    reporte.iva = iva
-    reporte.subtotal = nuevo_total
-    reporte.total = newTotal
-    reporte.meses = total_meses
-    // console.log(reporte);
-    // (reporteGeneral.subtotal - cstoCOmpra) *100/reporteGeneral.subtotal
-    reporte.ub = (nuevo_total - refacciones) * (100 / nuevo_total)
-    return {reporte, elementos}
-    
-  }
-  mano_refaccion(ele){
-    const {costo, precio, cantidad} = ele
-    const mul = (costo > 0 ) ? costo : precio
-    return cantidad * mul
-  }
-  total_paquete(data){
-    const {elementos} = data
-    const reporte = {mo:0, refacciones:0}
-    elementos.forEach(ele=>{
-      if (ele.tipo === 'mo') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.mo += operacion
-      }else if (ele.tipo === 'refaccion') {
-        const operacion = this.mano_refaccion(ele)
-        reporte.refacciones += operacion
-      }
-    })
-    return reporte
-  }
+ 
 
 }

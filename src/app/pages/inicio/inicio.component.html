@@ -1,5 +1,14 @@
-<app-template-navegacion></app-template-navegacion>
-
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 fs-4">
+        <ol class="breadcrumb float-sm-left">
+          <li class="breadcrumb-item active text-capitalize">Inicio</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
   <div class="row">
     <ng-container *ngIf="Gerente_rol || SuperSU_rol">
       <div class="col-12 col-sm-4 col-md-4 col-lg-3  pointer "  *ngFor="let gerente of asigancion_roles_gerente"

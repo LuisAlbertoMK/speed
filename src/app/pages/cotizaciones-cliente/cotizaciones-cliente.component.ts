@@ -5,16 +5,6 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { SucursalesService } from 'src/app/services/sucursales.service';
 
 
-import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
-const db = getDatabase()
-const dbRef = ref(getDatabase());
-
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-
-
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CotizacionesService } from 'src/app/services/cotizaciones.service';
 import { VehiculosService } from 'src/app/services/vehiculos.service';
@@ -52,12 +42,6 @@ export class CotizacionesClienteComponent implements OnInit {
   mo: string          =   this._campos.mo
   miniColumnas:number =   this._campos.miniColumnas
 
-  dataSource = new MatTableDataSource(); //elementos
-  elementos = ['index','no_cotizacion','fullname','placas']; //elementos
-  columnsToDisplayWithExpand = [...this.elementos, 'opciones', 'expand']; //elementos
-  expandedElement: any | null; //elementos
-  @ViewChild('cotizacionesPaginator') paginator: MatPaginator //elementos
-  @ViewChild('cotizaciones') sort: MatSort //elementos
 
 
   cotizaciones_Existentes = []
@@ -162,15 +146,15 @@ export class CotizacionesClienteComponent implements OnInit {
         this.valores_promedios[c] = promedios_ticket[c]
       })
   
-      const resultados_comparados = this._publicos.obtenerMaximoMinimoYSimilitudes(cotizaciones_arr)
+      const {maximos, minimos} = this._publicos.obtenerMaximoMinimoYSimilitudes(cotizaciones_arr)
 
       this.tabla_maximos.forEach(element => {
         const {valor} = element
-        this.valores_tabla_maximos[valor] = resultados_comparados[0][valor]
+        this.valores_tabla_maximos[valor] = maximos[valor]
       });
       this.tabla_minimos.forEach(element => {
         const {valor} = element
-        this.valores_tabla_minimos[valor] = resultados_comparados[1][valor]
+        this.valores_tabla_minimos[valor] = minimos[valor]
       })
     }
     

@@ -17,7 +17,7 @@ export class FormateHoraPipe implements PipeTransform {
       let fechaFormateada = `${dia.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${anio}`;
     
       if (incluirHora) {
-        fechaFormateada += ` ${padStartNumber(hora)}:${padStartNumber(minutos)}: ${padStartNumber(segundos)}`;
+        fechaFormateada += ` ${padStartNumber(hora)}:${padStartNumber(minutos)}:${padStartNumber(segundos)}`;
       }
 
       function padStartNumber(cadena, number?){

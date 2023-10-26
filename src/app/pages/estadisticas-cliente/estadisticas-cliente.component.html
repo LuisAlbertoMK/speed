@@ -2,114 +2,118 @@
 
 <app-template-navegacion></app-template-navegacion>
 
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-4 animate__animated animate__bounce">SpeedPro</h1>
-    <p class="lead texto-justificado">
-      Actualmente trabajando en tus estadisticas ....
-    </p>
-  </div>
-</div>
-<!-- <div class="row">
-  <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+<div class="content-header">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="card  mb-3">
-          <div class="card-header">
-            Estadisticas de <strong>recepciones </strong>
-          </div>
-          <div class="card-body text-success">
-            <h5 class="card-title"></h5>
-            <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                    <span class="titulo">seleccionado:</span>
-                    <span  class="text-uppercase informacion"><strong>{{infoSelect.name}}</strong></span>
-                    <div class="row">
-                      <div class="col-lg-8 col-md-8 col-sm-12 col-12 m-1">
-                        <select class="form-control form-control-sm informacion" #valor (change)="onSelect_general(valor.value)">
-                          <option value="" >Selecciona</option>
-                          <option [value]="item" [selected]="item === infoSelect.name" *ngFor="let item of seleciona">{{item}}</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                    <span class="titulo">Total de servicios:</span>
-                    <span  class="text-uppercase informacion"><strong>{{campos_estadisticas.servicios_totales}}</strong></span>
-                  </div>
-                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                    <span class="titulo">Dinero:</span>
-                    <span  class="text-uppercase informacion"><strong>{{infoSelect.value | monedas}}</strong></span>
-                  </div>
-                  <ng-container *ngIf="infoSelect.contador">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
-                      <span class="titulo">cuantos:</span>
-                      <span  class="text-uppercase informacion"><strong>{{infoSelect.contador}}</strong></span>
-                    </div>
-                  </ng-container>
-                  <ng-container *ngIf="infoSelect.arreglo.length">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta" >
-                      <span class="titulo">cuales:</span>
-                      <span  class="text-uppercase informacion">
-                        <strong>
-                          <ng-container *ngFor="let item of infoSelect.arreglo">
-                              {{item}}, &nbsp;
-                          </ng-container>
-                        </strong>
-                      </span>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
-              
-              <div #guet class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <button class="btn btn-sm btn-danger m-1" (click)="applyDimensions()">Ajustar grafica</button>
-                <ngx-charts-gauge
-                [view]="view"
-                  [scheme]="colorScheme"
-                  [results]="single_generales"
-                  [legend]="legend_general"
-                  [units]="gaugeUnits"
-                  [showText]="showText_general"
-                  [legendTitle]="legendTitle_general"
-                  [legendPosition]="legendPosition"
-                  [animations]="animations"
-                  [angleSpan]="240"
-                  [showAxis]="showAxis"
-                  [showText]="true"
-                  [textValue]="gaugeTextValue"
-                  [axisTickFormatting]="axisTickFormatting"
-                  [bigSegments]="10" [smallSegments]="10"
-                  [customColors] = "colorScheme"
-                  (select)="onSelect_general($event)"
-                  [valueFormatting]="valueFormatting"
-                  (activate)="onActivate_general($event)"
-                  (deactivate)="onDeactivate($event)"
-                  class="bg-cyan"
-                  [margin]="margin ? [marginTop, marginRight, marginBottom, marginLeft] : [40, 1, 1, 1]"
-                >
-                </ngx-charts-gauge>
-              </div>
-              
-              
-            </div>
-          </div>
-        </div>
+      <div class="col">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
+          <!-- <li class="breadcrumb-item"><a class="breadcrumb-item" (click)="regresar()">Regresar</a></li> -->
+          <li class="breadcrumb-item active">Mi estadisticas</li>
+        </ol>
       </div>
     </div>
   </div>
-  <div class="col-lg-6 col-md-12 col-sm-12 col-12">
-    <div class="card">
-      <div class="card-body">
-        <h3>Comparativo mis vehículos</h3>
-        <select class="form-control form-control-sm informacion m-1" #valorbusqueda (change)="onSelect_busqueda(valorbusqueda.value)">
-          <option value="" >Selecciona</option>
-          <option [value]="item" *ngFor="let item of seleciona">{{item}}</option>
-        </select>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1 mt-2">
+    <app-template-tabla-recepciones [recepciones_arr]="recepciones_arr" [muestra_desgloce]="false"> </app-template-tabla-recepciones>
+  </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
+      <div class="card  mb-3">
+        <div class="card-header">
+          Estadisticas de <strong>recepciones </strong>
+        </div>
+        <div class="card-body text-success">
+          <h5 class="card-title"></h5>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-start">
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                  <span class="titulo">seleccionado:</span>
+                  <span  class="text-uppercase informacion"><strong>{{infoSelect.name}}</strong></span>
+                  <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-12 m-1">
+                      <select aria-label="Search" class="form-control form-control-sm informacion" #valor (change)="onSelect_general(valor.value)">
+                        <option value="" >Selecciona</option>
+                        <option [value]="item" [selected]="item === infoSelect.name" *ngFor="let item of seleciona">{{item}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                  <span class="titulo">Total de servicios:</span>
+                  <span  class="text-uppercase informacion"><strong>{{campos_estadisticas.servicios_gen}}</strong></span>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                  <span class="titulo">Dinero:</span>
+                  <span  class="text-uppercase informacion"><strong>{{infoSelect.value | monedas}}</strong></span>
+                </div>
+                <ng-container *ngIf="infoSelect.contador">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta">
+                    <span class="titulo">cuantos:</span>
+                    <span  class="text-uppercase informacion"><strong>{{infoSelect.contador}}</strong></span>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="infoSelect.arreglo.length">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-12 cita-tarjeta" >
+                    <span class="titulo">cuales:</span>
+                    <span  class="text-uppercase informacion">
+                      <strong>
+                        <ng-container *ngFor="let item of infoSelect.arreglo">
+                            {{item}}, &nbsp;
+                        </ng-container>
+                      </strong>
+                    </span>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            
+            <div #guet class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <button class="btn btn-sm btn-danger m-1" (click)="applyDimensions()">Ajustar grafica</button>
+              <ngx-charts-gauge
+              [view]="view"
+                [scheme]="colorScheme"
+                [results]="single_generales"
+                [legend]="legend_general"
+                [units]="gaugeUnits"
+                [showText]="showText_general"
+                [legendTitle]="legendTitle_general"
+                [legendPosition]="legendPosition"
+                [animations]="animations"
+                [angleSpan]="240"
+                [showAxis]="showAxis"
+                [showText]="true"
+                [textValue]="gaugeTextValue"
+                [axisTickFormatting]="axisTickFormatting"
+                [bigSegments]="10" [smallSegments]="10"
+                [customColors] = "colorScheme"
+                (select)="onSelect_general($event)"
+                [valueFormatting]="valueFormatting"
+                (activate)="onActivate_general($event)"
+                (deactivate)="onDeactivate($event)"
+                class="bg-cyan"
+                [margin]="margin ? [marginTop, marginRight, marginBottom, marginLeft] : [40, 1, 1, 1]"
+              >
+      <!-- [view]="view" -->
+              <!-- units="34" -->
+              </ngx-charts-gauge>
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+    <div class="card-body">
+      <h3>Comparativo mis vehículos</h3>
+      <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12 m-1">
-          Fecha filtro:
           <div class="input-group mb-3 ">
             <mat-date-range-picker #pickerBusqueda></mat-date-range-picker>
             <mat-date-range-input 
@@ -117,33 +121,162 @@
             class="pointer form-control" 
             [formGroup]="range_busqueda"
             [rangePicker]="pickerBusqueda">
-            <input matStartDate class="mr-2" formControlName="start" readonly (dateChange)="cambiosFechas()"   placeholder="Inicio">
-            <input matEndDate   class="mr-2" formControlName="end" readonly (dateChange)="cambiosFechas()"  placeholder="Final">
+            <input matStartDate class="mr-2" formControlName="start" readonly placeholder="Inicio">
+            <input matEndDate   class="mr-2" formControlName="end" readonly placeholder="Final">
           </mat-date-range-input>
           <div class="input-group-append">
-            <button class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBusqueda.open()">
+            <button aria-label="Search" class="btn btn-sm btn-outline-secondary" type="button" (click)="pickerBusqueda.open()">
               <i class="fa fa-calendar-alt"></i>
             </button>
           </div>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-        <ngx-charts-pie-chart
-          [view]="view_comparativa"
-          [scheme]="colorScheme"
-          [results]="single"
-          [gradient]="gradient"
-          [doughnut]="isDoughnut"
-          [tooltipText]="tooltipText"
-          [labelFormatting]="axisTickFormatting"
-          >
-        </ngx-charts-pie-chart>
-      </div>
+        <!-- <select aria-label="Search" class="form-control form-control-sm informacion m-1" #valorbusqueda (change)="onSelect_busqueda(valorbusqueda.value)">
+          <option value="" >Selecciona</option>
+          <option [value]="item" *ngFor="let item of seleciona">{{item}}</option>
+        </select> -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+          <ngx-charts-pie-chart
+            [view]="view_comparativa"
+            [scheme]="colorScheme"
+            [results]="single"
+            [gradient]="gradient"
+            [doughnut]="isDoughnut"
+            (select)="vehiculo_fd($event)"
+            [tooltipText]="tooltipText"
+            [labelFormatting]="axisTickFormatting"
+            >
+          </ngx-charts-pie-chart>
+        </div>
+        <ng-container *ngIf="data_seleccionada">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 mb-1">
+              <app-vehiculo-tarjeta [vehiculo]="data_seleccionada['data_vehiculo']"></app-vehiculo-tarjeta>
+            </div>
+            <div class="card-text">
+              <div class="list-group">
+                  <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">servicios</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['servicios']}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">ticketGeneral</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['ticketGeneral'] | monedas}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">ticketPromedio</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['ticketPromedio'] | monedas}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">maximo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['maximo'] | monedas}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">no_maximo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['no_maximo']}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">contadorMaximo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['contadorMaximo']}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">arreglo_maximo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['arreglo_maximo']}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      
+
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">minimo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['minimo'] | monedas}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">no_minimo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['no_minimo']}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">contadorMinimo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['contadorMinimo']}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item">
+                        <div class="row">
+                          <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between">
+                              <h5 class="mb-1 text-capitalize">arreglo_minimo</h5>
+                          </div>
+                          <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+                              <h5 class="mb-1">{{data_seleccionada['data_max_min']['arreglo_minimo']}}</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <!-- <pre>{{ data_seleccionada | json}}</pre> -->
+        </ng-container>
       </div>
     </div>
   </div>
-  
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
-    
-  </div>
-</div> -->
+</div>
+

@@ -271,7 +271,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   creaFormCitas(){
     const sucursal = (this.SUCURSAL === 'Todas') ? '':  this.SUCURSAL
     // const muestra = (this.info_cita['id']) ? this.info_cita['id'] : null
-    const urlRegex = /^(https?:\/\/)?goo.gl\/maps\/.*$/;
+    const urlRegex = /^(https?:\/\/)?maps.app.goo.gl\/maps\/.*$/;
 
     this.citaForm = this.formBuilder.group({
       id:[''],
@@ -311,10 +311,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     //   }
     // })
     this.citaForm.get('cotizacion_utiliza').valueChanges.subscribe(async (cotizacion_utiliza: string) => {
-      // console.log(cotizacion_utiliza);
       const cliente = this.citaForm.get('cliente').value;
-      console.log(cliente);
-      
       if (cotizacion_utiliza && cliente) {
           const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
           const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizaciones)
@@ -506,6 +503,8 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         const updates = {}
         const clave = this._publicos.generaClave()
         updates[`citas/${clave}`] = this.purifica_data_cita(recuperda)
+        console.log(updates);
+        
         const claves_encontradas = this._publicos.nueva_revision_cache('claves_citas')
         const valorNoDuplicado = [...new Set([...this._publicos.crearArreglo(claves_encontradas), clave])];
         updates['claves_citas'] = valorNoDuplicado

@@ -1822,7 +1822,11 @@ export class ServiciosPublicosService {
       // const data_cliente = clientes[id_cliente]
       const asiganacion_data_cliente = this.crear_new_object(clientes[id_cliente])
       if (Object.keys(asiganacion_data_cliente).length) asiganacion_data_cliente.id = id_cliente
-      
+      function fullname(asiganacion_data_cliente){
+        const {nombre, apellidos} = asiganacion_data_cliente
+        return `${nombre} ${apellidos}`.toLowerCase()
+      }
+      asiganacion_data_cliente.fullname = fullname(asiganacion_data_cliente)
       const data_cliente = asiganacion_data_cliente
       const vehiculos = this.nueva_revision_cache('vehiculos')
       const vehiculos_arr =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(vehiculos,'cliente', id_cliente))
@@ -2383,6 +2387,24 @@ export class ServiciosPublicosService {
       return nueva_data;
   
     }
+    transformaDataCliente2(objeto_recuperado){
+      const nueva_data = {};
+      const sucursales = this.nueva_revision_cache('sucursales');
+      for (const cliente in objeto_recuperado) {
+        if (Object.hasOwnProperty.call(objeto_recuperado, cliente)) {
+          const nueva_data_cliente = this.crear_new_object(objeto_recuperado[cliente]);
+          const { sucursal, nombre, apellidos } = nueva_data_cliente;
+
+          nueva_data_cliente.sucursalShow = `${sucursales[sucursal].sucursal}`
+          nueva_data_cliente.fullname = `${nombre.toLowerCase()} ${apellidos.toLowerCase()}`;
+    
+          nueva_data[cliente] = nueva_data_cliente;
+        }
+      }
+    
+      return nueva_data;
+  
+    }
     filtrarObjetoPorPropiedad(objeto, propiedad, valor) {
       const resultado = {};
         for (const clave in objeto) {
@@ -2568,18 +2590,18 @@ export class ServiciosPublicosService {
         }
       }
     
-      return [
-        {
+      return {
+        maximos: {
           maximo,
           similitudesMaximo: similitudesMaximo.join(', '),
           contadorMaximo,
         },
-        {
+        minimos: {
           minimo,
           similitudesMinimo: similitudesMinimo.join(', '),
           contadorMinimo
-        }
-      ]
+        } 
+      }
         ;
     }
     sanitizar_paquetes(paquetes){
@@ -2633,6 +2655,46 @@ export class ServiciosPublicosService {
           return data_elemento_return
         })
         return afhgj
+    }
+    contruye_citas(citas){
+      const camposServicios = [
+        {valor:'1',nombre:'servicio'},
+        {valor:'2',nombre:'garantia'},
+        // {valor:'3',nombre:'retorno'},
+        // {valor:'4',nombre:'venta'},
+        {valor:'5',nombre:'preventivo'},
+        // {valor:'6',nombre:'correctivo'},
+        {valor:'7',nombre:'rescate vial'},
+        {valor:'8',nombre:'frenos'},
+        {valor:'9',nombre:'afinación'},
+        {valor:'10',nombre:'cambio de aceite'},
+        {valor:'11',nombre:'revisión general'},
+        {valor:'12',nombre:'revisión de falla'},
+        {valor:'13',nombre:'escaneo vehículo'},
+      ]
+      const nuevas_citas = {}
+      const clientes = this.nueva_revision_cache('clientes')
+      const vehiculos = this.nueva_revision_cache('vehiculos')
+      const sucursales = this.nueva_revision_cache('sucursales')
+      const cotizaciones = this.nueva_revision_cache('cotizaciones')
+      Object.keys(citas).forEach(cita=>{
+        const {id, cliente, vehiculo, sucursal, servicio, id_cotizacion      } = citas[cita]
+        const data_cliente = clientes[cliente]
+        const fullname = `${data_cliente.nombre} ${data_cliente.apellidos}`
+        data_cliente.fullname = fullname
+        data_cliente.id = cliente
+        const data_vehiculo = vehiculos[vehiculo]
+        data_vehiculo.id = vehiculo
+        const data_sucursal = sucursales[sucursal]
+        data_sucursal.id = sucursal
+        let data_cotizacion = {}
+        if (id_cotizacion && cotizaciones[id_cotizacion]) {
+          data_cotizacion = {...cotizaciones[id_cotizacion]}
+        }
+        const servicio_show = camposServicios.find(ser=>ser.valor === servicio).nombre
+        nuevas_citas[cita] = {...citas[cita], data_cliente, data_vehiculo, data_sucursal, servicio_show, data_cotizacion}
+      })
+      return nuevas_citas
     }
       
  }

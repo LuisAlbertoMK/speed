@@ -43,6 +43,43 @@
           </div>
         </div>
       </div>
+      <ng-container *ngIf="data_cita['recoleccion']">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item ">
+          <div class="row">
+            <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between ">
+              <h4 class="mb-1 text-capitalize">recoleccion</h4>
+            </div>
+            <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+              <h4 class="mb-1">{{data_cita['recoleccion'] ? 'SI':'NO' | uppercase}}</h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item ">
+          <div class="row">
+            <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between ">
+              <h4 class="mb-1 text-capitalize">direccion</h4>
+            </div>
+            <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+              <!-- <h4 class="mb-1">{{data_cita['direccion'] | capitalizarUno}}</h4> -->
+              <a [href]="data_cita['direccion']" target="_blank" rel="noopener noreferrer">
+                {{data_cita['direccion'] | slice:0:15}}...
+              </a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="data_cita['id_cotizacion']">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 list-group-item ">
+          <div class="row">
+            <div class="col-lg-4 col-md-5 col-sm-6 col-12 justify-content-between ">
+              <h4 class="mb-1 text-capitalize">cotización</h4>
+            </div>
+            <div class="col-lg-8 col-md-7 col-sm-6 col-12 justify-content-start">
+              <h4 class="mb-1">{{data_cita.data_cotizacion['no_cotizacion']  | uppercase}}</h4>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

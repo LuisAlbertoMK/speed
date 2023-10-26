@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "arreglando modulo citas part-3.1 mostrando citas en el calendario (proceso)"
+git commit -m "arreglando modulo citas part-3.2 mostrando citas en el calendario (proceso)"
 git push -u origin
 
 shutdown -s -t 600 -c 'XD'

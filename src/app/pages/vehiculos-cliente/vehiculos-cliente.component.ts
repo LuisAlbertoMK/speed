@@ -24,14 +24,14 @@ export class VehiculosClienteComponent implements OnInit {
   rol(){
 
     const {rol, usuario, sucursal, uid} = this._security.usuarioRol()
-    console.log(this._security.usuarioRol());
-    
+
     this._sucursal = sucursal
     this._rol = rol
     // if (rol === this.rol_cliente && uid) this.obtenerInformacion_cliente(uid) 
     if (uid) {
       this._uid = uid
-      this.primer_comprobacion_resultados()
+      this.asiganacion_resultados()
+      this.segundo_llamado()
     }
     const clientes = this._publicos.nueva_revision_cache('clientes')
     if (clientes[this._uid]) {
@@ -42,10 +42,7 @@ export class VehiculosClienteComponent implements OnInit {
     const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
-  primer_comprobacion_resultados(){
-    this.asiganacion_resultados()
-    this.segundo_llamado()
-  }
+
   segundo_llamado(){
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
@@ -58,7 +55,7 @@ export class VehiculosClienteComponent implements OnInit {
   }
   asiganacion_resultados(){
     // const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
-    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
+    const { vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
 
     const campo_vehiculo = [
       'cliente',
@@ -76,20 +73,17 @@ export class VehiculosClienteComponent implements OnInit {
       'transmision',
     ]
 
+    this.objecto_actual = this._publicos.nueva_revision_cache('vehiculos')
     this.vehiculos_arr = (!this.vehiculos_arr.length)  ? vehiculos_arr :
     this._publicos.actualizarArregloExistente(this.vehiculos_arr,vehiculos_arr,campo_vehiculo)
 
-    
   }
 
    
   vehiculo_registrado(event){
     if (event) {
-      console.log(event);
-      
-    //  this.extra = event
-    //  this.vigila_vehiculos_cliente()
-   }
+      this.asiganacion_resultados()
+    }
  }
 
 }

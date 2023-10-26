@@ -259,3 +259,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   font-size: 14px;
   color: #333333;
 }
+.list-group-item{
+  border-width: 1px;
+  border-color: lavender;
+}

@@ -126,28 +126,28 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     const primeraRevision = localStorage.getItem('primera_revision');
     const totales = this.campos.length
     
-    if (!primeraRevision) {
-      let contador_eliminados = 0      
-      this.campos.forEach(campo=>{
-        const {ruta_observacion, nombre } = campo
-        localStorage.removeItem(nombre)
-        localStorage.removeItem(ruta_observacion)
-        contador_eliminados++
-      })
-
-      const intervalo = setInterval(() => {
-        if (totales >= contador_eliminados) {
-          console.log('estan todos eliminados');
-          clearInterval(intervalo)
-          localStorage.setItem('primera_revision', 'ok')
-          this.revision_existe_cache()
-        }
-      }, 500);
-    } else {
-      console.log('existe la primera revision');
-      // La revisión ya existe en la caché, realizar otras acciones necesarias.
-      this.revision_existe_cache()
-    }
+    // if (!primeraRevision) {
+    //   let contador_eliminados = 0      
+    //   this.campos.forEach(campo=>{
+    //     const {ruta_observacion, nombre } = campo
+    //     localStorage.removeItem(nombre)
+    //     localStorage.removeItem(ruta_observacion)
+    //     contador_eliminados++
+    //   })
+    //   const intervalo = setInterval(() => {
+    //     if (totales >= contador_eliminados) {
+    //       console.log('estan todos eliminados');
+    //       clearInterval(intervalo)
+    //       localStorage.setItem('primera_revision', 'ok')
+    //       // this.revision_existe_cache()
+    //     }
+    //   }, 500);
+    // } else {
+    //   console.log('existe la primera revision');
+    //   // La revisión ya existe en la caché, realizar otras acciones necesarias.
+    //   // this.revision_existe_cache()
+    // }
+    this.revision_existe_cache()
   }
   
   revision_existe_cache(){

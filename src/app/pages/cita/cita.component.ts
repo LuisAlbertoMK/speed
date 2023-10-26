@@ -35,45 +35,9 @@ export class CitaComponent implements OnInit, OnChanges {
       
     }
   }
-  contruye(citas){
-    const camposServicios = [
-      {valor:'1',nombre:'servicio'},
-      {valor:'2',nombre:'garantia'},
-      // {valor:'3',nombre:'retorno'},
-      // {valor:'4',nombre:'venta'},
-      {valor:'5',nombre:'preventivo'},
-      // {valor:'6',nombre:'correctivo'},
-      {valor:'7',nombre:'rescate vial'},
-      {valor:'8',nombre:'frenos'},
-      {valor:'9',nombre:'afinación'},
-      {valor:'10',nombre:'cambio de aceite'},
-      {valor:'11',nombre:'revisión general'},
-      {valor:'12',nombre:'revisión de falla'},
-      {valor:'13',nombre:'escaneo vehículo'},
-    ]
-    const nuevas_citas = {}
-    const clientes = this._publicos.nueva_revision_cache('clientes')
-    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
-    const sucursales = this._publicos.nueva_revision_cache('sucursales')
-    Object.keys(citas).forEach(cita=>{
-      const {id, cliente, vehiculo, sucursal, servicio} = citas[cita]
-      const data_cliente = clientes[cliente]
-      const fullname = `${data_cliente.nombre} ${data_cliente.apellidos}`
-      data_cliente.fullname = fullname
-      data_cliente.id = cliente
-      const data_vehiculo = vehiculos[vehiculo]
-      data_vehiculo.id = vehiculo
-      const data_sucursal = sucursales[sucursal]
-      data_sucursal.id = sucursal
-      
-      const servicio_show = camposServicios.find(ser=>ser.valor === servicio).nombre
-      nuevas_citas[cita] = {...citas[cita], data_cliente, data_vehiculo, data_sucursal, servicio_show}
-    })
-    return nuevas_citas
-  }
   consulta_data_cita(){
     const citas = this._publicos.nueva_revision_cache('citas')
-    const citas_all_data = this.contruye(citas)
+    const citas_all_data = this._publicos.contruye_citas(citas)
     if (citas_all_data[this.data]) {
       const data_cita = this._publicos.crear_new_object(citas_all_data[this.data])
       data_cita.id = this.data

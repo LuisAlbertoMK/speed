@@ -114,7 +114,10 @@ export class CotizacionClienteComponent implements OnInit {
     this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
     if(vehiculo){
       const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
-      const data_cliente_new = this._publicos.crear_new_object(clientes[data_vehiculo.cliente])
+      
+      const data_cliente_new = this._publicos.crear_new_object(this._publicos.transformaDataCliente(clientes[data_vehiculo.cliente]))
+      console.log(data_cliente_new);
+      
       data_cliente_new.id = data_vehiculo.cliente
       this.infoCotizacion.data_cliente = data_cliente_new
       this.infoCotizacion.cliente = data_vehiculo.cliente
@@ -151,7 +154,8 @@ export class CotizacionClienteComponent implements OnInit {
   }
   asiganacion_resultados(){
     
-    const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
+    const {data_cliente, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
+
     this.infoCotizacion.data_cliente = data_cliente
     const campo_vehiculo = [
       'cliente',

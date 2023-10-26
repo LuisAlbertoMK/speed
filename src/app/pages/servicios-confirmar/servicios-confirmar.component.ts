@@ -1109,9 +1109,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
                   updates[`recepciones/${clave}`] = guardar_
 
                   this._mail.EmailRecepcion(dataMail)
-                  // if (this.ParamsGet.tipo === 'cita') {
-                  //   updates[`${this.ParamsGet.ruta}/status`] = 'concretada'
-                  // }
 
                   const claves_encontradas = await this._automaticos.consulta_ruta('claves_recepciones')
                   const valorNoDuplicado = await [...new Set([...claves_encontradas, clave])];
