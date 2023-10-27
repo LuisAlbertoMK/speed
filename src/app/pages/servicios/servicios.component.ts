@@ -89,6 +89,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
      
      }
     ngOnInit(): void {
+      this.resetea_horas_admin()
       this.rol()
       this.vigila_calendario()
       
