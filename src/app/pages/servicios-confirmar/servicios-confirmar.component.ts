@@ -205,18 +205,20 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   async acciones(){
-    console.log(this.enrutamiento);
+    // console.log(this.enrutamiento);
     const {cotizacion, recepcion, cliente, vehiculo} = this.enrutamiento
-    const vehiculos = await this._publicos.nueva_revision_cache('vehiculos')
-    const clientes = await this._publicos.nueva_revision_cache('clientes')
-
+    const vehiculos =  this._publicos.nueva_revision_cache('vehiculos')
+    const clientes = this._publicos.nueva_revision_cache('clientes')
+    
+ 
     if (cotizacion) {
-      const cotizaciones = await this._publicos.nueva_revision_cache('cotizaciones')
+      const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
       
       const campos_recupera_cotizacion = ["cliente","elementos","formaPago","iva","margen","servicio","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal","reporte"]
       if(cotizaciones[cotizacion]){
-        const cotizacion_completa = this._publicos.nueva_asignacion_recepciones(cotizaciones[cotizacion])
-        console.log(cotizacion_completa);
+
+        const cotizacion_completa = this._publicos.nueva_asignacion_recepciones([cotizaciones[cotizacion]])
+
         const data_cotizacion = this._publicos.crear_new_object(cotizacion_completa[0])
         // console.log(Object.keys(cotizacion_completa[0]));
         campos_recupera_cotizacion.forEach(campo=>{
@@ -228,11 +230,11 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.extra = data_cotizacion.vehiculo
       }
     }else if(recepcion){
-      const recepciones = await this._publicos.nueva_revision_cache('recepciones')
+      const recepciones = this._publicos.nueva_revision_cache('recepciones')
       console.log(recepcion);
       if(recepciones[recepcion]){
         const campos_recupera_recepcion = ["cliente","elementos","formaPago","id","iva","margen","servicio","status","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal"]
-        const recepcion_completa = this._publicos.nueva_asignacion_recepciones(recepciones[recepcion])
+        const recepcion_completa = this._publicos.nueva_asignacion_recepciones([recepciones[recepcion]])
         // console.log(Object.keys(recepcion_completa[0]));
         const data_cotizacion = this._publicos.crear_new_object(recepcion_completa[0])
         console.log(data_cotizacion);
@@ -1036,6 +1038,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         total: reporte['total'],
       }
       this.infoConfirmar.no_os = this.generateOSNumber(this.infoConfirmar, this._rol)
+      console.log(this.infoConfirmar.no_os);
+      
       const dataMail = {
         correos: this._publicos.dataCorreo(data_sucursal, data_cliente),
         no_os: this.infoConfirmar.no_os,
@@ -1138,9 +1142,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
           })
         }
       })
-      // this._servicios.generateOSNumber(this.infoConfirmar,this._rol).then((no_os)=>{
-        
-      // })
+
     })
   }
 
@@ -1163,7 +1165,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     const sucursales = this._publicos.nueva_revision_cache('sucursales')
     const claves_recepciones:any[] = this._publicos.nueva_revision_cache('claves_recepciones')
-
     const {sucursal} = data
     const date = new Date();
     const anio = date.getFullYear().toString().slice(-2);

@@ -54,9 +54,11 @@ export class InicioComponent implements OnInit {
     this.leerToken()
     this.estaAutenticado()
     this.rol()
+    // this.reloj()
     // this.brow()
   }
   rol(){
+    
     const { rol, sucursal } = this._security.usuarioRol()
 
     this.ROL = rol
@@ -136,6 +138,30 @@ export class InicioComponent implements OnInit {
       }, 1000);
      
     }
+  }
+  reloj(){
+    const deg = 6;
+    const hour = document.querySelector<HTMLElement>('.hour')!;
+    const min = document.querySelector<HTMLElement>('.min')!;
+    const sec = document.querySelector<HTMLElement>('.sec')!;
+    
+    const setClock = () => {
+      let day = new Date();
+      let hh = day.getHours() * 30;
+      let mm = day.getMinutes() * deg;
+      let ss = day.getSeconds() * deg;
+
+   
+      hour.style.transform = `rotateZ(${hh + mm / 12}deg)`;
+      min.style.transform =`rotateZ(${mm}deg)`
+      sec.style.transform = `rotateZ(${ss}deg)`;
+
+    };
+    
+    // first time
+    ;
+    // Update every 1000 ms
+    setInterval(setClock, 1000);
   }
   
 }

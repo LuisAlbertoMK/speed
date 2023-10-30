@@ -73,9 +73,9 @@
                 <hr>
                
                 <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mt-3" *ngFor="let sucursal of sucursales_array" >
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 mt-3" *ngFor="let sucursal of sucursales_array" >
                             <div class="card h-100 ">
-                                <img [src]="sucursal.imagen" class="card-img-top" height="200px">
+                                <img [src]="sucursal.imagen" class="card-img-top" height="200px" alt="sucursal"/>
                                 <div class="card-body">
                                   <div class="row">
                                     <figure>
@@ -88,11 +88,11 @@
                                       </figure>
                                 </div>
                                   <div class="card-text text-start">
-                                    <label>Dirección: </label> {{sucursal.direccion}} <br>
-                                    <label>Telefono: </label> {{sucursal.telefono}} <br>
-                                    <label>Correo: </label> {{sucursal.correo}} <br>
+                                    <strong>Dirección: </strong> {{sucursal.direccion}} <br>
+                                    <strong>Telefono: </strong> {{sucursal.telefono}} <br>
+                                    <strong >Correo: </strong> {{sucursal.correo}} <br>
+                                    <!-- <app-sucursal-tarjeta [sucursal]="sucursal" [title]="'Información sucursal'"></app-sucursal-tarjeta> -->
                                   </div>
-                                 
                                 </div>
                                 <div class="card-footer text-muted">
                                     <a  class="btn btn-primary">Ver mas...</a>

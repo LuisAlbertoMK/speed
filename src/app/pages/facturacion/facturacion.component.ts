@@ -5,8 +5,7 @@ import { ServiciosPublicosService } from 'src/app/services/servicios-publicos.se
 import { SucursalesService } from 'src/app/services/sucursales.service';
 
 import { environment } from 'src/environments/environment';
-import { loadStripe } from '@stripe/stripe-js';
-import { Stripe } from '@stripe/stripe-js';
+
 import { ServerService } from 'src/app/services/server.service';
 @Component({
   selector: 'app-facturacion',
@@ -14,10 +13,10 @@ import { ServerService } from 'src/app/services/server.service';
   styleUrls: ['./facturacion.component.css']
 })
 export class FacturacionComponent implements OnInit {
-  private stripePromise: Promise<Stripe>;
+ 
   constructor(private _publicos:ServiciosPublicosService, private _security:EncriptadoService, private _sucursales: SucursalesService,
     private router: Router, private _serve: ServerService) { 
-      this.stripePromise = loadStripe(environment.clave_publica);
+     
     }
 
   ngOnInit(): void {

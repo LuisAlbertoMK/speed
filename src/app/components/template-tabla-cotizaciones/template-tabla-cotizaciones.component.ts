@@ -117,7 +117,7 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
   irPagina(pagina, data){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
     let queryParams = {}
-    
+
     if (this._rol === 'cliente') {
       if (pagina === 'cotizacionNueva' && !tipo) {
         pagina = 'cotizacion-new-cliente'

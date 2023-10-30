@@ -4,15 +4,15 @@
     [dataSource]="dataSource" multiTemplateDataRows
     class="mat-elevation-z8">
     <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Nombre </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Nombre </th>
         <td mat-cell *matCellDef="let row" [ngClass]="'tipo-'+ row.tipo"> {{ row.nombre | capitalizarUno}} </td>
     </ng-container>
     <ng-container matColumnDef="precio">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Precio </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Precio </th>
         <td mat-cell *matCellDef="let row"> {{ row.precio | monedas}}   </td>
     </ng-container>
     <ng-container matColumnDef="cantidad">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Cantidad </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Cantidad </th>
         <td mat-cell *matCellDef="let row">
             <input  aria-label="cantidad" type="number" min="1" [value]="row.cantidad" maxlength="5" onkeypress="soloNumeros(event)" 
             (change)="editar_cantidad_elemento('cantidad',row, cantidadNueva.value)" #cantidadNueva class="smallInput" 
@@ -21,7 +21,7 @@
     </ng-container>
     
     <ng-container matColumnDef="costo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Costo </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Costo </th>
         <td mat-cell *matCellDef="let row"> 
             <input  aria-label="costo" type="number" min="0" [value]="row.costo" maxlength="6" onkeypress="validarDecimal(event)" 
             (change)="editar_cantidad_elemento('costo',row, costoNuevo.value)" #costoNuevo class="smallInput" 
@@ -29,7 +29,7 @@
         </td>
     </ng-container>
     <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal"> Total </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="principal" [ngStyle]="{'min-width':(miniColumnas)*1+'px'}"> Total </th>
         <td mat-cell *matCellDef="let row"> {{ row.total | monedas}}   </td>
     </ng-container>
     <ng-container matColumnDef="xcolumn">

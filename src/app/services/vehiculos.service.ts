@@ -2012,7 +2012,7 @@ export class VehiculosService {
 
 
 
-  async engomado(valor:string){
+  engomado(valor:string){
     let engomado:string ='', placas:string = valor
     const engomados =[
       {color:'verde',numeros:[1,2]},

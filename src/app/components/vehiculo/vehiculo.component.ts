@@ -111,6 +111,26 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       map(value => this._filter(value || '')),
     )
   }
+  infoCliente(cliente){
+    if (cliente) {
+      const {id} = cliente
+      console.log(cliente);
+      this.form_vehiculo.get('cliente').setValue(cliente.id)
+      
+      // this.infoCotizacion.cliente = id
+      // this.infoCotizacion.data_cliente = cliente
+      // // this.infoCotizacion.sucursal = sucursal
+      // // this.infoCotizacion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal)
+      // this.extra = null
+      // this.infoCotizacion.data_vehiculo = {}
+      // this.infoCotizacion.vehiculo = null
+      
+      // const {cliente: id_cliente} = this.infoCotizacion
+      // if (id_cliente) {
+      //   this.vigila_vehiculos_cliente()
+      // }
+    }
+  }
   crearFormularioLlenadoManual(){
       this.form_vehiculo = this.fb.group({
         id:['',[]],
@@ -181,7 +201,7 @@ export class VehiculoComponent implements OnInit, OnChanges  {
       if (placas) {        
         const existe = this.listaPlacas.find(c=>String(c).trim().toLowerCase() === String(placas).trim().toLowerCase())
         this.existenPlacas = (existe) ? true: false
-        let engomado_ = (placas.length>=6) ? await this._vehiculos.engomado(placas) : ''         
+        let engomado_ = (placas.length>=6) ? this._vehiculos.engomado(placas) : ''         
         this.form_vehiculo.controls['engomado'].setValue(engomado_)
       }
     })

@@ -23,13 +23,14 @@
                         <div class="mb-1">
                           <label for="cliente" class="form-label obligatorio">Cliente <span class="obligatorio">*</span></label>
                           <!-- <ng-container *ngIf="!cliente"> -->
-                            <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente" id="cliente"
+                            <!-- <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente" id="cliente"
                             (click)="automaticos()"
-                              class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto">
-                            <small *ngIf="validaCampo('cliente')" class="text-danger">
-                              Campo requerido
-                            </small>
-                            <mat-autocomplete #auto="matAutocomplete" class="text-capitalize" [displayWith]="displayFn">
+                              class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto"> -->
+                              <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
+                              <small *ngIf="validaCampo('cliente')" class="text-danger">
+                                Campo requerido
+                              </small>
+                            <!-- <mat-autocomplete #auto="matAutocomplete" class="text-capitalize" [displayWith]="displayFn">
                               <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
                                 #tooltip="matTooltip"
                                 [matTooltip]="'Nombre: '+option.fullname +', Sucursal: '+ '' +', Correo: '+option.correo"
@@ -37,7 +38,7 @@
                                 >
                                 {{option.fullname}}
                               </mat-option>
-                            </mat-autocomplete>                      
+                            </mat-autocomplete>                       -->
                           <!-- </ng-container> -->
                         </div>
                       </div>

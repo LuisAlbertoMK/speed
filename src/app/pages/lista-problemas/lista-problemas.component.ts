@@ -9,7 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
-import { child, get, getDatabase, onValue, ref, set, update,push } from "firebase/database"
+import { getDatabase, onValue, ref,update } from "firebase/database"
 import { SucursalesService } from 'src/app/services/sucursales.service';
 import { CamposSystemService } from 'src/app/services/campos-system.service';
 const db = getDatabase()

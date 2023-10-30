@@ -1,15 +1,14 @@
 <app-template-navegacion></app-template-navegacion>
 
 <div class="row">
-<div class="col">
-    <select aria-label="Search" class="form-control form-control-sm" #valJ (change)="obtener_informacion_cache(valJ.value)">
-        <option value="">....</option>
-        <option *ngFor="let item of campos" [value]="item.ruta_observacion">{{item.ruta_observacion}}</option>
-    </select>
+  <div class="col">
+      <select aria-label="Search" class="form-control form-control-sm" #valJ (change)="obtener_informacion_cache(valJ.value)">
+          <option value="">....</option>
+          <option *ngFor="let item of campos" [value]="item.ruta_observacion">{{item.ruta_observacion}}</option>
+      </select>
+  </div>
 </div>
-
-</div>
-    
+<button class="btn btn-sm btn-danger m-2" (click)="asigancion_clientes_ordenes()">asigancion_clientes_ordenes</button>
 
 <input aria-label="Search" type="file" (change)="handleFileInput($event.target['files'])" accept=".xlsx" />
 <div *ngIf="jsonData">

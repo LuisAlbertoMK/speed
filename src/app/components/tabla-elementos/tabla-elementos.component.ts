@@ -43,6 +43,7 @@ export class TablaElementosComponent implements OnInit, OnChanges {
 
    formasPago        =   [ ...this._cotizaciones.formasPago ]
 
+   miniColumnas:number = 100
    elementos_internos= []
   _rol:string
   ngOnInit(): void {
