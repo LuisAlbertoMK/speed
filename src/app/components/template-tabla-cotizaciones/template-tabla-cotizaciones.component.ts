@@ -125,15 +125,17 @@ export class TemplateTablaCotizacionesComponent implements OnInit,OnChanges {
       }
     }else if(this._rol !=='cliente'){
       if (pagina === 'cotizacionNueva' && !tipo) {
-        queryParams = { anterior:'historial-vehiculo', cotizacion: idCotizacion} 
+        queryParams = { cotizacion: idCotizacion}
       }else if (pagina === 'cotizacionNueva' && tipo) {
-        queryParams = { anterior:'historial-vehiculo', tipo, vehiculo} 
+        queryParams = { tipo, vehiculo} 
       }else if (pagina === 'ServiciosConfirmar' && !tipo) {
-        queryParams = { anterior:'historial-vehiculo', cotizacion: idCotizacion} 
+        queryParams = { cotizacion: idCotizacion} 
       }else if (pagina === 'ServiciosConfirmar' && tipo) {
-        queryParams = { anterior:'historial-vehiculo', tipo, vehiculo}
+        queryParams = { tipo, vehiculo}
       }
     }    
+    queryParams['anterior'] = this._publicos.extraerParteDeURL()
+    
     this.router.navigate([`/${pagina}`], { queryParams });
   }
   

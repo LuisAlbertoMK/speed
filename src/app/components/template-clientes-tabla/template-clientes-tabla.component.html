@@ -107,7 +107,7 @@
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
-  <mat-paginator #clientesPaginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  <mat-paginator #clientesPaginator [pageSizeOptions]="[10, 25, 100]" ></mat-paginator>
 </div>
 
 <div class="modal fade" id="modalNewUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -115,7 +115,7 @@
   <div class="modal-dialog modal-fullscreen modal-fullscreen-sm-down modal-fullscreen-md-down modal-fullscreen-lg-down modal-fullscreen-xl-down modal-fullscreen-xxl-down">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" id="cerrar-modal" >
           <i class="fas fa-times"></i>
         </button>
       </div>

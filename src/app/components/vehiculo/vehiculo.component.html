@@ -26,7 +26,7 @@
                             <!-- <input type="search" placeholder="cliente" aria-label="Cliente" name="cliente" id="cliente"
                             (click)="automaticos()"
                               class="form-control form-control-sm text-capitalize" clean [formControl]="myControl" [matAutocomplete]="auto"> -->
-                              <app-clientes-list (dataCliente)="infoCliente ( $event )"  class="m-1" ></app-clientes-list>
+                              <app-clientes-list (dataCliente)="infoCliente ( $event )" [tituloshow]="false"  class="m-1" ></app-clientes-list>
                               <small *ngIf="validaCampo('cliente')" class="text-danger">
                                 Campo requerido
                               </small>
@@ -238,12 +238,7 @@
               </button>
             </div>
           </form>
-          <div class="row m-1">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-              <ng-container *ngIf="faltante_s">
-                información faltante: <strong class="text-danger"> {{ faltante_s }}</strong>
-              </ng-container>
-            </div>
-          </div>
+          <app-tarjeta-faltantes [faltante_s]="faltante_s"></app-tarjeta-faltantes>
+
     </div>
   </div>

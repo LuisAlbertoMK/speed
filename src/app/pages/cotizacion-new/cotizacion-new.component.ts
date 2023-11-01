@@ -198,18 +198,21 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
       'promocion'
     ]
 
+   
+    
+
     const clientes = this._publicos.nueva_revision_cache('clientes')
     const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
 
     if (recepcion){
 
-      const recepciones_object = this._publicos.nueva_revision_cache('cotizaciones')
+      const recepciones_object = this._publicos.nueva_revision_cache('recepciones')
       
       const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.nueva_revision_cache('historial_gastos_orden'))
       const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.nueva_revision_cache('historial_pagos_orden'))
 
-      const data_recepcion = recepciones_object[recepcion]
-      
+      const data_recepcion = {...recepciones_object[recepcion], id: recepcion}
+
       const cotizaciones_arregladas = this._publicos.asigna_datos_recepcion({
         bruto: [data_recepcion], clientes, vehiculos,
         historial_gastos_orden,
@@ -231,7 +234,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
 
       const data_cotizacion = cotizaciones_object[cotizacion]
 
-      const cotizaciones_arregladas = this._publicos.nueva_asignacion_recepciones(data_cotizacion)
+      const cotizaciones_arregladas = this._publicos.nueva_asignacion_cotizaciones([data_cotizacion])
       
       const nueva_data_cotizacion = cotizaciones_arregladas[0]
       

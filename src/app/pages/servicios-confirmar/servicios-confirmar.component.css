@@ -220,7 +220,6 @@ mat-button-toggle-group {
   align-items: center;
   padding: 0px 0px;
   font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-  /* border-radius: px; */
   border: none;
   margin-top: 1px !important;
   color: #fff;
@@ -232,7 +231,6 @@ mat-button-toggle-group {
   touch-action: manipulation;
   border: 1px rgba(0,0,0,0) solid !important;
 }
-
 
 .mat-button-toggle {
     border: 1px rgba(0,0,0,0) solid !important;
@@ -249,7 +247,6 @@ mat-button-toggle-group {
     border-radius: 5px !important;
     color: #000;
 } 
-
 
 
  .mat-button-toggle#mat-button-toggle-1{
@@ -275,11 +272,10 @@ mat-button-toggle-group {
 .mat-button-toggle-input {
     background-color: none !important;
     padding-left: 1px !important;
-} */
+} 
 
 .main-container{
   background-color: rgb(8, 8, 246,.2);
-  /* height: 100vh; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -324,10 +320,7 @@ input.smallInput {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* width: 35px;
-  height: 1em; */
   color: #efefef;
-  /* background-color: #fff; */
   border-radius: 50%;
 }
 

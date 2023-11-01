@@ -39,17 +39,18 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideStorage,getStorage } from '@angular/fire/storage';
+
 ///material
 
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table'
-import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator'
+import {MatPaginatorModule} from '@angular/material/paginator'
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
-import {MatButtonModule} from '@angular/material/button';
+import {MatButtonModule} from '@angular/material/button'
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu'
 import {MatStepperModule} from '@angular/material/stepper'
@@ -177,7 +178,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   listPlugin,
   timeGridPlugin,
   bootstrap5Plugin,
-  
 ]);
 @NgModule({
   declarations: [
@@ -282,6 +282,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CommonModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideDatabase(() => getDatabase()),
+    provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
     AngularFirestoreModule,
     FormsModule,
     NgxDropzoneModule,
@@ -321,9 +323,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatSidenavModule,
     MatProgressBarModule,
     MatButtonToggleModule,
-    MatExpansionModule,
-    provideAuth(() => getAuth()),
-    provideStorage(() => getStorage())
+    MatExpansionModule    
   ],
   exports:[
     TranslateModule

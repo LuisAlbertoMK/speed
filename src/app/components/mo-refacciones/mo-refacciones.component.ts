@@ -27,7 +27,7 @@ export class MoRefaccionesComponent implements OnInit  {
 
   @Output() dataElemento : EventEmitter<any>
 
-  @Input() registro: boolean
+  @Input() registro: boolean = true
   
   calculo: number =  0
   calculoMargen: number = 0

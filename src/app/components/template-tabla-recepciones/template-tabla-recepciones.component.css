@@ -65,3 +65,7 @@ table {
   .tipo-mo {
     color: #3574FA;
   }
+  .list-group-item{
+    border-width: 1px;
+    border-color: lavender;
+}

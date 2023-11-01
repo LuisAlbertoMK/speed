@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "arreglando modulo Estadisticas cliente mostrando citas en el calendario (proceso)"
+git commit -m "arreglando recepciones a subir"
 git push -u origin
 
 shutdown -s -t 800 -c 'XD'

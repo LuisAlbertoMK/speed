@@ -471,13 +471,11 @@ export class ServiciosPublicosService {
         camposRecuperar.forEach((recupera) => {
             if(typeof data[recupera] === 'string'){
                 const evalua = String(data[recupera]).trim()
-                if (evalua !== undefined && evalua !== null && evalua !== "") {
-                    necessary[recupera] = evalua;
-                }
-            }else{
-                if (data[recupera] !== undefined && data[recupera] !== null && data[recupera] !== "") {
-                    necessary[recupera] = data[recupera];
-                }
+                if (evalua !== undefined && evalua !== null && evalua !== "") necessary[recupera] = evalua;
+            }else if (recupera === 'descuento' ) {
+              if (parseFloat(data[recupera]) > 0) necessary[recupera] = data[recupera]; 
+            }else if (data[recupera] !== undefined && data[recupera] !== null && data[recupera] !== "") {
+              necessary[recupera] = data[recupera];
             }
         });
         return necessary;
@@ -1906,11 +1904,23 @@ export class ServiciosPublicosService {
         return recepcion
       })
     }
+    reemplaza_info_paquetes(elementos:any[], paquetes, moRefacciones){
+      return elementos.map(ele=>{
+        let temp_data = {}
+        const {tipo, id} = ele
+        if (tipo === 'paquete') temp_data = {...paquetes[id], ...ele}
+        else temp_data = {...moRefacciones[id], ...ele}
+        return temp_data
+      })
+    }
     nueva_asignacion_recepciones(data:any[]){
 
       const clientes = this.nueva_revision_cache('clientes')
       const vehiculos = this.nueva_revision_cache('vehiculos')
-     
+      const moRefacciones = this.nueva_revision_cache('moRefacciones')
+      const paquetes = this.nueva_revision_cache('paquetes')
+      const paquetes_armados  = this.armar_paquetes({moRefacciones, paquetes})
+
       const clientes_tranformacion_data = this.transformaDataCliente(clientes)
       const historial_gastos_orden = this.nueva_revision_cache('historial_gastos_orden')
       // console.log(historial_gastos_orden);
@@ -1920,8 +1930,13 @@ export class ServiciosPublicosService {
       return this.ordenamiento_fechas(data,'fecha_recibido',true)
       .map(recepcion=>{
 
-        const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal} = recepcion;
-        
+        const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal, reporte_ya_estaba} = recepcion;
+
+
+        // const nuevos = this.reemplaza_info_paquetes(elementos, paquetes_armados, moRefacciones)
+        const neuvos_ = this.asignacion_nuevos_elementos(elementos,paquetes, moRefacciones)
+        if(!reporte_ya_estaba) recepcion.elementos = neuvos_  
+
         recepcion.data_cliente = clientes_tranformacion_data[cliente] || {}
         recepcion.data_vehiculo = vehiculos[vehiculo] || {} ;
         recepcion.data_sucursal = this.sucursales_array.find(s=>s.id === sucursal) || {};
@@ -1943,12 +1958,12 @@ export class ServiciosPublicosService {
         // console.log(objetoFiltrado_historial_pagos_orden);
         recepcion.historial_pagos_orden = this.crearArreglo2(objetoFiltrado_historial_pagos_orden)
 
-        recepcion.reporte = this.genera_reporte({elementos, margen, iva, descuento, formaPago})
+        recepcion.reporte = this.genera_reporte({elementos: neuvos_, margen, iva, descuento, formaPago})
 
         const total_gastos = this.sumatorias_aprobados(recepcion.historial_gastos_orden)
 
         const nuevo = JSON.parse(JSON.stringify(recepcion.reporte));
-
+        // recepcion.elementos = nuevos
         nuevo.refaccion = total_gastos
 
         recepcion.reporte_real = this.sumatoria_reporte(nuevo, margen, iva, 0)
@@ -1962,6 +1977,7 @@ export class ServiciosPublicosService {
       const vehiculos = this.nueva_revision_cache('vehiculos')
       const paquetes = this.nueva_revision_cache('paquetes')
       const moRefacciones = this.nueva_revision_cache('moRefacciones')
+      
 
       const clientes_tranformacion_data = this.transformaDataCliente(clientes)
 
@@ -1971,7 +1987,6 @@ export class ServiciosPublicosService {
         const { cliente, vehiculo,elementos,no_cotizacion, margen, iva, descuento, formaPago, id, sucursal} = cotizacion;
 
         const neuvos_ = this.asignacion_nuevos_elementos(elementos,paquetes, moRefacciones)
-        
         cotizacion.elementos = neuvos_        
 
         const data_cliente = clientes_tranformacion_data[cliente]
@@ -1989,7 +2004,9 @@ export class ServiciosPublicosService {
           const { placas } = data_vehiculo
           cotizacion.placas = `${placas}`.toUpperCase()
         }
+        // const nuevos = this.reemplaza_info_paquetes(elementos, paquetes_armados, moRefacciones)
 
+        // cotizacion.elementos = nuevos
         cotizacion.reporte = this.genera_reporte({elementos: neuvos_, margen, iva, descuento, formaPago})
         return cotizacion
       })

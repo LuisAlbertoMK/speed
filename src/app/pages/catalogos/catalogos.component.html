@@ -26,7 +26,7 @@
                 <select formControlName="marca" aria-label="Filtro por marca" id="filtro-marca"
                  name="filtro-marca" class="form-control form-control-sm custom-select">
                   <option selected value="">Selecciona marca</option>
-                  <option value="{{marca}}" *ngFor="let marca of marcas_vehiculos_id">{{marca}}</option>
+                  <option value="{{marca.id}}" *ngFor="let marca of marcas_vehiculos_id">{{marca.id}}</option>
                 </select>
               </div>
               <div class="col">

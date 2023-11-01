@@ -103,7 +103,7 @@ export class PdfRecepcionService {
     // const dat = data
     const {data_cliente, data_sucursal, data_vehiculo, checkList, fecha_recibido} = data
     
-
+    
 
     data_cliente['empresa'] = (data_cliente['empresa']) ? data_cliente['empresa'] : ''
 
@@ -611,6 +611,7 @@ export class PdfRecepcionService {
     { text: `D) la empresa no se hace responsable por artículos de valor no reportados al momento de recibir el vehículo`,alignment: 'justify', style:'terminos2' },
     // { text: `E) Cualquier diagnóstico y cotización que no sea autorizada tendra un costo minimo de $ 499.00 pesos'`,alignment: 'justify', style:'terminos' },
     { columns: [ { width: '100%', text: ` `, } ], columnGap: 10 },
+    { text: '', pageBreak: 'after' },
     ]
     let limites_ = []
 

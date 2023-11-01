@@ -174,6 +174,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       'status',
       'tecnico',
       'tecnicoShow',
+      'id'
       // 'cliente',
       // 'descuento',
       // 'elementos',

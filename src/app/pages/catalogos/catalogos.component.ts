@@ -132,6 +132,10 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     // this.marcas_vehiculos_id = n.map(c=>{
     //   return c.id
     // })
+    this.marcas_vehiculos_id = this._publicos.crearArreglo2(this.marcas_vehiculos)
+   
+    console.log(this.marcas_vehiculos_id);
+    
     
   }
   ngOnDestroy(): void {
@@ -142,9 +146,7 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
   }
   nuevas_consultas(){
     const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
-    // console.log(moRefacciones);
     const paquetes = this._publicos.nueva_revision_cache('paquetes')
-    // console.log(paquetes);
 
     this.paquetes_({moRefacciones, paquetes})
     

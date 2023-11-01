@@ -231,14 +231,13 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
       }
     }else if(recepcion){
       const recepciones = this._publicos.nueva_revision_cache('recepciones')
-      console.log(recepcion);
+      
       if(recepciones[recepcion]){
         const campos_recupera_recepcion = ["cliente","elementos","formaPago","id","iva","margen","servicio","status","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal"]
         const recepcion_completa = this._publicos.nueva_asignacion_recepciones([recepciones[recepcion]])
-        // console.log(Object.keys(recepcion_completa[0]));
-        const data_cotizacion = this._publicos.crear_new_object(recepcion_completa[0])
-        console.log(data_cotizacion);
         
+        const data_cotizacion = this._publicos.crear_new_object(recepcion_completa[0])
+
         campos_recupera_recepcion.forEach(campo=>{
           if (data_cotizacion[campo]) {
             this.infoConfirmar[campo] = data_cotizacion[campo]
@@ -446,8 +445,6 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
     this.asignar_nuevos_elementos([...new Set([...event])])
   }
   realizaOperaciones(){
-    // const { elementos, margen, iva, descuento, formaPago} = this.infoConfirmar
-
     const { elementos, margen, iva, descuento, formaPago} = this.infoConfirmar
 
     const reporte = this._publicos.genera_reporte({elementos, margen, iva, descuento, formaPago})
@@ -461,10 +458,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   newPagination(){
     setTimeout(() => {
-    // if (data==='elementos') {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort
-    // }
     }, 500)
   }
 

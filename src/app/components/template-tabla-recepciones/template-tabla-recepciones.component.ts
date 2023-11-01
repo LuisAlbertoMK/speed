@@ -92,8 +92,7 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
   }
   irPagina(pagina, data, nueva?){
     const {cliente, sucursal, id: idCotizacion, tipo, vehiculo } = data
-    console.log(data);
-    
+
     let queryParams = {}
 
     if (this._rol === 'cliente') {
@@ -103,21 +102,15 @@ export class TemplateTablaRecepcionesComponent implements OnInit,OnChanges {
       }
     }else if(this._rol !=='cliente'){
       if (pagina ==='cotizacionNueva') {
-        queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+        queryParams = { recepcion: idCotizacion} 
       } else if(pagina === 'ServiciosConfirmar'){
-        queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+        queryParams = { recepcion: idCotizacion} 
       } else if(pagina === 'editar-os'){
-        queryParams = { cliente, sucursal, recepcion: idCotizacion, tipo:'recepcion', vehiculo} 
+        queryParams = { recepcion: idCotizacion} 
       }
     }
 
-    const ruta_Actual= this.router.url
-
-    const ruta = ruta_Actual.split('/')
-
-    const ruta_anterior = ruta[1].split('?')
-
-    queryParams['anterior'] = ruta_anterior[0]
+    queryParams['anterior'] = this._publicos.extraerParteDeURL()
     
     this.router.navigate([`/${pagina}`], { queryParams });
   }

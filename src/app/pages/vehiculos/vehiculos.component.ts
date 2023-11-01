@@ -70,5 +70,8 @@ export class VehiculosComponent implements OnInit {
     
 
   }
+  vehiculoInfo(info:any){
+    // console.log(info);
+  }
 
 }

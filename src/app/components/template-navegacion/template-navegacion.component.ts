@@ -49,8 +49,8 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
     }, {});
     const {anterior} = this._publicos.crear_new_object( this.enrutamiento )
 
-    // console.log(query_params);
     const queryParams = (queryParams_verifica(anterior)) ?  {}: query_params
+
 
     const cliente = this.obtener_querys(anterior)
     
@@ -71,6 +71,7 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
         'clientes',
         'configuracion',
         'cotizacion',
+        'cotizacionNueva',
         'sucursales',
         'servicios',
         'usuarios',
