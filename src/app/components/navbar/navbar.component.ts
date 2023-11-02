@@ -90,7 +90,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     {ruta_observacion: 'clientes', nombre:'claves_clientes'},
     {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
     {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
-    {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
+    // {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
     {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
     {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
     {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
@@ -139,13 +139,13 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     //       console.log('estan todos eliminados');
     //       clearInterval(intervalo)
     //       localStorage.setItem('primera_revision', 'ok')
-    //       // this.revision_existe_cache()
+    //       this.revision_existe_cache()
     //     }
     //   }, 500);
     // } else {
     //   console.log('existe la primera revision');
     //   // La revisión ya existe en la caché, realizar otras acciones necesarias.
-    //   // this.revision_existe_cache()
+    //   this.revision_existe_cache()
     // }
     this.revision_existe_cache()
   }
@@ -217,6 +217,8 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
     
     const {nombre, ruta_observacion} = data
+    console.log(data);
+    
 
     // this.simular_observacion_informacion_firebase_nombre(this.busqueda)
     // console.log({nombre, ruta_observacion});
@@ -234,7 +236,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     
     // console.log(en_cloud);
     let resultados_real_time = [...en_cloud]
-    let resultados_en_local = [...en_local]
+    let resultados_en_local = [...en_local] || []
 
     // console.log(resultados_real_time);
     

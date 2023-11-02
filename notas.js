@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "arreglando recepciones a subir"
+git commit -m "problema con cotizaciones"
 git push -u origin
 
 shutdown -s -t 800 -c 'XD'

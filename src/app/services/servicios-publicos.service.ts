@@ -1932,9 +1932,11 @@ export class ServiciosPublicosService {
 
         const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal, reporte_ya_estaba} = recepcion;
 
-
+        console.log(id);
+        
+        const elementos_en = elementos ? elementos : []
         // const nuevos = this.reemplaza_info_paquetes(elementos, paquetes_armados, moRefacciones)
-        const neuvos_ = this.asignacion_nuevos_elementos(elementos,paquetes, moRefacciones)
+        const neuvos_ = this.asignacion_nuevos_elementos(elementos_en,paquetes, moRefacciones)
         if(!reporte_ya_estaba) recepcion.elementos = neuvos_  
 
         recepcion.data_cliente = clientes_tranformacion_data[cliente] || {}
