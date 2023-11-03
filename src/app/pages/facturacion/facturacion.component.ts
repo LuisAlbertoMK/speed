@@ -29,15 +29,7 @@ export class FacturacionComponent implements OnInit {
     
   }
   async redirectToCheckout() {
-    // const stripe = await this.stripePromise;
-    // console.log(stripe);
-    
-    // Utiliza el objeto 'stripe' para interactuar con la API de Stripe
-    // Ejemplo: stripe.redirectToCheckout({ ... });
-    // this._serve.sendInvoice('mkoromini94@gmail.com').then((asn)=>{
-    //   console.log(asn);
-      
-    // })
+   
     
   }
 

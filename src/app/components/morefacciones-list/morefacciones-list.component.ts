@@ -29,7 +29,7 @@ export class MorefaccionesListComponent implements OnInit {
     this.vigila()
   }
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('moRefacciones')
+    const objecto_recuperdado = this._publicos.revision_cache('moRefacciones')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
 
@@ -42,7 +42,7 @@ export class MorefaccionesListComponent implements OnInit {
     },500)
   }
   asiganacion_resultados(){
-    this.objecto_actual = this._publicos.nueva_revision_cache('moRefacciones')
+    this.objecto_actual = this._publicos.revision_cache('moRefacciones')
     const filtrados = this._publicos.filtrarObjetoPorPropiedad(this.objecto_actual, 'status', true)
     this.moRefacciones = this._publicos.crearArreglo2(filtrados)
   }

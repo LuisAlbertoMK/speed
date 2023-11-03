@@ -90,7 +90,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     {ruta_observacion: 'clientes', nombre:'claves_clientes'},
     {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
     {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
-    // {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
+    {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
     {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
     {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
     {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
@@ -125,89 +125,99 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     // console.log(this._sucursal);
     const primeraRevision = localStorage.getItem('primera_revision');
     const totales = this.campos.length
+
+    this.procesarArregloConSweetAlert()
+  }
+  procesarArregloConSweetAlert(){
+    let existentes = [], faltantes = []
+    let claves_Existentes = [], claves_faltantes = []
     
-    // if (!primeraRevision) {
-    //   let contador_eliminados = 0      
-    //   this.campos.forEach(campo=>{
-    //     const {ruta_observacion, nombre } = campo
-    //     localStorage.removeItem(nombre)
-    //     localStorage.removeItem(ruta_observacion)
-    //     contador_eliminados++
-    //   })
-    //   const intervalo = setInterval(() => {
-    //     if (totales >= contador_eliminados) {
-    //       console.log('estan todos eliminados');
-    //       clearInterval(intervalo)
-    //       localStorage.setItem('primera_revision', 'ok')
-    //       this.revision_existe_cache()
-    //     }
-    //   }, 500);
-    // } else {
-    //   console.log('existe la primera revision');
-    //   // La revisión ya existe en la caché, realizar otras acciones necesarias.
-    //   this.revision_existe_cache()
-    // }
-    this.revision_existe_cache()
+    let timerInterval
+    const time = this.campos.length * 500
+    Swal.fire({
+      title: 'Espere ...',
+      html: 'Revisando información <b></b>',
+      timer: time,
+      timerProgressBar: true,
+      progressStepsDistance: 4,
+      allowOutsideClick: false,
+      didOpen: async () => {
+        Swal.showLoading()
+        for(let campo of this.campos){
+          const {nombre, ruta_observacion} = campo
+          // Simula una operación de procesamiento
+          const b = Swal.getHtmlContainer().querySelector('b')
+          b.textContent = ruta_observacion
+          await new Promise(resolve => setTimeout(resolve, 200)); // Espera 1 segundo
+          this._publicos.existe_variable_localhost(ruta_observacion) ? existentes.push(ruta_observacion) : faltantes.push(ruta_observacion)
+          this._publicos.existe_variable_localhost(nombre) ? claves_Existentes.push(nombre) : claves_faltantes.push(nombre)
+        }
+        
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+        // return {claves:claves_faltantes, ruta_observacion: claves_faltantes}
+        this.consulta_data(faltantes, claves_faltantes)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+      }
+    })
   }
   
-  revision_existe_cache(){
-    const faltantes = {}
-    const existentes = {}
-    let timer:number = 2000
-    
-
-    this.campos.forEach(campo=>{
-        const {ruta_observacion, nombre} = campo
-        if (localStorage[nombre] && localStorage[ruta_observacion]) {
-            existentes[ruta_observacion] =nombre
-        }else{
-            timer+=1500
-            faltantes[ruta_observacion] = nombre; 
-        }
-    })
-
-    // console.log(existentes);
-    // console.log(faltantes);
-    
-
-    function tieneElementos(objeto) {
-        const  faltantes_cout = Object.keys(objeto).length
-        const faltantes_ruta_observacion = objeto
-        return {faltantes_cout, faltantes_ruta_observacion}
-    }
-
-    const {faltantes_cout, faltantes_ruta_observacion} = tieneElementos(faltantes)
-
-    
-    if (faltantes_cout > 0) {
-        console.log('El objeto faltantes tiene elementos.');
-        Object.entries(faltantes_ruta_observacion).forEach( async ([ruta_observacion, nombre])=>{
-            const data = await this._automaticos.consulta_ruta(ruta_observacion)
-            this._publicos.saber_pesos(data)
-            this._security.guarda_informacion({nombre: ruta_observacion, data: data})
-            this._security.guarda_informacion({nombre, data: Object.keys(data)})
-        })
-    }else{
-        timer = 2500
-    }
-
-    Swal.fire({
-        title: 'Cargando data ',
-        html: 'Espere ...',
-        timer,
-        // timerProgressBar: true,
+  consulta_data(faltantes:any[], claves:any[]){
+  
+    const nuevos = [...new Set([...faltantes, ...claves])]
+  
+    if (nuevos.length) {
+      let timerInterval
+      const time = nuevos.length * 1000
+      Swal.fire({
+        title: 'Consuta espere ...',
+        html: 'Obteniendo <b></b>',
+        timer: time,
+        timerProgressBar: true,
+        progressStepsDistance: 4,
         allowOutsideClick: false,
-        didOpen: () => {
+        didOpen: async () => {
           Swal.showLoading()
+          for(let campo of nuevos){
+            // Simula una operación de procesamiento
+            console.log(`campos recupera BD ===> ${campo}`);
+
+            // const simular = await this._automaticos.consulta_ruta()
+            const data = await this._automaticos.consulta_ruta(campo)
+  
+            const b = Swal.getHtmlContainer().querySelector('b')
+            b.textContent = campo
+  
+            this._security.guarda_informacion({nombre: campo, data})
+  
+            
+          }
+          
         },
+        willClose: () => {
+          clearInterval(timerInterval)
+          this.vigila_nodos()
+          // return {claves:claves_faltantes, ruta_observacion: claves_faltantes}
+          // this.consulta_data(faltantes, claves_faltantes)
+        }
       }).then((result) => {
         /* Read more about handling dismissals below */
-        // if (result.dismiss === Swal.DismissReason.timer) {
-        //   console.log('I was closed by the timer')
-        // }
+        if (result.dismiss === Swal.DismissReason.timer) {
+          
+        }
       })
+    }else{
       this.vigila_nodos()
+    }
+  
   }
+  
+  
+
   vigila_nodos(){
     this.campos.forEach((g)=>{
       this.vigila_nodo_principal(g)
@@ -217,30 +227,14 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
     
     const {nombre, ruta_observacion} = data
-    console.log(data);
     
 
-    // this.simular_observacion_informacion_firebase_nombre(this.busqueda)
-    // console.log({nombre, ruta_observacion});
+    const en_cloud:any[] =  await this._automaticos.consulta_ruta(nombre)
 
+    const resultados_real_time = (!en_cloud.length) ? [] : en_cloud
 
-    const en_cloud = await this._automaticos.consulta_ruta(nombre)
-    // const claves_supervisa = await this._automaticos.consulta_ruta(nombre)
-   
-    // console.log(this._publicos.saber_pesos(en_cloud));
-    // console.log(nombre);
-    
-    const en_local:any[] = this._publicos.nueva_revision_cache(nombre)
-    // console.log(this._publicos.saber_pesos(en_local));
-    // console.log(nombre);
-    
-    // console.log(en_cloud);
-    let resultados_real_time = [...en_cloud]
-    let resultados_en_local = [...en_local] || []
+    const resultados_en_local = this._publicos.revision_cache(nombre) || []
 
-    // console.log(resultados_real_time);
-    
-    // console.log(resultados_en_local);
 
     const valorNoDuplicado = await [...new Set([...resultados_real_time, ...resultados_en_local])];
 
@@ -269,7 +263,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
         // console.log(valor);
         console.log('NO_LOCAL_HOST ==>', valor);
 
-        let locales_nuevas = this._publicos.nueva_revision_cache(nombre)
+        let locales_nuevas = this._publicos.revision_cache(nombre)
         let resultados_en_local_nuevas = [...locales_nuevas]
         const valorNoDuplicado = [...new Set([...resultados_en_local_nuevas, valor])];
         this._security.guarda_informacion({nombre, data: valorNoDuplicado})
@@ -287,7 +281,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     let resultados = [...new Set([...bruto_arr])];
 
     let faltantes = []
-    const actuales_nombres = this._publicos.nueva_revision_cache(ruta_observacion)
+    const actuales_nombres = this._publicos.revision_cache(ruta_observacion)
     // console.log(actuales_nombres);
     
     resultados.forEach((clave_vigilar) => {
@@ -296,9 +290,9 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
         const valor =  data.val()
         const key = data.key
         console.log(`actualizacion key=> [${key}]: valor =>{${valor}}`);
-        this._publicos.saber_pesos(data)
+        // this._publicos.saber_pesos(data)
 
-        const localhost_nombre = await this._publicos.nueva_revision_cache(ruta_observacion)
+        const localhost_nombre = await this._publicos.revision_cache(ruta_observacion)
 
         if (localhost_nombre[clave_vigilar]) {
           const nueva_data_clave = this._publicos.crear_new_object(localhost_nombre[clave_vigilar])
@@ -309,7 +303,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
           // console.log(`la informacion del cliente no se encuentra`);
           this.obtenerInformacion_unico(clave_vigilar, ruta_observacion)
           .then((resultados_promesa) => {
-            let actuales  = this._publicos.nueva_revision_cache(ruta_observacion)
+            let actuales  = this._publicos.revision_cache(ruta_observacion)
             actuales[clave_vigilar] = resultados_promesa
             this._security.guarda_informacion({nombre: ruta_observacion, data: actuales})
           })
@@ -332,7 +326,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
 
           const claves_obtenidas = Object.keys(resultados_promesa)
 
-          let actuales  = this._publicos.nueva_revision_cache(ruta_observacion)
+          let actuales  = this._publicos.revision_cache(ruta_observacion)
           claves_obtenidas.forEach(clave_obtenida=>{
             actuales[clave_obtenida] = resultados_promesa[clave_obtenida]
           })
@@ -445,23 +439,23 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     const expira = Number(localStorage.getItem('expira'))
     let expiraTimee = new Date(expira)
   }
-  cambiosSys(){
-    const starCountRef = ref(db, `configuraciones/cambiosPlataforma`)
-    onValue(starCountRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const update:boolean  = snapshot.val()
-        if (!localStorage.getItem('actualizacion') && update || localStorage.getItem('actualizacion') && update) {
-          this.update = true
-          localStorage.setItem('actualizacion', 'true')
-        }else{
-            this.update = false
-            localStorage.setItem('actualizacion','false')
-        }    
-      }else{
-        this.update = false
-      }
-    })
-  }
+  // cambiosSys(){
+  //   const starCountRef = ref(db, `configuraciones/cambiosPlataforma`)
+  //   onValue(starCountRef, (snapshot) => {
+  //     if (snapshot.exists()) {
+  //       const update:boolean  = snapshot.val()
+  //       if (!localStorage.getItem('actualizacion') && update || localStorage.getItem('actualizacion') && update) {
+  //         this.update = true
+  //         localStorage.setItem('actualizacion', 'true')
+  //       }else{
+  //           this.update = false
+  //           localStorage.setItem('actualizacion','false')
+  //       }    
+  //     }else{
+  //       this.update = false
+  //     }
+  //   })
+  // }
   refresh(): void {
     localStorage.setItem('actualizacion','false')
     this.update = false
@@ -476,9 +470,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   // logout(){ this._auth.logout('cerrar') }
   logout(){
     signOut(auth).then(() => {
-      // this.obternerInformacion()
-      this.sesion = false
-      this._auth.logout('cerrar')
+      localStorage.removeItem('dataSecurity')
       // this.leerToken()
     }).catch((error) => {
       const errorCode = error.code;
@@ -508,7 +500,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   // }
   
   nombreSucursal(){
-    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    const sucursales = this._publicos.revision_cache('sucursales')
     if (this._sucursal !=='Todas')  this.nombreSucursalMuestra = sucursales[this._sucursal].sucursal
   }
 

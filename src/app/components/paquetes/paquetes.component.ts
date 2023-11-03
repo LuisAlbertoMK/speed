@@ -59,8 +59,8 @@ export class PaquetesComponent implements OnInit, OnChanges {
   
   aplicaFiltro(){
 
-    const paquetes = this._publicos.nueva_revision_cache('paquetes');
-    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    const paquetes = this._publicos.revision_cache('paquetes');
+    const moRefacciones = this._publicos.revision_cache('moRefacciones')
     const armadfos =this._publicos.armar_paquetes({moRefacciones, paquetes} )
     
     const paquetes_filtrados = (this.modelo_temp) ? this._publicos.filtrarObjetoPorPropiedad(armadfos, 'modelo', this.modelo):  armadfos

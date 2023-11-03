@@ -145,8 +145,8 @@ export class CatalogosComponent implements  OnDestroy, OnInit  {
     this.datosSeleccionados.emit(item);
   }
   nuevas_consultas(){
-    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
-    const paquetes = this._publicos.nueva_revision_cache('paquetes')
+    const moRefacciones = this._publicos.revision_cache('moRefacciones')
+    const paquetes = this._publicos.revision_cache('paquetes')
 
     this.paquetes_({moRefacciones, paquetes})
     

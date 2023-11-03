@@ -48,7 +48,7 @@ export class ClientesComponent implements AfterViewInit, OnInit {
     this._sucursal = sucursal
   }
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('clientes')
+    const objecto_recuperdado = this._publicos.revision_cache('clientes')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
   segundo_llamado(){
@@ -61,8 +61,10 @@ export class ClientesComponent implements AfterViewInit, OnInit {
   }
   
   asignacion_resultados(){
-    this.objecto_actual = this._publicos.nueva_revision_cache('clientes')
+    this.objecto_actual = this._publicos.revision_cache('clientes')
+    
     const clientes_para_tabla = this._publicos.transformaDataCliente(this.objecto_actual)
+    
     const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(clientes_para_tabla, 'sucursal', this._sucursal);
     const data_recuperda_arr = this._publicos.crearArreglo2(objetoFiltrado)
 

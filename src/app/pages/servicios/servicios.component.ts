@@ -129,7 +129,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
   
   comprobacion_resultados_multiple(campo){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
+    const objecto_recuperdado = this._publicos.revision_cache(campo)
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
   }
 
@@ -138,18 +138,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.campo_vigilar.forEach(campo_vigila=>{
         if (!this.comprobacion_resultados_multiple(campo_vigila)) {
           console.log(`recuperando data ${campo_vigila}`);
-          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
+          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.revision_cache(campo_vigila))
           this.asiganacion_resultados_multiples(this.campo_vigilar)
         }
       })
     },500)
   }
   asiganacion_resultados_multiples(campo_vigila){
-    this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
+    this.objecto_actuales[campo_vigila] = this._publicos.revision_cache(campo_vigila)
     this.genera_resultados()
   }
   genera_resultados(){
-    this.objecto_actual = this._publicos.nueva_revision_cache('recepciones')
+    this.objecto_actual = this._publicos.revision_cache('recepciones')
 
     const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(this.objecto_actual, 'sucursal', this._sucursal);
 

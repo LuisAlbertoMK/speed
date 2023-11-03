@@ -37,16 +37,21 @@
   </nav>
   <aside class="control-sidebar control-sidebar-dark">
     <div class="p-3 control-sidebar-content">
-      <h3>opciones</h3>
-        <a (click)="logout()">
-          <div class="mb-1">
-            Cerrrar cesión
-          </div>
-        </a>
-        <a (click)="changeColor = !changeColor; cambiaColorNavbar()">
-          <div class="mb-1">
-            {{tema_selecciondo.show}} <i class="fa" [class]="'fa-'+tema_selecciondo.icono"></i>
-          </div>
-        </a>
+      <!-- <h3>opciones</h3> -->
+      <ul class="list-group">
+        <!-- <li class="list-group-item disabled" aria-disabled="true">Opciones</li> -->
+        <li class="list-group-item">
+          <a (click)="logout()">
+              Cerrrar cesión
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a (click)="changeColor = !changeColor; cambiaColorNavbar()">
+            <div class="mb-1">
+              {{tema_selecciondo.show}} <i class="fa" [class]="'fa-'+tema_selecciondo.icono"></i>
+            </div>
+          </a>
+        </li>
+      </ul>
     </div>
   </aside>

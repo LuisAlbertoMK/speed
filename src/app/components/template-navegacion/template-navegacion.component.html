@@ -1,16 +1,13 @@
 <div class="content-header">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 fs-4">
+      <div class="row m-0">
+        <div class="col-auto fs-4">
           <ol class="breadcrumb float-sm-left">
             <li class="breadcrumb-item"><a class="breadcrumb-item" [routerLink]="['/inicio']">Inicio</a></li>
             <li class="breadcrumb-item active text-capitalize">{{donde_show}}</li>
-            <!-- -->
-            <!-- <ng-container > -->
-              <li class="breadcrumb-item" (click)="regresar()" *ngIf="enrutamiento && enrutamiento.anterior">
-                <a class="breadcrumb-item navegacion">Regresar</a>
-              </li>
-            <!-- </ng-container> -->
+            <li class="breadcrumb-item" (click)="regresar()" *ngIf="enrutamiento && enrutamiento.anterior">
+              <a class="breadcrumb-item navegacion">Regresar</a>
+            </li>
           </ol>
         </div>
       </div>

@@ -198,7 +198,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
      this.acciones()
     });
     this.cambiaTodosCheckA(true)
-    this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
+    this.vehiculo_cache = this._publicos.revision_cache('vehiculos')
   }
   asignaKilometraje(valor){
     this.infoConfirmar.kilometraje =  (parseInt(valor)<0) ? 0 : parseInt(valor)
@@ -207,12 +207,12 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   async acciones(){
     // console.log(this.enrutamiento);
     const {cotizacion, recepcion, cliente, vehiculo} = this.enrutamiento
-    const vehiculos =  this._publicos.nueva_revision_cache('vehiculos')
-    const clientes = this._publicos.nueva_revision_cache('clientes')
+    const vehiculos =  this._publicos.revision_cache('vehiculos')
+    const clientes = this._publicos.revision_cache('clientes')
     
  
     if (cotizacion) {
-      const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
+      const cotizaciones = this._publicos.revision_cache('cotizaciones')
       
       const campos_recupera_cotizacion = ["cliente","elementos","formaPago","iva","margen","servicio","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal","reporte"]
       if(cotizaciones[cotizacion]){
@@ -230,7 +230,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.extra = data_cotizacion.vehiculo
       }
     }else if(recepcion){
-      const recepciones = this._publicos.nueva_revision_cache('recepciones')
+      const recepciones = this._publicos.revision_cache('recepciones')
       
       if(recepciones[recepcion]){
         const campos_recupera_recepcion = ["cliente","elementos","formaPago","id","iva","margen","servicio","status","sucursal","vehiculo","data_cliente","data_vehiculo","data_sucursal"]
@@ -247,15 +247,15 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
         this.extra = data_cotizacion.vehiculo
       }
     }else if(cliente){
-      // const clientes = await this._publicos.nueva_revision_cache('clientes')
+      // const clientes = await this._publicos.revision_cache('clientes')
       this.infoConfirmar.cliente = cliente
       const data_cliente_new = this._publicos.crear_new_object(clientes[cliente])
       data_cliente_new.id = cliente
       this.infoConfirmar.data_cliente = data_cliente_new
       this.infoConfirmar.sucursal = data_cliente_new.sucursal
     }else if(vehiculo){
-      // const clientes = await this._publicos.nueva_revision_cache('clientes')
-      // const vehiculos = await this._publicos.nueva_revision_cache('vehiculos')
+      // const clientes = await this._publicos.revision_cache('clientes')
+      // const vehiculos = await this._publicos.revision_cache('vehiculos')
       const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
       const data_cliente_new = this._publicos.crear_new_object(clientes[data_vehiculo.cliente])
       data_cliente_new.id = data_vehiculo.cliente
@@ -364,8 +364,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
 
   asignar_nuevos_elementos(nuevos:any[]){
-    const paquetes = this._publicos.nueva_revision_cache('paquetes')
-    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    const paquetes = this._publicos.revision_cache('paquetes')
+    const moRefacciones = this._publicos.revision_cache('moRefacciones')
     const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
     // console.log(paquetes_armados);
     
@@ -974,7 +974,7 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
 
     const {cliente, sucursal, vehiculo} = this.infoConfirmar
 
-    const recepciones:any[] = await this._publicos.nueva_revision_cache('recepciones')//this._servicios.consulta_recepciones_cliente_satus({ruta: `recepciones`})
+    const recepciones:any[] = await this._publicos.revision_cache('recepciones')//this._servicios.consulta_recepciones_cliente_satus({ruta: `recepciones`})
     const recepciones_existentes = this._publicos.crearArreglo2(recepciones)
     
     const verificacion = recepciones_existentes
@@ -1158,8 +1158,8 @@ export class ServiciosConfirmarComponent implements OnInit, AfterViewInit {
   }
   generateOSNumber(data, rol: string) {
 
-    const sucursales = this._publicos.nueva_revision_cache('sucursales')
-    const claves_recepciones:any[] = this._publicos.nueva_revision_cache('claves_recepciones')
+    const sucursales = this._publicos.revision_cache('sucursales')
+    const claves_recepciones:any[] = this._publicos.revision_cache('claves_recepciones')
     const {sucursal} = data
     const date = new Date();
     const anio = date.getFullYear().toString().slice(-2);

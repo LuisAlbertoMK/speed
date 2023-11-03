@@ -184,7 +184,7 @@ export class PagoComponent implements OnInit, OnChanges {
   //   this.claves_ordenes = await this._servicios.claves_recepciones(`recepciones/${sucursal}`)
   // }
   muestra_claves_recepciones(sucursal){
-    const recepciones = this._publicos.nueva_revision_cache('recepciones')
+    const recepciones = this._publicos.revision_cache('recepciones')
     if (sucursal !== 'Todas') {
       const filtro_recepciones = this._publicos.filtrarObjetoPorPropiedad(recepciones, 'sucursal', sucursal)
       const filtro_recepciones_new = this._publicos.filtrarObjetoPorPropiedades_arr(
@@ -226,7 +226,7 @@ export class PagoComponent implements OnInit, OnChanges {
   //  info_get.numero_os = id
 
    const updates = {[ruta]: info_get }
-   const claves_encontradas = this._publicos.nueva_revision_cache('claves_historial_pagos_orden')
+   const claves_encontradas = this._publicos.revision_cache('claves_historial_pagos_orden')
 
    let nuevas_claves = [...claves_encontradas, clave_ ]
    updates['claves_historial_pagos_orden'] = nuevas_claves
@@ -234,7 +234,7 @@ export class PagoComponent implements OnInit, OnChanges {
     update(ref(db), updates).then(()=>{
 
 
-      const historial_pagos_orden = this._publicos.nueva_revision_cache('historial_pagos_orden')
+      const historial_pagos_orden = this._publicos.revision_cache('historial_pagos_orden')
       historial_pagos_orden[clave_] = info_get
       this._security.guarda_informacion({nombre:'historial_pagos_orden', data: historial_pagos_orden})
       this.pago_registrado.emit(true);

@@ -3,17 +3,17 @@
 
 
   <!-- <pre>{{listaArrarySucursales }}</pre> -->
-  <div class="row col-lg-12 col-md-12 col-sm-12 ">
+  <!-- <div class="row col-lg-12 col-md-12 col-sm-12 ">
     <div class="card">
       <div class="card-body">
-        <div class="card-text">
+        <div class="card-text"> -->
           <div class="text-end  mb-3" *ngIf="_rol==='SuperSU' || _rol === 'Administrador'">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detallesSucursal" id="btndetallesSucursal"
               (click)="resetAntes()"> Nueva sucursal</button>
           </div>
           <div class="row" *ngIf="sucursales_array.length!==0">
             <ng-container *ngFor="let sucursal of sucursales_array; let i = index">
-              <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt-2">
+              <div class="col-lg-4 col-md-6 col-sm-12 col-12 mt-2">
                 <div class="card h-100">
                   <img alt="imagen de sucursal" [src]="sucursal.imagen ? sucursal.imagen : 'assets/img/default-image.jpg'" class="card-img-top img-thumbnail rounded "
                     [alt]="sucursal.sucursal" *ngIf="sucursal.imagen!==''" [ngStyle]="{'height':(minAltura)*1.5+'px'}">
@@ -27,9 +27,9 @@
                             <blockquote class="blockquote">
                               <p>{{sucursal.sucursal}}</p>
                             </blockquote>
-                            <figcaption class="blockquote-footer">
+                            <!-- <figcaption class="blockquote-footer">
                               Serie <cite title="Source Title">{{sucursal.serie}}</cite>
-                            </figcaption>
+                            </figcaption> -->
                           </figure>
                         </h5>
                       </div>
@@ -45,7 +45,7 @@
                       <br>
                       <label>Correo: </label> {{sucursal.correo}} <br>
                       <ng-container  *ngIf="_rol!== 'SuperSU' && _rol !== 'Administrador'">
-                        <div class="col col-lg-12 col-md-12 col-sm-12 col-12 m-0 mt-1">
+                        <div class="col col-lg-12 col-md-12 col-sm-12 col-12 mt-1">
                           <div class="d-grid gap-2">
                             <button aria-label="boton mostrar sucursal mas grande" class="btn verImagen btn-sm" type="button" alt="info" id="btncorreo"
                               (click)="verImagen(sucursal)" [style]="'cursor: pointer'">
@@ -118,10 +118,10 @@
               </div>
             </div>
           </div>
-        </div>
+        <!-- </div>
       </div>
     </div>
-  </div>
+  </div> -->
   
   
   <!--modal nueva o modificar datos de sucursal-->

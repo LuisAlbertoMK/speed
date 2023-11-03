@@ -21,6 +21,11 @@ export class EncriptadoService {
 
   guarda_informacion(data_gif){
     const {nombre, data} = data_gif
+    localStorage.setItem(`${nombre}`, JSON.stringify(data))
+    console.log('se registro '+ nombre);
+  }
+  guarda_informacion_nuevaLH(data_gif){
+    const {nombre, data} = data_gif
     const encriptado_sucursales = this.servicioEncriptado_objetc(data)
     localStorage.setItem(`${nombre}`, encriptado_sucursales)
     console.log('se registro '+ nombre);

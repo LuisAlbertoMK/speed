@@ -1600,7 +1600,7 @@ export class ServiciosPublicosService {
     }
 
     genera_reporte(data){
-      // const paquetes_c = this.nueva_revision_cache('paquetes')
+      // const paquetes_c = this.revision_cache('paquetes')
 
       const {margen, iva, elementos, descuento, formaPago } = data
 
@@ -1797,7 +1797,13 @@ export class ServiciosPublicosService {
     
 
     nueva_revision_cache(nombre:string){
-      return (localStorage.getItem(`${nombre}`)) ? this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`)) : {}
+      return this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`)) 
+    }
+    revision_cache(nombre:string){
+      return JSON.parse(localStorage.getItem(`${nombre}`))
+    }
+    existe_variable_localhost(nombre){
+      return localStorage.getItem(nombre) ? true : false
     }
     consulta_ruta(ruta): Promise<any> {
       return new Promise((resolve, reject) => {
@@ -1816,7 +1822,7 @@ export class ServiciosPublicosService {
     }
 
     data_relacionada_id_cliente(id_cliente:string ){
-      const clientes = this.nueva_revision_cache('clientes')
+      const clientes = this.revision_cache('clientes')
       // const data_cliente = clientes[id_cliente]
       const asiganacion_data_cliente = this.crear_new_object(clientes[id_cliente])
       if (Object.keys(asiganacion_data_cliente).length) asiganacion_data_cliente.id = id_cliente
@@ -1826,14 +1832,14 @@ export class ServiciosPublicosService {
       }
       asiganacion_data_cliente.fullname = fullname(asiganacion_data_cliente)
       const data_cliente = asiganacion_data_cliente
-      const vehiculos = this.nueva_revision_cache('vehiculos')
+      const vehiculos = this.revision_cache('vehiculos')
       const vehiculos_arr =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(vehiculos,'cliente', id_cliente))
 
-      const cotizaciones = this.nueva_revision_cache('cotizaciones')
+      const cotizaciones = this.revision_cache('cotizaciones')
       const cotizaciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(cotizaciones,'cliente', id_cliente))
       const cotizaciones_arr = this.nueva_asignacion_cotizaciones(cotizaciones_antes)
 
-      const recepciones = this.nueva_revision_cache('recepciones')
+      const recepciones = this.revision_cache('recepciones')
       const recepciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(recepciones,'cliente', id_cliente))
       const recepciones_arr = this.nueva_asignacion_recepciones(recepciones_antes)
       
@@ -1842,8 +1848,8 @@ export class ServiciosPublicosService {
     data_relacionada_id_vehiculo(id_vehiculo:string ){
       
 
-      const vehiculos = this.nueva_revision_cache('vehiculos')
-      const clientes = this.nueva_revision_cache('clientes')
+      const vehiculos = this.revision_cache('vehiculos')
+      const clientes = this.revision_cache('clientes')
 
       const asiganacion_data_vehiculo = this.crear_new_object(vehiculos[id_vehiculo])
       let data_vehiculo, data_cliente
@@ -1865,11 +1871,11 @@ export class ServiciosPublicosService {
       // let cotizaciones_arr = [],
       // let recepciones_arr = []
 
-      const cotizaciones = this.nueva_revision_cache('cotizaciones')
+      const cotizaciones = this.revision_cache('cotizaciones')
       const cotizaciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(cotizaciones,'vehiculo', id_vehiculo))
       const cotizaciones_arr = this.nueva_asignacion_cotizaciones(cotizaciones_antes)
 
-      const recepciones = this.nueva_revision_cache('recepciones')
+      const recepciones = this.revision_cache('recepciones')
       const recepciones_antes =  this.crearArreglo2( this.filtrarObjetoPorPropiedad(recepciones,'vehiculo', id_vehiculo))
       const recepciones_arr = this.nueva_asignacion_recepciones(recepciones_antes)
       
@@ -1915,16 +1921,16 @@ export class ServiciosPublicosService {
     }
     nueva_asignacion_recepciones(data:any[]){
 
-      const clientes = this.nueva_revision_cache('clientes')
-      const vehiculos = this.nueva_revision_cache('vehiculos')
-      const moRefacciones = this.nueva_revision_cache('moRefacciones')
-      const paquetes = this.nueva_revision_cache('paquetes')
+      const clientes = this.revision_cache('clientes')
+      const vehiculos = this.revision_cache('vehiculos')
+      const moRefacciones = this.revision_cache('moRefacciones')
+      const paquetes = this.revision_cache('paquetes')
       const paquetes_armados  = this.armar_paquetes({moRefacciones, paquetes})
 
       const clientes_tranformacion_data = this.transformaDataCliente(clientes)
-      const historial_gastos_orden = this.nueva_revision_cache('historial_gastos_orden')
+      const historial_gastos_orden = this.revision_cache('historial_gastos_orden')
       // console.log(historial_gastos_orden);
-      const historial_pagos_orden = this.nueva_revision_cache('historial_pagos_orden')
+      const historial_pagos_orden = this.revision_cache('historial_pagos_orden')
       // console.log(historial_pagos_orden);
 
       return this.ordenamiento_fechas(data,'fecha_recibido',true)
@@ -1975,10 +1981,10 @@ export class ServiciosPublicosService {
     }
     nueva_asignacion_cotizaciones(data:any[]){
 
-      const clientes = this.nueva_revision_cache('clientes')
-      const vehiculos = this.nueva_revision_cache('vehiculos')
-      const paquetes = this.nueva_revision_cache('paquetes')
-      const moRefacciones = this.nueva_revision_cache('moRefacciones')
+      const clientes = this.revision_cache('clientes')
+      const vehiculos = this.revision_cache('vehiculos')
+      const paquetes = this.revision_cache('paquetes')
+      const moRefacciones = this.revision_cache('moRefacciones')
       
 
       const clientes_tranformacion_data = this.transformaDataCliente(clientes)
@@ -2364,8 +2370,6 @@ export class ServiciosPublicosService {
       const tamanioEnBytes = encodedData.length;
       const tamanioEnKilobytes = tamanioEnBytes / 1024;
       const tamanioEnMegabytes = tamanioEnKilobytes / 1024;
-      console.log({tamanioEnBytes, tamanioEnKilobytes, tamanioEnMegabytes});
-      
       return {tamanioEnBytes, tamanioEnKilobytes, tamanioEnMegabytes}
     }
     eliminarElementosRepetidos(arregloOriginal, elementosAEliminar) {
@@ -2388,7 +2392,7 @@ export class ServiciosPublicosService {
     }
     transformaDataCliente(objeto_recuperado){
       const nueva_data = {};
-      const sucursales = this.nueva_revision_cache('sucursales');
+      const sucursales = this.revision_cache('sucursales');
       for (const cliente in objeto_recuperado) {
         if (Object.hasOwnProperty.call(objeto_recuperado, cliente)) {
           const nueva_data_cliente = this.crear_new_object(objeto_recuperado[cliente]);
@@ -2408,7 +2412,7 @@ export class ServiciosPublicosService {
     }
     transformaDataCliente2(objeto_recuperado){
       const nueva_data = {};
-      const sucursales = this.nueva_revision_cache('sucursales');
+      const sucursales = this.revision_cache('sucursales');
       for (const cliente in objeto_recuperado) {
         if (Object.hasOwnProperty.call(objeto_recuperado, cliente)) {
           const nueva_data_cliente = this.crear_new_object(objeto_recuperado[cliente]);
@@ -2465,8 +2469,8 @@ export class ServiciosPublicosService {
       return resultado;
     }
     arregla_data_completa(object){
-      const sucursales = this.nueva_revision_cache('sucursales')
-      const recepciones = this.nueva_revision_cache('recepciones')
+      const sucursales = this.revision_cache('sucursales')
+      const recepciones = this.revision_cache('recepciones')
       let nueva_data = this.crear_new_object(object)
       Object.keys(object).forEach(clave=>{
         const {sucursal, tipo, id_os, metodo } = nueva_data[clave]
@@ -2482,10 +2486,10 @@ export class ServiciosPublicosService {
 
       const metodospago = this._campos.metodospago
 
-      const recepciones = this.nueva_revision_cache('recepciones')
-      const sucursales = this.nueva_revision_cache('sucursales')
-      const vehiculos = this.nueva_revision_cache('vehiculos')
-      const historial_gastos_orden = this.nueva_revision_cache('historial_gastos_orden')
+      const recepciones = this.revision_cache('recepciones')
+      const sucursales = this.revision_cache('sucursales')
+      const vehiculos = this.revision_cache('vehiculos')
+      const historial_gastos_orden = this.revision_cache('historial_gastos_orden')
 
       return nuevas_.map((os_especifica:any)=>{
         const {tipo, id_os, sucursal, metodo} = this.crear_new_object(os_especifica)
@@ -2625,7 +2629,7 @@ export class ServiciosPublicosService {
     }
     sanitizar_paquetes(paquetes){
       const nuevosPaquetes = {};
-      const moRefacciones = this.nueva_revision_cache('moRefacciones')
+      const moRefacciones = this.revision_cache('moRefacciones')
       for (const [key, entry] of Object.entries(paquetes)) {
         const nuevoPaquete = this.crearNuevoObjeto(entry,moRefacciones);
         nuevosPaquetes[key] = nuevoPaquete;
@@ -2692,10 +2696,10 @@ export class ServiciosPublicosService {
         {valor:'13',nombre:'escaneo vehículo'},
       ]
       const nuevas_citas = {}
-      const clientes = this.nueva_revision_cache('clientes')
-      const vehiculos = this.nueva_revision_cache('vehiculos')
-      const sucursales = this.nueva_revision_cache('sucursales')
-      const cotizaciones = this.nueva_revision_cache('cotizaciones')
+      const clientes = this.revision_cache('clientes')
+      const vehiculos = this.revision_cache('vehiculos')
+      const sucursales = this.revision_cache('sucursales')
+      const cotizaciones = this.revision_cache('cotizaciones')
       Object.keys(citas).forEach(cita=>{
         const {id, cliente, vehiculo, sucursal, servicio, id_cotizacion      } = citas[cita]
         const data_cliente = clientes[cliente]

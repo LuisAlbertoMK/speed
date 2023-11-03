@@ -81,7 +81,7 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+    const objecto_recuperdado = this._publicos.revision_cache('cotizaciones')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
 
@@ -89,14 +89,14 @@ export class CotizacionComponent implements AfterViewInit, OnDestroy, OnInit {
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
         console.log('recuperando data');
-        const objecto_recuperdado = this._publicos.nueva_revision_cache('cotizaciones')
+        const objecto_recuperdado = this._publicos.revision_cache('cotizaciones')
         this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asiganacion_resultados()
       }
     },500)
   }
   asiganacion_resultados(){
-    this.objecto_actual = this._publicos.nueva_revision_cache('cotizaciones')
+    this.objecto_actual = this._publicos.revision_cache('cotizaciones')
 
     const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(this.objecto_actual, 'sucursal', this._sucursal);
 

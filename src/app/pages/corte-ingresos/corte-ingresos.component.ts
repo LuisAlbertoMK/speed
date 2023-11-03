@@ -103,7 +103,7 @@ export class CorteIngresosComponent implements OnInit {
 
 
   comprobacion_resultados_multiple(campo){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
+    const objecto_recuperdado = this._publicos.revision_cache(campo)
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
   }
   primer_comprobacion_resultados_multiple(){
@@ -118,7 +118,7 @@ export class CorteIngresosComponent implements OnInit {
       this.campo_vigilar.forEach(campo_vigila=>{
         if (!this.comprobacion_resultados_multiple(campo_vigila)) {
           console.log(`recuperando data ${campo_vigila}`);
-          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
+          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.revision_cache(campo_vigila))
           this.asiganacion_resultados_multiples(this.campo_vigilar)
         }
       })
@@ -129,7 +129,7 @@ export class CorteIngresosComponent implements OnInit {
   genera_resultados(){
 
     const {start, end} = this.fecha_formateadas
-    const recepciones = this._publicos.nueva_revision_cache('recepciones')
+    const recepciones = this._publicos.revision_cache('recepciones')
     
     const resultados_recepciones = filtrarInformacion(recepciones,{sucursal: this.filtro_sucursal, status: 'entregado', start, end})
 
@@ -137,8 +137,8 @@ export class CorteIngresosComponent implements OnInit {
     
     const arregaldas_recepciones = this._publicos.nueva_asignacion_recepciones(arreglo_recepciones)
 
-    const gastos_orden = this._publicos.nueva_revision_cache('historial_gastos_orden')
-    const gastos_operacion = this._publicos.nueva_revision_cache('historial_gastos_operacion')
+    const gastos_orden = this._publicos.revision_cache('historial_gastos_orden')
+    const gastos_operacion = this._publicos.revision_cache('historial_gastos_operacion')
 
     const gastos_orden_filtrados = this._publicos.filtrarObjetoPorPropiedad_fecha(gastos_orden, start, end)
     const gastos_operacion_filtro = this._publicos.filtrarObjetoPorPropiedad_fecha(gastos_operacion, start, end)
@@ -150,7 +150,7 @@ export class CorteIngresosComponent implements OnInit {
     const total_subtotales_ventas = this._publicos.suma_gastos_ordenes_subtotales_reales(arregaldas_recepciones)
 
   
-    const objetivos = this._publicos.nueva_revision_cache('metas_sucursales')
+    const objetivos = this._publicos.revision_cache('metas_sucursales')
 
     const filtro_objetivos_sucursal = this._publicos.filtrarObjetoPorPropiedad(objetivos, 'sucursal', this.filtro_sucursal)
 
@@ -263,7 +263,7 @@ export class CorteIngresosComponent implements OnInit {
   }
 
   asiganacion_resultados_multiples(campo_vigila){
-    this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
+    this.objecto_actuales[campo_vigila] = this._publicos.revision_cache(campo_vigila)
     this.genera_resultados()
   }
 

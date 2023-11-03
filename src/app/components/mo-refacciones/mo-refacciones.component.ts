@@ -241,7 +241,7 @@ export class MoRefaccionesComponent implements OnInit  {
 
   listadoRefacciones_moRefacciones(){
 
-    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    const moRefacciones = this._publicos.revision_cache('moRefacciones')
 
     const arreglo = this._publicos.crearArreglo2(moRefacciones)
     const campos_moRefacciones = ['cantidad','costo','descripcion','id_publico','nombre','precio','status','tipo']

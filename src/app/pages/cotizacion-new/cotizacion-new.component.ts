@@ -155,7 +155,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
       this.cargaDataCliente_new()
     });
 
-    this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
+    this.vehiculo_cache = this._publicos.revision_cache('vehiculos')
     
   }
   // vigila_hijo(){
@@ -201,15 +201,15 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
    
     
 
-    const clientes = this._publicos.nueva_revision_cache('clientes')
-    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+    const clientes = this._publicos.revision_cache('clientes')
+    const vehiculos = this._publicos.revision_cache('vehiculos')
 
     if (recepcion){
 
-      const recepciones_object = this._publicos.nueva_revision_cache('recepciones')
+      const recepciones_object = this._publicos.revision_cache('recepciones')
       
-      const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.nueva_revision_cache('historial_gastos_orden'))
-      const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.nueva_revision_cache('historial_pagos_orden'))
+      const historial_gastos_orden = this._publicos.crearArreglo2(this._publicos.revision_cache('historial_gastos_orden'))
+      const historial_pagos_orden = this._publicos.crearArreglo2(this._publicos.revision_cache('historial_pagos_orden'))
 
       const data_recepcion = {...recepciones_object[recepcion], id: recepcion}
 
@@ -230,7 +230,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
       })
       this.extra = cotizaciones_arregladas[0].vehiculo
     }else if (cotizacion){
-      const cotizaciones_object = this._publicos.nueva_revision_cache('cotizaciones')
+      const cotizaciones_object = this._publicos.revision_cache('cotizaciones')
 
       const data_cotizacion = cotizaciones_object[cotizacion]
 
@@ -493,8 +493,8 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
     this.nuevos_elementos(nuevos)
   }
   asignar_nuevos_elementos(nuevos:any[]){
-    // const paquetes = this._publicos.nueva_revision_cache('paquetes')
-    // const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    // const paquetes = this._publicos.revision_cache('paquetes')
+    // const moRefacciones = this._publicos.revision_cache('moRefacciones')
     // const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
     // console.log(paquetes_armados);
     
@@ -608,7 +608,7 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
     const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
     if (cliente && !sucursal && data_cliente) {
       const dat_cliente = this._publicos.crear_new_object(data_cliente)
-      const sucursales = this._publicos.nueva_revision_cache('sucursales')
+      const sucursales = this._publicos.revision_cache('sucursales')
       // const {}
       const {sucursal: cliente_sucursal} = dat_cliente
       this.infoCotizacion.sucursal = cliente_sucursal
@@ -854,13 +854,13 @@ export class CotizacionNewComponent implements OnInit,AfterViewInit, OnChanges {
   generaNombreCotizacion(rol:string, data){
     const nueva_data = this._publicos.crear_new_object(data)
     const  {sucursal, data_cliente} = nueva_data
-    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    const sucursales = this._publicos.revision_cache('sucursales')
     const date: Date = new Date()
     const year = date.getFullYear().toString().slice(-2)
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const nombreSucursal:string = sucursales[sucursal].sucursal.slice(0,2).toUpperCase()
     const nuevoRol:string = rol.slice(0,2).toUpperCase()
-    const no_cotizacion:any[]  = this._publicos.nueva_revision_cache('claves_cotizaciones')
+    const no_cotizacion:any[]  = this._publicos.revision_cache('claves_cotizaciones')
     const secuencia = (no_cotizacion.length + 1).toString().padStart(4, '0')
     return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`
   }

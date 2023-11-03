@@ -14,7 +14,7 @@
 
     
     <mat-tab label="Paquetes">
-      <div class="row m-1">
+      <div class="row ">
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
           <input class="form-control" id="busqueda" (keyup)="applyFilter('paquetes',$event)" placeholder="Buscar paquete" #input>
         </div>
@@ -180,7 +180,7 @@
     </div>
     </mat-tab>
     <mat-tab label="Mano de obra">
-      <div class="row m-1">
+      <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
           <input class="form-control" (keyup)="applyFilter('mo',$event)" placeholder="Buscar mo" #input>
         </div>
@@ -249,7 +249,7 @@
       </div>
     </mat-tab>
     <mat-tab label="Refacciones">
-      <div class="row m-1">
+      <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-12 m-1">
           <input class="form-control" (keyup)="applyFilter('refacciones',$event)" placeholder="Buscar refaccion" #input>
         </div>
@@ -318,9 +318,7 @@
     </mat-tab>
   </mat-tab-group>
 
-  <div class="row mb-5">
-    <div class="col mb-5">&nbsp;</div>
-  </div>
+
 
 
   <div class="modal fade" id="modalElemento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -551,9 +549,7 @@
             </tbody>
           </table>
         </div>
-        <div class="row mb-5">
-          <div class="col mb-5">&nbsp;</div>
-        </div>
+        
       </div>
     </div>
   </div>

@@ -253,7 +253,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
   }
   async vigila_vehiculos_cliente(){
     const {id: id_cliente} = this.data_cliente
-    const vehiculos_object = await this._publicos.nueva_revision_cache('vehiculos')
+    const vehiculos_object = await this._publicos.revision_cache('vehiculos')
     const vehiculos_arr = this._publicos.crearArreglo2(vehiculos_object)
     const vehiculos_cliente = this._publicos.filtra_campo(vehiculos_arr,'cliente',id_cliente)
     this.arr_vehiculos = vehiculos_cliente
@@ -313,7 +313,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     this.citaForm.get('cotizacion_utiliza').valueChanges.subscribe(async (cotizacion_utiliza: string) => {
       const cliente = this.citaForm.get('cliente').value;
       if (cotizacion_utiliza && cliente) {
-          const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
+          const cotizaciones = this._publicos.revision_cache('cotizaciones')
           const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizaciones)
           const filtro_cotizaciones_cliente = this._publicos.filtra_informacion(arreglo_cotizaciones,'cliente',cliente)
           const ordenedas = this._publicos.ordenamiento_fechas_x_campo(filtro_cotizaciones_cliente,'no_cotizacion',false)
@@ -327,7 +327,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
       this.obtenerCitas_horarios()
       const cotizacion_utiliza = this.citaForm.get('cotizacion_utiliza').value;
       if (cotizacion_utiliza && cliente) {
-        const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
+        const cotizaciones = this._publicos.revision_cache('cotizaciones')
           // const arreglo_cotizaciones = this._publicos.crearArreglo2(cotizaciones)
           const filtro_cotizaciones_cliente = this._publicos.filtrarObjetoPorPropiedad(cotizaciones,'cliente',cliente)
           const ordenedas = this._publicos.ordenamiento_fechas_x_campo(filtro_cotizaciones_cliente,'no_cotizacion',false)
@@ -346,7 +346,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
     const data_form = this._publicos.getRawValue(this.citaForm)
     const {fecha, hora, sucursal, cliente, servicio, vehiculo} = data_form
 
-    const citas = this._publicos.nueva_revision_cache('citas')
+    const citas = this._publicos.revision_cache('citas')
     const seleccionado = this._publicos.resetearHoras(new Date(fecha))
 
     const apuntadores = ['cliente','sucursal','vehiculo', 'servicio','fecha']
@@ -505,7 +505,7 @@ export class RegistraCitaComponent implements OnInit,AfterViewInit, OnChanges, O
         updates[`citas/${clave}`] = this.purifica_data_cita(recuperda)
         console.log(updates);
         
-        const claves_encontradas = this._publicos.nueva_revision_cache('claves_citas')
+        const claves_encontradas = this._publicos.revision_cache('claves_citas')
         const valorNoDuplicado = [...new Set([...this._publicos.crearArreglo(claves_encontradas), clave])];
         updates['claves_citas'] = valorNoDuplicado
            update(ref(db), updates).then(()=>{

@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 
 
+import { recepciones } from './ayuda';
+
 import { VehiculosService } from 'src/app/services/vehiculos.service';
 
 
@@ -37,7 +39,7 @@ export class AutomaticosComponent implements OnInit {
     {ruta_observacion: 'clientes', nombre:'claves_clientes'},
     {ruta_observacion: 'vehiculos', nombre:'claves_vehiculos'},
     {ruta_observacion: 'recepciones', nombre:'claves_recepciones'},
-    {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
+    // {ruta_observacion: 'cotizaciones', nombre:'claves_cotizaciones'},
     {ruta_observacion: 'historial_gastos_diarios', nombre:'claves_historial_gastos_diarios'},
     {ruta_observacion: 'historial_gastos_operacion', nombre:'claves_historial_gastos_operacion'},
     {ruta_observacion: 'historial_gastos_orden', nombre:'claves_historial_gastos_orden'},
@@ -72,6 +74,8 @@ export class AutomaticosComponent implements OnInit {
   save_ordenes = {}
   claves = []
 
+  
+
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('fileInput') fileInput2: ElementRef;
   ngOnInit(): void {
@@ -83,15 +87,234 @@ export class AutomaticosComponent implements OnInit {
   rol(){
     const { rol, sucursal, usuario } = this._security.usuarioRol()
     this._sucursal = sucursal
+
+    // this.procesarArregloConSweetAlert()
+
+    // this.eliminaid()
+    
   }
+  // Importa SweetAlert2 si no lo has hecho ya
+
+
+
+// Importa SweetAlert2 si no lo has hecho ya
+
+procesarArregloConSweetAlert(){
+  let existentes = [], faltantes = []
+  let claves_Existentes = [], claves_faltantes = []
+  
+  let timerInterval
+  const time = this.campos.length * 500
+  Swal.fire({
+    title: 'Espere ...',
+    html: 'Revisando información <b></b>',
+    timer: time,
+    timerProgressBar: true,
+    progressStepsDistance: 4,
+    allowOutsideClick: false,
+    didOpen: async () => {
+      Swal.showLoading()
+      for(let campo of this.campos){
+        const {nombre, ruta_observacion} = campo
+        // Simula una operación de procesamiento
+        await new Promise(resolve => setTimeout(resolve, 450)); // Espera 1 segundo
+        // console.log(campo);
+
+        const b = Swal.getHtmlContainer().querySelector('b')
+        b.textContent = ruta_observacion
+        this._publicos.existe_variable_localhost(ruta_observacion) ? existentes.push(ruta_observacion) : faltantes.push(ruta_observacion)
+        this._publicos.existe_variable_localhost(nombre) ? claves_Existentes.push(nombre) : claves_faltantes.push(nombre)
+      }
+      
+    },
+    willClose: () => {
+      clearInterval(timerInterval)
+      // return {claves:claves_faltantes, ruta_observacion: claves_faltantes}
+      this.consulta_data(faltantes, claves_faltantes)
+    }
+  }).then((result) => {
+    /* Read more about handling dismissals below */
+    if (result.dismiss === Swal.DismissReason.timer) {
+    }
+  })
+}
+
+consulta_data(faltantes:any[], claves:any[]){
+
+  const nuevos = [...new Set([...faltantes, ...claves])]
+
+  if (nuevos.length) {
+    let timerInterval
+    const time = nuevos.length * 1000
+    Swal.fire({
+      title: 'Consuta espere ...',
+      html: 'Obteniendo <b></b>',
+      timer: time,
+      timerProgressBar: true,
+      progressStepsDistance: 4,
+      allowOutsideClick: false,
+      didOpen: async () => {
+        Swal.showLoading()
+        for(let campo of nuevos){
+          // Simula una operación de procesamiento
+          console.log(campo);
+
+          const b = Swal.getHtmlContainer().querySelector('b')
+          b.textContent = campo
+
+          const data = await this._automaticos.consulta_ruta(campo)
+
+          this._security.guarda_informacion({nombre: campo, data})
+          
+        }
+        
+      },
+      willClose: () => {
+        clearInterval(timerInterval)
+        // return {claves:claves_faltantes, ruta_observacion: claves_faltantes}
+        // this.consulta_data(faltantes, claves_faltantes)
+      }
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        
+      }
+    })
+  }
+
+}
+
+
+
   obtener_informacion_cache(cual){
     console.log(cual);
-    const data_claves = this._publicos.nueva_revision_cache(cual)
+    const data_claves = this._publicos.revision_cache(cual)
     this._publicos.saber_pesos(data_claves)
     console.log(data_claves);
-    const claves = this._publicos.nueva_revision_cache(`claves_${cual}`)
+    const claves = this._publicos.revision_cache(`claves_${cual}`)
     console.log(claves);
+
+    console.log(this._publicos.saber_pesos(data_claves));
+    console.log(this._publicos.saber_pesos(claves));
     
+    
+  }
+  eliminaid(){
+    const nuevas ={}
+    Object.entries(recepciones).forEach(([key, entrie])=>{
+      const newdat = this._publicos.crear_new_object(entrie)
+      delete newdat.id
+      delete newdat.reporte
+      nuevas[key] = newdat
+    })
+    console.log(nuevas);
+    
+  }
+  handleFileInputLH(event) {
+
+    const file = event.target.files[0];
+
+    if (file) {
+      // Verifica que el archivo sea de tipo JSON
+      if (file.type === 'application/json') {
+        const reader = new FileReader();
+
+        // const crear = ['clientes','vehiculos','cotizaciones','recepciones','']
+
+        reader.onload = (e: any) => {
+          try {
+            // Parsea el contenido del archivo JSON
+            const jsonData = JSON.parse(e.target.result);
+
+
+
+            Object.entries(jsonData).forEach(([key, entrie])=>{
+              // guarda_informacion_sesion
+              
+              // console.log(entrie);
+              
+              
+              // console.log(`claves_${key}`);
+              
+              const cuantos = key.split('_')
+              // console.log(cuantos);
+              
+              if ( cuantos.length >= 3 || cuantos.length === 1 ) {
+                // console.log('=====>',key);
+                console.log(`====> ${key} <=====`);
+                this._security.guarda_informacion({nombre: key, data: entrie})
+                this._security.guarda_informacion({nombre: `claves_${key}`, data: Object.keys(entrie)})
+              }
+
+              // this._security.guarda_informacion({nombre: `claves_${key}`, data: entrie})
+              
+              
+            })
+
+            const nuevaBD = {}
+
+            // // const {clientes} = this._publicos.crear_new_object(jsonData)
+
+            // const arry = [
+            //   'clientes',
+            //   // 'vehiculos',
+            //   'recepciones',
+            //   'cotizaciones',
+            //   'historial_gastos_diarios',
+            //   'historial_gastos_operacion',
+            //   'historial_gastos_orden',
+            //   'historial_pagos_orden',
+            //   'metas_sucursales',
+            //   'citas',
+            // ]
+
+            // for(let campo of arry){
+              
+              
+            //   const obtenido = this._publicos.filtrarObjetoPorPropiedad(jsonData[campo], 'sucursal', '-N2glF34lV3Gj0bQyEWK')
+            //   nuevaBD[campo] = obtenido
+            //   nuevaBD[`claves_${campo}`] = Object.keys(obtenido)
+
+            //   console.log(`campo ==> ${campo} ==> dataCount ${this._publicos.crearArreglo2(obtenido).length}, claves ==> ${Object.keys(obtenido).length}`);
+              
+              
+            // }
+
+
+
+            
+            
+
+            // let nuevos_vehiculos = {}
+            // Object.keys(nuevaBD['clientes']).forEach(cliente=>{
+
+            //   const vehiculos_cliente = this._publicos.filtrarObjetoPorPropiedad(jsonData['vehiculos'],'cliente',cliente)
+
+            //   nuevos_vehiculos = {...nuevos_vehiculos, ...vehiculos_cliente}
+              
+            // })
+            // nuevaBD['vehiculos'] = nuevos_vehiculos
+            // nuevaBD['claves_vehiculos'] = Object.keys(nuevos_vehiculos)
+
+            
+            console.log(nuevaBD);
+            
+
+            console.log(this._publicos.saber_pesos(nuevaBD));
+            console.log(this._publicos.saber_pesos(jsonData));
+
+            // console.log(jsonData);
+            
+          } catch (error) {
+            console.error('Error al cargar el archivo JSON:', error);
+          }
+        };
+
+        reader.readAsText(file);
+      } else {
+        console.error('Selecciona un archivo JSON válido.');
+      }
+    }
   }
   handleFileInput(files: FileList) {
 

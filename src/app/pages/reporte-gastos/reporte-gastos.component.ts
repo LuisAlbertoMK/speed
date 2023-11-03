@@ -115,7 +115,7 @@ export class ReporteGastosComponent implements OnInit {
     this.primer_comprobacion_resultados_multiple()
   }
   comprobacion_resultados_multiple(campo){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
+    const objecto_recuperdado = this._publicos.revision_cache(campo)
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
   }
   primer_comprobacion_resultados_multiple(){
@@ -129,20 +129,20 @@ export class ReporteGastosComponent implements OnInit {
       this.campo_vigilar.forEach(campo_vigila=>{
         if (!this.comprobacion_resultados_multiple(campo_vigila)) {
           console.log(`recuperando data ${campo_vigila}`);
-          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
+          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.revision_cache(campo_vigila))
           this.asiganacion_resultados_multiples(this.campo_vigilar)
         }
       })
     },1500)
   }
   asiganacion_resultados_multiples(campo_vigila){
-    this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
+    this.objecto_actuales[campo_vigila] = this._publicos.revision_cache(campo_vigila)
     this.genera_resultados()
   }
   genera_resultados(){
-    const historial_gastos_diarios = this._publicos.nueva_revision_cache('historial_gastos_diarios')
-    const historial_gastos_operacion = this._publicos.nueva_revision_cache('historial_gastos_operacion')
-    const historial_gastos_orden = this._publicos.nueva_revision_cache('historial_gastos_orden')
+    const historial_gastos_diarios = this._publicos.revision_cache('historial_gastos_diarios')
+    const historial_gastos_operacion = this._publicos.revision_cache('historial_gastos_operacion')
+    const historial_gastos_orden = this._publicos.revision_cache('historial_gastos_orden')
 
     const objetoFiltradohistorial_gastos_diarios = this._publicos.filtrarObjetoPorPropiedad(historial_gastos_diarios, 'sucursal', this.filtro_sucursal);
     const objetoFiltradohistorial_gastos_operacion = this._publicos.filtrarObjetoPorPropiedad(historial_gastos_operacion, 'sucursal', this.filtro_sucursal);
@@ -235,7 +235,7 @@ export class ReporteGastosComponent implements OnInit {
   genera_excel(){
     const enviar_totales_orden = []
 
-    const historial_gastos_orden = this._publicos.nueva_revision_cache('historial_gastos_orden')
+    const historial_gastos_orden = this._publicos.revision_cache('historial_gastos_orden')
     const nuevas_ = [...this.dataSource.data]
     if (nuevas_.length) {
       const aplicadas = nuevas_.map((os_especifica:any)=>{

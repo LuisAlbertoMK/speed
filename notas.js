@@ -2,10 +2,10 @@
 /*
 
 git add .
-git commit -m "problema con cotizaciones"
+git commit -m "modificaciones revision cache"
 git push -u origin
 
-shutdown -s -t 800 -c 'XD'
+shutdown -s -t 60 -c 'XD'
 ls
 ls
 

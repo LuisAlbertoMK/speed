@@ -185,9 +185,9 @@ export class CitasComponent implements OnInit {
       {valor:'13',nombre:'escaneo vehículo'},
     ]
     const nuevas_citas = {}
-    const clientes = this._publicos.nueva_revision_cache('clientes')
-    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
-    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    const clientes = this._publicos.revision_cache('clientes')
+    const vehiculos = this._publicos.revision_cache('vehiculos')
+    const sucursales = this._publicos.revision_cache('sucursales')
     Object.keys(citas).forEach(cita=>{
       const {id, cliente, vehiculo, sucursal, servicio} = citas[cita]
       const data_cliente = clientes[cliente]
@@ -204,7 +204,7 @@ export class CitasComponent implements OnInit {
     return nuevas_citas
   }
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('citas')
+    const objecto_recuperdado = this._publicos.revision_cache('citas')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
   segundo_llamado(){
@@ -216,8 +216,8 @@ export class CitasComponent implements OnInit {
     },500)
   }
   asignacion_resultados(){
-    this.objecto_actual = this._publicos.nueva_revision_cache('citas')
-    const citas = this._publicos.nueva_revision_cache('citas')
+    this.objecto_actual = this._publicos.revision_cache('citas')
+    const citas = this._publicos.revision_cache('citas')
     const citas_all_data = this._publicos.contruye_citas(citas)
     this.objecto_actual_data = citas_all_data
 

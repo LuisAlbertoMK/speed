@@ -32,21 +32,21 @@ export class VehiculosComponent implements OnInit {
     this._sucursal = sucursal
   }
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
   segundo_llamado(){
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
         console.log('recuperando data');
-        const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+        const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
         this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asignacion_resultados()
       }
     },500)
   }
   asignacion_resultados(){
-    this.objecto_actual = this._publicos.nueva_revision_cache('vehiculos')
+    this.objecto_actual = this._publicos.revision_cache('vehiculos')
     const data_recuperda_arr = this._publicos.crearArreglo2(this.objecto_actual)
 
     const campos = [

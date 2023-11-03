@@ -1,0 +1,118 @@
+ {
+    "-N7wdOTLAaUye85buKap": {
+      "confirmCorreo": "desarrolloSpeed03@gmail.com",
+      "confirmPassword": "SuperSU/(1",
+      "correo": "desarrolloSpeed03@gmail.com",
+      "password": "SuperSU/(1",
+      "rol": "SuperSU",
+      "status": true,
+      "sucursal": "Todas",
+      "usuario": "Develop One"
+    },
+    "-N7zux8oj_H4tfPIAZZ5": {
+      "confirmCorreo": "contacto_toreo@speed-service.com.mx",
+      "confirmPassword": "Gers312/",
+      "correo": "contacto_toreo@speed-service.com.mx",
+      "password": "Gers312/",
+      "rol": "Gerente",
+      "status": true,
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "usuario": "gerente"
+    },
+    "-NEggACBYV-38whh-Cnz": {
+      "confirmCorreo": "ventas_culhuacan@speed-service.com.mx",
+      "confirmPassword": "Culh12/(1",
+      "correo": "ventas_culhuacan@speed-service.com.mx",
+      "password": "Culh12/(1",
+      "rol": "Gerente",
+      "status": true,
+      "sucursal": "-N2glF34lV3Gj0bQyEWK",
+      "usuario": "Juan Perez Garcia"
+    },
+    "-NEq0nuZ7DSkzMqRTuIG": {
+      "confirmCorreo": "coapa@speed-service.com.mx",
+      "confirmPassword": "GerenteCoapa/(1",
+      "correo": "coapa@speed-service.com.mx",
+      "password": "GerenteCoapa/(1",
+      "rol": "Gerente",
+      "status": true,
+      "sucursal": "-N2glf8hot49dUJYj5WP",
+      "usuario": "gerente coapa"
+    },
+    "-NEq14DC0L7P5lyiiZG1": {
+      "confirmCorreo": "gerentecircuito@gmail.com",
+      "confirmPassword": "GerenteCircuito@1",
+      "correo": "circuito@speed-service.com.mx",
+      "password": "GerenteCircuito@1",
+      "rol": "Gerente",
+      "status": true,
+      "sucursal": "-N2glQ18dLQuzwOv3Qe3",
+      "usuario": "gerente circuito"
+    },
+    "-NFVB-LASl4wBCkOcmmu": {
+      "correo": "gabriel_guadarrama@hotmail.com",
+      "password": "h1022OIiqQ",
+      "rol": "cliente",
+      "status": true,
+      "sucursal": "-N2gkVg1RtSLxK3rTMYc",
+      "usuario": "Gabriel"
+    },
+    "-NFp1szdczrEHN9dLSrn": {
+      "correo": "inmobiliarias@arrendify.com",
+      "password": "Zr5Hpf8tFI",
+      "rol": "cliente",
+      "status": true,
+      "sucursal": "-N2glF34lV3Gj0bQyEWK",
+      "usuario": "miriam"
+    },
+    "-NG2LstV0NhaJkHH6ro-": {
+      "correo": "genaro_guadarrama@outlook.com",
+      "password": "#tjQRct$9W",
+      "rol": "cliente",
+      "status": true,
+      "sucursal": "-N2glF34lV3Gj0bQyEWK",
+      "usuario": "GENARO GUADAAAAA"
+    },
+    "-NGSEdDHwxKgKHC1IM7E": {
+      "confirmCorreo": "atencion_clientes@speed-service.com.mx",
+      "confirmPassword": "Speed0(Cu60",
+      "correo": "atencion_clientes@speed-service.com.mx",
+      "password": "Speed0(Cu60",
+      "rol": "Gerente",
+      "status": true,
+      "sucursal": "-N2glF34lV3Gj0bQyEWK",
+      "usuario": "Jhovanny Dorantes"
+    },
+    "-NL1hTSnVq0ImKF7kCT7": {
+      "correo": "juan@gmail.com",
+      "img": "https://firebasestorage.googleapis.com/v0/b/speed-pro-app.appspot.com/o/usuarios%2Fdefault.jpg?alt=media&token=439b5875-8b06-4f37-b522-a86dc4d7954b",
+      "password": "Juan12&/",
+      "rol": "tecnico",
+      "status": "true",
+      "sucursal": "-N2glF34lV3Gj0bQyEWK",
+      "usuario": "juna garcia nico"
+    },
+    "-dsbhkdsfg_45dfgsda": {
+      "correo": "josemarianew@gmail.com",
+      "password": "dsfhgGHFG546%",
+      "rol": "tecnico",
+      "sucursal": "-N2gkzuYrS4XDFgYciId",
+      "usuario": "jose maria"
+    },
+    "J5Q7SHu7IGQubFnCJmIFBA5WyCj1": {
+      "correo": "mkkaos28@gmail.com",
+      "password": "MKkaos28/(1",
+      "rol": "cliente",
+      "status": true,
+      "sucursal": "-N2glF34lV3Gj0bQyEWK",
+      "usuario": "mkprueba"
+    },
+    "RrgWsBCKu8OtIqDtEy4HgbCtBIw2": {
+      "correo": "tecnogerzon@hotmail.com",
+      "password": "gansebrio147AGUA/",
+      "rol": "cliente",
+      "status": true,
+      "sucursal": "-N2glF34lV3Gj0bQyEWK",
+      "usuario": "EGNARO COLOR"
+    }
+  }

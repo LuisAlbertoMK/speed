@@ -88,7 +88,7 @@ export class AdministracionComponent implements OnInit {
     this.primer_comprobacion_resultados_multiple()
   }
   comprobacion_resultados_multiple(campo){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache(campo)
+    const objecto_recuperdado = this._publicos.revision_cache(campo)
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actuales[campo], objecto_recuperdado);
   }
   primer_comprobacion_resultados_multiple(){
@@ -103,7 +103,7 @@ export class AdministracionComponent implements OnInit {
       this.campo_vigilar.forEach(campo_vigila=>{
         if (!this.comprobacion_resultados_multiple(campo_vigila)) {
           console.log(`recuperando data ${campo_vigila}`);
-          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.nueva_revision_cache(campo_vigila))
+          this.objecto_actuales[campo_vigila] = this._publicos.crear_new_object(this._publicos.revision_cache(campo_vigila))
           this.asiganacion_resultados_multiples(this.campo_vigilar)
         }
       })
@@ -111,11 +111,11 @@ export class AdministracionComponent implements OnInit {
     },1500)
   }
   asiganacion_resultados_multiples(campo_vigila){
-    this.objecto_actuales[campo_vigila] = this._publicos.nueva_revision_cache(campo_vigila)
+    this.objecto_actuales[campo_vigila] = this._publicos.revision_cache(campo_vigila)
     this.genera_resultados()
   }
   genera_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+    const objecto_recuperdado = this._publicos.revision_cache('recepciones')
 
     const objetoFiltrado = this._publicos.filtrarObjetoPorPropiedad(objecto_recuperdado, 'sucursal', this.filtro_sucursal);
 
@@ -133,7 +133,7 @@ export class AdministracionComponent implements OnInit {
 
     // console.log('==========><==========');
     
-    const gastos_operacion = this._publicos.nueva_revision_cache('historial_gastos_operacion')
+    const gastos_operacion = this._publicos.revision_cache('historial_gastos_operacion')
     // console.log(gastos_operacion);
     // console.log(this.filtro_sucursal);
     const objetoFiltrado_operacion = this._publicos.filtrarObjetoPorPropiedad(gastos_operacion, 'sucursal', this.filtro_sucursal);

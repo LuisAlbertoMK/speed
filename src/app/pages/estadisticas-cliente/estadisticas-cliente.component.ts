@@ -190,7 +190,7 @@ export class EstadisticasClienteComponent implements OnInit{
   }
   
   asiganacion_resultados(){
-    // const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    
     const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
   
     this.recepciones_arr = recepciones_arr
@@ -385,7 +385,7 @@ export class EstadisticasClienteComponent implements OnInit{
   
   onSelect_busqueda(event){
     // console.log(event);
-    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+    const vehiculos = this._publicos.revision_cache('vehiculos')
     // if (event) {
       // const busqueda = (typeof event === 'object') ? event.name : event
       // this.infoSelect_busqueda  = this.clonado.find(c=>c.name === busqueda)
