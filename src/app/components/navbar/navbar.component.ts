@@ -123,10 +123,26 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
     this._rol = rol
     this._sucursal = sucursal
     // console.log(this._sucursal);
-    const primeraRevision = localStorage.getItem('primera_revision');
-    const totales = this.campos.length
 
-    this.procesarArregloConSweetAlert()
+    if (!this._publicos.existe_variable_localhost('unica')) {
+      let camposs= this.campos.length
+      let contados = 0
+      this.campos.forEach(campo=>{
+        const {nombre, ruta_observacion}= campo
+        localStorage.removeItem(nombre)
+        localStorage.removeItem(ruta_observacion)
+        contados++
+      })
+      const intervlo = setInterval(() => {
+        if (camposs === contados) {
+          clearInterval(intervlo)
+          localStorage.setItem('unica', 'ok')
+          this.procesarArregloConSweetAlert()
+        }
+      }, 100);
+    }else{
+      this.procesarArregloConSweetAlert()
+    }    
   }
   procesarArregloConSweetAlert(){
     let existentes = [], faltantes = []
@@ -149,6 +165,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
           const b = Swal.getHtmlContainer().querySelector('b')
           b.textContent = ruta_observacion
           await new Promise(resolve => setTimeout(resolve, 200)); // Espera 1 segundo
+
           this._publicos.existe_variable_localhost(ruta_observacion) ? existentes.push(ruta_observacion) : faltantes.push(ruta_observacion)
           this._publicos.existe_variable_localhost(nombre) ? claves_Existentes.push(nombre) : claves_faltantes.push(nombre)
         }
@@ -172,7 +189,7 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   
     if (nuevos.length) {
       let timerInterval
-      const time = nuevos.length * 1000
+      const time = nuevos.length * 500
       Swal.fire({
         title: 'Consuta espere ...',
         html: 'Obteniendo <b></b>',
@@ -226,17 +243,18 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
   async vigila_nodo_principal(data){
 
     
-    const {nombre, ruta_observacion} = data
     
+    const {nombre, ruta_observacion} = data
 
     const en_cloud:any[] =  await this._automaticos.consulta_ruta(nombre)
 
     const resultados_real_time = (!en_cloud.length) ? [] : en_cloud
 
-    const resultados_en_local = this._publicos.revision_cache(nombre) || []
+    const resultados_en_local:any[] = this._publicos.revision_cache(nombre) 
 
+    const newLocal:any[] = (!resultados_en_local.length) ?  [] : resultados_en_local
 
-    const valorNoDuplicado = await [...new Set([...resultados_real_time, ...resultados_en_local])];
+    const valorNoDuplicado = [...new Set([...resultados_real_time, ...newLocal])];
 
     // console.log(this._publicos.saber_pesos(valorNoDuplicado));
 

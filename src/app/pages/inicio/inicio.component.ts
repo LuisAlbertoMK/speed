@@ -18,7 +18,7 @@ export class InicioComponent implements OnInit {
 
   asigancion_roles_gerente = [
     {path:'administracion', show:'Administracion',icono:'book'},
-    {path:'automaticos', show:'AUTOMATICOS',icono:'ban'},
+    // {path:'automaticos', show:'AUTOMATICOS',icono:'ban'},
     {path:'catalogos', show:'Catalogos',icono:'address-book'},
     {path:'citas', show:'Citas',icono:'calendar-check'},
     {path:'clientes', show:'Clientes',icono:'user'},

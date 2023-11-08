@@ -36,7 +36,7 @@ export class CitaComponent implements OnInit, OnChanges {
     }
   }
   consulta_data_cita(){
-    const citas = this._publicos.nueva_revision_cache('citas')
+    const citas = this._publicos.revision_cache('citas')
     const citas_all_data = this._publicos.contruye_citas(citas)
     if (citas_all_data[this.data]) {
       const data_cita = this._publicos.crear_new_object(citas_all_data[this.data])
