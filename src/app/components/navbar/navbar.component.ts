@@ -202,7 +202,6 @@ export class NavbarComponent implements AfterViewInit ,OnInit {
           for(let campo of nuevos){
             // Simula una operación de procesamiento
             console.log(`campos recupera BD ===> ${campo}`);
-
             // const simular = await this._automaticos.consulta_ruta()
             const data = await this._automaticos.consulta_ruta(campo)
   

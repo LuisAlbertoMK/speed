@@ -96,7 +96,7 @@ export class TemplateNavegacionComponent implements OnInit,OnChanges {
     let cliente_id:string = ''
     if (ruta_valida) {
       if (vehiculo) {
-        const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+        const vehiculos = this._publicos.revision_cache('vehiculos')
         const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
         const {cliente} = data_vehiculo
         cliente_id = cliente

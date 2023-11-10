@@ -109,9 +109,9 @@ export class CotizacionClienteComponent implements OnInit {
 
     const {cliente, sucursal, cotizacion, tipo, anterior, vehiculo, recepcion } = this.enrutamiento
 
-    const clientes = this._publicos.nueva_revision_cache('clientes')
-    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
-    this.vehiculo_cache = this._publicos.nueva_revision_cache('vehiculos')
+    const clientes = this._publicos.revision_cache('clientes')
+    const vehiculos = this._publicos.revision_cache('vehiculos')
+    this.vehiculo_cache = this._publicos.revision_cache('vehiculos')
     if(vehiculo){
       const data_vehiculo = this._publicos.crear_new_object(vehiculos[vehiculo])
       
@@ -133,11 +133,11 @@ export class CotizacionClienteComponent implements OnInit {
 
   }
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
   primer_comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
     this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
     this.asiganacion_resultados()
     this.segundo_llamado()
@@ -146,7 +146,7 @@ export class CotizacionClienteComponent implements OnInit {
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
         console.log('recuperando data');
-        const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+        const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
         this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asiganacion_resultados()
       }
@@ -275,8 +275,8 @@ export class CotizacionClienteComponent implements OnInit {
     }
   }
   asignar_nuevos_elementos(nuevos:any[]){
-    const paquetes = this._publicos.nueva_revision_cache('paquetes')
-    const moRefacciones = this._publicos.nueva_revision_cache('moRefacciones')
+    const paquetes = this._publicos.revision_cache('paquetes')
+    const moRefacciones = this._publicos.revision_cache('moRefacciones')
     const paquetes_armados  = this._publicos.armar_paquetes({moRefacciones, paquetes})
     // console.log(paquetes_armados);
     
@@ -339,7 +339,7 @@ export class CotizacionClienteComponent implements OnInit {
     const {sucursal, cliente, data_sucursal, data_cliente} = this.infoCotizacion
     if (cliente && !sucursal && data_cliente) {
       const dat_cliente = this._publicos.crear_new_object(data_cliente)
-      const sucursales = this._publicos.nueva_revision_cache('sucursales')
+      const sucursales = this._publicos.revision_cache('sucursales')
       const {sucursal: cliente_sucursal} = dat_cliente
       this.infoCotizacion.sucursal = cliente_sucursal
       this.infoCotizacion.data_sucursal = sucursales[cliente_sucursal]
@@ -432,7 +432,7 @@ export class CotizacionClienteComponent implements OnInit {
                    this._email.EmailCotizacion(tempData)
                    this._publicos.swalToast('Cotizacion realizada!!', 1, 'top-start')
                    this._security.guarda_informacion({nombre:'claves_cotizaciones', data: valorNoDuplicado})
-                   const cotizaciones = this._publicos.nueva_revision_cache('cotizaciones')
+                   const cotizaciones = this._publicos.revision_cache('cotizaciones')
                    cotizaciones[clave_] = data_save
                    this._security.guarda_informacion({nombre:'cotizaciones', data: cotizaciones})
                    
@@ -512,13 +512,13 @@ export class CotizacionClienteComponent implements OnInit {
   async generaNombreCotizacion(rol:string, data){
     const nueva_data = this._publicos.crear_new_object(data)
     const  {sucursal, data_cliente} = nueva_data
-    const sucursales = this._publicos.nueva_revision_cache('sucursales')
+    const sucursales = this._publicos.revision_cache('sucursales')
     const date: Date = new Date()
     const year = date.getFullYear().toString().slice(-2)
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const nombreSucursal:string = sucursales[sucursal].sucursal.slice(0,2).toUpperCase()
     const nuevoRol:string = rol.slice(0,2).toUpperCase()
-    // const no_cotizacion:any[]  = this._publicos.nueva_revision_cache('claves_cotizaciones')
+    // const no_cotizacion:any[]  = this._publicos.revision_cache('claves_cotizaciones')
     const no_cotizacion:any[]  = await this._automaticos.consulta_ruta('claves_cotizaciones')
     const secuencia = (no_cotizacion.length + 1).toString().padStart(4, '0')
     return `${nombreSucursal}${month}${year}${nuevoRol}${secuencia}`

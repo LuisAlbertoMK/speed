@@ -227,7 +227,7 @@ export class ClienteComponent implements OnInit, OnChanges {
       if (correo) {
 
         let nuevo_correo_ = this._publicos.quitarAcentos(correo)
-        const clientes = await this._publicos.nueva_revision_cache('clientes')
+        const clientes = await this._publicos.revision_cache('clientes')
         const clientes_arr = this._publicos.crearArreglo2(clientes)
         const existe = clientes_arr.find(c=>c.correo === nuevo_correo_)
         this.correoExistente = (existe) ? true : false
@@ -349,9 +349,9 @@ export class ClienteComponent implements OnInit, OnChanges {
     const informacion_purifica = [
       'nombre', 'apellidos','correo'
     ]
-    informacion_purifica.forEach(campo=>{
-      info_get[campo] = this._publicos.quitarAcentos(info_get[campo])
-    })
+    // informacion_purifica.forEach(campo=>{
+    //   info_get[campo] = this._publicos.quitarAcentos(info_get[campo])
+    // })
 
     let campos_cliente                 = [ ...this._clientes.campos_cliente ]
     const campos_permitidos_Actualizar   = [ ...this._clientes.campos_permitidos_Actualizar ]

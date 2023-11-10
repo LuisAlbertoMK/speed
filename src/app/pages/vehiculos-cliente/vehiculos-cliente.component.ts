@@ -33,13 +33,13 @@ export class VehiculosClienteComponent implements OnInit {
       this.asiganacion_resultados()
       this.segundo_llamado()
     }
-    const clientes = this._publicos.nueva_revision_cache('clientes')
+    const clientes = this._publicos.revision_cache('clientes')
     if (clientes[this._uid]) {
       this.data_cliente = clientes[this._uid]
     }
   }
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
 
@@ -47,14 +47,14 @@ export class VehiculosClienteComponent implements OnInit {
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
         console.log('recuperando data');
-        const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+        const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
         this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asiganacion_resultados()
       }
     },1500)
   }
   asiganacion_resultados(){
-    // const objecto_recuperdado = this._publicos.nueva_revision_cache('vehiculos')
+    // const objecto_recuperdado = this._publicos.revision_cache('vehiculos')
     const { vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
 
     const campo_vehiculo = [
@@ -73,7 +73,7 @@ export class VehiculosClienteComponent implements OnInit {
       'transmision',
     ]
 
-    this.objecto_actual = this._publicos.nueva_revision_cache('vehiculos')
+    this.objecto_actual = this._publicos.revision_cache('vehiculos')
     this.vehiculos_arr = (!this.vehiculos_arr.length)  ? vehiculos_arr :
     this._publicos.actualizarArregloExistente(this.vehiculos_arr,vehiculos_arr,campo_vehiculo)
 

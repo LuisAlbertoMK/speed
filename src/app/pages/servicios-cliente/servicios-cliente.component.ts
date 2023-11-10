@@ -79,7 +79,7 @@ export class ServiciosClienteComponent implements OnInit {
   }
 
   comprobacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+    const objecto_recuperdado = this._publicos.revision_cache('recepciones')
     return this._publicos.sonObjetosIgualesConJSON(this.objecto_actual, objecto_recuperdado);
   }
   primer_comprobacion_resultados(){
@@ -90,14 +90,14 @@ export class ServiciosClienteComponent implements OnInit {
     setInterval(()=>{
       if (!this.comprobacion_resultados()) {
         console.log('recuperando data');
-        const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+        const objecto_recuperdado = this._publicos.revision_cache('recepciones')
         this.objecto_actual = this._publicos.crear_new_object(objecto_recuperdado)
         this.asiganacion_resultados()
       }
     },1500)
   }
   asiganacion_resultados(){
-    const objecto_recuperdado = this._publicos.nueva_revision_cache('recepciones')
+    const objecto_recuperdado = this._publicos.revision_cache('recepciones')
 
     const {data_cliente, cotizaciones_arr, recepciones_arr, vehiculos_arr} = this._publicos.data_relacionada_id_cliente(this._uid)
 

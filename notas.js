@@ -2,7 +2,7 @@
 /*
 
 git add .
-git commit -m "modificaciones revision cache"
+git commit -m "correcciones menor cliente y editarOS"
 git push -u origin
 
 shutdown -s -t 60 -c 'XD'

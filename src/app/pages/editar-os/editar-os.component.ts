@@ -230,12 +230,12 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
   async nuevas(){
 
-    const recepciones = await this._publicos.nueva_revision_cache('recepciones')
-    const clientes = await this._publicos.nueva_revision_cache('clientes')
-    const vehiculos = await this._publicos.nueva_revision_cache('vehiculos')
-    const historial_gastos_orden_object = await this._publicos.nueva_revision_cache('historial_gastos_orden')
+    const recepciones =  this._publicos.revision_cache('recepciones')
+    const clientes =  this._publicos.revision_cache('clientes')
+    const vehiculos =  this._publicos.revision_cache('vehiculos')
+    const historial_gastos_orden_object =  this._publicos.revision_cache('historial_gastos_orden')
     const historial_gastos_orden = this._publicos.crearArreglo2(historial_gastos_orden_object)
-    const historial_pagos_orden_object = await this._publicos.nueva_revision_cache('historial_pagos_orden')
+    const historial_pagos_orden_object =  this._publicos.revision_cache('historial_pagos_orden')
     const historial_pagos_orden = this._publicos.crearArreglo2(historial_pagos_orden_object)
 
     // console.log(this.enrutamiento);
@@ -247,7 +247,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
 
     if (recepci[0]) {
       const data_recepcion = this._publicos.crear_new_object(recepci[0]) //JSON.parse(JSON.stringify());
-      console.log(data_recepcion);
+      
       const claves_recuperar = [
         "checkList", "cliente", "diasEntrega", "diasSucursal", "elementos", "formaPago", "id", "iva", "margen", "no_os", "servicio", "status", "sucursal", "vehiculo", "historial_gastos_orden", "historial_pagos_orden", "data_cliente", "data_vehiculo", "reporte", "data_sucursal", "reporte_real",'tecnicoShow','tecnico','pdf_entrega' ]
 
@@ -363,7 +363,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         updates[`recepciones/${id}/pdf_entrega`] = null
         update(ref(db), updates).then(async ()=>{
           // console.log('finalizo');
-          const recepciones = await this._publicos.nueva_revision_cache('recepciones')
+          const recepciones = await this._publicos.revision_cache('recepciones')
           recepciones[id].fecha_recibido =''
           recepciones[id].fecha_entregado = ''
           recepciones[id].fecha_limite_gastos = ''
@@ -377,7 +377,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         })
       }
     }else{
-      // const recepciones = await this._publicos.nueva_revision_cache('recepciones')
+      // const recepciones = await this._publicos.revision_cache('recepciones')
       // recepciones[id].fecha_recibido =''
       // recepciones[id].fecha_entregado = ''
       // recepciones[id].fecha_limite_gastos = ''
@@ -410,7 +410,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
         
         update(ref(db), updates).then(async ()=>{
 
-          const recepciones = await this._publicos.nueva_revision_cache('recepciones')
+          const recepciones = await this._publicos.revision_cache('recepciones')
           recepciones[id_recepcion].tecnico = id
           recepciones[id_recepcion].tecnicoShow = usuario
           this._security.guarda_informacion({nombre:'recepciones', data: recepciones})
@@ -470,7 +470,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
       updates[`recepciones/${id}/elementos`] = nuevos;
       update(ref(db), updates).then(async ()=>{
         // console.log('finalizo');
-        const recepciones = await this._publicos.nueva_revision_cache('recepciones')
+        const recepciones = await this._publicos.revision_cache('recepciones')
         recepciones[id].elementos = nuevos;
         this._security.guarda_informacion({nombre:'recepciones', data: recepciones})
       })
@@ -627,7 +627,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
                   
                   update(ref(db), updates).then(async()=>{
                     // console.log('finalizo');
-                    const recepciones = await this._publicos.nueva_revision_cache('recepciones')
+                    const recepciones = await this._publicos.revision_cache('recepciones')
                     recepciones[nueva_data['id']].pdf_entrega =_ruta_pdf_entrega
                     recepciones[nueva_data['id']].fecha_entregado = actual
                     recepciones[nueva_data['id']].fecha_limite_gastos = save_guardar
@@ -855,7 +855,7 @@ export class EditarOsComponent implements OnInit, OnDestroy,AfterViewInit {
   async se_registro(event){
     const {id} = this.data_editar
     if (event && id) {
-      const historial_pagos_orden = await  this._publicos.nueva_revision_cache('historial_pagos_orden')
+      const historial_pagos_orden = await  this._publicos.revision_cache('historial_pagos_orden')
       const arreglo_pagos = this._publicos.crearArreglo2(historial_pagos_orden)
       this.data_editar.historial_pagos_orden = this._publicos.filtra_orden(arreglo_pagos, id)
     }

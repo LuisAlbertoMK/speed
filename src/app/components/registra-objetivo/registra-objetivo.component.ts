@@ -49,7 +49,7 @@ export class RegistraObjetivoComponent implements OnInit {
     this.faltante_s = faltante_s
     if (!ok) return
     console.log(get_data);
-    const metas_sucursales = this._publicos.nueva_revision_cache('metas_sucursales')
+    const metas_sucursales = this._publicos.revision_cache('metas_sucursales')
     const {sucursal, mes, objetivo} = this._publicos.crear_new_object(get_data)
     
 

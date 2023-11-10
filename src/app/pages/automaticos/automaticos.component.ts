@@ -376,8 +376,8 @@ consulta_data(faltantes:any[], claves:any[]){
     if (this.valida('ordenes_mes') && this.valida('morefacciones_ordenes')) {
       
     
-    const clientes = this._publicos.nueva_revision_cache('clientes')
-    const vehiculos = this._publicos.nueva_revision_cache('vehiculos')
+    const clientes = this._publicos.revision_cache('clientes')
+    const vehiculos = this._publicos.revision_cache('vehiculos')
     const servicios=[
       {valor:'1',nombre:'servicio'},
       {valor:'2',nombre:'garantia'},

@@ -1796,9 +1796,9 @@ export class ServiciosPublicosService {
     }
     
 
-    nueva_revision_cache(nombre:string){
-      return this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`)) 
-    }
+    // nueva_revision_cache(nombre:string){
+    //   return this._security.servicioDecrypt_object(localStorage.getItem(`${nombre}`)) 
+    // }
     revision_cache(nombre:string){
       return JSON.parse(localStorage.getItem(`${nombre}`))
     }
@@ -1937,8 +1937,6 @@ export class ServiciosPublicosService {
       .map(recepcion=>{
 
         const { cliente, vehiculo,elementos, margen, iva, descuento, formaPago, id, sucursal, reporte_ya_estaba} = recepcion;
-
-        console.log(id);
         
         const elementos_en = elementos ? elementos : []
         // const nuevos = this.reemplaza_info_paquetes(elementos, paquetes_armados, moRefacciones)
@@ -2300,9 +2298,6 @@ export class ServiciosPublicosService {
     }
 
     quitarAcentos(texto) {
-      // const nuevo_ = this.eliminarEspacios(texto)
-      // const nuevo_1 = this.dejarUnEspacio(nuevo_)
-
       return texto
         .normalize("NFD") // Normalizamos el texto en Unicode
         .replace(/[\u0300-\u036f]/g, "") // Eliminamos los caracteres diacríticos
